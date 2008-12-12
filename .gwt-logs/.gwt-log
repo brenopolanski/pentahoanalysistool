@@ -1,0 +1,875 @@
+Loading module 'com.mycompany.project.OLAPShit'
+   Module URL, resName: com/mycompany/project/OLAPShit.gwt.xml
+   Module URL 1: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL 2: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, externalForm, ori: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, externalForm, chn: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, from external: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, URI: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, gwtXmlFile: /home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, for Reader: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Loading inherited module 'com.google.gwt.user.User'
+      Module URL, resName: com/google/gwt/user/User.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Loading inherited module 'com.google.gwt.core.Core'
+         Module URL, resName: com/google/gwt/core/Core.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Loading inherited module 'com.google.gwt.dev.jjs.intrinsic.Intrinsic'
+            Module URL, resName: com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL 1: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL 2: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, externalForm, ori: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, externalForm, chn: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, from external: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, URI: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, gwtXmlFile: /home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, for Reader: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Loading inherited module 'com.google.gwt.lang.LongLib'
+               Module URL, resName: com/google/gwt/lang/LongLib.gwt.xml
+               Module URL 1: bundleresource://920/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL 2: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, externalForm, ori: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, externalForm, chn: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, from external: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, for Reader: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+         Loading inherited module 'com.google.gwt.emul.Emulation'
+            Module URL, resName: com/google/gwt/emul/Emulation.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+      Loading inherited module 'com.google.gwt.animation.Animation'
+         Module URL, resName: com/google/gwt/animation/Animation.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.User'
+            Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.RemoteService'
+         Module URL, resName: com/google/gwt/user/RemoteService.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Loading inherited module 'com.google.gwt.http.HTTP'
+            Module URL, resName: com/google/gwt/http/HTTP.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.DocumentRoot'
+         Module URL, resName: com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module URL, resName: com/google/gwt/user/UserAgent.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+      Loading inherited module 'com.google.gwt.user.DOM'
+         Module URL, resName: com/google/gwt/user/DOM.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.dom.DOM'
+            Module URL, resName: com/google/gwt/dom/DOM.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+            Loading inherited module 'com.google.gwt.user.UserAgent'
+               Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Window'
+         Module URL, resName: com/google/gwt/user/Window.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.HTTPRequest'
+         Module URL, resName: com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.History'
+         Module URL, resName: com/google/gwt/user/History.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.i18n.I18N'
+         Module URL, resName: com/google/gwt/i18n/I18N.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+      Loading inherited module 'com.google.gwt.user.Popup'
+         Module URL, resName: com/google/gwt/user/Popup.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Form'
+         Module URL, resName: com/google/gwt/user/Form.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.TextBox'
+         Module URL, resName: com/google/gwt/user/TextBox.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Focus'
+         Module URL, resName: com/google/gwt/user/Focus.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.ImageBundle'
+         Module URL, resName: com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Loading inherited module 'com.google.gwt.user.ClippedImage'
+            Module URL, resName: com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+            Loading inherited module 'com.google.gwt.user.UserAgent'
+               Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.ClippedImage'
+         Module 'com.google.gwt.user.ClippedImage' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.RichText'
+         Module URL, resName: com/google/gwt/user/RichText.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.SplitPanel'
+         Module URL, resName: com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Loading inherited module 'com.google.gwt.user.User'
+            Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.CaptionPanel'
+         Module URL, resName: com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Window'
+         Module 'com.google.gwt.user.Window' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Tree'
+         Module URL, resName: com/google/gwt/user/Tree.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+   Loading inherited module 'com.google.gwt.user.theme.standard.Standard'
+      Module URL, resName: com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+   Loading inherited module 'com.allen_sauer.gwt.dnd.gwt-dnd'
+      Module URL, resName: com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Loading inherited module 'com.google.gwt.user.User'
+         Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+   Public resources found in...
+      Refreshing resources
+         Searching for resources within file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar
+            Indexing zip file: /home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/asm-2.2.3.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/asm-2.2.3.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/asm-commons-2.2.3.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/asm-commons-2.2.3.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-collections.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-collections.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-dbcp.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-dbcp.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-logging.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-logging.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-math-1.0.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-math-1.0.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-pool.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-pool.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/commons-vfs.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/commons-vfs.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/eigenbase-properties.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/eigenbase-properties.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/eigenbase-resgen.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/eigenbase-resgen.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/eigenbase-xom.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/eigenbase-xom.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/javacup.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/javacup.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/jcommon-1.0.12.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/jcommon-1.0.12.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/jfreechart-1.0.9.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/jfreechart-1.0.9.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/log4j-1.2.9.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/log4j-1.2.9.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/mondrian.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/mondrian.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/mysql-connector-java-5.0.7-bin.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/mysql-connector-java-5.0.7-bin.jar
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/olap4j.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/olap4j.jar
+   Translatable source found in...
+      Refreshing resources
+Compiling Java source files in module 'com.mycompany.project.OLAPShit'
+   Removing units with errors
+   Removing units with errors
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Removing units with errors
+   Removing units with errors
+Rebinding com.google.gwt.user.client.ui.MenuBar.MenuBarImages
+   Invoking <generate-with class='com.google.gwt.user.rebind.ui.ImageBundleGenerator'/>
+      Adding image 'com/google/gwt/user/client/ui/menuBarSubMenuIcon.gif'
+      Writing generated resource '/home/bugg/workspace/olapShit/.wbp-gwt-tmp/shell/com.mycompany.project.OLAPShit/548CDF11D6FE9011F3447CA200D7FB7F.cache.png'
+   Removing units with errors
+   Removing units with errors
+Rebinding com.mycompany.project.client.Messages
+   Invoking <generate-with class='com.google.gwt.i18n.rebind.LocalizableGenerator'/>
+      Processing interface com.mycompany.project.client.Messages
+         Generating method body for chart()
+         Generating method body for move_to_column()
+         Generating method body for connection_string()
+         Generating method body for ok()
+         Generating method body for no_data()
+         Generating method body for top()
+         Generating method body for column_dimensions()
+         Generating method body for filter_dimensions()
+         Generating method body for no_connection_param()
+         Generating method body for use_mdx()
+         Generating method body for chart_properties()
+         Generating method body for bottom()
+         Generating method body for siblings()
+         Generating method body for mdx_query()
+         Generating method body for move_to_row()
+         Generating method body for children()
+         Generating method body for move_to_filter()
+         Generating method body for grid()
+         Generating method body for no_connection()
+         Generating method body for cancel()
+         Generating method body for use_schema_nav()
+         Generating method body for no_selection_cleared()
+         Generating method body for visible()
+         Generating method body for welcome()
+         Generating method body for include_children()
+         Generating method body for swap_axis()
+         Generating method body for null_value()
+         Generating method body for report()
+         Generating method body for execute_query()
+         Generating method body for next()
+         Generating method body for dimensions()
+         Generating method body for connection()
+         Generating method body for ungroup_headers()
+         Generating method body for member()
+         Generating method body for show_parents()
+         Generating method body for chart_title()
+         Generating method body for no_selection_set()
+         Generating method body for chart_width()
+         Generating method body for location()
+         Generating method body for right()
+         Generating method body for connect()
+         Generating method body for clear_selections()
+         Generating method body for olap_chart()
+         Generating method body for disconnect()
+         Generating method body for hide_parents()
+         Generating method body for group_headers()
+         Generating method body for select_cube()
+         Generating method body for chart_height()
+         Generating method body for left()
+         Generating method body for selections()
+         Generating method body for row_dimensions()
+         Generating method body for no_server_data()
+         Generating method body for execute_mdx()
+   Removing units with errors
+   Removing units with errors
+Rebinding com.google.gwt.user.client.ui.TreeImages
+   Invoking <generate-with class='com.google.gwt.user.rebind.ui.ImageBundleGenerator'/>
+      Adding image 'com/google/gwt/user/client/ui/treeClosed.gif'
+      Adding image 'com/google/gwt/user/client/ui/treeLeaf.gif'
+      Adding image 'com/google/gwt/user/client/ui/treeOpen.gif'
+      Writing generated resource '/home/bugg/workspace/olapShit/.wbp-gwt-tmp/shell/com.mycompany.project.OLAPShit/A7CD51F9E5A7DED5F85AD1D82BA67A8A.cache.png'
+   Removing units with errors
+   Removing units with errors
+Rebinding com.mycompany.project.client.images.SelectionModeImageBundle
+   Invoking <generate-with class='com.google.gwt.user.rebind.ui.ImageBundleGenerator'/>
+      Adding image 'com/mycompany/project/client/images/children_select_icon.gif'
+      Adding image 'com/mycompany/project/client/images/include_children_select_icon.gif'
+      Adding image 'com/mycompany/project/client/images/member_select_icon.gif'
+      Adding image 'com/mycompany/project/client/images/siblings_select_icon.gif'
+      Writing generated resource '/home/bugg/workspace/olapShit/.wbp-gwt-tmp/shell/com.mycompany.project.OLAPShit/507CDE08337FE9672DEAE3BDABF1C89D.cache.png'
+   Removing units with errors
+   Removing units with errors
+Refreshing resources
+Refreshing resources
+Compiling Java source files in module 'com.mycompany.project.OLAPShit'
+   Removing units with errors
+   Removing units with errors
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Removing units with errors
+   Removing units with errors
+Refreshing resources
+Refreshing resources
+Compiling Java source files in module 'com.mycompany.project.OLAPShit'
+   Removing units with errors
+   Removing units with errors
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Removing units with errors
+   Removing units with errors
+Rebinding com.google.gwt.user.client.ui.TreeImages
+   Invoking <generate-with class='com.google.gwt.user.rebind.ui.ImageBundleGenerator'/>
+      Adding image 'com/google/gwt/user/client/ui/treeClosed.gif'
+      Adding image 'com/google/gwt/user/client/ui/treeLeaf.gif'
+      Adding image 'com/google/gwt/user/client/ui/treeOpen.gif'
+      Writing generated resource '/home/bugg/workspace/olapShit/.wbp-gwt-tmp/shell/com.mycompany.project.OLAPShit/A7CD51F9E5A7DED5F85AD1D82BA67A8A.cache.png'
+   Removing units with errors
+   Removing units with errors
+Loading module 'com.mycompany.project.OLAPShit'
+   Module URL, resName: com/mycompany/project/OLAPShit.gwt.xml
+   Module URL 1: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL 2: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, externalForm, ori: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, externalForm, chn: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, from external: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, URI: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, gwtXmlFile: /home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Module URL, for Reader: file:/home/bugg/workspace/olapShit/src/com/mycompany/project/OLAPShit.gwt.xml
+   Loading inherited module 'com.google.gwt.user.User'
+      Module URL, resName: com/google/gwt/user/User.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
+      Loading inherited module 'com.google.gwt.core.Core'
+         Module URL, resName: com/google/gwt/core/Core.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/core/Core.gwt.xml
+         Loading inherited module 'com.google.gwt.dev.jjs.intrinsic.Intrinsic'
+            Module URL, resName: com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL 1: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL 2: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, externalForm, ori: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, externalForm, chn: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, from external: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, URI: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, gwtXmlFile: /home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Module URL, for Reader: file:/home/bugg/Desktop/eclipse/configuration/org.eclipse.osgi/bundles/920/1/.cp/com/google/gwt/dev/jjs/intrinsic/Intrinsic.gwt.xml
+            Loading inherited module 'com.google.gwt.lang.LongLib'
+               Module URL, resName: com/google/gwt/lang/LongLib.gwt.xml
+               Module URL 1: bundleresource://920/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL 2: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, externalForm, ori: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, externalForm, chn: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, from external: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+               Module URL, for Reader: jar:file:/home/bugg/Desktop/eclipse/plugins/com.instantiations.designer.gwt.hosted.1_5.super_5.1.0.200809292209.jar!/com/google/gwt/lang/LongLib.gwt.xml
+         Loading inherited module 'com.google.gwt.emul.Emulation'
+            Module URL, resName: com/google/gwt/emul/Emulation.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/emul/Emulation.gwt.xml
+      Loading inherited module 'com.google.gwt.animation.Animation'
+         Module URL, resName: com/google/gwt/animation/Animation.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/animation/Animation.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.User'
+            Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.RemoteService'
+         Module URL, resName: com/google/gwt/user/RemoteService.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RemoteService.gwt.xml
+         Loading inherited module 'com.google.gwt.http.HTTP'
+            Module URL, resName: com/google/gwt/http/HTTP.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/http/HTTP.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.DocumentRoot'
+         Module URL, resName: com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DocumentRoot.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module URL, resName: com/google/gwt/user/UserAgent.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/UserAgent.gwt.xml
+      Loading inherited module 'com.google.gwt.user.DOM'
+         Module URL, resName: com/google/gwt/user/DOM.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/DOM.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.dom.DOM'
+            Module URL, resName: com/google/gwt/dom/DOM.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/dom/DOM.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+            Loading inherited module 'com.google.gwt.user.UserAgent'
+               Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Window'
+         Module URL, resName: com/google/gwt/user/Window.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Window.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.HTTPRequest'
+         Module URL, resName: com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/HTTPRequest.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.History'
+         Module URL, resName: com/google/gwt/user/History.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/History.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.i18n.I18N'
+         Module URL, resName: com/google/gwt/i18n/I18N.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/i18n/I18N.gwt.xml
+      Loading inherited module 'com.google.gwt.user.Popup'
+         Module URL, resName: com/google/gwt/user/Popup.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Popup.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Form'
+         Module URL, resName: com/google/gwt/user/Form.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Form.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.TextBox'
+         Module URL, resName: com/google/gwt/user/TextBox.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/TextBox.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Focus'
+         Module URL, resName: com/google/gwt/user/Focus.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Focus.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.ImageBundle'
+         Module URL, resName: com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ImageBundle.gwt.xml
+         Loading inherited module 'com.google.gwt.user.ClippedImage'
+            Module URL, resName: com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/ClippedImage.gwt.xml
+            Loading inherited module 'com.google.gwt.core.Core'
+               Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+            Loading inherited module 'com.google.gwt.user.UserAgent'
+               Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.ClippedImage'
+         Module 'com.google.gwt.user.ClippedImage' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.RichText'
+         Module URL, resName: com/google/gwt/user/RichText.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/RichText.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.SplitPanel'
+         Module URL, resName: com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/SplitPanel.gwt.xml
+         Loading inherited module 'com.google.gwt.user.User'
+            Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.CaptionPanel'
+         Module URL, resName: com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/CaptionPanel.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Window'
+         Module 'com.google.gwt.user.Window' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.user.Tree'
+         Module URL, resName: com/google/gwt/user/Tree.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/Tree.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+   Loading inherited module 'com.gwtext.GwtExt'
+      Module URL, resName: com/gwtext/GwtExt.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar!/com/gwtext/GwtExt.gwt.xml
+      Loading inherited module 'com.google.gwt.user.User'
+         Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.xml.XML'
+         Module URL, resName: com/google/gwt/xml/XML.gwt.xml
+         Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/xml/XML.gwt.xml
+         Loading inherited module 'com.google.gwt.core.Core'
+            Module 'com.google.gwt.core.Core' has already been loaded and will be skipped
+         Loading inherited module 'com.google.gwt.user.UserAgent'
+            Module 'com.google.gwt.user.UserAgent' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.http.HTTP'
+         Module 'com.google.gwt.http.HTTP' has already been loaded and will be skipped
+   Loading inherited module 'com.google.gwt.user.theme.standard.Standard'
+      Module URL, resName: com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/gwt-linux-1.5.2/gwt-user.jar!/com/google/gwt/user/theme/standard/Standard.gwt.xml
+   Loading inherited module 'com.allen_sauer.gwt.dnd.gwt-dnd'
+      Module URL, resName: com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-dnd-2.0.7.jar!/com/allen_sauer/gwt/dnd/gwt-dnd.gwt.xml
+      Loading inherited module 'com.google.gwt.user.User'
+         Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+   Loading inherited module 'org.gwtwidgets.WidgetLibrary'
+      Module URL, resName: org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL 1: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL 2: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL, externalForm, ori: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL, externalForm, chn: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL, from external: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Module URL, for Reader: jar:file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar!/org/gwtwidgets/WidgetLibrary.gwt.xml
+      Loading inherited module 'com.google.gwt.user.User'
+         Module 'com.google.gwt.user.User' has already been loaded and will be skipped
+      Loading inherited module 'com.google.gwt.http.HTTP'
+         Module 'com.google.gwt.http.HTTP' has already been loaded and will be skipped
+   Public resources found in...
+      Refreshing resources
+         Searching for resources within file:/home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar
+            Indexing zip file: /home/bugg/workspace/olapShit/lib/third-party/gwt-widgets-0.2.0.jar
+         Searching for resources within file:/home/bugg/workspace/gwtext-2.0.5/gwtext.jar
+            Indexing zip file: /home/bugg/workspace/gwtext-2.0.5/gwtext.jar
+   Translatable source found in...
+      Refreshing resources
+Compiling Java source files in module 'com.mycompany.project.OLAPShit'
+   Removing units with errors
+   Removing units with errors
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Removing units with errors
+   Removing units with errors
+Rebinding com.mycompany.project.client.Messages
+   Invoking <generate-with class='com.google.gwt.i18n.rebind.LocalizableGenerator'/>
+      Processing interface com.mycompany.project.client.Messages
+         Generating method body for chart()
+         Generating method body for move_to_column()
+         Generating method body for connection_string()
+         Generating method body for ok()
+         Generating method body for no_data()
+         Generating method body for top()
+         Generating method body for column_dimensions()
+         Generating method body for filter_dimensions()
+         Generating method body for no_connection_param()
+         Generating method body for use_mdx()
+         Generating method body for chart_properties()
+         Generating method body for bottom()
+         Generating method body for siblings()
+         Generating method body for mdx_query()
+         Generating method body for move_to_row()
+         Generating method body for children()
+         Generating method body for move_to_filter()
+         Generating method body for grid()
+         Generating method body for no_connection()
+         Generating method body for cancel()
+         Generating method body for use_schema_nav()
+         Generating method body for no_selection_cleared()
+         Generating method body for visible()
+         Generating method body for welcome()
+         Generating method body for include_children()
+         Generating method body for swap_axis()
+         Generating method body for null_value()
+         Generating method body for report()
+         Generating method body for execute_query()
+         Generating method body for next()
+         Generating method body for dimensions()
+         Generating method body for connection()
+         Generating method body for ungroup_headers()
+         Generating method body for member()
+         Generating method body for show_parents()
+         Generating method body for chart_title()
+         Generating method body for no_selection_set()
+         Generating method body for chart_width()
+         Generating method body for location()
+         Generating method body for right()
+         Generating method body for connect()
+         Generating method body for clear_selections()
+         Generating method body for olap_chart()
+         Generating method body for disconnect()
+         Generating method body for hide_parents()
+         Generating method body for group_headers()
+         Generating method body for select_cube()
+         Generating method body for chart_height()
+         Generating method body for left()
+         Generating method body for selections()
+         Generating method body for row_dimensions()
+         Generating method body for no_server_data()
+         Generating method body for execute_mdx()
+   Removing units with errors
+   Removing units with errors
