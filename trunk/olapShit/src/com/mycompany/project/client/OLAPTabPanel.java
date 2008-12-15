@@ -2,6 +2,7 @@ package com.mycompany.project.client;
 
 import com.mycompany.project.client.panels.ConnectPanel;
 import com.mycompany.project.client.panels.DimPanel;
+import com.mycompany.project.client.panels.ComboBar;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.gwtext.client.widgets.Toolbar;
@@ -16,6 +17,7 @@ public class OLAPTabPanel extends FlexTable {
 
 	DimPanel dimensionPanel;
 	ConnectPanel connectWindow;
+	ComboBar cBar;
 
 	public OLAPTabPanel() {
 		super();
@@ -29,7 +31,9 @@ public class OLAPTabPanel extends FlexTable {
 	private void init() {
 		dimensionPanel = new DimPanel();
 		connectWindow = new ConnectPanel();
+		cBar = new ComboBar();
 		connectWindow.addConnectionListener(dimensionPanel);
+		connectWindow.addConnectionListener(cBar);
 		// ConnectionPanel connectionPanel = new ConnectionPanel();
 		// ReportPanel reportPanel = new ReportPanel(dimensionPanel);
 
@@ -54,20 +58,22 @@ public class OLAPTabPanel extends FlexTable {
 
 		Menu submenu = new Menu();
 		submenu.addItem(connect);
+
 		final ToolbarMenuButton fileToolbarMenuButton = new ToolbarMenuButton(
-		"File");
+				"File");
 		fileToolbarMenuButton.setMenu(submenu);
 		toolbar.addButton(fileToolbarMenuButton);
 
+		this.setWidget(1, 0, cBar);
+		this.getCellFormatter().setHeight(1, 0, "30px");
 		final HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
-		this.setWidget(1, 0, horizontalSplitPanel);
+		this.setWidget(2, 0, horizontalSplitPanel);
 		horizontalSplitPanel.setSize("100%", "100%");
 		horizontalSplitPanel.setSplitPosition("20%");
 
 		horizontalSplitPanel.setLeftWidget(dimensionPanel);
 		dimensionPanel.setSize("100%", "100%");
-		// selectTab(0);
-		// this.addTabListener(connectionPanel);
+
 	}
 
 	public DimPanel getDimensionPanel() {
