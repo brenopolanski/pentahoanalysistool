@@ -18,7 +18,6 @@ import com.mycompany.project.client.util.GuidFactory;
 import com.mycompany.project.client.util.MessageFactory;
 import com.mycompany.project.client.util.ServiceFactory;
 
-
 public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	FormPanel formPanel;
 	TextArea connectionText;
@@ -51,20 +50,18 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		FlexTable flex = new FlexTable();
 		Panel panel = new FormPanel();
 
-		
-		
 		serverText = new TextField();
 		serverText.setLabel("Server");
 		panel.add(serverText);
-		
+
 		portText = new TextField();
 		portText.setLabel("Port");
 		panel.add(portText);
-		
+
 		usernameText = new TextField();
 		usernameText.setLabel("Username");
 		panel.add(usernameText);
-		
+
 		passwordText = new TextField();
 		passwordText.setLabel("Password");
 		panel.add(passwordText);
@@ -72,8 +69,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		databaseText = new TextField();
 		databaseText.setLabel("Database");
 		panel.add(databaseText);
-		
-		cubeText=new TextField();
+
+		cubeText = new TextField();
 		cubeText.setLabel("Schema");
 		cubeText.setInputType("file");
 		panel.add(cubeText);
@@ -84,19 +81,23 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 			public void onClick(Button button, EventObject e) {
 				if (connectBtn.getText().equals(
 						MessageFactory.getInstance().connect())) {
-					String cStr = "jdbc:mondrian:Jdbc=jdbc:mysql://"+getServerText()+":"+getPortText()+"/"+getDatabaseText()+"?user="+getUsernameText()+"&password="+getPasswordText()+";Catalog="+getCubeText()+";";
+					String cStr = "jdbc:mondrian:Jdbc=jdbc:mysql://"
+							+ getServerText() + ":" + getPortText() + "/"
+							+ getDatabaseText() + "?user=" + getUsernameText()
+							+ "&password=" + getPasswordText() + ";Catalog="
+							+ getCubeText() + ";";
 					connect(cStr);
-					
+
 				} else if (connectBtn.getText().equals(
 						MessageFactory.getInstance().disconnect())) {
 					disconnect();
 				}
 			}
 		});
-		
+
 		flex.setWidget(0, 1, connectBtn);
 		this.add(flex);
-		
+
 		flex.setWidget(0, 0, panel);
 
 	}
@@ -113,38 +114,40 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		if (!isConnectionEstablished()) {
 			ServiceFactory.getInstance().connect(connectionStr,
 					GuidFactory.getGuid(), new AsyncCallback() {
-				public void onSuccess(Object result) {
-					Boolean booleanResult = (Boolean) result;
-					if (booleanResult.booleanValue()) {
-						setConnectionEstablished(true);
-						 connectionListeners.fireConnectionMade(ConnectPanel.this);
-						 
+						public void onSuccess(Object result) {
+							Boolean booleanResult = (Boolean) result;
+							if (booleanResult.booleanValue()) {
+								setConnectionEstablished(true);
+								connectionListeners
+										.fireConnectionMade(ConnectPanel.this);
 
-					} else {
-						setConnectionEstablished(false);
-						connectionListeners.fireConnectionBroken(
-						ConnectPanel.this);
-					}
-					connectBtn
-					.setText(isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect());
-					destroy();
-				}
+							} else {
+								setConnectionEstablished(false);
+								connectionListeners
+										.fireConnectionBroken(ConnectPanel.this);
+							}
+							connectBtn
+									.setText(isConnectionEstablished() ? MessageFactory
+											.getInstance().disconnect()
+											: MessageFactory.getInstance()
+													.connect());
+							destroy();
+						}
 
-				public void onFailure(Throwable caught) {
-					/*Window.alert(MessageFactory.getInstance().
-					 no_connection_param
-					(caught.getLocalizedMessage()));
-					setConnectionEstablished(false);*/
-					connectBtn
-					.setText(isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect());
-				}
-			});
+						public void onFailure(Throwable caught) {
+							/*
+							 * Window.alert(MessageFactory.getInstance().
+							 * no_connection_param
+							 * (caught.getLocalizedMessage()));
+							 * setConnectionEstablished(false);
+							 */
+							connectBtn
+									.setText(isConnectionEstablished() ? MessageFactory
+											.getInstance().disconnect()
+											: MessageFactory.getInstance()
+													.connect());
+						}
+					});
 		}
 	}
 
@@ -152,31 +155,31 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		if (isConnectionEstablished()) {
 			ServiceFactory.getInstance().disconnect(GuidFactory.getGuid(),
 					new AsyncCallback() {
-				public void onFailure(Throwable caught) {
-					// Window.alert(MessageFactory.getInstance().
-					// no_connection_param
-					// (caught.getLocalizedMessage()));
-					setConnectionEstablished(false);
-					connectionListeners.fireConnectionBroken(
-					ConnectPanel.this);
-					connectBtn
-					.setText(isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect());
-				}
+						public void onFailure(Throwable caught) {
+							// Window.alert(MessageFactory.getInstance().
+							// no_connection_param
+							// (caught.getLocalizedMessage()));
+							setConnectionEstablished(false);
+							connectionListeners
+									.fireConnectionBroken(ConnectPanel.this);
+							connectBtn
+									.setText(isConnectionEstablished() ? MessageFactory
+											.getInstance().disconnect()
+											: MessageFactory.getInstance()
+													.connect());
+						}
 
-				public void onSuccess(Object result) {
-					setConnectionEstablished(false);
-					connectionListeners.fireConnectionBroken(
-					ConnectPanel.this);
-					connectBtn
-					.setText(isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect());
-				}
-			});
+						public void onSuccess(Object result) {
+							setConnectionEstablished(false);
+							connectionListeners
+									.fireConnectionBroken(ConnectPanel.this);
+							connectBtn
+									.setText(isConnectionEstablished() ? MessageFactory
+											.getInstance().disconnect()
+											: MessageFactory.getInstance()
+													.connect());
+						}
+					});
 		}
 	}
 
@@ -241,51 +244,57 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	private String getCubeText() {
 		return cubeText.getText();
 	}
-	
+
 	/**
 	 * @return the cubeText
 	 */
 	private String getDatabaseText() {
 		return databaseText.getText();
 	}
-	
+
 	/**
-	 * @param serverText the serverText to set
+	 * @param serverText
+	 *            the serverText to set
 	 */
 	private void setServerText(String serverText) {
 		this.serverText.setValue(serverText);
 	}
 
 	/**
-	 * @param portText the portText to set
+	 * @param portText
+	 *            the portText to set
 	 */
 	private void setPortText(String portText) {
 		this.portText.setValue(portText);
 	}
 
 	/**
-	 * @param usernameText the usernameText to set
+	 * @param usernameText
+	 *            the usernameText to set
 	 */
 	private void setUsernameText(String usernameText) {
 		this.usernameText.setValue(usernameText);
 	}
 
 	/**
-	 * @param passwordText the passwordText to set
+	 * @param passwordText
+	 *            the passwordText to set
 	 */
 	private void setPasswordText(String passwordText) {
 		this.passwordText.setValue(passwordText);
 	}
 
 	/**
-	 * @param cubeText the cubeText to set
+	 * @param cubeText
+	 *            the cubeText to set
 	 */
 	private void setCubeText(String cubeText) {
 		this.cubeText.setValue(cubeText);
 	}
-	
+
 	/**
-	 * @param cubeText the cubeText to set
+	 * @param cubeText
+	 *            the cubeText to set
 	 */
 	private void setDatabaseText(String databaseText) {
 		this.databaseText.setValue(databaseText);
