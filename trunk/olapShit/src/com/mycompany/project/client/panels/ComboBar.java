@@ -60,7 +60,7 @@ public class ComboBar extends Toolbar implements ConnectionListener {
 		cubeListBox.addListener(new ComboBoxListenerAdapter() {
 
 			public void onSelect(ComboBox comboBox, Record record, int index) {
-				System.out.println(comboBox.getValueAsString());
+				
 				ServiceFactory.getInstance().setCube(
 						(String) comboBox.getValueAsString(),
 						GuidFactory.getGuid(), new AsyncCallback() {
@@ -92,7 +92,7 @@ public class ComboBar extends Toolbar implements ConnectionListener {
 						if (result1 != null) {
 							store.removeAll();
 							store.commitChanges();
-							System.out.println(store.getCount());
+							
 							String[][] cubeNames = (String[][]) result1;
 							for (int i = 0; i < cubeNames.length; i++) {
 								store.add(recordDef.createRecord(cubeNames[i]));
@@ -133,8 +133,8 @@ public class ComboBar extends Toolbar implements ConnectionListener {
 						public void onSuccess(Object result) {
 
 							String[] dimStrs = (String[]) result;
-
-							DimPanel.tree = DimPanel.getDimTree(dimStrs);
+							DimPanel.loadupStoreWithDimensions(dimStrs);
+							DimPanel.getDimTree(dimStrs);
 
 						}
 
