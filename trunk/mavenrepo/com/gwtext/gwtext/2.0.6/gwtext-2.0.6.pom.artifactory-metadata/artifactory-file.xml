@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/gwtext/gwtext/2.0.6/gwtext-2.0.6.pom</path>
+  </repoPath>
+  <name>gwtext-2.0.6.pom</name>
+  <created>1229633763261</created>
+  <lastModified>1229633763000</lastModified>
+  <size>248</size>
+  <mimeType>application/x-maven-pom+xml</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229633763265</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>e7db7798f23631870e2bc28038f53233</actual>
+        </checksum>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>d93bd8015a8e3728464b31c5a7ad7f3b05cc970b</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

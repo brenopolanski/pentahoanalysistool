@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/pentaho/mondrian-jdk/1.4/mondrian-jdk-1.4.jar</path>
+  </repoPath>
+  <name>mondrian-jdk-1.4.jar</name>
+  <created>1229627513782</created>
+  <lastModified>1229627480000</lastModified>
+  <size>2577953</size>
+  <mimeType>application/zip</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229627514335</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>6eb5a96975e952e5ef415f881aeee03211b0c4a6</actual>
+        </checksum>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>332609aaf84734f6bee569b2af1526ea</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

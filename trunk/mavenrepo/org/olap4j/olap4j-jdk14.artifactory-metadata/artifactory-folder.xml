@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/olap4j/olap4j-jdk14</path>
+  </repoPath>
+  <name>olap4j-jdk14</name>
+  <created>1229627839981</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229627839981</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>

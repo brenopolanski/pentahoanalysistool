@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>javacup/javacup/0.10k/javacup-0.10k.jar</path>
+  </repoPath>
+  <name>javacup-0.10k.jar</name>
+  <created>1229628533871</created>
+  <lastModified>1229628503000</lastModified>
+  <size>238189</size>
+  <mimeType>application/zip</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229628533925</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>aa1c422b2f143211339044b74939c95b4dc8e62f</actual>
+        </checksum>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>2f7084bd575cc1bc7a51702be6fefea2</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>
