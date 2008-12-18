@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>javacup</path>
+  </repoPath>
+  <name>javacup</name>
+  <created>1229628533860</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229628533860</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>
