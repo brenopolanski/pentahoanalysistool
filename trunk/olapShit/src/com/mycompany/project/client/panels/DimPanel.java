@@ -1,6 +1,7 @@
 package com.mycompany.project.client.panels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -31,7 +32,6 @@ import com.gwtext.client.widgets.tree.TreePanel;
 import com.gwtext.client.widgets.tree.event.TreePanelListenerAdapter;
 import com.mycompany.project.client.listeners.ConnectionListener;
 import com.mycompany.project.client.util.GuidFactory;
-import com.mycompany.project.client.util.ListBoxDragController;
 import com.mycompany.project.client.util.ServiceFactory;
 import com.mycompany.project.client.util.StringTree;
 import com.mycompany.project.client.widgets.MouseListBox;
@@ -43,7 +43,6 @@ public class DimPanel extends FlexTable implements ConnectionListener {
 	public static TreePanel dimTree;
 	SelectionModePopup selectionModePopup;
 	MouseListBox dimensionsList;
-	ListBoxDragController dragController;
 	VerticalPanel verticalPanel;
 	static TreeNode dimensions = new TreeNode("Dims");
 	static RecordDef recordDef;
@@ -52,7 +51,7 @@ public class DimPanel extends FlexTable implements ConnectionListener {
 	RecordDef recDef;
 	MemoryProxy proxy;
 	Button execute;
-
+	
 	public DimPanel() {
 		super();
 		init();
@@ -168,6 +167,7 @@ public class DimPanel extends FlexTable implements ConnectionListener {
 				}
 				TreeNode node = dimTree.getNodeById(country);
 				dimensions.removeChild(node);
+				moveDimension(country, "ROWS");
 				return true;
 			}
 
@@ -340,6 +340,28 @@ public class DimPanel extends FlexTable implements ConnectionListener {
 		// return store3;
 	}
 
+	public void moveDimension(String dim, String axis){
+	    final String finalAxis = axis;
+		  System.out.println("init");
+	    ServiceFactory.getInstance().moveDimension(axis, dim, GuidFactory.getGuid(), new AsyncCallback() {
+	      public void onSuccess(Object result) {
+	    	  System.out.println("success");
+	        boolean success = ((Boolean)result).booleanValue();
+	      if (success) {
+	        List axisList = new ArrayList();
+	        axisList.add(DimensionPanel.AXIS_NONE);
+	        axisList.add(finalAxis);
+	        ComboBar.populateDimensions(axisList);
+	        System.out.println("success");
+	      }
+	      }
+
+	      public void onFailure(Throwable arg0) {
+	        // TODO Auto-generated method stub
+	    	  System.out.println(arg0);
+	      }
+	    });  
+	  }
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
 
