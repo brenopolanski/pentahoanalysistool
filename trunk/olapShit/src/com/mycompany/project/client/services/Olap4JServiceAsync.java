@@ -19,29 +19,13 @@ package com.mycompany.project.client.services;
 
 
 
-import com.mycompany.project.client.util.ChartPrefs;
-import com.mycompany.project.client.util.OlapData;
-import com.mycompany.project.client.util.StringTree;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 
 /**
  * @author wseyler
  *
  */
 public interface Olap4JServiceAsync {
-  public void getServerInfo(AsyncCallback<String> callback);
-  public void connect(String connectStr, String guid, AsyncCallback asyncCallback);
-  public void disconnect(String guid, AsyncCallback<Object> asyncCallback);
-  public void getCubes(String guid, AsyncCallback<String[][]> callback);
-  public void setCube(String cubeName, String guid, AsyncCallback<Boolean> callback);
-  public void getDimensions(String axis, String guid, AsyncCallback<String[]> callback);
-  public void moveDimension(String axisName, String DimName, String guid, AsyncCallback<Boolean> callback);
-  public void getMembers(String dimName, String guid, AsyncCallback<StringTree> callback);
-  public void validateQuery(String guid, AsyncCallback<Boolean> callback);
-  public void executeQuery(String guid, AsyncCallback<OlapData> callback);
-  public void executeMDXStr(String mdx, String guid, AsyncCallback<OlapData> callback);
-  public void createSelection(String dimName, String[] memberNames, Integer selectionType, String guid, AsyncCallback<Boolean> callback);
-  public void clearSelection(String dimName, String[] memberNames, String guid, AsyncCallback<Boolean> callback);
-  public void swapAxis(String guid, AsyncCallback<OlapData> callback);
-  public void createChart(OlapData olapData, ChartPrefs chartPrefs, AsyncCallback<String> callback);
+  
 }
