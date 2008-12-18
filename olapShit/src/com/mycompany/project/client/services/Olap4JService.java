@@ -20,28 +20,12 @@ package com.mycompany.project.client.services;
 
 
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.mycompany.project.client.util.ChartPrefs;
-import com.mycompany.project.client.util.OlapData;
-import com.mycompany.project.client.util.StringTree;
+
 
 /**
  * @author wseyler
  *
  */
 public interface Olap4JService extends RemoteService {
-  public String getServerInfo();
-  public Boolean connect(String connectStr, String guid);
-  public Boolean disconnect(String guid);
-  public String[][] getCubes(String guid);
-  public Boolean setCube(String cubeName, String guid);
-  public String[] getDimensions(String axis, String guid);
-  public Boolean moveDimension(String axisName, String DimName, String guid);
-  public StringTree getMembers(String dimName, String guid);
-  public Boolean validateQuery(String guid);
-  public OlapData executeQuery(String guid);
-  public OlapData executeMDXStr(String mdx, String guid);
-  public Boolean createSelection(String dimName, String[] memberNames, Integer selectionType, String guid);
-  public Boolean clearSelection(String dimName, String[] memberNames, String guid);
-  public OlapData swapAxis(String guid);
-  public String createChart(OlapData olapData, ChartPrefs chartPrefs);
+  
 }
