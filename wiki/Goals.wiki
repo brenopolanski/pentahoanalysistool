@@ -6,10 +6,15 @@ These are the goals of the project
 
 = Details =
 Stage 1
+
 * Basic Connectivity
+
 * Working cube selection
+
 * Working Dim/Measure Selection
 
 Stage 2
+
 * Work on the Table
+
 * Decide what features we want adding......
