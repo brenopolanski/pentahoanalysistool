@@ -5,8 +5,11 @@ These are the goals of the project
 
 
 = Details =
+Stage 1
+* Basic Connectivity
+* Working cube selection
+* Working Dim/Measure Selection
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Stage 2
+* Work on the Table
+* Decide what features we want adding......
