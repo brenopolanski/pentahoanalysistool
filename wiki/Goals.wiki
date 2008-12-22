@@ -5,7 +5,7 @@ These are the goals(so far) of the project and where we aim to be heading.
 
 
 = Details =
-Stage 1
+==Stage 1==
 
   * Connectivity
 
@@ -15,7 +15,7 @@ Stage 1
 
 This will effectively get us back to where the idea branch ends, but with nice code and a proper design and layout.
 
-Stage 2
+==Stage 2==
 
   * Work on the Table decide which way to proced, GWT-EXT grid or other way.
 
