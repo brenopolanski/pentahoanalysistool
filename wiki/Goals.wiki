@@ -43,3 +43,5 @@ This will effectively get us back to where the idea branch ends, but with nice c
   * Phantal 4) The treemap would be cool if it actually worked. 
 
   * Phantal If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
+  
+  * Modular Pluggable Design
