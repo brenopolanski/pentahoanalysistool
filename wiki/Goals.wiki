@@ -1,20 +1,40 @@
 #summary Goals of the Project
 
 = Introduction =
-These are the goals of the project
+These are the goals(so far) of the project and where we aim to be heading.
 
 
 = Details =
 Stage 1
 
-* Basic Connectivity
+* Connectivity
 
 * Working cube selection
 
 * Working Dim/Measure Selection
 
+This will effectively get us back to where the idea branch ends, but with nice code and a proper design and layout.
+
 Stage 2
 
-* Work on the Table
+* Work on the Table decide which way to proced, GWT-EXT grid or other way.
 
 * Decide what features we want adding......
+
+* Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
+
+* Ability to be able to select individual properties instead of all or none(ask Daniel Einspanjer)
+
+* Drill Down
+
+* Easy Cell Colour Coding
+
+* Dynamic Totals
+
+* <Phantal-> 2) Add some more ways of interacting directly with the crosstab table. For example, I'm constantly running into situations where I say "Alright, I'm only interested in this day", so I either need to modify the query to filter only for that day, or I have to drag'n drop all other days off the grid 
+
+* <Phantal-> 3) I love the charting, but it'd be nice if they were more interactive, eg, the ability to drill down based on something visual. 
+
+* <Phantal-> 4) The treemap would be cool if it actually worked. 
+
+* <Phantal-> If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
