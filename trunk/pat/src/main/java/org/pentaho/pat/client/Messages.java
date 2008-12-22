@@ -430,4 +430,20 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
    *  children
    */
   String children();
+  
+  /**
+   * Translated "Cube".
+   * 
+   * @return translated "Cube"
+   *  cube
+   */
+  String cube();
+  
+  /**
+   * Translated "File".
+   * 
+   * @return translated "File"
+   *  file
+   */
+  String file();
 }

@@ -182,7 +182,7 @@
 					<compileTargets>
 						<value>org.pentaho.pat</value>
 					</compileTargets>
-					<runTarget>org.pentaho.pat.OLAPShit/OLAPShit.html</runTarget>
+					<runTarget>org.pentaho.pat.PAT/PAT.html</runTarget>
 					<logLevel>INFO</logLevel>
 					<style>DETAILED</style>
 					<noServer>false</noServer>

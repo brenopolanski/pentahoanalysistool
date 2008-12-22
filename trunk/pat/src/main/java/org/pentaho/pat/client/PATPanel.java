@@ -4,12 +4,11 @@ import org.pentaho.pat.client.panels.ConnectionPanel;
 import org.pentaho.pat.client.panels.ControlBarPanel;
 import org.pentaho.pat.client.panels.DimensionPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
-
-import com.google.gwt.user.client.ui.FlexTable;
-
+import com.google.gwt.user.client.ui.FlowPanel;
 
 
-public class OLAPTabPanel extends FlexTable {
+
+public class PATPanel extends FlowPanel {
 /*TODO
  * Generic ToolBar stuff that goes with every OLAP program under the sun.
  */
@@ -18,7 +17,7 @@ public class OLAPTabPanel extends FlexTable {
 	ConnectionPanel connectionWindow;
 	ControlBarPanel controlBar;
 	
-	public OLAPTabPanel() {
+	public PATPanel() {
 		super();
 
 		init();
@@ -34,6 +33,9 @@ public class OLAPTabPanel extends FlexTable {
 		controlBar = new ControlBarPanel();
 		connectionWindow.addConnectionListener(dimensionPanel);
 		connectionWindow.addConnectionListener(controlBar);
+		this.add(toolBarPanel);
+		this.add(controlBar);
+		
 			}
 
 
