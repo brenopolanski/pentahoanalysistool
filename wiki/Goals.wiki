@@ -31,10 +31,10 @@ Stage 2
 
 * Dynamic Totals
 
-* <Phantal-> 2) Add some more ways of interacting directly with the crosstab table. For example, I'm constantly running into situations where I say "Alright, I'm only interested in this day", so I either need to modify the query to filter only for that day, or I have to drag'n drop all other days off the grid 
+* Phantal 2) Add some more ways of interacting directly with the crosstab table. For example, I'm constantly running into situations where I say "Alright, I'm only interested in this day", so I either need to modify the query to filter only for that day, or I have to drag'n drop all other days off the grid 
 
-* <Phantal-> 3) I love the charting, but it'd be nice if they were more interactive, eg, the ability to drill down based on something visual. 
+* Phantal 3) I love the charting, but it'd be nice if they were more interactive, eg, the ability to drill down based on something visual. 
 
-* <Phantal-> 4) The treemap would be cool if it actually worked. 
+* Phantal 4) The treemap would be cool if it actually worked. 
 
-* <Phantal-> If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
+* Phantal If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
