@@ -55,8 +55,8 @@ public class ControlBar {
 
 	
 	public static String[][] getCubeData() {
-		String[][] tom = { new String[] { "naught", "No Cubes" }};
-		return tom;
+		String[][] list = { new String[] { "naught", "No Cubes" }};
+		return list;
 	}
 
 	public static void setCube(String boxText){
