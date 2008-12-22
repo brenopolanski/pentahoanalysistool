@@ -1,6 +1,6 @@
 package org.pentaho.pat.client;
 
-import org.pentaho.pat.client.OLAPTabPanel;
+import org.pentaho.pat.client.PATPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class OLAPShit implements EntryPoint {
+public class PAT implements EntryPoint {
 	
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
@@ -23,7 +23,7 @@ public class OLAPShit implements EntryPoint {
 		      }
 		});
 
-		OLAPTabPanel tabPanel = new OLAPTabPanel();
+		PATPanel tabPanel = new PATPanel();
 		RootPanel root = RootPanel.get();
 		root.setSize("1024px", "768px");
 		root.add(tabPanel);
