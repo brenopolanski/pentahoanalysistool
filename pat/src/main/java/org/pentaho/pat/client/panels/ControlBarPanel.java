@@ -1,8 +1,10 @@
 package org.pentaho.pat.client.panels;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtext.client.widgets.Toolbar;
+import com.gwtext.client.widgets.ToolbarButton;
 import com.gwtext.client.widgets.form.ComboBox;
 import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
 import org.pentaho.pat.client.listeners.ConnectionListener;
@@ -22,6 +24,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener {
 	private Store store;
 	private ComboBox cubeListBox;
 	private ControlBar controlBar;
+	private ToolbarButton connectButton;
 	
 	public ControlBarPanel() {
 		super();
@@ -53,6 +56,8 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener {
 		});
 
 		this.addField(cubeListBox);
+		connectButton = new ToolbarButton("Connect");
+		this.addButton(connectButton);
 
 	}
 	
