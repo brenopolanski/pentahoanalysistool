@@ -21,15 +21,20 @@ This will effectively get us back to where the idea branch ends, but with nice c
 
   * Decide what features we want adding......
 
-  * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
+  * Loading the Table with MDX
 
-  * Ability to be able to select individual properties instead of all or none(ask Daniel Einspanjer)
+
+==Stage 3==
+  * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
 
   * Drill Down
 
   * Easy Cell Colour Coding
 
   * Dynamic Totals
+
+==Planned Functionality==
+  * Ability to be able to select individual properties instead of all or none(ask Daniel Einspanjer)
 
   * Phantal 2) Add some more ways of interacting directly with the crosstab table. For example, I'm constantly running into situations where I say "Alright, I'm only interested in this day", so I either need to modify the query to filter only for that day, or I have to drag'n drop all other days off the grid 
 
