@@ -45,3 +45,5 @@ This will effectively get us back to where the idea branch ends, but with nice c
   * Phantal If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
   
   * Modular Pluggable Design
+
+  * Implement interfaces (connectionstring, mdx statement, ...) that enables a call from a xaction like jpivot
