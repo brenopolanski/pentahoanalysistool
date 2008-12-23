@@ -29,7 +29,6 @@ public class PATPanel extends FlowPanel {
 	private void init() {
 		toolBarPanel = new ToolBarPanel();
 		dimensionPanel = new DimensionPanel();
-		connectionWindow = new ConnectionPanel();
 		controlBarPanel = new ControlBarPanel();
 		controlBarPanel.addConnectionListener(dimensionPanel);
 		//TODO Will need re-enabling when connect panel works.... 
