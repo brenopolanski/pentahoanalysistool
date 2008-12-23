@@ -30,6 +30,15 @@
         	<id>libs-releases-local</id>
         	<url>http://pentahoanalysistool.googlecode.com/svn/trunk/mavenrepo/</url>
         </repository>
+        <repository>
+			<id>pentaho-repo</id>
+			<url>http://repo.pentaho.org/artifactory/pentaho/</url>
+		</repository>
+		<repository>
+			<id>pentaho-third-party</id>
+			<url>http://repo.pentaho.org/artifactory/third-party/</url>
+		</repository>
+        
     </repositories>
     
 	<!--  convenience to define GWT version in one place -->
@@ -168,6 +177,21 @@
 			<groupId>net.sf.gwt-widget</groupId>
 			<artifactId>gwt-widgets</artifactId>
 			<version>0.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eigenbase</groupId>
+			<artifactId>eigenbase-properties</artifactId>
+			<version>1.1.0.10924</version>
+		</dependency>
+		<dependency>
+			<groupId>eigenbase</groupId>
+			<artifactId>eigenbase-resgen</artifactId>
+			<version>1.3.0.11873</version>
+		</dependency>
+		<dependency>
+			<groupId>eigenbase</groupId>
+			<artifactId>eigenbase-xom</artifactId>
+			<version>1.3.0.11999</version>
 		</dependency>
 	</dependencies>
 	
