@@ -15,7 +15,7 @@ public class PATPanel extends FlowPanel {
 	ToolBarPanel toolBarPanel;
 	DimensionPanel dimensionPanel;
 	ConnectionPanel connectionWindow;
-	ControlBarPanel controlBar;
+	ControlBarPanel controlBarPanel;
 	
 	public PATPanel() {
 		super();
@@ -30,11 +30,12 @@ public class PATPanel extends FlowPanel {
 		toolBarPanel = new ToolBarPanel();
 		dimensionPanel = new DimensionPanel();
 		connectionWindow = new ConnectionPanel();
-		controlBar = new ControlBarPanel();
-		connectionWindow.addConnectionListener(dimensionPanel);
-		connectionWindow.addConnectionListener(controlBar);
+		controlBarPanel = new ControlBarPanel();
+		controlBarPanel.addConnectionListener(dimensionPanel);
+		//TODO Will need re-enabling when connect panel works.... 
+		//controlBarPanel.addConnectionListener(controlBarPanel);
 		this.add(toolBarPanel);
-		this.add(controlBar);
+		this.add(controlBarPanel);
 		
 			}
 
