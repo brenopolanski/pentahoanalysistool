@@ -10,8 +10,13 @@ import com.gwtext.client.widgets.ToolbarMenuButton;
 import com.gwtext.client.widgets.menu.BaseItem;
 import com.gwtext.client.widgets.menu.Item;
 import com.gwtext.client.widgets.menu.Menu;
+import com.gwtext.client.widgets.menu.event.BaseItemListener;
 import com.gwtext.client.widgets.menu.event.BaseItemListenerAdapter;
+import com.gwtext.client.widgets.menu.event.MenuListenerAdapter;
 import com.gwtext.client.core.EventObject;
+
+import org.pentaho.pat.client.panels.ConnectPanel;
+
 
 /**
  * @author Tom Barber
@@ -19,6 +24,8 @@ import com.gwtext.client.core.EventObject;
  */
 public class ToolBarPanel extends Toolbar {
 
+	ConnectPanel connectWindow;
+	
 	public ToolBarPanel(){
 		super();
 		
@@ -29,13 +36,21 @@ public class ToolBarPanel extends Toolbar {
 		final BaseItemListenerAdapter listener = new BaseItemListenerAdapter() {
 			public void onClick(BaseItem connect, EventObject e) {
 				
-			}
-		};
+				connectWindow = new ConnectPanel();
+				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
+				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
+				connectWindow.show();
+					}
+				};
+			
+		
 		Item connect = new Item(MessageFactory.getInstance().connect());
 		connect.addListener(listener);
 
 		Menu submenu = new Menu();
 		submenu.addItem(connect);
+		connect.addListener(listener);
+		
 
 		final ToolbarMenuButton fileToolbarMenuButton = new ToolbarMenuButton(
 				MessageFactory.getInstance().file());
@@ -44,4 +59,6 @@ public class ToolBarPanel extends Toolbar {
 		this.addButton(fileToolbarMenuButton);
 
 	}
+
+	
 }
