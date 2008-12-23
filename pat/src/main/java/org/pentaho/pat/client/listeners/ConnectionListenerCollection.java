@@ -3,8 +3,6 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.pentaho.pat.client.panels.services.ControlBar;
-
 import com.google.gwt.user.client.ui.Widget;
 
 /**
