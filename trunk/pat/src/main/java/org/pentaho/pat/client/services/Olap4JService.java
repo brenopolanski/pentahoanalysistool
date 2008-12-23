@@ -18,5 +18,5 @@ public interface Olap4JService extends RemoteService {
 	  public Boolean disconnect(String guid);
 	  public Boolean setCube(String cubeName, String guid);
 	  public String[] getDimensions(String axis, String guid);
-	  public String[] getCubes(String guid);
+	  public String[][] getCubes(String guid);
 }
