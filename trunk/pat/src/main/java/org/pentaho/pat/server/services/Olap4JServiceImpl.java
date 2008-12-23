@@ -141,17 +141,18 @@ public class Olap4JServiceImpl extends RemoteServiceServlet implements Olap4JSer
 		    return dimNames;
 		  }
 	  
-	  public String[] getCubes(String guid) {
+	  public String[][] getCubes(String guid) {
 		    OlapConnection connection = connectionCache.get(guid);
 		    if (connection == null) {
-		      return new String[0];
+		      return new String[0][];
 		    }
 		    try {
 		      NamedList<Cube> cubes = connection.getSchema().getCubes();
-		      String[] cubeNames = new String[cubes.size()];
+		      String[][] cubeNames = new String[cubes.size()][2];
 		      for (int i = 0; i < cubes.size(); i++) {
 		        Cube cube = cubes.get(i);
-		        cubeNames[i] = cube.getName();
+		        cubeNames[i][0] = ""+i;
+		        cubeNames[i][1] = cube.getName();
 		      }
 		      return cubeNames;
 		    } catch (OlapException e) {
