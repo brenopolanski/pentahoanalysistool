@@ -23,6 +23,8 @@ This will effectively get us back to where the idea branch ends, but with nice c
 
   * Loading the Table with MDX
 
+  * Localization Support
+
 
 ==Stage 3==
   * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
