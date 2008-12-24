@@ -6,6 +6,8 @@ package org.pentaho.pat.client.services;
 
 
 
+import org.pentaho.pat.client.util.StringTree;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 
 
@@ -19,4 +21,6 @@ public interface Olap4JService extends RemoteService {
 	  public Boolean setCube(String cubeName, String guid);
 	  public String[] getDimensions(String axis, String guid);
 	  public String[][] getCubes(String guid);
+	  public StringTree getMembers(String dimName, String guid);
+
 }
