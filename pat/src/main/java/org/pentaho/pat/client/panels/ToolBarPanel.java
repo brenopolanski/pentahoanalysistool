@@ -5,6 +5,7 @@ package org.pentaho.pat.client.panels;
 
 import org.pentaho.pat.client.util.MessageFactory;
 
+import com.google.gwt.user.client.ui.Widget;
 import com.gwtext.client.widgets.Toolbar;
 import com.gwtext.client.widgets.ToolbarMenuButton;
 import com.gwtext.client.widgets.menu.BaseItem;
@@ -15,6 +16,7 @@ import com.gwtext.client.widgets.menu.event.BaseItemListenerAdapter;
 import com.gwtext.client.widgets.menu.event.MenuListenerAdapter;
 import com.gwtext.client.core.EventObject;
 
+import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.panels.ConnectPanel;
 
 
@@ -22,7 +24,7 @@ import org.pentaho.pat.client.panels.ConnectPanel;
  * @author Tom Barber
  *
  */
-public class ToolBarPanel extends Toolbar {
+public class ToolBarPanel extends Toolbar implements ConnectionListener  {
 
 	ConnectPanel connectWindow;
 	
@@ -60,5 +62,13 @@ public class ToolBarPanel extends Toolbar {
 
 	}
 
-	
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onConnectionMade(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
 }
