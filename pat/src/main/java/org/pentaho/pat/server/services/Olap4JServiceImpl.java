@@ -5,6 +5,7 @@ package org.pentaho.pat.server.services;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,8 +21,16 @@ import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.server.services.Messages;
 import org.pentaho.pat.server.services.ObjectNotInCacheException;
 import org.pentaho.pat.client.services.Olap4JService;
+import org.pentaho.pat.client.util.StringTree;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.olap4j.CellSet;
+import org.olap4j.metadata.Level;
+import org.olap4j.metadata.Member;
+import org.olap4j.query.Selection;
 
 
 
@@ -176,4 +185,54 @@ public class Olap4JServiceImpl extends RemoteServiceServlet implements Olap4JSer
 
 	    return cube;
 	  }
+	 
+	  public StringTree getMembers(String dimName, String guid) {
+
+		    Query query = null;
+		    try {
+		      query = getQuery4Guid(guid);
+		    } catch (ObjectNotInCacheException e1) {
+		      // TODO Auto-generated catch block
+		      e1.printStackTrace();
+		    }
+
+		    List<String> uniqueNameList = new ArrayList<String>();
+		    NamedList<Level> levels = query.getDimension(dimName).getDimension().getHierarchies().get(dimName).getLevels();
+		    for (Level level : levels) {
+		      try {
+		        List<Member> levelMembers = level.getMembers();
+		        for (Member member : levelMembers) {
+		          uniqueNameList.add(member.getUniqueName());
+		        }
+		      } catch (OlapException e) {
+		        e.printStackTrace();
+		      }
+		    }
+		    StringTree result = new StringTree(dimName, null);
+		    for (int i = 0; i < uniqueNameList.size(); i++) {
+		      String[] memberNames = uniqueNameList.get(i).split("\\."); //$NON-NLS-1$
+		      for (int j = 0; j < memberNames.length; j++) { // Trim off the brackets
+		        memberNames[j] = memberNames[j].substring(1, memberNames[j].length() - 1);
+		      }
+		      result = OlapUtil.parseMembers(memberNames, result);
+		    }
+
+		    return result;
+		  }
+	  private Query getQuery4Guid(String guid) throws ObjectNotInCacheException {
+		    Cube cube;
+		    try {
+		      cube = getCube4Guid(guid);
+		    } catch (ObjectNotInCacheException e) {
+		      throw e;
+		    }
+
+		    Query query = queryCache.get(cube);
+		    if (query == null) {
+		      throw new ObjectNotInCacheException(Messages.getString("Olap4JServiceImpl.OBJECT_NOT_IN_CACHE") + Query.class.toString() + Messages.getString("Olap4JServiceImpl.NO_KEY_FOUND") + cube.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		    }
+
+		    return query;
+		  }
+
 }
