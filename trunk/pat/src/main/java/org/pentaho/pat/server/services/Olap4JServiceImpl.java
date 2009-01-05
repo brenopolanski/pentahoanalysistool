@@ -234,5 +234,34 @@ public class Olap4JServiceImpl extends RemoteServiceServlet implements Olap4JSer
 
 		    return query;
 		  }
+	  public Boolean moveDimension(String axisName, String DimName, String guid) {
+		    Cube cube;
+		    try {
+		      cube = getCube4Guid(guid);
+		    } catch (ObjectNotInCacheException e1) {
+		      // TODO Auto-generated catch block
+		      e1.printStackTrace();
+		      return new Boolean(false);
+		    }
+
+		    Query query = queryCache.get(cube);
+		    if (query == null) {
+		      try {
+		        query = new Query(guid, cube);
+		        queryCache.put(cube, query);
+		      } catch (SQLException e) {
+		        e.printStackTrace();
+		        return new Boolean(false);
+		      }
+		    }
+		    Axis targetAxis = null;
+		    if (!axisName.equalsIgnoreCase("none")) { //$NON-NLS-1$
+		      targetAxis = Axis.valueOf(axisName);
+		    }
+
+		    query.getAxes().get(targetAxis).getDimensions().add(query.getDimension(DimName));
+
+		    return new Boolean(true);
+		  }
 
 }

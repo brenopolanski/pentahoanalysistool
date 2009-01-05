@@ -18,4 +18,5 @@ public interface Olap4JServiceAsync {
 	public void getDimensions(String axis, String guid, AsyncCallback callback);
 	public void getCubes(String guid, AsyncCallback callback);
 	public void getMembers(String dimName, String guid, AsyncCallback<StringTree> callback);
+	public void moveDimension(String axisName, String DimName, String guid, AsyncCallback<Boolean> callback);
 }
