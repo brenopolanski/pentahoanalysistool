@@ -47,8 +47,8 @@ public class PAT implements EntryPoint {
 		
 		controlBarPanel = new ControlBarPanel();
 		controlBarPanel.setWidth(1024);
-		controlBarPanel.addConnectionListener(toolBarPanel);
-				
+		//controlBarPanel.addConnectionListener(toolBarPanel);
+		
 		
 		patPanel = new PATPanel();
 		
@@ -64,24 +64,13 @@ public class PAT implements EntryPoint {
 
 		
 		dimensionPanel = new DimensionPanel();
-		dimensionPanel.addListener(new PanelListenerAdapter() {
-			@Override
-			public void onCollapse(Panel panel) {
-				patPanel.setTitle("West Panel was collapsed");
-			}
-
-			@Override
-			public void onExpand(Panel panel) {
-				patPanel.setTitle("West Panel was expanded");
-			}
-		});
 		dimensionPanel.setTitle("Dimension Panel");
-		dimensionPanel.setWidth(220);
+		dimensionPanel.setWidth(250);
 		dimensionPanel.setHeight(600);
 		// it's not more then this westPanel.setCollapsible(true);
 		// westPanel.setCollapsed(true);
 		dimensionPanel.setCollapsible(true);
-		
+		controlBarPanel.addConnectionListener(dimensionPanel);
 		
 		northPanel = new NorthPanel();
 		northPanel.setTitle("MDX/Filter Panel");
@@ -108,19 +97,19 @@ public class PAT implements EntryPoint {
 
 		BorderLayoutData southLayoutData = new BorderLayoutData(
 				RegionPosition.SOUTH);
-		westLayoutData.setMargins(new Margins(5, 5, 0, 5));
-		westLayoutData.setCMargins(new Margins(5, 5, 5, 5));
-		westLayoutData.setMinSize(175);
-		westLayoutData.setMaxSize(400);
-		westLayoutData.setSplit(true);
+		southLayoutData.setMargins(new Margins(5, 5, 0, 5));
+		southLayoutData.setCMargins(new Margins(5, 5, 5, 5));
+		southLayoutData.setMinSize(175);
+		southLayoutData.setMaxSize(400);
+		southLayoutData.setSplit(true);
 		
 		BorderLayoutData northLayoutData = new BorderLayoutData(
 				RegionPosition.NORTH);
-		westLayoutData.setMargins(new Margins(5, 5, 0, 5));
-		westLayoutData.setCMargins(new Margins(5, 5, 5, 5));
-		westLayoutData.setMinSize(175);
-		westLayoutData.setMaxSize(400);
-		westLayoutData.setSplit(true);
+		northLayoutData.setMargins(new Margins(5, 5, 0, 5));
+		northLayoutData.setCMargins(new Margins(5, 5, 5, 5));
+		northLayoutData.setMinSize(175);
+		northLayoutData.setMaxSize(400);
+		northLayoutData.setSplit(true);
 		
 		
 		mainPanel.add(dimensionPanel, westLayoutData);
