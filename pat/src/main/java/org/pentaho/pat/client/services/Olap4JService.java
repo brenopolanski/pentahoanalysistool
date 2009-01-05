@@ -22,5 +22,5 @@ public interface Olap4JService extends RemoteService {
 	  public String[] getDimensions(String axis, String guid);
 	  public String[][] getCubes(String guid);
 	  public StringTree getMembers(String dimName, String guid);
-
+	  public Boolean moveDimension(String axisName, String DimName, String guid); 
 }

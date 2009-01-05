@@ -137,6 +137,7 @@ public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents 
 				new AsyncCallback() {
 			public void onSuccess(Object result) {
 				// TODO Populate the Dimensions Dialog
+				DimensionPanel.populateDimensions();
 			}
 
 			public void onFailure(Throwable caught) {
