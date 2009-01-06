@@ -11,12 +11,10 @@ import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.client.util.StringTree;
-import com.gwtext.client.core.EventObject;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.widgets.Panel;
-import com.gwtext.client.widgets.tree.TreePanel;
-import com.gwtext.client.widgets.tree.event.TreePanelListenerAdapter;
+import com.gwtext.client.core.EventObject;
 import com.gwtext.client.data.ArrayReader;
 import com.gwtext.client.data.FieldDef;
 import com.gwtext.client.data.MemoryProxy;
@@ -30,22 +28,25 @@ import com.gwtext.client.dd.DragDrop;
 import com.gwtext.client.dd.DragSource;
 import com.gwtext.client.dd.DropTarget;
 import com.gwtext.client.dd.DropTargetConfig;
-
-
+import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.grid.ColumnConfig;
 import com.gwtext.client.widgets.grid.ColumnModel;
 import com.gwtext.client.widgets.grid.GridDragData;
 import com.gwtext.client.widgets.grid.GridPanel;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
+import com.gwtext.client.widgets.menu.Menu;
+import com.gwtext.client.widgets.tree.DropNodeCallback;
 import com.gwtext.client.widgets.tree.TreeDragData;
 import com.gwtext.client.widgets.tree.TreeNode;
-import com.gwtext.client.widgets.tree.DropNodeCallback;
+import com.gwtext.client.widgets.tree.TreePanel;
+import com.gwtext.client.widgets.tree.event.TreePanelListenerAdapter;
 
 /**
- * @author Tom Barber
+ * @author root
  *
  */
 public class DimensionPanel extends Panel implements ConnectionListener  {
+
 	 /*TODO
 	 * The Dimension Panel Needs to Handle the listing of the dimension tree and adding the dimensions
 	 * to the rows/columns grids in a manner that also allows selecting of children etc(check Original halogen for ideas).
@@ -60,131 +61,84 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 	private static final String AXIS_PAGES = "PAGES"; //$NON-NLS-1$
 	private static final String AXIS_CHAPTERS = "CHAPTERS"; //$NON-NLS-1$
 	private static final String AXIS_SECTIONS = "SECTIONS"; //$NON-NLS-1$
-
-	private static  TreeNode dimensions = new TreeNode(MessageFactory.getInstance().dimensions());
-	private static TreePanel dimTree; 
+	
+	private static  TreeNode rowNode = new TreeNode("Rows");
+	private static  TreeNode columnNode = new TreeNode("Columns");
+	private TreePanel rowTree;
+	private TreePanel colTree; 
 	private static  RecordDef recordDef;
-	private static  Store treeStore;
-	private ColumnConfig columns;
-	private RecordDef recDef;
+	private static  Store dimensionStore;
 	private MemoryProxy proxy;
 	private Store colStore;
 	private Store rowStore;
-	private  GridPanel gridCols;
-	private  GridPanel gridRows; 
-	private  Panel gridWrapperPanel;
-	private Panel wrapperPanel;
-	private DropTargetConfig dtc;
-	private DropTarget tg;
+	private GridPanel gridDimensions;
+	private Panel gridWrapperPanel;
+	private Panel rowWrapperPanel;
+	private Panel colWrapperPanel;
+	private DropTargetConfig dimensionDTC;
+	private DropTarget dimensionTg;
+	private DropTargetConfig colDTC;
+	private DropTarget colTg;
+	
 	public DimensionPanel() {
 		super();
 
 		init();
 	}
+	
 	public void init(){
-		this.setAutoScroll(true);
-		wrapperPanel = new Panel();  
-		wrapperPanel.setAutoScroll(true);
-		wrapperPanel.setWidth("100%");
-		wrapperPanel.setHeight(300);
+		ColumnConfig[] columns = { new ColumnConfig("Dimensions", "tags", 90) };
+		ColumnModel columnModel = new ColumnModel(columns);
+		recordDef = new RecordDef(new FieldDef[] { new StringFieldDef("tags") });
+		proxy = new MemoryProxy(getProxyData());
+
+		ArrayReader reader = new ArrayReader(recordDef);
+		dimensionStore = new Store(proxy, reader);
+		dimensionStore.load();
+		
 		colStore = new SimpleStore(new String[] { "tags" },
 				new String[][] {});
 		colStore.load();
 		rowStore = new SimpleStore(new String[] { "tags" },
 				new String[][] {});
 		rowStore.load();
-
-		recordDef = new RecordDef(new FieldDef[] { new StringFieldDef("tags") });
-		proxy = new MemoryProxy(getProxyData());
-
-		ArrayReader reader = new ArrayReader(recordDef);
-		treeStore = new Store(proxy, reader);
-		treeStore.load();
-
-		ColumnConfig[] columns2 = { new ColumnConfig("Columns", "tags", 90) };
-		ColumnConfig[] columns = { new ColumnConfig("Rows", "tags", 90) };
-		ColumnModel columnModel = new ColumnModel(columns);
-		ColumnModel columnModel2 = new ColumnModel(columns2);
+		
+		this.setAutoScroll(false);
 		
 		
-		dimTree = new TreePanel();
-		dimTree.setRootNode(dimensions);
-		dimTree.setDdGroup("myDDGroup");
-		dimTree.setAnimate(true);
-		dimTree.setEnableDD(true);
-		dimTree.setContainerScroll(true);
-		dimTree.setEnableDrop(true);
-		dimTree.setRootVisible(true);
-		dimTree.setAutoWidth(true);
-		dimTree.setAutoHeight(true);
-		dimTree.setDisabled(true);
-		// add trip tree listener that handles move / copy logic
-		dimTree.addListener(new TreePanelListenerAdapter() {
-			
-			public boolean doBeforeNodeDrop(TreePanel treePanel,
-					TreeNode target, DragData dragData, String point,
-					DragDrop source, TreeNode dropNode,
-					DropNodeCallback dropDropNodeCallback) {
-				if (dragData instanceof GridDragData) {
-					GridDragData gridDragData = (GridDragData) dragData;
-					Record[] records = gridDragData.getSelections();
-					TreeNode[] copyNodes = new TreeNode[records.length];
-					for (int i = 0; i < records.length; i++) {
-						Record record = records[i];
-						String dimension = record.getAsString("tags");
-						TreeNode copyNode = new TreeNode(dimension);
-						copyNode.setId(dimension);
-
-						copyNodes[i] = copyNode;
-						target.appendChild(copyNode);
-
-						GridPanel grid = gridDragData.getGrid();
-						Store store = grid.getStore();
-						store.remove(record);
-						store.commitChanges();
-
-						rowStore.add(record);
-						rowStore.commitChanges();
-
-					}
-				}
-				return true;
-			}
-		});
+		rowWrapperPanel = new Panel();  
+		rowWrapperPanel.setAutoScroll(true);
+		rowWrapperPanel.setWidth("100%");
+		rowWrapperPanel.setAutoWidth(true);
+		rowWrapperPanel.setHeight(200);
+		 
+		colWrapperPanel = new Panel();  
+		colWrapperPanel.setAutoScroll(true);
+		colWrapperPanel.setWidth("100%");
+		colWrapperPanel.setAutoWidth(true);
+		colWrapperPanel.setHeight(200);
 		
 		gridWrapperPanel = new Panel();  
 		gridWrapperPanel.setAutoScroll(true);
 		gridWrapperPanel.setWidth("100%");
 		gridWrapperPanel.setHeight(110);
-		gridWrapperPanel.setLayout(new HorizontalLayout(2)); 
+		//gridWrapperPanel.setLayout(new HorizontalLayout(1)); 
 		
-		gridCols = new GridPanel();
-		gridCols.setColumnModel(columnModel2);
-		gridCols.setEnableDragDrop(true);
-		gridCols.setEnableColumnResize(true);
-		gridCols.setStore(colStore);
-		gridCols.setDdGroup("myDDGroup");
-		gridCols.setHeight(100);
-		gridCols.setAutoWidth(true);
-		gridCols.setAutoHeight(true);
-		//gridCols.setDisabled(true);
+		gridDimensions = new GridPanel();
+		gridDimensions.setColumnModel(columnModel);
+		gridDimensions.setEnableDragDrop(true);
+		gridDimensions.setEnableColumnResize(true);
+		gridDimensions.setStore(dimensionStore);
+		gridDimensions.setDdGroup("myDDGroup");
+		gridDimensions.setHeight(100);
+		gridDimensions.setAutoWidth(true);
+		gridDimensions.setAutoHeight(true);
 		
-		gridRows= new GridPanel();
-		gridRows.setColumnModel(columnModel);
-		gridRows.setEnableDragDrop(true);
-		gridRows.setEnableColumnResize(true);
-		gridRows.setStore(rowStore);
-		gridRows.setDdGroup("myDDGroup");
-		gridRows.setHeight(100);
-		gridRows.setAutoWidth(true);
-		gridRows.setAutoHeight(true);
-		//gridRows.setDisabled(true);
-		gridWrapperPanel.add(gridRows);
-		gridWrapperPanel.add(gridCols);
-		dtc = new DropTargetConfig();
-		dtc.setdDdGroup("myDDGroup");
+		
+		dimensionDTC = new DropTargetConfig();
+		dimensionDTC.setdDdGroup("myDDGroup");
 
-		tg = new DropTarget(gridRows, dtc) {
+		dimensionTg = new DropTarget(gridDimensions, dimensionDTC) {
 			
 			public boolean notifyDrop(DragSource source,
 				EventObject e, DragData data) {
@@ -193,20 +147,20 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 
 				TreeDragData treeDragData = (TreeDragData) data;
 				TreeNode treeNode = treeDragData.getTreeNode();
-				String country = treeNode.getText();
+				String nodeText = treeNode.getText();
 
-				int index = treeStore.find("tags", country, 0, true, true);
-				Record record = treeStore.getAt(index);
+				int index = rowStore.find("tags", nodeText, 0, true, true);
+				Record record = rowStore.getAt(index);
 				if (record != null) {
-					rowStore.add(record);
-					rowStore.commitChanges();
+					dimensionStore.add(record);
+					dimensionStore.commitChanges();
 
-					treeStore.remove(record);
-					treeStore.commitChanges();
+					rowStore.remove(record);
+					rowStore.commitChanges();
 				}
-				TreeNode node = dimTree.getNodeById(country);
-				dimensions.removeChild(node);
-				moveDimension(country, "ROWS");
+				TreeNode node = rowTree.getNodeById(nodeText);
+				rowNode.removeChild(node);
+				//moveDimension(nodeText, "ROWS");
 				return true;
 			}
 
@@ -215,27 +169,136 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 				return "x-dd-drop-ok";
 			}
 		};
+		gridWrapperPanel.add(gridDimensions);
 		
-		wrapperPanel.add(dimTree);
-		this.add(wrapperPanel);
+		
+		rowTree = new TreePanel();
+		rowTree.setRootNode(rowNode);
+		rowTree.setDdGroup("myDDGroup");
+		rowTree.setAnimate(true);
+		rowTree.setEnableDD(true);
+		rowTree.setContainerScroll(true);
+		rowTree.setEnableDrop(true);
+		rowTree.setRootVisible(true);
+		rowTree.setAutoWidth(true);
+		rowTree.setAutoHeight(true);
+		
+		//rowTree.setDisabled(true);
+		// add trip tree listener that handles move / copy logic
+		rowTree.addListener(new TreePanelListenerAdapter() {
+			
+			public boolean doBeforeNodeDrop(TreePanel treePanel,
+					TreeNode target, DragData dragData, String point,
+					DragDrop source, TreeNode dropNode,
+					DropNodeCallback dropDropNodeCallback) {
+				if (dragData instanceof GridDragData) {
+					GridDragData gridDragData = (GridDragData) dragData;
+					Record[] records = gridDragData.getSelections();
+					for (int i = 0; i < records.length; i++) {
+						Record record = records[i];
+						String dimension = record.getAsString("tags");
+						GridPanel grid = gridDragData.getGrid();
+						Store store = grid.getStore();
+						store.remove(record);
+						store.commitChanges();
+
+						rowStore.add(record);
+						rowStore.commitChanges();
+						moveDimension(dimension, "ROWS");
+					}
+				}
+				return true;
+			}
+		});
+		
+		rowTree.addListener(new TreePanelListenerAdapter() {
+		     public void onContextMenu(TreeNode node, EventObject e) {
+		         // logic to create context menu depending on which node was clicked
+		         
+		        Menu menu = new Menu();
+		        // add menu items
+		        
+		        //display menu where node was right clicked
+		        menu.showAt(e.getXY());
+		    }
+
+		}); 
+		
+		colTree = new TreePanel();
+		colTree.setRootNode(columnNode);
+		colTree.setDdGroup("myDDGroup");
+		colTree.setAnimate(true);
+		colTree.setEnableDD(true);
+		colTree.setContainerScroll(true);
+		colTree.setEnableDrop(true);
+		colTree.setRootVisible(true);
+		colTree.setAutoWidth(true);
+		colTree.setAutoHeight(true);
+		//colTree.setDisabled(true);
+		// add trip tree listener that handles move / copy logic
+		colTree.addListener(new TreePanelListenerAdapter() {
+			
+			public boolean doBeforeNodeDrop(TreePanel treePanel,
+					TreeNode target, DragData dragData, String point,
+					DragDrop source, TreeNode dropNode,
+					DropNodeCallback dropDropNodeCallback) {
+				if (dragData instanceof GridDragData) {
+					GridDragData gridDragData = (GridDragData) dragData;
+					Record[] records = gridDragData.getSelections();
+					
+					for (int i = 0; i < records.length; i++) {
+						Record record = records[i];
+						String dimension = record.getAsString("tags");
+						GridPanel grid = gridDragData.getGrid();
+						Store store = grid.getStore();
+						store.remove(record);
+						store.commitChanges();
+
+						colStore.add(record);
+						colStore.commitChanges();
+						moveDimension(dimension, "COLUMNS");
+					}
+				}
+				return true;
+			}
+		});
+
+		colTree.addListener(new TreePanelListenerAdapter() {
+		     public void onContextMenu(TreeNode node, EventObject e) {
+		         // logic to create context menu depending on which node was clicked
+		         
+		        Menu menu = new Menu();
+		        // add menu items
+		        
+		        //display menu where node was right clicked
+		        menu.showAt(e.getXY());
+		    }
+
+		}); 
+		rowWrapperPanel.add(rowTree);
+		colWrapperPanel.add(colTree);
 		this.add(gridWrapperPanel);
+		this.add(rowWrapperPanel);
+		this.add(colWrapperPanel);
+		
 	}
 	
-	private static void getDimTree(String[] dimStrs) {
+	private static TreeNode getDimTree(String dimStrs) {
+		final TreeNode parent = new TreeNode();
 
-		for (int i = 0; i < dimStrs.length; i++) {
-
-			ServiceFactory.getInstance().getMembers(dimStrs[i],
+			ServiceFactory.getInstance().getMembers(dimStrs,
 					GuidFactory.getGuid(), new AsyncCallback() {
 						public void onSuccess(Object result) {
 							StringTree memberTree = (StringTree) result;
 							TreeNode root = new TreeNode(memberTree.getValue());
-							root.setId(memberTree.getValue());
+							parent.setId(memberTree.getValue());
+							parent.setText(memberTree.getValue());
 							for (int i = 0; i < memberTree.getChildren().size(); i++) {
 								root = createPathForMember(root, memberTree
 										.getChildren().get(i));
 							}
-							dimensions.appendChild(root);
+							//rows.appendChild(root);
+							parent.appendChild(root);
 
 						}
 						public void onFailure(Throwable caught) {
@@ -243,8 +306,9 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 
 						}
 					});
+			return parent;
 		}
-	}
+	
 		private static TreeNode createPathForMember(TreeNode parent,
 				StringTree node) {
 			String memberLabel = new String(node.getValue());
@@ -280,9 +344,24 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 				ServiceFactory.getInstance().getDimensions(AXIS_NONE,
 						GuidFactory.getGuid(), new AsyncCallback() {
 							public void onSuccess(Object result) {
-								loadupStoreWithDimensions((String[])result);
+								String[] dimStrs = (String[]) result;
+								String dimStr[][] = null;
+								dimensionStore.removeAll();
+								if (dimStrs.length > 0) {
+									dimStr = new String[dimStrs.length][1];
+									for (int k = 0; k < dimStrs.length; k++) {
+										dimStr[k][0] = dimStrs[k];
+									}
+
+								}
+								for (int j = 0; j < dimStr.length; j++) {
+									
+									dimensionStore.add(recordDef.createRecord(dimStr[j]));
+									dimensionStore.commitChanges();
+								}
+								/*loadupStoreWithDimensions((String[])result);
 								getDimTree((String[])result);
-								dimTree.setDisabled(false);
+								dimTree.setDisabled(false);*/
 								//gridCols.setDisabled(false);
 								//gridRows.setDisabled(false);
 							}
@@ -294,77 +373,55 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 
 						});
 			}
+		    if (axis.contains(AXIS_ROWS)) {
+		      ServiceFactory.getInstance().getDimensions(AXIS_ROWS, GuidFactory.getGuid(), new AsyncCallback() {
+		  
+		        public void onSuccess(Object result) {
+		        	String[] dimStrs = (String[]) result; 
+		        	for (int i=0; i<dimStrs.length; i++) {
+		        	rowNode.appendChild(getDimTree(dimStrs[i]));
+		        	}
+		        }
+		        
+		        public void onFailure(Throwable caught) {
+		          // TODO Auto-generated method stub
+		        }
+		      });
+		    }
+		    
+		    if (axis.contains(AXIS_COLUMNS)) {
+		      ServiceFactory.getInstance().getDimensions(AXIS_COLUMNS, GuidFactory.getGuid(), new AsyncCallback() {
+		  
+		        public void onSuccess(Object result) {
+		        	String[] dimStrs = (String[]) result; 
+		        	for (int i=0; i<dimStrs.length; i++) {
+		        	columnNode.appendChild(getDimTree(dimStrs[i]));
+		        }
+		        }
+		        
+		        public void onFailure(Throwable caught) {
+		          // TODO Auto-generated method stub
+		        }
+		      });
+		    }
+		    
+		    if (axis.contains(AXIS_FILTER)) {
+		      ServiceFactory.getInstance().getDimensions(AXIS_FILTER, GuidFactory.getGuid(), new AsyncCallback() {
+
+		        public void onSuccess(Object result) {
+		        
+		        }
+		        
+		        public void onFailure(Throwable caught) {
+		          // TODO Auto-generated method stub
+		          
+		        }     
+		      });
+		    }
 		}
 
-		private static ArrayList loadupStoreWithChildDimensions(TreeNode parent,
-				StringTree node) {
-			String memberLabel = new String(node.getValue());
-
-			final ArrayList<String> listing2 = new ArrayList<String>();
-			listing2.add(memberLabel);
-
-			TreeNode childItem = new TreeNode(memberLabel);
-			parent.appendChild(childItem);
-			for (int i = 0; i < node.getChildren().size(); i++) {
-				listing2.addAll(loadupStoreWithChildDimensions(childItem, node
-						.getChildren().get(i)));
-
-			}
-			return listing2;
-		}
-
-		private static void loadupStoreWithDimensions(String[] dimStrs) {
-			final ArrayList<String> listing = new ArrayList<String>();
-
-			for (int i = 0; i < dimStrs.length; i++) {
-
-				ServiceFactory.getInstance().getMembers(dimStrs[i],
-						GuidFactory.getGuid(), new AsyncCallback() {
-							public void onSuccess(Object result) {
-
-								String dimStr[][] = null;
-								StringTree memberTree = (StringTree) result;
-								TreeNode root = new TreeNode(memberTree.getValue());
-								listing.clear();
-								listing.add(memberTree.getValue());
-
-								for (int i = 0; i < memberTree.getChildren().size(); i++) {
-
-									ArrayList listing2 = (loadupStoreWithChildDimensions(
-											root, memberTree.getChildren().get(i)));
-									listing.addAll(listing2);
-								}
-
-								if (listing.size() > 0) {
-
-									dimStr = new String[listing.size()][1];
-
-									for (int k = 0; k < listing.size(); k++) {
-										dimStr[k][0] = listing.get(k);
-									}
-
-								}
-
-								for (int j = 0; j < dimStr.length; j++) {
-									treeStore.add(recordDef.createRecord(dimStr[j]));
-									treeStore.commitChanges();
-								}
-							}
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-							}
-						});
-
-			}
-
-		}
-
-		/*
-		 * Horrible Horrible Code That Sorts Out Stores For Drag N Drop, drink plenty of beer before reading below this line... You HAVE Been Warned!!
-		 *Currently Broken..
-		 */
+		
+		
 				public void moveDimension(String dim, String axis){
 			    final String finalAxis = axis;
 				  System.out.println("init");
@@ -374,7 +431,7 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 			        boolean success = ((Boolean)result).booleanValue();
 			      if (success) {
 			        List axisList = new ArrayList();
-			        axisList.add(DimensionPanel.AXIS_NONE);
+			        axisList.add(AXIS_NONE);
 			        axisList.add(finalAxis);
 			        populateDimensions(axisList);
 			        System.out.println("success");
@@ -387,16 +444,16 @@ public class DimensionPanel extends Panel implements ConnectionListener  {
 			      }
 			    });  
 			  }
-
-
+				
+				
 	public void onConnectionBroken(Widget sender) {
-	dimTree.setDisabled(true);
-	//gridCols.setDisabled(true);
-	//gridRows.setDisabled(true);
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void onConnectionMade(Widget sender) {
-	
+		// TODO Auto-generated method stub
+		
 	}
 
 }
