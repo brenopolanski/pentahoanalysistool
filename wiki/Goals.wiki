@@ -53,3 +53,5 @@ This will effectively get us back to where the idea branch ends, but with nice c
   * Different Mode's (View only, user, admin)
 
   * New Calculated Measures via GUI
+
+  * Save View as Xaction
