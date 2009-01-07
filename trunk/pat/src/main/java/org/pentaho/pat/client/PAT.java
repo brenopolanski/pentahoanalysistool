@@ -1,9 +1,9 @@
 package org.pentaho.pat.client;
 
-import org.pentaho.pat.client.PATPanel;
 import org.pentaho.pat.client.panels.ControlBarPanel;
 import org.pentaho.pat.client.panels.DimensionPanel;
 import org.pentaho.pat.client.panels.NorthPanel;
+import org.pentaho.pat.client.panels.OlapPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
 
@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.gwtext.client.core.Margins;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.widgets.Panel;
-import com.gwtext.client.widgets.event.PanelListenerAdapter;
 import com.gwtext.client.widgets.layout.BorderLayout;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
 
@@ -27,7 +26,7 @@ public class PAT implements EntryPoint {
 	ToolBarPanel toolBarPanel;
 	ControlBarPanel controlBarPanel;
 	DimensionPanel dimensionPanel;
-	PATPanel patPanel;
+	OlapPanel olapPanel;
 	NorthPanel northPanel;
 	SouthPanel southPanel;
 	
@@ -50,7 +49,7 @@ public class PAT implements EntryPoint {
 		//controlBarPanel.addConnectionListener(toolBarPanel);
 		
 		
-		patPanel = new PATPanel();
+		olapPanel = new OlapPanel();
 		
 		
 		Panel mainPanel = new Panel();
@@ -60,7 +59,7 @@ public class PAT implements EntryPoint {
 		BorderLayoutData centerLayoutData = new BorderLayoutData(
 				RegionPosition.CENTER);
 		centerLayoutData.setMargins(new Margins(5, 0, 0, 5));
-		mainPanel.add(patPanel, centerLayoutData);
+		mainPanel.add(olapPanel, centerLayoutData);
 
 		
 		dimensionPanel = new DimensionPanel();
