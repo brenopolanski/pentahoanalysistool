@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.olap4j.Axis;
+import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
@@ -21,13 +22,11 @@ import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.server.services.Messages;
 import org.pentaho.pat.server.services.ObjectNotInCacheException;
 import org.pentaho.pat.client.services.Olap4JService;
+import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.StringTree;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import java.text.DateFormat;
-import java.util.Date;
 
-import org.olap4j.CellSet;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.query.Selection;
@@ -263,5 +262,64 @@ public class Olap4JServiceImpl extends RemoteServiceServlet implements Olap4JSer
 
 		    return new Boolean(true);
 		  }
+	  
+	  public Boolean createSelection(String dimName, String[] memberNames, Integer selectionType, String guid) {
+		    Cube cube = null;
+		    try {
+		      cube = getCube4Guid(guid);
+		    } catch (ObjectNotInCacheException e1) {
+		      e1.printStackTrace();
+		      return new Boolean(false);
+		    }
 
+		    Query query = queryCache.get(cube);
+		    if (query == null) {
+		      return new Boolean(false);
+		    }
+		    try {
+		      Member member = cube.lookupMember(memberNames);
+		      QueryDimension qDim = OlapUtil.getQueryDimension(query, dimName);
+		      Selection.Operator selectionMode = Selection.Operator.values()[selectionType.intValue()];
+		      Selection selection = qDim.createSelection(member, selectionMode);
+		      qDim.getSelections().add(selection);
+		    } catch (OlapException e) {
+		      e.printStackTrace();
+		      return new Boolean(false);
+		    }
+		    return new Boolean(true);
+		  }
+
+		  /* (non-Javadoc)
+		   * @see org.pentaho.halogen.client.services.Olap4JService#clearSelection(java.lang.String, java.lang.String[])
+		   */
+		  public Boolean clearSelection(String dimName, String[] memberNames, String guid) {
+		    Query query = null;
+		    try {
+		      query = getQuery4Guid(guid);
+		    } catch (ObjectNotInCacheException e) {
+		      e.printStackTrace();
+		      return new Boolean(false);
+		    }
+
+		    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimName);
+		    String path = OlapUtil.normalizeMemberNames(memberNames);
+		    Selection selection = OlapUtil.findSelection(path, qDim);
+		    if (selection == null) {
+		      return new Boolean(false);
+		    }
+		    qDim.getSelections().remove(selection);
+		    return new Boolean(true);
+		  }
+
+		  public OlapData executeQuery(String guid) {
+			    CellSet results = null;
+			    try {
+			      results = getQuery4Guid(guid).execute();
+			    } catch (OlapException e) {
+			      e.printStackTrace();
+			    } catch (ObjectNotInCacheException e) {
+			      e.printStackTrace();
+			    }
+			    return OlapUtil.cellSet2OlapData(results);
+			  }
 }
