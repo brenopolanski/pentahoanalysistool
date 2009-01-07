@@ -1,0 +1,15 @@
+#summary How to use PAT
+#labels Phase-Support
+
+= Introduction =
+
+Here's a brief introduction into how to use PAT
+
+
+= Details =
+
+Grab the sourcecode from SVN, see above, then open it in Eclipse, it is a Maven based project so it may want to rip some dependencies. Once that is done add a Connection.properties to org.pentaho.pat.client and inside it add a connection string for example:
+
+connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:mysql\://localhost\:3306/sampledata?user\=me&password\=password;Catalog\=/home/bugg/SampleData.mondrian.xml;
+
+and press the connect button on the tool bar, it will connect to an internal Mondrian server and load up the specified schema.
