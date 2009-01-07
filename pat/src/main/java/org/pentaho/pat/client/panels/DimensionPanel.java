@@ -9,6 +9,7 @@ import java.util.List;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
+import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.client.util.StringTree;
 
@@ -72,7 +73,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 	private static Store dimensionStore;
 	private MemoryProxy proxy;
 	private Store colStore;
-	private Store rowStore;
+	private static Store rowStore;
 	private GridPanel gridDimensions;
 	private Panel gridWrapperPanel;
 	private Panel rowWrapperPanel;
@@ -154,15 +155,14 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 				int index = rowStore.find("tags", nodeText, 0, true, true);
 				Record record = rowStore.getAt(index);
 				if (record != null) {
-					dimensionStore.add(record);
-					dimensionStore.commitChanges();
+				dimensionStore.add(record);
+				dimensionStore.commitChanges();
 
-					rowStore.remove(record);
-					rowStore.commitChanges();
+				rowStore.remove(record);
+				rowStore.commitChanges();
 				}
 				TreeNode node = rowTree.getNodeById(nodeText);
 				rowNode.removeChild(node);
-				// moveDimension(nodeText, "ROWS");
 				return true;
 			}
 
@@ -303,20 +303,17 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 
 	private static TreeNode getDimTree(String dimStrs, TreeNode node) {
 		final TreeNode parent = node;
-
 		ServiceFactory.getInstance().getMembers(dimStrs, GuidFactory.getGuid(),
 				new AsyncCallback() {
 			public void onSuccess(Object result) {
 				StringTree memberTree = (StringTree) result;
 				TreeNode root = new TreeNode(memberTree.getValue());
 				root.setId("top");
-				// parent.setId(memberTree.getValue());
-				// parent.setText(memberTree.getValue());
 				for (int i = 0; i < memberTree.getChildren().size(); i++) {
 					root = createPathForMember(root, memberTree
 							.getChildren().get(i));
 				}
-
+				
 				parent.appendChild(root);
 
 			}
@@ -398,6 +395,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
 					for (int i = 0; i < dimStrs.length; i++) {
+						
 						getDimTree(dimStrs[i], rowNode);
 
 					}
@@ -416,6 +414,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
 					for (int i = 0; i < dimStrs.length; i++) {
+						
 						getDimTree(dimStrs[i], columnNode);
 					}
 				}
@@ -467,9 +466,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 				new AsyncCallback() {
 
 			public void onSuccess(Object result1) {
-				// olapTable.setData((OlapData)result1);
-				// doCreateChart();
-				System.out.println("success");
+				OlapPanel.olapTable.setData((OlapData)result1);
 			}
 
 			public void onFailure(Throwable caught) {
