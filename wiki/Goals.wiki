@@ -55,3 +55,7 @@ This will effectively get us back to where the idea branch ends, but with nice c
   * New Calculated Measures via GUI
 
   * Save View as Xaction
+
+  * Show single records
+
+  * Export selection (including single records) (excel? html?)
