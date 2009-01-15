@@ -1,4 +1,4 @@
-#How to build pentaho analysis tool
+#summary How to build pentaho analysis tool
 
 = Introduction =
 
