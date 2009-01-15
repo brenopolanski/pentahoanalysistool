@@ -7,7 +7,7 @@ These are the goals(so far) of the project and where we aim to be heading.
 = Details =
 ==Stage 1==
 
-  * Connectivity
+  * Connectivity (XMLA or JDBC)
 
   * Working cube selection
 
