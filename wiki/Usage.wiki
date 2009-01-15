@@ -10,7 +10,7 @@ Here's a brief introduction into how to use PAT
 
 Grab the sourcecode from SVN, see above, then open it in Eclipse, it is a Maven based project so it may want to rip some dependencies. Once that is done add a Connection.properties to org.pentaho.pat.client and inside it add a connection string for example:
 
-connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:mysql\://localhost\:3306/sampledata?user\=me&password\=password;Catalog\=/home/bugg/SampleData.mondrian.xml;
+connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:mysql\://localhost\:3306/sampledata?user\=me&password\=password;Catalog\=/home/bugg/SampleData.mondrian.xml;JdbcDrivers=com.mysql.jdbc.Driver;
 
 For postgress put some thing like the following:
 
@@ -18,3 +18,10 @@ connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:postgresql\://localhost\:5432/samp
 
 
 and press the connect button on the tool bar, it will connect to an internal Mondrian server and load up the specified schema.
+
+= Known Problems =
+
+There are reports that GWT-DEV files are extracted in a new directory (e.g. PROJECT_HOME/{local.Repository}/com/google/gwt/gwt-dev/1.5.3) instead of the local maven repository (default: ~/.m2/repository/com/google/gwt/gwt-dev/1.5.3) during the build process.
+
+This is (probably) caused by the maven-eclipse plugin.
+This can be solved due the use of an external maven installation (Change that in Eclipse Preferences : Maven : Installation - Add)
