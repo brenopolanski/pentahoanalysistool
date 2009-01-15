@@ -12,4 +12,9 @@ Grab the sourcecode from SVN, see above, then open it in Eclipse, it is a Maven 
 
 connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:mysql\://localhost\:3306/sampledata?user\=me&password\=password;Catalog\=/home/bugg/SampleData.mondrian.xml;
 
+For postgress put some thing like the following:
+
+connection_string=jdbc\:mondrian\:Jdbc\=jdbc\:postgresql\://localhost\:5432/sampledata?user\=postgres&password\=password;Catalog\=C\:/java/PAT/sampledata.xml;jdbcDrivers\=org.postgresql.Driver;
+
+
 and press the connect button on the tool bar, it will connect to an internal Mondrian server and load up the specified schema.
