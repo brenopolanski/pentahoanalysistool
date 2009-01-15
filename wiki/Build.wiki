@@ -1,0 +1,15 @@
+#How to build pentaho analysis tool
+
+= Introduction =
+
+The project is maven based. Either the maven plug in for eclipse or the stand alone can be used to build it
+
+The build goal is: 
+
+com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
+
+From the command line run 
+mvn com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt 
+in the project directory to build and run the application.
+
+The first time you do this it will download a lot of dependencies so will take a lot longer. However this will not happen next time.
