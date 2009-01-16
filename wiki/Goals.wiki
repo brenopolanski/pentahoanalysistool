@@ -19,7 +19,9 @@ This will effectively get us back to where the idea branch ends, but with nice c
 
 ==Stage 2==
 
-  * Work on the Table decide which way to proced, GWT-EXT grid or other way.
+  * Work on the Table decide which way to proced, GWT-EXT grid or other way. Olap4j was supposed to include some sort of table model, but multi dimensions in mind. It was initially planned to exist as the org.olap4j.layout package. If we are to put efforts in a table model, why not do it in Olap4j core API ? See http://www.olap4j.org/olap4j_fs.html#Layout for more details.
+
+
 
   * Decide what features we want adding......
 
