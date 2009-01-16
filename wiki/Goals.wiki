@@ -31,7 +31,7 @@ This will effectively get us back to where the idea branch ends, but with nice c
 ==Stage 3==
   * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
 
-  * Drill Down
+  * Drill-down/Roll-up - This will need synchronized work with Olap4j team because the current Olap4j release doesn't implement those trnasformations yet. Fear not, they were considered in it's architecture.
 
   * Easy Cell Colour Coding
 
