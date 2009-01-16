@@ -27,6 +27,6 @@ Steps to set PAT up as Java Application for Debugging
 
 3) VM Args: -Xmx512M
 
-4) ClassPath Add: /PAT/src/main/java
+4) ClassPath Add : /PAT/src/main/java
 
-5) ClassPath Add: /PAT/src/
+5) ClassPath Add : /PAT/src/
