@@ -8,6 +8,8 @@ These are the goals(so far) of the project and where we aim to be heading.
 ==Stage 1==
 
   * Connectivity (XMLA or JDBC)
+       * Register Cubes in Config
+       (* Cube Selection out of Config)
 
   * Working cube selection
 
