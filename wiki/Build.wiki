@@ -4,6 +4,8 @@
 
 The project is maven based. Either the maven plug in for eclipse or the stand alone can be used to build it
 
+= Maven =
+
 The build goal is: 
 
 com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
@@ -13,3 +15,13 @@ mvn com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
 in the project directory to build and run the application.
 
 The first time you do this it will download a lot of dependencies so will take a lot longer. However this will not happen next time.
+
+
+= Debugging as Java Application =
+
+Steps to set PAT up as Java Application for Debugging
+1 Main Class: com.google.gwt.dev.GWTShell
+2 Program Args: -out www org.pentaho.pat.PAT/PAT.html
+3 VM Args: -Xmx512M
+4 ClassPath Add: /PAT/src/main/java
+5 ClassPath Add: /PAT/src/
