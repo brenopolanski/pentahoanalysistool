@@ -20,8 +20,13 @@ The first time you do this it will download a lot of dependencies so will take a
 = Debugging as Java Application =
 
 Steps to set PAT up as Java Application for Debugging
+
 1) Main Class: com.google.gwt.dev.GWTShell
+
 2) Program Args: -out www org.pentaho.pat.PAT/PAT.html
+
 3) VM Args: -Xmx512M
+
 4) ClassPath Add: /PAT/src/main/java
+
 5) ClassPath Add: /PAT/src/
