@@ -47,7 +47,7 @@ public class ToolBarPanel extends Toolbar implements ConnectionListener  {
 			
 		
 		Item connect = new Item(MessageFactory.getInstance().connect());
-		connect.addListener(listener);
+		
 
 		Menu submenu = new Menu();
 		submenu.addItem(connect);

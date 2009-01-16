@@ -1,8 +1,8 @@
 package org.pentaho.pat.client.panels;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.gwtext.client.core.EventObject;
+import com.gwtext.client.core.Position;  
 import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.Window;
@@ -10,7 +10,9 @@ import com.gwtext.client.widgets.event.ButtonListenerAdapter;
 import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.TextArea;
 import com.gwtext.client.widgets.form.TextField;
+import com.gwtext.client.widgets.form.ComboBox;  
 import com.gwtext.client.widgets.layout.FitLayout;
+import com.gwtext.client.widgets.TabPanel;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
@@ -20,7 +22,7 @@ import org.pentaho.pat.client.util.ServiceFactory;
 
 public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	FormPanel formPanel;
-	TextArea connectionText;
+	TextField connectionText;
 	TextField serverText;
 	TextField portText;
 	TextField usernameText;
@@ -28,6 +30,14 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	TextField cubeText;
 	TextField databaseText;
 	Button connectBtn;
+	ComboBox supportedDriverCombo;
+	
+	private TabPanel tabs;
+	private Panel supportedJDBC;
+	private Panel genericJDBC;
+	private Panel xmla;
+	
+
 
 	static String queryTypeGroup = "QUERY_TYPE"; //$NON-NLS-1$
 	boolean connectionEstablished = false;
@@ -40,40 +50,63 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	}
 
 	private void init() {
-		this.setTitle("Connect");
-		this.setMaximizable(false);
-		this.setResizable(true);
-		this.setLayout(new FitLayout());
-		this.setWidth(500);
-		this.setModal(false);
-		this.setShadow(true);
-		FlexTable flex = new FlexTable();
-		Panel panel = new FormPanel();
+		this.setTitle("Register new Mondrian Connection");
+		
+		tabs = new TabPanel();
+		tabs.setTabPosition(Position.TOP);  
+		tabs.setPaddings(10);
+		
+		supportedJDBC = new Panel();  
+		supportedJDBC.setAutoScroll(true);  
+		supportedJDBC.setTitle("Supported JDBC");  
+		supportedJDBC.setIconCls("tab-icon");  
+		//supportedJDBC.setLayout(new FitLayout());
+		
 
+		genericJDBC = new Panel();  
+		genericJDBC.setAutoScroll(true);  
+		genericJDBC.setTitle("Generic JDBC");  
+		genericJDBC.setIconCls("tab-icon");  
+
+		xmla = new Panel();  
+		xmla.setAutoScroll(true);  
+		xmla.setTitle("XMLA");  
+		xmla.setIconCls("tab-icon");  
+
+		this.setWidth(500);
+		this.setShadow(true);
+		Panel fpanel1= new FormPanel();
+		fpanel1.setPaddings(5);
+		
+		supportedDriverCombo = new ComboBox("Select a DB Type");
+		supportedDriverCombo.setLabel("Driver");
+		fpanel1.add(supportedDriverCombo);
+		
 		serverText = new TextField();
 		serverText.setLabel("Server");
-		panel.add(serverText);
+		fpanel1.add(serverText);
 
 		portText = new TextField();
 		portText.setLabel("Port");
-		panel.add(portText);
+		
+		fpanel1.add(portText);
 
 		usernameText = new TextField();
 		usernameText.setLabel("Username");
-		panel.add(usernameText);
+		fpanel1.add(usernameText);
 
 		passwordText = new TextField();
 		passwordText.setLabel("Password");
-		panel.add(passwordText);
+		fpanel1.add(passwordText);
 
 		databaseText = new TextField();
 		databaseText.setLabel("Database");
-		panel.add(databaseText);
+		fpanel1.add(databaseText);
 
 		cubeText = new TextField();
 		cubeText.setLabel("Schema");
 		cubeText.setInputType("file");
-		panel.add(cubeText);
+		fpanel1.add(cubeText);
 
 		connectBtn = new Button(MessageFactory.getInstance().connect());
 		connectBtn.addListener(new ButtonListenerAdapter() {
@@ -94,11 +127,42 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 				}
 			}
 		});
+		
+		supportedJDBC.add(fpanel1);
+		
+		Panel fpanel2= new FormPanel();
+		fpanel2.setPaddings(5);
+		
+		supportedDriverCombo = new ComboBox("Select a Driver");
+		supportedDriverCombo.setLabel("Driver");
+		fpanel2.add(supportedDriverCombo);
+		
+		connectionText = new TextField();
+		connectionText.setLabel("Connection String");
+		fpanel2.add(connectionText);
 
-		flex.setWidget(0, 1, connectBtn);
-		this.add(flex);
+		usernameText = new TextField();
+		usernameText.setLabel("Username");
+		fpanel2.add(usernameText);
 
-		flex.setWidget(0, 0, panel);
+		passwordText = new TextField();
+		passwordText.setLabel("Password");
+		fpanel2.add(passwordText);
+
+		cubeText = new TextField();
+		cubeText.setLabel("Schema");
+		cubeText.setInputType("file");
+		fpanel2.add(cubeText);
+		
+		genericJDBC.add(fpanel2);
+		
+		tabs.add(supportedJDBC);
+		tabs.add(genericJDBC);
+		tabs.add(xmla);
+		tabs.activate(0);
+		this.add(tabs);
+		this.setPaddings(10);
+		this.add(connectBtn);
 
 	}
 
