@@ -63,3 +63,5 @@ This will effectively get us back to where the idea branch ends, but with nice c
   * Show single records
 
   * Export selection (including single records) (excel? html?)
+
+  * Show charts (pie, bar,..)
