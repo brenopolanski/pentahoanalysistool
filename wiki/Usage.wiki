@@ -1,5 +1,5 @@
 #summary How to use PAT
-#labels Phase-Support
+#labels Phase-Support,Featured
 
 = Introduction =
 
