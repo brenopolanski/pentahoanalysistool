@@ -1,4 +1,5 @@
 #summary Goals of the Project
+#labels Featured,Phase-Requirements
 
 = Introduction =
 These are the goals(so far) of the project and where we aim to be heading.
