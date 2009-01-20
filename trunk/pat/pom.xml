@@ -1,10 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mycompany</groupId>
   <artifactId>project</artifactId>
   <packaging>war</packaging>
   <name>gwt-maven-archetype-project</name>
   <version>0.0.1-SNAPSHOT</version>
+  
   <build>
     <plugins>
       <plugin>
@@ -24,13 +29,38 @@
             <value>org.pentaho.pat</value>
           </compileTargets>
           <runTarget>org.pentaho.pat.PAT/PAT.html</runTarget>
-          <logLevel>INFO</logLevel>
+          <logLevel>DEBUG</logLevel>
           <style>DETAILED</style>
           <noServer>false</noServer>
           <extraJvmArgs>-Xmx512m</extraJvmArgs>
           <gwtVersion>${gwtVersion}</gwtVersion>
         </configuration>
       </plugin>
+      <plugin>                                
+	    <artifactId>maven-antrun-plugin</artifactId>
+	      <executions>
+	        <execution>
+	          <id>applicationContextCopy</id>
+	          <phase>compile</phase>
+	          <configuration>
+	            <tasks>
+	              <copy
+	                file="${basedir}/src/main/webapp/WEB-INF/pat-applicationContext.xml"
+	                toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-applicationContext.xml" />
+	              <copy
+	                file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
+	                toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
+	              <copy
+	                file="${basedir}/src/main/webapp/WEB-INF/legacy-dispatcher-servlet.xml"
+	                toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/legacy-dispatcher-servlet.xml" />
+	            </tasks>
+	          </configuration>
+	        <goals>
+	          <goal>run</goal>
+	        </goals>
+	      </execution>
+	    </executions>
+	  </plugin>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -263,6 +293,16 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring</artifactId>
       <version>2.5.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>1.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>1.2.6</version>
     </dependency>
   </dependencies>
   <properties>
