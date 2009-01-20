@@ -304,6 +304,11 @@
       <artifactId>spring-webmvc</artifactId>
       <version>1.2.6</version>
     </dependency>
+    <dependency>
+    	<groupId>net.sf.gwt-widget</groupId>
+    	<artifactId>gwt-sl</artifactId>
+    	<version>0.1.5</version>
+    </dependency>
   </dependencies>
   <properties>
     <gwtVersion>1.5.3</gwtVersion>
