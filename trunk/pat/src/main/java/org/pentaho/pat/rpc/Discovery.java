@@ -1,43 +1,38 @@
-package org.pentaho.pat.server.services;
+package org.pentaho.pat.rpc;
 
 
-import java.util.List;
-
-import org.apache.commons.collections.list.TreeList;
 import org.olap4j.Axis;
+import org.pentaho.pat.client.util.StringTree;
 
 /**
  * Defines discovery operations methods.
  * @author Luc Boudreau
  */
-public interface DiscoveryService {
+public interface Discovery {
 
 	/**
 	 * Returns a list of all available dimension names on
 	 * a given axis.
 	 * @param axis The axis for which we want the dimensions.
-	 * @param guid The id of the person who asks.
 	 * @return A list object containing all available dimensions,
 	 * an empty list if there are none available or null
 	 * if the given axis is not present in the cube.
 	 */
-	public List<String> getDimensions(Axis axis, String guid);
+	public String [] getDimensions(Axis axis);
 	
 	/**
 	 * Returns all the cube names available on the current connection.
-	 * @param guid The owner of the request.
 	 * @return A list of all the cube names available or an empty
 	 * list if none are found.
 	 */
-	public List<String> getCubes(String guid);
+	public String [] getCubes();
 	
 	/**
 	 * Returns a tree list of all members found within a given
 	 * dimension, or null if the dimension 
-	 * @param dimensionName
-	 * @param guid
-	 * @return
+	 * @param dimensionName Name of the dimension that contains
+	 * the member names we want.
+	 * @return A StringTree of all present members.
 	 */
-	public TreeList getMembers(String dimensionName, String guid);
-
+	public StringTree getMembers(String dimensionName);
 }
