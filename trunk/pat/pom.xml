@@ -34,6 +34,7 @@
           <noServer>false</noServer>
           <extraJvmArgs>-Xmx512m</extraJvmArgs>
           <gwtVersion>${gwtVersion}</gwtVersion>
+          <debugSuspend>true</debugSuspend>
         </configuration>
       </plugin>
       <plugin>                                
@@ -50,9 +51,6 @@
 	              <copy
 	                file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 	                toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
-	              <copy
-	                file="${basedir}/src/main/webapp/WEB-INF/legacy-dispatcher-servlet.xml"
-	                toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/legacy-dispatcher-servlet.xml" />
 	            </tasks>
 	          </configuration>
 	        <goals>
