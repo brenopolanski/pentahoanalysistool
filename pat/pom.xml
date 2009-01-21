@@ -34,7 +34,7 @@
           <noServer>false</noServer>
           <extraJvmArgs>-Xmx512m</extraJvmArgs>
           <gwtVersion>${gwtVersion}</gwtVersion>
-          <debugSuspend>true</debugSuspend>
+          <debugSuspend>false</debugSuspend>
         </configuration>
       </plugin>
       <plugin>                                
