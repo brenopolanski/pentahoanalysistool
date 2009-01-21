@@ -3,6 +3,8 @@
  */
 package org.pentaho.pat.server.servlet;
 
+import java.util.List;
+
 import org.olap4j.Axis;
 import org.pentaho.pat.client.util.StringTree;
 import org.pentaho.pat.rpc.Discovery;
@@ -23,8 +25,8 @@ public class DiscoveryServlet extends GenericServlet implements
 	private DiscoveryService discoveryService;
 
 	public String[] getCubes() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> list = this.discoveryService.getCubes(getUserId()); 
+		return list.toArray(new String[list.size()]);
 	}
 
 	public String[] getDimensions(Axis axis) {
