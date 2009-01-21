@@ -11,7 +11,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	private ConnectionCache connectionCache;
 
-	public String connect(String ownerId, String driverName, String connectStr,
+	public OlapConnection connect(String ownerId, String driverName, String connectStr,
 			String username, String password) throws OlapException {
 		// TODO Auto-generated method stub
 		return null;
@@ -22,7 +22,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	}
 
-	public OlapConnection getConnection(String ownerId, String connectionId)
+	public OlapConnection getConnection(String ownerId)
 			throws InvalidKeyException, OlapException {
 		// TODO Auto-generated method stub
 		return null;
