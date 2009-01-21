@@ -18,6 +18,8 @@ These are the goals(so far) of the project and where we aim to be heading.
 
   * Decide on the backend parse tree architecture.
 
+  * Migrate all server calls to the non-lagacy servlets.
+
 This will effectively get us back to where the idea branch ends, but with nice code and a proper design and layout.
 
 ==Stage 2==
