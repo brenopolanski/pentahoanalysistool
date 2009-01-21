@@ -3,7 +3,6 @@
  */
 package org.pentaho.pat.server.servlet;
 
-import org.gwtwidgets.server.spring.GWTSpringController;
 import org.olap4j.Axis;
 import org.pentaho.pat.client.util.StringTree;
 import org.pentaho.pat.rpc.Discovery;
@@ -16,7 +15,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
  * @author Luc Boudreau
  *
  */
-public class DiscoveryServlet extends GWTSpringController implements
+public class DiscoveryServlet extends GenericServlet implements
 		Discovery {
 
 	private static final long serialVersionUID = 1L;

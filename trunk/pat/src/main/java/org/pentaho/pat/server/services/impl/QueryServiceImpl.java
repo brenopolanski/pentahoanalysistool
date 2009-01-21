@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.query.Selection.Operator;
+import org.pentaho.pat.server.data.QueryManager;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 
 public class QueryServiceImpl implements QueryService {
 
 	private SessionService sessionService;
+	
+	private QueryManager queryManager;
 	
 	public Boolean clearSelection(String dimensionName, List<String> memberNames) {
 		// TODO Auto-generated method stub
@@ -29,6 +32,10 @@ public class QueryServiceImpl implements QueryService {
 	
 	public void setSessionService(SessionService service) {
 		this.sessionService = service;
+	}
+	
+	public void setQueryManager(QueryManager manager) {
+		this.queryManager = manager;
 	}
 
 }

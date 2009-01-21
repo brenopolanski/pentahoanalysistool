@@ -2,11 +2,10 @@ package org.pentaho.pat.server.servlet;
 
 import java.util.List;
 
-import org.gwtwidgets.server.spring.GWTSpringController;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.services.SessionService;
 
-public class SessionServlet extends GWTSpringController implements Session {
+public class SessionServlet extends GenericServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
 	

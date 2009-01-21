@@ -3,11 +3,79 @@
 
 <beans default-autowire="byName">
 
-	<bean id="LegacyService" class="org.pentaho.pat.server.services.Olap4JServiceImpl" />
+
+
+
+	<!--  This is the old legacy stuff... -->
+	<bean id="legacyServlet" class="org.pentaho.pat.server.services.Olap4JServiceImpl" />
+	
+	
+	
+	
+	
+	
 	
 	<!-- ############################################################################# -->
-	<!-- ########  WEB LAYER ######################################################### -->
+	<!-- ########  SERVLET LAYER ##################################################### -->
 	<!-- ############################################################################# -->
-	<bean></bean>
+	
+	
+	<bean id="discoveryServlet" class="org.pentaho.pat.server.servlet.DiscoveryServlet">
+		<property name="discoveryService" ref="discoveryService" />
+	</bean>
+	
+	<bean id="queryServlet" class="org.pentaho.pat.server.servlet.QueryServlet">
+		<property name="queryService" ref="queryService" />
+	</bean>
+	
+	<bean id="sessionServlet" class="org.pentaho.pat.server.servlet.SessionServlet">
+		<property name="sessionService" ref="sessionService" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	<!-- ############################################################################# -->
+	<!-- ########  SERVICE LAYER ##################################################### -->
+	<!-- ############################################################################# -->
+	
+	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+		<property name="connectionManager" ref="connectionManager" />
+	</bean>
+	
+	<bean id="queryService" class="org.pentaho.pat.server.services.impl.QueryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+		<property name="queryManager" ref="queryManager" />
+	</bean>
+	
+	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
+		<property name="connectionManager" ref="connectionManager" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	<!-- ############################################################################# -->
+	<!-- ########  PERSISTENCE LAYER ################################################# -->
+	<!-- ############################################################################# -->
+	
+	<bean id="connectionManager" class="org.pentaho.pat.server.data.impl.ConnectionManagerImpl">
+		<property name="connectionCache" ref="connectionCache" />
+	</bean>
+	
+	<bean id="queryManager" class="org.pentaho.pat.server.data.impl.QueryManagerImpl">
+		<property name="queryCache" ref="queryCache" />
+		<property name="connectionManager" ref="connectionManager" />
+	</bean>
+	
+	<bean id="queryCache" class="org.pentaho.pat.server.data.impl.InMemoryQueryCache"/>
+	
+	<bean id="connectionCache" class="org.pentaho.pat.server.data.impl.InMemoryConnectionCache"/>
 	
 </beans>

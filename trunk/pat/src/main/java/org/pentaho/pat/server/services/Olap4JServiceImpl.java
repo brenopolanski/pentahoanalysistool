@@ -22,6 +22,7 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.server.services.Messages;
 import org.pentaho.pat.server.services.ObjectNotInCacheException;
+import org.pentaho.pat.server.servlet.GenericServlet;
 import org.pentaho.pat.client.services.Olap4JService;
 import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.StringTree;
@@ -37,7 +38,7 @@ import org.olap4j.query.Selection;
  *
  */
 @SuppressWarnings("serial")
-public class Olap4JServiceImpl extends GWTSpringController implements Olap4JService {
+public class Olap4JServiceImpl extends GenericServlet implements Olap4JService {
 //public class Olap4JServiceImpl extends SpringGWTServlet implements Olap4JService {
 	  protected static final Double ZERO_THRESHOLD = 1.2346E-8;
 

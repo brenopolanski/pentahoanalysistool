@@ -22,7 +22,7 @@ public interface QueryManager {
 	 * @throws OlapException If something went wrong while creating 
 	 * the query.
 	 */
-	public String create(String connectionId, String cubeName) throws OlapException;
+	public String create(String cubeName) throws OlapException;
 	
 	/**
 	 * Fetches a previously saved query object from this manager.

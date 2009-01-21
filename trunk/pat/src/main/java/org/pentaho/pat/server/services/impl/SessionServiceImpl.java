@@ -2,8 +2,12 @@ package org.pentaho.pat.server.services.impl;
 
 import java.util.List;
 
+import org.pentaho.pat.server.data.ConnectionManager;
+
 public class SessionServiceImpl implements
 		org.pentaho.pat.server.services.SessionService {
+
+	private ConnectionManager connectionManager;
 
 	public Boolean connect(String connectStr) {
 		// TODO Auto-generated method stub
@@ -48,6 +52,10 @@ public class SessionServiceImpl implements
 	public Boolean setCurrentQuery(String queryId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void setConnectionManager(ConnectionManager manager) {
+		this.connectionManager = manager;
 	}
 
 }

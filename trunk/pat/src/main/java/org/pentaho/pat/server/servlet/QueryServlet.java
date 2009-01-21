@@ -5,7 +5,6 @@ package org.pentaho.pat.server.servlet;
 
 import java.util.List;
 
-import org.gwtwidgets.server.spring.GWTSpringController;
 import org.olap4j.Axis;
 import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.Query;
@@ -15,7 +14,7 @@ import org.pentaho.pat.server.services.QueryService;
  * @author luc Boudreau
  *
  */
-public class QueryServlet extends GWTSpringController implements Query {
+public class QueryServlet extends GenericServlet implements Query {
 
 	private static final long serialVersionUID = 1L;
 	
