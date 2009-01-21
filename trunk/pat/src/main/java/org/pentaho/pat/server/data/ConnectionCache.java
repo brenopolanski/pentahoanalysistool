@@ -9,7 +9,7 @@ import org.olap4j.OlapConnection;
  * @author Luc Boudreau
  *
  */
-interface ConnectionCache {
+public interface ConnectionCache {
 
 	/**
 	 * Stores a connection object in cache.

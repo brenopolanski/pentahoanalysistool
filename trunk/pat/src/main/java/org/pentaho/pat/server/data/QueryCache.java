@@ -8,7 +8,7 @@ import org.olap4j.mdx.SelectNode;
  * Defines operations allowed on a query cache.
  * @author Luc Boudreau
  */
-interface QueryCache {
+public interface QueryCache {
 
 	/**
 	 * Stores a SelectNode in cache.

@@ -57,4 +57,10 @@ public interface ConnectionManager {
 	 */
 	public OlapConnection getConnection(String ownerId, String connectionId) 
 		throws InvalidKeyException, OlapException;
+	
+	/**
+	 * Injects the connection cache tu use.
+	 * @param cache The connection cache object.
+	 */
+	public void setConnectionCache(ConnectionCache cache);
 }
