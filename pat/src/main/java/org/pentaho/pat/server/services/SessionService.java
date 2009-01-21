@@ -18,7 +18,8 @@ public interface SessionService {
 	 * @param connectStr
 	 * @return
 	 */
-	public Boolean connect(String connectStr);
+	public Boolean connect(String driverClassName, String url, String username,
+		String password);
 	
 	
 	

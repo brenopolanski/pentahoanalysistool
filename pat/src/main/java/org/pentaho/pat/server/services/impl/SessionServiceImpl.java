@@ -9,8 +9,9 @@ public class SessionServiceImpl implements
 
 	private ConnectionManager connectionManager;
 
-	public Boolean connect(String connectStr) {
-		// TODO Auto-generated method stub
+	public Boolean connect(String driverClassName, String url, String username,
+			String password) {
+		
 		return null;
 	}
 
