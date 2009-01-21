@@ -15,7 +15,7 @@ public class QueryManagerImpl implements QueryManager {
 	
 	private QueryCache queryCache;
 
-	public String create(String connectionId, String cubeName)
+	public String create(String cubeName)
 			throws OlapException {
 		// TODO Auto-generated method stub
 		return null;

@@ -14,7 +14,7 @@ import org.pentaho.pat.server.data.QueryCache;
  * Simple query cache store that stores everything in memory.
  * @author Luc Boudreau
  */
-class InMemoryQueryCache implements QueryCache {
+public class InMemoryQueryCache implements QueryCache {
 
 	private ConcurrentHashMap<String, SelectNode> cache = new ConcurrentHashMap<String, SelectNode>();
 

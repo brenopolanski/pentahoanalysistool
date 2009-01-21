@@ -14,7 +14,7 @@ import org.pentaho.pat.server.data.ConnectionCache;
  * Simple connection cache store that stores everything in memory.
  * @author Luc Boudreau
  */
-class InMemoryConnectionCache implements ConnectionCache {
+public class InMemoryConnectionCache implements ConnectionCache {
 
 	private ConcurrentHashMap<String, OlapConnection> cache = new ConcurrentHashMap<String, OlapConnection>();
 
