@@ -14,8 +14,9 @@ public interface ConnectionManager {
 
 	/**
 	 * Creates an OLAP connection through regular JDBC conventions.
-	 * Once the connection is in it's pool, a GUID is returned
-	 * for further reference.
+	 * Once the connection is in it's pool, the connection object is
+	 * sent back for handling. No need to keep a hold of it, you can simply
+	 * supply back the ownerId you sent upon creation to fetch it again.
 	 * @param driverName The JDBC driver fully qualified class name
 	 * to use.
 	 * @param connectStr The JDBC connection string to use.
@@ -29,7 +30,7 @@ public interface ConnectionManager {
 	 * @throws OlapException If anything turns sour, an OlapException
 	 * will be sent along with details.
 	 */
-	public String connect(String ownerId, String driverName, String connectStr, 
+	public OlapConnection connect(String ownerId, String driverName, String connectStr, 
 			String username, String password) throws OlapException;
 	
 	/**
@@ -49,13 +50,13 @@ public interface ConnectionManager {
 	 * is not in a valid state anymore, implementations must
 	 * establish a new one and associate with the provided GUID.
 	 * 
-	 * @param connectionId The GUID of the connection we wish to fetch.
+	 * @param ownerId The GUID of the connection we wish to fetch.
 	 * @return A valid OLAP connection.
 	 * @throws InvalidKeyException If the supplied GUID is not valid.
 	 * @throws OlapException If an exception was encountered while trying
 	 * to re-establish a lost connection, an OlapException will be thrown.
 	 */
-	public OlapConnection getConnection(String ownerId, String connectionId) 
+	public OlapConnection getConnection(String ownerId) 
 		throws InvalidKeyException, OlapException;
 	
 	/**
