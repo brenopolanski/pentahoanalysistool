@@ -36,9 +36,8 @@ public interface ConnectionManager {
 	/**
 	 * Closes a connection. Does not throw any exceptions and silently
 	 * fails if the something happens.
-	 * @param connectionId The unique identity number of the connection to close.
 	 */
-	public void disconnect(String ownerId, String connectionId);
+	public void disconnect(String ownerId);
 	
 	/**
 	 * Returns a valid connection from the connection cache. 

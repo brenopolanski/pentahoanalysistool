@@ -63,8 +63,8 @@ public class SessionServiceImpl implements
 
 
 	public Boolean disconnect(String guid) {
-		// TODO Auto-generated method stub
-		return null;
+		this.connectionManager.disconnect(guid);
+		return true;
 	}
 
 
