@@ -1,4 +1,4 @@
-package org.pentaho.pat.server.services;
+package org.pentaho.pat.rpc;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Luc Boudreau
  */
-public interface SessionService {
+public interface Session {
 
 	
 	

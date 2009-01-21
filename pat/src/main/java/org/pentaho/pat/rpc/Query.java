@@ -1,4 +1,4 @@
-package org.pentaho.pat.server.services;
+package org.pentaho.pat.rpc;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.olap4j.query.Selection;
  * object.
  * @author Luc Boudreau
  */
-public interface QueryService {
+public interface Query {
 	
 	/**
 	 * Moves a dimension to a different axis.

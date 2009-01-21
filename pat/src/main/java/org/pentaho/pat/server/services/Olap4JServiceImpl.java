@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.gwtwidgets.server.spring.GWTSpringController;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
@@ -25,8 +26,6 @@ import org.pentaho.pat.client.services.Olap4JService;
 import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.StringTree;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.query.Selection;
@@ -38,7 +37,8 @@ import org.olap4j.query.Selection;
  *
  */
 @SuppressWarnings("serial")
-public class Olap4JServiceImpl extends RemoteServiceServlet implements Olap4JService {
+public class Olap4JServiceImpl extends GWTSpringController implements Olap4JService {
+//public class Olap4JServiceImpl extends SpringGWTServlet implements Olap4JService {
 	  protected static final Double ZERO_THRESHOLD = 1.2346E-8;
 
 	  protected static HashMap<String, OlapConnection> connectionCache = new HashMap<String, OlapConnection>();

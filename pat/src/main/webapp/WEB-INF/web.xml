@@ -3,9 +3,45 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<display-name>GWT-Maven-Archetype</display-name>	
+
+	<display-name>Pentaho Analysis Tool</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/pat-applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>	
+	
+	
+    <servlet>
+      <servlet-name>legacy-dispatcher</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+	<servlet>
+      <servlet-name>dispatcher</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>legacy-dispatcher</servlet-name>
+        <url-pattern>/olap4j</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.service</url-pattern>
+    </servlet-mapping>
 	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
+	
+	
 </web-app>
