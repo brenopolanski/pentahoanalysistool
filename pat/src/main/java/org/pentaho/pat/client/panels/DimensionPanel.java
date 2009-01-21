@@ -44,7 +44,7 @@ import com.gwtext.client.widgets.tree.TreePanel;
 import com.gwtext.client.widgets.tree.event.TreePanelListenerAdapter;
 
 /**
- * @author root
+ * @author Tom Barber
  * 
  */
 public class DimensionPanel extends Panel implements ConnectionListener {
@@ -79,8 +79,11 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 	private Panel rowWrapperPanel;
 	private Panel colWrapperPanel;
 	private DropTargetConfig dimensionDTC;
+	@SuppressWarnings("unused")
 	private DropTarget dimensionTg;
+	@SuppressWarnings("unused")
 	private DropTargetConfig colDTC;
+	@SuppressWarnings("unused")
 	private DropTarget colTg;
 	private Button execute;
 
@@ -125,7 +128,8 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		gridWrapperPanel.setHeight(110);
 		gridWrapperPanel.setAutoWidth(true);
 		gridWrapperPanel.setAutoHeight(true);
-		// gridWrapperPanel.setLayout(new HorizontalLayout(1));
+		gridWrapperPanel.setBorder(true);
+
 
 		gridDimensions = new GridPanel();
 		gridDimensions.setColumnModel(columnModel);
@@ -133,10 +137,10 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		gridDimensions.setEnableColumnResize(true);
 		gridDimensions.setStore(dimensionStore);
 		gridDimensions.setDdGroup("myDDGroup");
-		gridDimensions.setHeight(100);
-		gridDimensions.setAutoWidth(true);
+		gridDimensions.setWidth("100%");
+		gridDimensions.getView().setAutoFill(true);
+		gridDimensions.getView().setForceFit(true);
 		gridDimensions.setAutoHeight(true);
-
 		dimensionDTC = new DropTargetConfig();
 		dimensionDTC.setdDdGroup("myDDGroup");
 
@@ -161,8 +165,10 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 				rowStore.remove(record);
 				rowStore.commitChanges();
 				}
-				TreeNode node = rowTree.getNodeById(nodeText);
-				rowNode.removeChild(node);
+				//TreeNode node = rowTree.getNodeById(nodeText);
+				
+				rowNode.removeChild(treeNode);
+				moveDimension(nodeText, "none");
 				return true;
 			}
 
@@ -185,7 +191,6 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		rowTree.setAutoWidth(true);
 		rowTree.setAutoHeight(true);
 
-		// rowTree.setDisabled(true);
 		// add trip tree listener that handles move / copy logic
 		rowTree.addListener(new TreePanelListenerAdapter() {
 
@@ -222,7 +227,6 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 
 				DimensionContextMenu menu = new DimensionContextMenu(node,
 						GuidFactory.getGuid());
-				// add menu items
 
 				// display menu where node was right clicked
 				menu.showAt(e.getXY());
@@ -240,7 +244,6 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		colTree.setRootVisible(true);
 		colTree.setAutoWidth(true);
 		colTree.setAutoHeight(true);
-		// colTree.setDisabled(true);
 		// add trip tree listener that handles move / copy logic
 		colTree.addListener(new TreePanelListenerAdapter() {
 
@@ -301,7 +304,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		this.add(execute);
 	}
 
-	private static TreeNode getDimTree(String dimStrs, TreeNode node) {
+	private static TreeNode getDimensionTree(String dimStrs, TreeNode node) {
 		final TreeNode parent = node;
 		ServiceFactory.getInstance().getMembers(dimStrs, GuidFactory.getGuid(),
 				new AsyncCallback() {
@@ -341,7 +344,6 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 	}
 
 	private String[][] getProxyData() {
-		// TODO Auto-generated method stub
 		String[][] list = { new String[] { "Empty", "Empty" } };
 		return list;
 	}
@@ -396,7 +398,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 					String[] dimStrs = (String[]) result;
 					for (int i = 0; i < dimStrs.length; i++) {
 						
-						getDimTree(dimStrs[i], rowNode);
+						getDimensionTree(dimStrs[i], rowNode);
 
 					}
 				}
@@ -415,7 +417,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 					String[] dimStrs = (String[]) result;
 					for (int i = 0; i < dimStrs.length; i++) {
 						
-						getDimTree(dimStrs[i], columnNode);
+						getDimensionTree(dimStrs[i], columnNode);
 					}
 				}
 
