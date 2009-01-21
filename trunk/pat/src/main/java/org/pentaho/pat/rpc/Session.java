@@ -14,11 +14,14 @@ public interface Session {
 	
 	/**
 	 * Creates a connection and associates it with a owner id.
-	 * FIXME this will need improvements.
-	 * @param connectStr
+	 * @param driverClassName
+	 * @param url
+	 * @param username
+	 * @param password
 	 * @return
 	 */
-	public Boolean connect(String connectStr);
+	public Boolean connect(String driverClassName, String url, String username,
+			String password);
 	
 	
 	
