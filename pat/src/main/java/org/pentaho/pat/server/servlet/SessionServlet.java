@@ -11,10 +11,12 @@ public class SessionServlet extends GenericServlet implements Session {
 	
 	private SessionService sessionService;
 
-	public Boolean connect(String driverClassName, String url, String username,
-			String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean connect(String driverClassName, String url, 
+		String username, String password) {
+		
+		return this.sessionService.connect(
+			getUserId(), driverClassName, url, username, password);
+		
 	}
 
 	public String createNewQuery() {

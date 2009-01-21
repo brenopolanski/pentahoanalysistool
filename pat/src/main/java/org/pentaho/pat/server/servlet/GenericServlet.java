@@ -18,6 +18,8 @@ public class GenericServlet extends GWTSpringController {
 			return super.getServletContext();
 	}
 
-	
+	protected String getUserId() {
+		return getRequest().getSession().getId();
+	}
 	
 }

@@ -13,14 +13,14 @@ public interface ConnectionCache {
 
 	/**
 	 * Stores a connection object in cache.
+	 * @param connectionId The desired connection object unique id.
 	 * @param conn The connection to store.
-	 * @return A unique id to retrieve the object later on.
 	 */
-	public String put(OlapConnection conn);
+	public void put(String connectionId, OlapConnection conn);
 	
 	/**
 	 * Fetches a connection object from the cache.
-	 * @param guid The desired connection object unique id.
+	 * @param connectionId The desired connection object unique id.
 	 * @return The desired connection object.
 	 * @throws InvalidKeyException When no connection of that name were found.
 	 */
