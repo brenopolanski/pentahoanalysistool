@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.list.TreeList;
+import org.apache.log4j.Logger;
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
@@ -19,6 +20,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	private SessionService sessionService;
 	
 	private ConnectionManager connectionManager;
+	
+	
+	Logger log = Logger.getLogger(this.getClass());
 	
 	
 	
@@ -38,14 +42,16 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			for (int i = 0; i < cubes.size(); i++) {
 				list.add(cubes.get(i).getName());
 			}
+			
+			if (log.isDebugEnabled())
+				log.debug("Found the following cubes:"+list.toString());
+			
 			return list;
 			
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("The supplied connection id was not found.");
 		} catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Communications error while retrieving the cubes list.", e);
 		}
 		
 		return null;
