@@ -1,27 +1,28 @@
 /**
  * 
  */
-package org.pentaho.pat.server.data;
+package org.pentaho.pat.server.data.impl;
 
 import java.security.InvalidKeyException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.olap4j.OlapConnection;
+import org.olap4j.mdx.SelectNode;
+import org.pentaho.pat.server.data.QueryCache;
 
 /**
- * Simple connection cache store that stores everything in memory.
+ * Simple query cache store that stores everything in memory.
  * @author Luc Boudreau
  */
-class InMemoryConnectionCache implements ConnectionCache {
+class InMemoryQueryCache implements QueryCache {
 
-	private ConcurrentHashMap<String, OlapConnection> cache = new ConcurrentHashMap<String, OlapConnection>();
+	private ConcurrentHashMap<String, SelectNode> cache = new ConcurrentHashMap<String, SelectNode>();
 
 	public void delete(String guid) {
 		this.cache.remove(guid);
 	}
 
-	public OlapConnection get(String guid) throws InvalidKeyException {
+	public SelectNode get(String guid) throws InvalidKeyException {
 		if (this.cache.containsKey(guid)) {
 			return this.cache.get(guid);
 		}
@@ -29,9 +30,9 @@ class InMemoryConnectionCache implements ConnectionCache {
 			"The supplied query GUID cannot be found in the cache.");
 	}
 
-	public String put(OlapConnection conn) {
+	public String put(SelectNode node) {
 		String ref = String.valueOf(UUID.randomUUID());
-		this.cache.put(ref, conn);
+		this.cache.put(ref, node);
 		return ref;
 	}
 }

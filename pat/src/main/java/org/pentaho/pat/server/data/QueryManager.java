@@ -4,7 +4,6 @@ import java.security.InvalidKeyException;
 
 import org.olap4j.CellSet;
 import org.olap4j.OlapException;
-import org.olap4j.mdx.SelectNode;
 import org.olap4j.query.Query;
 
 /**
@@ -49,4 +48,10 @@ public interface QueryManager {
 	 * @param queryGuid The GUID of the query to release.
 	 */
 	public void release(String queryGuid);
+	
+	/**
+	 * Injects the query cache to use.
+	 * @param cache The cache object to use.
+	 */
+	public void setQueryCache(QueryCache cache);
 }
