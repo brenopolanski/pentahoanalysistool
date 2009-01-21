@@ -10,26 +10,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.gwtwidgets.server.spring.GWTSpringController;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Level;
+import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
-import org.pentaho.pat.server.services.Messages;
-import org.pentaho.pat.server.services.ObjectNotInCacheException;
-import org.pentaho.pat.server.servlet.GenericServlet;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.client.services.Olap4JService;
 import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.StringTree;
-
-import org.olap4j.metadata.Level;
-import org.olap4j.metadata.Member;
-import org.olap4j.query.Selection;
+import org.pentaho.pat.server.servlet.GenericServlet;
 
 
 

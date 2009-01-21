@@ -4,7 +4,6 @@
 package org.pentaho.pat.server.data.impl;
 
 import java.security.InvalidKeyException;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
@@ -30,9 +29,7 @@ public class InMemoryConnectionCache implements ConnectionCache {
 			"The supplied query GUID cannot be found in the cache.");
 	}
 
-	public String put(OlapConnection conn) {
-		String ref = String.valueOf(UUID.randomUUID());
+	public void put(String ref, OlapConnection conn) {
 		this.cache.put(ref, conn);
-		return ref;
 	}
 }
