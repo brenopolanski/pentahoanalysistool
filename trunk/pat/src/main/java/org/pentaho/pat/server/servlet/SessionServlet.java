@@ -30,8 +30,8 @@ public class SessionServlet extends GenericServlet implements Session {
 	}
 
 	public Boolean disconnect() {
-		// TODO Auto-generated method stub
-		return null;
+		this.sessionService.disconnect(getUserId());
+		return true;
 	}
 
 	public String getCurrentCube() {

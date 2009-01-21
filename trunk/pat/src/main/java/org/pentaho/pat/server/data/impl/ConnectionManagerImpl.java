@@ -45,9 +45,22 @@ public class ConnectionManagerImpl implements ConnectionManager {
 		}
 	}
 
-	public void disconnect(String ownerId, String connectionId) {
-		// TODO Auto-generated method stub
-
+	public void disconnect(String ownerId) {
+		try {
+			
+			OlapConnection conn = this.connectionCache.get(ownerId);
+			
+			if (conn!=null)
+			{
+				conn.close();
+				this.connectionCache.delete(ownerId);
+			}
+			
+		} catch (InvalidKeyException e) {
+			// Silent fail.
+		} catch (SQLException e) {
+			//Silent fail i said!!
+		}
 	}
 
 	public OlapConnection getConnection(String ownerId)
