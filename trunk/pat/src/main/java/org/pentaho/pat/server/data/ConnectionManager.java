@@ -1,7 +1,5 @@
 package org.pentaho.pat.server.data;
 
-import java.security.InvalidKeyException;
-
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 
@@ -51,12 +49,10 @@ public interface ConnectionManager {
 	 * 
 	 * @param ownerId The GUID of the connection we wish to fetch.
 	 * @return A valid OLAP connection.
-	 * @throws InvalidKeyException If the supplied GUID is not valid.
 	 * @throws OlapException If an exception was encountered while trying
 	 * to re-establish a lost connection, an OlapException will be thrown.
 	 */
-	public OlapConnection getConnection(String ownerId) 
-		throws InvalidKeyException, OlapException;
+	public OlapConnection getConnection(String ownerId) throws OlapException;
 	
 	/**
 	 * Injects the connection cache tu use.

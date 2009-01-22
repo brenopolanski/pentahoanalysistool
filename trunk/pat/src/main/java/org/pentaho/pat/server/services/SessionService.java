@@ -2,6 +2,8 @@ package org.pentaho.pat.server.services;
 
 import java.util.List;
 
+import org.olap4j.OlapException;
+
 /**
  * Manages the operations on the GUI and persists it's current
  * selections. 
@@ -59,8 +61,9 @@ public interface SessionService {
 	 * selected.
 	 * @param guid User id who sent this request 
 	 * @return A unique id to identify the newly created query.
+	 * @throws OlapException If something goes wrong
 	 */
-	public String createNewQuery(String guid);
+	public String createNewQuery(String guid) throws OlapException;
 	
 	/**
 	 * Tells what query ids are currently stored for the specified user.

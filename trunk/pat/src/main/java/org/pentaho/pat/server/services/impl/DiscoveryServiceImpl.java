@@ -58,8 +58,6 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			
 			return list;
 			
-		} catch (InvalidKeyException e) {
-			log.error("The supplied connection id was not found.");
 		} catch (OlapException e) {
 			log.error("Communications error while retrieving the cubes list.", e);
 		}
@@ -80,7 +78,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	public List<String> getDimensions(Axis axis, String guid) 
 		throws OlapException
 	{
-		Query query = this.queryManager.get(
+		Query query = this.queryManager.get(guid,
 				this.sessionService.getCurrentQuery(guid));
 	    List<QueryDimension> dimList = query.getAxes().get(axis).getDimensions();
 	    List<String> dimNames = new ArrayList<String>();
@@ -94,7 +92,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		throws OlapException 
 	{
 		
-		Query query = this.queryManager.get(
+		Query query = this.queryManager.get(guid,
 				this.sessionService.getCurrentQuery(guid));
 		
 		List<String> uniqueNameList = new ArrayList<String>();

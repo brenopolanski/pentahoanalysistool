@@ -22,7 +22,7 @@ public interface QueryManager {
 	 * @throws OlapException If something went wrong while creating 
 	 * the query.
 	 */
-	public String create(String cubeName) throws OlapException;
+	public String create(String userId, String cubeName) throws OlapException;
 	
 	/**
 	 * Fetches a previously saved query object from this manager.
@@ -30,7 +30,7 @@ public interface QueryManager {
 	 * @return The Query object you asked for.
 	 * @throws OlapException If something fishy happens.
 	 */
-	public Query get(String queryGuid) throws OlapException;
+	public Query get(String userId, String queryGuid) throws OlapException;
 	
 	/**
 	 * Executes a stored query with the selected name.
@@ -38,17 +38,12 @@ public interface QueryManager {
 	 * @return
 	 * @throws OlapException
 	 */
-	public CellSet execute(String queryGuid) throws OlapException;
+	public CellSet execute(String userId, String queryGuid) throws OlapException;
 	
 	/**
 	 * Releases a query object from this manager.
 	 * @param queryGuid The GUID of the query to release.
 	 */
-	public void release(String queryGuid);
+	public void release(String userId, String queryGuid);
 	
-	/**
-	 * Injects the query cache to use.
-	 * @param cache The cache object to use.
-	 */
-	public void setQueryCache(QueryCache cache);
 }
