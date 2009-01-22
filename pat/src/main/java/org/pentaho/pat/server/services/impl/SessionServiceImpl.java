@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
+import org.olap4j.OlapException;
 import org.pentaho.pat.server.data.ConnectionManager;
-import org.pentaho.pat.server.data.SessionManager;
+import org.pentaho.pat.server.data.QueryManager;
+import org.pentaho.pat.server.services.SessionService;
 
 public class SessionServiceImpl implements
 		org.pentaho.pat.server.services.SessionService {
@@ -15,17 +17,21 @@ public class SessionServiceImpl implements
 	
 	private ConnectionManager connectionManager;
 
-	private SessionManager sessionManager;
+	private SessionService sessionService;
 	
-	
+	private QueryManager queryManager;
 
 	
 	public void setConnectionManager(ConnectionManager manager) {
 		this.connectionManager = manager;
 	}
 	
-	public void setSessionManager(SessionManager manager) {
-		this.sessionManager = manager;
+	public void setSessionService(SessionService service) {
+		this.sessionService = service;
+	}
+	
+	public void setQueryManager(QueryManager manager) {
+		this.queryManager = manager;
 	}
 
 
@@ -59,9 +65,9 @@ public class SessionServiceImpl implements
 	}
 
 
-	public String createNewQuery(String guid) {
-		// TODO Auto-generated method stub
-		return null;
+	public String createNewQuery(String guid) throws OlapException {
+		return this.queryManager.create(
+			guid, this.sessionService.getCurrentCube(guid));
 	}
 
 

@@ -7,7 +7,7 @@ import org.olap4j.query.Selection;
 
 /**
  * This interface defines the operations permitted on a query
- * object.
+ * object that was previously instanciated through the Session service.
  * @author Luc Boudreau
  */
 public interface Query {

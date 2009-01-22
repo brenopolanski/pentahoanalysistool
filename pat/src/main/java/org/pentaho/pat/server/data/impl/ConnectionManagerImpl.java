@@ -64,7 +64,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	}
 
 	public OlapConnection getConnection(String ownerId)
-			throws InvalidKeyException, OlapException {
+			throws OlapException {
 		// TODO Auto-generated method stub
 		return null;
 	}
