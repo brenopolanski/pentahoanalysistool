@@ -1,7 +1,5 @@
 package org.pentaho.pat.server.data;
 
-import java.security.InvalidKeyException;
-
 import org.olap4j.mdx.SelectNode;
 
 /**
@@ -21,10 +19,8 @@ public interface QueryCache {
 	 * Fetches a SelectNode from the cache.
 	 * @param queryId The id of the node to fetch.
 	 * @return The desired node.
-	 * @throws InvalidKeyException If no node corresponding to the 
-	 * key were found.
 	 */
-	public SelectNode get(String queryId) throws InvalidKeyException;
+	public SelectNode get(String queryId);
 	
 	/**
 	 * Removes a cached element.

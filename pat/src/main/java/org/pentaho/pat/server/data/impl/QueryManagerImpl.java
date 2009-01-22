@@ -26,8 +26,7 @@ public class QueryManagerImpl implements QueryManager {
 		return null;
 	}
 
-	public Query get(String queryGuid) throws InvalidKeyException,
-			OlapException {
+	public Query get(String queryGuid) throws OlapException {
 		// TODO Auto-generated method stub
 		return null;
 	}

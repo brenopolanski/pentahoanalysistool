@@ -3,8 +3,10 @@ package org.pentaho.pat.server.services;
 
 import java.util.List;
 
-import org.apache.commons.collections.list.TreeList;
 import org.olap4j.Axis;
+import org.olap4j.OlapException;
+import org.olap4j.metadata.Cube;
+import org.pentaho.pat.client.util.StringTree;
 
 /**
  * Defines discovery operations methods.
@@ -21,7 +23,7 @@ public interface DiscoveryService {
 	 * an empty list if there are none available or null
 	 * if the given axis is not present in the cube.
 	 */
-	public List<String> getDimensions(Axis axis, String guid);
+	public List<String> getDimensions(Axis axis, String guid) throws OlapException;
 	
 	/**
 	 * Returns all the cube names available on the current connection.
@@ -32,12 +34,20 @@ public interface DiscoveryService {
 	public List<String> getCubes(String guid);
 	
 	/**
+	 * Get a cube object.
+	 * @param name The name of the cube we want.
+	 * @return The cube object.
+	 */
+	public Cube getCube(String guid, String name);
+	
+	/**
 	 * Returns a tree list of all members found within a given
 	 * dimension, or null if the dimension 
 	 * @param dimensionName
 	 * @param guid
 	 * @return
+	 * @throws OlapException 
 	 */
-	public TreeList getMembers(String dimensionName, String guid);
+	public StringTree getMembers(String dimensionName, String guid) throws OlapException;
 
 }

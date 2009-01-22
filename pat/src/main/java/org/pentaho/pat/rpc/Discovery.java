@@ -2,6 +2,7 @@ package org.pentaho.pat.rpc;
 
 
 import org.olap4j.Axis;
+import org.olap4j.OlapException;
 import org.pentaho.pat.client.util.StringTree;
 
 /**
@@ -17,8 +18,9 @@ public interface Discovery {
 	 * @return A list object containing all available dimensions,
 	 * an empty list if there are none available or null
 	 * if the given axis is not present in the cube.
+	 * @throws OlapException If something goes wrong.
 	 */
-	public String [] getDimensions(Axis axis);
+	public String [] getDimensions(Axis axis) throws OlapException;
 	
 	/**
 	 * Returns all the cube names available on the current connection.
@@ -33,6 +35,7 @@ public interface Discovery {
 	 * @param dimensionName Name of the dimension that contains
 	 * the member names we want.
 	 * @return A StringTree of all present members.
+	 * @throws OlapException If something goes wrong.
 	 */
-	public StringTree getMembers(String dimensionName);
+	public StringTree getMembers(String dimensionName) throws OlapException;
 }

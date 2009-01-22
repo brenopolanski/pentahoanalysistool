@@ -43,6 +43,7 @@
 	
 	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
 		<property name="sessionService" ref="sessionService" />
+		<property name="queryManager" ref="queryManager" />
 		<property name="connectionManager" ref="connectionManager" />
 	</bean>
 	
@@ -52,6 +53,7 @@
 	</bean>
 	
 	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
+		<property name="sessionManager" ref="sessionManager" />
 		<property name="connectionManager" ref="connectionManager" />
 	</bean>
 	
@@ -74,8 +76,14 @@
 		<property name="connectionManager" ref="connectionManager" />
 	</bean>
 	
+	<bean id="sessionManager" class="org.pentaho.pat.server.data.impl.SessionManagerImpl">
+		<property name="sessionCache" ref="sessionCache" />
+	</bean>
+	
 	<bean id="queryCache" class="org.pentaho.pat.server.data.impl.InMemoryQueryCache"/>
 	
 	<bean id="connectionCache" class="org.pentaho.pat.server.data.impl.InMemoryConnectionCache"/>
+	
+	<bean id="sessionCache" class="org.pentaho.pat.server.data.impl.InMemorySessionCache"/>
 	
 </beans>

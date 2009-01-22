@@ -28,12 +28,9 @@ public interface QueryManager {
 	 * Fetches a previously saved query object from this manager.
 	 * @param queryGuid The GUD of the query to fetch.
 	 * @return The Query object you asked for.
-	 * @throws InvalidKeyException If no SelectNode with the given
-	 * GUID can be found.
 	 * @throws OlapException If something fishy happens.
 	 */
-	public Query get(String queryGuid) throws InvalidKeyException,
-		OlapException;
+	public Query get(String queryGuid) throws OlapException;
 	
 	/**
 	 * Executes a stored query with the selected name.
