@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.pentaho.pat.server.data.ConnectionManager;
+import org.pentaho.pat.server.data.SessionManager;
 
 public class SessionServiceImpl implements
 		org.pentaho.pat.server.services.SessionService {
@@ -14,9 +15,17 @@ public class SessionServiceImpl implements
 	
 	private ConnectionManager connectionManager;
 
+	private SessionManager sessionManager;
+	
+	
+
 	
 	public void setConnectionManager(ConnectionManager manager) {
 		this.connectionManager = manager;
+	}
+	
+	public void setSessionManager(SessionManager manager) {
+		this.sessionManager = manager;
 	}
 
 
@@ -95,6 +104,16 @@ public class SessionServiceImpl implements
 	public Boolean setCurrentQuery(String guid, String queryId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<String> getCubes(String guid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setCubes(String guid, List<String> cubes) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

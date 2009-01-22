@@ -3,7 +3,6 @@
  */
 package org.pentaho.pat.server.data.impl;
 
-import java.security.InvalidKeyException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,12 +21,8 @@ public class InMemoryQueryCache implements QueryCache {
 		this.cache.remove(guid);
 	}
 
-	public SelectNode get(String guid) throws InvalidKeyException {
-		if (this.cache.containsKey(guid)) {
-			return this.cache.get(guid);
-		}
-		throw new InvalidKeyException(
-			"The supplied query GUID cannot be found in the cache.");
+	public SelectNode get(String guid) {
+		return this.cache.get(guid);
 	}
 
 	public String put(SelectNode node) {

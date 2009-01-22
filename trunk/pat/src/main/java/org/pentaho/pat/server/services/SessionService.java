@@ -96,5 +96,17 @@ public interface SessionService {
 	 */
 	public String getCurrentCube(String guid);
 
+	/**
+	 * Sets the current available cubes
+	 * @param guid User id who sent this request
+	 * @param cubes The currently available cubes for a user.
+	 */
+	public void setCubes(String guid, List<String> cubes);
 	
+	/**
+	 * Returns the currently available cube names
+	 * @param guid User id
+	 * @return The list of cubes
+	 */
+	public List<String> getCubes(String guid);
 }
