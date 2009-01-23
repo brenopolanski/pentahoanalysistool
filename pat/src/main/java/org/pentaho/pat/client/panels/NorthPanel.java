@@ -27,14 +27,12 @@ public class NorthPanel extends TabPanel {
 		this.setResizeTabs(true);  
 		this.setMinTabWidth(115);  
 		this.setTabWidth(135);  
-		this.setEnableTabScroll(true);  
-		this.setWidth("100%");  
-		this.setHeight("100%");  
+		this.setEnableTabScroll(true);   
 		this.setActiveTab(0); 
 		this.setTabPosition(Position.BOTTOM); 
 		mdxTab = new Panel();  
 		mdxTab.setAutoScroll(true);  
-		mdxTab.setTitle("MDX Tab");  
+		mdxTab.setTitle("MDX Code");  
 		mdxTab.setIconCls("tab-icon");  
 		mdxField = new TextField();
 		mdxField.setWidth("100%");
@@ -42,7 +40,7 @@ public class NorthPanel extends TabPanel {
 		mdxTab.add(mdxField);
 		filterTab = new Panel();  
 		filterTab.setAutoScroll(true);  
-		filterTab.setTitle("Filter Tab");  
+		filterTab.setTitle("MDX Filter");  
 		filterTab.setIconCls("tab-icon");  
 		this.add(mdxTab);  
 		this.add(filterTab);
