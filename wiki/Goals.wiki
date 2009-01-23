@@ -47,7 +47,7 @@ Alpha release (0.1)
 
   * Tree control for browsing cubes and dimensions  drag and drop members/dimensions from tree onto grid  right-click  Add to columns - expand to column position  Add to rows - expand to row position
 
-
+alpha release
 ==Stage 3==
   * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
 
