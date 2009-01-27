@@ -13,13 +13,14 @@ import org.olap4j.OlapException;
 public interface SessionService {
 
 	/**
-	 * Creates a session on the application.
-	 * @return The created session GUID to send back.
+	 * Creates a window session on the application.
+	 * @return The created session GUID to send back for further
+	 * reference to this window session.
 	 */
 	public String createSession();
 	
 	/**
-	 * Closes a session id.
+	 * Closes a window session id.
 	 * @param guid The id of the session to close.
 	 * @return True if all is well.
 	 */
