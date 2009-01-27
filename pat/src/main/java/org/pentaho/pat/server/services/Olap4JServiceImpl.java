@@ -25,7 +25,7 @@ import org.olap4j.query.Selection;
 import org.pentaho.pat.client.services.Olap4JService;
 import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.StringTree;
-import org.pentaho.pat.server.servlet.GenericServlet;
+import org.pentaho.pat.server.servlet.AbstractServlet;
 
 
 
@@ -34,7 +34,7 @@ import org.pentaho.pat.server.servlet.GenericServlet;
  *
  */
 @SuppressWarnings("serial")
-public class Olap4JServiceImpl extends GenericServlet implements Olap4JService {
+public class Olap4JServiceImpl extends AbstractServlet implements Olap4JService {
 //public class Olap4JServiceImpl extends SpringGWTServlet implements Olap4JService {
 	  protected static final Double ZERO_THRESHOLD = 1.2346E-8;
 
@@ -47,6 +47,8 @@ public class Olap4JServiceImpl extends GenericServlet implements Olap4JService {
 	public Olap4JServiceImpl() {
 	    super();
 	  }
+	
+	public void afterPropertiesSet() throws Exception { }
 	
 	
 	  public Boolean connect(String connectStr, String guid) {

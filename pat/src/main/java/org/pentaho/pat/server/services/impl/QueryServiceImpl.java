@@ -8,8 +8,13 @@ import org.pentaho.pat.server.data.QueryManager;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 
-public class QueryServiceImpl implements QueryService {
-
+/**
+ * Simple service implementation as a Spring bean.
+ * @author Luc Boudreau
+ */
+public class QueryServiceImpl extends AbstractService 
+	implements QueryService 
+{
 	private SessionService sessionService;
 	
 	private QueryManager queryManager;
@@ -20,6 +25,13 @@ public class QueryServiceImpl implements QueryService {
 	
 	public void setQueryManager(QueryManager manager) {
 		this.queryManager = manager;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.sessionService == null)
+			throw new Exception("A sessionService is required.");
+		if (this.queryManager == null)
+			throw new Exception("A queryManager is required.");
 	}
 	
 	public Boolean clearSelection(String guid, String dimensionName, List<String> memberNames) {

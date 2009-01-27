@@ -5,7 +5,7 @@ import java.util.List;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.services.SessionService;
 
-public class SessionServlet extends GenericServlet implements Session {
+public class SessionServlet extends AbstractServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -13,6 +13,11 @@ public class SessionServlet extends GenericServlet implements Session {
 	
 	public void setSessionService(SessionService service) {
 		this.sessionService = service;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.sessionService==null)
+			throw new Exception("A sessionService is required.");
 	}
 
 	public Boolean connect(String guid, String driverClassName, String url, 

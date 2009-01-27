@@ -20,7 +20,13 @@ import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.SessionService;
 
-public class DiscoveryServiceImpl implements DiscoveryService {
+/**
+ * Simple service implementation as a Spring bean.
+ * @author Luc Boudreau
+ */
+public class DiscoveryServiceImpl extends AbstractService 
+	implements DiscoveryService
+{
 
 	private SessionService sessionService;
 	
@@ -40,6 +46,15 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	
 	public void setQueryManager(QueryManager manager) {
 		this.queryManager = manager;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.sessionService == null)
+			throw new Exception("A sessionService is required.");
+		if (this.connectionManager == null)
+			throw new Exception("A connectionManager is required.");
+		if (this.queryManager == null)
+			throw new Exception("A queryManager is required.");
 	}
 	
 	public List<String> getCubes(String guid) {

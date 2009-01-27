@@ -10,7 +10,7 @@ import org.olap4j.query.Selection;
  * object.
  * @author Luc Boudreau
  */
-public interface QueryService {
+public interface QueryService extends Service {
 	
 	/**
 	 * Moves a dimension to a different axis.

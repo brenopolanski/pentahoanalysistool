@@ -10,7 +10,7 @@ import org.olap4j.OlapException;
  * 
  * @author Luc Boudreau
  */
-public interface SessionService {
+public interface SessionService extends Service {
 
 	/**
 	 * Creates a window session on the application.

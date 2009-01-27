@@ -18,7 +18,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
  * @author Luc Boudreau
  *
  */
-public class DiscoveryServlet extends GenericServlet implements
+public class DiscoveryServlet extends AbstractServlet implements
 		Discovery {
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +27,11 @@ public class DiscoveryServlet extends GenericServlet implements
 	
 	public void setDiscoveryService(DiscoveryService service) {
 		this.discoveryService = service;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.discoveryService==null)
+			throw new Exception("A discoveryService is required.");
 	}
 
 	public String[] getCubes(String guid) {
