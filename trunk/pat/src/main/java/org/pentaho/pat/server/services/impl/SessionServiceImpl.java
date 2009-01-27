@@ -10,8 +10,13 @@ import org.pentaho.pat.server.data.ConnectionManager;
 import org.pentaho.pat.server.data.QueryManager;
 import org.pentaho.pat.server.services.SessionService;
 
-public class SessionServiceImpl implements
-		org.pentaho.pat.server.services.SessionService {
+/**
+ * Simple service implementation as a Spring bean.
+ * @author Luc Boudreau
+ */
+public class SessionServiceImpl extends AbstractService
+	implements SessionService
+{
 
 	Logger log = Logger.getLogger(this.getClass());
 	
@@ -32,6 +37,15 @@ public class SessionServiceImpl implements
 	
 	public void setQueryManager(QueryManager manager) {
 		this.queryManager = manager;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.sessionService == null)
+			throw new Exception("A sessionService is required.");
+		if (this.connectionManager == null)
+			throw new Exception("A connectionManager is required.");
+		if (this.queryManager == null)
+			throw new Exception("A queryManager is required.");
 	}
 
 

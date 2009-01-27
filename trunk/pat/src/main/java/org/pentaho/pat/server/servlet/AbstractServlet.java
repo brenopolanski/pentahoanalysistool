@@ -3,8 +3,11 @@ package org.pentaho.pat.server.servlet;
 import javax.servlet.ServletContext;
 
 import org.gwtwidgets.server.spring.GWTSpringController;
+import org.springframework.beans.factory.InitializingBean;
 
-public class GenericServlet extends GWTSpringController {
+public abstract class AbstractServlet extends GWTSpringController
+	implements InitializingBean
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,4 +20,5 @@ public class GenericServlet extends GWTSpringController {
 		else
 			return super.getServletContext();
 	}
+
 }

@@ -12,7 +12,7 @@ import org.pentaho.pat.client.util.StringTree;
  * Defines discovery operations methods.
  * @author Luc Boudreau
  */
-public interface DiscoveryService {
+public interface DiscoveryService extends Service {
 
 	/**
 	 * Returns a list of all available dimension names on

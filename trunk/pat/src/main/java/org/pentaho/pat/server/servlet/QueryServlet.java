@@ -14,7 +14,7 @@ import org.pentaho.pat.server.services.QueryService;
  * @author luc Boudreau
  *
  */
-public class QueryServlet extends GenericServlet implements Query {
+public class QueryServlet extends AbstractServlet implements Query {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,6 +22,11 @@ public class QueryServlet extends GenericServlet implements Query {
 	
 	public void setQueryService(QueryService service) {
 		this.queryService = service;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		if (this.queryService==null)
+			throw new Exception("A queryService is required.");
 	}
 
 	public Boolean clearSelection(String guid, String dimensionName, 
