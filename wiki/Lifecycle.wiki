@@ -1,0 +1,9 @@
+  * A web browser is opened to the root address.
+  * The server redirects to the login page.
+  * The user submits his info.
+  * The ACEGI framework intercepts the call and validates the data.
+  * The ACEGI framework redirects to the PAT.HTML page and the user sees the application GUI. 
+    * The application sends out upon initialization a Session.createSession() call to obtain a unique window id.
+  * The user creates a connection by giving parameters.
+  * The client side code sends a connection request.
+  * The server tries to create the connection with the supplied parameters. It returns true/false. If true, the connection object is stored and associated to the window unique id.
