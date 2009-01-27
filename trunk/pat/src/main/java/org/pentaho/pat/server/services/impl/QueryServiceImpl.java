@@ -14,22 +14,6 @@ public class QueryServiceImpl implements QueryService {
 	
 	private QueryManager queryManager;
 	
-	public Boolean clearSelection(String dimensionName, List<String> memberNames) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Boolean createSelection(String dimensionName,
-			List<String> memberNames, Operator selectionType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Boolean moveDimension(Axis axis, String dimensionName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public void setSessionService(SessionService service) {
 		this.sessionService = service;
 	}
@@ -37,5 +21,20 @@ public class QueryServiceImpl implements QueryService {
 	public void setQueryManager(QueryManager manager) {
 		this.queryManager = manager;
 	}
+	
+	public Boolean clearSelection(String guid, String dimensionName, List<String> memberNames) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	public Boolean createSelection(String guid, String dimensionName,
+			List<String> memberNames, Operator selectionType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Boolean moveDimension(String guid, Axis axis, String dimensionName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

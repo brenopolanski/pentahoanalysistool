@@ -26,14 +26,21 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	
 	private ConnectionManager connectionManager;
 	
-	
+	private QueryManager queryManager;
 	
 	Logger log = Logger.getLogger(this.getClass());
 
-	private QueryManager queryManager;
-
+	public void setSessionService(SessionService service) {
+		this.sessionService = service;
+	}
 	
+	public void setConnectionManager(ConnectionManager manager) {
+		this.connectionManager = manager;
+	}
 	
+	public void setQueryManager(QueryManager manager) {
+		this.queryManager = manager;
+	}
 	
 	public List<String> getCubes(String guid) {
 		
@@ -74,7 +81,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	}
 	
 	
-	public List<String> getDimensions(Axis axis, String guid) 
+	public List<String> getDimensions(String guid, Axis axis) 
 		throws OlapException
 	{
 		Query query = this.queryManager.get(guid,
@@ -87,7 +94,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	    return dimNames;
 	}
 
-	public StringTree getMembers(String dimensionName, String guid) 
+	public StringTree getMembers(String guid, String dimensionName) 
 		throws OlapException 
 	{
 		
@@ -122,19 +129,4 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	    return result;
 		
 	}
-	
-	public void setSessionService(SessionService service) {
-		this.sessionService = service;
-	}
-	
-	public void setConnectionManager(ConnectionManager manager) {
-		this.connectionManager = manager;
-	}
-	
-	public void setQueryManager(QueryManager manager) {
-		this.queryManager = manager;
-	}
-
-	
-
 }

@@ -19,25 +19,28 @@ public class QueryServlet extends GenericServlet implements Query {
 	private static final long serialVersionUID = 1L;
 	
 	private QueryService queryService;
+	
+	public void setQueryService(QueryService service) {
+		this.queryService = service;
+	}
 
-	public Boolean clearSelection(String dimensionName, List<String> memberNames) {
+	public Boolean clearSelection(String guid, String dimensionName, 
+			List<String> memberNames) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Boolean createSelection(String dimensionName,
+	public Boolean createSelection(String guid, String dimensionName,
 			List<String> memberNames, Operator selectionType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Boolean moveDimension(Axis axis, String dimensionName) {
+	public Boolean moveDimension(String guid, Axis axis, 
+			String dimensionName) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public void setQueryService(QueryService service) {
-		this.queryService = service;
-	}
-	
 }
