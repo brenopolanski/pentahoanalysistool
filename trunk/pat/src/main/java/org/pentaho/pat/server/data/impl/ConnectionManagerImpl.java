@@ -23,9 +23,9 @@ public class ConnectionManagerImpl implements ConnectionManager {
 		OlapConnection connection;
 
 		try {
-			Class.forName(driverName); //$NON-NLS-1$
+			Class.forName(driverName);
 			connection = (OlapConnection) DriverManager
-					.getConnection(connectStr);
+					.getConnection(connectStr,username,password);
 			OlapWrapper wrapper = connection;
 			OlapConnection olapConnection = wrapper
 					.unwrap(OlapConnection.class);
