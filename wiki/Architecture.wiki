@@ -10,6 +10,14 @@ The main skeletton of the application is as follows :
       * org.pentaho.pat.server.services : This is the service layer of the server.
       * org.pentaho.pat.server.servlet : This is the web layer of the server. It contains all the servlets that implement the RPC interfaces.
 
+= Project dependencies =
+
+This project depends, among other things, on those other projects :
+
+  * Spring framework.
+  * Google web toolkit
+  * ACEGI security framework.
+
 = Anatomy of a server request =
 
 This section describes how requests with the backend system are handled through the layers of the application.
