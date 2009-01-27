@@ -122,4 +122,14 @@ public class SessionServiceImpl implements
 		
 	}
 
+	public Boolean closeSession(String guid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String createSession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

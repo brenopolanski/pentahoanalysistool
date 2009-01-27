@@ -63,4 +63,14 @@ public class SessionServlet extends GenericServlet implements Session {
 		this.sessionService = service;
 	}
 
+	public Boolean closeSession(String guid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String createSession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -11,6 +11,19 @@ import java.util.List;
 public interface Session {
 
 	
+	/**
+	 * Creates a session on the application.
+	 * @return The created session GUID to send back.
+	 */
+	public String createSession();
+	
+	/**
+	 * Closes a session id.
+	 * @param guid The id of the session to close.
+	 * @return True if all is well.
+	 */
+	public Boolean closeSession(String guid);
+	
 	
 	/**
 	 * Creates a connection and associates it with a owner id.
