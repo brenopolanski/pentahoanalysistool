@@ -1,6 +1,5 @@
 package org.pentaho.pat.server.services.impl;
 
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
 
