@@ -72,7 +72,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		genericJDBC.setAutoScroll(true);  
 		genericJDBC.setTitle("Generic JDBC");  
 		genericJDBC.setIconCls("tab-icon");  
-		genericJDBC.setHeight(250);
+		genericJDBC.setHeight(220);
 
 		xmla = new Panel();  
 		xmla.setAutoScroll(true);  
@@ -119,13 +119,13 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedJDBC.add(fpanel1);
 		
 		Panel fpanel2= new FormPanel();
-		fpanel2.setHeight(220);
+		fpanel2.setHeight(200);
 		fpanel2.setPaddings(5);
 		
 		supportedDriverCombo = new ComboBox("Select a Driver");
 		supportedDriverCombo.setLabel("Driver");
 		Object[][] drivers = 	new Object[][]{  
-			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
+			                 	//new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
 			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
 			                 	  
 				};  
@@ -166,8 +166,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 						MessageFactory.getInstance().connect())) {
 					String cStr = "jdbc:mondrian:Jdbc="
 							+ connectionText.getText()
-							+ ";username=" + usernameText.getText() 
-							+ ";password=" + passwordText.getText() 
+							+ "?user=" + usernameText.getText() 
+							+ "&password=" + passwordText.getText() 
 							+ ";Catalog="  + cubeText.getText() 
 							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
 					
