@@ -20,5 +20,9 @@ public abstract class AbstractServlet extends GWTSpringController
 		else
 			return super.getServletContext();
 	}
+	
+	protected String getCurrentUserId() {
+		return "MyDummyUser";
+	}
 
 }

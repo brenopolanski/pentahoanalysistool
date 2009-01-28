@@ -6,7 +6,9 @@ package org.pentaho.pat.server.servlet;
 import java.util.List;
 
 import org.olap4j.Axis;
+import org.olap4j.OlapException;
 import org.olap4j.query.Selection.Operator;
+import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.server.services.QueryService;
 
@@ -29,23 +31,27 @@ public class QueryServlet extends AbstractServlet implements Query {
 			throw new Exception("A queryService is required.");
 	}
 
-	public Boolean clearSelection(String guid, String dimensionName, 
+	public Boolean clearSelection(String sessionId, String dimensionName, 
 			List<String> memberNames) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.queryService.clearSelection(getCurrentUserId(), 
+				sessionId, dimensionName, memberNames);
 	}
 
-	public Boolean createSelection(String guid, String dimensionName,
+	public Boolean createSelection(String sessionId, String dimensionName,
 			List<String> memberNames, Operator selectionType) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.queryService.createSelection(getCurrentUserId(), sessionId, 
+				dimensionName, memberNames, selectionType);
 	}
 
-	public Boolean moveDimension(String guid, Axis axis, 
+	public Boolean moveDimension(String sessionId, Axis axis, 
 			String dimensionName) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.queryService.moveDimension(
+			getCurrentUserId(), sessionId, axis, dimensionName);
+	}
+
+	public OlapData executeQuery(String sessionId) throws OlapException {
+		return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 	}
 }

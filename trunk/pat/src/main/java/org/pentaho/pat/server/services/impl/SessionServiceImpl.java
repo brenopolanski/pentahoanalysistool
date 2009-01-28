@@ -1,13 +1,23 @@
 package org.pentaho.pat.server.services.impl;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
-import org.pentaho.pat.server.data.ConnectionManager;
-import org.pentaho.pat.server.data.QueryManager;
+import org.olap4j.OlapWrapper;
+import org.olap4j.query.Query;
+import org.pentaho.pat.Constants;
+import org.pentaho.pat.server.data.pojo.Session;
+import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 
 /**
@@ -20,130 +30,273 @@ public class SessionServiceImpl extends AbstractService
 
 	Logger log = Logger.getLogger(this.getClass());
 	
-	private ConnectionManager connectionManager;
 
-	private SessionService sessionService;
-	
-	private QueryManager queryManager;
+
 
 	
-	public void setConnectionManager(ConnectionManager manager) {
-		this.connectionManager = manager;
-	}
+private static Map<String,Map<String, Session>> sessions = new ConcurrentHashMap<String, Map<String, Session>>();
 	
-	public void setSessionService(SessionService service) {
-		this.sessionService = service;
-	}
+	private DiscoveryService discoveryService = null;
 	
-	public void setQueryManager(QueryManager manager) {
-		this.queryManager = manager;
-	}
 	
+
 	public void afterPropertiesSet() throws Exception {
-		if (this.sessionService == null)
-			throw new Exception("A sessionService is required.");
-		if (this.connectionManager == null)
-			throw new Exception("A connectionManager is required.");
-		if (this.queryManager == null)
-			throw new Exception("A queryManager is required.");
+		if (this.discoveryService == null)
+			throw new Exception("discoveryService est requis.");
+	}
+	
+	
+	
+	public String createNewSession(String userId) {
+		
+		String generatedId = String.valueOf(UUID.randomUUID());
+		
+		if (!sessions.containsKey(userId))
+			sessions.put(userId, new ConcurrentHashMap<String, Session>());
+		
+		sessions.get(userId).put(generatedId, new Session());
+		
+		return generatedId;
+	}
+
+	
+	
+	
+	public void releaseSession(String userId, String sessionId) {
+		if (sessions.containsKey(userId) &&
+			sessions.get(userId).containsKey(sessionId))
+		{
+			this.releaseConnection(userId, sessionId);
+			sessions.get(userId).get(sessionId).destroy();
+			sessions.get(userId).remove(sessionId);
+			
+			if (sessions.get(userId).size()==0)
+				sessions.remove(userId);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	public void deleteUserSessionVariable(String userId, String sessionId, 
+		String key) 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			sessions.get(userId).get(sessionId)
+				.getVariables().remove(key);
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+
+	
+
+	public void saveUserSessionVariable(String userId, String sessionId, 
+		String key, String value) 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			sessions.get(userId).get(sessionId)
+				.getVariables().put(key, value);
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+
+	
+	
+	
+	public String getUserSessionVariable(String userId, String sessionId,
+			String key) {
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			return sessions.get(userId).get(sessionId)
+				.getVariables().get(key);
+		}
+		throw new RuntimeException("Invalid user/session ids provided.");
 	}
 
 
-	public Boolean connect(String guid, String driverClassName, String url,
-			String username, String password) {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	public void createConnection(String userId, String sessionId,
+			String driverName, String connectStr, String username,
+			String password) throws OlapException 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
 		
-		OlapConnection conn = null;
-		
-		try {
-			conn = this.connectionManager.connect(
-				guid, driverClassName, url, username, password);
-			if (conn != null &&
-					!conn.isClosed())
-			{
-				if (log.isDebugEnabled())
-					log.debug("Connection created successfully.");
+			OlapConnection connection;
+	
+			try {
+				Class.forName(driverName);
+				connection = (OlapConnection) DriverManager
+						.getConnection(connectStr,username,password);
 				
-				return true;
+				OlapWrapper wrapper = connection;
+				
+				OlapConnection olapConnection = wrapper
+						.unwrap(OlapConnection.class);
+	
+				if (olapConnection != null) {
+					
+					sessions.get(userId).get(sessionId)
+						.setConnection(connection);
+					
+				} else {
+					throw new OlapException(
+							"Creating a connection object returned null.");
+				}
+	
+			} catch (ClassNotFoundException e) {
+				throw new OlapException(e.getMessage(), e);
+			} catch (SQLException e) {
+				throw new OlapException(e.getMessage(), e);
 			}
-			else
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+	
+	
+	
+	public OlapConnection getConnection(String userId, String sessionId) {
+		if (sessions.containsKey(userId) &&
+			sessions.get(userId).containsKey(sessionId))
+		{
+			return sessions.get(userId).get(sessionId).getConnection();
+		}
+		throw new RuntimeException("Invalid user/session ids provided.");
+	}
+	
+
+	public void releaseConnection(String userId, String sessionId) 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			try {
+				sessions.get(userId).get(sessionId).getConnection().close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			sessions.get(userId).get(sessionId).setConnection(null);
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	public String createNewQuery(String userId, String sessionId) 
+		throws OlapException 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			// We need to verify if the user has selected a cube.
+			String cubeName = sessions.get(userId).get(sessionId).getVariables()
+				.get(Constants.CURRENT_CUBE_NAME); 
+			
+			if (cubeName==null)
+				return null;
+			
+			String generatedId = String.valueOf(UUID.randomUUID());
+			
+			try {
+				
+				Query query = new Query(cubeName, this.discoveryService.getCube(
+					userId, sessionId, cubeName));
+				
+				sessions.get(userId).get(sessionId).getQueries()
+					.put(generatedId, query);
+				
+				return generatedId;
+				
+			} catch (SQLException e) {
+				throw new OlapException(e.getMessage(),e);
+			}
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+
+	
+	
+	public Query getQuery(String userId, String sessionId, String queryId) 
+	{
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			return sessions.get(userId).get(sessionId).getQueries().get(queryId);
+		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+	
+
+	public List<String> getQueries(String userId, String sessionId) {
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			List<String> names = new ArrayList<String>();
+			Set<Entry<String, Query>> entries = 
+				sessions.get(userId).get(sessionId).getQueries().entrySet();
+			for(Entry<String,Query> entry : entries)
 			{
-				log.error("An error was encountered while creating a new connection.");
-				return false;
+				names.add(entry.getKey());
 			}
+			return names;
 		}
-		
-		catch (SQLException e) {
-			log.error(e.getMessage());
-			return false;
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
+	}
+
+	
+	public void releaseQuery(String userId, String sessionId, String queryId) {
+		if (sessions.containsKey(userId) &&
+				sessions.get(userId).containsKey(sessionId))
+		{
+			sessions.get(userId).get(sessionId).getQueries().remove(queryId);
 		}
+		else
+			throw new RuntimeException("Invalid user/session ids provided.");
 	}
 
 
-	public String createNewQuery(String guid) throws OlapException {
-		return this.queryManager.create(
-			guid, this.sessionService.getCurrentCube(guid));
+
+
+	
+	public void setDiscoveryService(DiscoveryService discoveryService) {
+		this.discoveryService = discoveryService;
 	}
 
 
-	public Boolean deleteQuery(String guid, String queryId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
-	public Boolean disconnect(String guid) {
-		this.connectionManager.disconnect(guid);
-		return true;
-	}
-
-
-	public String getCurrentCube(String guid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public String getCurrentQuery(String guid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public List<String> getQueries(String guid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public Boolean setCurrentCube(String guid, String cubeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public Boolean setCurrentQuery(String guid, String queryId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<String> getCubes(String guid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setCubes(String guid, List<String> cubes) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Boolean closeSession(String guid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String createSession() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

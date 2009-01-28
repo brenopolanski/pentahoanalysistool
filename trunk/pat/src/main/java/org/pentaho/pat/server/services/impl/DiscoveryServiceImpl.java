@@ -13,9 +13,8 @@ import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
+import org.pentaho.pat.Constants;
 import org.pentaho.pat.client.util.StringTree;
-import org.pentaho.pat.server.data.ConnectionManager;
-import org.pentaho.pat.server.data.QueryManager;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.SessionService;
@@ -28,42 +27,35 @@ public class DiscoveryServiceImpl extends AbstractService
 	implements DiscoveryService
 {
 
-	private SessionService sessionService;
+	private SessionService sessionService = null;
 	
-	private ConnectionManager connectionManager;
 	
-	private QueryManager queryManager;
-	
+
 	Logger log = Logger.getLogger(this.getClass());
 
-	public void setSessionService(SessionService service) {
-		this.sessionService = service;
+
+	
+	public void setSessionService(SessionService sessionService) {
+		this.sessionService = sessionService;
 	}
 	
-	public void setConnectionManager(ConnectionManager manager) {
-		this.connectionManager = manager;
-	}
 	
-	public void setQueryManager(QueryManager manager) {
-		this.queryManager = manager;
-	}
 	
 	public void afterPropertiesSet() throws Exception {
 		if (this.sessionService == null)
 			throw new Exception("A sessionService is required.");
-		if (this.connectionManager == null)
-			throw new Exception("A connectionManager is required.");
-		if (this.queryManager == null)
-			throw new Exception("A queryManager is required.");
 	}
 	
-	public List<String> getCubes(String guid) {
+	
+	
+	
+	public List<String> getCubes(String userId, String sessionId) {
 		
 		try {
 			
 			List<String> list = new ArrayList<String>();
 			
-			OlapConnection conn = this.connectionManager.getConnection(guid);
+			OlapConnection conn = this.sessionService.getConnection(userId, sessionId);
 			
 			if (conn == null)
 				return list;
@@ -87,20 +79,21 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 
 	
-	public Cube getCube(String guid, String name) {
+	public Cube getCube(String userId, String sessionId, String name) {
 		try {
-			OlapConnection conn = this.connectionManager.getConnection(guid);
+			OlapConnection conn = this.sessionService.getConnection(userId,sessionId);
 			return conn.getSchema().getCubes().get(name);
 		} catch (Exception e) {}
 		return null;
 	}
 	
 	
-	public List<String> getDimensions(String guid, Axis axis) 
-		throws OlapException
+	public List<String> getDimensions(String userId, String sessionId, 
+		Axis axis) throws OlapException
 	{
-		Query query = this.queryManager.get(guid,
-				this.sessionService.getCurrentQuery(guid));
+		String currentQuery = this.sessionService.getUserSessionVariable(userId, 
+				sessionId, Constants.CURRENT_QUERY_NAME);
+		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 	    List<QueryDimension> dimList = query.getAxes().get(axis).getDimensions();
 	    List<String> dimNames = new ArrayList<String>();
 	    for (QueryDimension dim : dimList) {
@@ -109,12 +102,13 @@ public class DiscoveryServiceImpl extends AbstractService
 	    return dimNames;
 	}
 
-	public StringTree getMembers(String guid, String dimensionName) 
+	public StringTree getMembers(String userId, String sessionId, String dimensionName) 
 		throws OlapException 
 	{
 		
-		Query query = this.queryManager.get(guid,
-				this.sessionService.getCurrentQuery(guid));
+		String currentQuery = this.sessionService.getUserSessionVariable(userId, 
+				sessionId, Constants.CURRENT_QUERY_NAME);
+		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
 		List<String> uniqueNameList = new ArrayList<String>();
 	    
