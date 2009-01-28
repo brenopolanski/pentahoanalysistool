@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.panels;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.core.Position;  
 import com.gwtext.client.widgets.Button;
@@ -20,6 +21,9 @@ import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 
+import com.gwtext.client.data.SimpleStore;  
+import com.gwtext.client.data.Store;  
+
 public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	FormPanel formPanel;
 	TextField connectionText;
@@ -31,6 +35,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	TextField databaseText;
 	Button connectBtn;
 	ComboBox supportedDriverCombo;
+	Label debuglabel;
 	
 	private TabPanel tabs;
 	private Panel supportedJDBC;
@@ -67,6 +72,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		genericJDBC.setAutoScroll(true);  
 		genericJDBC.setTitle("Generic JDBC");  
 		genericJDBC.setIconCls("tab-icon");  
+		genericJDBC.setHeight(400);
 
 		xmla = new Panel();  
 		xmla.setAutoScroll(true);  
@@ -108,37 +114,35 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		cubeText.setInputType("file");
 		fpanel1.add(cubeText);
 
-		connectBtn = new Button(MessageFactory.getInstance().connect());
-		connectBtn.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(Button button, EventObject e) {
-				if (connectBtn.getText().equals(
-						MessageFactory.getInstance().connect())) {
-					String cStr = "jdbc:mondrian:Jdbc=jdbc:mysql://"
-							+ getServerText() + ":" + getPortText() + "/"
-							+ getDatabaseText() + "?user=" + getUsernameText()
-							+ "&password=" + getPasswordText() + ";Catalog="
-							+ getCubeText() + ";";
-					connect(cStr);
-
-				} else if (connectBtn.getText().equals(
-						MessageFactory.getInstance().disconnect())) {
-					disconnect();
-				}
-			}
-		});
+		
 		
 		supportedJDBC.add(fpanel1);
 		
 		Panel fpanel2= new FormPanel();
+		fpanel2.setHeight(350);
 		fpanel2.setPaddings(5);
 		
 		supportedDriverCombo = new ComboBox("Select a Driver");
 		supportedDriverCombo.setLabel("Driver");
+		Object[][] drivers = 	new Object[][]{  
+			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
+			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
+			                 	  
+				};  
+		final Store driversStore = new SimpleStore(new String[]{"driver", "name"}, drivers);  
+		driversStore.load();  
+		supportedDriverCombo.setStore(driversStore);
+		supportedDriverCombo.setDisplayField("name");  
+		supportedDriverCombo.setMode(ComboBox.LOCAL);  
+		supportedDriverCombo.setTriggerAction(ComboBox.ALL);  
+		supportedDriverCombo.setForceSelection(true);  
+		supportedDriverCombo.setValueField("driver");  
+		supportedDriverCombo.setReadOnly(true);  
+		
 		fpanel2.add(supportedDriverCombo);
 		
 		connectionText = new TextField();
-		connectionText.setLabel("Connection String");
+		connectionText.setLabel("ConnectString");
 		fpanel2.add(connectionText);
 
 		usernameText = new TextField();
@@ -154,15 +158,41 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		cubeText.setInputType("file");
 		fpanel2.add(cubeText);
 		
+		connectBtn = new Button(MessageFactory.getInstance().connect());
+		connectBtn.addListener(new ButtonListenerAdapter() {
+			@Override
+			public void onClick(Button button, EventObject e) {
+				if (connectBtn.getText().equals(
+						MessageFactory.getInstance().connect())) {
+					String cStr = "jdbc:mondrian:Jdbc="
+							+ connectionText.getText()
+							+ ";username=" + usernameText.getText() 
+							+ ";password=" + passwordText.getText() 
+							+ ";Catalog="  + cubeText.getText() 
+							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
+					
+					connect(cStr);
+					debuglabel.setText(cStr);
+
+				} else if (connectBtn.getText().equals(
+						MessageFactory.getInstance().disconnect())) {
+					disconnect();
+				}
+			}
+		});
+		fpanel2.add(connectBtn);
+		debuglabel = new Label("empty");
+		fpanel2.add(debuglabel);
 		genericJDBC.add(fpanel2);
 		
-		tabs.add(supportedJDBC);
+		//tabs.add(supportedJDBC);
 		tabs.add(genericJDBC);
-		tabs.add(xmla);
+		//tabs.add(xmla);
 		tabs.activate(0);
 		this.add(tabs);
 		this.setPaddings(10);
-		this.add(connectBtn);
+		
+
 
 	}
 
