@@ -72,7 +72,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		genericJDBC.setAutoScroll(true);  
 		genericJDBC.setTitle("Generic JDBC");  
 		genericJDBC.setIconCls("tab-icon");  
-		genericJDBC.setHeight(400);
+		genericJDBC.setHeight(250);
 
 		xmla = new Panel();  
 		xmla.setAutoScroll(true);  
@@ -119,7 +119,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedJDBC.add(fpanel1);
 		
 		Panel fpanel2= new FormPanel();
-		fpanel2.setHeight(350);
+		fpanel2.setHeight(220);
 		fpanel2.setPaddings(5);
 		
 		supportedDriverCombo = new ComboBox("Select a Driver");
