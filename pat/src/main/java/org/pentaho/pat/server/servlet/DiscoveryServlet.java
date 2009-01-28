@@ -34,18 +34,18 @@ public class DiscoveryServlet extends AbstractServlet implements
 			throw new Exception("A discoveryService is required.");
 	}
 
-	public String[] getCubes(String guid) {
-		List<String> list = this.discoveryService.getCubes(guid); 
+	public String[] getCubes(String sessionId) {
+		List<String> list = this.discoveryService.getCubes(getCurrentUserId(), sessionId); 
 		return list.toArray(new String[list.size()]);
 	}
 
-	public String[] getDimensions(String guid, Axis axis) throws OlapException {
+	public String[] getDimensions(String sessionId, Axis axis) throws OlapException {
 		List<String> dimensionsList = 
-			this.discoveryService.getDimensions(guid, axis);
+			this.discoveryService.getDimensions(getCurrentUserId(), sessionId, axis);
 		return dimensionsList.toArray(new String[dimensionsList.size()]);
 	}
 
-	public StringTree getMembers(String guid, String dimensionName) throws OlapException {
-		return this.discoveryService.getMembers(guid, dimensionName);
+	public StringTree getMembers(String sessionId, String dimensionName) throws OlapException {
+		return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 	}
 }
