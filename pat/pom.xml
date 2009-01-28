@@ -26,9 +26,9 @@
         </executions>
         <configuration>
           <compileTargets>
-            <value>org.pentaho.pat</value>
+            <value>org.pentaho.pat.Pat</value>
           </compileTargets>
-          <runTarget>org.pentaho.pat.PAT/PAT.html</runTarget>
+          <runTarget>org.pentaho.pat.Pat/Pat.html</runTarget>
           <logLevel>DEBUG</logLevel>
           <style>DETAILED</style>
           <noServer>false</noServer>

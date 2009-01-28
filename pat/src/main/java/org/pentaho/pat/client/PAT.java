@@ -27,7 +27,7 @@ import com.gwtext.client.widgets.layout.RowLayoutData;
  * @author Tom Barber
  *
  */
-public class PAT implements EntryPoint {
+public class Pat implements EntryPoint {
 	Panel panel; // Container Panel(FitLayout to make dynamic resizing happy)
 	Panel wrapperPanel; //Contains all child panels
 	Panel mainPanel; // Border Panel
