@@ -7,3 +7,8 @@
   * The user creates a connection by giving parameters.
   * The client side code sends a connection request.
   * The server tries to create the connection with the supplied parameters. It returns true/false. If true, the connection object is stored and associated to the window unique id.
+  * The GUI asks for the list of available cubes.
+  * The user selects a cube and press a button like "create a query". Since the backend supports multiple queries as of now, yet the GUI doesn't, we could simply make the GUI create one and always give it the same name for now.
+  * The GUI asks for all available dimensions.
+  * Drag and drop magic here.
+  * The user closes his window : The GUI has to send closing signals to the back-end.
