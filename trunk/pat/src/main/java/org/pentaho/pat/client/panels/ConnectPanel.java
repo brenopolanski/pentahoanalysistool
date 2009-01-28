@@ -14,12 +14,14 @@ import com.gwtext.client.widgets.form.TextField;
 import com.gwtext.client.widgets.form.ComboBox;  
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.TabPanel;
+
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
+
 
 import com.gwtext.client.data.SimpleStore;  
 import com.gwtext.client.data.Store;  
@@ -125,7 +127,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedDriverCombo = new ComboBox("Select a Driver");
 		supportedDriverCombo.setLabel("Driver");
 		Object[][] drivers = 	new Object[][]{  
-			                 	//new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
+			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
 			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
 			                 	  
 				};  
@@ -165,12 +167,21 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 				if (connectBtn.getText().equals(
 						MessageFactory.getInstance().connect())) {
 					String cStr = "jdbc:mondrian:Jdbc="
-							+ connectionText.getText()
-							+ "?user=" + usernameText.getText() 
-							+ "&password=" + passwordText.getText() 
-							+ ";Catalog="  + cubeText.getText() 
+							+ connectionText.getText();
+							if (supportedDriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
+								
+							cStr = cStr + "?user=" + usernameText.getText() 
+							+ "&password=" + passwordText.getText();
+							}
+							if (supportedDriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
+								cStr = cStr + ";username=" + usernameText.getText() 
+								+ ";password=" + passwordText.getText(); 
+									
+							}
+							
+							cStr = cStr + ";Catalog="  + cubeText.getText() 
 							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
-					
+
 					connect(cStr);
 					debuglabel.setText(cStr);
 
@@ -208,41 +219,42 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		if (!isConnectionEstablished()) {
 			ServiceFactory.getInstance().connect(connectionStr,
 					GuidFactory.getGuid(), new AsyncCallback() {
-						public void onSuccess(Object result) {
-							Boolean booleanResult = (Boolean) result;
-							if (booleanResult.booleanValue()) {
-								setConnectionEstablished(true);
-								connectionListeners
-										.fireConnectionMade(ConnectPanel.this);
+				public void onSuccess(Object result) {
+					Boolean booleanResult = (Boolean) result;
+					if (booleanResult.booleanValue()) {
+						setConnectionEstablished(true);
+						connectionListeners
+						.fireConnectionMade(ConnectPanel.this);
+					} else {
+						setConnectionEstablished(false);
+						connectionListeners
+						.fireConnectionBroken(ConnectPanel.this);
+					}
+					connectBtn
+					.setText(isConnectionEstablished() ? MessageFactory
+							.getInstance().disconnect()
+							: MessageFactory.getInstance()
+							.connect());
+					
+				}
 
-							} else {
-								setConnectionEstablished(false);
-								connectionListeners
-										.fireConnectionBroken(ConnectPanel.this);
-							}
-							connectBtn
-									.setText(isConnectionEstablished() ? MessageFactory
-											.getInstance().disconnect()
-											: MessageFactory.getInstance()
-													.connect());
-							destroy();
-						}
+				public void onFailure(Throwable caught) {
+					System.out.println(caught.getLocalizedMessage());
+					com.google.gwt.user.client.Window.alert(MessageFactory.getInstance()
+							.no_connection_param(
+									caught.getLocalizedMessage()));
+					setConnectionEstablished(false);
+					connectBtn
+					.setText((isConnectionEstablished() ? MessageFactory
+							.getInstance().disconnect()
+							: MessageFactory.getInstance()
+							.connect()));
+					
+				}
+			});
 
-						public void onFailure(Throwable caught) {
-							/*
-							 * Window.alert(MessageFactory.getInstance().
-							 * no_connection_param
-							 * (caught.getLocalizedMessage()));
-							 * setConnectionEstablished(false);
-							 */
-							connectBtn
-									.setText(isConnectionEstablished() ? MessageFactory
-											.getInstance().disconnect()
-											: MessageFactory.getInstance()
-													.connect());
-						}
-					});
 		}
+
 	}
 
 	public void disconnect() {
