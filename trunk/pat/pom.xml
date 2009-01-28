@@ -4,8 +4,8 @@
 
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mycompany</groupId>
-  <artifactId>project</artifactId>
+  <groupId>org.pentaho</groupId>
+  <artifactId>pat</artifactId>
   <packaging>war</packaging>
   <name>gwt-maven-archetype-project</name>
   <version>0.0.1-SNAPSHOT</version>
