@@ -34,9 +34,14 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	TextField usernameText;
 	TextField passwordText;
 	TextField cubeText;
+	TextField usernameText2;
+	TextField passwordText2;
+	TextField cubeText2;
 	TextField databaseText;
+	Button connectBtn2;
 	Button connectBtn;
 	ComboBox supportedDriverCombo;
+	ComboBox DriverCombo;
 	Label debuglabel;
 	
 	private TabPanel tabs;
@@ -68,13 +73,14 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedJDBC.setTitle("Supported JDBC");  
 		supportedJDBC.setIconCls("tab-icon");  
 		//supportedJDBC.setLayout(new FitLayout());
+		supportedJDBC.setHeight(250);
 		
 
 		genericJDBC = new Panel();  
 		genericJDBC.setAutoScroll(true);  
 		genericJDBC.setTitle("Generic JDBC");  
 		genericJDBC.setIconCls("tab-icon");  
-		genericJDBC.setHeight(220);
+		genericJDBC.setHeight(250);
 
 		xmla = new Panel();  
 		xmla.setAutoScroll(true);  
@@ -84,47 +90,10 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		this.setWidth(500);
 		this.setShadow(true);
 		Panel fpanel1= new FormPanel();
+		fpanel1.setHeight(250);
 		fpanel1.setPaddings(5);
 		
 		supportedDriverCombo = new ComboBox("Select a DB Type");
-		supportedDriverCombo.setLabel("Driver");
-		fpanel1.add(supportedDriverCombo);
-		
-		serverText = new TextField();
-		serverText.setLabel("Server");
-		fpanel1.add(serverText);
-
-		portText = new TextField();
-		portText.setLabel("Port");
-		
-		fpanel1.add(portText);
-
-		usernameText = new TextField();
-		usernameText.setLabel("Username");
-		fpanel1.add(usernameText);
-
-		passwordText = new TextField();
-		passwordText.setLabel("Password");
-		fpanel1.add(passwordText);
-
-		databaseText = new TextField();
-		databaseText.setLabel("Database");
-		fpanel1.add(databaseText);
-
-		cubeText = new TextField();
-		cubeText.setLabel("Schema");
-		cubeText.setInputType("file");
-		fpanel1.add(cubeText);
-
-		
-		
-		supportedJDBC.add(fpanel1);
-		
-		Panel fpanel2= new FormPanel();
-		fpanel2.setHeight(200);
-		fpanel2.setPaddings(5);
-		
-		supportedDriverCombo = new ComboBox("Select a Driver");
 		supportedDriverCombo.setLabel("Driver");
 		Object[][] drivers = 	new Object[][]{  
 			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
@@ -140,40 +109,52 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedDriverCombo.setForceSelection(true);  
 		supportedDriverCombo.setValueField("driver");  
 		supportedDriverCombo.setReadOnly(true);  
+		fpanel1.add(supportedDriverCombo);
 		
-		fpanel2.add(supportedDriverCombo);
 		
-		connectionText = new TextField();
-		connectionText.setLabel("ConnectString");
-		fpanel2.add(connectionText);
+		serverText = new TextField();
+		serverText.setLabel("Server");
+		fpanel1.add(serverText);
 
+		portText = new TextField();
+		portText.setLabel("Port");
+		
+		fpanel1.add(portText);
+
+		databaseText = new TextField();
+		databaseText.setLabel("Database");
+		fpanel1.add(databaseText);
+		
 		usernameText = new TextField();
 		usernameText.setLabel("Username");
-		fpanel2.add(usernameText);
+		fpanel1.add(usernameText);
 
 		passwordText = new TextField();
 		passwordText.setLabel("Password");
-		fpanel2.add(passwordText);
+		fpanel1.add(passwordText);
 
 		cubeText = new TextField();
 		cubeText.setLabel("Schema");
 		cubeText.setInputType("file");
-		fpanel2.add(cubeText);
-		
+		fpanel1.add(cubeText);
+
 		connectBtn = new Button(MessageFactory.getInstance().connect());
 		connectBtn.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(Button button, EventObject e) {
 				if (connectBtn.getText().equals(
 						MessageFactory.getInstance().connect())) {
-					String cStr = "jdbc:mondrian:Jdbc="
-							+ connectionText.getText();
+					String cStr = "jdbc:mondrian:Jdbc=";
+							
 							if (supportedDriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
-								
+							//jdbc:mysql://localhost:3306/sampledata
+							cStr = cStr + "jdbc:mysql://" + serverText.getText() + ":" + portText.getText() + "/" + databaseText.getText();
 							cStr = cStr + "?user=" + usernameText.getText() 
 							+ "&password=" + passwordText.getText();
 							}
 							if (supportedDriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
+								//jdbc:hsqldb:hsql://localhost:9001/hibernate
+								cStr = cStr + "jdbc:hsqldb:hsql://" + serverText.getText() + ":" + portText.getText() + "/" + databaseText.getText();
 								cStr = cStr + ";username=" + usernameText.getText() 
 								+ ";password=" + passwordText.getText(); 
 									
@@ -191,13 +172,91 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 				}
 			}
 		});
-		fpanel2.add(connectBtn);
-		debuglabel = new Label("empty");
-		fpanel2.add(debuglabel);
+		fpanel1.add(connectBtn);
+		//debuglabel = new Label("Example: HSQLDB/Server:localhost/Port:9001/DB:sampledata/username:hibuser/password:password");
+		//fpanel1.add(debuglabel);
+		
+		
+		supportedJDBC.add(fpanel1);
+		
+		Panel fpanel2= new FormPanel();
+		fpanel2.setHeight(200);
+		fpanel2.setPaddings(5);
+		
+		DriverCombo = new ComboBox("Select a Driver");
+		DriverCombo.setLabel("Driver");
+		Object[][] drivers2 = 	new Object[][]{  
+			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
+			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
+			                 	  
+				};  
+		final Store driversStore2 = new SimpleStore(new String[]{"driver", "name"}, drivers2);  
+		driversStore2.load();  
+		DriverCombo.setStore(driversStore2);
+		DriverCombo.setDisplayField("name");  
+		DriverCombo.setMode(ComboBox.LOCAL);  
+		DriverCombo.setTriggerAction(ComboBox.ALL);  
+		DriverCombo.setForceSelection(true);  
+		DriverCombo.setValueField("driver");  
+		DriverCombo.setReadOnly(true);  
+		
+		fpanel2.add(DriverCombo);
+		
+		connectionText = new TextField();
+		connectionText.setLabel("ConnectString");
+		fpanel2.add(connectionText);
+
+		usernameText2 = new TextField();
+		usernameText2.setLabel("Username");
+		fpanel2.add(usernameText2);
+
+		passwordText2 = new TextField();
+		passwordText2.setLabel("Password");
+		fpanel2.add(passwordText2);
+
+		cubeText2 = new TextField();
+		cubeText2.setLabel("Schema");
+		cubeText2.setInputType("file");
+		fpanel2.add(cubeText2);
+		
+		connectBtn2 = new Button(MessageFactory.getInstance().connect());
+		connectBtn2.addListener(new ButtonListenerAdapter() {
+			@Override
+			public void onClick(Button button, EventObject e) {
+				if (connectBtn2.getText().equals(
+						MessageFactory.getInstance().connect())) {
+					String cStr = "jdbc:mondrian:Jdbc="
+							+ connectionText.getText();
+							if (DriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
+								
+							cStr = cStr + "?user=" + usernameText2.getText() 
+							+ "&password=" + passwordText2.getText();
+							}
+							if (DriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
+								cStr = cStr + ";username=" + usernameText2.getText() 
+								+ ";password=" + passwordText2.getText(); 
+									
+							}
+							
+							cStr = cStr + ";Catalog="  + cubeText2.getText() 
+							+ ";JdbcDrivers=" + DriverCombo.getValueAsString();
+
+					connect(cStr);
+					//debuglabel.setText(cStr);
+
+				} else if (connectBtn2.getText().equals(
+						MessageFactory.getInstance().disconnect())) {
+					disconnect();
+				}
+			}
+		});
+		fpanel2.add(connectBtn2);
+		//debuglabel = new Label("empty");
+		//fpanel2.add(debuglabel);
 		genericJDBC.add(fpanel2);
 		
-		//tabs.add(supportedJDBC);
-		tabs.add(genericJDBC);
+		tabs.add(supportedJDBC);
+		//tabs.add(genericJDBC);
 		//tabs.add(xmla);
 		tabs.activate(0);
 		this.add(tabs);
