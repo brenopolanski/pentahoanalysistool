@@ -77,7 +77,8 @@ public class Pat implements EntryPoint {
 		controlBarPanel.setWidth("100%");
 		controlBarPanel.setAutoHeight(true);
 		controlBarPanel.addConnectionListener(dimensionPanel);
-		controlBarPanel.addConnectionListener(toolBarPanel);
+		toolBarPanel.addConnectionListener(controlBarPanel);
+		
 
 		northPanel = new NorthPanel();
 		northPanel.setTitle(MessageFactory.getInstance().mdxPanel());
