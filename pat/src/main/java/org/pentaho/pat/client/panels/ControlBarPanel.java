@@ -80,7 +80,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 		conButton = new ToolbarButton("Connect");
 		cubeListBox.setLabel("Cube List");
-		conButton.disable();
+		conButton.setVisible(false);
 		conButton.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(final Button button, final EventObject e) {
@@ -296,21 +296,24 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
+		setConnectionEstablished(false);
+		connectionListeners.fireConnectionBroken(ControlBarPanel.this);
+		cubeListBox.setVisible(false);
+		//cubeListBox.setDisabled(!isConnectionEstablished());
+		
+		
+
 		
 	}
 
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
 		setConnectionEstablished(true);
-		connectionListeners
-		.fireConnectionMade(ControlBarPanel.this);
-		conButton.enable();
-		conButton
-		.setText(isConnectionEstablished() ? MessageFactory
-				.getInstance().disconnect()
-				: MessageFactory.getInstance()
-				.connect());
+		connectionListeners.fireConnectionMade(ControlBarPanel.this);
+		
 		cubeListBox.setDisabled(!isConnectionEstablished());
+		cubeListBox.setVisible(true);
+		
 	}
 
 

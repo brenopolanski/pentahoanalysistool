@@ -34,6 +34,8 @@ import com.gwtext.client.widgets.ToolbarButton;
 public class ToolBarPanel extends Toolbar implements ConnectionListener,SourcesConnectionEvents  {
 
 	ConnectPanel connectWindow;
+	ToolbarButton fileToolbarMenuButton;
+	boolean connectionEstablished = false;
 
 	
 	private ConnectionListenerCollection connectionListeners;
@@ -68,16 +70,25 @@ public class ToolBarPanel extends Toolbar implements ConnectionListener,SourcesC
 		//connect.addListener(listener);
 		
 
-		final ToolbarButton fileToolbarMenuButton = new ToolbarButton("New Connection");
+		fileToolbarMenuButton = new ToolbarButton(MessageFactory.getInstance().connect());
 		
 		fileToolbarMenuButton.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(final Button button, final EventObject e) {
-				connectWindow = new ConnectPanel();
-				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
-				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
-				connectWindow.addConnectionListener(ToolBarPanel.this);
-				connectWindow.show();
+				if (button.getText().equals(
+						MessageFactory.getInstance().connect())) {
+					connectWindow = new ConnectPanel();
+					// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
+					// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
+					connectWindow.addConnectionListener(ToolBarPanel.this);
+					connectWindow.show();
+					//connect(ConnectionFactory.getInstance().connection_string());
+
+				} else if (button.getText().equals(
+						MessageFactory.getInstance().disconnect())) {
+					connectionListeners.fireConnectionBroken(ToolBarPanel.this);
+					fileToolbarMenuButton.setText(MessageFactory.getInstance().connect());
+				}
 			}
 		});
 		this.setAutoWidth(true);
@@ -93,6 +104,7 @@ public class ToolBarPanel extends Toolbar implements ConnectionListener,SourcesC
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
 		connectionListeners.fireConnectionMade(ToolBarPanel.this);
+		fileToolbarMenuButton.setText(MessageFactory.getInstance().disconnect());
 		
 		
 	}
