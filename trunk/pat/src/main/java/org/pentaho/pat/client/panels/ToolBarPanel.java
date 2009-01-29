@@ -17,6 +17,7 @@ import com.gwtext.client.widgets.menu.event.MenuListenerAdapter;
 import com.gwtext.client.core.EventObject;
 
 import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.panels.ConnectPanel;
 
 
@@ -27,6 +28,9 @@ import org.pentaho.pat.client.panels.ConnectPanel;
 public class ToolBarPanel extends Toolbar implements ConnectionListener  {
 
 	ConnectPanel connectWindow;
+
+	
+	private ConnectionListenerCollection connectionListeners;
 	
 	public ToolBarPanel(){
 		super();
@@ -41,6 +45,10 @@ public class ToolBarPanel extends Toolbar implements ConnectionListener  {
 				connectWindow = new ConnectPanel();
 				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
 				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
+				connectWindow.addConnectionListener(ToolBarPanel.this);
+				
+				
+				
 				connectWindow.show();
 					}
 				};
@@ -70,5 +78,19 @@ public class ToolBarPanel extends Toolbar implements ConnectionListener  {
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	public void removeClickListener(ConnectionListener listener) {
+		if (connectionListeners != null) {
+			connectionListeners.remove(listener);
+		}
 	}
 }
