@@ -183,7 +183,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
 
 					connect(cStr);
-					debuglabel.setText(cStr);
+					//debuglabel.setText(cStr);
 
 				} else if (connectBtn.getText().equals(
 						MessageFactory.getInstance().disconnect())) {
@@ -235,6 +235,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 							.getInstance().disconnect()
 							: MessageFactory.getInstance()
 							.connect());
+					ConnectPanel.this.close();
+					
 					
 				}
 
@@ -273,6 +275,9 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 											.getInstance().disconnect()
 											: MessageFactory.getInstance()
 													.connect());
+							
+							
+							
 						}
 
 						public void onSuccess(Object result) {

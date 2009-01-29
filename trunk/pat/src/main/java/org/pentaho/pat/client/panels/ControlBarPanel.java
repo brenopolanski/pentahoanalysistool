@@ -10,6 +10,7 @@ import org.pentaho.pat.client.util.ServiceFactory;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.data.ArrayReader;
 import com.gwtext.client.data.FieldDef;
@@ -25,7 +26,7 @@ import com.gwtext.client.widgets.event.ButtonListenerAdapter;
 import com.gwtext.client.widgets.form.ComboBox;
 import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
 
-public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents {
+public class ControlBarPanel extends Toolbar implements ConnectionListener,SourcesConnectionEvents {
 	/*
 	 * TODO The Control Bar will amonst other things display the currently
 	 * selected cube for user and allow other functionality as the project
@@ -78,6 +79,8 @@ public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents 
 		});
 
 		conButton = new ToolbarButton("Connect");
+		cubeListBox.setLabel("Cube List");
+		conButton.disable();
 		conButton.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(final Button button, final EventObject e) {
@@ -85,7 +88,7 @@ public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents 
 				if (button.getText().equals(
 						MessageFactory.getInstance().connect())) {
 
-					connect(ConnectionFactory.getInstance().connection_string());
+					//connect(ConnectionFactory.getInstance().connection_string());
 
 				} else if (button.getText().equals(
 						MessageFactory.getInstance().disconnect())) {
@@ -257,6 +260,7 @@ public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents 
 							: MessageFactory.getInstance()
 							.connect()));
 					cubeListBox.setDisabled(!isConnectionEstablished());
+					conButton.disable();
 				}
 			});
 		}
@@ -289,5 +293,25 @@ public class ControlBarPanel extends Toolbar implements SourcesConnectionEvents 
 			connectionListeners.remove(listener);
 		}
 	}
+	
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onConnectionMade(Widget sender) {
+		// TODO Auto-generated method stub
+		setConnectionEstablished(true);
+		connectionListeners
+		.fireConnectionMade(ControlBarPanel.this);
+		conButton.enable();
+		conButton
+		.setText(isConnectionEstablished() ? MessageFactory
+				.getInstance().disconnect()
+				: MessageFactory.getInstance()
+				.connect());
+		cubeListBox.setDisabled(!isConnectionEstablished());
+	}
+
 
 }
