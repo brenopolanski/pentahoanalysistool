@@ -1,4 +1,3 @@
-#summary Requrements Specified by the `ho's
 Features that Pentaho wants in PAT (Needs updating)
 = Introduction =
 *This is a very old list, it needs to be updated*
