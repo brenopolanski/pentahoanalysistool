@@ -1,9 +1,0 @@
-#summary How to use PAT
-#labels Phase-Support,Featured
-
-= Introduction =
-
-Here's a brief introduction into how to use PAT
-
-
-= Details =
