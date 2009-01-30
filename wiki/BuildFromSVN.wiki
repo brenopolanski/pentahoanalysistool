@@ -32,3 +32,9 @@ Cleans and then packages the application into a WAR file, which you
 can deploy easily by dropping it into tomcat/webapps e.g
 
 Check out Maven Goals for more goals that can be used
+
+= Known Problems with Eclipse building =
+
+There are reports that GWT-DEV files are extracted in a new directory (e.g. PROJECT_HOME/{local.Repository}/com/google/gwt/gwt-dev/1.5.3) instead of the local maven repository (default: ~/.m2/repository/com/google/gwt/gwt-dev/1.5.3) during the build process.
+
+This is (probably) caused by the maven-eclipse plugin. This can be solved due the use of an external maven installation (Change that in Eclipse Preferences : Maven : Installation - Add) 
