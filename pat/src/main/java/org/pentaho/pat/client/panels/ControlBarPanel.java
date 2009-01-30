@@ -58,7 +58,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 			@Override
 			public void onExpand(ComboBox comboBox) {
 				if (isConnectionEstablished())
-					getCubes(cubeListBox.getText());
+					getCubes();
 			}
 
 			@Override
@@ -85,7 +85,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 		this.addField(cubeListBox);
 	}
 
-	public void getCubes(final String boxText) {
+	public void getCubes() {
 
 		ServiceFactory.getInstance().getCubes(GuidFactory.getGuid(),
 				new AsyncCallback() {
@@ -160,7 +160,6 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 			store.removeAll();
 			store.commitChanges();
 			cubeListBox.setValue(null);
-			populateCubeList();
 		
 	}
 	/*
@@ -204,6 +203,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	public void onConnectionMade(Widget sender) {
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ControlBarPanel.this);
+		getCubes();
 		cubeListBox.setDisabled(false);
 		
 		
