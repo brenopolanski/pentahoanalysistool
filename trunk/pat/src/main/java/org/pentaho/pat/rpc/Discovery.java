@@ -4,12 +4,15 @@ package org.pentaho.pat.rpc;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.pentaho.pat.client.util.StringTree;
+import org.springframework.security.annotation.Secured;
+
+import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * Defines discovery operations methods.
  * @author Luc Boudreau
  */
-public interface Discovery {
+public interface Discovery extends RemoteService {
 
 	/**
 	 * Returns a list of all available dimension names on
@@ -21,6 +24,7 @@ public interface Discovery {
 	 * if the given axis is not present in the cube.
 	 * @throws OlapException If something goes wrong.
 	 */
+	@Secured ({"ROLE_USER"})
 	public String [] getDimensions(String sessionId, Axis axis) throws OlapException;
 	
 	/**
@@ -29,6 +33,7 @@ public interface Discovery {
 	 * @return A list of all the cube names available or an empty
 	 * list if none are found.
 	 */
+	@Secured ({"ROLE_USER"})
 	public String [] getCubes(String sessionId);
 	
 	/**
@@ -40,5 +45,6 @@ public interface Discovery {
 	 * @return A StringTree of all present members.
 	 * @throws OlapException If something goes wrong.
 	 */
+	@Secured ({"ROLE_USER"})
 	public StringTree getMembers(String sessionId, String dimensionName) throws OlapException;
 }

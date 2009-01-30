@@ -6,13 +6,16 @@ import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.client.util.OlapData;
+import org.springframework.security.annotation.Secured;
+
+import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * This interface defines the operations permitted on a query
  * object that was previously instanciated through the Session service.
  * @author Luc Boudreau
  */
-public interface Query {
+public interface Query extends RemoteService {
 	
 	/**
 	 * Moves a dimension to a different axis.
@@ -21,6 +24,7 @@ public interface Query {
 	 * @param dimensionName The name of the dimension to move.
 	 * @return True if all is good.
 	 */
+	@Secured ({"ROLE_USER"})
 	public Boolean moveDimension(
 		String sessionId, 
 		Axis axis, 
@@ -36,6 +40,7 @@ public interface Query {
 	 * @param selectionType The type of selection to perform.
 	 * @return True if all is well.
 	 */
+	@Secured ({"ROLE_USER"})
 	public Boolean createSelection(
 		String sessionId, 
 		String dimensionName, 
@@ -51,11 +56,12 @@ public interface Query {
 	 * remove the selection status.
 	 * @return True if all is well.
 	 */
+	@Secured ({"ROLE_USER"})
 	public Boolean clearSelection(
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames);
 	
-	
+	@Secured ({"ROLE_USER"})
 	public OlapData executeQuery(String sessionId) throws OlapException;
 }

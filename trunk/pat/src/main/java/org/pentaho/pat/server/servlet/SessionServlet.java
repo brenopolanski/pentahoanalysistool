@@ -22,18 +22,20 @@ public class SessionServlet extends AbstractServlet implements Session {
 			throw new Exception("A sessionService is required.");
 	}
 
-	public void connect(String sessionId, String driverClassName, String url, 
+	public Boolean connect(String sessionId, String driverClassName, String url, 
 		String username, String password) throws OlapException {
 		this.sessionService.createConnection(getCurrentUserId(),sessionId, 
 			driverClassName, url, username, password);
+		return true;
 	}
 
 	public String createNewQuery(String sessionId) throws OlapException {
 		return this.sessionService.createNewQuery(getCurrentUserId(), sessionId);
 	}
 
-	public void deleteQuery(String sessionId, String queryId) {
+	public Boolean deleteQuery(String sessionId, String queryId) {
 		this.sessionService.releaseQuery(getCurrentUserId(), sessionId, queryId);
+		return true;
 	}
 
 	public Boolean disconnect(String sessionId) {
@@ -55,20 +57,23 @@ public class SessionServlet extends AbstractServlet implements Session {
 		return this.sessionService.getQueries(getCurrentUserId(), sessionId);
 	}
 
-	public void setCurrentCube(String sessionId, String cubeId) {
+	public Boolean setCurrentCube(String sessionId, String cubeId) {
 		this.sessionService.saveUserSessionVariable(getCurrentUserId(), 
 			sessionId, Constants.CURRENT_CUBE_NAME, cubeId);
+		return true;
 	}
 
-	public void setCurrentQuery(String sessionId, String queryId) {
+	public Boolean setCurrentQuery(String sessionId, String queryId) {
 		this.sessionService.saveUserSessionVariable(getCurrentUserId(), 
 				sessionId, Constants.CURRENT_QUERY_NAME, queryId);
+		return true;
 	}
 	
 	
 
-	public void closeSession(String sessionId) {
+	public Boolean closeSession(String sessionId) {
 		this.sessionService.releaseSession(getCurrentUserId(), sessionId);
+		return true;
 	}
 
 	public String createSession() {
