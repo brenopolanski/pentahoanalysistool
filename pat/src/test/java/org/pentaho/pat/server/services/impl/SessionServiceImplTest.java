@@ -131,6 +131,22 @@ public class SessionServiceImplTest extends TestContext {
 	
 	
 	
+	public void testConnection() throws Exception 
+	{
+		initTest();
+		
+		// Create a single session.
+		String sessionId = this.sessionService.createNewSession("user");
+		
+		// Create a connection.
+		createConnection(this.sessionService, "user", sessionId);
+		
+		// Close this session.
+		this.sessionService.releaseSession("user", sessionId);
+		
+		finishTest();
+	}
+	
 	
 	
 	
@@ -139,6 +155,7 @@ public class SessionServiceImplTest extends TestContext {
 	
 	
 	private void initTest() {
+		initTestContext();
 		this.sessionService = new SessionServiceImpl();
 		this.discoveryService = new DiscoveryServiceStub();
 		this.sessionService.setDiscoveryService(this.discoveryService);
