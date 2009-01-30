@@ -4,6 +4,7 @@ import org.pentaho.pat.server.data.UserManager;
 import org.pentaho.pat.server.data.pojo.Group;
 import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.data.pojo.User;
+import org.springframework.security.context.SecurityContextHolder;
 
 public class UserManagerImpl implements UserManager {
 
@@ -20,18 +21,23 @@ public class UserManagerImpl implements UserManager {
 	public User getUser(String userId) {
 		// TODO Auto-generated method stub
 		
+//		try {
+//			SecurityContextHolder.getContext().getAuthentication();
+//		
 		if (defaultUser == null)
 		{
 			User user  = new User();
 			user.setUsername(userId);
 			Group group = new Group();
-			group.setName("PAT-Users");
+			group.setName("ROLE_USER");
+			group.getMembers().add(user);
+			user.getGroups().add(group);
+			group = new Group();
+			group.setName("ROLE_ADMIN");
 			group.getMembers().add(user);
 			user.getGroups().add(group);
 			
 			defaultUser = user;
-		
-			Session session = new Session();
 		}
 		return defaultUser;
 	}

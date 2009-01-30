@@ -3,6 +3,9 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.olap4j.OlapException;
+import org.springframework.security.annotation.Secured;
+
+import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * Manages the operations on the GUI and persists it's current
@@ -10,26 +13,25 @@ import org.olap4j.OlapException;
  * 
  * @author Luc Boudreau
  */
-public interface Session {
+public interface Session extends RemoteService {
 
 	
-	/**
-	 * Creates a session on the application.
-	 * @return The created session GUID to send back.
-	 */
+	@Secured ({"ROLE_USER"})
 	public String createSession();
 	
-	public void closeSession(String sessionId);
+	@Secured ({"ROLE_USER"})
+	public Boolean closeSession(String sessionId);
 	
 
 	
 	
 	
 	
-	
-	public void connect(String sessionId, String driverClassName, String url, 
+	@Secured ({"ROLE_USER"})
+	public Boolean connect(String sessionId, String driverClassName, String url, 
 			String username, String password) throws OlapException;
 	
+	@Secured ({"ROLE_USER"})
 	public Boolean disconnect(String sessionId);	
 	
 	
@@ -43,50 +45,34 @@ public interface Session {
 	
 	
 	
+	@Secured ({"ROLE_USER"})
+	public Boolean setCurrentQuery(String sessionId, String queryId);
 	
-	public void setCurrentQuery(String sessionId, String queryId);
-	
-	/**
-	 * Tells which is the currently selected query.
-	 * @param sessionId Identifies the window session id that requested the operation.
-	 * @return The name of the currently selected query.
-	 */
+	@Secured ({"ROLE_USER"})
 	public String getCurrentQuery(String sessionId);
 	
-	/**
-	 * Create a new query object on the connection and cubes currently 
-	 * selected. 
-	 * @param sessionId Identifies the window session id that requested the operation.
-	 * @return A unique id to identify the newly created query.
-	 * @throws OlapException 
-	 */
+	@Secured ({"ROLE_USER"})
 	public String createNewQuery(String sessionId) throws OlapException;
 	
-	/**
-	 * Tells what query ids are currently stored for the specified user.
-	 * @param sessionId Identifies the window session id that requested the operation.
-	 * @return A list of all queries available.
-	 */
+	@Secured ({"ROLE_USER"})
 	public List<String> getQueries(String sessionId);
 
-	/**
-	 * Deletes a query from the query store.
-	 * @param guid Identifies the window session id that requested the operation.
-	 * @param sessionId The query id to delete.
-	 */
-	public void deleteQuery(String guid, String sessionId);
-	
+	@Secured ({"ROLE_USER"})
+	public Boolean deleteQuery(String guid, String sessionId);
 
 	
-
-	public void setCurrentCube(String sessionId, String cubeId);
 	
 	
-	/**
-	 * Tells what is the currently selected cube.
-	 * @param sessionId Identifies the window session id that requested the operation.
-	 * @return The id of the currently selected cube.
-	 */
+	
+	
+	
+	
+	
+	@Secured ({"ROLE_USER"})
+	public Boolean setCurrentCube(String sessionId, String cubeId);
+	
+	
+	@Secured ({"ROLE_USER"})
 	public String getCurrentCube(String sessionId);
 
 	

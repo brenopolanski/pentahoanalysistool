@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 
 import org.gwtwidgets.server.spring.GWTSpringController;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.context.SecurityContextHolder;
 
 public abstract class AbstractServlet extends GWTSpringController
 	implements InitializingBean
@@ -21,8 +22,19 @@ public abstract class AbstractServlet extends GWTSpringController
 			return super.getServletContext();
 	}
 	
+	/**
+	 * Helper method to gain access to the current user's security object.
+	 * @return The current user name.
+	 */
 	protected String getCurrentUserId() {
-		return "MyDummyUser";
+		// TODO monstruous security hole right there. This is just for development purposes, sicne security is not active.
+		try {
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			return name;
+		}
+		catch (Throwable t) {
+			return "DEBUG_USER";
+		} 
 	}
 
 }
