@@ -1,7 +1,6 @@
 #summary PAT WIKI HOME
+#labels Featured
 
 = Introduction =
 
 This Wiki shall give you all the information you need about PAT
-
-
