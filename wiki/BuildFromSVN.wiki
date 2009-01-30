@@ -1,0 +1,35 @@
+#Howto checkout from SVN and build PAT with Maven
+
+= Introduction =
+You can easily build PAT from source by following two steps.
+
+
+= 1. SVN Checkout =
+
+Checkout the project with your favourite SVN client from:
+{{{
+http://pentahoanalysistool.googlecode.com/svn/trunk/pat/
+}}}
+
+= 2. Maven Build =
+
+Run Maven or Maven Eclipse Plugin with following goals
+
+*RUN*
+
+{{{
+com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
+}}}
+Runs the application
+
+
+*PACKAGE*
+
+{{{
+clean package
+}}}
+
+Cleans and then packages the application into a WAR file, which you
+can deploy easily by dropping it into tomcat/webapps e.g
+
+Check out Maven Goals for more goals that can be used
