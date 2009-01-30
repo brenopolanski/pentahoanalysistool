@@ -1,0 +1,12 @@
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+	<entry key="olap4j.driver">mondrian.olap4j.MondrianOlap4jDriver</entry>
+	<entry key="olap4j.jdbc.url">jdbc:mondrian:Jdbc={mondrian.jdbc.url};Catalog={mondrian.catalog};JdbcDrivers={mondrian.jdbc.driver}</entry>
+	
+	<entry key="mondrian.catalog">D:/MesDocuments/workspaces/pat/pat/utils/SampleData.mondrian.xml</entry>
+	<entry key="mondrian.jdbc.driver">org.hsqldb.jdbcDriver</entry>
+	<entry key="mondrian.jdbc.url">jdbc:hsqldb:file:D:\MesDocuments\workspaces\pat\pat\utils\hsql_data\sampledata?user=sa</entry>
+	
+</properties>
