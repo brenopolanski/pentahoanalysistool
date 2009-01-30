@@ -16,6 +16,9 @@ public class Session {
 	
 	private Map<String,Query> queries = new ConcurrentHashMap<String, Query>();
 	
+	public Session(String id) {
+		this.id = id;
+	}
 	
 	public void destroy()
 	{

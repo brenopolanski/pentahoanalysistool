@@ -65,7 +65,7 @@ public class SessionServiceImpl extends AbstractService
 		if (!sessions.containsKey(userId))
 			sessions.put(userId, new ConcurrentHashMap<String, Session>());
 		
-		sessions.get(userId).put(generatedId, new Session());
+		sessions.get(userId).put(generatedId, new Session(generatedId));
 		
 		return generatedId;
 	}
@@ -203,7 +203,9 @@ public class SessionServiceImpl extends AbstractService
 				sessions.get(userId).containsKey(sessionId))
 		{
 			try {
-				sessions.get(userId).get(sessionId).getConnection().close();
+				OlapConnection conn = sessions.get(userId).get(sessionId).getConnection();
+				if (conn!=null)
+					conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -307,7 +309,13 @@ public class SessionServiceImpl extends AbstractService
 	}
 
 
-
+	/**
+	 * Accessor. For testing purposes.
+	 * @return
+	 */
+	protected Map<String,Map<String,Session>> getSessions() {
+		return sessions;
+	}
 
 
 }
