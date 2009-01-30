@@ -12,6 +12,7 @@ import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.TextArea;
 import com.gwtext.client.widgets.form.TextField;
 import com.gwtext.client.widgets.form.ComboBox;  
+import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.TabPanel;
 
@@ -23,6 +24,7 @@ import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 
 
+import com.gwtext.client.data.Record;
 import com.gwtext.client.data.SimpleStore;  
 import com.gwtext.client.data.Store;  
 
@@ -109,6 +111,18 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		supportedDriverCombo.setForceSelection(true);  
 		supportedDriverCombo.setValueField("driver");  
 		supportedDriverCombo.setReadOnly(true);  
+		
+		supportedDriverCombo.addListener(new ComboBoxListenerAdapter() {
+			@Override
+			public void onSelect(ComboBox comboBox, Record record, int index) {
+				if(comboBox.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
+					portText.setValue("9001");
+				}
+				if(comboBox.getValueAsString().equals("com.mysql.jdbc.Driver")) {
+					portText.setValue("3306");
+				}
+			}
+		});
 		fpanel1.add(supportedDriverCombo);
 		
 		
@@ -153,15 +167,20 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 							
 							if (supportedDriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
 							//jdbc:mysql://localhost:3306/sampledata
-							cStr = cStr + "jdbc:mysql://" + serverText.getText() + ":" + portText.getText() + "/" + databaseText.getText();
-							cStr = cStr + "?user=" + usernameText.getText() 
-							+ "&password=" + passwordText.getText();
+							cStr = cStr + "jdbc:mysql://" + serverText.getText();
+							if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
+							cStr = cStr + "/" + databaseText.getText();
+							cStr = cStr + "?user=" + usernameText.getText(); 
+							if (passwordText.getText().length() > 0 ) cStr = cStr + "&password=" + passwordText.getText();
 							}
 							if (supportedDriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
 								//jdbc:hsqldb:hsql://localhost:9001/hibernate
-								cStr = cStr + "jdbc:hsqldb:hsql://" + serverText.getText() + ":" + portText.getText() + "/" + databaseText.getText();
-								cStr = cStr + ";username=" + usernameText.getText() 
-								+ ";password=" + passwordText.getText(); 
+								cStr = cStr + "jdbc:hsqldb:hsql://" + serverText.getText();
+								if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
+								cStr = cStr + "/" + databaseText.getText();
+								cStr = cStr + ";username=" + usernameText.getText();
+								if (passwordText.getText().length() > 0 ) cStr = cStr + "&password=" + passwordText.getText();
+								
 									
 							}
 							
@@ -178,7 +197,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 			}
 		});
 		fpanel1.add(connectBtn);
-		//debuglabel = new Label("Example: HSQLDB/Server:localhost/Port:9001/DB:sampledata/username:hibuser/password:password");
+		//debuglabel = new Label("");
 		//fpanel1.add(debuglabel);
 		
 		
