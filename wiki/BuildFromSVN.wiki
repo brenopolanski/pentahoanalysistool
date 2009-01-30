@@ -1,5 +1,4 @@
-#Howto checkout from SVN and build PAT with Maven
-
+#summary Howto checkout from SVN and build PAT with Maven
 = Introduction =
 You can easily build PAT from source by following two steps.
 
