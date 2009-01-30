@@ -160,6 +160,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 			store.removeAll();
 			store.commitChanges();
 			cubeListBox.setValue(null);
+			populateCubeList();
 		
 	}
 	/*
