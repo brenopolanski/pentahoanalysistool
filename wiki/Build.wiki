@@ -12,32 +12,40 @@ The following goals can be used in eclipse runtime configuration > maven build o
 The first time you do this it will download a lot of dependencies so will take a lot longer. However this will not happen next time.
 
 
-  # *RUN*
+*RUN*
 
 *com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt*
 Runs the application
 
-  # *DEBUG*
+----
+
+*DEBUG*
 
 *com.totsp.gwt:maven-googlewebtoolkit2-plugin:debug*
 
 Runs the application in debug mode, you can then connect with a new
 debugging runtime configuration (New Remote Java Application)
 
-  # *COMPILE*
+----
+
+*COMPILE*
 
 *compile*
 
 I think thats clear ;-)
 
-  # *PACKAGE*
+----
+
+*PACKAGE*
 
 *clean package*
 
 Cleans and then packages the application into a WAR file, which you
 can deploy easily by dropping it into tomcat/webapps e.g
 
-  # *ECLIPSE*
+----
+
+*ECLIPSE*
 
 When you open a new command line and change into project directory you
 can run:
