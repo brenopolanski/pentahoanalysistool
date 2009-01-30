@@ -34,7 +34,6 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	 */
 	private Store store;
 	private ComboBox cubeListBox;
-	private ToolbarButton conButton;
 	private ConnectionListenerCollection connectionListeners;
 	private static RecordDef recordDef;
 	private MemoryProxy proxy;
@@ -78,29 +77,12 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 		});
 
-		conButton = new ToolbarButton("Connect");
+		
 		cubeListBox.setLabel("Cube List");
-		conButton.setVisible(false);
-		conButton.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(final Button button, final EventObject e) {
-
-				if (button.getText().equals(
-						MessageFactory.getInstance().connect())) {
-
-					//connect(ConnectionFactory.getInstance().connection_string());
-
-				} else if (button.getText().equals(
-						MessageFactory.getInstance().disconnect())) {
-					disconnect();
-
-				}
-			}
-		});
+		
+		
 
 		this.addField(cubeListBox);
-		this.addButton(conButton);
-
 	}
 
 	public void getCubes(final String boxText) {
@@ -164,64 +146,6 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 	}
 
-	/*
-	 * Uncomment this lot when connect button goes away....
-	 */
-	/*
-	 * public void onConnectionBroken(Widget sender) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * public void onConnectionMade(Widget sender) {
-	 * getCubes(cubeListBox.getText()); }
-	 */
-
-	/*
-	 * Remove Below When We Don't Need The Connect Button Any More
-	 */
-	public void connect(String connectionStr) {
-		if (!isConnectionEstablished()) {
-			ServiceFactory.getInstance().connect(connectionStr,
-					GuidFactory.getGuid(), new AsyncCallback() {
-				public void onSuccess(Object result) {
-					Boolean booleanResult = (Boolean) result;
-					if (booleanResult.booleanValue()) {
-						setConnectionEstablished(true);
-						connectionListeners
-						.fireConnectionMade(ControlBarPanel.this);
-					} else {
-						setConnectionEstablished(false);
-						connectionListeners
-						.fireConnectionBroken(ControlBarPanel.this);
-					}
-					conButton
-					.setText(isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect());
-					cubeListBox.setDisabled(!isConnectionEstablished());
-				}
-
-				public void onFailure(Throwable caught) {
-					System.out.println(caught.getLocalizedMessage());
-					Window.alert(MessageFactory.getInstance()
-							.no_connection_param(
-									caught.getLocalizedMessage()));
-					setConnectionEstablished(false);
-					conButton
-					.setText((isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect()));
-					cubeListBox.setDisabled(!isConnectionEstablished());
-				}
-			});
-
-		}
-
-	}
-
 	public boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
@@ -231,42 +155,13 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 	}
 
-	public void disconnect() {
-		if (isConnectionEstablished()) {
-			ServiceFactory.getInstance().disconnect(GuidFactory.getGuid(),
-					new AsyncCallback<Object>() {
-				public void onFailure(Throwable caught) {
-					Window.alert(MessageFactory.getInstance()
-							.no_connection_param(
-									caught.getLocalizedMessage()));
-					setConnectionEstablished(false);
-					connectionListeners
-					.fireConnectionBroken(ControlBarPanel.this);
-					conButton
-					.setText((isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect()));
-					cubeListBox.setDisabled(!isConnectionEstablished());
-				}
-
-				public void onSuccess(Object result) {
-					setConnectionEstablished(false);
-					connectionListeners
-					.fireConnectionBroken(ControlBarPanel.this);
-					conButton
-					.setText((isConnectionEstablished() ? MessageFactory
-							.getInstance().disconnect()
-							: MessageFactory.getInstance()
-							.connect()));
-					cubeListBox.setDisabled(!isConnectionEstablished());
-					conButton.disable();
-				}
-			});
-		}
-
+	
+	private void emptyStore(){
+			store.removeAll();
+			store.commitChanges();
+			cubeListBox.setValue(null);
+		
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -295,11 +190,10 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	}
 	
 	public void onConnectionBroken(Widget sender) {
-		// TODO Auto-generated method stub
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ControlBarPanel.this);
-		cubeListBox.setVisible(false);
-		//cubeListBox.setDisabled(!isConnectionEstablished());
+		emptyStore();
+		cubeListBox.setDisabled(true);
 		
 		
 
@@ -307,12 +201,10 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	}
 
 	public void onConnectionMade(Widget sender) {
-		// TODO Auto-generated method stub
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ControlBarPanel.this);
+		cubeListBox.setDisabled(false);
 		
-		cubeListBox.setDisabled(!isConnectionEstablished());
-		cubeListBox.setVisible(true);
 		
 	}
 

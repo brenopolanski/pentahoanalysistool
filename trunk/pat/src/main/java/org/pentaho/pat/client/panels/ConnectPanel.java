@@ -114,23 +114,28 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		
 		serverText = new TextField();
 		serverText.setLabel("Server");
+		serverText.setAllowBlank(false);
 		fpanel1.add(serverText);
 
 		portText = new TextField();
 		portText.setLabel("Port");
-		
+		serverText.setAllowBlank(true);
 		fpanel1.add(portText);
 
 		databaseText = new TextField();
 		databaseText.setLabel("Database");
+		databaseText.setAllowBlank(false);
 		fpanel1.add(databaseText);
 		
 		usernameText = new TextField();
 		usernameText.setLabel("Username");
+		usernameText.setAllowBlank(false);
 		fpanel1.add(usernameText);
 
 		passwordText = new TextField();
+		passwordText.setInputType( "password" );
 		passwordText.setLabel("Password");
+		passwordText.setAllowBlank(true);
 		fpanel1.add(passwordText);
 
 		cubeText = new TextField();
