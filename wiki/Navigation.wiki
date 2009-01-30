@@ -1,0 +1,6 @@
+#sidebar TableOfContents
+* [Goals PAT Project Goals]
+* [BuildFromSVN Build from SVN]
+    * [MavenGoals Maven Build Goals]
+* [Architecture PAT Architecture]
+* [Lifecycle Usage/Lifecycle]
