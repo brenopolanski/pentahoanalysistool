@@ -1,6 +1,4 @@
-#summary Maven Goals that can be used to build PAT
-
-= Introduction =
+* Introduction *
 
 The project is maven based. Either the maven plug in for eclipse or the stand alone can be used to build it with the following goals.
 
