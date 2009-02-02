@@ -49,7 +49,7 @@ public class DiscoveryServlet extends AbstractServlet implements
 		return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 	}
 	
-	public List<String> getDrivers() {
+	public String[][] getDrivers() {
 		return this.discoveryService.getDrivers();
 	}
 }
