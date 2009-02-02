@@ -28,4 +28,7 @@ public interface DiscoveryService extends Service {
 	@Secured ({"ROLE_USER"})
 	public StringTree getMembers(String userId, String sessionId,
 			String dimensionName) throws OlapException;
+	
+	@Secured ({"ROLE_USER"})
+	public List<String> getDrivers();
 }

@@ -1,6 +1,8 @@
 package org.pentaho.pat.rpc;
 
 
+import java.util.List;
+
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.pentaho.pat.client.util.StringTree;
@@ -14,6 +16,12 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface Discovery extends RemoteService {
 
+	/**
+	 * Fetches a list of JDBC drivers available for use.
+	 * @return A list of java JDBC driver names.
+	 */
+	public List<String> getDrivers();
+	
 	/**
 	 * Returns a list of all available dimension names on
 	 * a given axis.

@@ -48,4 +48,8 @@ public class DiscoveryServlet extends AbstractServlet implements
 	public StringTree getMembers(String sessionId, String dimensionName) throws OlapException {
 		return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 	}
+	
+	public List<String> getDrivers() {
+		return this.discoveryService.getDrivers();
+	}
 }

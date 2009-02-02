@@ -18,6 +18,7 @@ import org.pentaho.pat.client.util.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Simple service implementation as a Spring bean.
@@ -47,6 +48,10 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 	
 	
+	public List<String> getDrivers() {
+		// TODO implement this.
+		return null;
+	}
 	
 	
 	public List<String> getCubes(String userId, String sessionId) {
