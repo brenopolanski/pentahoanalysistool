@@ -1,5 +1,10 @@
 package org.pentaho.pat.test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -8,7 +13,7 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.server.services.SessionService;
 
 public class TestContext extends TestCase {
-
+	
 	private static boolean IS_INIT_DONE = false;
 	
 	private static Properties testProps = new Properties();
@@ -19,6 +24,19 @@ public class TestContext extends TestCase {
 			try {
 				// Load test context properties.
 				testProps.loadFromXML( TestContext.class.getResourceAsStream("test.properties.xml") );
+				
+				// Load the test SQL structure
+				String sql = slurp(TestContext.class.getResourceAsStream("sampledata.sql"));
+				
+				// First, create the in-memory instance
+				Class.forName("org.hsqldb.jdbcDriver");
+				Connection c = DriverManager.getConnection(getTestProperty("context.database"), 
+						getTestProperty("context.username"), getTestProperty("context.password"));
+				
+				Statement stm =  c.createStatement();
+				stm.execute(sql);
+				stm.close();
+				c.close();
 			
 				IS_INIT_DONE = true;
 			} catch (Exception e) {
@@ -29,9 +47,6 @@ public class TestContext extends TestCase {
 	
 	protected String getTestProperty(String key) 
 	{
-		if (!IS_INIT_DONE)
-			throw new RuntimeException("You can't use the context properties unless you initialize a test context first.");
-			
 		return testProps.getProperty(key);
 	}
 	
@@ -41,16 +56,21 @@ public class TestContext extends TestCase {
 		if (!IS_INIT_DONE)
 			throw new RuntimeException("You can't use the context properties unless you initialize a test context first.");
 		
-		String url = getTestProperty("olap4j.jdbc.url");
-		url = url.replace("{mondrian.jdbc.url}", getTestProperty("mondrian.jdbc.url"));
-		url = url.replace("{mondrian.catalog}", getTestProperty("mondrian.catalog"));
-		url = url.replace("{mondrian.jdbc.driver}", getTestProperty("mondrian.jdbc.driver"));
-		
 		try {
-			service.createConnection(userId, sessionId, getTestProperty("olap4j.driver"), url, null, null);
+			service.createConnection(userId, sessionId, getTestProperty("olap4j.driver"), getTestProperty("mondrian.url"), null, null);
 		} catch (OlapException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static String slurp (InputStream in) throws IOException {
+	    StringBuffer out = new StringBuffer();
+	    byte[] b = new byte[4096];
+	    for (int n; (n = in.read(b)) != -1;) {
+	        out.append(new String(b, 0, n));
+	    }
+	    return out.toString();
+	}
+
 	
 }

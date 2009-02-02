@@ -2,11 +2,22 @@
 
 <properties>
 
-	<entry key="olap4j.driver">mondrian.olap4j.MondrianOlap4jDriver</entry>
-	<entry key="olap4j.jdbc.url">jdbc:mondrian:Jdbc={mondrian.jdbc.url};Catalog={mondrian.catalog};JdbcDrivers={mondrian.jdbc.driver}</entry>
+	<!-- 
+		Defines what URL will be used to create a testing Olap4j connection.
+	 -->
+	<entry key="mondrian.url">jdbc:mondrian:Jdbc=jdbc:hsqldb:mem:pat_test;Catalog=utils\SampleData.mondrian.xml;JdbcDrivers=org.hsqldb.jdbcDriver</entry>
 	
-	<entry key="mondrian.catalog">D:/MesDocuments/workspaces/pat/pat/utils/SampleData.mondrian.xml</entry>
-	<entry key="mondrian.jdbc.driver">org.hsqldb.jdbcDriver</entry>
-	<entry key="mondrian.jdbc.url">jdbc:hsqldb:file:D:\MesDocuments\workspaces\pat\pat\utils\hsql_data\sampledata?user=sa</entry>
+	<!-- 
+		Defines which Olap4j driver to use. Better keep it as in-process...
+	 -->
+	<entry key="olap4j.driver">mondrian.olap4j.MondrianOlap4jDriver</entry>
+	
+	<!-- 
+		Defines where to initialize the testing database. Has to be the same place as defined
+		in mondrian.url.
+	 -->
+	<entry key="context.database">jdbc:hsqldb:mem:pat_test</entry>
+	<entry key="context.username">sa</entry>
+	<entry key="context.password"></entry>
 	
 </properties>
