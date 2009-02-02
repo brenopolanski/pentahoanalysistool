@@ -236,7 +236,7 @@ public class SessionServiceImpl extends AbstractService
 				.get(Constants.CURRENT_CUBE_NAME); 
 			
 			if (cubeName==null)
-				return null;
+				throw new OlapException("You asked to create a query but there was no cube previously selected.");
 			
 			String generatedId = String.valueOf(UUID.randomUUID());
 			
