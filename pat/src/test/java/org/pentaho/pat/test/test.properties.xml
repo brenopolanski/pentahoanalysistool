@@ -5,7 +5,7 @@
 	<!-- 
 		Defines what URL will be used to create a testing Olap4j connection.
 	 -->
-	<entry key="mondrian.url">jdbc:mondrian:Jdbc=jdbc:hsqldb:mem:pat_test;Catalog=utils\SampleData.mondrian.xml;JdbcDrivers=org.hsqldb.jdbcDriver</entry>
+	<entry key="mondrian.url">jdbc:mondrian:Jdbc=jdbc:hsqldb:mem:pat_test;Catalog=src\test\java\org\pentaho\pat\test\SampleData.mondrian.xml;JdbcDrivers=org.hsqldb.jdbcDriver</entry>
 	
 	<!-- 
 		Defines which Olap4j driver to use. Better keep it as in-process...
