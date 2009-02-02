@@ -98,7 +98,14 @@ public class DiscoveryServiceImpl extends AbstractService
 		String currentQuery = this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
-	    List<QueryDimension> dimList = query.getAxes().get(axis).getDimensions();
+		
+		// The UNUSED axis is not used by default...
+		Axis targetAxis = null;
+	    if (!axis.name().equalsIgnoreCase(Axis.UNUSED.name())) { //$NON-NLS-1$
+	      targetAxis = axis;
+	    }
+		
+	    List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
 	    List<String> dimNames = new ArrayList<String>();
 	    for (QueryDimension dim : dimList) {
 	      dimNames.add(dim.getName());
