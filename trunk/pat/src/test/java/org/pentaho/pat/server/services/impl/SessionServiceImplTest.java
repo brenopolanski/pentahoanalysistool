@@ -131,21 +131,25 @@ public class SessionServiceImplTest extends TestContext {
 	
 	
 	
-//	public void testConnection() throws Exception 
-//	{
-//		initTest();
-//		
-//		// Create a single session.
-//		String sessionId = this.sessionService.createNewSession("user");
-//		
-//		// Create a connection.
-//		createConnection(this.sessionService, "user", sessionId);
-//		
-//		// Close this session.
-//		this.sessionService.releaseSession("user", sessionId);
-//		
-//		finishTest();
-//	}
+	public void testConnection() throws Exception 
+	{
+		initTest();
+		
+		// Create a single session.
+		String sessionId = this.sessionService.createNewSession("user");
+		
+		// Create a connection.
+		createConnection(this.sessionService, "user", sessionId);
+		
+		// Check some basic stuff to test the connection.
+		assertEquals("LOCALDB", this.sessionService.getConnection("user", sessionId).getCatalogs().get(0).getName());
+		assertNotNull(this.sessionService.getConnection("user", sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on ROWS from [Quadrant Analysis]"));
+		
+		// Close this session.
+		this.sessionService.releaseSession("user", sessionId);
+		
+		finishTest();
+	}
 	
 	
 	
