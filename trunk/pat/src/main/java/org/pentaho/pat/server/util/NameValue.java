@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.test;
+package org.pentaho.pat.server.util;
 
 import java.io.Serializable;
 
