@@ -40,7 +40,7 @@
         <security:password-encoder hash="md5" />
         <security:user-service>
             <security:user name="admin" password="369389d19e24204b4927e30dd7c39efc" authorities="ROLE_USER,ROLE_ADMIN" />
-            <security:user name="user" password="847c6f184197dc1545d9891d42814a7d" authorities="ROLE_USER" />
+            <!--security:user name="user" password="847c6f184197dc1545d9891d42814a7d" authorities="ROLE_USER" /-->
         </security:user-service>
         
     </security:authentication-provider>

@@ -29,7 +29,7 @@ public class TestContext extends TestCase {
 				String sql = slurp(TestContext.class.getResourceAsStream("sampledata.sql"));
 				
 				// First, create the in-memory instance
-				Class.forName("org.hsqldb.jdbcDriver");
+				Class.forName(getTestProperty("context.driver"));
 				Connection c = DriverManager.getConnection(getTestProperty("context.database"), 
 						getTestProperty("context.username"), getTestProperty("context.password"));
 				

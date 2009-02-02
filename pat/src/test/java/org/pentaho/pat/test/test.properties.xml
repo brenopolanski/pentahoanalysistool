@@ -16,6 +16,7 @@
 		Defines where to initialize the testing database. Has to be the same place as defined
 		in mondrian.url.
 	 -->
+	<entry key="context.driver">org.hsqldb.jdbcDriver</entry> 
 	<entry key="context.database">jdbc:hsqldb:mem:pat_test</entry>
 	<entry key="context.username">sa</entry>
 	<entry key="context.password"></entry>
