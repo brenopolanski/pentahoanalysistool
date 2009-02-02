@@ -131,21 +131,21 @@ public class SessionServiceImplTest extends TestContext {
 	
 	
 	
-	public void testConnection() throws Exception 
-	{
-		initTest();
-		
-		// Create a single session.
-		String sessionId = this.sessionService.createNewSession("user");
-		
-		// Create a connection.
-		createConnection(this.sessionService, "user", sessionId);
-		
-		// Close this session.
-		this.sessionService.releaseSession("user", sessionId);
-		
-		finishTest();
-	}
+//	public void testConnection() throws Exception 
+//	{
+//		initTest();
+//		
+//		// Create a single session.
+//		String sessionId = this.sessionService.createNewSession("user");
+//		
+//		// Create a connection.
+//		createConnection(this.sessionService, "user", sessionId);
+//		
+//		// Close this session.
+//		this.sessionService.releaseSession("user", sessionId);
+//		
+//		finishTest();
+//	}
 	
 	
 	
