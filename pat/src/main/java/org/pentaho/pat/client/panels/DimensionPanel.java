@@ -209,7 +209,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 						Store store = grid.getStore();
 						store.remove(record);
 						store.commitChanges();
-
+						
 						rowStore.add(record);
 						rowStore.commitChanges();
 						moveDimension(dimension, "ROWS");
@@ -396,11 +396,12 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
-					for (int i = 0; i < dimStrs.length; i++) {
-						
-						getDimensionTree(dimStrs[i], rowNode);
-
-					}
+					
+						if (dimStrs.length>0){
+						int i = dimStrs.length;
+						getDimensionTree(dimStrs[i-1], rowNode);
+						}
+					
 				}
 
 				public void onFailure(Throwable caught) {
@@ -415,10 +416,12 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
-					for (int i = 0; i < dimStrs.length; i++) {
+					
+						if (dimStrs.length>0){
+						int i = dimStrs.length;
+						getDimensionTree(dimStrs[i-1], columnNode);
+						}
 						
-						getDimensionTree(dimStrs[i], columnNode);
-					}
 				}
 
 				public void onFailure(Throwable caught) {
