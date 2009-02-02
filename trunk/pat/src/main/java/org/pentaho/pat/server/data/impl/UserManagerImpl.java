@@ -2,9 +2,7 @@ package org.pentaho.pat.server.data.impl;
 
 import org.pentaho.pat.server.data.UserManager;
 import org.pentaho.pat.server.data.pojo.Group;
-import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.data.pojo.User;
-import org.springframework.security.context.SecurityContextHolder;
 
 public class UserManagerImpl implements UserManager {
 
