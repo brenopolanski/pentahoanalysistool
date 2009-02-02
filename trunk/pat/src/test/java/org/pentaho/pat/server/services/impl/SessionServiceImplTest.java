@@ -1,5 +1,7 @@
 package org.pentaho.pat.server.services.impl;
 
+import org.olap4j.OlapException;
+import org.pentaho.pat.Constants;
 import org.pentaho.pat.test.TestContext;
 
 public class SessionServiceImplTest extends TestContext {
@@ -145,6 +147,10 @@ public class SessionServiceImplTest extends TestContext {
 		assertEquals("LOCALDB", this.sessionService.getConnection("user", sessionId).getCatalogs().get(0).getName());
 		assertNotNull(this.sessionService.getConnection("user", sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on ROWS from [Quadrant Analysis]"));
 		
+		// Tests the destruction of the connection
+		this.sessionService.releaseConnection("user", sessionId);
+		assertNull(this.sessionService.getConnection("user", sessionId));
+		
 		// Close this session.
 		this.sessionService.releaseSession("user", sessionId);
 		
@@ -158,11 +164,63 @@ public class SessionServiceImplTest extends TestContext {
 	
 	
 	
+	public void testCreateQuery() throws Exception 
+	{
+		
+		initTest();
+		
+		// Create a single session.
+		String sessionId = this.sessionService.createNewSession("user");
+		
+		// Create a connection.
+		createConnection(this.sessionService, "user", sessionId);
+		
+		// Creating a query without selecting a cube should fail
+		try {
+			this.sessionService.createNewQuery("user", sessionId);
+			fail();
+		} catch (OlapException e) {
+			if (!e.getMessage().equals("You asked to create a query but there was no cube previously selected."))
+				fail();
+		}
+		
+		// Create a query object.
+		String cubeName = this.discoveryService.getCubes("user", sessionId).get(0);
+		assertNotNull(cubeName);
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cubeName);
+		String queryId = this.sessionService.createNewQuery("user", sessionId);
+		assertNotNull(queryId);
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId);
+		assertNotNull(this.sessionService.getQuery("user", sessionId, queryId));
+		assertEquals(1, this.sessionService.getQueries("user", sessionId).size());
+		
+		
+		// Test the release of a query.
+		this.sessionService.releaseQuery("user", sessionId, queryId);
+		assertNull(this.sessionService.getQuery("user", sessionId, queryId));
+		assertEquals(0, this.sessionService.getQueries("user", sessionId).size());
+		
+		
+		// Close this session.
+		this.sessionService.releaseSession("user", sessionId);
+		
+		finishTest();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private void initTest() {
 		initTestContext();
 		this.sessionService = new SessionServiceImpl();
 		this.discoveryService = new DiscoveryServiceStub();
 		this.sessionService.setDiscoveryService(this.discoveryService);
+		this.discoveryService.setSessionService(this.sessionService);
 	}
 	
 	
