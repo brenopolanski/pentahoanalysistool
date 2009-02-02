@@ -6,6 +6,7 @@ import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.OlapPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
+import org.pentaho.pat.client.test.AccordionPanel;
 import org.pentaho.pat.client.util.MessageFactory;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -13,8 +14,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
 import com.gwtext.client.core.Margins;
+import com.gwtext.client.core.Position;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.widgets.Panel;
+import com.gwtext.client.widgets.TabPanel;
 import com.gwtext.client.widgets.Viewport;
 import com.gwtext.client.widgets.layout.BorderLayout;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
@@ -72,7 +75,13 @@ public class Pat implements EntryPoint {
 		dimensionPanel.setTitle(MessageFactory.getInstance().dimensionPanel());
 		dimensionPanel.setWidth(250);
 		dimensionPanel.setCollapsible(true);
-
+		
+		AccordionPanel accp = new AccordionPanel();
+		accp.setTitle("Dimensions and Measures");
+		accp.setWidth(250);
+		accp.setCollapsible(true);
+		
+		
 		controlBarPanel = new ControlBarPanel();
 		controlBarPanel.setWidth("100%");
 		controlBarPanel.setAutoHeight(true);
@@ -118,7 +127,17 @@ public class Pat implements EntryPoint {
 		northLayoutData.setSplit(true);
 
 		mainPanel.add(olapPanel, centerLayoutData);
-		mainPanel.add(dimensionPanel, westLayoutData);
+		TabPanel tabs = new TabPanel();
+		tabs.setTabPosition(Position.TOP);  
+		tabs.setPaddings(10);
+		tabs.setWidth(250);
+		tabs.setCollapsible(true);
+		tabs.add(dimensionPanel);
+		tabs.add(accp);
+		
+		//mainPanel.add(dimensionPanel, westLayoutData);
+		mainPanel.add(tabs, westLayoutData);
+		
 		mainPanel.add(northPanel, northLayoutData);
 		mainPanel.add(drillPanel, southLayoutData);
 
