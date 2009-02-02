@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.pentaho.pat.client.test;
+package org.pentaho.pat.server.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -10,8 +10,8 @@ import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.pat.client.test.NameValue;
-import org.pentaho.pat.client.test.ResolverUtil;
+import org.pentaho.pat.server.util.NameValue;
+import org.pentaho.pat.server.util.ResolverUtil;
 
 
 
