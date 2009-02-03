@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+
+
+
+
+	<!--  This is the old legacy stuff... -->
+	<bean id="legacyServlet" class="org.pentaho.pat.server.services.Olap4JServiceImpl" />
+	
+	
+	
+	
+	
+	
+	
+	<!-- ############################################################################# -->
+	<!-- ########  SERVLET LAYER ##################################################### -->
+	<!-- ############################################################################# -->
+	
+	
+	<bean id="discoveryServlet" class="org.pentaho.pat.server.servlet.DiscoveryServlet">
+		<property name="discoveryService" ref="discoveryService" />
+	</bean>
+	
+	<bean id="queryServlet" class="org.pentaho.pat.server.servlet.QueryServlet">
+		<property name="queryService" ref="queryService" />
+	</bean>
+	
+	<bean id="sessionServlet" class="org.pentaho.pat.server.servlet.SessionServlet">
+		<property name="sessionService" ref="sessionService" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	<!-- ############################################################################# -->
+	<!-- ########  SERVICE LAYER ##################################################### -->
+	<!-- ############################################################################# -->
+	
+	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+	</bean>
+	
+	<bean id="queryService" class="org.pentaho.pat.server.services.impl.QueryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+		<property name="discoveryService" ref="discoveryService" />
+	</bean>
+	
+	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
+		<property name="discoveryService" ref="discoveryService" />
+	</bean>
+	
+	
+
+	
+</beans>
