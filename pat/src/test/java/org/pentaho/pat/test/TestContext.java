@@ -1,14 +1,19 @@
 package org.pentaho.pat.test;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Properties;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
 import junit.framework.TestCase;
 
+import org.hsqldb.jdbc.jdbcDataSource;
 import org.olap4j.OlapException;
 import org.pentaho.pat.server.services.SessionService;
 
@@ -22,22 +27,31 @@ public class TestContext extends TestCase {
 		if (!IS_INIT_DONE)
 		{
 			try {
+				
 				// Load test context properties.
 				testProps.loadFromXML( TestContext.class.getResourceAsStream("test.properties.xml") );
 				
-				// Load the test SQL structure
-				String sql = slurp(TestContext.class.getResourceAsStream("sampledata.sql"));
 				
-				// First, create the in-memory instance
-				Class.forName(getTestProperty("context.driver"));
-				Connection c = DriverManager.getConnection(getTestProperty("context.database"), 
-						getTestProperty("context.username"), getTestProperty("context.password"));
+				// Create the datasource
+				jdbcDataSource ds = new jdbcDataSource();
+				ds.setDatabase(getTestProperty("context.database"));
+				ds.setUser(getTestProperty("context.username"));
+				ds.setPassword(getTestProperty("context.password"));
 				
+				// Bind the datasource in the directory
+				Context ctx = new InitialContext();
+				ctx.bind(getTestProperty("context.jndi"), ds);
+				
+				// Create the schema
+				Connection c = ds.getConnection();
 				Statement stm =  c.createStatement();
-				stm.execute(sql);
+				slurp(stm, TestContext.class.getResourceAsStream("sampledata.sql"));
+				stm.executeBatch();
+				stm.clearBatch();
 				stm.close();
+				c.commit();
 				c.close();
-			
+				
 				IS_INIT_DONE = true;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -63,13 +77,19 @@ public class TestContext extends TestCase {
 		}
 	}
 	
-	public static String slurp (InputStream in) throws IOException {
-	    StringBuffer out = new StringBuffer();
-	    byte[] b = new byte[4096];
-	    for (int n; (n = in.read(b)) != -1;) {
-	        out.append(new String(b, 0, n));
+	private void slurp (Statement stm, InputStream stream) throws Exception 
+	{
+		DataInputStream in = new DataInputStream(stream);
+	    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+	    
+	    String strLine;
+	    
+	    while ((strLine = br.readLine()) != null)   {
+	    	//stm.addBatch(strLine);
+	    	stm.execute(strLine);
 	    }
-	    return out.toString();
+	    
+	    in.close();
 	}
 
 	
