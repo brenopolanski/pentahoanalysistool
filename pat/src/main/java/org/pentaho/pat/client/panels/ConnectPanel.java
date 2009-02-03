@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.panels;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Label;
 import com.gwtext.client.core.Connection;
 import com.gwtext.client.core.EventObject;
@@ -168,7 +169,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		uploadBtn.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(Button button, EventObject e) {
-				fpanel1.getForm().submit("/schemaupload",null,Connection.POST,"... loading",false);
+				// TODO thats not a nice way to tell PAT the servlet
+				fpanel1.getForm().submit("./schemaupload",null,Connection.POST,"... loading",false);
 				
 				
 			}
@@ -204,8 +206,12 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		
 		uploadlabel = new Label("");
 		fpanel1.add(uploadlabel);
+		 
+		 Hidden login = new Hidden();
+         login.setName("mode");
+         login.setValue("login");
+        fpanel1.add(login);
 
-		
 		
 		
 		connectBtn = new Button(MessageFactory.getInstance().connect());
