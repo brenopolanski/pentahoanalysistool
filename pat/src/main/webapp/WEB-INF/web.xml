@@ -48,8 +48,9 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/olap4j</url-pattern>
+    <url-pattern>/schemaupload</url-pattern>
   </servlet-mapping>
+  
   <!--inserted by gwt-maven-->
   <servlet-mapping>
     <servlet-name>org.pentaho.pat.server.services.Olap4JServiceImpl/org.pentaho.pat.Pat/olap4j</servlet-name>

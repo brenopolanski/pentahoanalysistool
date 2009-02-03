@@ -2,17 +2,20 @@ package org.pentaho.pat.client.panels;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.gwtext.client.core.Connection;
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.core.Position;  
 import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.Window;
 import com.gwtext.client.widgets.event.ButtonListenerAdapter;
+import com.gwtext.client.widgets.form.Form;
 import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.TextArea;
 import com.gwtext.client.widgets.form.TextField;
 import com.gwtext.client.widgets.form.ComboBox;  
 import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
+import com.gwtext.client.widgets.form.event.FormListener;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.TabPanel;
 
@@ -91,7 +94,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 
 		this.setWidth(500);
 		this.setShadow(true);
-		Panel fpanel1= new FormPanel();
+		final FormPanel fpanel1= new FormPanel();
+		fpanel1.setFileUpload(true);
 		fpanel1.setHeight(250);
 		fpanel1.setPaddings(5);
 		
@@ -152,17 +156,44 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		passwordText.setAllowBlank(true);
 		fpanel1.add(passwordText);
 
-		cubeText = new TextField();
-		cubeText.setLabel("Schema");
+		
+		cubeText = new TextField("Schema","file");
 		cubeText.setInputType("file");
+		
 		fpanel1.add(cubeText);
-
+		//fpanel1.add(new com.gwtext.client.widgets.form.Label("http://source.pentaho.org/svnroot/bi-platform-v2/trunk/bi-platform-sample-solution/steel-wheels/analysis/steelwheels.mondrian.xml"));
+		
+		fpanel1.addFormListener(new FormListener() {
+			public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
+				
+				com.google.gwt.user.client.Window.alert("actioncomplete:" +responseText);
+			};
+			public void onActionFailed(Form form, int httpStatus,
+					String responseText) {
+				// TODO Auto-generated method stub
+				com.google.gwt.user.client.Window.alert("onactionfailed:" +responseText);
+				
+			}
+			
+			public boolean doBeforeAction(Form form) {
+				// TODO Auto-generated method stub
+				com.google.gwt.user.client.Window.alert("dobefore:" +form.findField("file").getValueAsString());
+				return true;
+			}
+		});
+		
+		
 		connectBtn = new Button(MessageFactory.getInstance().connect());
 		connectBtn.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(Button button, EventObject e) {
 				if (connectBtn.getText().equals(
 						MessageFactory.getInstance().connect())) {
+					
+					
+					fpanel1.getForm().submit("/schemaupload",null,Connection.POST,"... loading",false);
+					
+					
 					String cStr = "jdbc:mondrian:Jdbc=";
 							
 							if (supportedDriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
@@ -188,7 +219,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
 
 					connect(cStr);
-					//debuglabel.setText(cStr);
+					debuglabel.setText(cStr);
 
 				} else if (connectBtn.getText().equals(
 						MessageFactory.getInstance().disconnect())) {
@@ -197,8 +228,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 			}
 		});
 		fpanel1.add(connectBtn);
-		//debuglabel = new Label("");
-		//fpanel1.add(debuglabel);
+		debuglabel = new Label("");
+		fpanel1.add(debuglabel);
 		
 		
 		supportedJDBC.add(fpanel1);
@@ -247,6 +278,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		connectBtn2.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(Button button, EventObject e) {
+				
 				if (connectBtn2.getText().equals(
 						MessageFactory.getInstance().connect())) {
 					String cStr = "jdbc:mondrian:Jdbc="

@@ -21,7 +21,6 @@
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<goal>test</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -38,7 +37,8 @@
 					<debugSuspend>false</debugSuspend>
 				</configuration>
 			</plugin>
-		<!-- 	<plugin>
+			
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -53,8 +53,8 @@
 									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
 								<copy
-									file="${basedir}/src/main/java/org/pentaho/pat/server/log4j.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/log4j.xml" />
+									file="${basedir}/src/main/resources/log4j.xml"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -62,7 +62,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin> 
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -99,6 +99,17 @@
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>7.0.0.pre5</version>
+				<configuration>
+				<webAppConfig>
+					<contextPath>/</contextPath>
+					<defaultsDescriptor>src/main/servers/jetty/dev/webdefault.xml</defaultsDescriptor>
+				</webAppConfig>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -352,6 +363,16 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
 		</dependency>
 		
 	</dependencies>
