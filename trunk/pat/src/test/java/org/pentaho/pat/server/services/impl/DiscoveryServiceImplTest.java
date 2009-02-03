@@ -2,6 +2,7 @@ package org.pentaho.pat.server.services.impl;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.Constants;
@@ -89,7 +90,7 @@ public class DiscoveryServiceImplTest extends TestContext {
 		String[] currentList = new String[4];
 		dims.toArray(currentList);
 		//assert(refDims, currentList);
-		org.junit.Assert.assertArrayEquals(refDims, currentList);
+		Assert.assertArrayEquals(refDims, currentList);
 		
 		// Release the session.
 		this.sessionService.releaseSession("user", sessionId);
@@ -118,7 +119,9 @@ public class DiscoveryServiceImplTest extends TestContext {
 		
 		StringTree members = this.discoveryService.getMembers("user", sessionId, "Region");
 		assertNotNull(members);
-		
+		assertEquals("Region", members.getValue());
+		assertEquals(1, members.getChildren().size());
+		assertEquals(4, members.getChildren().get(0).getChildren().size());
 		
 		// Release the session.
 		this.sessionService.releaseSession("user", sessionId);
