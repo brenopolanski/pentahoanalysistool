@@ -20,6 +20,11 @@
 		<property name="service" ref="queryServlet" />
 		<property name="serviceInterface" value="org.pentaho.pat.rpc.Query" />
 	</bean>
+	
+	<bean id="fileUploadController"
+		class="org.pentaho.pat.server.servlet.FileUploadController">
+		<property name="basedir" value="/schema_temp/" />
+	</bean>
 
 	<bean id="httpInvokerLegacyServlet"
 		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
@@ -32,7 +37,7 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-				<prop key="/olap4j">httpInvokerLegacyServlet</prop>
+				<prop key="/schemaupload">fileUploadController</prop>
 				<prop key="/discovery.rpc">httpInvokerDiscoveryServlet</prop>
 				<prop key="/session.rpc">httpInvokerSessionServlet</prop>
 				<prop key="/query.rpc">httpInvokerQueryServlet</prop>
