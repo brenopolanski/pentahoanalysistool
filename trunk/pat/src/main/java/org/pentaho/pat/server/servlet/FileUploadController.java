@@ -48,16 +48,22 @@ public class FileUploadController extends AbstractController {
 			byte[] data = item.get();
 			
 			fn = "" + new Date().getTime();
+			if (basedir.mkdir()) System.out.print("Created Schema_temp Directory\n");
 			FileWriter fw = new FileWriter(new File(basedir,fn));
 			BufferedWriter out = new BufferedWriter(fw);
+			
 			out.write(new String(data));
 			out.close();
-			arg1.getOutputStream().println(fn);
+			//arg1.getOutputStream().println(fn);
 			System.out.print("Uploaded Schema file:" + fn);
+			arg1.getWriter().print(fn);
 			}
 		}
 		arg1.setStatus(HttpServletResponse.SC_OK);
-		arg1.getOutputStream().flush();
+		
+		
+		//arg1.getOutputStream().flush();
+		arg1.getWriter().flush();
 		return null;
 	}
 
