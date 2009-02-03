@@ -30,6 +30,7 @@ import org.pentaho.pat.client.util.ServiceFactory;
 import com.gwtext.client.data.Record;
 import com.gwtext.client.data.SimpleStore;  
 import com.gwtext.client.data.Store;  
+import com.gwtext.client.data.XmlReader;
 
 public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	FormPanel formPanel;
@@ -45,9 +46,11 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	TextField databaseText;
 	Button connectBtn2;
 	Button connectBtn;
+	Button uploadBtn;
 	ComboBox supportedDriverCombo;
 	ComboBox DriverCombo;
 	Label debuglabel;
+	Label uploadlabel;
 	
 	private TabPanel tabs;
 	private Panel supportedJDBC;
@@ -55,7 +58,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	private Panel xmla;
 	
 
-
+	private String schemafilename;
 	static String queryTypeGroup = "QUERY_TYPE"; //$NON-NLS-1$
 	boolean connectionEstablished = false;
 	ConnectionListenerCollection connectionListeners;
@@ -159,40 +162,59 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		
 		cubeText = new TextField("Schema","file");
 		cubeText.setInputType("file");
-		
 		fpanel1.add(cubeText);
-		//fpanel1.add(new com.gwtext.client.widgets.form.Label("http://source.pentaho.org/svnroot/bi-platform-v2/trunk/bi-platform-sample-solution/steel-wheels/analysis/steelwheels.mondrian.xml"));
+		
+		uploadBtn = new Button("Upload Schema");
+		uploadBtn.addListener(new ButtonListenerAdapter() {
+			@Override
+			public void onClick(Button button, EventObject e) {
+				fpanel1.getForm().submit("/schemaupload",null,Connection.POST,"... loading",false);
+				
+				
+			}
+		});
+		fpanel1.add(uploadBtn);
 		
 		fpanel1.addFormListener(new FormListener() {
 			public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
 				
-				com.google.gwt.user.client.Window.alert("actioncomplete:" +responseText);
+				//com.google.gwt.user.client.Window.alert("actioncomplete:" +responseText);
+				uploadlabel.setText("Schema:" + cubeText.getText());
+				connectBtn.enable();
+				uploadBtn.disable();
+				//
+				String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
+				setSchemafilename("/schema_temp/"+tmp);
+				
+				
 			};
 			public void onActionFailed(Form form, int httpStatus,
 					String responseText) {
 				// TODO Auto-generated method stub
-				com.google.gwt.user.client.Window.alert("onactionfailed:" +responseText);
+				//com.google.gwt.user.client.Window.alert("onactionfailed:" +responseText);
 				
 			}
 			
 			public boolean doBeforeAction(Form form) {
 				// TODO Auto-generated method stub
-				com.google.gwt.user.client.Window.alert("dobefore:" +form.findField("file").getValueAsString());
+			//	com.google.gwt.user.client.Window.alert("dobefore:" +form.findField("file").getValueAsString());
 				return true;
 			}
 		});
 		
+		uploadlabel = new Label("");
+		fpanel1.add(uploadlabel);
+
+		
+		
 		
 		connectBtn = new Button(MessageFactory.getInstance().connect());
+		connectBtn.disable();
 		connectBtn.addListener(new ButtonListenerAdapter() {
 			@Override
 			public void onClick(Button button, EventObject e) {
 				if (connectBtn.getText().equals(
 						MessageFactory.getInstance().connect())) {
-					
-					
-					fpanel1.getForm().submit("/schemaupload",null,Connection.POST,"... loading",false);
-					
 					
 					String cStr = "jdbc:mondrian:Jdbc=";
 							
@@ -215,11 +237,11 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 									
 							}
 							
-							cStr = cStr + ";Catalog="  + cubeText.getText() 
+							cStr = cStr + ";Catalog="  + getSchemafilename()
 							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
 
 					connect(cStr);
-					debuglabel.setText(cStr);
+					//debuglabel.setText(cStr);
 
 				} else if (connectBtn.getText().equals(
 						MessageFactory.getInstance().disconnect())) {
@@ -228,8 +250,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 			}
 		});
 		fpanel1.add(connectBtn);
-		debuglabel = new Label("");
-		fpanel1.add(debuglabel);
+		//debuglabel = new Label("");
+		//fpanel1.add(debuglabel);
 		
 		
 		supportedJDBC.add(fpanel1);
@@ -524,5 +546,13 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	 */
 	private void setDatabaseText(String databaseText) {
 		this.databaseText.setValue(databaseText);
+	}
+
+	public String getSchemafilename() {
+		return schemafilename;
+	}
+
+	public void setSchemafilename(String schemafilename) {
+		this.schemafilename = schemafilename;
 	}
 }
