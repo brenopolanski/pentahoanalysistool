@@ -1,6 +1,10 @@
 package org.pentaho.pat.server.services.impl;
 
+import java.io.IOException;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,13 +22,18 @@ import org.pentaho.pat.client.util.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
+import org.springframework.jca.context.SpringContextResourceAdapter;
 
 /**
  * Simple service implementation as a Spring bean.
  * @author Luc Boudreau
  */
 public class DiscoveryServiceImpl extends AbstractService 
-	implements DiscoveryService
+	implements DiscoveryService, ApplicationContextAware
 {
 
 	private SessionService sessionService = null;
@@ -32,6 +41,10 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 
 	Logger log = Logger.getLogger(this.getClass());
+
+
+
+	private ApplicationContext applicationContext;
 
 
 	
@@ -44,12 +57,37 @@ public class DiscoveryServiceImpl extends AbstractService
 	public void afterPropertiesSet() throws Exception {
 		if (this.sessionService == null)
 			throw new Exception("A sessionService is required.");
+		if (this.applicationContext == null)
+			throw new Exception("A applicationContext is required.");
 	}
 	
 	
-	public String[][] getDrivers() {
-		// TODO implement this.
-		return null;
+	public String[] getDrivers() 
+	{
+		try {
+			
+			Resource[] jars = applicationContext.getResources("/**/jdbc/*.jar");
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		
+		// An enumeration is a very unpractical thing, so let's convert it to a List.
+		// We can't even know it's size... what a shameful object.
+		Enumeration<Driver> driversEnum = DriverManager.getDrivers();
+		List<Driver> drivers = new ArrayList<Driver>();
+		while (driversEnum.hasMoreElements()) 
+			{ drivers.add(driversEnum.nextElement()); }
+		
+		// Now we can instanciate the string array properly.
+		String[] result = new String[drivers.size()];
+		
+		for (int cpt = 0; cpt < drivers.size(); cpt++) {
+			result[cpt] = drivers.get(cpt).getClass().getName();
+		}
+		
+		return result;
 	}
 	
 	
@@ -148,5 +186,12 @@ public class DiscoveryServiceImpl extends AbstractService
 
 	    return result;
 		
+	}
+
+
+
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }

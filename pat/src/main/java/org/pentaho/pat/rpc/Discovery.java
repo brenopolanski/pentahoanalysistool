@@ -18,7 +18,7 @@ public interface Discovery extends RemoteService {
 	 * Fetches a list of JDBC drivers available for use.
 	 * @return A list of java JDBC driver names.
 	 */
-	public String[][] getDrivers();
+	public String[] getDrivers();
 	
 	/**
 	 * Returns a list of all available dimension names on
