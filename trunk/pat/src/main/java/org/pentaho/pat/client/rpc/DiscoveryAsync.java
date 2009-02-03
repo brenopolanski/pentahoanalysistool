@@ -1,4 +1,4 @@
-package org.pentaho.pat.rpc;
+package org.pentaho.pat.client.rpc;
 
 
 import java.util.List;
