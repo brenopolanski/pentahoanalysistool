@@ -127,16 +127,16 @@ public class Pat implements EntryPoint {
 		northLayoutData.setSplit(true);
 
 		mainPanel.add(olapPanel, centerLayoutData);
-		TabPanel tabs = new TabPanel();
-		tabs.setTabPosition(Position.TOP);  
-		tabs.setPaddings(10);
-		tabs.setWidth(250);
-		tabs.setCollapsible(true);
-		tabs.add(dimensionPanel);
-		tabs.add(accp);
-		
-		//mainPanel.add(dimensionPanel, westLayoutData);
-		mainPanel.add(tabs, westLayoutData);
+//		TabPanel tabs = new TabPanel();
+//		tabs.setTabPosition(Position.TOP);  
+//		tabs.setPaddings(10);
+//		tabs.setWidth(250);
+//		tabs.setCollapsible(true);
+//		tabs.add(dimensionPanel);
+//		tabs.add(accp);
+//		
+		mainPanel.add(dimensionPanel, westLayoutData);
+//		mainPanel.add(tabs, westLayoutData);
 		
 		mainPanel.add(northPanel, northLayoutData);
 		mainPanel.add(drillPanel, southLayoutData);
