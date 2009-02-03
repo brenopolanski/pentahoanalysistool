@@ -6,11 +6,13 @@
 	
 	<!-- Legacy controller -->
 	<servlet path="/olap4j" class="org.pentaho.pat.server.services.Olap4JServiceImpl"/>
+	<servlet path="/schemaupload" class="org.pentaho.pat.server.servlet.FileUploadController" />
 	
 	<!-- Spring controllers -->
 	<servlet path="/session.rpc" class="org.pentaho.pat.server.servlet.SessionServlet"/>
 	<servlet path="/query.rpc" class="org.pentaho.pat.server.servlet.QueryServlet"/>
 	<servlet path="/discovery.rpc" class="org.pentaho.pat.server.servlet.DiscoveryServlet"/>
+	
 	
 	<inherits name="com.allen_sauer.gwt.dnd.gwt-dnd"/>
 	<inherits name="org.gwtwidgets.WidgetLibrary"/>

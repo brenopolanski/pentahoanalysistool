@@ -37,7 +37,7 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-				<prop key="/schemaupload">fileUploadController</prop>
+				<prop key="/org.pentaho.pat.Pat/schemaupload">fileUploadController</prop>
 				<prop key="/discovery.rpc">httpInvokerDiscoveryServlet</prop>
 				<prop key="/session.rpc">httpInvokerSessionServlet</prop>
 				<prop key="/query.rpc">httpInvokerQueryServlet</prop>

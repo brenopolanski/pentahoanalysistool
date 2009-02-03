@@ -48,7 +48,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/schemaupload</url-pattern>
+    <url-pattern>/org.pentaho.pat.Pat/schemaupload</url-pattern>
   </servlet-mapping>
   
   <!--inserted by gwt-maven-->
