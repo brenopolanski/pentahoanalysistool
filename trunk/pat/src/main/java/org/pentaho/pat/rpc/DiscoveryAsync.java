@@ -15,7 +15,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface DiscoveryAsync {
 	
-	public void getDrivers(AsyncCallback<String[][]> callback);
+	public void getDrivers(AsyncCallback<String[]> callback);
 
 	public void getDimensions(String sessionId, Axis axis, AsyncCallback<String []> callback) throws OlapException;
 	

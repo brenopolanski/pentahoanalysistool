@@ -30,5 +30,5 @@ public interface DiscoveryService extends Service {
 			String dimensionName) throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
-	public String[][] getDrivers();
+	public String[] getDrivers();
 }

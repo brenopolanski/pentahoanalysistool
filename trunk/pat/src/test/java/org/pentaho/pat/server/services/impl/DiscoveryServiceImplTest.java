@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.services.impl;
 
+import java.sql.DriverManager;
 import java.util.List;
 
 import org.junit.Assert;
@@ -125,6 +126,17 @@ public class DiscoveryServiceImplTest extends TestContext {
 		
 		// Release the session.
 		this.sessionService.releaseSession("user", sessionId);
+		
+		finishTest();
+	}
+	
+	
+	
+	public void testGetDrivers() throws Exception
+	{
+		initTest();
+		
+		this.discoveryService.getDrivers();
 		
 		finishTest();
 	}
