@@ -38,7 +38,7 @@
 					<debugSuspend>false</debugSuspend>
 				</configuration>
 			</plugin>
-			<plugin>
+		<!-- 	<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -52,6 +52,9 @@
 								<copy
 									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
+								<copy
+									file="${basedir}/src/main/java/org/pentaho/pat/server/log4j.xml"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/log4j.xml" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -59,7 +62,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
