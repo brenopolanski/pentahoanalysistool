@@ -1,5 +1,7 @@
 package org.pentaho.pat.client.panels;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Label;
@@ -20,6 +22,7 @@ import com.gwtext.client.widgets.form.event.FormListener;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.TabPanel;
 
+import org.apache.catalina.HttpResponse;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
@@ -180,14 +183,17 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		fpanel1.addFormListener(new FormListener() {
 			public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
 				
-				//com.google.gwt.user.client.Window.alert("actioncomplete:" +responseText);
-				uploadlabel.setText("Schema:" + cubeText.getText());
-				connectBtn.enable();
-				uploadBtn.disable();
-				//
-				String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
-				setSchemafilename("/schema_temp/"+tmp);
-				
+				if (httpStatus == HttpServletResponse.SC_OK)
+				{
+					uploadlabel.setText("Schema:" + cubeText.getText());
+					connectBtn.enable();
+					uploadBtn.disable();
+					//
+					String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
+					setSchemafilename("/schema_temp/"+tmp);
+				}
+				else
+					com.google.gwt.user.client.Window.alert("ERROR: Schema could not be uploaded");
 				
 			};
 			public void onActionFailed(Form form, int httpStatus,
