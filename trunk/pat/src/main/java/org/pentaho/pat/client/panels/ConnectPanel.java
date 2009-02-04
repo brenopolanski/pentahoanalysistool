@@ -244,7 +244,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 								if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
 								cStr = cStr + "/" + databaseText.getText();
 								cStr = cStr + ";username=" + usernameText.getText();
-								if (passwordText.getText().length() > 0 ) cStr = cStr + "&password=" + passwordText.getText();
+								if (passwordText.getText().length() > 0 ) cStr = cStr + ";password=" + passwordText.getText();
 								
 									
 							}
