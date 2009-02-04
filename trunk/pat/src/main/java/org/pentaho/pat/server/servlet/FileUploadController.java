@@ -3,10 +3,10 @@ package org.pentaho.pat.server.servlet;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,72 +14,106 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import java.util.Iterator;
-
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.metadata.commons.CommonsAttributes;
-import org.springframework.web.context.ServletContextAware;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-public class FileUploadController extends AbstractController implements ServletContextAware {
+public class FileUploadController extends AbstractController implements
+		ResourceLoaderAware, InitializingBean {
 
-	private File basedir;
+	Logger log = Logger.getLogger(this.getClass());
 	
-	public File getBasedir() {
-		return basedir;
-	}
-	public void setBasedir(File basedir) {
+	private String basedir = null;
+	private File schemaDirectory = null;
+	private ResourceLoader resourceLoader;
+
+	public void setBasedir(String basedir) {
 		this.basedir = basedir;
 	}
-	
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest arg0,
-			HttpServletResponse arg1) throws Exception {
-		// TODO Auto-generated method stub
-		try
-		{
-		FileItemFactory factory = new DiskFileItemFactory();
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		List items = upload.parseRequest(arg0);
-		Iterator it = items.iterator();
-		String fn = new Date().toString();
-		
-		
-		while(it.hasNext())
-		{
-			
-			FileItem item = (FileItem)it.next();
-			if(!item.isFormField()) {
-			byte[] data = item.get();
 
-			fn = "" + new Date().getTime();
-			File f = basedir;
-			if (f.mkdir()) 
-				System.out.println("Created Directory: " + f.getAbsolutePath());
-			f = new File(f,fn);
-			FileWriter fw = new FileWriter(f);
-			BufferedWriter out = new BufferedWriter(fw);
-			
-			out.write(new String(data));
-			out.close();
-			//arg1.getOutputStream().println(fn);
-			System.out.println("Uploaded Schema file:" + f.getAbsolutePath());
-			arg1.getWriter().print(f.toString());
-			}
+	public void afterPropertiesSet() throws Exception {
+		if (this.resourceLoader == null)
+			throw new Exception("A resourceLoader is required.");
+		if (this.basedir == null)
+			throw new Exception("A basedir is required.");
+		try {
+			this.schemaDirectory = resourceLoader.getResource(basedir)
+					.getFile();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		arg1.setStatus(HttpServletResponse.SC_OK);
-		}
-		catch (Exception e)
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest request,
+			HttpServletResponse response) throws Exception 
+	{
+		try 
 		{
-			System.out.println("ERROR:" + e.getMessage());
-			arg1.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			String tmpFileName = String.valueOf(UUID.randomUUID());
+			
+			FileItemFactory factory = new DiskFileItemFactory();
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			List items = upload.parseRequest(request);
+			Iterator it = items.iterator();
+
+			while (it.hasNext()) {
+
+				FileItem item = (FileItem) it.next();
+				
+				if (!item.isFormField()) 
+				{
+					byte[] data = item.get();
+					
+					// TODO make schema validation work.
+//					// validate the file contents
+//					String validationResult = SchemaValidator.validateAgainstXsd(new String(data));
+//					if (validationResult==null)
+//					{
+						// Create the directory if needed
+						this.schemaDirectory.mkdir();
+						
+						// create an accessor for the temp file.
+						File tmpFile = new File(this.schemaDirectory, tmpFileName);
+						
+						// write the file
+						FileWriter fw = new FileWriter(tmpFile);
+						BufferedWriter out = new BufferedWriter(fw);
+						out.write(new String(data));
+						out.close();
+						
+						// append it to the response
+						response.getWriter().print(tmpFile.toString());
+//					}
+//					else
+//					{
+//						log.error(validationResult);
+//						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//					}
+				}
+			}
+			// return a success code
+			response.setStatus(HttpServletResponse.SC_OK);
+		} 
+		catch (Exception e) 
+		{
+			log.error(e.getMessage());
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		arg1.getWriter().flush();		
 		
+		// return the result to the client
+		response.getWriter().flush();
+
 		return null;
+	}
+
+	
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
 	}
 
 }
