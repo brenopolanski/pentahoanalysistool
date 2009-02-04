@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
-import org.pentaho.pat.client.rpc.Discovery;
 import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.Discovery;
 import org.pentaho.pat.server.services.DiscoveryService;
 
 /**

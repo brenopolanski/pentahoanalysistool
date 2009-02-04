@@ -183,12 +183,11 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 		fpanel1.addFormListener(new FormListener() {
 			public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
 				
-				if (httpStatus == HttpServletResponse.SC_OK)
+				if (httpStatus == 200)
 				{
 					uploadlabel.setText("Schema:" + cubeText.getText());
 					connectBtn.enable();
 					uploadBtn.disable();
-					//
 					String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
 					setSchemafilename("/schema_temp/"+tmp);
 				}

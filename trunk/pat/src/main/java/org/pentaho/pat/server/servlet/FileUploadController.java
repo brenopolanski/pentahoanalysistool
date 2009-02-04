@@ -33,6 +33,8 @@ public class FileUploadController extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest arg0,
 			HttpServletResponse arg1) throws Exception {
 		// TODO Auto-generated method stub
+		try
+		{
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		List items = upload.parseRequest(arg0);
@@ -60,10 +62,14 @@ public class FileUploadController extends AbstractController {
 			}
 		}
 		arg1.setStatus(HttpServletResponse.SC_OK);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+			arg1.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		arg1.getWriter().flush();		
 		
-		
-		//arg1.getOutputStream().flush();
-		arg1.getWriter().flush();
 		return null;
 	}
 
