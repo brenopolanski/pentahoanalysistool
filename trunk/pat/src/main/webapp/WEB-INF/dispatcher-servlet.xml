@@ -23,7 +23,7 @@
 	
 	<bean id="fileUploadController"
 		class="org.pentaho.pat.server.servlet.FileUploadController">
-		<property name="basedir" value="/schema_temp/" />
+		<property name="basedir" value="schema_temp/" />
 	</bean>
 
 	<bean id="httpInvokerLegacyServlet"
