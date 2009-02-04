@@ -8,8 +8,8 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.query.Selection.Operator;
-import org.pentaho.pat.client.rpc.Query;
 import org.pentaho.pat.client.util.OlapData;
+import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.server.services.QueryService;
 
 /**

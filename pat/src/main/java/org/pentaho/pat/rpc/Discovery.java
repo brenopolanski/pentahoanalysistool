@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.rpc;
+package org.pentaho.pat.rpc;
 
 
 import org.olap4j.Axis;

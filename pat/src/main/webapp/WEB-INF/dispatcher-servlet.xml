@@ -6,19 +6,19 @@
 	<bean id="httpInvokerDiscoveryServlet"
 		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="service" ref="discoveryServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.client.rpc.Discovery" />
+		<property name="serviceInterface" value="org.pentaho.pat.rpc.Discovery" />
 	</bean>
 
 	<bean id="httpInvokerSessionServlet"
 		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="service" ref="sessionServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.client.rpc.Session" />
+		<property name="serviceInterface" value="org.pentaho.pat.rpc.Session" />
 	</bean>
 
 	<bean id="httpInvokerQueryServlet"
 		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="service" ref="queryServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.client.rpc.Query" />
+		<property name="serviceInterface" value="org.pentaho.pat.rpc.Query" />
 	</bean>
 	
 	<bean id="fileUploadController"

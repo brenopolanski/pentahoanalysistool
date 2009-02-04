@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.olap4j.OlapException;
 import org.pentaho.pat.Constants;
-import org.pentaho.pat.client.rpc.Session;
+import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.services.SessionService;
 
 public class SessionServlet extends AbstractServlet implements Session {
