@@ -189,7 +189,8 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 					connectBtn.enable();
 					uploadBtn.disable();
 					String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
-					setSchemafilename("/schema_temp/"+tmp);
+					setSchemafilename(tmp);
+					
 				}
 				else
 					com.google.gwt.user.client.Window.alert("ERROR: Schema could not be uploaded");
