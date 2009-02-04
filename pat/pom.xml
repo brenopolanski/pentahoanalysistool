@@ -53,8 +53,34 @@
 									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
 								<copy
+									file="${basedir}/src/main/java/org/pentaho/pat/server/util/mondrian.xsd"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/org/pentaho/pat/server/util/mondrian.xsd" />
+								<copy
 									file="${basedir}/src/main/resources/log4j.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>testResourcesCopy</id>
+						<phase>test-compile</phase>
+						<configuration>
+							<tasks>
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/test/SampleData.mondrian.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/SampleData.mondrian.xml" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/test/sampledata.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/sampledata.sql" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/test/test.properties.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/test.properties.xml" />
+								<copy
+									file="${basedir}/src/test/java/jndi.properties"
+									toFile="${basedir}/target/test-classes/jndi.properties" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -110,6 +136,16 @@
 					<contextPath>/</contextPath>
 					<defaultsDescriptor>src/main/servers/jetty/dev/webdefault.xml</defaultsDescriptor>
 				</webAppConfig>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/TestContext.java</exclude>
+					</excludes>
+					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
 		</plugins>
