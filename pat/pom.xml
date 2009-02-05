@@ -9,7 +9,7 @@
 	<artifactId>pat</artifactId>
 	<packaging>war</packaging>
 	<name>gwt-maven-archetype-project</name>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 
 	<build>
 		<plugins>
