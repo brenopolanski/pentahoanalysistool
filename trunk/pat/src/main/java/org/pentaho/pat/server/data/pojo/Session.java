@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.data.pojo;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,7 +23,18 @@ public class Session {
 	
 	public void destroy()
 	{
-		// TODO code what'S needed to release a session properly.
+		try {
+			if (this.connection!=null&&
+				!this.connection.isClosed())
+				this.connection.close();
+		} catch (SQLException e) {
+			// nothing here.
+		}
+		this.connection=null;
+		this.variables.clear();
+		this.variables = null;
+		this.queries.clear();
+		this.queries=null;
 	}
 	
 	
