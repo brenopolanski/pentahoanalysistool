@@ -11,7 +11,7 @@ http://pentahoanalysistool.googlecode.com/svn/trunk/pat/
 
 * 2. Maven Build *
 
-Run Maven or Maven Eclipse Plugin with following goals
+Run Maven or Maven Eclipse Plugin (check HOWTO at http://smartgwt.rorschach.de/index.php5/Setting_up_Eclipse_%26_Maven2) with following goals
 
 *RUN*
 
