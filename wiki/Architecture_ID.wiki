@@ -1,27 +1,27 @@
-
+#labels Phase-Design,Indonesian
 =Pendahuluan=
 
-Aplikasi PAT adalah penggabungan dari beberapa layer dan framework yang berbeda-beda ke dalam satu project. Halaman antar muka (_front end_) akan dihasilkan oleh framework GWT (Google Web Toolkit. Untuk back-endnya menggunakan framework Spring. Titik koneksi antar dua framework ini adalah paket (package) org.pentaho.pat.rpc. Paket ini mendefinisikan semua _interface_ yang akan digunakan oleh GUI (_Graphical User Interface_).
+Aplikasi PAT adalah penggabungan dari beberapa layer dan framework yang berbeda-beda ke dalam satu project. Halaman antar muka (_front end_) akan dihasilkan oleh framework [http://code.google.com/webtoolkit/ GWT] (Google Web Toolkit. Untuk back-endnya menggunakan framework Spring. Titik koneksi antar dua framework ini adalah paket (package) org.pentaho.pat.rpc. Paket ini mendefinisikan semua _interface_ yang akan digunakan oleh GUI (_Graphical User Interface_).
 
 
 Kerangka utama aplikasi ini adalah sebagai berikut 
   * org.pentaho.pat : Paket utama (_main package_).
     * org.pentaho.pat.client : Segala sesuatu yang berhubungan dengan GUI.
-    * org.pentaho.pat.rpc : This is the RPC interfaces for client-server communications.
-    * org.pentaho.pat.server : This is the main package of everything related to server stuff.
+    * org.pentaho.pat.rpc : Interface RPC (_Remote Procedure Call_) untuk komunikasi client-server.
+    * org.pentaho.pat.server : Package utama segala hal yang berhubungan dengan server.
       * org.pentaho.pat.server.data : This is the persistence classes.
       * org.pentaho.pat.server.services : This is the service layer of the server.
       * org.pentaho.pat.server.servlet : This is the web layer of the server. It contains all the servlets that implement the RPC interfaces.
 
-= Project dependencies =
+= Ketergantungan Proyek (_Project Dependencies_) =
 
-This project depends, among other things, on those other projects :
+Proyek ini bergantung ke beberapa proyek berikut :
 
-  * Spring framework.
-  * Google web toolkit
-  * ACEGI security framework.
+  * [http://www.springsource.org Spring framework].
+  * [http://code.google.com/webtoolkit/ Google web toolkit].
+  * [www.acegisecurity.org ACEGI security framework].
 
-= Anatomy of a server request =
+= Anatomi dari suatu _server request_ =
 
 This section describes how requests with the backend system are handled through the layers of the application.
 
