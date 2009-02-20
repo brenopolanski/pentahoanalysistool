@@ -27,14 +27,7 @@ public abstract class AbstractServlet extends GWTSpringController
 	 * @return The current user name.
 	 */
 	protected String getCurrentUserId() {
-		// TODO monstruous security hole right there. This is just for development purposes, sicne security is not active.
-		try {
-			String name = SecurityContextHolder.getContext().getAuthentication().getName();
-			return name;
-		}
-		catch (Throwable t) {
-			return "DEBUG_USER";
-		} 
+		return SecurityContextHolder.getContext().getAuthentication().getName(); 
 	}
 
 }
