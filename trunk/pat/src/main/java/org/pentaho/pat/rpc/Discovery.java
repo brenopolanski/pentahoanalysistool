@@ -18,6 +18,7 @@ public interface Discovery extends RemoteService {
 	 * Fetches a list of JDBC drivers available for use.
 	 * @return A list of java JDBC driver names.
 	 */
+	@Secured ({"ROLE_USER"})
 	public String[] getDrivers();
 	
 	/**
