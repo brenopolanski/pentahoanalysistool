@@ -50,6 +50,9 @@
 									file="${basedir}/src/main/webapp/WEB-INF/pat-applicationContext.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-applicationContext.xml" />
 								<copy
+									file="${basedir}/src/main/webapp/WEB-INF/pat-securityContext.xml"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-securityContext.xml" />
+								<copy
 									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
 								<copy
@@ -383,6 +386,16 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>

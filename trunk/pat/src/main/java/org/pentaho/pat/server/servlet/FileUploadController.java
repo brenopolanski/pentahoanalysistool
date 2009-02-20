@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.annotation.Secured;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -49,6 +50,7 @@ public class FileUploadController extends AbstractController implements
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Secured( {"ROLE_USER"} )
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception 
 	{
