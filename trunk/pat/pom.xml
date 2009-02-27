@@ -322,6 +322,21 @@
 			<version>2.5.6</version>
 		</dependency>
 		<dependency>
+			<groupId>com.code.gwtx</groupId>
+			<artifactId>gwtx</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>gwt-beans-binding</artifactId>
+			<version>0.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>gwt-mosaic</artifactId>
+			<version>0.1.8</version>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.gwt-widget</groupId>
 			<artifactId>gwt-widgets</artifactId>
 			<version>0.2.0</version>
