@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/gwt-beans-binding/gwt-beans-binding/0.2.3</path>
+  </repoPath>
+  <name>0.2.3</name>
+  <created>1235747432578</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1235747432567</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>

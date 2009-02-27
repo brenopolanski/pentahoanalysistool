@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/gwt-beans-binding/gwt-beans-binding/0.2.3/gwt-beans-binding-0.2.3.pom</path>
+  </repoPath>
+  <name>gwt-beans-binding-0.2.3.pom</name>
+  <created>1235747432666</created>
+  <lastModified>1235747432000</lastModified>
+  <size>272</size>
+  <mimeType>application/x-maven-pom+xml</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1235747432672</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>d66e23ffa80e908e6e1d30f514bdf5d87bac23fc</actual>
+        </checksum>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>3fbd4bd4fbed451a7dedf7c7bad9c6b9</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>
