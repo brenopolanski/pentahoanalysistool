@@ -1,5 +1,14 @@
 package org.pentaho.pat.client;
-
+import org.gwt.mosaic.ui.client.Caption;
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.CollapsedListener;
+import org.gwt.mosaic.ui.client.ImageButton;
+import org.gwt.mosaic.ui.client.InfoPanel;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.Viewport;
+import org.gwt.mosaic.ui.client.WidgetWrapper;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.panels.ControlBarPanel;
 import org.pentaho.pat.client.panels.DimensionPanel;
 import org.pentaho.pat.client.panels.NorthPanel;
@@ -12,26 +21,187 @@ import org.pentaho.pat.client.util.MessageFactory;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 
-import com.gwtext.client.core.Margins;
-import com.gwtext.client.core.Position;
-import com.gwtext.client.core.RegionPosition;
-import com.gwtext.client.widgets.Panel;
-import com.gwtext.client.widgets.TabPanel;
-import com.gwtext.client.widgets.Viewport;
-import com.gwtext.client.widgets.layout.BorderLayout;
-import com.gwtext.client.widgets.layout.BorderLayoutData;
-import com.gwtext.client.widgets.layout.FitLayout;
-import com.gwtext.client.widgets.layout.RowLayout;
-import com.gwtext.client.widgets.layout.RowLayoutData;
-
+import com.google.gwt.user.client.ui.RootPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * @author Tom Barber
  *
  */
-public class Pat implements EntryPoint {
-	Panel panel; // Container Panel(FitLayout to make dynamic resizing happy)
+public class Pat implements
+CollapsedListener, EntryPoint {
+	DimensionPanel dimensionPanel; // Dimension GUI for defining the query model
+	OlapPanel olapPanel; // Main Window
+	NorthPanel northPanel; // Contains the MDX and Filter GUI
+	SouthPanel drillPanel; // Contains the drill down information
+	public static LayoutPanel layoutPanel;
+	LayoutPanel boxPanel;
+	/**
+	   * Constructor.
+	   * 
+	   * @param constants the constants
+	   */
+	  public Pat() {
+	    super();
+	    init();
+	  }
+
+	
+	   /**
+	   * The content widget's layout panel.
+	   */
+	 
+
+	  
+
+	  
+	  public String getDescription() {
+	    return "A BorderLayout test";
+	  }
+
+	  
+	  public String getName() {
+	    return "Collapsed";
+	  }
+	
+	  public void init(){
+		  
+		  boxPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+		  layoutPanel = new LayoutPanel(new BorderLayout());
+		      
+		
+		  
+	    // Create a layout panel to align the widgets
+
+		  final ToolBarPanel toolBarPanel = new ToolBarPanel();
+		  
+		  
+		  toolBarPanel.addConnectionListener(dimensionPanel);
+		  
+		  layoutPanel.setPadding(0);
+
+	    // north panel
+
+	    final CaptionLayoutPanel northPanel = new CaptionLayoutPanel("MDX Panel");
+	    final ImageButton collapseBtn1 = new ImageButton(
+	        Caption.IMAGES.toolCollapseUp());
+	    northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
+	    northPanel.add(new WidgetWrapper(new HTML("Height: 20%")));
+
+	    collapseBtn1.addClickListener(new ClickListener() {
+	      public void onClick(Widget sender) {
+	        layoutPanel.setCollapsed(northPanel,
+	            !layoutPanel.isCollapsed(northPanel));
+	        layoutPanel.layout();
+	      }
+	    });
+
+	    // south panel
+
+	    final CaptionLayoutPanel southPanel = new CaptionLayoutPanel("Drill Data");
+	    final ImageButton collapseBtn2 = new ImageButton(
+	        Caption.IMAGES.toolCollapseDown());
+	    southPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
+	    southPanel.add(new WidgetWrapper(new HTML("Height: 20%")));
+
+	    collapseBtn2.addClickListener(new ClickListener() {
+	      public void onClick(Widget sender) {
+	        layoutPanel.setCollapsed(southPanel,
+	            !layoutPanel.isCollapsed(southPanel));
+	        layoutPanel.layout();
+	      }
+	    });
+
+	    layoutPanel.add(southPanel, new BorderLayoutData(Region.SOUTH,
+	        0.20, true));
+	    layoutPanel.setCollapsed(southPanel, true);
+
+	    layoutPanel.addCollapsedListener(southPanel, this);
+
+	    // west panel
+	    
+		
+	    dimensionPanel = new DimensionPanel(MessageFactory.getInstance().dimensionPanel());
+	    final ImageButton collapseBtn3 = new ImageButton(
+	        Caption.IMAGES.toolCollapseLeft());
+	    dimensionPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+	    //dimensionPanel.add(new WidgetWrapper(new HTML("Width: 20%")));
+
+	    collapseBtn3.addClickListener(new ClickListener() {
+	      public void onClick(Widget sender) {
+	        layoutPanel.setCollapsed(dimensionPanel, !layoutPanel.isCollapsed(dimensionPanel));
+	        layoutPanel.layout();
+	      }
+	    });
+
+	    layoutPanel.add(dimensionPanel, new BorderLayoutData(Region.WEST,
+	        250, true));
+	    layoutPanel.setCollapsed(dimensionPanel, true);
+
+	    layoutPanel.addCollapsedListener(dimensionPanel, this);
+
+	    // east panel
+
+	   /* final CaptionLayoutPanel eastPanel = new CaptionLayoutPanel("East");
+	    final ImageButton collapseBtn4 = new ImageButton(
+	        Caption.IMAGES.toolCollapseRight());
+	    eastPanel.getHeader().add(collapseBtn4, CaptionRegion.RIGHT);
+	    eastPanel.add(new WidgetWrapper(new HTML("Width: 20%")));
+
+	    collapseBtn4.addClickListener(new ClickListener() {
+	      public void onClick(Widget sender) {
+	        layoutPanel.setCollapsed(eastPanel, !layoutPanel.isCollapsed(eastPanel));
+	        layoutPanel.layout();
+	      }
+	    });
+
+	    layoutPanel.add(eastPanel, new BorderLayoutData(Region.EAST,
+	        0.2, true));
+	    layoutPanel.setCollapsed(eastPanel, true);
+
+	    layoutPanel.addCollapsedListener(eastPanel, this);
+*/
+	    // center panel
+
+	    //final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel("Center");
+	    //centerPanel.getHeader().add(Showcase.IMAGES.gwtLogoThumb().createImage());
+	    olapPanel = new OlapPanel();
+	    
+
+	    layoutPanel.add(olapPanel, new BorderLayoutData(Region.CENTER, true));
+
+	   
+	   boxPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+	    
+	   boxPanel.add(layoutPanel, new BoxLayoutData(FillStyle.BOTH));
+	  }
+	  
+	public void onCollapsedChange(Widget sender) {
+		// TODO Auto-generated method stub
+	    InfoPanel.show("Collapsed", "" + layoutPanel.isCollapsed(sender));
+	}
+
+	  /**
+	   * 
+	   * @see org.gwt.mosaic.ui.client.CollapsedListener#onCollapsedChange(com.google.gwt.user.client.ui.Widget)
+	   */
+	/*  @ShowcaseSource
+	  public void onCollapsedChange(Widget sender) {
+	    InfoPanel.show("Collapsed", "" + layoutPanel.isCollapsed(sender));
+	  }
+*/
+	/*Panel panel; // Container Panel(FitLayout to make dynamic resizing happy)
 	Panel wrapperPanel; //Contains all child panels
 	Panel mainPanel; // Border Panel
 	ToolBarPanel toolBarPanel; // Menu bar at top of windows
@@ -41,16 +211,8 @@ public class Pat implements EntryPoint {
 	NorthPanel northPanel; // Contains the MDX and Filter GUI
 	SouthPanel drillPanel; // Contains the drill down information
 	
-	public void onModuleLoad() {
-		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-			public void onUncaughtException(Throwable e) {
-				String str = "";
-				e.printStackTrace();
-				Window.alert(str + e);
-			}
-		});
 
-		panel = new Panel();
+	/*	panel = new Panel();
 		panel.setPaddings(15);
 		panel.setLayout(new FitLayout());
 
@@ -148,7 +310,25 @@ public class Pat implements EntryPoint {
 
 		panel.add(wrapperPanel);
 		Viewport viewport = new Viewport(panel);
-
+*/
+		  		  
+	public void onModuleLoad() {
+		final Viewport viewport = new Viewport();
+		
+		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+			public void onUncaughtException(Throwable e) {
+				String str = "";
+				e.printStackTrace();
+				Window.alert(str + e);
+			}
+		});	
+		 viewport.add(boxPanel);
+		RootPanel.get().add(viewport);
+	}
+	
+	
+	
 	}
 
-}
+
+

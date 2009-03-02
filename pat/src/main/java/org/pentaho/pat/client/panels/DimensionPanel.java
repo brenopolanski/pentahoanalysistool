@@ -3,51 +3,24 @@
  */
 package org.pentaho.pat.client.panels;
 
-import java.util.ArrayList;
-import java.util.List;
 
+
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.util.GuidFactory;
-import org.pentaho.pat.client.util.MessageFactory;
-import org.pentaho.pat.client.util.OlapData;
-import org.pentaho.pat.client.util.ServiceFactory;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.widgets.DemoFlexTable;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.core.EventObject;
-import com.gwtext.client.data.ArrayReader;
-import com.gwtext.client.data.FieldDef;
-import com.gwtext.client.data.MemoryProxy;
-import com.gwtext.client.data.Record;
-import com.gwtext.client.data.RecordDef;
-import com.gwtext.client.data.SimpleStore;
-import com.gwtext.client.data.Store;
-import com.gwtext.client.data.StringFieldDef;
-import com.gwtext.client.dd.DragData;
-import com.gwtext.client.dd.DragDrop;
-import com.gwtext.client.dd.DragSource;
-import com.gwtext.client.dd.DropTarget;
-import com.gwtext.client.dd.DropTargetConfig;
-import com.gwtext.client.widgets.Button;
-import com.gwtext.client.widgets.Panel;
-import com.gwtext.client.widgets.event.ButtonListenerAdapter;
-import com.gwtext.client.widgets.grid.ColumnConfig;
-import com.gwtext.client.widgets.grid.ColumnModel;
-import com.gwtext.client.widgets.grid.GridDragData;
-import com.gwtext.client.widgets.grid.GridPanel;
-import com.gwtext.client.widgets.tree.DropNodeCallback;
-import com.gwtext.client.widgets.tree.TreeDragData;
-import com.gwtext.client.widgets.tree.TreeNode;
-import com.gwtext.client.widgets.tree.TreePanel;
-import com.gwtext.client.widgets.tree.event.TreePanelListenerAdapter;
+
 
 /**
  * @author Tom Barber
  * 
  */
-public class DimensionPanel extends Panel implements ConnectionListener {
+public class DimensionPanel extends CaptionLayoutPanel implements ConnectionListener {
 
 	/*
 	 * TODO The Dimension Panel Needs to Handle the listing of the dimension
@@ -64,8 +37,8 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 	private static final String AXIS_PAGES = "PAGES"; //$NON-NLS-1$
 	private static final String AXIS_CHAPTERS = "CHAPTERS"; //$NON-NLS-1$
 	private static final String AXIS_SECTIONS = "SECTIONS"; //$NON-NLS-1$
-
-	private static TreeNode rowNode = new TreeNode("Rows");
+	
+	/*private static TreeNode rowNode = new TreeNode("Rows");
 	private static TreeNode columnNode = new TreeNode("Columns");
 	private TreePanel rowTree;
 	private TreePanel colTree;
@@ -86,15 +59,49 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 	@SuppressWarnings("unused")
 	private DropTarget colTg;
 	private Button execute;
+	
+*/
+	public static FlexTableCellDragController tableRowDragController;
+	  /**
+	   * The default style name.
+	   */
+	  /*private static final String DEFAULT_STYLENAME = "mosaic-CaptionLayoutPanel";
 
-	public DimensionPanel() {
-		super();
-
-		init();
+	  private final Caption caption;
+	  private final LayoutPanel body;
+	  private Widget footer;
+*/
+	public DimensionPanel(String text) {
+		super(text);
+		//this(null, false);
+	    init();
 	}
 
 	public void init() {
-		ColumnConfig[] columns = { new ColumnConfig("Dimensions", "tags", 90) };
+		AbsolutePanel tableExamplePanel = new AbsolutePanel();
+	    tableExamplePanel.setPixelSize(450, 300);
+	
+	    this.add(tableExamplePanel);
+	    // instantiate our drag controller
+	    tableRowDragController = new FlexTableCellDragController(tableExamplePanel);
+	
+
+	    // instantiate two flex tables
+	    DemoFlexTable table1 = new DemoFlexTable(2, 2, tableRowDragController);
+	
+	    tableExamplePanel.add(table1, 10, 20);
+	
+
+	    // instantiate a drop controller for each table
+	    //FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1);
+	
+	    //tableRowDragController.registerDropController(flexTableRowDropController1);
+	
+	    this.add(tableExamplePanel);
+//		DraggableListBox listBox = new DraggableListBox("10em");
+		//listBox.getDragController().addDragHandler(dragHandler);
+	//    this.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+		/*ColumnConfig[] columns = { new ColumnConfig("Dimensions", "tags", 90) };
 		ColumnModel columnModel = new ColumnModel(columns);
 		recordDef = new RecordDef(new FieldDef[] { new StringFieldDef("tags") });
 		proxy = new MemoryProxy(getProxyData());
@@ -108,7 +115,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		rowStore = new SimpleStore(new String[] { "tags" }, new String[][] {});
 		rowStore.load();
 
-		this.setAutoScroll(true);
+		//this.setAutoScroll(true);
 
 		rowWrapperPanel = new Panel();
 		rowWrapperPanel.setAutoScroll(true);
@@ -302,8 +309,8 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		this.add(rowWrapperPanel);
 		this.add(colWrapperPanel);
 		this.add(execute);
-	}
-
+*/	}
+/*
 	private static TreeNode getDimensionTree(String dimStrs, TreeNode node) {
 		final TreeNode parent = node;
 		ServiceFactory.getInstance().getMembers(dimStrs, GuidFactory.getGuid(),
@@ -482,7 +489,7 @@ public class DimensionPanel extends Panel implements ConnectionListener {
 		});
 
 	}
-
+*/
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
 
