@@ -122,7 +122,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 				new AsyncCallback() {
 			public void onSuccess(Object result) {
 				// TODO Populate the Dimensions Dialog
-				DimensionPanel.populateDimensions();
+//				DimensionPanel.populateDimensions();
 			}
 
 			public void onFailure(Throwable caught) {

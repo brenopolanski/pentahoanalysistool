@@ -1,66 +1,74 @@
 package org.pentaho.pat.client.panels;
 
-import javax.servlet.http.HttpServletResponse;
-
+import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Hidden;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.Label;
-import com.gwtext.client.core.Connection;
-import com.gwtext.client.core.EventObject;
-import com.gwtext.client.core.Position;  
-import com.gwtext.client.widgets.Button;
-import com.gwtext.client.widgets.Panel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.widgetideas.client.ResizableWidget;
+import com.google.gwt.widgetideas.client.ResizableWidgetCollection;
 import com.gwtext.client.widgets.Window;
-import com.gwtext.client.widgets.event.ButtonListenerAdapter;
-import com.gwtext.client.widgets.form.Form;
-import com.gwtext.client.widgets.form.FormPanel;
-import com.gwtext.client.widgets.form.TextArea;
-import com.gwtext.client.widgets.form.TextField;
-import com.gwtext.client.widgets.form.ComboBox;  
-import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
-import com.gwtext.client.widgets.form.event.FormListener;
-import com.gwtext.client.widgets.layout.FitLayout;
-import com.gwtext.client.widgets.TabPanel;
 
-import org.apache.catalina.HttpResponse;
+import org.gwt.mosaic.forms.client.builder.PanelBuilder;
+import org.gwt.mosaic.forms.client.factories.ButtonBarFactory;
+import org.gwt.mosaic.forms.client.layout.CellConstraints;
+import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.ComboBox;
+import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
+import org.gwt.mosaic.ui.client.ListBox;
+import org.gwt.mosaic.ui.client.WindowPanel;
+import org.gwt.mosaic.ui.client.layout.BaseLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.HasLayoutManager;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+
 import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 
 
-import com.gwtext.client.data.Record;
-import com.gwtext.client.data.SimpleStore;  
-import com.gwtext.client.data.Store;  
-import com.gwtext.client.data.XmlReader;
-
-public class ConnectPanel extends Window implements SourcesConnectionEvents {
-	FormPanel formPanel;
-	TextField connectionText;
-	TextField serverText;
-	TextField portText;
-	TextField usernameText;
-	TextField passwordText;
-	TextField cubeText;
-	TextField usernameText2;
-	TextField passwordText2;
-	TextField cubeText2;
-	TextField databaseText;
+public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents {
+	
+	TextBox connectionText;
+	TextBox serverText;
+	TextBox portText;
+	TextBox usernameText;
+	TextBox passwordText;
+	TextBox cubeText;
+	TextBox genericServerText;
+	TextBox genericUsernameText;
+	TextBox genericPasswordText;
+	TextBox genericCubeText;
+	TextBox databaseText;
+	TextBox genericPortText;
+	TextBox genericDatabaseText;
+	FileUpload fileUpload;
 	Button connectBtn2;
 	Button connectBtn;
 	Button uploadBtn;
-	ComboBox supportedDriverCombo;
-	ComboBox DriverCombo;
+	ListBox<Driver> supportedDriverCombo;
+	ComboBox genericDriverCombo;
 	Label debuglabel;
 	Label uploadlabel;
-	
-	private TabPanel tabs;
-	private Panel supportedJDBC;
-	private Panel genericJDBC;
-	private Panel xmla;
-	
+	FileUpload genericFileUpload;
+
+	private DecoratedTabLayoutPanel tabPanel;
 
 	private String schemafilename;
 	static String queryTypeGroup = "QUERY_TYPE"; //$NON-NLS-1$
@@ -68,293 +76,12 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	ConnectionListenerCollection connectionListeners;
 
 	public ConnectPanel() {
-		super();
-
-		init();
-	}
-
-	private void init() {
+		
 		this.setTitle("Register new Mondrian Connection");
-		
-		tabs = new TabPanel();
-		tabs.setTabPosition(Position.TOP);  
-		tabs.setPaddings(10);
-		
-		supportedJDBC = new Panel();  
-		supportedJDBC.setAutoScroll(true);  
-		supportedJDBC.setTitle("Supported JDBC");  
-		supportedJDBC.setIconCls("tab-icon");  
-		//supportedJDBC.setLayout(new FitLayout());
-		supportedJDBC.setHeight(250);
-		
-
-		genericJDBC = new Panel();  
-		genericJDBC.setAutoScroll(true);  
-		genericJDBC.setTitle("Generic JDBC");  
-		genericJDBC.setIconCls("tab-icon");  
-		genericJDBC.setHeight(250);
-
-		xmla = new Panel();  
-		xmla.setAutoScroll(true);  
-		xmla.setTitle("XMLA");  
-		xmla.setIconCls("tab-icon");  
-
-		this.setWidth(500);
-		this.setShadow(true);
-		final FormPanel fpanel1= new FormPanel();
-		fpanel1.setFileUpload(true);
-		fpanel1.setHeight(250);
-		fpanel1.setPaddings(5);
-		
-		supportedDriverCombo = new ComboBox("Select a DB Type");
-		supportedDriverCombo.setLabel("Driver");
-		Object[][] drivers = 	new Object[][]{  
-			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
-			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
-			                 	  
-				};  
-		final Store driversStore = new SimpleStore(new String[]{"driver", "name"}, drivers);  
-		driversStore.load();  
-		supportedDriverCombo.setStore(driversStore);
-		supportedDriverCombo.setDisplayField("name");  
-		supportedDriverCombo.setMode(ComboBox.LOCAL);  
-		supportedDriverCombo.setTriggerAction(ComboBox.ALL);  
-		supportedDriverCombo.setForceSelection(true);  
-		supportedDriverCombo.setValueField("driver");  
-		supportedDriverCombo.setReadOnly(true);  
-		
-		supportedDriverCombo.addListener(new ComboBoxListenerAdapter() {
-			@Override
-			public void onSelect(ComboBox comboBox, Record record, int index) {
-				if(comboBox.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
-					portText.setValue("9001");
-				}
-				if(comboBox.getValueAsString().equals("com.mysql.jdbc.Driver")) {
-					portText.setValue("3306");
-				}
-			}
-		});
-		fpanel1.add(supportedDriverCombo);
-		
-		
-		serverText = new TextField();
-		serverText.setLabel("Server");
-		serverText.setAllowBlank(false);
-		fpanel1.add(serverText);
-
-		portText = new TextField();
-		portText.setLabel("Port");
-		serverText.setAllowBlank(true);
-		fpanel1.add(portText);
-
-		databaseText = new TextField();
-		databaseText.setLabel("Database");
-		databaseText.setAllowBlank(false);
-		fpanel1.add(databaseText);
-		
-		usernameText = new TextField();
-		usernameText.setLabel("Username");
-		usernameText.setAllowBlank(false);
-		fpanel1.add(usernameText);
-
-		passwordText = new TextField();
-		passwordText.setInputType( "password" );
-		passwordText.setLabel("Password");
-		passwordText.setAllowBlank(true);
-		fpanel1.add(passwordText);
-
-		
-		cubeText = new TextField("Schema","file");
-		cubeText.setInputType("file");
-		fpanel1.add(cubeText);
-		
-		uploadBtn = new Button("Upload Schema");
-		uploadBtn.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(Button button, EventObject e) {
-				// TODO thats not a nice way to tell PAT the servlet
-				fpanel1.getForm().submit("./schemaupload",null,Connection.POST,"... loading",false);
-				
-				
-			}
-		});
-		fpanel1.add(uploadBtn);
-		
-		fpanel1.addFormListener(new FormListener() {
-			public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
-				
-				if (httpStatus == 200)
-				{
-					uploadlabel.setText("Schema:" + cubeText.getText());
-					connectBtn.enable();
-					uploadBtn.disable();
-					String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
-					setSchemafilename(tmp);
-					
-				}
-				else
-					com.google.gwt.user.client.Window.alert("ERROR: Schema could not be uploaded");
-				
-			};
-			public void onActionFailed(Form form, int httpStatus,
-					String responseText) {
-				// TODO Auto-generated method stub
-				//com.google.gwt.user.client.Window.alert("onactionfailed:" +responseText);
-				
-			}
-			
-			public boolean doBeforeAction(Form form) {
-				// TODO Auto-generated method stub
-			//	com.google.gwt.user.client.Window.alert("dobefore:" +form.findField("file").getValueAsString());
-				return true;
-			}
-		});
-		
-		uploadlabel = new Label("");
-		fpanel1.add(uploadlabel);
-		 
-		 Hidden login = new Hidden();
-         login.setName("mode");
-         login.setValue("login");
-        fpanel1.add(login);
-
-		
-		
-		connectBtn = new Button(MessageFactory.getInstance().connect());
-		connectBtn.disable();
-		connectBtn.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(Button button, EventObject e) {
-				if (connectBtn.getText().equals(
-						MessageFactory.getInstance().connect())) {
-					
-					String cStr = "jdbc:mondrian:Jdbc=";
-							
-							if (supportedDriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
-							//jdbc:mysql://localhost:3306/sampledata
-							cStr = cStr + "jdbc:mysql://" + serverText.getText();
-							if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
-							cStr = cStr + "/" + databaseText.getText();
-							cStr = cStr + "?user=" + usernameText.getText(); 
-							if (passwordText.getText().length() > 0 ) cStr = cStr + "&password=" + passwordText.getText();
-							}
-							if (supportedDriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
-								//jdbc:hsqldb:hsql://localhost:9001/hibernate
-								cStr = cStr + "jdbc:hsqldb:hsql://" + serverText.getText();
-								if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
-								cStr = cStr + "/" + databaseText.getText();
-								cStr = cStr + ";username=" + usernameText.getText();
-								if (passwordText.getText().length() > 0 ) cStr = cStr + ";password=" + passwordText.getText();
-								
-									
-							}
-							
-							cStr = cStr + ";Catalog="  + getSchemafilename()
-							+ ";JdbcDrivers=" + supportedDriverCombo.getValueAsString();
-
-					connect(cStr);
-					//debuglabel.setText(cStr);
-
-				} else if (connectBtn.getText().equals(
-						MessageFactory.getInstance().disconnect())) {
-					disconnect();
-				}
-			}
-		});
-		fpanel1.add(connectBtn);
-		//debuglabel = new Label("");
-		//fpanel1.add(debuglabel);
-		
-		
-		supportedJDBC.add(fpanel1);
-		
-		Panel fpanel2= new FormPanel();
-		fpanel2.setHeight(200);
-		fpanel2.setPaddings(5);
-		
-		DriverCombo = new ComboBox("Select a Driver");
-		DriverCombo.setLabel("Driver");
-		Object[][] drivers2 = 	new Object[][]{  
-			                 	new Object[]{"org.hsqldb.jdbcDriver", "HSQLDB"},  
-			                 	new Object[]{"com.mysql.jdbc.Driver", "MySQL"},  
-			                 	  
-				};  
-		final Store driversStore2 = new SimpleStore(new String[]{"driver", "name"}, drivers2);  
-		driversStore2.load();  
-		DriverCombo.setStore(driversStore2);
-		DriverCombo.setDisplayField("name");  
-		DriverCombo.setMode(ComboBox.LOCAL);  
-		DriverCombo.setTriggerAction(ComboBox.ALL);  
-		DriverCombo.setForceSelection(true);  
-		DriverCombo.setValueField("driver");  
-		DriverCombo.setReadOnly(true);  
-		
-		fpanel2.add(DriverCombo);
-		
-		connectionText = new TextField();
-		connectionText.setLabel("ConnectString");
-		fpanel2.add(connectionText);
-
-		usernameText2 = new TextField();
-		usernameText2.setLabel("Username");
-		fpanel2.add(usernameText2);
-
-		passwordText2 = new TextField();
-		passwordText2.setLabel("Password");
-		fpanel2.add(passwordText2);
-
-		cubeText2 = new TextField();
-		cubeText2.setLabel("Schema");
-		cubeText2.setInputType("file");
-		fpanel2.add(cubeText2);
-		
-		connectBtn2 = new Button(MessageFactory.getInstance().connect());
-		connectBtn2.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(Button button, EventObject e) {
-				
-				if (connectBtn2.getText().equals(
-						MessageFactory.getInstance().connect())) {
-					String cStr = "jdbc:mondrian:Jdbc="
-							+ connectionText.getText();
-							if (DriverCombo.getValueAsString().equals("com.mysql.jdbc.Driver")) {
-								
-							cStr = cStr + "?user=" + usernameText2.getText() 
-							+ "&password=" + passwordText2.getText();
-							}
-							if (DriverCombo.getValueAsString().equals("org.hsqldb.jdbcDriver")) {
-								cStr = cStr + ";username=" + usernameText2.getText() 
-								+ ";password=" + passwordText2.getText(); 
-									
-							}
-							
-							cStr = cStr + ";Catalog="  + cubeText2.getText() 
-							+ ";JdbcDrivers=" + DriverCombo.getValueAsString();
-
-					connect(cStr);
-					//debuglabel.setText(cStr);
-
-				} else if (connectBtn2.getText().equals(
-						MessageFactory.getInstance().disconnect())) {
-					disconnect();
-				}
-			}
-		});
-		fpanel2.add(connectBtn2);
-		//debuglabel = new Label("empty");
-		//fpanel2.add(debuglabel);
-		genericJDBC.add(fpanel2);
-		
-		tabs.add(supportedJDBC);
-		//tabs.add(genericJDBC);
-		//tabs.add(xmla);
-		tabs.activate(0);
-		this.add(tabs);
-		this.setPaddings(10);
-		
-
-
+		this.setWidget(onInitialize());
+		this.setWidth("700");
 	}
+
 
 	public boolean isConnectionEstablished() {
 		return connectionEstablished;
@@ -384,7 +111,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 							.getInstance().disconnect()
 							: MessageFactory.getInstance()
 							.connect());
-					ConnectPanel.this.close();
+					ConnectPanel.this.hide();
 					
 					
 				}
@@ -442,123 +169,7 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 					});
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * addConnectionListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	public void removeClickListener(ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
-	}
-
-	/**
-	 * @return the serverText
-	 */
-	private String getServerText() {
-		return serverText.getText();
-	}
-
-	/**
-	 * @return the portText
-	 */
-	private String getPortText() {
-		return portText.getText();
-	}
-
-	/**
-	 * @return the usernameText
-	 */
-	private String getUsernameText() {
-		return usernameText.getText();
-	}
-
-	/**
-	 * @return the passwordText
-	 */
-	private String getPasswordText() {
-		return passwordText.getText();
-	}
-
-	/**
-	 * @return the cubeText
-	 */
-	private String getCubeText() {
-		return cubeText.getText();
-	}
-
-	/**
-	 * @return the cubeText
-	 */
-	private String getDatabaseText() {
-		return databaseText.getText();
-	}
-
-	/**
-	 * @param serverText
-	 *            the serverText to set
-	 */
-	private void setServerText(String serverText) {
-		this.serverText.setValue(serverText);
-	}
-
-	/**
-	 * @param portText
-	 *            the portText to set
-	 */
-	private void setPortText(String portText) {
-		this.portText.setValue(portText);
-	}
-
-	/**
-	 * @param usernameText
-	 *            the usernameText to set
-	 */
-	private void setUsernameText(String usernameText) {
-		this.usernameText.setValue(usernameText);
-	}
-
-	/**
-	 * @param passwordText
-	 *            the passwordText to set
-	 */
-	private void setPasswordText(String passwordText) {
-		this.passwordText.setValue(passwordText);
-	}
-
-	/**
-	 * @param cubeText
-	 *            the cubeText to set
-	 */
-	private void setCubeText(String cubeText) {
-		this.cubeText.setValue(cubeText);
-	}
-
-	/**
-	 * @param cubeText
-	 *            the cubeText to set
-	 */
-	private void setDatabaseText(String databaseText) {
-		this.databaseText.setValue(databaseText);
-	}
+	
 
 	public String getSchemafilename() {
 		return schemafilename;
@@ -567,4 +178,370 @@ public class ConnectPanel extends Window implements SourcesConnectionEvents {
 	public void setSchemafilename(String schemafilename) {
 		this.schemafilename = schemafilename;
 	}
+	  protected Widget onInitialize() {
+		    // Create a layout panel to align the widgets
+		    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
+		            Orientation.VERTICAL));
+
+		    // Create a tab panel
+		    tabPanel = new DecoratedTabLayoutPanel();
+
+
+		    // Add a supportedJDBC tab
+		    tabPanel.add(createSupportedJDBCContent(), "Supported JDBC");
+
+		    //Add a genericJDBC tab
+		    tabPanel.add(createGenericJDBCContent(), "Generic JDBC");
+		    
+		    tabPanel.ensureDebugId("cwTabPanel");
+
+		    tabPanel.addTabListener(new TabListener() {
+		    	public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+			        return true;
+			      }
+		    	public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+			       pack();
+			        
+			      }
+			    });
+		    layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
+		    
+		    return layoutPanel;
+		  }
+
+	  
+	  @Override
+	  protected void onLoad(){
+	  	tabPanel.selectTab(0);
+	  	super.onLoad();
+	  }
+		  /**
+		   * Create content for layout.
+		   */
+
+		  private LayoutPanel createSupportedJDBCContent() {
+		    final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+		    layoutPanel.setPadding(0);
+
+		    //Initiate form components
+		    serverText = new TextBox();
+		    portText = new TextBox();
+		    databaseText = new TextBox();
+		    usernameText = new TextBox();
+		    passwordText = new TextBox();		    
+		    fileUpload = new FileUpload();
+		    supportedDriverCombo = new ListBox<Driver>(new String[] {
+		            "Name", "Sample URL", "Driver"});
+
+		    supportedDriverCombo.setCellRenderer(new CellRenderer<Driver>() {
+		        public void renderCell(ListBox<Driver> listBox, int row, int column,
+		            Driver item) {
+		          switch (column) {
+		            case 0:
+		              listBox.setText(row, column, item.getName());
+		              break;
+		            case 1:
+		              listBox.setText(row, column, item.getSampleUrl());
+		              break;
+		            case 2:
+		              listBox.setText(row, column, String.valueOf(item.getDriverTag()));
+		              break;
+		            default:
+		              throw new RuntimeException("Should not happen");
+		          }
+		        }
+		      });
+
+		    final DefaultListModel<Driver> model = (DefaultListModel<Driver>) supportedDriverCombo.getModel();
+		    model.add(new Driver("MySQL", "jdbc:mysql://localhost/mydatabase", "com.mysql.jdbc.Driver"));
+		    model.add(new Driver("HSQL", "", "org.hsqldb.jdbcDriver"));
+
+		    supportedDriverCombo.addChangeListener(new ChangeListener() {
+		      public void onChange(Widget sender) {
+		        
+		      }
+		    });
+
+		    connectBtn = new Button(MessageFactory.getInstance().connect(), new ClickListener(){
+					public void onClick(Widget sender) {
+						if (connectBtn.getText().equals(
+								MessageFactory.getInstance().connect())) {
+							
+							String cStr = "jdbc:mondrian:Jdbc=";
+		
+					
+									if (supportedDriverCombo.getItem(
+								            supportedDriverCombo.getSelectedIndex()).getName().equals("MySQL")) {
+									//jdbc:mysql://localhost:3306/sampledata
+									cStr = cStr + "jdbc:mysql://" + serverText.getText();
+									if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
+									cStr = cStr + "/" + databaseText.getText();
+									cStr = cStr + "?user=" + usernameText.getText(); 
+									if (passwordText.getText().length() > 0 ) cStr = cStr + "&password=" + passwordText.getText();
+									}
+									if (supportedDriverCombo.getItem(
+								            supportedDriverCombo.getSelectedIndex()).getName().equals("HSQL")) {
+										//jdbc:hsqldb:hsql://localhost:9001/hibernate
+										cStr = cStr + "jdbc:hsqldb:hsql://" + serverText.getText();
+										if (portText.getText().length() > 0 ) cStr = cStr + ":" + portText.getText();
+										cStr = cStr + "/" + databaseText.getText();
+										cStr = cStr + ";username=" + usernameText.getText();
+										if (passwordText.getText().length() > 0 ) cStr = cStr + ";password=" + passwordText.getText();
+										
+											
+									}
+									
+									cStr = cStr + ";Catalog="  + fileUpload.getFilename()
+									+ ";JdbcDrivers=" + supportedDriverCombo.getItem(
+								            supportedDriverCombo.getSelectedIndex()).getDriverTag();
+
+							connect(cStr);
+							//debuglabel.setText(cStr);
+
+						} else if (connectBtn.getText().equals(
+								MessageFactory.getInstance().disconnect())) {
+							disconnect();
+						}
+					}
+				});
+
+		    uploadBtn = new Button("Upload Schema", new ClickListener(){
+				public void onClick(Widget sender) {
+					// TODO thats not a nice way to tell PAT the servlet
+			//		.getForm().submit("./schemaupload",null,Connection.POST,"... loading",false);
+					
+					
+				}
+			});			  
+			  
+		    
+		    // Create a FormLayout instance on the given column and row specs.
+		    // For almost all forms you specify the columns; sometimes rows are
+		    // created dynamically. In this case the labels are right aligned.
+		    FormLayout supportedJDBCLayout = new FormLayout(
+		        //"right:pref, 3dlu, pref, 7dlu, right:pref, 3dlu, pref", // cols
+		    	"right:pref, 100px, pref, 100px, right:pref, 100px, pref", // cols
+		        "p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p"); // rows
+
+		    // Specify that columns 1 & 5 as well as 3 & 7 have equal widths.
+		    supportedJDBCLayout.setColumnGroups(new int[][] { {1, 5}, {3, 7}});
+
+		    // Create a builder that assists in adding components to the container.
+		    // Wrap the panel with a standardized border.
+		    PanelBuilder builder = new PanelBuilder(supportedJDBCLayout);
+		    
+		    builder.addSeparator("General", CellConstraints.xyw(1, 1, 7));
+
+
+
+		    builder.addLabel("Driver", CellConstraints.xy(1, 3));
+		    builder.add(supportedDriverCombo, CellConstraints.xy(3, 3));
+		    supportedDriverCombo.ensureDebugId("mosaicAbstractComboBox-normal-supportedDriverCombo");
+		     
+		    builder.addLabel("Server", CellConstraints.xy(1, 5));
+		    builder.add(serverText, CellConstraints.xy(3, 5));
+		    
+		    builder.addLabel("Port", CellConstraints.xy(5, 5));
+		    builder.add(portText, CellConstraints.xy(7, 5));
+		    
+		    builder.addLabel("Database", CellConstraints.xy(1, 7));
+		    builder.add(databaseText, CellConstraints.xy(3, 7));
+		    
+		    builder.addLabel("Username", CellConstraints.xy(1, 9));
+		    builder.add(usernameText, CellConstraints.xy(3, 9));
+		    
+		    builder.addLabel("Password", CellConstraints.xy(5, 9));
+		    builder.add(passwordText, CellConstraints.xy(7, 9));
+		    
+		    builder.addLabel("Cube", CellConstraints.xy(1, 11));
+		    builder.add(fileUpload, CellConstraints.xyw(3, 11, 5));
+		    
+		    builder.add(ButtonBarFactory.buildLeftAlignedBar(connectBtn), CellConstraints.xy(1, 13));
+		 // The builder holds the layout container that we now return.
+		    layoutPanel.add(builder.getPanel());
+
+		    
+			
+			
+			/*fpanel1.addFormListener(new FormListener() {
+				public void onActionComplete(com.gwtext.client.widgets.form.Form form, int httpStatus, String responseText) {
+					
+					if (httpStatus == 200)
+					{
+						uploadlabel.setText("Schema:" + cubeText.getText());
+						connectBtn.enable();
+						uploadBtn.disable();
+						String tmp = responseText.substring(responseText.indexOf("<pre>")+5,responseText.indexOf("</pre>"));
+						setSchemafilename(tmp);
+						
+					}
+					else
+						com.google.gwt.user.client.Window.alert("ERROR: Schema could not be uploaded");
+					
+				};
+				public void onActionFailed(Form form, int httpStatus,
+						String responseText) {
+					// TODO Auto-generated method stub
+					//com.google.gwt.user.client.Window.alert("onactionfailed:" +responseText);
+					
+				}
+				
+				public boolean doBeforeAction(Form form) {
+					// TODO Auto-generated method stub
+				//	com.google.gwt.user.client.Window.alert("dobefore:" +form.findField("file").getValueAsString());
+					return true;
+				}
+			});
+			
+			 
+			 Hidden login = new Hidden();
+	         login.setName("mode");
+	         login.setValue("login");
+	        */
+		    
+		    return layoutPanel;
+		  }
+		  
+		  
+
+		  /**
+		   * Create content for layout.
+		   */
+
+		  private LayoutPanel createGenericJDBCContent() {
+		    final LayoutPanel layoutPanel = new LayoutPanel();
+		    layoutPanel.setPadding(0);
+
+
+		    //Initiate form components
+		    genericServerText = new TextBox();
+		    genericPortText = new TextBox();
+		    genericDatabaseText = new TextBox();
+		    genericUsernameText = new TextBox();
+		    genericPasswordText = new TextBox();
+		    genericFileUpload = new FileUpload();
+		    
+		 // Create a FormLayout instance on the given column and row specs.
+		    // For almost all forms you specify the columns; sometimes rows are
+		    // created dynamically. In this case the labels are right aligned.
+		    FormLayout genericJDBCLayout = new FormLayout(
+		        //"right:pref, 3dlu, pref, 7dlu, right:pref, 3dlu, pref", // cols
+		    		"right:pref, 100px, pref, 100px, right:pref, 100px, pref", // cols
+	        "p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p"); // rows
+
+		    // Specify that columns 1 & 5 as well as 3 & 7 have equal widths.
+		    genericJDBCLayout.setColumnGroups(new int[][] { {1, 5}, {3, 7}});
+
+		    // Create a builder that assists in adding components to the container.
+		    // Wrap the panel with a standardized border.
+		    PanelBuilder genericBuilder = new PanelBuilder(genericJDBCLayout);
+		    
+		    genericBuilder.addSeparator("General", CellConstraints.xyw(1, 1, 7));
+
+		    genericBuilder.addLabel("Database", CellConstraints.xy(1, 3));
+		    genericBuilder.add(genericDriverCombo = new ComboBox(), CellConstraints.xy(3, 3));
+		    supportedDriverCombo.ensureDebugId("mosaicAbstractComboBox-normal-genericDriverCombo");
+		    
+		    genericBuilder.addLabel("Server", CellConstraints.xy(1, 5));
+		    genericBuilder.add(genericServerText, CellConstraints.xy(3, 5));
+		    
+		    genericBuilder.addLabel("Port", CellConstraints.xy(5, 5));
+		    genericBuilder.add(genericPortText, CellConstraints.xy(7, 5));
+		    
+		    genericBuilder.addLabel("Database", CellConstraints.xy(1, 7));
+		    genericBuilder.add(genericDatabaseText, CellConstraints.xy(3, 7));
+		    
+		    genericBuilder.addLabel("Username", CellConstraints.xy(1, 9));
+		    genericBuilder.add(genericUsernameText, CellConstraints.xy(3, 9));
+		    
+		    genericBuilder.addLabel("Password", CellConstraints.xy(5, 9));
+		    genericBuilder.add(genericPasswordText, CellConstraints.xy(7, 9));
+		    
+		    genericBuilder.addLabel("Cube", CellConstraints.xy(1, 11));
+		    genericBuilder.add(genericFileUpload, CellConstraints.xyw(3, 11, 5));
+
+		    
+		 // The builder holds the layout container that we now return.
+		    layoutPanel.add(genericBuilder.getPanel());
+
+		    
+		    return layoutPanel;
+		  }
+
+		  /*
+		   * (non-Javadoc)
+		   * 
+		   * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+		   * addConnectionListener
+		   * (org.pentaho.halogen.client.listeners.ConnectionListener)
+		   */
+		  public void addConnectionListener(ConnectionListener listener) {
+		          if (connectionListeners == null) {
+		                  connectionListeners = new ConnectionListenerCollection();
+		          }
+		          connectionListeners.add(listener);
+		  }
+
+		  /*
+		   * (non-Javadoc)
+		   * 
+		   * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+		   * removeClickListener
+		   * (org.pentaho.halogen.client.listeners.ConnectionListener)
+		   */
+		  public void removeClickListener(ConnectionListener listener) {
+		          if (connectionListeners != null) {
+		                  connectionListeners.remove(listener);
+		          }
+		  }
+
+
+
 }
+
+/**
+ * 
+ * @return
+ */
+class Driver {
+  private String name;
+  private String sampleurl;
+  private String drivertag;
+
+  public Driver(String name, String sampleurl, String drivertag) {
+    this.name = name;
+    this.sampleurl = sampleurl;
+    this.drivertag = drivertag;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getSampleUrl() {
+    return sampleurl;
+  }
+
+  public void setSampleUrl(String sampleurl) {
+    this.sampleurl = sampleurl;
+  }
+
+  public String getDriverTag() {
+	    return drivertag;
+	  }
+
+	  public void setDriverTag(String drivertag) {
+	    this.drivertag = drivertag;
+	  }
+  @Override
+  public String toString() {
+    return getName() + " " + getSampleUrl() + " " + getDriverTag();
+  }
+
+  
+}
+
