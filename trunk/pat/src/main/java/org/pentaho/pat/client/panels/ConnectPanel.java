@@ -8,13 +8,12 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.widgetideas.client.ResizableWidget;
-import com.google.gwt.widgetideas.client.ResizableWidgetCollection;
 import com.gwtext.client.widgets.Window;
 
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
@@ -219,7 +218,9 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		   * Create content for layout.
 		   */
 
-		  private LayoutPanel createSupportedJDBCContent() {
+		  private FormPanel createSupportedJDBCContent() {
+			final FormPanel formPanel = new FormPanel();
+			
 		    final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
 		    layoutPanel.setPadding(0);
 
@@ -309,7 +310,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 				public void onClick(Widget sender) {
 					// TODO thats not a nice way to tell PAT the servlet
 			//		.getForm().submit("./schemaupload",null,Connection.POST,"... loading",false);
-					
+					formPanel.submit();
 					
 				}
 			});			  
@@ -333,7 +334,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		    builder.addSeparator("General", CellConstraints.xyw(1, 1, 7));
 
 
-
+		    
 		    builder.addLabel("Driver", CellConstraints.xy(1, 3));
 		    builder.add(supportedDriverCombo, CellConstraints.xy(3, 3));
 		    supportedDriverCombo.ensureDebugId("mosaicAbstractComboBox-normal-supportedDriverCombo");
@@ -359,7 +360,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		    builder.add(ButtonBarFactory.buildLeftAlignedBar(connectBtn), CellConstraints.xy(1, 13));
 		 // The builder holds the layout container that we now return.
 		    layoutPanel.add(builder.getPanel());
-
+		    formPanel.add(layoutPanel);
 		    
 			
 			
@@ -399,7 +400,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	         login.setValue("login");
 	        */
 		    
-		    return layoutPanel;
+		    return formPanel;
 		  }
 		  
 		  
