@@ -1,5 +1,9 @@
 package org.pentaho.pat.client.panels;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
@@ -11,35 +15,24 @@ import org.pentaho.pat.client.util.ServiceFactory;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.core.EventObject;
-import com.gwtext.client.data.ArrayReader;
-import com.gwtext.client.data.FieldDef;
-import com.gwtext.client.data.MemoryProxy;
-import com.gwtext.client.data.Record;
-import com.gwtext.client.data.RecordDef;
-import com.gwtext.client.data.Store;
-import com.gwtext.client.data.StringFieldDef;
-import com.gwtext.client.widgets.Button;
-import com.gwtext.client.widgets.Toolbar;
-import com.gwtext.client.widgets.ToolbarButton;
-import com.gwtext.client.widgets.event.ButtonListenerAdapter;
-import com.gwtext.client.widgets.form.ComboBox;
-import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.layout.HLayout;
 
-public class ControlBarPanel extends Toolbar implements ConnectionListener,SourcesConnectionEvents {
+public class ControlBarPanel extends HLayout implements ConnectionListener,SourcesConnectionEvents {
 	/*
 	 * TODO The Control Bar will amonst other things display the currently
 	 * selected cube for user and allow other functionality as the project
 	 * progresses
 	 */
-	private Store store;
-	private ComboBox cubeListBox;
-	private ConnectionListenerCollection connectionListeners;
-	private static RecordDef recordDef;
-	private MemoryProxy proxy;
-	private ArrayReader reader;
-	boolean connectionEstablished = false;
 
+	private ComboBoxItem cubeListBox;
+	private ConnectionListenerCollection connectionListeners;
+	boolean connectionEstablished = false;
+	ArrayList departments;
 	public ControlBarPanel() {
 		super();
 
@@ -47,42 +40,31 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	}
 
 	private void init() {
-		cubeListBox = new ComboBox();
-		cubeListBox.setFieldLabel(MessageFactory.getInstance().cube());
+		final DynamicForm form = new DynamicForm();  
+		cubeListBox = new ComboBoxItem();
+		cubeListBox.setName("cubeListBox");
+		departments = new ArrayList();  
 		populateCubeList();
-		cubeListBox.setStore(store);
-		cubeListBox.setDisplayField("name");
-		cubeListBox.setDisabled(true);
-		cubeListBox.setMode(ComboBox.LOCAL);
-		cubeListBox.addListener(new ComboBoxListenerAdapter() {
-			@Override
-			public void onExpand(ComboBox comboBox) {
-				if (isConnectionEstablished())
-					getCubes();
-			}
-
-			@Override
-			public void onSelect(ComboBox comboBox, Record record, int index) {
+		
+		cubeListBox.addChangeHandler(new ChangeHandler() { 
+			public void onChange(ChangeEvent event) {
+				//if (isConnectionEstablished())getCubes();
+				 //form.getField("cubeListBox").setValueMap(departments);
 				ServiceFactory.getInstance().setCube(
-						comboBox.getValueAsString(),
+						(String)cubeListBox.getValue(),
 						GuidFactory.getGuid(), new AsyncCallback() {
 							public void onSuccess(Object result) {
-								setCube(cubeListBox.getText());
+								setCube((String)cubeListBox.getValue());
 							}
 
 							public void onFailure(Throwable caught) {
 							}
 						});
 			}
-
 		});
 
-		
-		cubeListBox.setLabel("Cube List");
-		
-		
-
-		this.addField(cubeListBox);
+		form.setFields(cubeListBox);
+		this.addMember(form);
 	}
 
 	public void getCubes() {
@@ -91,15 +73,17 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 				new AsyncCallback() {
 			public void onSuccess(Object result1) {
 				if (result1 != null) {
-					store.removeAll();
-					store.commitChanges();
+					
+				
+					
 					String[][] cubeNames = (String[][]) result1;
 					for (int i = 0; i < cubeNames.length; i++) {
-						store.add(recordDef.createRecord(cubeNames[i]));
+						
+						cubeListBox.setValueMap(cubeNames[i]);
 					}
-					store.commitChanges();
+					
 				}
-				ServiceFactory.getInstance().setCube(
+				/*ServiceFactory.getInstance().setCube(
 						cubeListBox.getText(), GuidFactory.getGuid(),
 						new AsyncCallback() {
 							public void onSuccess(Object result2) {
@@ -108,7 +92,7 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 							public void onFailure(Throwable caught) {
 							}
-						});
+						});*/
 			}
 
 			public void onFailure(Throwable caught) {
@@ -137,13 +121,13 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 	}
 
 	public void populateCubeList() {
-		proxy = new MemoryProxy(getCubeData());
+		/*proxy = new MemoryProxy(getCubeData());
 		recordDef = new RecordDef(new FieldDef[] {
 				new StringFieldDef("number"), new StringFieldDef("name") });
 		reader = new ArrayReader(recordDef);
 		store = new Store(proxy, reader);
 		store.load();
-
+*/
 	}
 
 	public boolean isConnectionEstablished() {
@@ -157,9 +141,9 @@ public class ControlBarPanel extends Toolbar implements ConnectionListener,Sourc
 
 	
 	private void emptyStore(){
-			store.removeAll();
+			/*store.removeAll();
 			store.commitChanges();
-			cubeListBox.setValue(null);
+			cubeListBox.setValue(null);*/
 		
 	}
 	/*
