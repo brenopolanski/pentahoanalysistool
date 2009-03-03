@@ -36,6 +36,8 @@ public final class FlexTableCellDragController extends PickupDragController {
   private FlexTable draggableTable;
 
   private int dragRow;
+  
+  private int dragCol;
 
   public FlexTableCellDragController(AbsolutePanel tableExamplePanel) {
     super(Pat.layoutPanel, false);
@@ -71,11 +73,12 @@ public final class FlexTableCellDragController extends PickupDragController {
 
   @Override
   protected Widget newDragProxy(DragContext context) {
-    SimplePanel proxy;
-    proxy = new SimplePanel();
+    FlexTable proxy;
+    proxy = new FlexTable();
     proxy.addStyleName(CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY);
-    draggableTable = (FlexTable) context.draggable.getParent().getParent();
-    //dragRow = getWidgetRow(context.draggable, draggableTable);
+    draggableTable = (FlexTable) context.draggable.getParent();
+    dragRow = getWidgetRow(context.draggable, draggableTable);
+    dragCol = getWidgetCol(context.draggable, draggableTable);
     //FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
     return proxy;
   }
@@ -86,6 +89,10 @@ public final class FlexTableCellDragController extends PickupDragController {
 
   int getDragRow() {
     return dragRow;
+  }
+  
+  int getDragCol(){
+	  return dragCol;
   }
 
   private int getWidgetRow(Widget widget, FlexTable table) {
@@ -99,4 +106,16 @@ public final class FlexTableCellDragController extends PickupDragController {
     }
     throw new RuntimeException("Unable to determine widget row");
   }
+  
+  private int getWidgetCol(Widget widget, FlexTable table) {
+	    for (int row = 0; row < table.getRowCount(); row++) {
+	      for (int col = 0; col < table.getCellCount(row); col++) {
+	        Widget w = table.getWidget(row, col);
+	        if (w == widget) {
+	          return col;
+	        }
+	      }
+	    }
+	    throw new RuntimeException("Unable to determine widget row");
+	  }
 }

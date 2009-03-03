@@ -44,20 +44,20 @@ public final class DemoFlexTable extends FlexTable {
     for (int col = 0; col < cols; col++) {
 	      for (int row = 0; row < rows; row++) {
 	        // create a simple panel drop target for the current cell
-	        SimplePanel simplePanel = new SimplePanel();
-	        simplePanel.setPixelSize(100, 100);
-	        setWidget(col, row, simplePanel);
+	        //SimplePanel simplePanel = new SimplePanel();
+	        //simplePanel.setPixelSize(100, 100);
+	        //setWidget(col, row, handle);
 	        
 
 	        // place a pumpkin in each panel in the cells in the first column
 	        if (row == 0) {
-	          simplePanel.setWidget(handle);
+	          setWidget(col, row, handle);
 	        }
 
 	        // instantiate a drop controller of the panel in the current cell
 	        //SetWidgetDropController dropController = new SetWidgetDropController(simplePanel);
 	        //dragController.registerDropController(dropController);
-	        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(simplePanel, this);
+	        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
 		    //FlexTableRowDropController flexTableRowDropController2 = new FlexTableRowDropController(table2);
 		    tableCellDragController.registerDropController(flexTableRowDropController1);
 	      }

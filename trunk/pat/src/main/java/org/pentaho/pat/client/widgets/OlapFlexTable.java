@@ -2,6 +2,7 @@ package org.pentaho.pat.client.widgets;
 
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.util.FlexTableCellDropController;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.user.client.ui.Button;
@@ -27,19 +28,9 @@ public class OlapFlexTable extends FlexTable {
 
 	  public OlapFlexTable(int rows, int cols, FlexTableCellDragController tableCellDragController) {
 		  this.insertRow(HeaderRowIndex);
-		   this.getRowFormatter().addStyleName(HeaderRowIndex,"FlexTable-Header");
+		  this.getRowFormatter().addStyleName(HeaderRowIndex,"FlexTable-Header");
 		  addStyleName("demo-flextable");
 		  Button execute = new Button("Execute");
-	    HTML handle = new HTML("Dont Drop Here");
-	    /*HTML other = new HTML("Blank");
-	    setWidget(0,0, execute);
-	    setHTML(0,1, "Blank");
-	    setWidget(1,1, handle);
-	    setWidget(1,0,other);*/
-	    tableCellDragController.makeDraggable(handle);
-		/*tableRowDragController.makeDraggable(other);  
-		*/
-		// initialize our drag controller
 
 	    
 	    for (int col = 0; col < cols; col++) {
@@ -48,70 +39,74 @@ public class OlapFlexTable extends FlexTable {
 	    	else addColumn("Col"+col);
 	    	
 	    }
+	    
+	    
 	    Object[][] rowData = new Object[rows][cols]; 
 	    for (int row = 0; row < rows; row++){
 	    	
-	    	SimplePanel simplePanel = new SimplePanel();
-		        simplePanel.setPixelSize(100, 100);
-		        //simplePanel.setWidget(handle);
-		       // SetWidgetDropController flexTableRowDropController1 = new SetWidgetDropController(simplePanel, this);
-			   //tableCellDragController.registerDropController(flexTableRowDropController1);
+				   
 		        for (int col = 0; col < cols; col++){
+		        	HTML handle = new HTML("Dont Drop Here");
 		        	
-		        	System.out.println(row);
-		    	   System.out.println(col);
-		    	   rowData[row][col] = simplePanel;
-		    	         
+		        	  
+				        tableCellDragController.makeDraggable(handle);
+				        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
+						   tableCellDragController.registerDropController(flexTableRowDropController1);
+						   if (col == 0)rowData[row][col] = handle;
+						   //else rowData[row][col] = new Label("");
 		       }
-		        System.out.println(rowData[0]);
+		     
 		        
 	    }
 	    
+	
 	    for (int row = 0; row < rows; row++){
 	    	addRow(rowData[row]);
 	    }
 	    
-/*		   for (int col = 0; col < cols; col++) {
+		/*   for (int col = 0; col < cols; col++) {
 			      for (int row = 0; row < rows; row++) {
+			    	  HTML handle = new HTML("Dont Drop Here");
 			        // create a simple panel drop target for the current cell
-			        SimplePanel simplePanel = new SimplePanel();
-			        simplePanel.setPixelSize(100, 100);
-			        setWidget(col, row, simplePanel);
+			        SimplePanel simplPanel = new SimplePanel();
+			        simplPanel.setPixelSize(100, 100);
+			        setWidget(col, row+1, simplPanel);
 			        
-
+			        //tableCellDragController.makeDraggable(handle);
 			        // place a pumpkin in each panel in the cells in the first column
 			        if (row == 0) {
-			          simplePanel.setWidget(handle);
+			          simplPanel.setWidget(handle);
 			        }
 
 			        // instantiate a drop controller of the panel in the current cell
-			        
+			      FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(simplPanel, this);
+					   tableCellDragController.registerDropController(flexTableRowDropController1);
 			      }
-			    }
-*/
+			    }*/
+
 	      this.setBorderWidth(5);
 	      
 	  //}
 	 	  }
 	  private void addColumn(Object columnHeading) {
 		    Widget widget = createCellWidget(columnHeading);
-		    int cell = this.getCellCount(HeaderRowIndex);
+		    int cell = getCellCount(HeaderRowIndex);
 		    
 		    widget.setWidth("100%");
 		    widget.addStyleName("FlexTable-ColumnLabel");
 		    
-		    this.setWidget(HeaderRowIndex, cell, widget);
+		    setWidget(HeaderRowIndex, cell, widget);
 		    
-		    this.getCellFormatter().addStyleName(
+		    getCellFormatter().addStyleName(
 		        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell");
 		  }
-	  
-	  private Widget createCellWidget(Object cellObject) {
+		  
+		  private Widget createCellWidget(Object cellObject) {
 		    Widget widget = null;
-
+		    
 		    if (cellObject instanceof Widget)
 		      widget = (Widget) cellObject;
-		    else
+		    else if(cellObject!=null)
 		      widget = new Label(cellObject.toString());
 
 		    return widget;
@@ -121,18 +116,16 @@ public class OlapFlexTable extends FlexTable {
 		    
 		    for (int cell = 0; cell < cellObjects.length; cell++) {
 		      Widget widget = createCellWidget(cellObjects[cell]);
-		      System.out.println(rowIndex);
-		      System.out.println(cell);
-		      this.setWidget(rowIndex, cell, widget);
-		     // this.getCellFormatter().addStyleName(rowIndex,cell,"FlexTable-Cell");
+		      setWidget(rowIndex, cell, widget);
+		      getCellFormatter().addStyleName(rowIndex,cell,"FlexTable-Cell");
 		    }
 		    rowIndex++;
 		  }
 		  
 		  private void applyDataRowStyles() {
-		    HTMLTable.RowFormatter rf = this.getRowFormatter();
+		    HTMLTable.RowFormatter rf = getRowFormatter();
 		    
-		    for (int row = 1; row < this.getRowCount(); ++row) {
+		    for (int row = 1; row < getRowCount(); ++row) {
 		      if ((row % 2) != 0) {
 		        rf.addStyleName(row, "FlexTable-OddRow");
 		      }
