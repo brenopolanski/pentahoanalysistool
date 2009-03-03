@@ -59,7 +59,7 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
     
     Command disconnectCmd = new Command() {
         public void execute() {
-      	 connectWindow.disconnect(); 
+      	 //connectWindow.disconnect(); 
         }
       };
 
