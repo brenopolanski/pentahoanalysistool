@@ -13,7 +13,7 @@
 	
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name='com.gwtext.GwtExt' />
-	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	<inherits name='com.google.gwt.user.theme.chrome.Chrome'/>
 	
 	
 	<!-- Legacy controller -->
@@ -25,7 +25,7 @@
 	<servlet path="/query.rpc" class="org.pentaho.pat.server.servlet.QueryServlet"/>
 	<servlet path="/discovery.rpc" class="org.pentaho.pat.server.servlet.DiscoveryServlet"/>
 	
-	
+	<inherits name="com.smartgwt.SmartGwt"/>
 	<inherits name="com.allen_sauer.gwt.dnd.gwt-dnd"/>
 	<inherits name="org.gwtwidgets.WidgetLibrary"/>
 	<inherits name='org.gwt.mosaic.Mosaic' />
