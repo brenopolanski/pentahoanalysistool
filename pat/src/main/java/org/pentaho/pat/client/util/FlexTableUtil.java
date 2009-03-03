@@ -15,8 +15,12 @@
  */
 package org.pentaho.pat.client.util;
 
+import org.pentaho.pat.client.widgets.OlapFlexTable;
+
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -77,6 +81,51 @@ public class FlexTableUtil {
   }
 
   /**
+   * Move an entire FlexTable from one FlexTable to another. Elements are moved
+   * by attempting to call {@link FlexTable#getWidget(int, int)} on the source
+   * table. If no widget is found (because <code>null</code> is returned), a
+   * new {@link HTML} is created instead by calling
+   * {@link FlexTable#getHTML(int, int)} on the source table.
+   *
+   * @param sourceTable the FlexTable to move a row from
+   * @param targetTable the FlexTable to move a row to
+   * @param sourceRow the index of the source row
+   * @param targetRow the index before which to insert the moved row
+   */
+  public static void moveCell(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int sourceCol,
+     int targetRow, int targetColumn) {
+	  if (sourceTable == targetTable && sourceRow >= targetRow) {
+	      sourceRow++;
+	    }
+	  Widget w = sourceTable.getWidget(sourceRow, sourceCol);
+	  if (targetRow==0) insertColumn(targetTable,targetRow,targetColumn,w);	  
+	  else insertCell(targetTable,targetRow,targetColumn,w);
+	  /*    if (sourceTable == targetTable && sourceRow >= targetRow) {
+      sourceRow++;
+    }
+    
+    
+    for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
+      Widget w = sourceTable.getWidget(sourceRow, col);
+      if (w != null) {
+        targetTable.setWidget(targetRow, col, w);
+      } else {
+        HTML html = new HTML(sourceTable.getHTML(sourceRow, col));
+        targetTable.setWidget(targetRow, col, html);
+      }
+    }
+    copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
+    sourceTable.removeRow(sourceRow);*/
+  }
+  private static void insertCell(FlexTable targetTable, int targetRow,
+		int targetColumn, Widget w) {
+	// TODO Auto-generated method stub
+
+	  if (targetTable.getWidget(targetRow-1, targetColumn-1)==null)
+		  targetTable.setWidget(targetRow-1, targetColumn-1, w);
+}
+
+/**
    * Copies the CSS style of a source row to a target row.
    *
    * @param sourceTable
@@ -90,5 +139,64 @@ public class FlexTableUtil {
     targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
   }
 
+  
+  public void insertColumn(FlexTable targetTable, Object columnHeading) {
+	  	int HeaderRowIndex = 0;
+	    Widget widget = createCellWidget(columnHeading);
+	    int cell = targetTable.getCellCount(HeaderRowIndex);
+	    
+	    widget.setWidth("100%");
+	    widget.addStyleName("FlexTable-ColumnLabel");
+	    
+	    targetTable.setWidget(HeaderRowIndex, cell, widget);
+	    
+	    targetTable.getCellFormatter().addStyleName(
+	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell");
+	  }
+  
+  public static void insertColumn(FlexTable targetTable, int targetRow, int targetColumn, Widget columnHeading) {
+	  	int HeaderRowIndex = 0;
+	    
+	    int cell = targetTable.getCellCount(HeaderRowIndex);
+	    if (targetColumn <= cell){
+	    
+	    columnHeading.setWidth("100%");
+	    columnHeading.addStyleName("FlexTable-ColumnLabel");
+	    
+	    for (int i=0; i < targetTable.getRowCount(); i++){
+	    	for (int j=cell; j > targetColumn; j--){
+	    	Widget w = targetTable.getWidget(i, j-1);
+	    	if (w!=null)targetTable.setWidget(i, j, w);
+	    	}
+	    }
+	    targetTable.setWidget(targetRow, targetColumn, columnHeading);
+	    
+	    targetTable.getCellFormatter().addStyleName(
+	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell");
+	    }
+	  }
+	  
+	  private Widget createCellWidget(Object cellObject) {
+	    Widget widget = null;
+
+	    if (cellObject instanceof Widget)
+	      widget = (Widget) cellObject;
+	    else
+	      widget = new Label(cellObject.toString());
+
+	    return widget;
+	  }
+	  int rowIndex = 1;
+	  public void addRow(FlexTable targetTable, Object[] cellObjects) {
+	    
+	    for (int cell = 0; cell < cellObjects.length; cell++) {
+	      Widget widget = createCellWidget(cellObjects[cell]);
+	      targetTable.setWidget(rowIndex, cell, widget);
+	      targetTable.getCellFormatter().addStyleName(rowIndex,cell,"FlexTable-Cell");
+	    }
+	    rowIndex++;
+	  }
+	  
+	
 }
 

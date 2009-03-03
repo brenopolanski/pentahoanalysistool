@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
+import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.allen_sauer.gwt.dnd.client.util.CoordinateLocation;
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
@@ -34,15 +35,16 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
  * DropController which allows a widget to be dropped on a SimplePanel drop
  * target when the drop target does not yet have a child widget.
  */
-public class FlexTableCellDropController extends SimpleDropController {
+public class FlexTableCellDropController extends AbstractPositioningDropController {
+	
+	 private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner";
+
 	private int targetRow;
 	private int targetColumn;
-  private final SimplePanel dropTarget;
   private final FlexTable flexTable;
-  public FlexTableCellDropController(SimplePanel dropTarget, FlexTable flexTable) {
-    super(dropTarget);
+  public FlexTableCellDropController(FlexTable flexTable) {
+    super(flexTable);
     this.flexTable = flexTable;
-    this.dropTarget = dropTarget;
   }
   private Widget positioner = null;
   private IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
@@ -67,21 +69,26 @@ public class FlexTableCellDropController extends SimpleDropController {
   @Override
   public void onDrop(DragContext context) {
 	  FlexTableCellDragController trDragController = (FlexTableCellDragController) context.dragController;
-	  FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable,
-		        trDragController.getDragRow(), targetRow + 1);
-	  dropTarget.setWidget(context.draggable);
-	  
+	  FlexTableUtil.moveCell(trDragController.getDraggableTable(), flexTable,
+		        trDragController.getDragRow(), trDragController.getDragCol(), targetRow+1, targetColumn);
+	  //dropTarget.setWidget(context.draggable);
     super.onDrop(context);
   }
 
   @Override
   public void onPreviewDrop(DragContext context) throws VetoDragException {
-    if (dropTarget.getWidget() != null) {
+  /*  if (dropTarget.getWidget() != null) {
       throw new VetoDragException();
-    }
+    }*/
     super.onPreviewDrop(context);
   }
   
+  @Override
+  public void onEnter(DragContext context) {
+    super.onEnter(context);
+    positioner = newPositioner(context);
+  }
+
   @Override
   public void onMove(DragContext context) {
     super.onMove(context);
@@ -91,11 +98,19 @@ public class FlexTableCellDropController extends SimpleDropController {
             context.mouseX, context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
 
     
-/*    Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
+    Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
     Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
     Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
     context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
-        + (targetRow == -1 ? 0 : w.getOffsetHeight()));*/
+        + (targetRow == -1 ? 0 : w.getOffsetHeight()));
   }
+  
+  Widget newPositioner(DragContext context) {
+	    Widget p = new SimplePanel();
+	    p.addStyleName(CSS_DEMO_TABLE_POSITIONER);
+	    p.setPixelSize(flexTable.getOffsetWidth(), 1);
+	    return p;
+	  }
+
 }
 
