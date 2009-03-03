@@ -6,7 +6,7 @@ import org.pentaho.pat.client.widgets.OlapFlexTable;
 import org.pentaho.pat.client.widgets.OlapTable;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.gwtext.client.widgets.Panel;
+
 
 
 

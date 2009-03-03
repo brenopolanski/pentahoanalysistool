@@ -15,7 +15,6 @@ import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.OlapPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
-import org.pentaho.pat.client.test.AccordionPanel;
 import org.pentaho.pat.client.util.MessageFactory;
 
 import com.google.gwt.core.client.EntryPoint;

@@ -10,12 +10,8 @@ import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.ToolBar;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
-import org.pentaho.pat.client.util.ConnectionFactory;
-import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
-import org.pentaho.pat.client.util.ServiceFactory;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -26,7 +22,6 @@ import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.panels.ConnectPanel;
-import com.gwtext.client.widgets.ToolbarButton;
 
 
 /**
@@ -36,7 +31,7 @@ import com.gwtext.client.widgets.ToolbarButton;
 public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionListener,SourcesConnectionEvents  {
 
 	ConnectPanel connectWindow;
-	ToolbarButton fileToolbarMenuButton;
+
 	boolean connectionEstablished = false;
 	PopupMenu menuBtnMenu = new PopupMenu();
 	MenuItem connectItem;
@@ -55,6 +50,7 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
     	  if (connectWindow == null) {
 	          connectWindow = new ConnectPanel();
 	          connectWindow.addConnectionListener(ToolBarPanel.this);
+	          
 	        }
 	        connectWindow.showModal();
         
