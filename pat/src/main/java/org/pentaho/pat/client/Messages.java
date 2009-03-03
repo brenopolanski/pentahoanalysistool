@@ -1,21 +1,20 @@
 package org.pentaho.pat.client;
 
-/**
- * Interface to represent the messages contained in resource bundle:
- * /Users/wseyler
- * /Documents/workspace-trunk/halogen/src/org/pentaho/halogen/client
- * /Messages.properties'.
- */
+
 public interface Messages extends com.google.gwt.i18n.client.Messages {
 
-	/**
-	 * Translated "Connection String:".
-	 * 
-	 * @return translated "Connection String:" 
-	 * connection_string
-	 */
+/* <Messages used by PAT> */
 	String connection_string();
+	String connect();
+	String disconnect();
+	String server();
+	String port();
+	String database();
+	String schema_file();
+	String username();
+	String password();
 
+/* </Messages used by PAT> */
 	/**
 	 * Translated "Row Dimensions".
 	 * 
@@ -88,13 +87,8 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	 */
 	String location();
 
-	/**
-	 * Translated "Disconnect".
-	 * 
-	 * @return translated "Disconnect" 
-	 * disconnect
-	 */
-	String disconnect();
+	
+
 
 	/**
 	 * Translated "Move To Filter".
@@ -168,13 +162,8 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	 */
 	String bottom();
 
-	/**
-	 * Translated "Connect".
-	 * 
-	 * @return translated "Connect" 
-	 * connect
-	 */
-	String connect();
+
+
 
 	/**
 	 * Translated "Move To Column".
