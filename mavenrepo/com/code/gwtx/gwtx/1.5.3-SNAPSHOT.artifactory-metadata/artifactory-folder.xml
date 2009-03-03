@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/google/code/gwtx/gwtx/1.5.3-SNAPSHOT</path>
+  </repoPath>
+  <name>1.5.3-SNAPSHOT</name>
+  <created>1236113067273</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1236113067269</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>
