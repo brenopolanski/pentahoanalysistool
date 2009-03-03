@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtext.client.widgets.Window;
+
 
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.factories.ButtonBarFactory;
@@ -79,6 +79,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		this.setTitle("Register new Mondrian Connection");
 		this.setWidget(onInitialize());
 		this.setWidth("700");
+		this.pack();
 	}
 
 
