@@ -29,8 +29,8 @@
 						<value>org.pentaho.pat.Pat</value>
 					</compileTargets>
 					<runTarget>org.pentaho.pat.Pat/Pat.html</runTarget>
-					<logLevel>DEBUG</logLevel>
-					<style>DETAILED</style>
+					<logLevel>ERROR</logLevel>
+					<style>OBF</style>
 					<noServer>false</noServer>
 					<extraJvmArgs>-Xmx512m</extraJvmArgs>
 					<gwtVersion>${gwtVersion}</gwtVersion>
