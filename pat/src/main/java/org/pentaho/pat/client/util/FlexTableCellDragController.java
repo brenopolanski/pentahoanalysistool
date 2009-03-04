@@ -15,11 +15,8 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.client.Pat;
-
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -40,7 +37,8 @@ public final class FlexTableCellDragController extends PickupDragController {
   private int dragCol;
 
   public FlexTableCellDragController(AbsolutePanel tableExamplePanel) {
-    super(Pat.layoutPanel, false);
+    //super(Pat.layoutPanel, false);
+	  super(tableExamplePanel, false);
     setBehaviorDragProxy(true);
     setBehaviorMultipleSelection(false);
   }
@@ -79,7 +77,7 @@ public final class FlexTableCellDragController extends PickupDragController {
     draggableTable = (FlexTable) context.draggable.getParent();
     dragRow = getWidgetRow(context.draggable, draggableTable);
     dragCol = getWidgetCol(context.draggable, draggableTable);
-    //FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
+    FlexTableUtil.copyCell(draggableTable, proxy, dragRow, dragCol, 0, 0);
     return proxy;
   }
 

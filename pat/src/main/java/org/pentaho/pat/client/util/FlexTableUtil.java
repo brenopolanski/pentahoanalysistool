@@ -49,6 +49,27 @@ public class FlexTableUtil {
   }
 
   /**
+   * Copy an entire FlexTable from one FlexTable to another. Each element is
+   * copied by creating a new {@link HTML} widget by calling
+   * {@link FlexTable#getHTML(int, int)} on the source table.
+   *
+   * @param sourceTable the FlexTable to copy a row from
+   * @param targetTable the FlexTable to copy a row to
+   * @param sourceRow the index of the source row
+   * @param targetRow the index before which to insert the copied row
+   */
+  public static void copyCell(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int sourceCol,
+      int targetRow, int targetCol) {
+    targetTable.insertRow(targetRow);
+    HTML html = new HTML(sourceTable.getHTML(sourceRow, sourceCol));
+    targetTable.setWidget(targetRow, sourceCol, html);
+    /*for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
+      
+      targetTable.setWidget(targetRow, col, html);
+    }*/
+    copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
+  }
+  /**
    * Move an entire FlexTable from one FlexTable to another. Elements are moved
    * by attempting to call {@link FlexTable#getWidget(int, int)} on the source
    * table. If no widget is found (because <code>null</code> is returned), a
@@ -94,12 +115,12 @@ public class FlexTableUtil {
    */
   public static void moveCell(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int sourceCol,
      int targetRow, int targetColumn) {
-	  if (sourceTable == targetTable && sourceRow >= targetRow) {
+	/*  if (sourceTable == targetTable && sourceRow >= targetRow) {
 	      sourceRow++;
-	    }
+	    }*/
 	  Widget w = sourceTable.getWidget(sourceRow, sourceCol);
 	  if (targetRow==0) insertColumn(targetTable,targetRow,targetColumn,w);	  
-	  else insertCell(targetTable,targetRow,targetColumn,w);
+	  else insertCell(targetTable,targetRow,targetColumn,w, sourceRow, sourceCol);
 	  /*    if (sourceTable == targetTable && sourceRow >= targetRow) {
       sourceRow++;
     }
@@ -118,11 +139,14 @@ public class FlexTableUtil {
     sourceTable.removeRow(sourceRow);*/
   }
   private static void insertCell(FlexTable targetTable, int targetRow,
-		int targetColumn, Widget w) {
+		int targetColumn, Widget w, int sourceRow, int sourceColumn) {
 	// TODO Auto-generated method stub
 
-	  if (targetTable.getWidget(targetRow-1, targetColumn-1)==null)
-		  targetTable.setWidget(targetRow-1, targetColumn-1, w);
+	  if (sourceRow != targetRow && sourceColumn!=targetColumn){
+		  targetTable.setWidget(targetRow, targetColumn, w);
+		
+			 targetTable.setWidget(sourceRow, sourceColumn, new Label(""));
+	  }
 }
 
 /**

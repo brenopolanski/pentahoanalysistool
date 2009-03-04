@@ -52,8 +52,8 @@ public class OlapFlexTable extends FlexTable {
 				        tableCellDragController.makeDraggable(handle);
 				        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
 						   tableCellDragController.registerDropController(flexTableRowDropController1);
-						   if (col == 0)rowData[row][col] = handle;
-						   //else rowData[row][col] = new Label("");
+						   if (col == 1 || col == 0)rowData[row][col] = handle;
+						   else rowData[row][col] = new Label("");
 		       }
 		     
 		        
