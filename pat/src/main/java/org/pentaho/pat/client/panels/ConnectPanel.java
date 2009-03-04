@@ -77,6 +77,7 @@ public class ConnectPanel extends WindowPanel implements
 	  protected Widget onInitialize() {
 		  fpanel = new FormPanel();
 		  fpanel.setAction("schemaupload");
+		  fpanel.setMethod("POST");
 		  fpanel.addFormHandler(new FormHandler() {
 			 
 			  public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
@@ -107,6 +108,7 @@ public class ConnectPanel extends WindowPanel implements
 		  builder.addLabel(MessageFactory.getInstance().password() + ":", CellConstraints.xy(5, 6));
 		  builder.add(passwordTB, CellConstraints.xy(7, 6));
 		  builder.addLabel(MessageFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8));
+		  fileUpload.setName("file");
 		  builder.add(fileUpload, CellConstraints.xyw(3,8,5));
 		  		  
 		  uploadButton.addClickListener(new ClickListener() {
@@ -118,7 +120,7 @@ public class ConnectPanel extends WindowPanel implements
 		        	fpanel.submit();
 		        	connectBtn.setEnabled(true);
 		        	uploadButton.setEnabled(false);
-		        	Window.alert(filename);
+		        	//Window.alert(filename);
 		        }
 		      }
 		    });

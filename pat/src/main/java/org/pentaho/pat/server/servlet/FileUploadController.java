@@ -19,11 +19,11 @@ public class FileUploadController {
 }
 
 //        @SuppressWarnings("unchecked") 
-//        @RequestMapping(value = "/schemaupload", method = RequestMethod.POST) 
-        public ModelAndView postUploadForm(@RequestParam(value = "file") MultipartFile file) { 
+        @RequestMapping(value = "/schemaupload", method = RequestMethod.POST) 
+        public ModelAndView postUploadForm(@RequestParam(value = "map['file']") MultipartFile file) { 
                 ModelAndView mav = new ModelAndView(); 
                 try { 
-            file.transferTo(new File(this.basedir, "temp.test")); 
+           file.transferTo(new File(this.basedir, "temp.test")); 
         } catch (IllegalStateException e1) { 
             // TODO Auto-generated catch block 
             e1.printStackTrace(); 
