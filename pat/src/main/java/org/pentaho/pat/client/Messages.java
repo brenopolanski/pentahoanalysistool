@@ -13,6 +13,7 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	String schema_file();
 	String username();
 	String password();
+	String upload();
 
 /* </Messages used by PAT> */
 	/**
