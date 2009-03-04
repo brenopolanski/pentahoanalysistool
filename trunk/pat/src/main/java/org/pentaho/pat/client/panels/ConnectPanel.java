@@ -18,7 +18,10 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -72,8 +75,20 @@ public class ConnectPanel extends WindowPanel implements
 	
 	
 	  protected Widget onInitialize() {
-		  fpanel = new FormPanel("/schema_upload");
-		  
+		  fpanel = new FormPanel();
+		  fpanel.setAction("schemaupload");
+		  fpanel.addFormHandler(new FormHandler() {
+			 
+			  public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			 public void onSubmit(FormSubmitEvent arg0) {
+				// TODO Auto-generated method stub
+				 //Window.alert(arg0.toString());
+				
+			}
+		  });
 		  FormLayout layout = new FormLayout(
 			        "right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 			            + "right:[40dlu,pref], 3dlu, 70dlu",

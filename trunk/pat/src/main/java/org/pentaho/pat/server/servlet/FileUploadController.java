@@ -19,7 +19,7 @@ public class FileUploadController {
 }
 
 //        @SuppressWarnings("unchecked") 
-        @RequestMapping(value = "/schemaupload", method = RequestMethod.POST) 
+//        @RequestMapping(value = "/schemaupload", method = RequestMethod.POST) 
         public ModelAndView postUploadForm(@RequestParam(value = "file") MultipartFile file) { 
                 ModelAndView mav = new ModelAndView(); 
                 try { 
