@@ -31,7 +31,7 @@
 
     <stylesheet src="gwt/standard/Mosaic.css" />
         
-	<!--<stylesheet src='Pat.css' />-->
+	<stylesheet src='Pat.css' />
 	<entry-point class="org.pentaho.pat.client.Pat"/>
 
 </module>

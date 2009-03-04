@@ -38,7 +38,7 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 public class FlexTableCellDropController extends AbstractPositioningDropController {
 	
 	 private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner";
-
+	 
 	private int targetRow;
 	private int targetColumn;
   private final FlexTable flexTable;
@@ -70,7 +70,7 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
   public void onDrop(DragContext context) {
 	  FlexTableCellDragController trDragController = (FlexTableCellDragController) context.dragController;
 	  FlexTableUtil.moveCell(trDragController.getDraggableTable(), flexTable,
-		        trDragController.getDragRow(), trDragController.getDragCol(), targetRow+1, targetColumn);
+		        trDragController.getDragRow(), trDragController.getDragCol(), targetRow, targetColumn-1);
 	  //dropTarget.setWidget(context.draggable);
     super.onDrop(context);
   }
@@ -92,6 +92,9 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
   @Override
   public void onMove(DragContext context) {
     super.onMove(context);
+   
+    
+    
     targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
         context.mouseX, context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
     targetColumn = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
@@ -103,6 +106,8 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
     Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
     context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
         + (targetRow == -1 ? 0 : w.getOffsetHeight()));
+    
+     
   }
   
   Widget newPositioner(DragContext context) {

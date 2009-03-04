@@ -9,6 +9,11 @@ body {
 a {	
 	color: darkblue;
 }
+.demo-table-positioner {
+  z-index: 1;
+  border-top: 1px solid green;
+  margin-top: 1px;
+}
 
 a:visited {	
 	color: darkblue; 
