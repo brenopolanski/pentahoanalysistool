@@ -29,7 +29,7 @@
 						<value>org.pentaho.pat.Pat</value>
 					</compileTargets>
 					<runTarget>org.pentaho.pat.Pat/Pat.html</runTarget>
-					<logLevel>ERROR</logLevel>
+					<logLevel>WARN</logLevel>
 					<style>OBF</style>
 					<noServer>false</noServer>
 					<extraJvmArgs>-Xmx512m</extraJvmArgs>
@@ -322,9 +322,9 @@
 			<version>2.5.6</version>
 		</dependency>
 		<dependency>
-			<groupId>com.code.gwtx</groupId>
+			<groupId>com.google.code.gwtx</groupId>
 			<artifactId>gwtx</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org</groupId>
