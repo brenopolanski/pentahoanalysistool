@@ -66,17 +66,15 @@ public class ConnectPanel extends WindowPanel implements
 		  FormLayout layout = new FormLayout(
 			        "right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 			            + "right:[40dlu,pref], 3dlu, 70dlu",
-			        "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, "
-			            + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, "
-			            + "p, 3dlu, p, 3dlu, p, 3dlu, p");
+			        "pref,10dlu,pref,pref,pref,pref");
 
 		  PanelBuilder builder = new PanelBuilder(layout);
-		  builder.addLabel(MessageFactory.getInstance().server() + ":", CellConstraints.xy(1, 2));
-		  builder.add(serverTB, CellConstraints.xyw(2, 2, 4));
-		  builder.addLabel(MessageFactory.getInstance().port() + ":", CellConstraints.xy(5, 2));
-		  builder.add(portTB, CellConstraints.xyw(7, 2, 2));
-		  builder.addLabel(MessageFactory.getInstance().database() + ":", CellConstraints.xy(1, 4));
-		  builder.add(databaseTB, CellConstraints.xyw(3, 4, 4));
+		  builder.addLabel(MessageFactory.getInstance().server() + ":", CellConstraints.xy(1, 3));
+		  builder.add(serverTB, CellConstraints.xy(3, 3));
+		  builder.addLabel(MessageFactory.getInstance().port() + ":", CellConstraints.xy(5, 3));
+		  builder.add(portTB, CellConstraints.xy(7, 3));
+		  builder.addLabel(MessageFactory.getInstance().database() + ":", CellConstraints.xy(1, 6));
+		  builder.add(databaseTB, CellConstraints.xy(3, 6));
 		    
 		    return builder.getPanel();
 	  		}
