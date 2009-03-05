@@ -35,5 +35,5 @@ public interface SourcesConnectionEvents {
    * 
    * @param listener the listener interface to remove
    */
-  void removeClickListener(ConnectionListener listener);
+  void removeConnectionListener(ConnectionListener listener);
 }

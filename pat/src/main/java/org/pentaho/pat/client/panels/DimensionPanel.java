@@ -6,8 +6,13 @@ package org.pentaho.pat.client.panels;
 
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
 import org.pentaho.pat.client.widgets.DemoFlexTable;
@@ -78,7 +83,27 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 	}
 
 	public void init() {
-		AbsolutePanel tableExamplePanel = new AbsolutePanel();
+		
+		 final LayoutPanel vBox = new LayoutPanel(
+			        new BoxLayout(Orientation.VERTICAL));
+			    vBox.setPadding(0);
+			    vBox.setWidgetSpacing(0);
+
+			    final ListBox<String> dimensionsListBox = new ListBox<String>();
+			    //listBox.setContextMenu(createContextMenu());
+
+			    final DefaultListModel<String> model = (DefaultListModel<String>) dimensionsListBox.getModel();
+			    model.add("foo");
+			    model.add("bar");
+			    model.add("baz");
+			    model.add("toto");
+			    model.add("tintin");
+
+			    
+			    vBox.add(dimensionsListBox, new BoxLayoutData(FillStyle.BOTH));
+
+			    this.add(vBox);
+		/*	AbsolutePanel tableExamplePanel = new AbsolutePanel();
 	    tableExamplePanel.setPixelSize(450, 300);
 	
 	    this.add(tableExamplePanel);
@@ -97,7 +122,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 	
 	    //tableRowDragController.registerDropController(flexTableRowDropController1);
 	
-	    this.add(tableExamplePanel);
+	    this.add(tableExamplePanel);*/
 //		DraggableListBox listBox = new DraggableListBox("10em");
 		//listBox.getDragController().addDragHandler(dragHandler);
 	//    this.add(listBox, new BoxLayoutData(FillStyle.BOTH));

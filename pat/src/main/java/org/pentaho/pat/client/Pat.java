@@ -84,9 +84,11 @@ CollapsedListener, EntryPoint {
 	    // Create a layout panel to align the widgets
 
 		  final ToolBarPanel toolBarPanel = new ToolBarPanel();
+		  final ControlBarPanel controlBarPanel = new ControlBarPanel();
+		  toolBarPanel.addConnectionListener(controlBarPanel);
+		  //toolBarPanel.addConnectionListener(dimensionPanel);
 		  
 		  
-		  toolBarPanel.addConnectionListener(dimensionPanel);
 		  
 		  layoutPanel.setPadding(0);
 
@@ -182,7 +184,7 @@ CollapsedListener, EntryPoint {
 
 	   
 	   boxPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-	    
+	   boxPanel.add(controlBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL)); 
 	   boxPanel.add(layoutPanel, new BoxLayoutData(FillStyle.BOTH));
 	  }
 	  
