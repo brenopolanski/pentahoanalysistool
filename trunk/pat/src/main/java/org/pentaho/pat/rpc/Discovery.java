@@ -24,7 +24,7 @@ public interface Discovery extends RemoteService {
 	/**
 	 * Returns a list of all available dimension names on
 	 * a given axis.
-	 * @param axis The axis for which we want the dimensions.
+	 * @param axis The axis for which we want the dimensions. Use null for unused dimensions.
 	 * @param sessionId Identifies the window session id that requested the operation.
 	 * @return A list object containing all available dimensions,
 	 * an empty list if there are none available or null

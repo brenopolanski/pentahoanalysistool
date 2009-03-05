@@ -3,6 +3,7 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.olap4j.OlapException;
+import org.olap4j.mdx.SelectNode;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -50,7 +51,7 @@ public interface SessionAsync {
 
 	public void deleteQuery(String guid, String sessionId, AsyncCallback<Boolean> callback);
 
-	
+	public void getQuery(String sessionId, String queryId, AsyncCallback<SelectNode> callback);
 	
 	
 	

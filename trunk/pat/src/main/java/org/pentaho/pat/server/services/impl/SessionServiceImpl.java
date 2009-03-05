@@ -14,6 +14,11 @@ import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
+import org.olap4j.mdx.AxisNode;
+import org.olap4j.mdx.IdentifierNode;
+import org.olap4j.mdx.ParseTreeNode;
+import org.olap4j.mdx.SelectNode;
+import org.olap4j.mdx.parser.impl.DefaultMdxParserImpl;
 import org.olap4j.query.Query;
 import org.pentaho.pat.Constants;
 import org.pentaho.pat.server.data.pojo.Session;
@@ -107,7 +112,7 @@ public class SessionServiceImpl extends AbstractService
 	
 
 	public void saveUserSessionVariable(String userId, String sessionId, 
-		String key, String value) 
+		String key, Object value) 
 	{
 		if (sessions.containsKey(userId) &&
 				sessions.get(userId).containsKey(sessionId))
@@ -122,7 +127,7 @@ public class SessionServiceImpl extends AbstractService
 	
 	
 	
-	public String getUserSessionVariable(String userId, String sessionId,
+	public Object getUserSessionVariable(String userId, String sessionId,
 			String key) {
 		if (sessions.containsKey(userId) &&
 				sessions.get(userId).containsKey(sessionId))
@@ -232,27 +237,22 @@ public class SessionServiceImpl extends AbstractService
 				sessions.get(userId).containsKey(sessionId))
 		{
 			// We need to verify if the user has selected a cube.
-			String cubeName = sessions.get(userId).get(sessionId).getVariables()
+			String cubeName = (String)sessions.get(userId).get(sessionId).getVariables()
 				.get(Constants.CURRENT_CUBE_NAME); 
 			
 			if (cubeName==null)
 				throw new OlapException("You asked to create a query but there was no cube previously selected.");
 			
 			String generatedId = String.valueOf(UUID.randomUUID());
+			String base_mdx = "SELECT {} ON ROWS, {} ON COLUMNS FROM ["+cubeName+"]";
+				
+			DefaultMdxParserImpl parser = new DefaultMdxParserImpl(getConnection(userId, sessionId));
+			SelectNode query = parser.parseSelect(base_mdx);
 			
-			try {
-				
-				Query query = new Query(cubeName, this.discoveryService.getCube(
-					userId, sessionId, cubeName));
-				
-				sessions.get(userId).get(sessionId).getQueries()
-					.put(generatedId, query);
-				
-				return generatedId;
-				
-			} catch (SQLException e) {
-				throw new OlapException(e.getMessage(),e);
-			}
+			sessions.get(userId).get(sessionId).getQueries()
+				.put(generatedId, query);
+			
+			return generatedId;
 		}
 		else
 			throw new RuntimeException("Invalid user/session ids provided.");
@@ -260,7 +260,7 @@ public class SessionServiceImpl extends AbstractService
 
 	
 	
-	public Query getQuery(String userId, String sessionId, String queryId) 
+	public SelectNode getQuery(String userId, String sessionId, String queryId) 
 	{
 		if (sessions.containsKey(userId) &&
 				sessions.get(userId).containsKey(sessionId))
@@ -277,9 +277,9 @@ public class SessionServiceImpl extends AbstractService
 				sessions.get(userId).containsKey(sessionId))
 		{
 			List<String> names = new ArrayList<String>();
-			Set<Entry<String, Query>> entries = 
+			Set<Entry<String, SelectNode>> entries = 
 				sessions.get(userId).get(sessionId).getQueries().entrySet();
-			for(Entry<String,Query> entry : entries)
+			for(Entry<String,SelectNode> entry : entries)
 			{
 				names.add(entry.getKey());
 			}

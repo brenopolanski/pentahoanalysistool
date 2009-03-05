@@ -11,12 +11,13 @@ import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.server.services.QueryService;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author luc Boudreau
  *
  */
-public class QueryServlet extends AbstractServlet implements Query {
+public class QueryServlet extends AbstractServlet implements Query, InitializingBean {
 
 	private static final long serialVersionUID = 1L;
 	
