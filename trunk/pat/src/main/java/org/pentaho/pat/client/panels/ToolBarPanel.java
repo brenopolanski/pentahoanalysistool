@@ -10,8 +10,11 @@ import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.ToolBar;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
+import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
+import org.pentaho.pat.client.util.ServiceFactory;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -60,6 +63,7 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
     Command disconnectCmd = new Command() {
         public void execute() {
       	 //connectWindow.disconnect(); 
+        	connectWindow.disconnect();
         }
       };
 
@@ -79,56 +83,17 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
 		
 		menuButton.setMenu(menuBtnMenu);
 		this.add(menuButton);
-		
-		
-		/*final BaseItemListenerAdapter listener = new BaseItemListenerAdapter() {
-			public void onClick(BaseItem connect, EventObject e) {
-				
-				connectWindow = new ConnectPanel();
-				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
-				// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
-				connectWindow.addConnectionListener(ToolBarPanel.this);
-				
-				
-				
-				connectWindow.show();
-					}
-				};
-			*/
-		
-		//Item connect = new Item(MessageFactory.getInstance().connect());
-		
-
-		//Menu submenu = new Menu();
-		//submenu.addItem(connect);
-		//connect.addListener(listener);
-		
-
-		/*fileToolbarMenuButton = new ToolbarButton(MessageFactory.getInstance().connect());
-		
-		fileToolbarMenuButton.addListener(new ButtonListenerAdapter() {
-			@Override
-			public void onClick(final Button button, final EventObject e) {
-				if (button.getText().equals(
-						MessageFactory.getInstance().connect())) {
-					connectWindow = new ConnectPanel();
-					// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(dimensionPanel);
-					// ADD WHEN IMPLEMENTED: connectWindow.addConnectionListener(cBar);
-					connectWindow.addConnectionListener(ToolBarPanel.this);
-					connectWindow.show();
-					//connect(ConnectionFactory.getInstance().connection_string());
-
-				} else if (button.getText().equals(
-						MessageFactory.getInstance().disconnect())) {
-					connectionListeners.fireConnectionBroken(ToolBarPanel.this);
-					fileToolbarMenuButton.setText(MessageFactory.getInstance().connect());
-				}
-			}
-		});
-		this.setAutoWidth(true);
-		this.addButton(fileToolbarMenuButton);
-*/
+	
 	}
+	public boolean isConnectionEstablished() {
+		return connectionEstablished;
+	}
+
+	public void setConnectionEstablished(boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
+	}
+	
+	
 	 public void onClick(Widget sender) {
 		    final Button btn = (Button) sender;
 		    
@@ -137,18 +102,28 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
 	 
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
+		setConnectionEstablished(false);
+		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 		menuBtnMenu.addItem(connectItem);
 		menuBtnMenu.removeItem(disconnectItem);
+		
 	}
 
 	public void onConnectionMade(Widget sender) {
-		// TODO Auto-generated method stub
-		//connectionListeners.fireConnectionMade(ToolBarPanel.this);
-		//fileToolbarMenuButton.setText(MessageFactory.getInstance().disconnect());
-		//menuBtnMenu.addItem(MessageFactory.getInstance().disconnect(), cmd1);
+		setConnectionEstablished(true);
+		connectionListeners.fireConnectionMade(ToolBarPanel.this);
 		menuBtnMenu.addItem(disconnectItem);
 		menuBtnMenu.removeItem(connectItem);
 	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		if (connectionListeners == null) {
 			connectionListeners = new ConnectionListenerCollection();
@@ -163,16 +138,7 @@ public class ToolBarPanel extends ToolBar implements ClickListener,ConnectionLis
 	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
-	
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	public void removeClickListener(ConnectionListener listener) {
+	public void removeConnectionListener(ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
