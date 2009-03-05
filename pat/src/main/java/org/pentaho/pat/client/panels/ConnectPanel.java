@@ -140,9 +140,10 @@ public class ConnectPanel extends WindowPanel implements
 
 	}
 
-	public void removeClickListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
 
+	public void removeConnectionListener(ConnectionListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
