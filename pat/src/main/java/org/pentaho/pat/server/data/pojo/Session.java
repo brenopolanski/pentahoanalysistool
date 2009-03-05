@@ -5,17 +5,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
-import org.olap4j.query.Query;
+import org.olap4j.mdx.SelectNode;
 
 public class Session {
 
 	private String id = null;
 	
-	private Map<String,String> variables = new ConcurrentHashMap<String, String>();
+	private Map<String,Object> variables = new ConcurrentHashMap<String, Object>();
 
 	private OlapConnection connection = null;
 	
-	private Map<String,Query> queries = new ConcurrentHashMap<String, Query>();
+	private Map<String,SelectNode> queries = new ConcurrentHashMap<String, SelectNode>();
 	
 	public Session(String id) {
 		this.id = id;
@@ -47,11 +47,11 @@ public class Session {
 		this.id = id;
 	}
 
-	public Map<String, String> getVariables() {
+	public Map<String, Object> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(Map<String, String> variables) {
+	public void setVariables(Map<String, Object> variables) {
 		this.variables = variables;
 	}
 
@@ -63,11 +63,11 @@ public class Session {
 		this.connection = connection;
 	}
 
-	public Map<String, Query> getQueries() {
+	public Map<String, SelectNode> getQueries() {
 		return queries;
 	}
 
-	public void setQueries(Map<String, Query> queries) {
+	public void setQueries(Map<String, SelectNode> queries) {
 		this.queries = queries;
 	}
 

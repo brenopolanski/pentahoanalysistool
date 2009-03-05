@@ -3,11 +3,13 @@ package org.pentaho.pat.server.servlet;
 import java.util.List;
 
 import org.olap4j.OlapException;
+import org.olap4j.mdx.SelectNode;
 import org.pentaho.pat.Constants;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.beans.factory.InitializingBean;
 
-public class SessionServlet extends AbstractServlet implements Session {
+public class SessionServlet extends AbstractServlet implements Session, InitializingBean {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -44,12 +46,12 @@ public class SessionServlet extends AbstractServlet implements Session {
 	}
 
 	public String getCurrentCube(String sessionId) {
-		return this.sessionService.getUserSessionVariable(
+		return (String)this.sessionService.getUserSessionVariable(
 				getCurrentUserId(), sessionId, Constants.CURRENT_CUBE_NAME);
 	}
 
 	public String getCurrentQuery(String sessionId) {
-		return this.sessionService.getUserSessionVariable(
+		return (String)this.sessionService.getUserSessionVariable(
 				getCurrentUserId(), sessionId, Constants.CURRENT_QUERY_NAME);
 	}
 
@@ -67,6 +69,11 @@ public class SessionServlet extends AbstractServlet implements Session {
 		this.sessionService.saveUserSessionVariable(getCurrentUserId(), 
 				sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		return true;
+	}
+	
+	public SelectNode getQuery(String sessionId, String queryId) {
+		return this.sessionService.getQuery(getCurrentUserId(), 
+				sessionId, queryId);
 	}
 	
 	

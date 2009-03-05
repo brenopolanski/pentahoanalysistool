@@ -1,8 +1,6 @@
 package org.pentaho.pat.rpc;
 
 
-import java.util.List;
-
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.pentaho.pat.client.util.StringTree;

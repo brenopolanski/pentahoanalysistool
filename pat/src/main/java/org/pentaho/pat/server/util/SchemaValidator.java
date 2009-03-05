@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -33,7 +34,7 @@ public abstract class SchemaValidator implements ErrorHandler {
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	
 			// parse the XML purely as XML and get a DOM tree represenation.
-			Document document = parser.parse( xml );
+			Document document = parser.parse( new ByteArrayInputStream(xml.getBytes()) );
 	
 			// parse the XML DOM tree againts the stricter XSD schema
 			validator.validate( new DOMSource( document ) );

@@ -10,6 +10,7 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.client.util.StringTree;
 import org.pentaho.pat.rpc.Discovery;
 import org.pentaho.pat.server.services.DiscoveryService;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 
@@ -19,7 +20,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
  *
  */
 public class DiscoveryServlet extends AbstractServlet implements
-		Discovery {
+		Discovery, InitializingBean {
 
 	private static final long serialVersionUID = 1L;
 	
