@@ -307,7 +307,7 @@
 		<dependency>
 			<groupId>org.olap4j</groupId>
 			<artifactId>olap4j</artifactId>
-			<version>0.9.7.135</version>
+			<version>0.9.7.146</version>
 		</dependency>
 		<dependency>
 			<groupId>com.pentaho</groupId>
