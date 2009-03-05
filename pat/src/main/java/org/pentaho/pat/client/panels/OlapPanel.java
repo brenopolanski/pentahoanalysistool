@@ -1,7 +1,15 @@
 package org.pentaho.pat.client.panels;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.DoubleClickListener;
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.ListBox;
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolBar;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.InfoPanel.InfoPanelType;
+import org.gwt.mosaic.ui.client.MessageBox.ConfirmationCallback;
+import org.gwt.mosaic.ui.client.MessageBox.PromptCallback;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
@@ -16,6 +24,8 @@ import org.pentaho.pat.client.widgets.OlapTable;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -45,7 +55,9 @@ public class OlapPanel extends CaptionLayoutPanel{
 		
 	    gl.setHorizontalAlignment(GridLayoutData.ALIGN_CENTER);
 	    gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
-	   // layoutPanel.add(dimensionWidget(), defaultGL);
+	    LayoutPanel lp = dimensionWidget();
+	    lp.setSize("300", "600");
+	    layoutPanel.add(lp);
 	    layoutPanel.add(test, gl);
 
 		//olapTable = new OlapTable(MessageFactory.getInstance());
@@ -72,16 +84,101 @@ public class OlapPanel extends CaptionLayoutPanel{
 	    //DimensionPanel.tableRowDragController.registerDropController(flexTableRowDropController2);
 	    //this.add(tableExamplePanel);
 	}
-	public Widget dimensionWidget(){
-	   	    final ListBox<String> listBox = new ListBox<String>();
+	public LayoutPanel dimensionWidget(){
+		  final LayoutPanel vBox = new LayoutPanel(
+			    new BoxLayout(Orientation.VERTICAL));
+			    vBox.setPadding(0);
+			    vBox.setWidgetSpacing(0);
+
+			final ListBox<String> listBox = new ListBox<String>();
 	        
 	        final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
 	        model.add("foo");
 	        model.add("bar");
 	        model.add("baz");
 	        model.add("toto");
-	        model.add("tintin");	
-	   return listBox;
+	        model.add("tintin");
+	        listBox.setSize("300", "300");
+	      
+	        
+	        listBox.addChangeListener(new ChangeListener() {
+	            public void onChange(Widget sender) {
+	              InfoPanel.show("ChangeListener",
+	                  listBox.getItem(listBox.getSelectedIndex()));
+	            }
+	          });
+
+	          listBox.addDoubleClickListener(new DoubleClickListener() {
+	            public void onDoubleClick(Widget sender) {
+	              InfoPanel.show(InfoPanelType.HUMANIZED_MESSAGE, "DoubleClickListener",
+	                  listBox.getItem(listBox.getSelectedIndex()));
+	            }
+	          });
+
+	          final ToolBar toolBar = new ToolBar();
+	          toolBar.add(new ToolButton("Insert", new ClickListener() {
+	            public void onClick(Widget sender) {
+	              MessageBox.prompt("ListBox Insert", "Please enter a new value to add",
+	                  null, new PromptCallback<String>() {
+	                    public void onResult(String input) {
+	                      if (input != null) {
+	                        final int index = listBox.getSelectedIndex();
+	                        if (index == -1) {
+	                          model.add(input);
+	                        } else {
+	                          model.add(index, input);
+	                        }
+	                      }
+	                    }
+	                  });
+	            }
+	          }));
+	          toolBar.add(new ToolButton("Remove", new ClickListener() {
+	            public void onClick(Widget sender) {
+	              if (listBox.getSelectedIndex() == -1) {
+	                MessageBox.alert("ListBox Edit", "No item selected");
+	                return;
+	              }
+	              String item = listBox.getItem(listBox.getSelectedIndex());
+	              MessageBox.confirm("ListBox Remove",
+	                  "Are you sure you want to permanently delete '" + item
+	                      + "' from the list?", new ConfirmationCallback() {
+	                    public void onResult(boolean result) {
+	                      if (result) {
+	                        model.remove(listBox.getSelectedIndex());
+	                      }
+	                    }
+	                  });
+	            };
+	          }));
+	          toolBar.add(new ToolButton("Edit", new ClickListener() {
+	            public void onClick(Widget sender) {
+	              if (listBox.getSelectedIndex() == -1) {
+	                MessageBox.alert("ListBox Edit", "No item selected");
+	                return;
+	              }
+	              String item = listBox.getItem(listBox.getSelectedIndex());
+	              MessageBox.prompt("ListBox Edit", "Please enter a new value for '"
+	                  + item + "'", item, new PromptCallback<String>() {
+	                public void onResult(String input) {
+	                  if (input != null) {
+	                    final int index = listBox.getSelectedIndex();
+	                    model.set(index, input);
+	                  }
+	                }
+	              });
+	            }
+	          }));
+
+	        
+	        
+	        
+	        
+	        
+	          vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+	        vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+	      vBox.setSize("300", "300");
+	   return vBox;
 		
 	}
 }
