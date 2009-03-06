@@ -31,27 +31,28 @@ public class ServiceFactory {
 	    return service;
 	  }
 	  
-	  static DiscoveryAsync dService = null;
-	  
-	  public static DiscoveryAsync getDiscoveryInstance() {
-	    if (dService == null) {
-	      dService = (DiscoveryAsync) GWT.create(Discovery.class);
-	      ServiceDefTarget endpoint = (ServiceDefTarget) dService;
-	      String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
-	      endpoint.setServiceEntryPoint(moduleRelativeURL);
-	    }
-	    return dService;
-	  }
-	  
-static SessionAsync sService = null;
-	  
-	  public static SessionAsync getSessionInstance() {
-	    if (sService == null) {
-	      sService = (SessionAsync) GWT.create(Session.class);
-	      ServiceDefTarget endpoint = (ServiceDefTarget) sService;
-	      String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
-	      endpoint.setServiceEntryPoint(moduleRelativeURL);
-	    }
-	    return sService;
-	  }
+// TODO activate new services, as soon as RPC can be client-side included 
+//	  static DiscoveryAsync dService = null;
+//	  
+//	  public static DiscoveryAsync getDiscoveryInstance() {
+//	    if (dService == null) {
+//	      dService = (DiscoveryAsync) GWT.create(Discovery.class);
+//	      ServiceDefTarget endpoint = (ServiceDefTarget) dService;
+//	      String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
+//	      endpoint.setServiceEntryPoint(moduleRelativeURL);
+//	    }
+//	    return dService;
+//	  }
+//	  
+//	  static SessionAsync sService = null;
+//	  
+//	  public static SessionAsync getSessionInstance() {
+//	    if (sService == null) {
+//	      sService = (SessionAsync) GWT.create(Session.class);
+//	      ServiceDefTarget endpoint = (ServiceDefTarget) sService;
+//	      String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
+//	      endpoint.setServiceEntryPoint(moduleRelativeURL);
+//	    }
+//	    return sService;
+//	  }
 }
