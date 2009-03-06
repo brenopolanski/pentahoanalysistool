@@ -82,7 +82,7 @@
 									file="${basedir}/src/test/java/org/pentaho/pat/test/test.properties.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/test.properties.xml" />
 								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/util/SampleData.mondrian.xml"
+									file="${basedir}/src/test/java/org/pentaho/pat/test/SampleData.mondrian.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/util/SampleData.mondrian.xml" />
 								<copy
 									file="${basedir}/src/test/java/jndi.properties"
@@ -479,6 +479,11 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-incubator</artifactId>
 			<version>1.5-Dec_28</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
 		</dependency>
 		
 	</dependencies>
