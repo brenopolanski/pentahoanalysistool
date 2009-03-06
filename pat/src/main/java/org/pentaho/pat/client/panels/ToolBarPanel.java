@@ -57,7 +57,7 @@ ConnectionListener, SourcesConnectionEvents {
 	// Execute command when disconnect button is pressed
 	Command disconnectCmd = new Command() {
 		public void execute() {
-			connectWindow.disconnect();
+			//connectWindow.disconnect();
 		}
 	};
 

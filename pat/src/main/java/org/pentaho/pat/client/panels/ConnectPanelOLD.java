@@ -168,7 +168,10 @@ public class ConnectPanelOLD extends WindowPanel implements SourcesConnectionEve
 		}
 	}
 	
-
+public void removeConnectionListener(ConnectionListener listener) {
+	// TODO Auto-generated method stub
+	
+}
 	public String getSchemafilename() {
 		return schemafilename;
 	}

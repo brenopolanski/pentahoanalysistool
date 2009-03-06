@@ -137,7 +137,8 @@ public class Olap4JServiceImpl extends AbstractServlet implements Olap4JService 
 
 		    Axis targetAxis = null;
 		    if (!axis.equalsIgnoreCase("none")) { //$NON-NLS-1$
-		      targetAxis = Axis.valueOf(axis);
+		      // TODO legacy olap4j
+		      // targetAxis = Axis.valueOf(axis);
 		    }
 
 		    List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
@@ -254,7 +255,8 @@ public class Olap4JServiceImpl extends AbstractServlet implements Olap4JService 
 		    }
 		    Axis targetAxis = null;
 		    if (!axisName.equalsIgnoreCase("none")) { //$NON-NLS-1$
-		      targetAxis = Axis.valueOf(axisName);
+		    // TODO legacy olap4j
+		    //targetAxis = Axis.valueOf(axisName);
 		    }
 
 		    query.getAxes().get(targetAxis).getDimensions().add(query.getDimension(DimName));
