@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.servlet;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,9 +44,12 @@ ResourceLoaderAware, InitializingBean {
              if (this.basedir == null)
                      throw new Exception("A basedir is required.");
              try {
-                     this.schemaDirectory = resourceLoader.getResource(basedir)
-                                     .getFile();
-             } catch (Exception e) {
+            	 	 // TODO FIXME: If the basedir doesn't exist in the webapp, this fails
+                     this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
+             } catch (FileNotFoundException e) {
+            	 log.error(e.getMessage());
+             }
+             catch (Exception e) {
                      throw new RuntimeException(e);
              }
      }
@@ -61,8 +65,8 @@ ResourceLoaderAware, InitializingBean {
 	            this.schemaDirectory.mkdir();
 	            File mvt = new File(this.schemaDirectory,tmpFileName);
 	            files.transferTo(mvt);
-	            // System.out.println("Uploaded file:" + mvt.getAbsolutePath());
 	            
+	            // TODO find a better way to return filename to client
                 response.getWriter().print("#filename#" + mvt.toString() + "#/filename#");
                 response.setStatus(HttpServletResponse.SC_OK);
 
@@ -73,8 +77,7 @@ ResourceLoaderAware, InitializingBean {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				}
 	        	
-                // return the result to the client
-	        	
+                // return the result to the client	        	
                 response.getWriter().flush();
 
 	           return null;  
