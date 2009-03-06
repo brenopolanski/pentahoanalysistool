@@ -78,10 +78,19 @@ public class ConnectPanel extends WindowPanel implements
 		  fpanel = new FormPanel();
 		  fpanel.setAction("schemaupload");
 		  fpanel.setMethod("POST");
+		  fpanel.setEncoding("multipart/form-data");
+		  
 		  fpanel.addFormHandler(new FormHandler() {
 			 
 			  public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
 				// TODO Auto-generated method stub
+				  if (arg0.getResults().contains("#filename#"))
+				  {
+					  String tmp = arg0.getResults().substring(arg0.getResults().indexOf("#filename#")+10,arg0.getResults().indexOf("#/filename#"));
+					  Window.alert(tmp);
+				  }
+				  else
+					  Window.alert("Schema Upload failed");
 				
 			}
 			 public void onSubmit(FormSubmitEvent arg0) {
@@ -109,6 +118,7 @@ public class ConnectPanel extends WindowPanel implements
 		  builder.add(passwordTB, CellConstraints.xy(7, 6));
 		  builder.addLabel(MessageFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8));
 		  fileUpload.setName("file");
+		  
 		  builder.add(fileUpload, CellConstraints.xyw(3,8,5));
 		  		  
 		  uploadButton.addClickListener(new ClickListener() {
