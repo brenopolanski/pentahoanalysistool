@@ -5,6 +5,9 @@ package org.pentaho.pat.client.panels;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -15,8 +18,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.util.GuidFactory;
+import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.client.widgets.DemoFlexTable;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -42,7 +48,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 	private static final String AXIS_PAGES = "PAGES"; //$NON-NLS-1$
 	private static final String AXIS_CHAPTERS = "CHAPTERS"; //$NON-NLS-1$
 	private static final String AXIS_SECTIONS = "SECTIONS"; //$NON-NLS-1$
-	
+	private static DefaultListModel<String> model;	
 	/*private static TreeNode rowNode = new TreeNode("Rows");
 	private static TreeNode columnNode = new TreeNode("Columns");
 	private TreePanel rowTree;
@@ -92,7 +98,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 			    final ListBox<String> dimensionsListBox = new ListBox<String>();
 			    //listBox.setContextMenu(createContextMenu());
 
-			    final DefaultListModel<String> model = (DefaultListModel<String>) dimensionsListBox.getModel();
+			    model = (DefaultListModel<String>) dimensionsListBox.getModel();
 			    model.add("foo");
 			    model.add("bar");
 			    model.add("baz");
@@ -379,7 +385,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 		String[][] list = { new String[] { "Empty", "Empty" } };
 		return list;
 	}
-
+*/
 	public static void populateDimensions() {
 		List axis = new ArrayList();
 		axis.add(AXIS_NONE);
@@ -395,24 +401,12 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 					GuidFactory.getGuid(), new AsyncCallback() {
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
-					String dimStr[][] = null;
-					dimensionStore.removeAll();
-					if (dimStrs.length > 0) {
-						dimStr = new String[dimStrs.length][1];
-						for (int k = 0; k < dimStrs.length; k++) {
-							dimStr[k][0] = dimStrs[k];
-						}
+					model.removeAllElements();
 
-					}
-					for (int j = 0; j < dimStr.length; j++) {
-
-						dimensionStore.add(recordDef
-								.createRecord(dimStr[j]));
-						dimensionStore.commitChanges();
+					for (int j = 0; j < dimStrs.length; j++) {
+						model.add(dimStrs[j]);					
 					}
 
-					// gridCols.setDisabled(false);
-					// gridRows.setDisabled(false);
 				}
 
 				public void onFailure(Throwable caught) {
@@ -431,7 +425,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 					
 						if (dimStrs.length>0){
 						int i = dimStrs.length;
-						getDimensionTree(dimStrs[i-1], rowNode);
+						//getDimensionTree(dimStrs[i-1], rowNode);
 						}
 					
 				}
@@ -451,7 +445,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 					
 						if (dimStrs.length>0){
 						int i = dimStrs.length;
-						getDimensionTree(dimStrs[i-1], columnNode);
+					//	getDimensionTree(dimStrs[i-1], columnNode);
 						}
 						
 				}
@@ -477,7 +471,7 @@ public class DimensionPanel extends CaptionLayoutPanel implements ConnectionList
 			});
 		}
 	}
-
+/*
 	public void moveDimension(String dim, String axis) {
 		final String finalAxis = axis;
 		ServiceFactory.getInstance().moveDimension(axis, dim,

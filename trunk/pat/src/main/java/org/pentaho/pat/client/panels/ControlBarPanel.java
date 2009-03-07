@@ -35,26 +35,7 @@ public class ControlBarPanel extends ToolBar implements ConnectionListener,
 		// Create listbox for displaying Cubenames
 		cubeListBox = new ListBox();
 		cubeListBox.addStyleName("cube-ListBox");
-		cubeListBox.addChangeListener(new ChangeListener() {
-			public void onChange(Widget sender) {
-				final int selected = cubeListBox.getSelectedIndex();
-				if (cubeListBox.getItemCount() > 0) {
-					ServiceFactory.getInstance().setCube(
-							cubeListBox.getItemText(selected),
-							GuidFactory.getGuid(), new AsyncCallback() {
-								public void onSuccess(Object result) {
-									System.out.println("Cube Set");
-								}
-
-								public void onFailure(Throwable caught) {
-									System.out.println("Cube Failed");
-								}
-							});
-				}
-			}
-		});
-
-		cubeListBox.addClickListener(new ClickListener() {
+				cubeListBox.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
 				if (cubeListBox.getItemCount() > 0) {
 					final int selected = cubeListBox.getSelectedIndex();
@@ -63,6 +44,7 @@ public class ControlBarPanel extends ToolBar implements ConnectionListener,
 							GuidFactory.getGuid(), new AsyncCallback() {
 								public void onSuccess(Object result) {
 									System.out.println("Cube Set");
+									DimensionPanel.populateDimensions();
 								}
 
 								public void onFailure(Throwable caught) {
