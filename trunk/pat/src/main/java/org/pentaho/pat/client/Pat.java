@@ -6,8 +6,7 @@ import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.panels.ControlBarPanel;
-import org.pentaho.pat.client.panels.DimensionPanel;
+import org.pentaho.pat.client.panels.CubeExplorerPanel;
 import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.OlapPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
@@ -36,7 +35,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * 
  */
 public class Pat implements CollapsedListener, EntryPoint {
-	private DimensionPanel dimensionPanel; // Dimension GUI for defining the
+	private CubeExplorerPanel dimensionPanel; // Dimension GUI for defining the
 	// query model
 	private OlapPanel olapPanel; // Main Window
 	private NorthPanel northPanel; // Contains the MDX and Filter GUI
@@ -57,8 +56,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 		// Create a layout panel to align the widgets
 		final ToolBarPanel toolBarPanel = new ToolBarPanel();
-		final ControlBarPanel controlBarPanel = new ControlBarPanel();
-		toolBarPanel.addConnectionListener(controlBarPanel);
+		
 		// toolBarPanel.addConnectionListener(dimensionPanel);
 
 		borderLayoutPanel.setPadding(0);
@@ -105,12 +103,13 @@ public class Pat implements CollapsedListener, EntryPoint {
 		borderLayoutPanel.addCollapsedListener(drillPanel, this);
 
 		// Dimension(west) Panel
-		dimensionPanel = new DimensionPanel(MessageFactory.getInstance()
+		dimensionPanel = new CubeExplorerPanel(MessageFactory.getInstance()
 				.dimensionPanel());
 		final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES
 				.toolCollapseLeft());
 		dimensionPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-
+		toolBarPanel.addConnectionListener(dimensionPanel);
+		
 		collapseBtn3.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
 				borderLayoutPanel.setCollapsed(dimensionPanel,
@@ -132,7 +131,6 @@ public class Pat implements CollapsedListener, EntryPoint {
 		borderLayoutPanel.add(olapPanel, new BorderLayoutData(Region.CENTER,
 				true));
 		boxPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-		boxPanel.add(controlBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 		boxPanel.add(borderLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
 	}
 
