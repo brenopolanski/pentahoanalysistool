@@ -1,6 +1,5 @@
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.widgets;
 
-import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.DoubleClickListener;
 import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.ListBox;
@@ -18,12 +17,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
-import org.pentaho.pat.client.util.MessageFactory;
-import org.pentaho.pat.client.widgets.OlapFlexTable;
-import org.pentaho.pat.client.widgets.OlapTable;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
@@ -32,15 +26,30 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 
-public class OlapPanel extends CaptionLayoutPanel{
+public class OlapPanel extends ContentWidget{
 	public static OlapTable olapTable;
-	public OlapPanel(){
+
+	
+	private String name;
+
+	  /**
+	   * Constructor.
+	   * 
+	   * @param constants2 the constants
+	   */
+	  
+	  
+	public OlapPanel(String name){
 		super();
-		
-		init();
+		this.name = name;
 	}
 	
-	public void init(){
+	
+	
+
+
+	@Override
+	public Widget onInitialize(){
 		GridLayoutData defaultGL = new GridLayoutData(1,1,true);
 		defaultGL.setHorizontalAlignment(GridLayoutData.ALIGN_DEFAULT);
 		defaultGL.setVerticalAlignment(GridLayoutData.ALIGN_TOP);
@@ -76,13 +85,14 @@ public class OlapPanel extends CaptionLayoutPanel{
 	    //OlapFlexTable table2 = new OlapFlexTable(4, 4, DimensionPanel.tableRowDragController);
 	    //tableExamplePanel.add(table1, 10, 20);
 	    //tableExamplePanel.add(table2, 230, 40);
-	    this.add(layoutPanel);
+	    
 	    // instantiate a drop controller for each table
 	    //FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1);
 	    //FlexTableRowDropController flexTableRowDropController2 = new FlexTableRowDropController(table2);
 	    //tableRowDragController.registerDropController(flexTableRowDropController1);
 	    //DimensionPanel.tableRowDragController.registerDropController(flexTableRowDropController2);
 	    //this.add(tableExamplePanel);
+	    return layoutPanel;
 	}
 	public LayoutPanel dimensionWidget(){
 		  final LayoutPanel vBox = new LayoutPanel(
@@ -181,4 +191,18 @@ public class OlapPanel extends CaptionLayoutPanel{
 	   return vBox;
 		
 	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+
 }

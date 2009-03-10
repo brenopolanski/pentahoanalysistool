@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.olap4j.OlapException;
 import org.olap4j.mdx.SelectNode;
-import org.pentaho.pat.Constants;
 import org.pentaho.pat.rpc.Session;
+import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.SessionService;
 import org.springframework.beans.factory.InitializingBean;
 

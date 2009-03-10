@@ -13,8 +13,8 @@ import org.olap4j.OlapException;
 import org.olap4j.mdx.SelectNode;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.NamedList;
-import org.pentaho.pat.Constants;
 import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 

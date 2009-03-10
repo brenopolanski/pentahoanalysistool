@@ -1,6 +1,6 @@
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.client.Messages;
+import org.pentaho.pat.client.PatMessages;
 
 import com.google.gwt.core.client.GWT;
 /**
@@ -8,10 +8,10 @@ import com.google.gwt.core.client.GWT;
  *
  */
 public class MessageFactory {
-	  static Messages messages = null;
-	  public static Messages getInstance() {
+	  static PatMessages messages = null;
+	  public static PatMessages getInstance() {
 	    if (messages == null) {
-	      messages = (Messages) GWT.create(Messages.class);
+	      messages = (PatMessages) GWT.create(PatMessages.class);
 	    }
 	    return messages;
 	  }

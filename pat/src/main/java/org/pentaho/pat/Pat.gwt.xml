@@ -37,4 +37,6 @@
 	<stylesheet src='Pat.css' />
 	<entry-point class="org.pentaho.pat.client.Pat"/>
 
+
+	<extend-property name="locale" values="es"/>
 </module>
