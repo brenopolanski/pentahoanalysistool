@@ -7,7 +7,7 @@ package org.pentaho.pat.client.panels;
 import org.gwt.mosaic.ui.client.WindowPanel;
 
 import org.pentaho.pat.client.util.GuidFactory;
-import org.pentaho.pat.client.util.MessageFactory;
+import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
@@ -58,9 +58,9 @@ public class ConnectPanel extends WindowPanel implements
 	public ConnectPanel() {
 		
 		this.setTitle("Register new Mondrian Connection");
-		MessageFactory.getInstance().disconnect();
-		connectBtn = new Button(MessageFactory.getInstance().connect());
-		uploadButton = new Button(MessageFactory.getInstance().upload());
+		ConstantFactory.getInstance().disconnect();
+		connectBtn = new Button(ConstantFactory.getInstance().connect());
+		uploadButton = new Button(ConstantFactory.getInstance().upload());
 		serverTB = new TextBox();
 		portTB = new TextBox();
 		databaseTB = new TextBox();
@@ -106,17 +106,17 @@ public class ConnectPanel extends WindowPanel implements
 
 		  PanelBuilder builder = new PanelBuilder(layout);
 		  this.setTitle("title");
-		  builder.addLabel(MessageFactory.getInstance().server() + ":", CellConstraints.xy(1, 2));
+		  builder.addLabel(ConstantFactory.getInstance().server() + ":", CellConstraints.xy(1, 2));
 		  builder.add(serverTB, CellConstraints.xy(3, 2));
-		  builder.addLabel(MessageFactory.getInstance().port() + ":", CellConstraints.xy(5, 2));
+		  builder.addLabel(ConstantFactory.getInstance().port() + ":", CellConstraints.xy(5, 2));
 		  builder.add(portTB, CellConstraints.xy(7, 2));
-		  builder.addLabel(MessageFactory.getInstance().database() + ":", CellConstraints.xy(1, 4));
+		  builder.addLabel(ConstantFactory.getInstance().database() + ":", CellConstraints.xy(1, 4));
 		  builder.add(databaseTB, CellConstraints.xyw(3, 4, 5));
-		  builder.addLabel(MessageFactory.getInstance().username() + ":", CellConstraints.xy(1, 6));
+		  builder.addLabel(ConstantFactory.getInstance().username() + ":", CellConstraints.xy(1, 6));
 		  builder.add(userTB, CellConstraints.xy(3, 6));
-		  builder.addLabel(MessageFactory.getInstance().password() + ":", CellConstraints.xy(5, 6));
+		  builder.addLabel(ConstantFactory.getInstance().password() + ":", CellConstraints.xy(5, 6));
 		  builder.add(passwordTB, CellConstraints.xy(7, 6));
-		  builder.addLabel(MessageFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8));
+		  builder.addLabel(ConstantFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8));
 		  fileUpload.setName("file");
 		  
 		  builder.add(fileUpload, CellConstraints.xyw(3,8,5));
