@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.gwt.mosaic.showcase.client.ContentWidget;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -20,15 +19,22 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.PatConstants;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
 import org.pentaho.pat.client.util.GuidFactory;
+import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
+import org.pentaho.pat.client.widgets.ContentWidget;
 import org.pentaho.pat.client.widgets.DemoFlexTable;
+import org.pentaho.pat.client.widgets.OlapPanel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -53,7 +59,7 @@ public class CubeExplorerPanel extends CaptionLayoutPanel implements ConnectionL
 SourcesConnectionEvents  {
 	
 
-	public static final CubeImages IMAGES = (CubeImages) GWT.create(CubeImages.class);
+	
 	private static final String AXIS_NONE = "none"; //$NON-NLS-1$
 	private static final String AXIS_UNUSED = "UNUSED"; //$NON-NLS-1$
 	private static final String AXIS_FILTER = "FILTER"; //$NON-NLS-1$
@@ -63,16 +69,20 @@ SourcesConnectionEvents  {
 	private static final String AXIS_CHAPTERS = "CHAPTERS"; //$NON-NLS-1$
 	private static final String AXIS_SECTIONS = "SECTIONS"; //$NON-NLS-1$
 	private static DefaultListModel<String> model;
-	private static FastTreeItem a;
 	private ConnectionListenerCollection connectionListeners;
 	public static FlexTableCellDragController tableRowDragController;
 	private static TreeItem rootNode;
+	
+
+	  
+	  
 	public CubeExplorerPanel(String text) {
 		super(text);
 		
 	    init();
 	}
-	  /**
+
+	/**
 	   * Images used in the {@link Application}.
 	   */
 	  public interface CubeTreeImages extends TreeImages {
@@ -88,12 +98,12 @@ SourcesConnectionEvents  {
 	  /**
 	   * A mapping of history tokens to their associated menu items.
 	   */
-	  private Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
+	  private static Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
 
 	  /**
 	   * A mapping of menu items to the widget display when the item is selected.
 	   */
-	  private Map<TreeItem, ContentWidget> itemWidgets = new HashMap<TreeItem, ContentWidget>();
+	  private static Map<TreeItem, ContentWidget> itemWidgets = new HashMap<TreeItem, ContentWidget>();
 
 	public void init() {
 		
@@ -108,7 +118,7 @@ SourcesConnectionEvents  {
 			    t.setAnimationEnabled(true);
 			    t.addStyleName("cube-menu");
 			    
-			    rootNode = t.addItem("Available Cubes");
+			    rootNode = t.addItem(ConstantFactory.getInstance().available_cubes());
 			    
 		
 			    final ScrollPanel panel = new ScrollPanel();
@@ -129,10 +139,14 @@ SourcesConnectionEvents  {
 						if (result1 != null) {
 							String[][] cubeNames = (String[][]) result1;
 						for (int i = 0; i < cubeNames.length; i++) {
-							if (a.getChildCount() > 0)
-								a.removeItems();
+							if (rootNode.getChildCount() > 0)
+								rootNode.removeItems();
 							
-								a.addItem(cubeNames[i][1]);
+							for (int j = 0; j < cubeNames.length; j++) {
+								setupMainMenuOption(rootNode, new OlapPanel(cubeNames[i][1]),
+								        Pat.IMAGES.cube());		
+							}
+							
 								
 							}
 						}
@@ -159,14 +173,14 @@ SourcesConnectionEvents  {
 	   * @param content the {@link ContentWidget} to display when selected
 	   * @param image the icon to display next to the {@link TreeItem}
 	   */
-	  private static void setupMainMenuOption(TreeItem parent, String name,
+	  private static void setupMainMenuOption(TreeItem parent,  ContentWidget content,
 	      AbstractImagePrototype image) {
-	    // Create the TreeItem
-	    TreeItem option = parent.addItem(image.getHTML() + " " + name);
+		   // Create the TreeItem
+		    TreeItem option = parent.addItem(image.getHTML() + " " + content.getName());
 
-	    // Map the item to its history token and content widget
-	    itemWidgets.put(option, content);
-	    itemTokens.put(getContentWidgetToken(content), option);
+		    // Map the item to its history token and content widget
+		    itemWidgets.put(option, content);
+		    itemTokens.put(getContentWidgetToken(content), option);
 	  }
 	  
 	public static void populateDimensions(List axis) {
@@ -175,13 +189,13 @@ SourcesConnectionEvents  {
 					GuidFactory.getGuid(), new AsyncCallback() {
 				public void onSuccess(Object result) {
 					String[] dimStrs = (String[]) result;
-					if (a.getChildCount() > 0)
-					a.removeItems();
+					if (rootNode.getChildCount() > 0)
+					rootNode.removeItems();
 
 					for (int j = 0; j < dimStrs.length; j++) {
 						//a.addItem(dimStrs[j]);
-						setupMainMenuOption(rootNode, dimStrs[j],
-						        IMAGES.calendar());		
+						setupMainMenuOption(rootNode, new OlapPanel(dimStrs[j]),
+						        Pat.IMAGES.cube());		
 					}
 
 				}
@@ -272,5 +286,16 @@ SourcesConnectionEvents  {
 		}
 
 	}
+	  /**
+	   * Get the token for a given content widget.
+	   * 
+	   * @return the content widget token.
+	   */
+	  private static String getContentWidgetToken(ContentWidget content) {
+	    String className = content.getClass().getName();
+	    className = className.substring(className.lastIndexOf('.') + 1);
+	    return className;
+	  }
+
 
 }

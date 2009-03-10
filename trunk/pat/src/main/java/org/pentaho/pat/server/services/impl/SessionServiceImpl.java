@@ -20,7 +20,7 @@ import org.olap4j.mdx.ParseTreeNode;
 import org.olap4j.mdx.SelectNode;
 import org.olap4j.mdx.parser.impl.DefaultMdxParserImpl;
 import org.olap4j.query.Query;
-import org.pentaho.pat.Constants;
+import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;

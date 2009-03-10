@@ -9,7 +9,7 @@ import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.ToolBar;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
-import org.pentaho.pat.client.util.MessageFactory;
+import org.pentaho.pat.client.util.ConstantFactory;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -69,10 +69,10 @@ ConnectionListener, SourcesConnectionEvents {
 		fileMenuButton.ensureDebugId("mosaicMenuButton-normal");
 
 		// Create Toolbar Menu Items
-		connectItem = new MenuItem(MessageFactory.getInstance().connect(),
+		connectItem = new MenuItem(ConstantFactory.getInstance().connect(),
 				connectWindowCmd);
 		disconnectItem = new MenuItem(
-				MessageFactory.getInstance().disconnect(), disconnectCmd);
+				ConstantFactory.getInstance().disconnect(), disconnectCmd);
 
 		// Add connect button
 		menuBtnMenu.addItem(connectItem);

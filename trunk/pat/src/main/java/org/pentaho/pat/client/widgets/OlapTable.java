@@ -19,7 +19,7 @@ package org.pentaho.pat.client.widgets;
 
 import java.util.Iterator;
 
-import org.pentaho.pat.client.Messages;
+import org.pentaho.pat.client.PatMessages;
 import org.pentaho.pat.client.panels.CellFormatPopup;
 import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.CellSpanInfo;
@@ -52,7 +52,7 @@ public class OlapTable extends FlexTable {
   OlapData olapData = null;
   boolean showParentMembers = true;
   boolean groupHeaders = true;
-  Messages messages = null;
+  PatMessages messages = null;
   
   private ClickListener clickListener;
   private CellFormatPopup cellFormatPopup;
@@ -60,7 +60,7 @@ public class OlapTable extends FlexTable {
   /**
    * @param messages
    */
-  public OlapTable(Messages messages) {
+  public OlapTable(PatMessages messages) {
     super();
     this.messages = messages;
     
@@ -68,7 +68,7 @@ public class OlapTable extends FlexTable {
   }
 
   
-  public OlapTable(Messages messages, boolean showParentMembers) {
+  public OlapTable(PatMessages messages, boolean showParentMembers) {
     this(messages);
     this.showParentMembers = showParentMembers;
   }

@@ -6,15 +6,18 @@ import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.panels.CubeExplorerPanel;
 import org.pentaho.pat.client.panels.NorthPanel;
-import org.pentaho.pat.client.panels.OlapPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
+import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.util.MessageFactory;
+import org.pentaho.pat.client.widgets.OlapPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,14 +38,16 @@ import com.google.gwt.user.client.ui.RootPanel;
  * 
  */
 public class Pat implements CollapsedListener, EntryPoint {
-	private CubeExplorerPanel dimensionPanel; // Dimension GUI for defining the
+	private CubeExplorerPanel cubeExplorerPanel; // Dimension GUI for defining the
 	// query model
 	private OlapPanel olapPanel; // Main Window
 	private NorthPanel northPanel; // Contains the MDX and Filter GUI
 	private SouthPanel drillPanel; // Contains the drill down information
 	public static LayoutPanel borderLayoutPanel;
 	private LayoutPanel boxPanel;
-
+	public static final PatImages IMAGES = (PatImages) GWT.create(PatImages.class);
+	
+	
 	public Pat() {
 		super();
 
@@ -56,8 +61,6 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 		// Create a layout panel to align the widgets
 		final ToolBarPanel toolBarPanel = new ToolBarPanel();
-		
-		// toolBarPanel.addConnectionListener(dimensionPanel);
 
 		borderLayoutPanel.setPadding(0);
 
@@ -103,31 +106,31 @@ public class Pat implements CollapsedListener, EntryPoint {
 		borderLayoutPanel.addCollapsedListener(drillPanel, this);
 
 		// Dimension(west) Panel
-		dimensionPanel = new CubeExplorerPanel(MessageFactory.getInstance()
+		cubeExplorerPanel = new CubeExplorerPanel(ConstantFactory.getInstance()
 				.dimensionPanel());
 		final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES
 				.toolCollapseLeft());
-		dimensionPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-		toolBarPanel.addConnectionListener(dimensionPanel);
+		cubeExplorerPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+		toolBarPanel.addConnectionListener(cubeExplorerPanel);
 		
 		collapseBtn3.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				borderLayoutPanel.setCollapsed(dimensionPanel,
-						!borderLayoutPanel.isCollapsed(dimensionPanel));
+				borderLayoutPanel.setCollapsed(cubeExplorerPanel,
+						!borderLayoutPanel.isCollapsed(cubeExplorerPanel));
 				borderLayoutPanel.layout();
 			}
 		});
 
-		borderLayoutPanel.add(dimensionPanel, new BorderLayoutData(Region.WEST,
+		borderLayoutPanel.add(cubeExplorerPanel, new BorderLayoutData(Region.WEST,
 				100, 10, 250));
-		borderLayoutPanel.setCollapsed(dimensionPanel, true);
+		borderLayoutPanel.setCollapsed(cubeExplorerPanel, true);
 
-		borderLayoutPanel.addCollapsedListener(dimensionPanel, this);
+		borderLayoutPanel.addCollapsedListener(cubeExplorerPanel, this);
 
 		// OLAP(center) panel
-
-		// centerPanel.getHeader().add(Showcase.IMAGES.gwtLogoThumb().createImage());
-		olapPanel = new OlapPanel();
+		olapPanel = new OlapPanel("blank");
+		
+		
 		borderLayoutPanel.add(olapPanel, new BorderLayoutData(Region.CENTER,
 				true));
 		boxPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
