@@ -5,6 +5,23 @@ import org.pentaho.pat.client.widgets.OlapPanel;
 import com.google.gwt.i18n.client.Constants;
 
 public interface PatConstants extends Constants{
+	/**
+	   * The available style themes that the user can select.
+	   */
+	  String[] STYLE_THEMES = {"standard", "chrome", "dark"};
+	  
+	String mainTitle();
+	
+	String mainSubTitle();
+	
+	String pat_homepage();
+	
+	String mainLinkPat();
+	
+	String pentaho_homepage();
+	
+	String mainLinkHomepage();
+
 	/* <Messages used by PAT> */
 	String connection_string();
 	String connect();
