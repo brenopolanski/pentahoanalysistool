@@ -45,15 +45,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * 
  */
 public class Pat implements CollapsedListener, EntryPoint {
-	/**
-	 * The type passed into the
-	 * {@link org.gwt.mosaic.showcase.generator.ShowcaseGenerator}.
-	 */
-	private static final class GeneratorInfo {
-	}
-													static {
-		GWTBeansBinding.init();
-	}
+
 	/**
 	 * Get the token for a given content widget.
 	 * 
@@ -84,18 +76,8 @@ public class Pat implements CollapsedListener, EntryPoint {
 		itemWidgets.put(option, content);
 		itemTokens.put(getContentWidgetToken(content), option);
 	}
-	private CubeExplorerPanel cubeExplorerPanel; // Dimension GUI for defining
-	// the
-	// query model
-	private OlapPanel olapPanel; // Main Window
-	private NorthPanel northPanel; // Contains the MDX and Filter GUI
-	private SouthPanel drillPanel; // Contains the drill down information
 
 	public static LayoutPanel borderLayoutPanel;
-
-	private LayoutPanel boxPanel;
-
-	private DecoratedTabLayoutPanel tabPanel;
 
 	public static final PatImages IMAGES = (PatImages) GWT
 			.create(PatImages.class);
@@ -108,7 +90,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	/**
 	 * The base style name.
 	 */
-	public static final String DEFAULT_STYLE_NAME = "Mosaic";
+	public static final String DEFAULT_STYLE_NAME = "Pat";
 
 	/**
 	 * A mapping of history tokens to their associated menu items.
@@ -127,8 +109,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 	public Pat() {
 		super();
-
-		// init();
+		
 	}
 
 	/**
@@ -174,7 +155,6 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 		// Create the application
 		setupTitlePanel();
-		setupMainLinks();
 		// setupOptionsPanel();
 		setupMainMenu();
 
@@ -221,25 +201,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none");
 	}
 
-	/**
-	 * Create the main links at the top of the application.
-	 * 
-	 * @param constants
-	 *            the constants with text
-	 */
-	private void setupMainLinks() {
-		// Link to PAT Homepage
-		app.addLink(new HTML("<a href=\""
-				+ ConstantFactory.getInstance().pat_homepage() + "\">"
-				+ ConstantFactory.getInstance().mainLinkPat() + "</a>"));
-
-		// Link to Pentaho Homepage
-		app.addLink(new HTML("<a href=\""
-				+ ConstantFactory.getInstance().pentaho_homepage() + "\">"
-				+ ConstantFactory.getInstance().mainLinkHomepage() + "</a>"));
-
-	}
-
+	
 	/**
 	 * Setup all of the options in the main menu.
 	 * 
