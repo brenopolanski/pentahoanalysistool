@@ -27,10 +27,10 @@ import org.pentaho.pat.client.panels.ConnectPanel;
  */
 public class ToolBarPanel extends ToolBar implements ClickListener,
 ConnectionListener, SourcesConnectionEvents {
-
+	private PopupMenu fileBtnMenu = new PopupMenu();
 	private ConnectPanel connectWindow;
 	private boolean connectionEstablished = false;
-	private PopupMenu menuBtnMenu = new PopupMenu();
+	
 	private MenuItem connectItem;
 	private MenuItem disconnectItem;
 	private ConnectionListenerCollection connectionListeners;
@@ -62,7 +62,15 @@ ConnectionListener, SourcesConnectionEvents {
 	};
 
 	public void init() {
-		// Create Toolbar Menu
+		createFileMenu();
+		createHelpMenu();
+		
+
+
+	}
+	
+	private void createFileMenu(){
+		
 		ToolButton fileMenuButton = new ToolButton("File");
 		fileMenuButton.setStyle(ToolButtonStyle.MENU);
 		fileMenuButton.addClickListener(this);
@@ -75,14 +83,45 @@ ConnectionListener, SourcesConnectionEvents {
 				ConstantFactory.getInstance().disconnect(), disconnectCmd);
 
 		// Add connect button
-		menuBtnMenu.addItem(connectItem);
+		fileBtnMenu.addItem(connectItem);
 
 		// Add File menu to Toolbar
-		fileMenuButton.setMenu(menuBtnMenu);
+		fileMenuButton.setMenu(fileBtnMenu);
 		this.add(fileMenuButton);
-
 	}
+	private void createHelpMenu(){
+		PopupMenu helpBtnMenu = new PopupMenu();
+		ToolButton helpMenuButton = new ToolButton("Help");
+		helpMenuButton.setStyle(ToolButtonStyle.MENU);
+		helpMenuButton.addClickListener(this);
+		helpMenuButton.ensureDebugId("mosaicMenuButton-normal");
 
+		// Create Toolbar Menu Items
+		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(),
+				new Command()
+						{
+							public void execute(){
+								System.out.print(ConstantFactory.getInstance().pat_homepage());
+							}
+							
+						});
+		
+		MenuItem pentahoItem = new MenuItem(
+				ConstantFactory.getInstance().mainLinkHomepage(),new Command()
+				{
+					public void execute(){
+						System.out.print(ConstantFactory.getInstance().pentaho_homepage());
+					}
+					
+				});
+
+		// Add connect button
+		helpBtnMenu.addItem(homeItem);
+		helpBtnMenu.addItem(pentahoItem);
+		// Add File menu to Toolbar
+		helpMenuButton.setMenu(helpBtnMenu);
+		this.add(helpMenuButton);
+	}
 	// Inherited on click method
 	public void onClick(Widget sender) {
 
@@ -100,8 +139,8 @@ ConnectionListener, SourcesConnectionEvents {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 		// Alter menu
-		menuBtnMenu.addItem(connectItem);
-		menuBtnMenu.removeItem(disconnectItem);
+		fileBtnMenu.addItem(connectItem);
+		fileBtnMenu.removeItem(disconnectItem);
 
 	}
 
@@ -109,8 +148,8 @@ ConnectionListener, SourcesConnectionEvents {
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ToolBarPanel.this);
 		// Alter menu
-		menuBtnMenu.addItem(disconnectItem);
-		menuBtnMenu.removeItem(connectItem);
+		fileBtnMenu.addItem(disconnectItem);
+		fileBtnMenu.removeItem(connectItem);
 	}
 
 	/*
