@@ -16,6 +16,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.panels.DimensionPanel;
 import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
@@ -110,6 +111,11 @@ public class Application extends Viewport {
 	private FlexTable topPanel;
 
 	/**
+	 * Create StackPanel
+	 */
+	private StackLayoutPanel stackPanel;
+	
+	/**
 	 * Constructor.
 	 */
 	public Application() {
@@ -124,7 +130,8 @@ public class Application extends Viewport {
 
 		final ToolBarPanel toolBarPanel = new ToolBarPanel();
 		layoutPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-
+		
+		
 		final LayoutPanel bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
@@ -174,11 +181,16 @@ public class Application extends Viewport {
 
 		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel(
 				"Cool Stuff!");
-		StackLayoutPanel stackPanel = new StackLayoutPanel();
+		stackPanel = new StackLayoutPanel();
 		westPanel.add(stackPanel);
 		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance()
 				.available_cubes());
 
+		DimensionPanel dimensionPanel = new DimensionPanel();
+		stackPanel.add(dimensionPanel, "Dimensions");
+		stackPanel.showStack(0);
+		toolBarPanel.addConnectionListener(dimensionPanel);
+		
 		// westPanel.getHeader().add(Showcase.IMAGES.showcaseDemos().createImage());
 		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
 				.toolCollapseLeft());
@@ -243,6 +255,9 @@ public class Application extends Viewport {
 				if (listener != null) {
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
+					stackPanel.showStack(1);
+					stackPanel.layout(true);
+					
 				}
 			}
 
