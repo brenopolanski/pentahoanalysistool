@@ -337,7 +337,7 @@
 		<dependency>
 			<groupId>org</groupId>
 			<artifactId>gwt-mosaic</artifactId>
-			<version>0.1.8</version>
+			<version>0.1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.gwt-widget</groupId>
