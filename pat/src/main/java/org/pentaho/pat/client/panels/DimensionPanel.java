@@ -41,7 +41,7 @@ SourcesConnectionEvents {
 		layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 		layoutPanel.setPadding(0);
 		layoutPanel.setWidgetSpacing(0);
-	layoutPanel.setSize("100%", "100%");
+		layoutPanel.setSize("100%", "100%");
 		createDimensionList();
 		this.add(layoutPanel);
 	}
@@ -87,8 +87,7 @@ SourcesConnectionEvents {
 					String[] dimStrs = (String[]) result;
 					
 						if (dimStrs.length>0){
-						int i = dimStrs.length;
-						//getDimensionTree(dimStrs[i-1], rowNode);
+						//getDimensionTree(dimStrs[dimStrs.length-1], rowNode);
 						}
 					
 				}

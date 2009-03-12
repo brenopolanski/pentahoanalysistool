@@ -5,16 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gwt.beansbinding.core.client.util.GWTBeansBinding;
-import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.CollapsedListener;
-import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.images.PatImages;
-import org.pentaho.pat.client.panels.CubeExplorerPanel;
-import org.pentaho.pat.client.panels.NorthPanel;
-import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.widgets.ContentWidget;
 import org.pentaho.pat.client.widgets.OlapPanel;
