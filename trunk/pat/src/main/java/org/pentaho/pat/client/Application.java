@@ -17,8 +17,6 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.panels.DimensionPanel;
-import org.pentaho.pat.client.panels.NorthPanel;
-import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.panels.ToolBarPanel;
 import org.pentaho.pat.client.util.ConstantFactory;
 
@@ -115,6 +113,11 @@ public class Application extends Viewport {
 	 */
 	private StackLayoutPanel stackPanel;
 	
+	/*
+	 * The tool bar
+	 */
+	private ToolBarPanel toolBarPanel;
+	
 	/**
 	 * Constructor.
 	 */
@@ -128,53 +131,11 @@ public class Application extends Viewport {
 		createTopPanel();
 		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 
-		final ToolBarPanel toolBarPanel = new ToolBarPanel();
-		layoutPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+		
 		
 		
 		final LayoutPanel bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
-
-		// MDX(north) panel
-		final NorthPanel northPanel = new NorthPanel("MDX Panel");
-		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES
-				.toolCollapseUp());
-		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
-
-		collapseBtn1.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				bottomPanel.setCollapsed(northPanel, !bottomPanel
-						.isCollapsed(northPanel));
-				bottomPanel.layout();
-			}
-		});
-
-		bottomPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10,
-				250));
-		bottomPanel.setCollapsed(northPanel, true);
-
-		// bottomPanel.addCollapsedListener(northPanel, this);
-
-		// Drill(south) panel
-		final SouthPanel drillPanel = new SouthPanel("Drill Data");
-
-		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES
-				.toolCollapseDown());
-		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
-
-		collapseBtn2.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				bottomPanel.setCollapsed(drillPanel, !bottomPanel
-						.isCollapsed(drillPanel));
-				bottomPanel.layout();
-			}
-		});
-
-		bottomPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10,
-				250));
-		bottomPanel.setCollapsed(drillPanel, true);
-
-		// bottomPanel.addCollapsedListener(drillPanel, this);
 
 		// Add the main menu
 		createMainMenu();
@@ -279,16 +240,13 @@ public class Application extends Viewport {
 		FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
 		// Setup the links cell
-		linksPanel = new HorizontalPanel();
-		topPanel.setWidget(0, 0, linksPanel);
-		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-links");
-		if (isRTL) {
-			formatter.setHorizontalAlignment(0, 0,
-					HasHorizontalAlignment.ALIGN_LEFT);
-		} else {
-			formatter.setHorizontalAlignment(0, 0,
-					HasHorizontalAlignment.ALIGN_RIGHT);
-		}
+		//linksPanel = new HorizontalPanel();
+		toolBarPanel = new ToolBarPanel();
+		//layoutPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+		
+		topPanel.setWidget(0, 0, toolBarPanel);
+		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu");
+
 		formatter.setColSpan(0, 0, 2);
 
 		// Setup the title cell

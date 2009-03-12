@@ -1,25 +1,39 @@
 package org.pentaho.pat.client.widgets;
 
+import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.DoubleClickListener;
+import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolBar;
 import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.InfoPanel.InfoPanelType;
 import org.gwt.mosaic.ui.client.MessageBox.ConfirmationCallback;
 import org.gwt.mosaic.ui.client.MessageBox.PromptCallback;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.panels.NorthPanel;
+import org.pentaho.pat.client.panels.SouthPanel;
+import org.pentaho.pat.client.util.ConstantFactory;
 
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -28,6 +42,17 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class OlapPanel extends ContentWidget{
 	public static OlapTable olapTable;
+
+	/**
+	 * The widget used to display source code.
+	 */
+	private HTML sourceWidget = null;
+	
+	/**
+	 * The stack panel with the contents.
+	 */
+	private StackLayoutPanel stackPanel;
+	
 
 	
 	private String name;
@@ -44,30 +69,91 @@ public class OlapPanel extends ContentWidget{
 		this.name = name;
 	}
 	
-	
+	private String createTabBarCaption(AbstractImagePrototype image, String text) {
+		StringBuffer sb = new StringBuffer();
+		sb
+				.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>");
+		sb.append("<td valign='middle'>");
+		sb.append(image.getHTML());
+		sb
+				.append("</td><td valign='middle' style='white-space: nowrap;'>&nbsp;");
+		sb.append(text);
+		sb.append("</td></tr></thead></table>");
+		return sb.toString();
+	}
 	
 
 
 	@Override
 	public Widget onInitialize(){
-		GridLayoutData defaultGL = new GridLayoutData(1,1,true);
-		defaultGL.setHorizontalAlignment(GridLayoutData.ALIGN_DEFAULT);
-		defaultGL.setVerticalAlignment(GridLayoutData.ALIGN_TOP);
-		final LayoutPanel layoutPanel = new LayoutPanel(new GridLayout(3, 5));
+		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+		
+		// MDX(north) panel
+		final NorthPanel northPanel = new NorthPanel("MDX Panel");
+		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES
+				.toolCollapseUp());
+		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
 
-		Label test = new Label("test");
-		
-		
+		collapseBtn1.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
+				layoutPanel.layout();
+			}
+		});
 
+		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10,
+				250));
+		layoutPanel.setCollapsed(northPanel, true);
 		
-		GridLayoutData gl = new GridLayoutData(2, 1, true);
 		
-	    gl.setHorizontalAlignment(GridLayoutData.ALIGN_CENTER);
-	    gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
-	    LayoutPanel lp = dimensionWidget();
-	    lp.setSize("300", "600");
-	    layoutPanel.add(lp);
-	    layoutPanel.add(test, gl);
+		
+		// Drill(south) panel
+		final SouthPanel drillPanel = new SouthPanel("Drill Data");
+
+			final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES
+					.toolCollapseDown());
+			drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
+
+			collapseBtn2.addClickListener(new ClickListener() {
+				public void onClick(Widget sender) {
+					layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
+					layoutPanel.layout();
+				}
+			});
+
+			layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10,
+					250));
+			layoutPanel.setCollapsed(drillPanel, true);
+
+			
+			stackPanel = new StackLayoutPanel();
+			// stackPanel.addTabListener(this);
+			// stackPanel.setPadding(5);
+			layoutPanel.add(stackPanel);
+			
+			
+			// Create the container for the main example
+			final LayoutPanel panel1 = new LayoutPanel(new BoxLayout(
+					Orientation.VERTICAL));
+			panel1.setPadding(0);
+			panel1.setWidgetSpacing(0);
+			
+			
+			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
+					ConstantFactory.getInstance().data() + " (" + getName() + ")"),
+					true);
+
+			final LayoutPanel panel2 = new LayoutPanel();
+			sourceWidget = new HTML();
+			sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source");
+			panel2.add(sourceWidget);
+			stackPanel.add(panel2,
+					createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory
+							.getInstance().chart()
+							+ " (" + getName() + ")"), true);
+
+			return layoutPanel;
+	
 
 		//olapTable = new OlapTable(MessageFactory.getInstance());
 		//this.add(olapTable);
@@ -92,106 +178,8 @@ public class OlapPanel extends ContentWidget{
 	    //tableRowDragController.registerDropController(flexTableRowDropController1);
 	    //DimensionPanel.tableRowDragController.registerDropController(flexTableRowDropController2);
 	    //this.add(tableExamplePanel);
-	    return layoutPanel;
 	}
-	public LayoutPanel dimensionWidget(){
-		  final LayoutPanel vBox = new LayoutPanel(
-			    new BoxLayout(Orientation.VERTICAL));
-			    vBox.setPadding(0);
-			    vBox.setWidgetSpacing(0);
-
-			final ListBox<String> listBox = new ListBox<String>();
-	        
-	        final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
-	        model.add("foo");
-	        model.add("bar");
-	        model.add("baz");
-	        model.add("toto");
-	        model.add("tintin");
-	        listBox.setSize("300", "300");
-	      
-	        
-	        listBox.addChangeListener(new ChangeListener() {
-	            public void onChange(Widget sender) {
-	              InfoPanel.show("ChangeListener",
-	                  listBox.getItem(listBox.getSelectedIndex()));
-	            }
-	          });
-
-	          listBox.addDoubleClickListener(new DoubleClickListener() {
-	            public void onDoubleClick(Widget sender) {
-	              InfoPanel.show(InfoPanelType.HUMANIZED_MESSAGE, "DoubleClickListener",
-	                  listBox.getItem(listBox.getSelectedIndex()));
-	            }
-	          });
-
-	          final ToolBar toolBar = new ToolBar();
-	          toolBar.add(new ToolButton("Insert", new ClickListener() {
-	            public void onClick(Widget sender) {
-	              MessageBox.prompt("ListBox Insert", "Please enter a new value to add",
-	                  null, new PromptCallback<String>() {
-	                    public void onResult(String input) {
-	                      if (input != null) {
-	                        final int index = listBox.getSelectedIndex();
-	                        if (index == -1) {
-	                          model.add(input);
-	                        } else {
-	                          model.add(index, input);
-	                        }
-	                      }
-	                    }
-	                  });
-	            }
-	          }));
-	          toolBar.add(new ToolButton("Remove", new ClickListener() {
-	            public void onClick(Widget sender) {
-	              if (listBox.getSelectedIndex() == -1) {
-	                MessageBox.alert("ListBox Edit", "No item selected");
-	                return;
-	              }
-	              String item = listBox.getItem(listBox.getSelectedIndex());
-	              MessageBox.confirm("ListBox Remove",
-	                  "Are you sure you want to permanently delete '" + item
-	                      + "' from the list?", new ConfirmationCallback() {
-	                    public void onResult(boolean result) {
-	                      if (result) {
-	                        model.remove(listBox.getSelectedIndex());
-	                      }
-	                    }
-	                  });
-	            };
-	          }));
-	          toolBar.add(new ToolButton("Edit", new ClickListener() {
-	            public void onClick(Widget sender) {
-	              if (listBox.getSelectedIndex() == -1) {
-	                MessageBox.alert("ListBox Edit", "No item selected");
-	                return;
-	              }
-	              String item = listBox.getItem(listBox.getSelectedIndex());
-	              MessageBox.prompt("ListBox Edit", "Please enter a new value for '"
-	                  + item + "'", item, new PromptCallback<String>() {
-	                public void onResult(String input) {
-	                  if (input != null) {
-	                    final int index = listBox.getSelectedIndex();
-	                    model.set(index, input);
-	                  }
-	                }
-	              });
-	            }
-	          }));
-
-	        
-	        
-	        
-	        
-	        
-	          vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
-	        vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
-	      vBox.setSize("300", "300");
-	   return vBox;
-		
-	}
-
+	
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub

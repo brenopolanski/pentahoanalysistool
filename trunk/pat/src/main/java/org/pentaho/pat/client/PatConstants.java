@@ -1,7 +1,5 @@
 package org.pentaho.pat.client;
 
-import org.pentaho.pat.client.widgets.OlapPanel;
-
 import com.google.gwt.i18n.client.Constants;
 
 public interface PatConstants extends Constants{
