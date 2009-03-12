@@ -1,38 +1,24 @@
 package org.pentaho.pat.client.widgets;
 
 import org.gwt.mosaic.ui.client.Caption;
-import org.gwt.mosaic.ui.client.DoubleClickListener;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.InfoPanel;
-import org.gwt.mosaic.ui.client.ListBox;
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
-import org.gwt.mosaic.ui.client.ToolBar;
-import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
-import org.gwt.mosaic.ui.client.InfoPanel.InfoPanelType;
-import org.gwt.mosaic.ui.client.MessageBox.ConfirmationCallback;
-import org.gwt.mosaic.ui.client.MessageBox.PromptCallback;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
-import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.util.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,7 +39,7 @@ public class OlapPanel extends ContentWidget{
 	 */
 	private StackLayoutPanel stackPanel;
 	
-
+	private LayoutPanel panel1;
 	
 	private String name;
 
@@ -127,17 +113,14 @@ public class OlapPanel extends ContentWidget{
 
 			
 			stackPanel = new StackLayoutPanel();
-			// stackPanel.addTabListener(this);
-			// stackPanel.setPadding(5);
 			layoutPanel.add(stackPanel);
 			
 			
 			// Create the container for the main example
-			final LayoutPanel panel1 = new LayoutPanel(new BoxLayout(
-					Orientation.VERTICAL));
+			panel1 = new LayoutPanel(new GridLayout(2, 4));
 			panel1.setPadding(0);
 			panel1.setWidgetSpacing(0);
-			
+			createLayout();
 			
 			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
 					ConstantFactory.getInstance().data() + " (" + getName() + ")"),
@@ -179,7 +162,20 @@ public class OlapPanel extends ContentWidget{
 	    //DimensionPanel.tableRowDragController.registerDropController(flexTableRowDropController2);
 	    //this.add(tableExamplePanel);
 	}
-	
+
+	private void createLayout(){
+		 FlexTable rowTable = new FlexTable();
+		 FlexTable colTable = new FlexTable();
+		 
+		 Label rowLabel = new Label("Rows");
+		 Label colLabel = new Label("Columns");
+		 
+		 panel1.add(rowLabel);
+		 panel1.add(rowTable);
+		 panel1.add(colLabel);
+		 panel1.add(colTable);
+		 
+	}
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
