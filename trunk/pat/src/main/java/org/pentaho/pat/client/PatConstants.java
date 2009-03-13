@@ -3,10 +3,8 @@ package org.pentaho.pat.client;
 import com.google.gwt.i18n.client.Constants;
 
 public interface PatConstants extends Constants{
-	/**
-	   * The available style themes that the user can select.
-	   */
-	  String[] STYLE_THEMES = {"standard", "chrome", "dark"};
+
+    String[] STYLE_THEMES = {"standard", "chrome", "dark"};
 	  
 	String mainTitle();
 	
@@ -448,5 +446,6 @@ public interface PatConstants extends Constants{
 	  String available_cubes();
 	  
 	  String data();
+
 	  
 }

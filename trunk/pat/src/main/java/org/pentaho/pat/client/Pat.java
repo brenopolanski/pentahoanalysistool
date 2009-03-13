@@ -79,7 +79,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	/**
 	 * The current style theme.
 	 */
-	public static String CUR_THEME = PatConstants.STYLE_THEMES[0];
+	public static String CUR_THEME = ConstantFactory.getInstance().STYLE_THEMES[0];
 
 	/**
 	 * The base style name.
@@ -99,7 +99,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	/**
 	 * The {@link Application}.
 	 */
-	private Application app = new Application();
+	private static Application app = new Application();
 
 	public Pat() {
 		super();
@@ -129,7 +129,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	 *            the prefix of the reference style name
 	 * @return the style name
 	 */
-	private String getCurrentReferenceStyleName(String prefix) {
+	private static String getCurrentReferenceStyleName(String prefix) {
 		String gwtRef = prefix + "-Reference-" + CUR_THEME;
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			gwtRef += "-rtl";
@@ -233,7 +233,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	/**
 	 * Update the style sheets to reflect the current theme and direction.
 	 */
-	private void updateStyleSheets() {
+	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css";
 		String gwtMosaicStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css";
@@ -316,4 +316,6 @@ public class Pat implements CollapsedListener, EntryPoint {
 		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet,
 				getCurrentReferenceStyleName("Application"), callback);
 	}
+	
+	
 }

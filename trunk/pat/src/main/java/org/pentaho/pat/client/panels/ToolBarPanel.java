@@ -3,14 +3,15 @@
  */
 package org.pentaho.pat.client.panels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.user.client.Command;
 
-import org.gwt.mosaic.ui.client.PopupMenu;
-import org.gwt.mosaic.ui.client.ToolBar;
-import org.gwt.mosaic.ui.client.ToolButton;
-import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.ConstantFactory;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,44 +26,50 @@ import org.pentaho.pat.client.panels.ConnectPanel;
  * @author Tom Barber
  * 
  */
-public class ToolBarPanel extends ToolBar implements ClickListener,
+public class ToolBarPanel extends MenuBar implements ClickListener,
 ConnectionListener, SourcesConnectionEvents {
-	private PopupMenu fileBtnMenu = new PopupMenu();
 	private ConnectPanel connectWindow;
 	private boolean connectionEstablished = false;
-	
 	private MenuItem connectItem;
-	private MenuItem disconnectItem;
 	private ConnectionListenerCollection connectionListeners;
 
+	
 	public ToolBarPanel() {
 		super();
 
 		init();
 	}
 
-	// Execute command when connect button is pressed
-	Command connectWindowCmd = new Command() {
-		public void execute() {
-			if (connectWindow == null) {
-				connectWindow = new ConnectPanel();
-				connectWindow.addConnectionListener(ToolBarPanel.this);
-			}
+	  private static final class ThemeMenu extends MenuItem {
+		    private static List<ThemeMenu> allButtons = null;
 
-			connectWindow.showModal();
+		    private String theme;
+		    public ThemeMenu(String theme, Command cmd) {
+		      super(theme, cmd);
+		      this.theme = theme;
+		      addStyleName("sc-ThemeButton-" + theme);
+		      
+		      // Add this button to the static list
+		      if (allButtons == null) {
+		        allButtons = new ArrayList<ThemeMenu>();
+		        //setDown(true);
+		        
+		      }
+		      allButtons.add(this);
+		    }
 
-		}
-	};
+		    public String getTheme() {
+		      return theme;
+		    }
 
-	// Execute command when disconnect button is pressed
-	Command disconnectCmd = new Command() {
-		public void execute() {
-			//connectWindow.disconnect();
-		}
-	};
+		    
+		    
+		  }
+
 
 	public void init() {
 		createFileMenu();
+		createViewMenu();
 		createHelpMenu();
 		
 
@@ -71,32 +78,66 @@ ConnectionListener, SourcesConnectionEvents {
 	
 	private void createFileMenu(){
 		
-		ToolButton fileMenuButton = new ToolButton("File");
-		fileMenuButton.setStyle(ToolButtonStyle.MENU);
-		fileMenuButton.addClickListener(this);
-		fileMenuButton.ensureDebugId("mosaicMenuButton-normal");
+		MenuBar fileMenuBar = new MenuBar(true);
+		fileMenuBar.setAnimationEnabled(true);
+		fileMenuBar.ensureDebugId("mosaicMenuButton-normal");
 
 		// Create Toolbar Menu Items
-		connectItem = new MenuItem(ConstantFactory.getInstance().connect(),
-				connectWindowCmd);
-		disconnectItem = new MenuItem(
-				ConstantFactory.getInstance().disconnect(), disconnectCmd);
-
+		
+		connectItem = new MenuItem(ConstantFactory.getInstance().connect(), new Command(){ 
+			public void execute() {
+				if (!connectionEstablished){
+				if (connectWindow == null) {
+					connectWindow = new ConnectPanel();
+					connectWindow.addConnectionListener(ToolBarPanel.this);
+				}
+				connectWindow.showModal();
+				}
+				else{
+					
+				}
+			}
+		});
+		
 		// Add connect button
-		fileBtnMenu.addItem(connectItem);
+		fileMenuBar.addItem(connectItem);
 
 		// Add File menu to Toolbar
-		fileMenuButton.setMenu(fileBtnMenu);
-		this.add(fileMenuButton);
+		 this.addItem(new MenuItem(ConstantFactory.getInstance().file(), fileMenuBar));
+		
 	}
-	private void createHelpMenu(){
-		PopupMenu helpBtnMenu = new PopupMenu();
-		ToolButton helpMenuButton = new ToolButton("Help");
-		helpMenuButton.setStyle(ToolButtonStyle.MENU);
-		helpMenuButton.addClickListener(this);
-		helpMenuButton.ensureDebugId("mosaicMenuButton-normal");
+	
+	private void createViewMenu(){
+		MenuBar viewMenu = new MenuBar(true);
+		viewMenu.setAnimationEnabled(true);
+	    MenuBar styleSheetMenu = new MenuBar(true);
+	
 
+		 for (int i = 0; i < ConstantFactory.getInstance().STYLE_THEMES.length; i++) {
+		      final ThemeMenu button = new ThemeMenu(
+		          ConstantFactory.getInstance().STYLE_THEMES[i], new Command(){
+		       public void execute() {
+			          // Update the current theme
+//		    	   	 Pat.CUR_THEME = button.getTheme();
+
+			          // Load the new style sheets
+			         Pat.updateStyleSheets();
+		       }});
+		      
+		     styleSheetMenu.addItem(button);
+		    }
+		 viewMenu.addItem("Blah", styleSheetMenu);
+		 
+		 this.addItem(new MenuItem("View",viewMenu));
+	}
+	
+	private void createHelpMenu(){
+		
+		MenuBar helpMenu = new MenuBar(true);
+		helpMenu.setAnimationEnabled(true);
+		
 		// Create Toolbar Menu Items
+
 		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(),
 				new Command()
 						{
@@ -116,11 +157,9 @@ ConnectionListener, SourcesConnectionEvents {
 				});
 
 		// Add connect button
-		helpBtnMenu.addItem(homeItem);
-		helpBtnMenu.addItem(pentahoItem);
-		// Add File menu to Toolbar
-		helpMenuButton.setMenu(helpBtnMenu);
-		this.add(helpMenuButton);
+		helpMenu.addItem(homeItem);
+		helpMenu.addItem(pentahoItem);
+		this.addItem(new MenuItem("Help", helpMenu));
 	}
 	// Inherited on click method
 	public void onClick(Widget sender) {
@@ -139,17 +178,15 @@ ConnectionListener, SourcesConnectionEvents {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 		// Alter menu
-		fileBtnMenu.addItem(connectItem);
-		fileBtnMenu.removeItem(disconnectItem);
-
+		connectItem.setText("Connect");
 	}
 
 	public void onConnectionMade(Widget sender) {
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ToolBarPanel.this);
 		// Alter menu
-		fileBtnMenu.addItem(disconnectItem);
-		fileBtnMenu.removeItem(connectItem);
+	
+		connectItem.setText("Disconnect");
 	}
 
 	/*
