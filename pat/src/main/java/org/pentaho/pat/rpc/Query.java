@@ -2,10 +2,8 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.olap4j.Axis;
-import org.olap4j.OlapException;
-import org.olap4j.query.Selection;
-import org.pentaho.pat.client.util.OlapData;
+import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.beans.OlapData;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -45,7 +43,7 @@ public interface Query extends RemoteService {
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames, 
-		Selection.Operator selectionType);	
+		String selectionType);	
 	
 	/**
 	 * Removes the selection status of members inside a given dimension.
@@ -63,5 +61,5 @@ public interface Query extends RemoteService {
 		List<String> memberNames);
 	
 	@Secured ({"ROLE_USER"})
-	public OlapData executeQuery(String sessionId) throws OlapException;
+	public OlapData executeQuery(String sessionId);
 }

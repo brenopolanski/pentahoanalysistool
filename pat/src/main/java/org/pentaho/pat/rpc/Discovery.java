@@ -1,9 +1,8 @@
 package org.pentaho.pat.rpc;
 
 
-import org.olap4j.Axis;
-import org.olap4j.OlapException;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.beans.StringTree;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -29,10 +28,9 @@ public interface Discovery extends RemoteService {
 	 * @return A list object containing all available dimensions,
 	 * an empty list if there are none available or null
 	 * if the given axis is not present in the cube.
-	 * @throws OlapException If something goes wrong.
 	 */
 	@Secured ({"ROLE_USER"})
-	public String [] getDimensions(String sessionId, Axis axis) throws OlapException;
+	public String [] getDimensions(String sessionId, Axis axis);
 	
 	/**
 	 * Returns all the cube names available on the current connection.
@@ -50,8 +48,7 @@ public interface Discovery extends RemoteService {
 	 * @param dimensionName Name of the dimension that contains
 	 * the member names we want.
 	 * @return A StringTree of all present members.
-	 * @throws OlapException If something goes wrong.
 	 */
 	@Secured ({"ROLE_USER"})
-	public StringTree getMembers(String sessionId, String dimensionName) throws OlapException;
+	public StringTree getMembers(String sessionId, String dimensionName);
 }

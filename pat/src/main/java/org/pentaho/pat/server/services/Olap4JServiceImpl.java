@@ -23,8 +23,8 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.client.services.Olap4JService;
-import org.pentaho.pat.client.util.OlapData;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.server.servlet.AbstractServlet;
 
 

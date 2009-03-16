@@ -24,8 +24,8 @@ import org.pentaho.pat.client.panels.CellFormatPopup;
 import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.GuidFactory;
-import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.OlapUtils;
+import org.pentaho.pat.rpc.beans.OlapData;
 
 
 

@@ -5,11 +5,11 @@ package org.pentaho.pat.server.servlet;
 
 import java.util.List;
 
-import org.olap4j.Axis;
+
 import org.olap4j.OlapException;
-import org.olap4j.query.Selection.Operator;
-import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.rpc.Query;
+import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.beans.OlapData;
 import org.pentaho.pat.server.services.QueryService;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -40,19 +40,25 @@ public class QueryServlet extends AbstractServlet implements Query, Initializing
 	}
 
 	public Boolean createSelection(String sessionId, String dimensionName,
-			List<String> memberNames, Operator selectionType) {
+			List<String> memberNames, String selectionType) {
 		return this.queryService.createSelection(getCurrentUserId(), sessionId, 
-				dimensionName, memberNames, selectionType);
+				dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
 	}
 
 	public Boolean moveDimension(String sessionId, Axis axis, 
 			String dimensionName) 
 	{
 		return this.queryService.moveDimension(
-			getCurrentUserId(), sessionId, axis, dimensionName);
+			getCurrentUserId(), sessionId, org.olap4j.Axis.Standard.valueOf(axis.getCaption()), dimensionName);
 	}
 
-	public OlapData executeQuery(String sessionId) throws OlapException {
-		return this.queryService.executeQuery(getCurrentUserId(), sessionId);
+	public OlapData executeQuery(String sessionId) {
+		try {
+			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
+		} catch (OlapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

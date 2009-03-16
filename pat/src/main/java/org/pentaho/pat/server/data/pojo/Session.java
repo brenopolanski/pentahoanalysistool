@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.mdx.SelectNode;
+import org.olap4j.query.Query;
 
 public class Session {
 
@@ -15,7 +16,7 @@ public class Session {
 
 	private OlapConnection connection = null;
 	
-	private Map<String,SelectNode> queries = new ConcurrentHashMap<String, SelectNode>();
+	private Map<String,Query> queries = new ConcurrentHashMap<String, Query>();
 	
 	public Session(String id) {
 		this.id = id;
@@ -63,11 +64,11 @@ public class Session {
 		this.connection = connection;
 	}
 
-	public Map<String, SelectNode> getQueries() {
+	public Map<String, Query> getQueries() {
 		return queries;
 	}
 
-	public void setQueries(Map<String, SelectNode> queries) {
+	public void setQueries(Map<String, Query> queries) {
 		this.queries = queries;
 	}
 

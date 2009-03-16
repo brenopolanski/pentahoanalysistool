@@ -6,7 +6,8 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.StringTree;
+
 import org.springframework.security.annotation.Secured;
 
 /**

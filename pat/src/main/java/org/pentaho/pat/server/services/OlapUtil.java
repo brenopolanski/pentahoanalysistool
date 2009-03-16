@@ -19,9 +19,9 @@ import org.olap4j.query.Selection;
 import org.pentaho.pat.client.util.CellData;
 import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.ColumnHeaders;
-import org.pentaho.pat.client.util.OlapData;
 import org.pentaho.pat.client.util.RowHeaders;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.beans.StringTree;
 
 
 

@@ -2,9 +2,6 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.olap4j.OlapException;
-import org.olap4j.mdx.SelectNode;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -26,7 +23,7 @@ public interface SessionAsync {
 	
 	
 	public void connect(String sessionId, String driverClassName, String url, 
-			String username, String password, AsyncCallback<Boolean> callback) throws OlapException;
+			String username, String password, AsyncCallback<Boolean> callback);
 	
 	public void disconnect(String sessionId, AsyncCallback<Boolean> callback);	
 	
@@ -45,14 +42,12 @@ public interface SessionAsync {
 	
 	public void getCurrentQuery(String sessionId, AsyncCallback<String> callback);
 	
-	public void createNewQuery(String sessionId, AsyncCallback<String> callback) throws OlapException;
+	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
 	
 	public void getQueries(String sessionId, AsyncCallback<List<String>> callback);
 
-	public void deleteQuery(String guid, String sessionId, AsyncCallback<Boolean> callback);
+	public void deleteQuery(String sessionId, String queryId, AsyncCallback<Boolean> callback);
 
-	public void getQuery(String sessionId, String queryId, AsyncCallback<SelectNode> callback);
-	
 	
 	
 	

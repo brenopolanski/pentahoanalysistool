@@ -15,9 +15,13 @@
  */
 
 
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.rpc.beans;
 
 import java.io.Serializable;
+
+import org.pentaho.pat.client.util.CellData;
+import org.pentaho.pat.client.util.ColumnHeaders;
+import org.pentaho.pat.client.util.RowHeaders;
 
 /**
  * @author wseyler
