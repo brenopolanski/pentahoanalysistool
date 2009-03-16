@@ -85,7 +85,7 @@ public class DiscoveryServiceImplTest extends TestContext {
 		String queryId = this.sessionService.createNewQuery("user", sessionId);
 		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		
-		List<String> dims = this.discoveryService.getDimensions("user", sessionId, Axis.UNUSED);
+		List<String> dims = this.discoveryService.getDimensions("user", sessionId, null);
 		assertNotNull(dims);
 		assertEquals(4, dims.size());
 		String[] currentList = new String[4];
