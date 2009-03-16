@@ -3,6 +3,7 @@ package org.pentaho.pat.server.services.impl;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,11 +15,8 @@ import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
-import org.olap4j.mdx.AxisNode;
-import org.olap4j.mdx.IdentifierNode;
-import org.olap4j.mdx.ParseTreeNode;
-import org.olap4j.mdx.SelectNode;
-import org.olap4j.mdx.parser.impl.DefaultMdxParserImpl;
+import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.Session;
@@ -243,14 +241,19 @@ public class SessionServiceImpl extends AbstractService
 			if (cubeName==null)
 				throw new OlapException("You asked to create a query but there was no cube previously selected.");
 			
+			Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
 			String generatedId = String.valueOf(UUID.randomUUID());
-			String base_mdx = "SELECT {} ON ROWS, {} ON COLUMNS FROM ["+cubeName+"]";
-				
-			DefaultMdxParserImpl parser = new DefaultMdxParserImpl(getConnection(userId, sessionId));
-			SelectNode query = parser.parseSelect(base_mdx);
+			Query newQuery;
+			try {
+				newQuery = new Query(generatedId, cube);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 			
 			sessions.get(userId).get(sessionId).getQueries()
-				.put(generatedId, query);
+				.put(generatedId, newQuery);
 			
 			return generatedId;
 		}
@@ -259,8 +262,31 @@ public class SessionServiceImpl extends AbstractService
 	}
 
 	
+	private Cube getCube4Guid(String userId, String sessionId, String cubeName) {
+		OlapConnection connection = this.getConnection(userId, sessionId);
+
+		try {
+			NamedList<Cube> cubes = connection.getSchema().getCubes();
+			Cube cube = null;
+			Iterator<Cube> iter = cubes.iterator();
+			while (iter.hasNext() && cube == null) {
+				Cube testCube = iter.next();
+				if (cubeName.equals(testCube.getName())) {
+					cube = testCube;
+				}
+			}
+			if (cube != null) {
+				return cube;
+			}
+		} catch (OlapException e) {
+		}
+
+		throw new RuntimeException("Programatic error. Invalid cube name.");
+
+	}
 	
-	public SelectNode getQuery(String userId, String sessionId, String queryId) 
+	
+	public Query getQuery(String userId, String sessionId, String queryId) 
 	{
 		if (sessions.containsKey(userId) &&
 				sessions.get(userId).containsKey(sessionId))
@@ -277,9 +303,9 @@ public class SessionServiceImpl extends AbstractService
 				sessions.get(userId).containsKey(sessionId))
 		{
 			List<String> names = new ArrayList<String>();
-			Set<Entry<String, SelectNode>> entries = 
+			Set<Entry<String, Query>> entries = 
 				sessions.get(userId).get(sessionId).getQueries().entrySet();
-			for(Entry<String,SelectNode> entry : entries)
+			for(Entry<String,Query> entry : entries)
 			{
 				names.add(entry.getKey());
 			}

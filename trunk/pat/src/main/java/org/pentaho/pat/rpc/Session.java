@@ -2,8 +2,6 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.olap4j.OlapException;
-import org.olap4j.mdx.SelectNode;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -30,7 +28,7 @@ public interface Session extends RemoteService {
 	
 	@Secured ({"ROLE_USER"})
 	public Boolean connect(String sessionId, String driverClassName, String url, 
-			String username, String password) throws OlapException;
+			String username, String password);
 	
 	@Secured ({"ROLE_USER"})
 	public Boolean disconnect(String sessionId);	
@@ -53,16 +51,13 @@ public interface Session extends RemoteService {
 	public String getCurrentQuery(String sessionId);
 	
 	@Secured ({"ROLE_USER"})
-	public String createNewQuery(String sessionId) throws OlapException;
+	public String createNewQuery(String sessionId);
 	
 	@Secured ({"ROLE_USER"})
 	public List<String> getQueries(String sessionId);
 
 	@Secured ({"ROLE_USER"})
-	public Boolean deleteQuery(String guid, String sessionId);
-
-	@Secured ({"ROLE_USER"})
-	public SelectNode getQuery(String sessionId, String queryId);
+	public Boolean deleteQuery(String sessionId, String queryId);
 	
 	
 	

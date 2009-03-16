@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
-import org.olap4j.OlapStatement;
-import org.olap4j.mdx.SelectNode;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Member;
+import org.olap4j.query.Query;
+import org.olap4j.query.QueryDimension;
+import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
-import org.pentaho.pat.client.util.OlapData;
+import org.pentaho.pat.rpc.beans.OlapData;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -50,19 +52,16 @@ public class QueryServiceImpl extends AbstractService
 	{
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
-		SelectNode query = this.sessionService.getQuery(userId, sessionId, currentQuery);
+		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
-		// FIXME IMPLEMENT ME
-		throw new UnsupportedOperationException();
-
-//	    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-//	    String path = OlapUtil.normalizeMemberNames((String[])memberNames.toArray());
-//	    Selection selection = OlapUtil.findSelection(path, qDim);
-//	    if (selection == null) {
-//	      return new Boolean(false);
-//	    }
-//	    qDim.getSelections().remove(selection);
-//	    return new Boolean(true);
+	    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+	    String path = OlapUtil.normalizeMemberNames((String[])memberNames.toArray());
+	    Selection selection = OlapUtil.findSelection(path, qDim);
+	    if (selection == null) {
+	      return new Boolean(false);
+	    }
+	    qDim.getSelections().remove(selection);
+	    return new Boolean(true);
 	}
 
 	public Boolean createSelection(String userId, String sessionId, String dimensionName,
@@ -73,23 +72,20 @@ public class QueryServiceImpl extends AbstractService
 		String currentCube = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_CUBE_NAME);
 		
-		SelectNode query = this.sessionService.getQuery(userId, sessionId, currentQuery);
+		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		Cube cube = this.discoveryService.getCube(userId, sessionId, currentCube);
 		
-		// FIXME IMPLEMENT ME
-		throw new UnsupportedOperationException();
-		
-//		try {
-//		      Member member = cube.lookupMember((String[])memberNames.toArray());
-//		      QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-//		      Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-//		      Selection selection = qDim.createSelection(member, selectionMode);
-//		      qDim.getSelections().add(selection);
-//	    } catch (OlapException e) {
-//	      e.printStackTrace();
-//	      return new Boolean(false);
-//	    }
-//	    return new Boolean(true);
+		try {
+		      Member member = cube.lookupMember((String[])memberNames.toArray());
+		      QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+		      Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+		      Selection selection = qDim.createSelection(member, selectionMode);
+		      qDim.getSelections().add(selection);
+	    } catch (OlapException e) {
+	      e.printStackTrace();
+	      return new Boolean(false);
+	    }
+	    return new Boolean(true);
 	}
 
 	public Boolean moveDimension(String userId, String sessionId, Axis axis, String dimensionName) {
@@ -97,13 +93,12 @@ public class QueryServiceImpl extends AbstractService
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		
-		SelectNode query = this.sessionService.getQuery(userId, sessionId, currentQuery);
+		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
-		// FIXME IMPLEMENT ME
-		throw new UnsupportedOperationException();
-
-//	    query.getAxes().get(axis).getDimensions()
-//	    	.add(query.getDimension(dimensionName));
+	    query.getAxes().get(axis).getDimensions()
+	    	.add(query.getDimension(dimensionName));
+	    
+	    return true;
 	}
 
 
@@ -112,10 +107,8 @@ public class QueryServiceImpl extends AbstractService
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 
-		SelectNode mdx = this.sessionService.getQuery(userId, sessionId, currentQuery);
+		Query mdx = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
-        OlapStatement olapStatement = this.sessionService.getConnection(userId, sessionId).createStatement();
-        
-		return OlapUtil.cellSet2OlapData(olapStatement.executeOlapQuery(mdx));
+		return OlapUtil.cellSet2OlapData(mdx.execute());
 	}
 }

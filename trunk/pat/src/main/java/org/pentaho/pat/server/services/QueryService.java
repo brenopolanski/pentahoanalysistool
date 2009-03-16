@@ -5,7 +5,7 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.query.Selection;
-import org.pentaho.pat.client.util.OlapData;
+import org.pentaho.pat.rpc.beans.OlapData;
 import org.springframework.security.annotation.Secured;
 
 /**

@@ -3,7 +3,6 @@ package org.pentaho.pat.server.servlet;
 import java.util.List;
 
 import org.olap4j.OlapException;
-import org.olap4j.mdx.SelectNode;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.SessionService;
@@ -25,14 +24,26 @@ public class SessionServlet extends AbstractServlet implements Session, Initiali
 	}
 
 	public Boolean connect(String sessionId, String driverClassName, String url, 
-		String username, String password) throws OlapException {
-		sessionService.createConnection(getCurrentUserId(),sessionId, 
-			driverClassName, url, username, password);
-		return true;
+		String username, String password) {
+		try {
+			sessionService.createConnection(getCurrentUserId(),sessionId, 
+				driverClassName, url, username, password);
+			return true;
+		} catch (OlapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	public String createNewQuery(String sessionId) throws OlapException {
-		return sessionService.createNewQuery(getCurrentUserId(), sessionId);
+	public String createNewQuery(String sessionId) {
+		try {
+			return sessionService.createNewQuery(getCurrentUserId(), sessionId);
+		} catch (OlapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public Boolean deleteQuery(String sessionId, String queryId) {
@@ -69,11 +80,6 @@ public class SessionServlet extends AbstractServlet implements Session, Initiali
 		sessionService.saveUserSessionVariable(getCurrentUserId(), 
 				sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		return true;
-	}
-	
-	public SelectNode getQuery(String sessionId, String queryId) {
-		return sessionService.getQuery(getCurrentUserId(), 
-				sessionId, queryId);
 	}
 	
 	

@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.rpc.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;

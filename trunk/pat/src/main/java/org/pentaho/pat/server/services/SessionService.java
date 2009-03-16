@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
-import org.olap4j.mdx.SelectNode;
+import org.olap4j.query.Query;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -61,7 +61,7 @@ public interface SessionService extends Service {
 	public String createNewQuery(String userId, String sessionId) throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
-	public SelectNode getQuery(String userId, String sessionId, String queryId);
+	public Query getQuery(String userId, String sessionId, String queryId);
 	
 	@Secured ({"ROLE_USER"})
 	public List<String> getQueries(String userId, String sessionId);

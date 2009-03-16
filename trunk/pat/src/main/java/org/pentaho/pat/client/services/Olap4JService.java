@@ -7,8 +7,8 @@ package org.pentaho.pat.client.services;
 
 
 
-import org.pentaho.pat.client.util.OlapData;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.beans.StringTree;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 

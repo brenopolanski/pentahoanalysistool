@@ -1,13 +1,11 @@
 package org.pentaho.pat.server.services.impl;
 
-import java.sql.DriverManager;
 import java.util.List;
 
 import org.junit.Assert;
-import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.Constants;
-import org.pentaho.pat.client.util.StringTree;
+import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.test.TestContext;
 
 public class DiscoveryServiceImplTest extends TestContext {

@@ -28,11 +28,11 @@
 	<inherits name="org.gwtwidgets.WidgetLibrary"/>
 	<inherits name='org.gwt.mosaic.Mosaic' />
 	<!-- TODO enable RPC interfaces -->
-	<!--  <source path='rpc'/>  -->
+  <source path='rpc'/>  
 	<source path='client' />
     <!--<inherits name='org.gwt.mosaic.actions.Actions' />-->
 
-    <stylesheet src="gwt/standard/Mosaic.css" />
+  <stylesheet src="gwt/standard/Mosaic.css" />
         
 	<stylesheet src='Pat.css' />
 	<entry-point class="org.pentaho.pat.client.Pat"/>
