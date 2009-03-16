@@ -20,17 +20,6 @@
 		<property name="service" ref="queryServlet" />
 		<property name="serviceInterface" value="org.pentaho.pat.rpc.Query" />
 	</bean>
-	
-	<bean id="fileUploadController"
-		class="org.pentaho.pat.server.servlet.FileUploadController">
-		   <property name="commandClass" value="org.pentaho.pat.server.beans.FileUploadBean"/>
-		   <property name="basedir" value="schema_temp/" />  
-	</bean>
-	
-	<bean id="multipartResolver" 
-    	class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
-    	<property name="maxUploadSize" value="100000" /> 
-  	</bean>
   	 
 	<bean id="httpInvokerLegacyServlet"
 		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
