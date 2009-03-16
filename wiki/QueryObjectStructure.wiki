@@ -17,7 +17,12 @@ A query has the following properties
 
 === axis ===
 
-A query has many QueryAxis objects as it's children. One of them is an "unused" axis, which contains dimensions that are not actually included in the query yet.
+A query has many QueryAxis objects as it's children. One of them is an "unused" axis, which contains dimensions that are not actually included in the query yet. The axis supported will be the following :
+
+  * columns
+  * rows
+  * slicer
+  * unused
 
 One of the dimensions is the Measures dimension. It is treated the same way as the other dimensions, thus allowing us to either crossjoin it with others, or simply drop it in the slicer axis.
 
@@ -52,6 +57,4 @@ This property defines what needs to be excluded from the selection.
 === sort rule ===
 
 This defines wether we sort the selection in ascending or descending or natural order.
-
-
 
