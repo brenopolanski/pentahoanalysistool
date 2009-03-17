@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 /**
  * Table to demonstrate draggable rows and columns.
  */
-public final class DemoFlexTable extends FlexTable {
+public final class DimensionFlexTable extends FlexTable {
 
   /**
    * Creates a FlexTable with the desired number of rows and columns, making
@@ -36,7 +36,7 @@ public final class DemoFlexTable extends FlexTable {
    * @param tableRowDragController the drag controller to enable dragging of
    *            table rows
    */
-  public DemoFlexTable(int rows, int cols, FlexTableCellDragController tableCellDragController) {
+  public DimensionFlexTable(int rows, int cols, FlexTableCellDragController tableCellDragController) {
     addStyleName("demo-flextable");
       HTML handle = new HTML("[drag-here]");
       handle.addStyleName("demo-drag-handle");

@@ -30,7 +30,7 @@ import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.MessageFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.client.widgets.ContentWidget;
-import org.pentaho.pat.client.widgets.DemoFlexTable;
+import org.pentaho.pat.client.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.widgets.OlapPanel;
 
 import com.google.gwt.core.client.GWT;

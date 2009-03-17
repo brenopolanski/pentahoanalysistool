@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * 
- * @author Tom Barber
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class Pat implements CollapsedListener, EntryPoint {
@@ -232,6 +232,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 	/**
 	 * Update the style sheets to reflect the current theme and direction.
+	 * 
 	 */
 	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include

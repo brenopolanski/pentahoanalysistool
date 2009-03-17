@@ -2,20 +2,65 @@ package org.pentaho.pat.client;
 
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * Constants for Pat 
+ */
+
 public interface PatConstants extends Constants{
 
+	/**
+	 * 
+	 * @return translated "STYLE_THEMES"
+	 * STYLE_THEMES 
+	 */
     String[] STYLE_THEMES = {"standard", "chrome", "dark"};
 	  
+    /**
+	 * Translated "Main Title".
+	 * 
+	 * @return translated "Main Title" 
+	 * mainTitle
+	 */
 	String mainTitle();
 	
+	/**
+	 * Translated "Main Sub Title".
+	 * 
+	 * @return translated "Main Sub Title" 
+	 * mainSubTitle
+	 */
 	String mainSubTitle();
 	
+	/**
+	 * Translated "Pat Homepage".
+	 * 
+	 * @return translated "Pat Homepage" 
+	 * pat_homepage
+	 */
 	String pat_homepage();
 	
+	/**
+	 * Translated "Main Link Pat".
+	 * 
+	 * @return translated "Main Link Pat" 
+	 * mainLinkPat
+	 */
 	String mainLinkPat();
 	
+	/**
+	 * Translated "Pentaho Homepage".
+	 * 
+	 * @return translated "Pentaho Homepage" 
+	 * pentaho_homepage
+	 */
 	String pentaho_homepage();
 	
+	/**
+	 * Translated "mainLinkHomepage".
+	 * 
+	 * @return translated "mainLinkHomepage" 
+	 * mainLinkHomepage
+	 */
 	String mainLinkHomepage();
 
 	/* <Messages used by PAT> */

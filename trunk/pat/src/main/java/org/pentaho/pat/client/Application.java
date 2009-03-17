@@ -39,8 +39,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * <p>
- * A generic application that includes a title bar, main menu, content area, and
- * some external links at the top.
+ * The Application wrapper that includes a menu bar, title and content 
  * </p>
  * <h3>CSS Style Rules</h3> <ul class="css"> <li>.Application { Applied to the
  * entire Application }</li> <li>.Application-top { The top portion of the
@@ -49,7 +48,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * { The options widget }</li> <li>.Application-menu { The main menu }</li> <li>
  * .Application-content-wrapper { The element around the content }</li> </ul>
  * 
- * @author georgopoulos.georgios(at)gmail.com
+ * @author tom(at)wamonline.org.uk
  */
 public class Application extends Viewport {
 	/**
@@ -176,16 +175,7 @@ public class Application extends Viewport {
 		contentWrapper = new LayoutPanel(new FillLayout());
 		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper");
 		bottomPanel.add(contentWrapper);
-
-		if (LocaleInfo.getCurrentLocale().isRTL()) {
-			// bottomPanel.setCellHorizontalAlignment(contentDecorator,
-			// HasHorizontalAlignment.ALIGN_LEFT);
-			// contentDecorator.getElement().setAttribute("align", "LEFT");
-		} else {
-			// bottomPanel.setCellHorizontalAlignment(contentDecorator,
-			// HasHorizontalAlignment.ALIGN_RIGHT);
-			// contentDecorator.getElement().setAttribute("align", "RIGHT");
-		}
+		
 		setContent(null);
 	}
 
@@ -239,10 +229,8 @@ public class Application extends Viewport {
 		topPanel.setStyleName(DEFAULT_STYLE_NAME + "-top");
 		FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
-		// Setup the links cell
-		//linksPanel = new HorizontalPanel();
+		//Setup the toolbar
 		toolBarPanel = new ToolBarPanel();
-		//layoutPanel.add(toolBarPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 		
 		topPanel.setWidget(0, 0, toolBarPanel);
 		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu");
