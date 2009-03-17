@@ -112,7 +112,7 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	
 	public List<String> getDimensions(String userId, String sessionId, 
-		Axis.Standard axis) throws OlapException
+		Axis axis) throws OlapException
 	{
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);

@@ -49,7 +49,7 @@ public class QueryServlet extends AbstractServlet implements Query, Initializing
 			String dimensionName) 
 	{
 		return this.queryService.moveDimension(
-			getCurrentUserId(), sessionId, org.olap4j.Axis.Standard.valueOf(axis.getCaption()), dimensionName);
+			getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.getCaption()), dimensionName);
 	}
 
 	public OlapData executeQuery(String sessionId) {

@@ -76,7 +76,7 @@ public class QueryServiceImpl extends AbstractService
 		Cube cube = this.discoveryService.getCube(userId, sessionId, currentCube);
 		
 		try {
-		      Member member = cube.lookupMember((String[])memberNames.toArray());
+		      Member member = cube.lookupMember((String[])memberNames.toArray(new String[]{}));
 		      QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
 		      Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
 		      Selection selection = qDim.createSelection(member, selectionMode);
