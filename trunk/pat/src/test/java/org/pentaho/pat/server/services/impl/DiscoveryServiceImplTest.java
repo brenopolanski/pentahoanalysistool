@@ -135,6 +135,7 @@ public class DiscoveryServiceImplTest extends TestContext {
 	{
 		initTest();
 		
+		// TODO Write a test for the driver discovery.
 		this.discoveryService.getDrivers();
 		
 		finishTest();
@@ -154,6 +155,7 @@ public class DiscoveryServiceImplTest extends TestContext {
 	
 	private void finishTest() {
 		this.sessionService.setDiscoveryService(null);
+		this.discoveryService.setSessionService(null);
 		this.discoveryService = null;
 		this.sessionService = null;
 	}

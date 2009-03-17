@@ -226,6 +226,7 @@ public class SessionServiceImplTest extends TestContext {
 	
 	private void finishTest() {
 		this.sessionService.setDiscoveryService(null);
+		this.discoveryService.setSessionService(null);
 		this.discoveryService = null;
 		this.sessionService = null;
 	}
