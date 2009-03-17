@@ -17,7 +17,6 @@
 	
 	<!-- Legacy controller -->
 	<servlet path="/olap4j" class="org.pentaho.pat.server.services.Olap4JServiceImpl"/>
-	<servlet path="/schemaupload" class="org.pentaho.pat.server.servlet.FileUploadController" />
 	
 	<!-- Spring controllers -->
 	<servlet path="/session.rpc" class="org.pentaho.pat.server.servlet.SessionServlet"/>
