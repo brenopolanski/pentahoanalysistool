@@ -3,6 +3,7 @@ package org.pentaho.pat.server.services.impl;
 import java.util.List;
 
 import org.junit.Assert;
+import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.Constants;
 import org.pentaho.pat.rpc.beans.StringTree;
@@ -83,7 +84,7 @@ public class DiscoveryServiceImplTest extends TestContext {
 		String queryId = this.sessionService.createNewQuery("user", sessionId);
 		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		
-		List<String> dims = this.discoveryService.getDimensions("user", sessionId, null);
+		List<String> dims = this.discoveryService.getDimensions("user", sessionId, Axis.UNUSED);
 		assertNotNull(dims);
 		assertEquals(4, dims.size());
 		String[] currentList = new String[4];

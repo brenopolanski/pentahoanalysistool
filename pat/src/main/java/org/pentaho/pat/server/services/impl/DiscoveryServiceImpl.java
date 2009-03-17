@@ -112,20 +112,13 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	
 	public List<String> getDimensions(String userId, String sessionId, 
-		Axis axis) throws OlapException
+		Axis.Standard axis) throws OlapException
 	{
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
-		
-		// The UNUSED axis is not used by default...
-		Axis targetAxis = null;
-	    if (!axis.name().equalsIgnoreCase(org.olap4j.Axis.UNUSED.name())) { //$NON-NLS-1$
-	      targetAxis = axis;
-	    }
-		
-	    List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
+	    List<QueryDimension> dimList = query.getAxes().get(axis).getDimensions();
 	    List<String> dimNames = new ArrayList<String>();
 	    for (QueryDimension dim : dimList) {
 	      dimNames.add(dim.getName());
