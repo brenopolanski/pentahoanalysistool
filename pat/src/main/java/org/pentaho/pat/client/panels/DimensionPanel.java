@@ -2,22 +2,21 @@ package org.pentaho.pat.client.panels;
 
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.gwt.mosaic.ui.client.list.DefaultListModel;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+import org.pentaho.pat.client.util.FlexTableCellDragController;
 import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
-import org.pentaho.pat.client.widgets.OlapPanel;
+import org.pentaho.pat.client.widgets.DimensionFlexTable;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,16 +46,16 @@ SourcesConnectionEvents {
 	}
 	
 	private void createDimensionList(){
-		final ListBox<String> listBox = new ListBox<String>();
+		AbsolutePanel tableExamplePanel = new AbsolutePanel();
+        tableExamplePanel.setPixelSize(100, 100);
         
-        final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
-        model.add("foo");
-        model.add("bar");
-        model.add("baz");
-        model.add("toto");
-        model.add("tintin");
-        listBox.setSize("300", "300");
-        layoutPanel.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+        FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(tableExamplePanel);
+        
+        DimensionFlexTable table1 = new DimensionFlexTable(2, 2, tableRowDragController);
+    
+        tableExamplePanel.add(table1, 0, 0);
+        
+        layoutPanel.add(tableExamplePanel, new BoxLayoutData(FillStyle.BOTH));
 	}
 	
 	public static void populateDimensions(List axis) {
