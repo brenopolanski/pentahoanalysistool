@@ -18,7 +18,7 @@ public interface DiscoveryService extends Service {
 
 	@Secured ({"ROLE_USER"})
 	public List<String> getDimensions(String userId, String sessionId, 
-			Axis axis) throws OlapException;
+			Axis.Standard axis) throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
 	public List<String> getCubes(String userId, String sessionId);

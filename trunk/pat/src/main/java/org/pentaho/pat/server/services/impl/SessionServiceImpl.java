@@ -37,15 +37,8 @@ public class SessionServiceImpl extends AbstractService
 
 
 	
-	private static Map<String,Map<String, Session>> sessions = null;
+	private Map<String,Map<String, Session>> sessions = new ConcurrentHashMap<String, Map<String, Session>>();;
 	
-	
-	
-	
-	
-	static {
-		sessions = new ConcurrentHashMap<String, Map<String, Session>>();
-	}
 	
 	
 	
