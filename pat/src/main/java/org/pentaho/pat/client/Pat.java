@@ -2,16 +2,21 @@ package org.pentaho.pat.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.CollapsedListener;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application.ApplicationListener;
+import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.images.PatImages;
+import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.ConstantFactory;
+import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.client.widgets.ContentWidget;
 import org.pentaho.pat.client.widgets.OlapPanel;
+
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -23,6 +28,7 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -38,8 +44,10 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class Pat implements CollapsedListener, EntryPoint {
+public class Pat implements CollapsedListener, EntryPoint, ConnectionListener,
+SourcesConnectionEvents {
 
+	
 	/**
 	 * Get the token for a given content widget.
 	 * 
@@ -76,6 +84,7 @@ public class Pat implements CollapsedListener, EntryPoint {
 	public static final PatImages IMAGES = (PatImages) GWT
 			.create(PatImages.class);
 
+
 	/**
 	 * The current style theme.
 	 */
@@ -100,6 +109,8 @@ public class Pat implements CollapsedListener, EntryPoint {
 	 * The {@link Application}.
 	 */
 	private static Application app = new Application();
+
+	public static String SESSION_ID;
 
 	public Pat() {
 		super();
@@ -207,7 +218,49 @@ public class Pat implements CollapsedListener, EntryPoint {
 
 		TreeItem homeMenu = mainMenu.addItem("Home");
 		setupMainMenuOption(homeMenu, new OlapPanel("Blah"), IMAGES.cube());
-		setupMainMenuOption(homeMenu, new OlapPanel("Blah2"), IMAGES.cube());
+		
+	}
+	
+	private void setupCubeMenu(){
+	
+		ServiceFactory.getDiscoveryInstance().getCubes(SESSION_ID, new AsyncCallback() {
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onSuccess(Object arg0) {
+				// TODO Auto-generated method stub
+				Tree mainMenu = app.getMainMenu();
+
+				TreeItem homeMenu = mainMenu.addItem("Cubes");
+				List<String> blah = (List)arg0;
+				Iterator itr = blah.iterator();
+				while (itr.hasNext()){
+					 String name = (String) itr.next(); 
+					setupMainMenuOption(homeMenu, new OlapPanel(name), IMAGES.cube());
+				}
+			}
+			
+		});
+		
+	}
+
+	private static void getSessionID(){
+		ServiceFactory.getSessionInstance().createSession(new AsyncCallback(){
+
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onSuccess(Object arg0) {
+				
+				SESSION_ID = (String) arg0;
+			}
+			
+		});
+		
 	}
 
 	/**
@@ -316,6 +369,21 @@ public class Pat implements CollapsedListener, EntryPoint {
 		// sheet so that custom styles supercede the theme styles.
 		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet,
 				getCurrentReferenceStyleName("Application"), callback);
+	}
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void onConnectionMade(Widget sender) {
+		setupCubeMenu();
+	}
+	public void addConnectionListener(ConnectionListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void removeConnectionListener(ConnectionListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
