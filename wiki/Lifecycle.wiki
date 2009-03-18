@@ -1,14 +1,39 @@
   * A web browser is opened to the root address.
-  * The server redirects to the login page.
-  * The user submits his info.
-  * The ACEGI framework intercepts the call and validates the data.
-  * The ACEGI framework redirects to the PAT.HTML page and the user sees the application GUI. 
-    * The application sends out upon initialization a Session.createSession() call to obtain a unique window id.
+  * The web layer intercepts the call and authenticates the user.
+    * The security framework intercepts the call and validates the data.
+    * The security framework redirects the user to the page he asked for before being intercepted.
+  * The GUI create a session. It needs to ask for a unique ID to the backend.
+    * GUI calls Session.createSession()
+    * Backend creates a memory space for this session and generates a unique ID for it.
+    * GUI has to store the returned ID and send it along every next request, until it closes the session.
   * The user creates a connection by giving parameters.
-  * The client side code sends a connection request.
-  * The server tries to create the connection with the supplied parameters. It returns true/false. If true, the connection object is stored and associated to the window unique id.
+    * For ad-hoc mondrian connections :
+      * The user inputs his connection infos.
+      * The user selects a schema file to use and uploads it.
+      * Server validates and stores the file.
+        * FileUploadController
+      * Server Sends the file path back to the GUI.
+      * GUI sends a connect request
+        * Session.connect(...)
+      * Server returns true/false
   * The GUI asks for the list of available cubes.
-  * The user selects a cube and press a button like "create a query". Since the backend supports multiple queries as of now, yet the GUI doesn't, we could simply make the GUI create one and always give it the same name for now.
-  * The GUI asks for all available dimensions.
-  * Drag and drop magic here.
-  * The user closes his window : The GUI has to send closing signals to the back-end.
+    * GUI Sends out a discovery request
+      * Discovery.getCubes(...)
+    * Server returns available cube names.
+  * A cube is selected and a new query is created.
+    * User right clicks or double clicks on cube in the list.
+    * GUI notifies server of cube selection
+      * Session.setCurrentCube(...)
+    * GUI asks to create new query.
+      * Session.createNewQuery(...)
+    * GUI stores the query name for later use. It can still get the list of current opened queries via getQueries() or the current one by getCurrentQuery()
+  * GUI refreshes dimensions list
+    * GUI asks for available dimensions.
+      * Discovery.getDimensions(...)
+    * Server sends back list of dimension names.
+    * GUI populates contents of dimensions.
+      * GUI iterates on dimensions list and discovers each dimension members.
+        * Discovery.getMembers(...)
+      * Server sends back members list.
+
+To be continued...
