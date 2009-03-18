@@ -116,7 +116,9 @@ ConnectionListener, SourcesConnectionEvents {
 		 for (int i = 0; i < ConstantFactory.getInstance().STYLE_THEMES.length; i++) {
 		      final ThemeMenu button = new ThemeMenu(
 		          ConstantFactory.getInstance().STYLE_THEMES[i], new Command(){
-		       public void execute() {
+		        	  
+		        	  public void execute() {
+		    	  
 			          // Update the current theme
 //		    	   	 Pat.CUR_THEME = button.getTheme();
 

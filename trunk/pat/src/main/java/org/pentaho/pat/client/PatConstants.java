@@ -8,6 +8,7 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface PatConstants extends Constants{
 
+	
 	/**
 	 * 
 	 * @return translated "STYLE_THEMES"
