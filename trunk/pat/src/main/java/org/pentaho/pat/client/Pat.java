@@ -1,4 +1,4 @@
-package org.pentaho.pat.client;
+	package org.pentaho.pat.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
-import org.pentaho.pat.client.widgets.ContentWidget;
+import org.pentaho.pat.client.widgets.DataWidget;
 import org.pentaho.pat.client.widgets.OlapPanel;
 
 
@@ -53,7 +53,7 @@ SourcesConnectionEvents {
 	 * 
 	 * @return the content widget token.
 	 */
-	private static String getContentWidgetToken(ContentWidget content) {
+	private static String getContentWidgetToken(DataWidget content) {
 		String className = content.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
 		return className;
@@ -64,12 +64,12 @@ SourcesConnectionEvents {
 	 * @param parent
 	 *            the {@link TreeItem} that is the option
 	 * @param content
-	 *            the {@link ContentWidget} to display when selected
+	 *            the {@link DataWidget} to display when selected
 	 * @param image
 	 *            the icon to display next to the {@link TreeItem}
 	 */
 	private static void setupMainMenuOption(TreeItem parent,
-			ContentWidget content, AbstractImagePrototype image) {
+			DataWidget content, AbstractImagePrototype image) {
 		// Create the TreeItem
 		TreeItem option = parent.addItem(image.getHTML() + " "
 				+ content.getName());
@@ -103,7 +103,7 @@ SourcesConnectionEvents {
 	/**
 	 * A mapping of menu items to the widget display when the item is selected.
 	 */
-	private static Map<TreeItem, ContentWidget> itemWidgets = new HashMap<TreeItem, ContentWidget>();
+	private static Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
 
 	/**
 	 * The {@link Application}.
@@ -118,12 +118,12 @@ SourcesConnectionEvents {
 	}
 
 	/**
-	 * Set the content to the {@link ContentWidget}.
+	 * Set the content to the {@link DataWidget}.
 	 * 
 	 * @param content
-	 *            the {@link ContentWidget} to display
+	 *            the {@link DataWidget} to display
 	 */
-	private void displayContentWidget(final ContentWidget content) {
+	private void displayContentWidget(final DataWidget content) {
 		if (content != null) {
 			if (!content.isInitialized()) {
 				content.initialize();
@@ -154,7 +154,7 @@ SourcesConnectionEvents {
 	}
 
 	public void onModuleLoad() {
-
+		setSessionID();
 		// Swap out the style sheets for the RTL versions if needed
 		updateStyleSheets();
 
@@ -185,7 +185,7 @@ SourcesConnectionEvents {
 		// selected
 		app.setListener(new ApplicationListener() {
 			public void onMenuItemSelected(TreeItem item) {
-				ContentWidget content = itemWidgets.get(item);
+				DataWidget content = itemWidgets.get(item);
 				if (content != null && !content.equals(app.getContent())) {
 					History.newItem(getContentWidgetToken(content));
 				}
@@ -246,7 +246,10 @@ SourcesConnectionEvents {
 		
 	}
 
-	private static void getSessionID(){
+	public static String getSessionID(){
+		return SESSION_ID;
+	}
+	private static void setSessionID(){
 		ServiceFactory.getSessionInstance().createSession(new AsyncCallback(){
 
 			public void onFailure(Throwable arg0) {

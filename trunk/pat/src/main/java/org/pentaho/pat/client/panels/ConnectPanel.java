@@ -6,6 +6,7 @@ package org.pentaho.pat.client.panels;
 
 import org.gwt.mosaic.ui.client.WindowPanel;
 
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.ConstantFactory;
 import org.pentaho.pat.client.util.ServiceFactory;
@@ -135,7 +136,13 @@ public class ConnectPanel extends WindowPanel implements
 		      }
 		    });
 		    builder.add(uploadButton, CellConstraints.xyw(3,10,5));
-		    
+		    connectBtn.addClickListener(new ClickListener(){
+		    	public void onClick(Widget sender) {
+
+		    		//Connection Routine
+		    		
+		    	}
+		    });
 		    connectBtn.setEnabled(false);
 		    builder.add(connectBtn, CellConstraints.xyw(3,12,5));
 		    

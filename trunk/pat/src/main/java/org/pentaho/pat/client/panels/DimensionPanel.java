@@ -47,91 +47,17 @@ SourcesConnectionEvents {
 	}
 	
 	private void createDimensionList(){
-		AbsolutePanel tableExamplePanel = new AbsolutePanel();
-        tableExamplePanel.setPixelSize(100, 100);
+		
         
         FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
         
         DimensionFlexTable table1 = new DimensionFlexTable(2, 2, tableRowDragController);
     
-        tableExamplePanel.add(table1, 0, 0);
-        
-        layoutPanel.add(tableExamplePanel, new BoxLayoutData(FillStyle.BOTH));
+        layoutPanel.add(table1, new BoxLayoutData(FillStyle.BOTH));
 	}
 	
 	public static void populateDimensions(List axis) {
-		if (axis.contains(AXIS_NONE)) {
-			ServiceFactory.getInstance().getDimensions(AXIS_NONE,
-					GuidFactory.getGuid(), new AsyncCallback() {
-				public void onSuccess(Object result) {
-					String[] dimStrs = (String[]) result;
-					
-					for (int j = 0; j < dimStrs.length; j++) {
-							
-					}
-
-				}
-
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-
-				}
-
-			});
-		}
-		if (axis.contains(AXIS_ROWS)) {
-			ServiceFactory.getInstance().getDimensions(AXIS_ROWS,
-					GuidFactory.getGuid(), new AsyncCallback() {
-
-				public void onSuccess(Object result) {
-					String[] dimStrs = (String[]) result;
-					
-						if (dimStrs.length>0){
-						//getDimensionTree(dimStrs[dimStrs.length-1], rowNode);
-						}
-					
-				}
-
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-				}
-			});
-		}
-
-		if (axis.contains(AXIS_COLUMNS)) {
-			ServiceFactory.getInstance().getDimensions(AXIS_COLUMNS,
-					GuidFactory.getGuid(), new AsyncCallback() {
-
-				public void onSuccess(Object result) {
-					String[] dimStrs = (String[]) result;
-					
-						if (dimStrs.length>0){
-						int i = dimStrs.length;
-					//	getDimensionTree(dimStrs[i-1], columnNode);
-						}
-						
-				}
-
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-				}
-			});
-		}
-
-		if (axis.contains(AXIS_FILTER)) {
-			ServiceFactory.getInstance().getDimensions(AXIS_FILTER,
-					GuidFactory.getGuid(), new AsyncCallback() {
-
-				public void onSuccess(Object result) {
-
-				}
-
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-		}
+		
 	}
 
 	
