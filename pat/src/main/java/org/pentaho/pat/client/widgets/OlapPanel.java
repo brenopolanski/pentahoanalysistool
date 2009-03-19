@@ -6,19 +6,20 @@ import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.panels.NorthPanel;
 import org.pentaho.pat.client.panels.SouthPanel;
 import org.pentaho.pat.client.util.ConstantFactory;
+import org.pentaho.pat.client.util.FlexTableCellDragController;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 
-public class OlapPanel extends ContentWidget{
+public class OlapPanel extends DataWidget{
 	public static OlapTable olapTable;
 
 	/**
@@ -121,7 +122,6 @@ public class OlapPanel extends ContentWidget{
 			panel1.setPadding(0);
 			panel1.setWidgetSpacing(0);
 			createLayout();
-			
 			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
 					ConstantFactory.getInstance().data() + " (" + getName() + ")"),
 					true);
@@ -134,7 +134,9 @@ public class OlapPanel extends ContentWidget{
 					createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory
 							.getInstance().chart()
 							+ " (" + getName() + ")"), true);
-
+			
+			stackPanel.showStack(0);
+			
 			return layoutPanel;
 	
 
@@ -164,16 +166,28 @@ public class OlapPanel extends ContentWidget{
 	}
 
 	private void createLayout(){
-		 FlexTable rowTable = new FlexTable();
-		 FlexTable colTable = new FlexTable();
 		 
+		
+		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
+        
 		 Label rowLabel = new Label("Rows");
 		 Label colLabel = new Label("Columns");
 		 
-		 panel1.add(rowLabel);
-		 panel1.add(rowTable);
-		 panel1.add(colLabel);
-		 panel1.add(colTable);
+		 
+		 DimensionFlexTable rowTable = new DimensionFlexTable(1, 2, tableRowDragController);
+    
+		 DimensionFlexTable colTable = new DimensionFlexTable(1, 2, tableRowDragController);
+		 
+		 Grid dropGrid = new Grid(2,2);
+		 
+		 dropGrid.setWidget(0, 0, rowLabel);
+		 dropGrid.setWidget(0, 1, rowTable);
+		 dropGrid.setWidget(1, 0, colLabel);
+		 dropGrid.setWidget(1, 1, colTable);
+		 
+		 
+		 
+		 panel1.add(dropGrid);
 		 
 	}
 	@Override
