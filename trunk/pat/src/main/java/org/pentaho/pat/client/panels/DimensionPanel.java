@@ -7,6 +7,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
@@ -49,7 +50,7 @@ SourcesConnectionEvents {
 		AbsolutePanel tableExamplePanel = new AbsolutePanel();
         tableExamplePanel.setPixelSize(100, 100);
         
-        FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(tableExamplePanel);
+        FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
         
         DimensionFlexTable table1 = new DimensionFlexTable(2, 2, tableRowDragController);
     

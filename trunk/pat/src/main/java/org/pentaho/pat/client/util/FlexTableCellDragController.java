@@ -37,8 +37,8 @@ public final class FlexTableCellDragController extends PickupDragController {
   private int dragCol;
 
   public FlexTableCellDragController(AbsolutePanel tableExamplePanel) {
-    //super(Pat.layoutPanel, false);
-	  super(tableExamplePanel, false);
+    
+	super(tableExamplePanel, false);
     setBehaviorDragProxy(true);
     setBehaviorMultipleSelection(false);
   }
