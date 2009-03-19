@@ -117,13 +117,14 @@ public class Application extends Viewport {
 	 */
 	private ToolBarPanel toolBarPanel;
 	
+	private static LayoutPanel layoutPanel;
 	/**
 	 * Constructor.
 	 */
 	public Application() {
 		super();
 		// Setup the main layout widget
-		final LayoutPanel layoutPanel = getWidget();
+		layoutPanel = getWidget();
 		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 		// Setup the top panel with the title and links
@@ -192,6 +193,9 @@ public class Application extends Viewport {
 		linksPanel.add(link);
 	}
 
+	public static LayoutPanel getPanel(){
+		return layoutPanel;
+	}
 	/**
 	 * Create the main menu.
 	 */
