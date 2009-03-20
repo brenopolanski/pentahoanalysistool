@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author georgopoulos.georgios(at)gmail.com
  */
-public abstract class ContentWidget extends LayoutPanel {
+public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * The default style name.
@@ -63,7 +63,7 @@ public abstract class ContentWidget extends LayoutPanel {
 	 * @param constants
 	 *            the constants
 	 */
-	public ContentWidget() {
+	public DataWidget() {
 		
 		setStyleName(DEFAULT_STYLE_NAME);
 	}
