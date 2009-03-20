@@ -2,35 +2,15 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-autowire="byName">
-
-
-
-
-	<!--  This is the old legacy stuff... -->
-	<bean id="legacyServlet" class="org.pentaho.pat.server.services.Olap4JServiceImpl" />
-	
-	
-	
-	
-	
 	
 	
 	<!-- ############################################################################# -->
 	<!-- ########  SERVLET LAYER ##################################################### -->
 	<!-- ############################################################################# -->
-	
-	
-	<bean id="discoveryServlet" class="org.pentaho.pat.server.servlet.DiscoveryServlet">
-		<property name="discoveryService" ref="discoveryService" />
-	</bean>
-	
-	<bean id="queryServlet" class="org.pentaho.pat.server.servlet.QueryServlet">
-		<property name="queryService" ref="queryService" />
-	</bean>
-	
-	<bean id="sessionServlet" class="org.pentaho.pat.server.servlet.SessionServlet">
-		<property name="sessionService" ref="sessionService" />
-	</bean>
+
+  <!-- The application servlet are either instanciated by GWT itself, as defined
+      in Pat.gwt.xml, or from the web context loader, in web.xml. 
+      Extra servlet mappings can also be found there. -->
 	
 	<bean id="fileUploadController"
     class="org.pentaho.pat.server.servlet.FileUploadController">

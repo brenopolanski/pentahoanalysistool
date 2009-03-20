@@ -5,12 +5,13 @@ package org.pentaho.pat.server.servlet;
 
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Discovery;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 
@@ -19,22 +20,17 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Luc Boudreau
  *
  */
-public class DiscoveryServlet extends AbstractServlet implements
-		Discovery, InitializingBean {
+public class DiscoveryServlet extends AbstractServlet implements Discovery {
 
 	private static final long serialVersionUID = 1L;
 	
 	private DiscoveryService discoveryService;
 	
-	public void setDiscoveryService(DiscoveryService service) {
-		this.discoveryService = service;
+	public void init() throws ServletException {
+		super.init();
+		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
 	}
 	
-	public void afterPropertiesSet() throws Exception {
-		if (this.discoveryService==null)
-			throw new Exception("A discoveryService is required.");
-	}
-
 	public String[] getCubes(String sessionId) {
 		List<String> list = this.discoveryService.getCubes(getCurrentUserId(), sessionId); 
 		return list.toArray(new String[list.size()]);

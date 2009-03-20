@@ -34,11 +34,11 @@
     
         <!-- Some URLs need to be accessible by anonymous users. Login pages,
         	CSS files, images... just add your public accessible urls here. -->
-        <intercept-url pattern="/org.pentaho.pat.Pat/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+<!--        <intercept-url pattern="/org.pentaho.pat.Pat/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />-->
     
     	<!--  Everything else that was not defined up there ^^ must be secured.
     		We use a simple wildcard trap. -->    
-        <intercept-url pattern="/org.pentaho.pat.Pat/**" access="ROLE_USER" />
+        <intercept-url pattern="/**" access="ROLE_USER" />
         
         <!-- Use basic authentication for now. -->
         <http-basic />
