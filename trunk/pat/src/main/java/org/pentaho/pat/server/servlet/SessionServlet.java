@@ -2,25 +2,22 @@ package org.pentaho.pat.server.servlet;
 
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.SessionService;
-import org.springframework.beans.factory.InitializingBean;
 
-public class SessionServlet extends AbstractServlet implements Session, InitializingBean {
+public class SessionServlet extends AbstractServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static SessionService sessionService;
+	private SessionService sessionService;
 	
-	public void setSessionService(SessionService service) {
-		sessionService = service;
-	}
-	
-	public void afterPropertiesSet() throws Exception {
-		if (sessionService==null)
-			throw new Exception("A sessionService is required.");
+	public void init() throws ServletException {
+		super.init();
+		sessionService = (SessionService)applicationContext.getBean("sessionService");
 	}
 
 	public Boolean connect(String sessionId, String driverClassName, String url, 

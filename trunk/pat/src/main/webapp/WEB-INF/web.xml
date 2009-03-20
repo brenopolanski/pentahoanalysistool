@@ -16,7 +16,7 @@
     <param-value>
 			/WEB-INF/pat-applicationContext.xml
 			/WEB-INF/pat-securityContext.xml
-	</param-value>
+	  </param-value>
   </context-param>
 
 
@@ -47,19 +47,36 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
   
-  <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
-    <url-pattern>*.rpc</url-pattern>
-  </servlet-mapping>
+  <servlet>
+    <servlet-name>SessionServlet</servlet-name>
+    <servlet-class>org.pentaho.pat.server.servlet.SessionServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>QueryServlet</servlet-name>
+    <servlet-class>org.pentaho.pat.server.servlet.QueryServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DiscoveryServlet</servlet-name>
+    <servlet-class>org.pentaho.pat.server.servlet.DiscoveryServlet</servlet-class>
+  </servlet>
+
+
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/org.pentaho.pat.Pat/schemaupload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/org.pentaho.pat.Pat/olap4j</url-pattern>
+    <servlet-name>SessionServlet</servlet-name>
+    <url-pattern>/org.pentaho.pat.Pat/session.rpc</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+    <servlet-name>QueryServlet</servlet-name>
+    <url-pattern>/org.pentaho.pat.Pat/query.rpc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DiscoveryServlet</servlet-name>
+    <url-pattern>/org.pentaho.pat.Pat/discovery.rpc</url-pattern>
+  </servlet-mapping>
 
   
   <welcome-file-list>

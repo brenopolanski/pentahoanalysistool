@@ -1,35 +1,80 @@
 package org.pentaho.pat.server.servlet;
 
-import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
-import org.gwtwidgets.server.spring.GWTSpringController;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.security.Authentication;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.adapters.PrincipalSpringSecurityUserToken;
 import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.web.context.ContextLoader;
 
-public abstract class AbstractServlet extends GWTSpringController
-	implements InitializingBean
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+public abstract class AbstractServlet extends RemoteServiceServlet
 {
-
 	private static final long serialVersionUID = 1L;
-
+	
+	private static boolean initDone;
+	private static boolean standaloneMode;
+	private static Authentication standaloneAuth;
+	protected static ApplicationContext applicationContext;
+	
+	private final String[] contextFiles = {
+			"./src/main/webapp/WEB-INF/pat-applicationContext.xml",
+			"./src/main/webapp/WEB-INF/pat-securityContext.xml"
+		};
+	
+	static 
+	{
+		initDone=false;
+		standaloneMode=false;
+	}
+	
 	@Override
-	public ServletContext getServletContext() {
-		// That's a weird freakin thing but at least it freakin works...
-		// I don't know why but GWT returns a null context.
-		if (super.getServletContext() ==null)
-			return super.getServletConfig().getServletContext();
-		else
-			return super.getServletContext();
+	public void init() throws ServletException 
+	{
+		super.init();
+		
+		if (!initDone)
+		{
+	        applicationContext = ContextLoader.getCurrentWebApplicationContext();
+	        
+	        if (applicationContext==null)
+	        {
+	        	// This happens if we launch PAT without a web context, like in the 
+	        	// GWT shell for example. We'll initialize the context manually.
+	        	applicationContext = new FileSystemXmlApplicationContext(contextFiles);
+	        	
+	        	standaloneMode=true;
+	        	
+	        	GrantedAuthority userAuths[] = {
+	    				new GrantedAuthorityImpl("ROLE_USER"),
+	    				new GrantedAuthorityImpl("ROLE_ADMIN")
+	    			};
+	    		
+	    		standaloneAuth = new PrincipalSpringSecurityUserToken(
+	    			"","admin","admin",userAuths,null);
+	        }
+	        
+	        initDone=true;
+		}
+		
 	}
 	
 	/**
 	 * Helper method to gain access to the current user's security object.
 	 * @return The current user name.
 	 */
-	protected String getCurrentUserId() {
-		// FIXME won't work.
-		//return SecurityContextHolder.getContext().getAuthentication().getName();
-		return "admin";
+	protected String getCurrentUserId() 
+	{
+		if (standaloneMode)
+			SecurityContextHolder.getContext().setAuthentication(standaloneAuth);
+		
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+		
 	}
 
 }

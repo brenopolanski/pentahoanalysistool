@@ -3,40 +3,11 @@
 
 <beans>
 
-	<bean id="httpInvokerDiscoveryServlet"
-		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="service" ref="discoveryServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.rpc.Discovery" />
-	</bean>
-
-	<bean id="httpInvokerSessionServlet"
-		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="service" ref="sessionServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.rpc.Session" />
-	</bean>
-
-	<bean id="httpInvokerQueryServlet"
-		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="service" ref="queryServlet" />
-		<property name="serviceInterface" value="org.pentaho.pat.rpc.Query" />
-	</bean>
-  	 
-	<bean id="httpInvokerLegacyServlet"
-		class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="service" ref="legacyServlet" />
-		<property name="serviceInterface"
-			value="org.pentaho.pat.client.services.Olap4JService" />
-	</bean>
-
 	<bean id="urlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-        <prop key="/org.pentaho.pat.Pat/olap4j">httpInvokerLegacyServlet</prop>
-				<prop key="/org.pentaho.pat.Pat/schemaupload">fileUploadController</prop>
-				<prop key="/org.pentaho.pat.Pat/discovery.rpc">httpInvokerDiscoveryServlet</prop>
-				<prop key="/org.pentaho.pat.Pat/session.rpc">httpInvokerSessionServlet</prop>
-				<prop key="/org.pentaho.pat.Pat/query.rpc">httpInvokerQueryServlet</prop>
+        <prop key="/org.pentaho.pat.Pat/schemaupload">fileUploadController</prop>
 			</props>
 		</property>
 	</bean>
