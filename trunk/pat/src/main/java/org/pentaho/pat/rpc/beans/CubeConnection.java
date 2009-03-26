@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class CubeConnection implements Serializable {
 	
 	
-	// TODO Is this the correct way to serialize?
 	private static final long serialVersionUID = 1L;
 
 	private String name = null;
@@ -27,7 +26,7 @@ public class CubeConnection implements Serializable {
 	private ConnectionType connectionType = null;
 
 	public enum ConnectionType {
-		XMLA, JDBC
+		XMLA, Mondrian
 	}
 	
 	
@@ -36,14 +35,6 @@ public class CubeConnection implements Serializable {
 	}
 	
 	public CubeConnection() {
-	}
-	
-	public String getConnectionString() {
-		String connectStr ="";
-		if (connectionType == ConnectionType.JDBC) {
-			
-		}
-		return connectStr;
 	}
 	
 	
