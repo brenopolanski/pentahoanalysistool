@@ -1,4 +1,4 @@
-package org.pentaho.pat.client;
+package org.pentaho.pat.client.i18n;
 
 
 public interface PatMessages extends com.google.gwt.i18n.client.Messages {

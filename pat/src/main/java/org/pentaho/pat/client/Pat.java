@@ -12,10 +12,10 @@ import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.util.ConstantFactory;
-import org.pentaho.pat.client.util.ServiceFactory;
-import org.pentaho.pat.client.widgets.DataWidget;
-import org.pentaho.pat.client.widgets.OlapPanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.OlapPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 
 import com.google.gwt.core.client.EntryPoint;

@@ -1,6 +1,6 @@
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.client.PatMessages;
+import org.pentaho.pat.client.i18n.PatMessages;
 
 import com.google.gwt.core.client.GWT;
 /**

@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.ui.panels;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
-import org.pentaho.pat.client.util.GuidFactory;
-import org.pentaho.pat.client.util.ServiceFactory;
-import org.pentaho.pat.client.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.util.factory.GuidFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;

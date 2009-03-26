@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.ui.panels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,9 @@ import java.util.List;
 import com.google.gwt.user.client.Command;
 
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.ConstantFactory;
+import org.pentaho.pat.client.ui.panels.ConnectPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -18,7 +20,6 @@ import com.google.gwt.user.client.ui.Widget;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
-import org.pentaho.pat.client.panels.ConnectPanel;
 
 /**
  * PAT Toolbar

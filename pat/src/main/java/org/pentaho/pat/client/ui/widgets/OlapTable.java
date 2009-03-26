@@ -15,16 +15,16 @@
  */
 
 
-package org.pentaho.pat.client.widgets;
+package org.pentaho.pat.client.ui.widgets;
 
 import java.util.Iterator;
 
-import org.pentaho.pat.client.PatMessages;
-import org.pentaho.pat.client.panels.CellFormatPopup;
+import org.pentaho.pat.client.i18n.PatMessages;
+import org.pentaho.pat.client.ui.panels.CellFormatPopup;
 import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.CellSpanInfo;
-import org.pentaho.pat.client.util.GuidFactory;
 import org.pentaho.pat.client.util.OlapUtils;
+import org.pentaho.pat.client.util.factory.GuidFactory;
 import org.pentaho.pat.rpc.beans.OlapData;
 
 
