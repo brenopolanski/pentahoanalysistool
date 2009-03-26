@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
-import org.olap4j.mdx.SelectNode;
 import org.olap4j.query.Query;
 
 public class Session {

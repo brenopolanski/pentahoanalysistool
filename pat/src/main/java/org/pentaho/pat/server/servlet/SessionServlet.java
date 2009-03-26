@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Session;
+import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.SessionService;
 
@@ -20,11 +21,11 @@ public class SessionServlet extends AbstractServlet implements Session {
 		sessionService = (SessionService)applicationContext.getBean("sessionService");
 	}
 
-	public Boolean connect(String sessionId, String driverClassName, String url, 
-		String username, String password) {
+	public Boolean connect(String sessionId, CubeConnection connection) {
 		try {
 			sessionService.createConnection(getCurrentUserId(),sessionId, 
-				driverClassName, url, username, password);
+				connection.getDriverClassName(), connection.getUrl(), 
+				connection.getUsername(), connection.getPassword());
 			return true;
 		} catch (OlapException e) {
 			// TODO Auto-generated catch block
