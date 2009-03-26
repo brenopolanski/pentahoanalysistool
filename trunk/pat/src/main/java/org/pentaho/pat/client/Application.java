@@ -16,9 +16,9 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.panels.DimensionPanel;
-import org.pentaho.pat.client.panels.ToolBarPanel;
-import org.pentaho.pat.client.util.ConstantFactory;
+import org.pentaho.pat.client.ui.panels.DimensionPanel;
+import org.pentaho.pat.client.ui.panels.ToolBarPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;

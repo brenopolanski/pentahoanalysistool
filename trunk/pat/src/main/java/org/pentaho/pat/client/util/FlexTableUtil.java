@@ -15,7 +15,7 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.client.widgets.OlapFlexTable;
+import org.pentaho.pat.client.ui.widgets.OlapFlexTable;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;

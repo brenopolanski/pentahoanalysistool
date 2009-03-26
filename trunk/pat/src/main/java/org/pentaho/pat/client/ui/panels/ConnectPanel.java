@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.ui.panels;
 
 
 import org.gwt.mosaic.ui.client.WindowPanel;
 
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.GuidFactory;
-import org.pentaho.pat.client.util.ConstantFactory;
-import org.pentaho.pat.client.util.ServiceFactory;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GuidFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;

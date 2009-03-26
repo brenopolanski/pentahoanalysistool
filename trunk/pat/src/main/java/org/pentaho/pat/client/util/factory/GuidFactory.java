@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.client.util.factory;
 
 /**
  * @author Tom Barber

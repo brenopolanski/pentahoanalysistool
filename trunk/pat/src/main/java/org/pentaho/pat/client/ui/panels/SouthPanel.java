@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;

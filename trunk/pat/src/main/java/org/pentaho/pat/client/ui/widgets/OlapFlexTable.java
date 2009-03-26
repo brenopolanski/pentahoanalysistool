@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.widgets;
+package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableCellDragController;

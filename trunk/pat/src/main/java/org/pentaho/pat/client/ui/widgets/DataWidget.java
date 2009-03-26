@@ -15,7 +15,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pentaho.pat.client.widgets;
+package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;

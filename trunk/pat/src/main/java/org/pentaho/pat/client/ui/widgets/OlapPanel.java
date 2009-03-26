@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.widgets;
+package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -11,10 +11,10 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.panels.NorthPanel;
-import org.pentaho.pat.client.panels.SouthPanel;
-import org.pentaho.pat.client.util.ConstantFactory;
+import org.pentaho.pat.client.ui.panels.NorthPanel;
+import org.pentaho.pat.client.ui.panels.SouthPanel;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;

@@ -1,4 +1,4 @@
-package org.pentaho.pat.client.panels;
+package org.pentaho.pat.client.ui.panels;
  
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
