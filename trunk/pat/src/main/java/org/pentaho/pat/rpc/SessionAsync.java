@@ -2,6 +2,8 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
+import org.pentaho.pat.rpc.beans.CubeConnection;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -22,8 +24,10 @@ public interface SessionAsync {
 	
 	
 	
-	public void connect(String sessionId, String driverClassName, String url, 
-			String username, String password, AsyncCallback<Boolean> callback);
+//	public void connect(String sessionId, String driverClassName, String url, 
+//			String username, String password, AsyncCallback<Boolean> callback);
+	public void connect(String sessionId, CubeConnection connection, 
+	    AsyncCallback<Boolean> callback);
 	
 	public void disconnect(String sessionId, AsyncCallback<Boolean> callback);	
 	

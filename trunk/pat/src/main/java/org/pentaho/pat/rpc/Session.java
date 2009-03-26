@@ -2,6 +2,7 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
+import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -26,9 +27,11 @@ public interface Session extends RemoteService {
 	
 	
 	
+//	@Secured ({"ROLE_USER"})
+//	public Boolean connect(String sessionId, String driverClassName, String url, 
+//			String username, String password);
 	@Secured ({"ROLE_USER"})
-	public Boolean connect(String sessionId, String driverClassName, String url, 
-			String username, String password);
+    public Boolean connect(String sessionId, CubeConnection connection);
 	
 	@Secured ({"ROLE_USER"})
 	public Boolean disconnect(String sessionId);	
