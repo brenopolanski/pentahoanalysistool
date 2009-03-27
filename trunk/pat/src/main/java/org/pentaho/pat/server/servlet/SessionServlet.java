@@ -19,6 +19,8 @@ public class SessionServlet extends AbstractServlet implements Session {
 	public void init() throws ServletException {
 		super.init();
 		sessionService = (SessionService)applicationContext.getBean("sessionService");
+		if (sessionService==null)
+		    throw new ServletException("No SessionService was found in the application context.");
 	}
 
 	public Boolean connect(String sessionId, CubeConnection connection) {

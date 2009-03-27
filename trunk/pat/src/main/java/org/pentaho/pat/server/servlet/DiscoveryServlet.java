@@ -29,6 +29,8 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	public void init() throws ServletException {
 		super.init();
 		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
+		if (discoveryService==null)
+            throw new ServletException("No discovery service was found in the application context.");
 	}
 	
 	public String[] getCubes(String sessionId) {

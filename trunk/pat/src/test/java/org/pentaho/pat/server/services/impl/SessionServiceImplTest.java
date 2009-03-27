@@ -2,9 +2,8 @@ package org.pentaho.pat.server.services.impl;
 
 import org.olap4j.OlapException;
 import org.pentaho.pat.Constants;
-import org.pentaho.pat.test.TestContext;
 
-public class SessionServiceImplTest extends TestContext {
+public class SessionServiceImplTest extends AbstractServiceTest {
 
 	private SessionServiceImpl sessionService;
 	private DiscoveryServiceStub discoveryService;

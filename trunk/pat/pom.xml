@@ -73,17 +73,29 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/test/SampleData.mondrian.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/SampleData.mondrian.xml" />
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml" />
 								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/test/sampledata.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/sampledata.sql" />
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/sampledata.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/sampledata.sql" />
 								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/test/test.properties.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/test/test.properties.xml" />
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/test.properties.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/test.properties.xml" />
 								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/test/SampleData.mondrian.xml"
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/util/SampleData.mondrian.xml" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/test.properties.xml"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/test.properties.xml" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/application-overrides.properties"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/application-overrides.properties" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat.sql"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat.sql" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" />
 								<copy
 									file="${basedir}/src/test/java/jndi.properties"
 									toFile="${basedir}/target/test-classes/jndi.properties" />
@@ -149,7 +161,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<exclude>**/TestContext.java</exclude>
+						<exclude>**/AbstractServiceTest.java</exclude>
+            <exclude>**/AbstractManagerTest.java</exclude>
 					</excludes>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
@@ -302,7 +315,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.9</version>
+			<version>1.2.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.olap4j</groupId>
@@ -418,6 +431,16 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
 		
 		
 		
@@ -455,11 +478,32 @@
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.7</version>
 		</dependency>
+    <dependency>
+        <groupId>javassist</groupId>
+        <artifactId>javassist</artifactId>
+        <version>3.4.GA</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.5.2</version>
+    </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.3.1.GA</version>
+			<version>${hibernate.version}</version>
 		</dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -491,5 +535,6 @@
 		<gwtVersion>1.5.3</gwtVersion>
 		<spring.version>2.5.6</spring.version>
     <spring.security.version>2.0.4</spring.security.version>
+    <hibernate.version>3.3.1.GA</hibernate.version>
 	</properties>
 </project>

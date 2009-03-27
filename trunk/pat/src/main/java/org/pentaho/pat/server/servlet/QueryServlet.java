@@ -26,6 +26,8 @@ public class QueryServlet extends AbstractServlet implements Query {
 	public void init() throws ServletException {
 		super.init();
 		queryService = (QueryService)applicationContext.getBean("queryService");
+		if (queryService==null)
+		    throw new ServletException("No query service was found in the application context.");
 	}
 
 	public Boolean clearSelection(String sessionId, String dimensionName, 

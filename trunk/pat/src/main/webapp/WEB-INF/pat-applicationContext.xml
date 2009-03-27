@@ -2,7 +2,19 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-autowire="byName">
-	
+
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreResourceNotFound" value="true"/>
+    <property name="locations"> 
+      <list>
+        <value>/WEB-INF/application.properties</value>
+        <!-- These values are added for testing environment -->
+        <!-- and won't affect production deployments. -->
+        <value>/src/main/webapp/WEB-INF/application.properties</value>
+        <value>/src/test/java/org/pentaho/pat/server/data/impl/application-overrides.properties</value>
+      </list>
+    </property>
+  </bean>	
 	
 	<!-- ############################################################################# -->
 	<!-- ########  SERVLET LAYER ##################################################### -->
@@ -43,7 +55,28 @@
 		<property name="discoveryService" ref="discoveryService" />
 	</bean>
 	
-	
+  
+  
+  
+	<!-- ############################################################################# -->
+  <!-- ########  PERSISTENCE LAYER ################################################# -->
+  <!-- ############################################################################# -->
 
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driver}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+    <property name="configLocation" value="${hibernate.config.location}"/>
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+  
+  <bean id="userManager" class="org.pentaho.pat.server.data.impl.UserManagerImpl">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
 	
 </beans>
