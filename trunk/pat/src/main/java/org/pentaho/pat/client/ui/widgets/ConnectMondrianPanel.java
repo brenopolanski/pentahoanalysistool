@@ -3,6 +3,7 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.apache.commons.lang.StringUtils;
 import org.gwt.mosaic.ui.client.WindowPanel;
 
 import org.pentaho.pat.client.Pat;
@@ -41,7 +42,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			SourcesConnectionEvents {
 
 	// TODO Finish this Widget
-		Button connectButton;
+		private final Button connectButton;
 		TextBox serverTextBox;
 		Label serverLabel;
 		TextBox portTextBox;
@@ -58,7 +59,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		
 		
 		 public ConnectMondrianPanel() {
-			
+			super();
 			this.setTitle("Register new Mondrian Connection");
 			ConstantFactory.getInstance().disconnect();
 			connectButton = new Button(ConstantFactory.getInstance().connect());
@@ -76,7 +77,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		}
 		
 		
-		  protected Widget onInitialize() {
+		  private Widget onInitialize() {
 			  formPanel = new FormPanel();
 			  formPanel.setAction("schemaupload");
 			  formPanel.setMethod("POST");
@@ -101,12 +102,12 @@ public class ConnectMondrianPanel extends WindowPanel implements
 					
 				}
 			  });
-			  FormLayout layout = new FormLayout(
+			  final FormLayout layout = new FormLayout(
 				        "right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 				            + "right:[40dlu,pref], 3dlu, 70dlu",
 				        "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 
-			  PanelBuilder builder = new PanelBuilder(layout);
+			  final PanelBuilder builder = new PanelBuilder(layout);
 			  this.setTitle("title");
 			  builder.addLabel(ConstantFactory.getInstance().server() + ":", CellConstraints.xy(1, 2));
 			  builder.add(serverTextBox, CellConstraints.xy(3, 2));
@@ -126,7 +127,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			  uploadButton.addClickListener(new ClickListener() {
 			      public void onClick(Widget sender) {
 			        String filename = fileUpload.getFilename();
-			        if (filename.length() == 0) {
+			        if (filename == null || filename.length() == 0) {
 			          Window.alert("No File");
 			        } else {
 			        	formPanel.submit();
