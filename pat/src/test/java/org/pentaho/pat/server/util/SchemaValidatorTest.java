@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.pentaho.pat.test.TestContext;
+import org.pentaho.pat.server.services.impl.AbstractServiceTest;
 
-public class SchemaValidatorTest extends TestContext {
+public class SchemaValidatorTest extends AbstractServiceTest {
 
 	private String schema = null;
 

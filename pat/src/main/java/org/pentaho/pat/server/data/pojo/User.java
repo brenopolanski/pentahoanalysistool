@@ -1,18 +1,30 @@
 package org.pentaho.pat.server.data.pojo;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+
+@Entity
+@Table(name="users")
 public class User {
 	
-	private String username = null;
+    @Basic
+    private String username = null;
 	
-	private Set<Group> groups = new HashSet<Group>();
+    private Collection<Group> groups = new HashSet<Group>();
 	
-	private Set<SavedConnection> savedConnections = new HashSet<SavedConnection>();
+    private Set<SavedConnection> savedConnections = new HashSet<SavedConnection>();
 	
-	// ACCESSORS
-	
+	@Id
 	public String getUsername() {
 		return username;
 	}
@@ -21,14 +33,19 @@ public class User {
 		this.username = username;
 	}
 
-	public Set<Group> getGroups() {
+	@ManyToMany(
+	    targetEntity=Group.class,
+	    fetch=FetchType.EAGER,
+	    mappedBy="members")
+	public Collection<Group> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(Set<Group> groups) {
+	public void setGroups(Collection<Group> groups) {
 		this.groups = groups;
 	}
 
+	@Transient
 	public Set<SavedConnection> getSavedConnections() {
 		return savedConnections;
 	}

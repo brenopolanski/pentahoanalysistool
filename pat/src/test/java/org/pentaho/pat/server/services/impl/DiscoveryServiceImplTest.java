@@ -7,9 +7,8 @@ import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.Constants;
 import org.pentaho.pat.rpc.beans.StringTree;
-import org.pentaho.pat.test.TestContext;
 
-public class DiscoveryServiceImplTest extends TestContext {
+public class DiscoveryServiceImplTest extends AbstractServiceTest {
 
 	private SessionServiceImpl sessionService;
 	private DiscoveryServiceStub discoveryService;

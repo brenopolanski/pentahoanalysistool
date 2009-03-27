@@ -11,9 +11,8 @@ import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.server.Constants;
-import org.pentaho.pat.test.TestContext;
 
-public class QueryServiceImplTest extends TestContext {
+public class QueryServiceImplTest extends AbstractServiceTest {
 
 	private SessionServiceImpl sessionService;
 	private DiscoveryServiceStub discoveryService;
