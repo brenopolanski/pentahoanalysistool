@@ -6,11 +6,14 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.pentaho.pat.server.beans.FileUploadBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +23,7 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 public class FileUploadController extends AbstractCommandController implements
 		ResourceLoaderAware, InitializingBean {
-
+	
 	Logger log = Logger.getLogger(this.getClass());
 
 	private String basedir = null;
@@ -36,10 +39,10 @@ public class FileUploadController extends AbstractCommandController implements
 	}
 
 	public void afterPropertiesSet() throws Exception {
-		if (this.resourceLoader == null)
-			throw new Exception("A resourceLoader is required.");
-		if (this.basedir == null)
-			throw new Exception("A basedir is required.");
+		
+		Assert.notNull(this.resourceLoader, "A resourceLoader is required.");
+		Assert.notNull(this.basedir, "A basedir is required.");
+		
 		try {
 			this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
 			this.schemaDirectory.mkdir();
@@ -47,13 +50,8 @@ public class FileUploadController extends AbstractCommandController implements
 			log
 					.warn("Unable to create the schema directory within the application directory. The application might be contained in a non expanded war file. Will try to store schemas in the java.io.tmpdir instead.");
 			try {
-				String tempdir = System.getProperty("java.io.tmpdir");
-				if (!(tempdir.endsWith("/") || tempdir.endsWith("\\")))
-					tempdir = tempdir + System.getProperty("file.separator");
-				if (this.basedir.startsWith("/")
-						|| this.basedir.startsWith("\\"))
-					this.basedir = this.basedir.substring(1);
-				this.schemaDirectory = new File(tempdir + this.basedir);
+				File tempDirectory = new File(System.getProperty("java.io.tmpdir"));				
+				this.schemaDirectory = new File(tempDirectory,basedir);
 				this.schemaDirectory.mkdir();
 			} catch (Exception e2) {
 				throw new RuntimeException(
@@ -75,6 +73,7 @@ public class FileUploadController extends AbstractCommandController implements
 			files.transferTo(mvt);
 
 			// TODO find a better way to return filename to client
+			response.setContentType("text/plain");
 			response.getWriter().print(
 					"#filename#" + mvt.toString() + "#/filename#");
 			response.setStatus(HttpServletResponse.SC_OK);
