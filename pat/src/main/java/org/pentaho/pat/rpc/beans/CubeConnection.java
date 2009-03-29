@@ -19,6 +19,8 @@ public class CubeConnection implements Serializable {
 	
 	private String url = null;
 	
+	private String catalog = null;
+	
 	private String username = null;
 	
 	private String password = null;
@@ -82,6 +84,14 @@ public class CubeConnection implements Serializable {
 	}
 	public void setConnectionType(ConnectionType connectionType) {
 		this.connectionType = connectionType;
+	}
+
+	public String getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
 	}
 	
 	

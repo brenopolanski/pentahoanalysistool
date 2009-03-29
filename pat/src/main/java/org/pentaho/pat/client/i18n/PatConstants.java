@@ -63,7 +63,23 @@ public interface PatConstants extends Constants{
 	 * mainLinkHomepage
 	 */
 	String mainLinkHomepage();
-
+	
+	/**
+	 * Translated "jdbc_url".
+	 * 
+	 * @return translated "jdbc_url" 
+	 * jdbc_url
+	 */
+	String jdbc_url();
+	
+	/**
+	 * Translated "jdbc_driver".
+	 * 
+	 * @return translated "jdbc_driver" 
+	 * jdbc_driver
+	 */
+	String jdbc_driver();
+	
 	/* <Messages used by PAT> */
 	String connection_string();
 	String connect();
