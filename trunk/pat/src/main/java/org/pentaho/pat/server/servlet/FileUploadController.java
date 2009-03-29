@@ -24,6 +24,9 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 public class FileUploadController extends AbstractCommandController implements
 		ResourceLoaderAware, InitializingBean {
 	
+	private static final String FILENAME_TAG_START = "#filename#";
+	private static final String FILENAME_TAG_END = "#/filename#";
+	
 	Logger log = Logger.getLogger(this.getClass());
 
 	private String basedir = null;
@@ -75,7 +78,7 @@ public class FileUploadController extends AbstractCommandController implements
 			// TODO find a better way to return filename to client
 			response.setContentType("text/plain");
 			response.getWriter().print(
-					"#filename#" + mvt.toString() + "#/filename#");
+					FILENAME_TAG_START + mvt.toString() + FILENAME_TAG_END);
 			response.setStatus(HttpServletResponse.SC_OK);
 
 		} catch (Exception e) {
