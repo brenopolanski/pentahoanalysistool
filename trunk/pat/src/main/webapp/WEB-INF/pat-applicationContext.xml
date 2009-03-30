@@ -41,6 +41,17 @@
 	
 	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
 		<property name="sessionService" ref="sessionService" />
+    <property name="driverFinder">
+      <bean class="org.pentaho.pat.server.util.JdbcDriverFinder">
+        <property name="jdbcDriverPath">
+          <list>
+            <value>/WEB-INF/lib</value>
+            <value>/src/main/resources/jdbc</value>
+          </list>
+        </property>
+        <property name="cacheTimeout" value="600000"/>
+      </bean>
+    </property>
 	</bean>
 	
 	<bean id="queryService" class="org.pentaho.pat.server.services.impl.QueryServiceImpl">
