@@ -16,10 +16,18 @@ import junit.framework.TestCase;
 import org.hsqldb.jdbc.jdbcDataSource;
 import org.olap4j.OlapException;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class AbstractServiceTest extends TestCase {
 
     private static boolean IS_INIT_DONE = false;
+
+    private final String[] contextFiles = new String[] { 
+        "/src/main/webapp/WEB-INF/pat-applicationContext.xml"
+    };
+
+    protected static ApplicationContext applicationContext = null;
 
     private static Properties testProps = new Properties();
 
@@ -43,6 +51,11 @@ public class AbstractServiceTest extends TestCase {
                 // Bind the datasource in the directory
                 Context ctx = new InitialContext();
                 ctx.bind(getTestProperty("context.jndi"), ds);
+                
+                // Initialize the application context. This will also create the
+                // default schema
+                applicationContext = new FileSystemXmlApplicationContext(
+                        contextFiles);
 
                 // Create the schema
                 Connection c = ds.getConnection();

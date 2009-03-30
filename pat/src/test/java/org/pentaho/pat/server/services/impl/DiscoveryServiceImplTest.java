@@ -7,11 +7,13 @@ import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.Constants;
 import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.server.services.DiscoveryService;
+import org.pentaho.pat.server.services.SessionService;
 
 public class DiscoveryServiceImplTest extends AbstractServiceTest {
 
-	private SessionServiceImpl sessionService;
-	private DiscoveryServiceStub discoveryService;
+	private SessionService sessionService;
+	private DiscoveryService discoveryService;
 	
 	
 	public void testGetCubes() throws Exception 
@@ -134,8 +136,12 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 	{
 		initTest();
 		
-		// TODO Write a test for the driver discovery.
-		this.discoveryService.getDrivers();
+		String[] drivers = this.discoveryService.getDrivers();
+		assertNotNull(drivers);
+		assertTrue(drivers.length>0);
+		
+		for (int cpt = 0; cpt < drivers.length; cpt++)
+		    assertNotNull(drivers[cpt]);
 		
 		finishTest();
 	}
@@ -145,23 +151,11 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 	
 	private void initTest() {
 		initTestContext();
-		this.sessionService = new SessionServiceImpl();
-		this.discoveryService = new DiscoveryServiceStub();
-		this.sessionService.setDiscoveryService(this.discoveryService);
-		this.discoveryService.setSessionService(this.sessionService);
+		this.sessionService = (SessionService)applicationContext.getBean("sessionService");
+		this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
 	}
 	
 	
 	private void finishTest() {
-		this.sessionService.setDiscoveryService(null);
-		this.discoveryService.setSessionService(null);
-		this.discoveryService = null;
-		this.sessionService = null;
 	}
-	
-	
-	private static class DiscoveryServiceStub extends DiscoveryServiceImpl {
-		
-	}
-	
 }

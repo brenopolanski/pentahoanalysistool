@@ -21,6 +21,8 @@ import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.util.JdbcDriverFinder;
+import org.springframework.util.Assert;
 
 /**
  * Simple service implementation as a Spring bean.
@@ -32,7 +34,7 @@ public class DiscoveryServiceImpl extends AbstractService
 
 	private SessionService sessionService = null;
 	
-	
+	private JdbcDriverFinder driverFinder = null;
 
 	Logger log = Logger.getLogger(this.getClass());
 
@@ -44,15 +46,15 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	
 	public void afterPropertiesSet() throws Exception {
-		if (this.sessionService == null)
-			throw new Exception("A sessionService is required.");
+		Assert.notNull(sessionService);
+		Assert.notNull(driverFinder);
 	}
 	
 	
 	public String[] getDrivers() 
 	{
 		
-		// TODO we need to scan a folder for JDBC drivers and register them prior to what follows here.
+		this.driverFinder.registerDrivers();
 		
 		// An enumeration is a very unpractical thing, so let's convert it to a List.
 		// We can't even know it's size... what a shameful object.
@@ -166,4 +168,10 @@ public class DiscoveryServiceImpl extends AbstractService
 
 	    return result;
 	}
+
+
+
+    public void setDriverFinder(JdbcDriverFinder driverFinder) {
+        this.driverFinder = driverFinder;
+    }
 }
