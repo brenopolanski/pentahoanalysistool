@@ -24,12 +24,35 @@ public class SessionServlet extends AbstractServlet implements Session {
 	}
 
 	public Boolean connect(String sessionId, CubeConnection connection) {
-		try {
+		try 
+		{
+		    String olap4jUrl=null;
+		    String olap4jDriver=null;
+		    
+		    switch (connection.getConnectionType())
+		    {
+		    case XMLA:
+		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl());
+		        olap4jDriver = "org.olap4j.driver.xmla.Olap4jXmlaDriver";
+		        break;
+		    case Mondrian:
+		        olap4jUrl = "jdbc:mondrian:"
+		            .concat("Jdbc=").concat(connection.getUrl()).concat(";")
+		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";")
+		            .concat("JdbcUser=").concat(connection.getUsername()).concat(";")
+		            .concat("JdbcPassword=").concat(connection.getPassword()).concat(";")
+		            .concat("Catalog=").concat(connection.getCatalog());
+		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver";
+		    }
+		    
 			sessionService.createConnection(getCurrentUserId(),sessionId, 
-				connection.getDriverClassName(), connection.getUrl(), 
+				olap4jDriver, olap4jUrl, 
 				connection.getUsername(), connection.getPassword());
+			
 			return true;
-		} catch (OlapException e) {
+		} 
+		catch (OlapException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
