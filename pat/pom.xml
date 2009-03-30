@@ -61,6 +61,9 @@
 								<copy
 									file="${basedir}/src/main/resources/log4j.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
+                <copy
+                  file="${basedir}/src/main/java/hibernate.cfg.xml"
+                  toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/hibernate.cfg.xml" />
 							</tasks>
 						</configuration>
 						<goals>
