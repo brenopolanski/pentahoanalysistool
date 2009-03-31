@@ -7,13 +7,16 @@ import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.WindowPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -148,8 +151,23 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			public void onClick(Widget sender) {
 				// TODO implement Connection Routine
 				// .connect(getCubeConnection())
+				ServiceFactory.getSessionInstance().connect(Pat.SESSION_ID, getCubeConnection(), new AsyncCallback<Boolean>() {
+					public void onSuccess(Boolean arg0) {
+						// TODO Auto-generated method stub
+						if (arg0 == true) {
+							Window.alert("Connect established!");
+							ConnectMondrianPanel.this.hide();
+						}
+					}
+					public void onFailure(Throwable arg0) {
+						// TODO use standardized message dialog when implemented
+						Window.alert("Connect Failed:" + arg0.getLocalizedMessage());
+						
+					}
+				});
 			}
 		});
+		
 		connectButton.setEnabled(false);
 		builder.add(connectButton, CellConstraints.xyw(3,12,5));
 
@@ -159,9 +177,23 @@ public class ConnectMondrianPanel extends WindowPanel implements
 
 	private ListBox createDriverListComboBox() {
 	    final ListBox listBox = new ListBox();
-	    listBox.addItem("New Building");
-	    listBox.addItem("Conversion");
-	    listBox.addItem("Repair");
+	    ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
+			public void onSuccess(String[] arg0) {
+				if (arg0 != null && arg0.length > 0) {
+					for(int i=0;i < arg0.length;i++) {
+						listBox.addItem(arg0[i]);
+					}
+				}
+				else {
+					// TODO use standardized message dialog when implemented
+					Window.alert("No installed JDBC Drivers found");	
+				}
+			}
+			public void onFailure(Throwable arg0) {
+				// TODO use standardized message dialog when implemented
+				Window.alert("Error occured. See Server log for details");	
+			}
+		});
 	    return listBox;
 	  }
 
