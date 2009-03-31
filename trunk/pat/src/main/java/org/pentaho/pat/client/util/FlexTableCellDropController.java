@@ -67,11 +67,11 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
 
   @Override
   public void onDrop(DragContext context) {
-	  FlexTableCellDragController trDragController = (FlexTableCellDragController) context.dragController;
-	  FlexTableUtil.moveCell(trDragController.getDraggableTable(), flexTable,
-		        trDragController.getDragRow(), trDragController.getDragCol(), targetRow, targetColumn-1);
+	//  FlexTableCellDragController trDragController = (FlexTableCellDragController) context.dragController;
+	//  FlexTableUtil.moveCell(trDragController.getDraggableTable(), flexTable,
+	//	        trDragController.getDragRow(), trDragController.getDragCol(), targetRow, targetColumn-1);
 	  //dropTarget.setWidget(context.draggable);
-    super.onDrop(context);
+    //super.onDrop(context);
   }
 
   @Override
@@ -96,11 +96,11 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
     
     targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
         context.mouseX, context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
-    targetColumn = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
-            context.mouseX, context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
+  //  targetColumn = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
+    //        context.mouseX, context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
 
     
-    Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
+        Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
     Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
     Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
     context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
