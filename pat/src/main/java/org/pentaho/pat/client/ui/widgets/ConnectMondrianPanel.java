@@ -96,6 +96,8 @@ public class ConnectMondrianPanel extends WindowPanel implements
 					{
 						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
 						catalog = tmp;
+						connectButton.setEnabled(true);
+						uploadButton.setEnabled(false);
 						Window.alert(tmp);
 					}
 					else {
@@ -109,8 +111,8 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			}
 			
 			public void onSubmit(FormSubmitEvent arg0) {
-				// TODO add Submit Action
-				Window.alert("onSubmit:" + arg0.toString());
+				// TODO add Submit Action - Probably validation?
+				// Window.alert("onSubmit:" + arg0.toString());
 			}
 		});
 		final FormLayout layout = new FormLayout(
@@ -121,7 +123,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		final PanelBuilder builder = new PanelBuilder(layout);
 		
 		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
-		builder.add(driverListBox, CellConstraints.xy(3, 2));
+		builder.add(driverListBox, CellConstraints.xyw(3, 2, 5));
 		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 4, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 6));
@@ -140,8 +142,6 @@ public class ConnectMondrianPanel extends WindowPanel implements
 					Window.alert("No file selected");
 				} else {
 					formPanel.submit();
-					connectButton.setEnabled(true);
-					uploadButton.setEnabled(false);
 				}
 			}
 		});
