@@ -8,6 +8,7 @@
     <property name="show_sql">true</property>
     <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.jdbc.batch_size">50</property>
     <mapping class="org.pentaho.pat.server.data.pojo.User"/>
     <mapping class="org.pentaho.pat.server.data.pojo.Group"/>
   </session-factory>

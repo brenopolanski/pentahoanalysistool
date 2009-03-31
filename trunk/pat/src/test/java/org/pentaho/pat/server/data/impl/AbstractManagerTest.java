@@ -60,6 +60,8 @@ public abstract class AbstractManagerTest extends TestCase {
 
                 this.initDatabase();
                 
+                IS_INIT_DONE=true;
+                
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -81,6 +83,7 @@ public abstract class AbstractManagerTest extends TestCase {
             c.commit();
             c.close();
             
+//            ((SessionFactory)applicationContext.getBean("sessionFactory")).isClosed()
             /*
              * Step 2. Insert data
              */
@@ -113,8 +116,8 @@ public abstract class AbstractManagerTest extends TestCase {
             while(rst.next())
             {
                 String[] currentRow = new String[nbCols];
-                for (int colPos = 0; colPos<nbCols;colPos++)
-                    currentRow[colPos]=rst.getString(colPos);
+                for (int colPos = 1; colPos<=nbCols;colPos++)
+                    currentRow[colPos-1]=rst.getString(colPos);
                 rows.add(currentRow);
             }
             
