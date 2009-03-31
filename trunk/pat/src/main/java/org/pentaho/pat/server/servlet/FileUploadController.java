@@ -24,8 +24,11 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 public class FileUploadController extends AbstractCommandController implements
 		ResourceLoaderAware, InitializingBean {
 	
-	private static final String FILENAME_TAG_START = "#filename#";
-	private static final String FILENAME_TAG_END = "#/filename#";
+//	private static final String FILENAME_TAG_START = "#filename#";
+//	private static final String FILENAME_TAG_END = "#/filename#";
+//	
+	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
+	private static final String FILENAME_TAG_END = "pat_schema_filename_end";
 	
 	Logger log = Logger.getLogger(this.getClass());
 

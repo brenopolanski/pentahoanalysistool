@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Command;
 
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ConnectPanel;
+import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.ClickListener;
@@ -29,7 +30,7 @@ import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
  */
 public class ToolBarPanel extends MenuBar implements ClickListener,
 ConnectionListener, SourcesConnectionEvents {
-	private ConnectPanel connectWindow;
+	private ConnectMondrianPanel connectWindow;
 	private boolean connectionEstablished = false;
 	private MenuItem connectItem;
 	private ConnectionListenerCollection connectionListeners;
@@ -89,7 +90,7 @@ ConnectionListener, SourcesConnectionEvents {
 			public void execute() {
 				if (!connectionEstablished){
 				if (connectWindow == null) {
-					connectWindow = new ConnectPanel();
+					connectWindow = new ConnectMondrianPanel();
 					connectWindow.addConnectionListener(ToolBarPanel.this);
 				}
 				connectWindow.showModal();
