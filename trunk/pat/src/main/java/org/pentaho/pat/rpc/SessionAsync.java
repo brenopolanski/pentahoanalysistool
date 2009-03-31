@@ -31,11 +31,11 @@ public interface SessionAsync {
 	
 	public void disconnect(String sessionId, AsyncCallback<Boolean> callback);	
 	
+	public void getConnection(String sessionId, String connectionName, AsyncCallback<CubeConnection> callback);
 	
+	public void saveConnection(String sessionId, CubeConnection connection, AsyncCallback<Boolean> callback);
 	
-	
-	
-	
+	public void getConnections(String sessionId, AsyncCallback<String[]> callback);
 	
 	
 	

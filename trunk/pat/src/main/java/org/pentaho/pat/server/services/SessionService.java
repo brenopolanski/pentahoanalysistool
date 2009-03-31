@@ -5,6 +5,7 @@ import java.util.List;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.query.Query;
+import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -54,6 +55,8 @@ public interface SessionService extends Service {
 	@Secured ({"ROLE_USER"})
 	public void releaseConnection(String userId, String sessionId);
 	
+	@Secured ({"ROLE_USER"})
+	public List<String> getConnections(String userId);
 	
 	
 	
@@ -69,7 +72,9 @@ public interface SessionService extends Service {
 	@Secured ({"ROLE_USER"})
 	public void releaseQuery(String userId, String sessionId, String queryId);
 	
+	@Secured ({"ROLE_USER"})
+	public SavedConnection getSavedConnection(String userId, String connectionName);
 	
-	
+	public void saveConnection(String userId, SavedConnection connection);
 
 }

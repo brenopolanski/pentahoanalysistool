@@ -5,12 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
 
 
 @Entity
@@ -45,7 +50,12 @@ public class User {
 		this.groups = groups;
 	}
 
-	@Transient
+	@OneToMany(fetch=FetchType.EAGER,targetEntity=SavedConnection.class,cascade=CascadeType.ALL)
+	@JoinTable(
+	    name="users_connections",
+	    joinColumns=@JoinColumn(name="user_id",table="users",referencedColumnName="username"),
+	    inverseJoinColumns=@JoinColumn(name="connection_id",table="connections",referencedColumnName="name"))
+	@Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
 	public Set<SavedConnection> getSavedConnections() {
 		return savedConnections;
 	}

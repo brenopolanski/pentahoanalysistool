@@ -21,6 +21,8 @@ public class CubeConnection implements Serializable {
 	
 	private String catalog = null;
 	
+	private String schemaPath = null;
+	
 	private String username = null;
 	
 	private String password = null;
@@ -93,6 +95,14 @@ public class CubeConnection implements Serializable {
 	public void setCatalog(String catalog) {
 		this.catalog = catalog;
 	}
+
+    public String getSchemaPath() {
+        return schemaPath;
+    }
+
+    public void setSchemaPath(String schemaPath) {
+        this.schemaPath = schemaPath;
+    }
 	
 	
 }
