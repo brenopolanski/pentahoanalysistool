@@ -28,6 +28,7 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HTML;
@@ -204,6 +205,7 @@ SourcesConnectionEvents {
 		}
 
 		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none");
+
 	}
 
 	
@@ -295,6 +297,7 @@ SourcesConnectionEvents {
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css";
 		String gwtMosaicStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css";
 		String showcaseStyleSheet = CUR_THEME + "/Showcase.css";
+		String widgetStyleSheet = "/widgets.css";
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css");
 			gwtMosaicStyleSheet = gwtMosaicStyleSheet.replace(".css",
@@ -366,12 +369,14 @@ SourcesConnectionEvents {
 				getCurrentReferenceStyleName("gwt"), null);
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosaicStyleSheet,
 				getCurrentReferenceStyleName("mosaic"), null);
-
 		// Load the showcase specific style sheet after the GWT & Mosaic theme
 		// style
 		// sheet so that custom styles supercede the theme styles.
 		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet,
 				getCurrentReferenceStyleName("Application"), callback);
+		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet, 
+				getCurrentReferenceStyleName("widgets"), null);
+		
 	}
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub

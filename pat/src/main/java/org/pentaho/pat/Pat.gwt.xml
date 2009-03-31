@@ -31,6 +31,7 @@
   <stylesheet src="gwt/standard/Mosaic.css" />
         
 	<stylesheet src='Pat.css' />
+	<stylesheet src='widgets.css' />
 	<entry-point class="org.pentaho.pat.client.Pat"/>
 
 

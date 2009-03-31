@@ -118,6 +118,8 @@ public class Application extends Viewport {
 	private ToolBarPanel toolBarPanel;
 	
 	private static LayoutPanel layoutPanel;
+	
+	private static LayoutPanel bottomPanel;
 	/**
 	 * Constructor.
 	 */
@@ -134,7 +136,7 @@ public class Application extends Viewport {
 		
 		
 		
-		final LayoutPanel bottomPanel = new LayoutPanel(new BorderLayout());
+		bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
 		// Add the main menu
@@ -194,7 +196,7 @@ public class Application extends Viewport {
 	}
 
 	public static LayoutPanel getPanel(){
-		return layoutPanel;
+		return bottomPanel;
 	}
 	/**
 	 * Create the main menu.

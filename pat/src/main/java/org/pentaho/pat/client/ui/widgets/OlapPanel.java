@@ -11,16 +11,22 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.ui.panels.NorthPanel;
 import org.pentaho.pat.client.ui.panels.SouthPanel;
-import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.images.widgets.WidgetImages;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.FlexTableCellDragController;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OlapPanel extends DataWidget{
 	public static OlapTable olapTable;
 
+	
 	/**
 	 * The widget used to display source code.
 	 */
@@ -167,28 +174,17 @@ public class OlapPanel extends DataWidget{
 
 	private void createLayout(){
 		 
+		   FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
+	        
+	        DimensionFlexTable table1 = new DimensionFlexTable(2, 2, tableRowDragController);
+	    
+	        panel1.add(table1);
+		//DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
+ 
+	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
 		
-		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
-        
-		 Label rowLabel = new Label("Rows");
-		 Label colLabel = new Label("Columns");
-		 
-		 
-		 DimensionFlexTable rowTable = new DimensionFlexTable(1, 2, tableRowDragController);
-    
-		 DimensionFlexTable colTable = new DimensionFlexTable(1, 2, tableRowDragController);
-		 
-		 Grid dropGrid = new Grid(2,2);
-		 
-		 dropGrid.setWidget(0, 0, rowLabel);
-		 dropGrid.setWidget(0, 1, rowTable);
-		 dropGrid.setWidget(1, 0, colLabel);
-		 dropGrid.setWidget(1, 1, colTable);
-		 
-		 
-		 
-		 panel1.add(dropGrid);
-		 
+		//panel1.add(rowDrop);
+	//	panel1.add(colDrop); 
 	}
 	@Override
 	public String getDescription() {
