@@ -37,7 +37,7 @@
 					<debugSuspend>false</debugSuspend>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -52,21 +52,20 @@
 								<copy
 									file="${basedir}/src/main/webapp/WEB-INF/pat-securityContext.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-securityContext.xml" />
-                <copy
-                  file="${basedir}/src/main/webapp/WEB-INF/application.properties"
-                  toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/application.properties" />
+								<copy
+									file="${basedir}/src/main/webapp/WEB-INF/application.properties"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/application.properties" />
 								<copy
 									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
 								<copy
 									file="${basedir}/src/main/java/org/pentaho/pat/server/util/mondrian.xsd"
 									toFile="${basedir}/target/classes/org/pentaho/pat/server/util/mondrian.xsd" />
-								<copy
-									file="${basedir}/src/main/resources/log4j.xml"
+								<copy file="${basedir}/src/main/resources/log4j.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
-                <copy
-                  file="${basedir}/src/main/java/hibernate.cfg.xml"
-                  toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/hibernate.cfg.xml" />
+								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/hibernate.cfg.xml" />
+								<mkdir dir="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib"/>
 							</tasks>
 						</configuration>
 						<goals>
@@ -90,24 +89,22 @@
 								<copy
 									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/util/SampleData.mondrian.xml" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/test.properties.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/test.properties.xml" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-insert.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-insert.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-delete.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-delete.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" />
 								<copy
-									file="${basedir}/src/test/java/jndi.properties"
+									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/test.properties.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/test.properties.xml" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-insert.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-insert.sql" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-delete.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-delete.sql" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" />
+								<copy file="${basedir}/src/test/java/jndi.properties"
 									toFile="${basedir}/target/test-classes/jndi.properties" />
-                <copy
-                  file="${basedir}/src/main/java/hibernate.cfg.xml"
-                  toFile="${basedir}/target/test-classes/hibernate.cfg.xml" />
+								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
+									toFile="${basedir}/target/test-classes/hibernate.cfg.xml" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -115,7 +112,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> 
+			</plugin>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -145,15 +142,15 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-          <webResources>
-            <resource>
-              <directory>src/main/java</directory>
-              <targetPath>WEB-INF/classes</targetPath>
-              <includes>
-                <include>hibernate.cfg.xml</include>
-              </includes>
-            </resource>
-          </webResources>
+					<webResources>
+						<resource>
+							<directory>src/main/java</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+							<includes>
+								<include>hibernate.cfg.xml</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -168,10 +165,10 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>7.0.0.pre5</version>
 				<configuration>
-				<webAppConfig>
-					<contextPath>/</contextPath>
-					<defaultsDescriptor>src/main/servers/jetty/dev/webdefault.xml</defaultsDescriptor>
-				</webAppConfig>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+						<defaultsDescriptor>src/main/servers/jetty/dev/webdefault.xml</defaultsDescriptor>
+					</webAppConfig>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -180,7 +177,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/AbstractServiceTest.java</exclude>
-            <exclude>**/AbstractManagerTest.java</exclude>
+						<exclude>**/AbstractManagerTest.java</exclude>
 					</excludes>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
@@ -402,13 +399,13 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-	      <groupId>net.sf.gwt-widget</groupId>
-	      <artifactId>gwt-widgets</artifactId>
-    	  <version>0.2.0</version>
-	    </dependency>
-	    
-	    
-	    <!-- Spring modules -->
+			<groupId>net.sf.gwt-widget</groupId>
+			<artifactId>gwt-widgets</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+
+
+		<!-- Spring modules -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -449,19 +446,19 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-		
-		
-		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core-tiger</artifactId>
@@ -482,51 +479,51 @@
 			<artifactId>spring-security-acl</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-		
-		
-		
-		
+
+
+
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.5.4</version>
 		</dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-      <version>1.5.4</version>
-    </dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.5.4</version>
+		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.7</version>
 		</dependency>
-    <dependency>
-        <groupId>javassist</groupId>
-        <artifactId>javassist</artifactId>
-        <version>3.4.GA</version>
-    </dependency>
-    <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.5.2</version>
-    </dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.4.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <version>${hibernate.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -552,12 +549,12 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.4</version>
 		</dependency>
-		
+
 	</dependencies>
 	<properties>
 		<gwtVersion>1.5.3</gwtVersion>
 		<spring.version>2.5.6</spring.version>
-    <spring.security.version>2.0.4</spring.security.version>
-    <hibernate.version>3.3.1.GA</hibernate.version>
+		<spring.security.version>2.0.4</spring.security.version>
+		<hibernate.version>3.3.1.GA</hibernate.version>
 	</properties>
 </project>
