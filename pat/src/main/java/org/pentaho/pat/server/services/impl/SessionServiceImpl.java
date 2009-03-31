@@ -19,7 +19,9 @@ import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.pentaho.pat.server.Constants;
+import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
+import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 
@@ -320,6 +322,27 @@ public class SessionServiceImpl extends AbstractService
 	}
 
 
+	public SavedConnection getSavedConnection(String userId,
+	        String connectionName) {
+	    for (SavedConnection conn : this.userManager.getUser(userId).getSavedConnections())
+	        if (conn.getName().equals(userId))
+	            return conn;
+	    return null;
+	}
+	
+	public void saveConnection(String userId, SavedConnection connection) {
+        User user = this.userManager.getUser(userId);
+        user.getSavedConnections().add(connection);
+        this.userManager.saveUser(user);
+    }
+	
+	public List<String> getConnections(String userId) {
+	    User user = this.userManager.getUser(userId);
+	    List<String> connections = new ArrayList<String>();
+	    for (SavedConnection conn : user.getSavedConnections())
+	        connections.add(conn.getName());
+	    return connections;
+	}
 
 
 	
@@ -335,6 +358,4 @@ public class SessionServiceImpl extends AbstractService
 	protected Map<String,Map<String,Session>> getSessions() {
 		return sessions;
 	}
-
-
 }

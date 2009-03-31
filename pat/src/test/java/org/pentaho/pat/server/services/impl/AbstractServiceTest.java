@@ -19,7 +19,7 @@ import org.pentaho.pat.server.services.SessionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-public class AbstractServiceTest extends TestCase {
+public abstract class AbstractServiceTest extends TestCase {
 
     private static boolean IS_INIT_DONE = false;
 

@@ -1,17 +1,43 @@
 package org.pentaho.pat.server.data.pojo;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+
+@Entity
+@Table(name="connections")
 public class SavedConnection {
 
-	private String name = null;
+    @Basic
+	private String name;
 	
-	private String driverClassName = null;
+    @Basic
+	private String driverClassName;
 	
-	private String url = null;
+    @Basic
+	private String url;
 	
-	private String username = null;
+    @Basic
+	private String username;
 	
-	private String password = null;
+    @Basic
+	private String password;
+    
+    @Basic
+    @Type(
+        type = "org.pentaho.pat.server.data.pojo.ConnectionType"
+    )
+    private ConnectionType type;
+    
+    @Column(nullable=true)
+    @Type(type="text")
+    private String schema=null;
 
+    @Id
 	public String getName() {
 		return name;
 	}
@@ -48,9 +74,23 @@ public class SavedConnection {
 		return password;
 	}
 
-	public void setPassword(String assword) {
-		this.password = assword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	
+
+    public ConnectionType getType() {
+        return type;
+    }
+
+    public void setType(ConnectionType type) {
+        this.type = type;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 }

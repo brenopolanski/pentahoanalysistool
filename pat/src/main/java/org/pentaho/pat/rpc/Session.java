@@ -34,13 +34,17 @@ public interface Session extends RemoteService {
     public Boolean connect(String sessionId, CubeConnection connection);
 	
 	@Secured ({"ROLE_USER"})
-	public Boolean disconnect(String sessionId);	
+	public Boolean disconnect(String sessionId);
 	
+	@Secured ({"ROLE_USER"})
+	public CubeConnection getConnection(String sessionId, String connectionName);
 	
+	@Secured ({"ROLE_USER"})
+	public Boolean saveConnection(String sessionId, CubeConnection connection);
 	
-	
-	
-	
+	@Secured ({"ROLE_USER"})
+    public String[] getConnections(String sessionId);
+    
 	
 	
 	
