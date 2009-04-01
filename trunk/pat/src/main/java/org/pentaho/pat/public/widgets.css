@@ -28,3 +28,7 @@ border-top-color : #54a654;
 border-top-style : solid;
 width: 100%;
 }	
+
+.demo-flextable{
+border : 1px;
+}

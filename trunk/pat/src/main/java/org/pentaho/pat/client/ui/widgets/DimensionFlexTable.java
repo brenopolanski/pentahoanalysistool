@@ -15,9 +15,13 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
 import org.pentaho.pat.client.util.FlexTableCellDropController;
+import org.pentaho.pat.client.util.ServiceFactory;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -31,27 +35,38 @@ public final class DimensionFlexTable extends FlexTable {
    * Creates a FlexTable with the desired number of rows and columns, making
    * each row draggable via the provided drag controller.
    * 
-   * @param rows desired number of table rows
-   * @param cols desired number of table columns
+   * 
    * @param tableRowDragController the drag controller to enable dragging of
    *            table rows
+   *            
+   * @author tom(at)wamonline.org.uk
    */
-  public DimensionFlexTable(int rows, int cols, FlexTableCellDragController tableCellDragController) {
-    addStyleName("demo-flextable");
-      HTML handle = new HTML("[drag-here]");
-      handle.addStyleName("demo-drag-handle");
-      tableCellDragController.makeDraggable(handle);
-    for (int col = 0; col < cols; col++) {
-	      for (int row = 0; row < rows; row++) {
-	        
-	        if (row == 0) {
-	          setWidget(col, row, handle);
-	        }
+  public DimensionFlexTable(final FlexTableCellDragController tableCellDragController) {	  
+	  addStyleName("demo-flextable");
+     
+    ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), null, new AsyncCallback<String[]>() {
 
-	        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
-		    tableCellDragController.registerDropController(flexTableRowDropController1);
+		public void onFailure(Throwable arg0) {
+			// TODO use standardized message dialog when implemented
+			Window.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage());
+		}
+
+		public void onSuccess(String[] arg0) {
+			 for (int row = 0; row < arg0.length; row++) {
+			        HTML handle = new HTML(arg0[row]);
+			        handle.addStyleName("drag-Dimension");
+			        setWidget(row, 0, handle);
+			        tableCellDragController.makeDraggable(handle);	
+		}
+    	
+    }
+	});
+  
+    	//TODO Rework the drop stuff
+	      //  FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
+		  //  tableCellDragController.registerDropController(flexTableRowDropController1);
 	      }
 	    }
-  }
   
-}
+  
+

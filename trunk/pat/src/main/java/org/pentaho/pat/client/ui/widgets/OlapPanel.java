@@ -174,11 +174,7 @@ public class OlapPanel extends DataWidget{
 
 	private void createLayout(){
 		 
-		   FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
-	        
-	        DimensionFlexTable table1 = new DimensionFlexTable(2, 2, tableRowDragController);
-	    
-	        panel1.add(table1);
+		  
 		//DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
  
 	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");

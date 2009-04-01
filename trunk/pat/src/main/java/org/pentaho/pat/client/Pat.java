@@ -1,4 +1,4 @@
-	package org.pentaho.pat.client;
+package org.pentaho.pat.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.CollapsedListener;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
@@ -31,6 +32,7 @@ import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -38,15 +40,17 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.RootPanel;
-
+import com.google.gwt.user.client.ui.ClickListener;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * 
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class Pat implements CollapsedListener, EntryPoint, ConnectionListener,
+
+public class Pat implements EntryPoint, ConnectionListener,
 SourcesConnectionEvents {
+	
 
 	
 	/**
@@ -80,8 +84,10 @@ SourcesConnectionEvents {
 		itemTokens.put(getContentWidgetToken(content), option);
 	}
 
-	public static LayoutPanel borderLayoutPanel;
 
+	/**
+	 * PatImages ImageBundle
+	 */
 	public static final PatImages IMAGES = (PatImages) GWT
 			.create(PatImages.class);
 
@@ -111,8 +117,16 @@ SourcesConnectionEvents {
 	 */
 	private static Application app = new Application();
 
-	public static String SESSION_ID;
+	
+	/**
+	 * Global Session ID
+	 */
+	private static String SESSION_ID;
 
+	
+	/**
+	 * Pat Constructor
+	 */
 	public Pat() {
 		super();
 		
@@ -149,12 +163,14 @@ SourcesConnectionEvents {
 		return gwtRef;
 	}
 
-	public void onCollapsedChange(Widget sender) {
-		// TODO Auto-generated method stub
 
-	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+	 */
 	public void onModuleLoad() {
+
 		setSessionID();
 		// Swap out the style sheets for the RTL versions if needed
 		updateStyleSheets();
@@ -211,9 +227,6 @@ SourcesConnectionEvents {
 	
 	/**
 	 * Setup all of the options in the main menu.
-	 * 
-	 * @param constants
-	 *            the constant values to use
 	 */
 	private void setupMainMenu() {
 		Tree mainMenu = app.getMainMenu();
@@ -223,18 +236,26 @@ SourcesConnectionEvents {
 		
 	}
 	
+	
+	/**
+	 * Generates a cube list for the Cube Menu 
+	 */
 	private void setupCubeMenu(){
 	
 		ServiceFactory.getDiscoveryInstance().getCubes(SESSION_ID, new AsyncCallback() {
 			public void onFailure(Throwable arg0) {
-				// TODO Auto-generated method stub
+				  
+			    Button errorBtn = new Button("Error");
+			    errorBtn.addClickListener(new ClickListener() {
+			      public void onClick(Widget sender) {
+			        MessageBox.error("Error", "Failed to get a Cube List!");
+			      }
+			    });
 				
 			}
 
 			public void onSuccess(Object arg0) {
-				// TODO Auto-generated method stub
 				Tree mainMenu = app.getMainMenu();
-
 				TreeItem homeMenu = mainMenu.addItem("Cubes");
 				List<String> blah = (List)arg0;
 				Iterator itr = blah.iterator();
@@ -248,19 +269,32 @@ SourcesConnectionEvents {
 		
 	}
 
+	
+	/**
+	 * Returns the SESSION_ID
+	 * @return SESSION_ID
+	 */
 	public static String getSessionID(){
 		return SESSION_ID;
 	}
+	
+	
+	/**
+	 * Sets the SESSION_ID 
+	 */
 	private static void setSessionID(){
 		ServiceFactory.getSessionInstance().createSession(new AsyncCallback(){
 
 			public void onFailure(Throwable arg0) {
-				// TODO Auto-generated method stub
-				
+			    Button errorBtn = new Button("Error");
+			    errorBtn.addClickListener(new ClickListener() {
+			      public void onClick(Widget sender) {
+			        MessageBox.error("Error", "Failed to get Session ID(Thats not great)!");
+			      }
+			    });
 			}
 
 			public void onSuccess(Object arg0) {
-				
 				SESSION_ID = (String) arg0;
 			}
 			
@@ -378,17 +412,34 @@ SourcesConnectionEvents {
 				getCurrentReferenceStyleName("widgets"), null);
 		
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionMade(Widget sender) {
 		setupCubeMenu();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void removeConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
 		
