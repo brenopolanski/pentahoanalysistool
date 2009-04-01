@@ -151,7 +151,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			public void onClick(Widget sender) {
 				// TODO implement Connection Routine
 				// .connect(getCubeConnection())
-				ServiceFactory.getSessionInstance().connect(Pat.SESSION_ID, getCubeConnection(), new AsyncCallback<Boolean>() {
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Boolean>() {
 					public void onSuccess(Boolean arg0) {
 						// TODO Auto-generated method stub
 						if (arg0 == true) {

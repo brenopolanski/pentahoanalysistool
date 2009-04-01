@@ -12,7 +12,13 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 
 public class DimensionDropWidget extends Grid {
-
+/**
+ * Widget for allowing user to drop dimension rows/columns and mdx filters onto canvas
+ * 
+ * @param labelText
+ * 
+ * @author tom(at)wamonline.org.uk
+ */
 
 	public DimensionDropWidget(String labelText){
 		
@@ -21,7 +27,10 @@ public class DimensionDropWidget extends Grid {
 	}
 	
 	public void init(String labelText){
-
+/*
+ * 
+ * Needs Completely reworking once cube and dimension panels are sorted.
+ */
 		final WidgetImages IMAGES = (WidgetImages) GWT
 		.create(WidgetImages.class);
 		
@@ -31,7 +40,7 @@ public class DimensionDropWidget extends Grid {
 		Label dropLabel = new Label();
 		dropLabel.setStyleName("dropLabel");
 		
-		 DimensionFlexTable rowTable = new DimensionFlexTable(2, 2, tableRowDragController);
+		 DimensionFlexTable rowTable = new DimensionFlexTable(tableRowDragController);
 		 rowTable.setStyleName("dropTable");
 		 
 		 this.setStyleName("dropGrid");

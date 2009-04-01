@@ -93,9 +93,9 @@ public class FlexTableCellDropController extends AbstractPositioningDropControll
     super.onMove(context);
    
     
-    
-    targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
-        context.mouseX, context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
+      targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
+            context.mouseX, context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
+
   //  targetColumn = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
     //        context.mouseX, context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
 
