@@ -7,6 +7,7 @@ import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
@@ -23,9 +24,11 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
 
     private List<String> jdbcDriverPath = null;
 
-    private File jdbcDriverDirectory = null;
+    private List<File> jdbcDriverDirectory = new ArrayList<File>();
 
     private ResourceLoader resourceLoader = null;
+    
+    protected Logger log = Logger.getLogger(this.getClass());
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(jdbcDriverPath);
@@ -35,7 +38,8 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
         {
             Resource res = resourceLoader.getResource(currentPath);
 
-            if (res == null || !res.exists())
+            if (res == null || 
+                !res.exists())
                 continue;
 
             File currentFile = res.getFile();
@@ -44,11 +48,10 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
                     || !currentFile.canRead())
                 continue;
             
-            this.jdbcDriverDirectory=currentFile;
-            break;
+            this.jdbcDriverDirectory.add(currentFile);
         }
-        if (this.jdbcDriverDirectory==null)
-          throw new Exception("The specified JDBC directory path doesn't exist.");
+        if (this.jdbcDriverDirectory.size()==0)
+            log.warn("No valid JDBC driver directory specified.");
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
@@ -84,15 +87,16 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
 
         ResolverUtil<Driver> resolver = new ResolverUtil<Driver>();
 
-        for (File lib : this.jdbcDriverDirectory.listFiles(libs)) {
-            try {
-                resolver.loadImplementationsInJar("", lib.toURI().toURL(), //$NON-NLS-1$
-                        new ResolverUtil.IsA(Driver.class));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                continue;
+        for (File directory : this.jdbcDriverDirectory)
+            for (File lib : directory.listFiles(libs)) {
+                try {
+                    resolver.loadImplementationsInJar("", lib.toURI().toURL(), //$NON-NLS-1$
+                            new ResolverUtil.IsA(Driver.class));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    continue;
+                }
             }
-        }
 
         List<String> drivers = new ArrayList<String>();
         for (Class<? extends Driver> cd : resolver.getClasses())

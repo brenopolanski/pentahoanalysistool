@@ -54,8 +54,7 @@ public class QueryServlet extends AbstractServlet implements Query {
 		try {
 			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("There was an error while executing the query.", e);
 			return null;
 		}
 	}
