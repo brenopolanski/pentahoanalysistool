@@ -45,8 +45,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 			dimensionsList = this.discoveryService.getDimensions(getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    log.error("An exception was encountered while populating the list of available dimensions.",e);
 			return null;
 		}
 		
@@ -57,8 +56,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		try {
 			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 		} catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    log.error("An exception was encountered while populating the list of available members.",e);
 			return null;
 		}
 	}

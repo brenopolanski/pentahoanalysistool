@@ -1,7 +1,5 @@
 package org.pentaho.pat.rpc;
 
-import java.util.List;
-
 import org.pentaho.pat.rpc.beans.CubeConnection;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -48,7 +46,7 @@ public interface SessionAsync {
 	
 	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
 	
-	public void getQueries(String sessionId, AsyncCallback<List<String>> callback);
+	public void getQueries(String sessionId, AsyncCallback<String[]> callback);
 
 	public void deleteQuery(String sessionId, String queryId, AsyncCallback<Boolean> callback);
 

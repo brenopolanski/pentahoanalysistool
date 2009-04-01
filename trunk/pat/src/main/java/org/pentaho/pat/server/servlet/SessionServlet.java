@@ -64,8 +64,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		} 
 		catch (OlapException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Unable to establish the connection.",e);
 			return false;
 		}
 	}
@@ -75,8 +74,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    try {
             return this.convert(savedConn);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Unable to load the connection due to a file system access error.",e);
             return null;
         }
 	}
@@ -87,8 +85,7 @@ public class SessionServlet extends AbstractServlet implements Session {
                     this.convert(connection));
             return true;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Unable to load the connection due to a file system access error.",e);
             return false;
         }
 	}
@@ -102,8 +99,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		try {
 			return sessionService.createNewQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("An exception was encountered while creating a new query.", e);
 			return null;
 		}
 	}
@@ -128,8 +124,9 @@ public class SessionServlet extends AbstractServlet implements Session {
 				getCurrentUserId(), sessionId, Constants.CURRENT_QUERY_NAME);
 	}
 
-	public List<String> getQueries(String sessionId) {
-		return sessionService.getQueries(getCurrentUserId(), sessionId);
+	public String[] getQueries(String sessionId) {
+	    List<String> list = sessionService.getQueries(getCurrentUserId(), sessionId);
+		return list.toArray(new String[list.size()]);
 	}
 
 	public Boolean setCurrentCube(String sessionId, String cubeId) {

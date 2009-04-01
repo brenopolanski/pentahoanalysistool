@@ -2,6 +2,7 @@ package org.pentaho.pat.server.servlet;
 
 import javax.servlet.ServletException;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.Authentication;
@@ -21,6 +22,8 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	private static boolean standaloneMode;
 	private static Authentication standaloneAuth;
 	protected static ApplicationContext applicationContext;
+	
+	protected Logger log = Logger.getLogger(this.getClass());
 	
 	private final String[] contextFiles = {
 			"./src/main/webapp/WEB-INF/pat-applicationContext.xml",
@@ -44,6 +47,8 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	        
 	        if (applicationContext==null)
 	        {
+	            log.info("Initializing PAT in standalone mode.");
+	            
 	        	// This happens if we launch PAT without a web context, like in the 
 	        	// GWT shell for example. We'll initialize the context manually.
 	        	applicationContext = new FileSystemXmlApplicationContext(contextFiles);

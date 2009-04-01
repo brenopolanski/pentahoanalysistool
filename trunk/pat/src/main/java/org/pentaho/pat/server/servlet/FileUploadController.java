@@ -6,8 +6,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.pentaho.pat.server.beans.FileUploadBean;
 import org.springframework.beans.factory.InitializingBean;
