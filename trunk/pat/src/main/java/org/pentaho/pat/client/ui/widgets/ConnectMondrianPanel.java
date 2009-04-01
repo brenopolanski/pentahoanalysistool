@@ -6,6 +6,8 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.LoadingPanel;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
@@ -98,20 +100,20 @@ public class ConnectMondrianPanel extends WindowPanel implements
 						catalog = tmp;
 						connectButton.setEnabled(true);
 						uploadButton.setEnabled(false);
-						Window.alert(tmp);
+						MessageBox.info("File uploaded","Filename" + tmp);
 					}
 					else {
 						// TODO use standardized message dialog when implemented
-						Window.alert("Schema Upload failed");	
+						MessageBox.error("Error", "Schema Upload failed");	
 					}
 				}
 				else
 					// TODO use standardized message dialog when implemented
-					Window.alert("Error occured. See Server log for details");
+					MessageBox.error("Error", "Error occured. See Server log for details");
 			}
 			
 			public void onSubmit(FormSubmitEvent arg0) {
-				// TODO add Submit Action - Probably validation?
+				// TODO add Submit Action - Probably validation? And mask UI
 				// Window.alert("onSubmit:" + arg0.toString());
 			}
 		});
@@ -139,7 +141,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
 					// TODO use standardized message dialog when implemented
-					Window.alert("No file selected");
+					MessageBox.error("Error","No file selected");
 				} else {
 					formPanel.submit();
 				}
@@ -151,17 +153,21 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			public void onClick(Widget sender) {
 				// TODO implement Connection Routine
 				// .connect(getCubeConnection())
+				connectButton.setEnabled(false);
+				
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Boolean>() {
 					public void onSuccess(Boolean arg0) {
 						// TODO Auto-generated method stub
 						if (arg0 == true) {
-							Window.alert("Connect established!");
+							MessageBox.info("Success","Connect established!");
 							ConnectMondrianPanel.this.hide();
 						}
+						else
+							MessageBox.error("Error", "Connect Failed");
 					}
 					public void onFailure(Throwable arg0) {
 						// TODO use standardized message dialog when implemented
-						Window.alert("Connect Failed:" + arg0.getLocalizedMessage());
+						MessageBox.error("Error", "Connect Failed:" + arg0.getLocalizedMessage());
 						
 					}
 				});
@@ -177,8 +183,11 @@ public class ConnectMondrianPanel extends WindowPanel implements
 
 	private ListBox createDriverListComboBox() {
 	    final ListBox listBox = new ListBox();
+	    final LoadingPanel loadingPanel = LoadingPanel.show(listBox,"Loading...");
+
 	    ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
 			public void onSuccess(String[] arg0) {
+				loadingPanel.hide();
 				if (arg0 != null && arg0.length > 0) {
 					for(int i=0;i < arg0.length;i++) {
 						listBox.addItem(arg0[i]);
@@ -186,12 +195,13 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				}
 				else {
 					// TODO use standardized message dialog when implemented
-					Window.alert("No installed JDBC Drivers found");	
+					MessageBox.error("Error", "No installed JDBC Drivers found");	
 				}
 			}
 			public void onFailure(Throwable arg0) {
+				loadingPanel.hide();
 				// TODO use standardized message dialog when implemented
-				Window.alert("Error occured. See Server log for details");	
+				MessageBox.error("Error", "Error occured. See Server log for details");	
 			}
 		});
 	    return listBox;
