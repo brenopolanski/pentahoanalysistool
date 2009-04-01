@@ -8,8 +8,9 @@
 	<groupId>org.pentaho</groupId>
 	<artifactId>pat</artifactId>
 	<packaging>war</packaging>
-	<name>gwt-maven-archetype-project</name>
+	<name>Pentaho Analysis Tool</name>
 	<version>0.2.0-SNAPSHOT</version>
+	<url>http://code.google.com/p/pentahoanalysistool/</url>
 
 	<build>
 		<plugins>
