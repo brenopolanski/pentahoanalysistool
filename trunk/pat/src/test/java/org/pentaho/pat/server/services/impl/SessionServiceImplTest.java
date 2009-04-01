@@ -2,11 +2,12 @@ package org.pentaho.pat.server.services.impl;
 
 import org.olap4j.OlapException;
 import org.pentaho.pat.Constants;
+import org.pentaho.pat.server.services.DiscoveryService;
 
 public class SessionServiceImplTest extends AbstractServiceTest {
 
 	private SessionServiceImpl sessionService;
-	private DiscoveryServiceStub discoveryService;
+	private DiscoveryService discoveryService;
 	
 	
 	/**
@@ -216,23 +217,11 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	private void initTest() {
 		initTestContext();
-		this.sessionService = new SessionServiceImpl();
-		this.discoveryService = new DiscoveryServiceStub();
-		this.sessionService.setDiscoveryService(this.discoveryService);
-		this.discoveryService.setSessionService(this.sessionService);
+		this.sessionService = (SessionServiceImpl)applicationContext.getBean("sessionService");
+        this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
 	}
 	
 	
 	private void finishTest() {
-		this.sessionService.setDiscoveryService(null);
-		this.discoveryService.setSessionService(null);
-		this.discoveryService = null;
-		this.sessionService = null;
 	}
-	
-	
-	private static class DiscoveryServiceStub extends DiscoveryServiceImpl {
-		
-	}
-	
 }

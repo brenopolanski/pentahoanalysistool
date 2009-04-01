@@ -11,12 +11,13 @@ import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.server.Constants;
+import org.pentaho.pat.server.services.QueryService;
+import org.pentaho.pat.server.services.SessionService;
 
 public class QueryServiceImplTest extends AbstractServiceTest {
 
-	private SessionServiceImpl sessionService;
-	private DiscoveryServiceStub discoveryService;
-	private QueryServiceImpl queryService;
+	private SessionService sessionService;
+	private QueryService queryService;
 	
 	
 	public void testMoveDimensions() throws Exception 
@@ -119,28 +120,13 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	
 	private void initTest() {
 		initTestContext();
-		this.sessionService = new SessionServiceImpl();
-		this.discoveryService = new DiscoveryServiceStub();
-		this.queryService = new QueryServiceImpl();
-		this.sessionService.setDiscoveryService(this.discoveryService);
-		this.discoveryService.setSessionService(this.sessionService);
-		this.queryService.setDiscoveryService(this.discoveryService);
-		this.queryService.setSessionService(this.sessionService);
+		this.sessionService = (SessionService)applicationContext.getBean("sessionService");
+        this.queryService = (QueryService)applicationContext.getBean("queryService");
+        
 	}
 	
 	
 	private void finishTest() {
-		this.sessionService.setDiscoveryService(null);
-		this.discoveryService.setSessionService(null);
-		this.queryService.setDiscoveryService(null);
-		this.queryService.setSessionService(null);
-		this.discoveryService = null;
-		this.sessionService = null;
-	}
-	
-	
-	private static class DiscoveryServiceStub extends DiscoveryServiceImpl {
 		
 	}
-	
 }
