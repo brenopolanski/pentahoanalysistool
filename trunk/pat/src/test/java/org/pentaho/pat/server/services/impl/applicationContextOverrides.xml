@@ -5,7 +5,7 @@
 
   <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
     <property name="jndiName">
-      <value>pat-app</value>
+      <value>pat-app-services-tests</value>
     </property>
   </bean>
 

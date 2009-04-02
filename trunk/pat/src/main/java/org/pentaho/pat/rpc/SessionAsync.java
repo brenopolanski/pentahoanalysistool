@@ -33,7 +33,9 @@ public interface SessionAsync {
 	
 	public void saveConnection(String sessionId, CubeConnection connection, AsyncCallback<Boolean> callback);
 	
-	public void getConnections(String sessionId, AsyncCallback<String[]> callback);
+	public void getSavedConnections(String sessionId, AsyncCallback<String[]> callback);
+	
+	public void deleteSavedConnection(String sessionId, String connectionName, AsyncCallback<Boolean> callback);
 	
 	
 	

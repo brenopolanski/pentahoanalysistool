@@ -57,8 +57,6 @@ public abstract class AbstractManagerTest extends TestCase {
                 // default schema
                 applicationContext = new FileSystemXmlApplicationContext(
                         contextFiles);
-
-                this.initDatabase();
                 
                 IS_INIT_DONE=true;
                 
@@ -66,6 +64,8 @@ public abstract class AbstractManagerTest extends TestCase {
                 throw new RuntimeException(e);
             }
         }
+        if (datasource!=null)
+            initDatabase();
     }
 
     protected void initDatabase()

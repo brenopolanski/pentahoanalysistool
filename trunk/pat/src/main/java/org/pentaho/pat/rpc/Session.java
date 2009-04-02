@@ -73,12 +73,14 @@ public interface Session extends RemoteService {
 	public Boolean saveConnection(String sessionId, CubeConnection connection);
 	
 	/**
-	 * Returns all the names of the currently saved connections.
+	 * Returns all the currently saved connections for a given user.
 	 * @param sessionId The window session id.
 	 * @return An array of connection names.
 	 */
 	@Secured ({"ROLE_USER"})
-    public String[] getConnections(String sessionId);
+    public CubeConnection[] getSavedConnections(String sessionId);
+	
+	public Boolean deleteSavedConnection(String sessionId, String connectionName);
     
 	
 	
