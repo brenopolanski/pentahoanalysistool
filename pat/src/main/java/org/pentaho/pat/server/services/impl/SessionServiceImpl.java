@@ -105,8 +105,6 @@ public class SessionServiceImpl extends AbstractService
 			sessions.get(userId).get(sessionId)
 				.getVariables().remove(key);
 		}
-		else
-			throw new RuntimeException("Invalid user/session ids provided.");
 	}
 
 	
@@ -120,8 +118,6 @@ public class SessionServiceImpl extends AbstractService
 			sessions.get(userId).get(sessionId)
 				.getVariables().put(key, value);
 		}
-		else
-			throw new RuntimeException("Invalid user/session ids provided.");
 	}
 
 	
@@ -135,7 +131,7 @@ public class SessionServiceImpl extends AbstractService
 			return sessions.get(userId).get(sessionId)
 				.getVariables().get(key);
 		}
-		throw new RuntimeException("Invalid user/session ids provided.");
+		return null;
 	}
 
 
@@ -186,8 +182,6 @@ public class SessionServiceImpl extends AbstractService
 				throw new OlapException(e.getMessage(), e);
 			}
 		}
-		else
-			throw new RuntimeException("Invalid user/session ids provided.");
 	}
 	
 	
@@ -198,7 +192,7 @@ public class SessionServiceImpl extends AbstractService
 		{
 			return sessions.get(userId).get(sessionId).getConnection();
 		}
-		throw new RuntimeException("Invalid user/session ids provided.");
+		return null;
 	}
 	
 
@@ -216,8 +210,6 @@ public class SessionServiceImpl extends AbstractService
 			}
 			sessions.get(userId).get(sessionId).setConnection(null);
 		}
-		else
-			throw new RuntimeException("Invalid user/session ids provided.");
 	}
 	
 	
@@ -264,10 +256,10 @@ public class SessionServiceImpl extends AbstractService
 	}
 
 	
-	private Cube getCube4Guid(String userId, String sessionId, String cubeName) {
+	private Cube getCube4Guid(String userId, String sessionId, String cubeName) throws OlapException 
+	{
 		OlapConnection connection = this.getConnection(userId, sessionId);
 
-		try {
 			NamedList<Cube> cubes = connection.getSchema().getCubes();
 			Cube cube = null;
 			Iterator<Cube> iter = cubes.iterator();
@@ -280,11 +272,7 @@ public class SessionServiceImpl extends AbstractService
 			if (cube != null) {
 				return cube;
 			}
-		} catch (OlapException e) {
-		}
-
 		throw new RuntimeException("Programatic error. Invalid cube name.");
-
 	}
 	
 	

@@ -61,7 +61,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 	private final FileUpload fileUpload;
 	private final Button uploadButton;
 	private final Button connectButton;
-	private String catalog;
+	private String schemaPath;
 	
 	public ConnectMondrianPanel() {
 		super();
@@ -76,7 +76,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
 		fileUpload = new FileUpload();
-		catalog ="";
+		schemaPath ="";
 		
 
 		this.setWidget(onInitialize());
@@ -97,7 +97,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 					if (arg0.getResults().contains(FILENAME_TAG_START))
 					{
 						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
-						catalog = tmp;
+						schemaPath = tmp;
 						connectButton.setEnabled(true);
 						uploadButton.setEnabled(false);
 						MessageBox.info("File uploaded","Filename" + tmp);
@@ -213,7 +213,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		cc.setUrl(urlTextBox.getText());
 		cc.setUsername(userTextBox.getText());
 		cc.setPassword(passwordTextBox.getText());
-		cc.setCatalog(catalog);
+		cc.setSchemaPath(schemaPath);
 		return cc;
 	}
 	public void addConnectionListener(ConnectionListener listener) {
