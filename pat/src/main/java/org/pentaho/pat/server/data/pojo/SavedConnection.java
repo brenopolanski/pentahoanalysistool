@@ -10,7 +10,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="connections")
-public class SavedConnection {
+public class SavedConnection implements Comparable<SavedConnection> {
 
     @Basic
 	private String name;
@@ -26,7 +26,7 @@ public class SavedConnection {
 	
     @Basic
 	private String password;
-    
+
     @Basic
     @Type(
         type = "org.pentaho.pat.server.data.pojo.ConnectionType"
@@ -92,5 +92,9 @@ public class SavedConnection {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public int compareTo(SavedConnection o) {
+        return this.getName().compareTo(o.getName());
     }
 }

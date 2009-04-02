@@ -55,7 +55,7 @@ public class User {
 	    name="users_connections",
 	    joinColumns=@JoinColumn(name="user_id",table="users",referencedColumnName="username"),
 	    inverseJoinColumns=@JoinColumn(name="connection_id",table="connections",referencedColumnName="name"))
-	@Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+	@Cascade({org.hibernate.annotations.CascadeType.ALL,org.hibernate.annotations.CascadeType.DELETE_ORPHAN,org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	public Set<SavedConnection> getSavedConnections() {
 		return savedConnections;
 	}

@@ -6,7 +6,9 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
+import org.pentaho.pat.server.data.pojo.Session;
 import org.springframework.security.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Manages the operations on the GUI and persists it's current
@@ -27,7 +29,9 @@ public interface SessionService extends Service {
 	@Secured ({"ROLE_USER"})
 	public void releaseSession(String userId, String sessionId);
 	
-	
+	@Secured ({"ROLE_ADMIN"})
+    public Session getSession(String userId, String sessionId);
+    
 	
 	@Secured ({"ROLE_USER"})
 	public void saveUserSessionVariable(String userId, String sessionId, 
@@ -56,7 +60,20 @@ public interface SessionService extends Service {
 	public void releaseConnection(String userId, String sessionId);
 	
 	@Secured ({"ROLE_USER"})
-	public List<String> getConnections(String userId);
+	@Transactional(readOnly=true)
+    public SavedConnection getSavedConnection(String userId, String connectionName);
+	
+	@Secured ({"ROLE_USER"})
+	@Transactional(readOnly=true)
+    public List<SavedConnection> getSavedConnections(String userId);
+    
+	@Secured ({"ROLE_USER"})
+	@Transactional(readOnly=false)
+    public void saveConnection(String userId, SavedConnection connection);
+	
+	@Secured ({"ROLE_USER"})
+	@Transactional(readOnly=false)
+    public void deleteSavedConnection(String userId, String connectionName);
 	
 	
 	
@@ -71,10 +88,5 @@ public interface SessionService extends Service {
 	
 	@Secured ({"ROLE_USER"})
 	public void releaseQuery(String userId, String sessionId, String queryId);
-	
-	@Secured ({"ROLE_USER"})
-	public SavedConnection getSavedConnection(String userId, String connectionName);
-	
-	public void saveConnection(String userId, SavedConnection connection);
 
 }

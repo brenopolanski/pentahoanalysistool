@@ -90,9 +90,22 @@ public class SessionServlet extends AbstractServlet implements Session {
         }
 	}
 	
-	public String[] getConnections(String sessionId) {
-	    List<String> connections = this.sessionService.getConnections(getCurrentUserId());
-	    return connections.toArray(new String[connections.size()]);
+	public CubeConnection[] getSavedConnections(String sessionId) {
+	    List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
+	    CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
+	    try {
+	        for (int cpt=0;cpt<savedConnections.size();cpt++)
+	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
+        } catch (IOException e) {
+            log.error("Unable to load the connection due to a file system access error.",e);
+            return null;
+        }
+	    return cubeConnections;
+	}
+	
+	public Boolean deleteSavedConnection(String sessionId, String connectionName) {
+	    this.sessionService.deleteSavedConnection(getCurrentUserId(),connectionName);
+	    return true;
 	}
 
 	public String createNewQuery(String sessionId) {

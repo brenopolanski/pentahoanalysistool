@@ -85,7 +85,14 @@ public class SessionServiceImpl extends AbstractService
 	}
 	
 	
-	
+	public Session getSession(String userId, String sessionId) {
+	    if (sessions.containsKey(userId) &&
+	            sessions.get(userId).containsKey(sessionId))
+	    {
+	        return sessions.get(userId).get(sessionId);
+	    }
+	    return null;
+	}
 	
 	
 	
@@ -324,24 +331,27 @@ public class SessionServiceImpl extends AbstractService
 
 	public SavedConnection getSavedConnection(String userId,
 	        String connectionName) {
-	    for (SavedConnection conn : this.userManager.getUser(userId).getSavedConnections())
-	        if (conn.getName().equals(userId))
-	            return conn;
-	    return null;
+	    return this.userManager.getSavedConnection(userId, connectionName);
 	}
 	
 	public void saveConnection(String userId, SavedConnection connection) {
         User user = this.userManager.getUser(userId);
         user.getSavedConnections().add(connection);
-        this.userManager.saveUser(user);
+        this.userManager.updateUser(user);
     }
 	
-	public List<String> getConnections(String userId) {
+	public List<SavedConnection> getSavedConnections(String userId) {
+	    List<SavedConnection> connections = new ArrayList<SavedConnection>();
 	    User user = this.userManager.getUser(userId);
-	    List<String> connections = new ArrayList<String>();
-	    for (SavedConnection conn : user.getSavedConnections())
-	        connections.add(conn.getName());
+	    connections.addAll(user.getSavedConnections());
 	    return connections;
+	}
+	
+	public void deleteSavedConnection(String userId, String connectionName) {
+	    User user = this.userManager.getUser(userId);
+	    SavedConnection conn = getSavedConnection(userId, connectionName);
+	    user.getSavedConnections().remove(conn);
+	    this.userManager.updateUser(user);
 	}
 
 
