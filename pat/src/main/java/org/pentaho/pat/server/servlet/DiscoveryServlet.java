@@ -33,12 +33,13 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
             throw new ServletException("No discovery service was found in the application context.");
 	}
 	
-	public String[] getCubes(String sessionId) {
+	public String[] getCubes(String sessionId) 
+	{
 		List<String> list = this.discoveryService.getCubes(getCurrentUserId(), sessionId); 
 		return list.toArray(new String[list.size()]);
 	}
 
-	public String [] getDimensions(String sessionId, Axis axis) 
+	public String [] getDimensions(String sessionId, Axis axis)
 	{
 		List<String> dimensionsList;
 		try {
@@ -52,7 +53,8 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		
 	}
 
-	public StringTree getMembers(String sessionId, String dimensionName) {
+	public StringTree getMembers(String sessionId, String dimensionName)
+	{
 		try {
 			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 		} catch (OlapException e) {
@@ -61,7 +63,8 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		}
 	}
 	
-	public String[] getDrivers() {
+	public String[] getDrivers()
+	{
 		return this.discoveryService.getDrivers();
 	}
 }

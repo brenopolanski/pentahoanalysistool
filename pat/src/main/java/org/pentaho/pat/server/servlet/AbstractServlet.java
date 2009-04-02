@@ -3,6 +3,7 @@ package org.pentaho.pat.server.servlet;
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.Authentication;
@@ -82,4 +83,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 		
 	}
 
+    protected void doUnexpectedFailure(Throwable e) {
+        super.doUnexpectedFailure(new RpcException(e.getMessage(),e));
+    }
 }
