@@ -1,6 +1,7 @@
 package org.pentaho.pat.rpc;
 
 import org.pentaho.pat.rpc.beans.CubeConnection;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -18,18 +19,20 @@ public interface Session extends RemoteService {
 	 * gets opened. It will return to you a unique identification string
 	 * which you will need to provide for all future calls.
 	 * @return A unique session identification string.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public String createSession();
+	public String createSession() throws RpcException;
 	
 	/**
 	 * Destroys the session on the server. Call this method when the browser
 	 * window is closed.
 	 * @param sessionId The session id to close and destroy.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean closeSession(String sessionId);
+	public Boolean closeSession(String sessionId) throws RpcException;
 	
 
 	
@@ -40,17 +43,19 @@ public interface Session extends RemoteService {
 	 * @param sessionId The window session id.
 	 * @param connection The connection parameters.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-    public Boolean connect(String sessionId, CubeConnection connection);
+    public Boolean connect(String sessionId, CubeConnection connection) throws RpcException;
 	
 	/**
 	 * Closes the current connection.
 	 * @param sessionId The window session id.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean disconnect(String sessionId);
+	public Boolean disconnect(String sessionId) throws RpcException;
 	
 	/**
 	 * Loads a saved connection object for the database. The connection
@@ -59,41 +64,45 @@ public interface Session extends RemoteService {
 	 * @param connectionName The name of the connection to load.
 	 * @return The connection object corresponding to the name passed 
 	 * as a parameter. Null if no connection of that name exist.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public CubeConnection getConnection(String sessionId, String connectionName);
+	public CubeConnection getConnection(String sessionId, String connectionName) throws RpcException;
 	
 	/**
 	 * Saves a connection parameters for later use.
 	 * @param sessionId The window session id.
 	 * @param connection The connection object to save.
 	 * @return True is all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean saveConnection(String sessionId, CubeConnection connection);
+	public Boolean saveConnection(String sessionId, CubeConnection connection) throws RpcException;
 	
 	/**
 	 * Returns all the currently saved connections for a given user.
 	 * @param sessionId The window session id.
 	 * @return An array of connection names.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-    public CubeConnection[] getSavedConnections(String sessionId);
+    public CubeConnection[] getSavedConnections(String sessionId) throws RpcException;
 	
-	public Boolean deleteSavedConnection(String sessionId, String connectionName);
+	public Boolean deleteSavedConnection(String sessionId, String connectionName) throws RpcException;
     
 	
 	
 	/**
 	 * Tells the server that we want to create a new query. 
 	 * It will create a new query against the currently selected cube.
-	 * You can set the currently selected cube with Session.setCurretnCube.
+	 * You can set the currently selected cube with Session.setCurrentCube.
 	 * It returns a unique identification string to identify the query created.
 	 * @param sessionId The window session id.
 	 * @return The unique ame of the created query.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-    public String createNewQuery(String sessionId);
+    public String createNewQuery(String sessionId) throws RpcException;
 	
 	/**
 	 * Tells the backend that from now on, operations will be performed on
@@ -101,35 +110,39 @@ public interface Session extends RemoteService {
 	 * @param sessionId The window session id.
 	 * @param queryId The name of the query we'll be performing operations from now on.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean setCurrentQuery(String sessionId, String queryId);
+	public Boolean setCurrentQuery(String sessionId, String queryId) throws RpcException;
 	
 	/**
 	 * Tells which is the currently selected query.
 	 * @param sessionId The window session id.
 	 * @return The unique id of the currently selected query.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public String getCurrentQuery(String sessionId);
+	public String getCurrentQuery(String sessionId) throws RpcException;
 	
 	
 	/**
 	 * Returns the list of currently created queries.
 	 * @param sessionId The window session id.
 	 * @return An array of query unique names.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public String[] getQueries(String sessionId);
+	public String[] getQueries(String sessionId) throws RpcException;
 
 	/**
 	 * Closes and releases a given query.
 	 * @param sessionId The window session id.
 	 * @param queryId The query we want to close and release.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean deleteQuery(String sessionId, String queryId);
+	public Boolean deleteQuery(String sessionId, String queryId) throws RpcException;
 	
 	
 	
@@ -139,9 +152,10 @@ public interface Session extends RemoteService {
 	 * discovery and query operations. 
 	 * @param sessionId The window session id.
 	 * @return The name of the currently selected cube.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-    public String getCurrentCube(String sessionId);
+    public String getCurrentCube(String sessionId) throws RpcException;
 	
 	/**
 	 * Tells the server which is the current cube we want to work with.
@@ -150,9 +164,10 @@ public interface Session extends RemoteService {
 	 * @param sessionId The window session id.
 	 * @param cubeId The cubeId we want to work with.
 	 * @return True if all is good.
+	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean setCurrentCube(String sessionId, String cubeId);
+	public Boolean setCurrentCube(String sessionId, String cubeId) throws RpcException;
 
 	
 }
