@@ -23,7 +23,8 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	public void testMoveDimensions() throws Exception 
 	{
 		String userId = "user";
-		String expectedMDX = "SELECT\r\n{} ON COLUMNS,\r\nCrossJoin({}, {}) ON ROWS\r\nFROM [Quadrant Analysis]";
+		String expectedMDX = "SELECT*new_line*{} ON COLUMNS,*new_line*CrossJoin({}, {}) ON ROWS*new_line*FROM [Quadrant Analysis]";
+		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" ));
 		initTest();
 		
 		// Create a session.
@@ -70,7 +71,8 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	{
 		initTest();
 		String userId = "user";
-		String expectedMDX = "SELECT\r\n{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,\r\nCrossJoin({[Positions].[All Positions].[CTO]}, {{[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}}) ON ROWS\r\nFROM [Quadrant Analysis]";
+		String expectedMDX = "SELECT*new_line*{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions].[CTO]}, {{[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}}) ON ROWS*new_line*FROM [Quadrant Analysis]";
+		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" ));
 		
 		// Create a session.
 		String sessionId = this.sessionService.createNewSession("user");
