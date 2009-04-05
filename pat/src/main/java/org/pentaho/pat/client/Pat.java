@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.CollapsedListener;
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application.ApplicationListener;
@@ -48,8 +49,7 @@ import com.google.gwt.user.client.ui.ClickListener;
  * 
  */
 
-public class Pat implements EntryPoint, ConnectionListener,
-SourcesConnectionEvents {
+public class Pat implements EntryPoint, ConnectionListener {
 	
 
 	
@@ -426,24 +426,10 @@ SourcesConnectionEvents {
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionMade(Widget sender) {
-		setupCubeMenu();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
+//		setupCubeMenu();
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void removeConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 }

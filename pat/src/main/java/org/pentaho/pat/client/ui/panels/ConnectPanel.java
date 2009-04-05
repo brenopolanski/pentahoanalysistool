@@ -38,7 +38,7 @@ import org.gwt.mosaic.forms.client.layout.FormLayout;
  *
  */
 public class ConnectPanel extends WindowPanel implements
-		SourcesConnectionEvents {
+		SourcesConnectionEvents, ConnectionListener {
 
 	Button connectBtn;
 	TextBox serverTB;
@@ -154,13 +154,25 @@ public class ConnectPanel extends WindowPanel implements
 
 	public void addConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 
 	public void removeConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void onConnectionMade(Widget sender) {
+		// TODO Auto-generated method stub
+		System.out.println("ConnectPanel on Connection Made");		
 	}
 
 }

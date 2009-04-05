@@ -6,12 +6,14 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LoadingPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
@@ -62,7 +64,9 @@ public class ConnectMondrianPanel extends WindowPanel implements
 	private final Button uploadButton;
 	private final Button connectButton;
 	private String schemaPath;
-	
+	private boolean connectionEstablished = false;
+    private ConnectionListenerCollection connectionListeners;
+
 	public ConnectMondrianPanel() {
 		super();
 		this.setTitle(REGISTER_NEW_MONDRIAN_CONNECTION);
@@ -84,6 +88,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 
 
 	private Widget onInitialize() {
+	
 		final FormPanel formPanel;
 		formPanel = new FormPanel();
 		formPanel.setAction(FORM_ACTION);
@@ -157,13 +162,18 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Boolean>() {
 					public void onSuccess(Boolean arg0) {
-						// TODO Auto-generated method stub
 						if (arg0 == true) {
 							MessageBox.info("Success","Connect established!");
-							ConnectMondrianPanel.this.hide();
+							ConnectMondrianPanel.this.hide();  
+							setConnectionEstablished(true);
+                            connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);                              
 						}
-						else
+						else{
+                            setConnectionEstablished(false);
+                            connectionListeners.fireConnectionBroken(ConnectMondrianPanel.this);
 							MessageBox.error("Error", "Connect Failed");
+						}
+
 					}
 					public void onFailure(Throwable arg0) {
 						// TODO use standardized message dialog when implemented
@@ -180,6 +190,14 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		formPanel.add(builder.getPanel());
 		return formPanel;
 	}
+
+    public boolean isConnectionEstablished() {
+            return connectionEstablished;
+    }
+
+    public void setConnectionEstablished(boolean connectionEstablished) {
+            this.connectionEstablished = connectionEstablished;
+    }
 
 	private ListBox createDriverListComboBox() {
 	    final ListBox listBox = new ListBox();
@@ -216,15 +234,30 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		cc.setSchemaPath(schemaPath);
 		return cc;
 	}
-	public void addConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
+	  /*
+     * (non-Javadoc)
+     * 
+     * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+     * addConnectionListener
+     * (org.pentaho.halogen.client.listeners.ConnectionListener)
+     */
+    public void addConnectionListener(ConnectionListener listener) {
+            if (connectionListeners == null) {
+                    connectionListeners = new ConnectionListenerCollection();
+            }
+            connectionListeners.add(listener);
+    }
 
-	}
-
-
-	public void removeConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
+    /*
+     * (non-Javadoc)
+     * 
+     * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+     * removeClickListener
+     * (org.pentaho.halogen.client.listeners.ConnectionListener)
+     */
+    public void removeConnectionListener(ConnectionListener listener) {
+            if (connectionListeners != null) {
+                    connectionListeners.remove(listener);
+            }
+    }
 }
