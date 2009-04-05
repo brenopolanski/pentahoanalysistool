@@ -4,6 +4,7 @@ package org.pentaho.pat.client;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
@@ -16,6 +17,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -50,7 +52,8 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * 
  * @author tom(at)wamonline.org.uk
  */
-public class Application extends Viewport {
+
+public class Application extends Viewport implements ConnectionListener{
 	/**
 	 * Images used in the {@link Application}.
 	 */
@@ -142,6 +145,7 @@ public class Application extends Viewport {
 		// Add the main menu
 		createMainMenu();
 
+		toolBarPanel.addConnectionListener(Application.this);
 		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel(
 				"Cool Stuff!");
 		stackPanel = new StackLayoutPanel();
@@ -152,7 +156,7 @@ public class Application extends Viewport {
 		DimensionPanel dimensionPanel = new DimensionPanel();
 		stackPanel.add(dimensionPanel, "Dimensions");
 		stackPanel.showStack(0);
-		toolBarPanel.addConnectionListener(dimensionPanel);
+		//toolBarPanel.addConnectionListener(dimensionPanel);
 		
 		// westPanel.getHeader().add(Showcase.IMAGES.showcaseDemos().createImage());
 		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
@@ -342,6 +346,15 @@ public class Application extends Viewport {
 	 */
 	public void setTitleWidget(Widget title) {
 		topPanel.setWidget(1, 0, title);
+	}
+
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onConnectionMade(Widget sender) {
+		InfoPanel.show("Application", "Application on Connection Made");		
 	}
 
 }
