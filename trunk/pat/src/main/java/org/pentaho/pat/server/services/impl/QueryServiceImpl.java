@@ -16,6 +16,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.util.Assert;
 
 /**
  * Simple service implementation as a Spring bean.
@@ -40,10 +41,8 @@ public class QueryServiceImpl extends AbstractService
 
 	
 	public void afterPropertiesSet() throws Exception {
-		if (this.sessionService == null)
-			throw new Exception("A sessionService is required.");
-		if (this.discoveryService == null)
-			throw new Exception("A discoveryService is required.");
+		Assert.notNull(this.discoveryService);
+		Assert.notNull(this.sessionService);
 	}
 	
 	

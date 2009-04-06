@@ -24,6 +24,7 @@ import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.springframework.util.Assert;
 
 /**
  * Simple service implementation as a Spring bean.
@@ -50,8 +51,7 @@ public class SessionServiceImpl extends AbstractService
 	
 
 	public void afterPropertiesSet() throws Exception {
-		if (this.discoveryService == null)
-			throw new Exception("discoveryService est requis.");
+		Assert.notNull(this.discoveryService);
 	}
 	
 	
