@@ -47,7 +47,7 @@ public class QueryServiceImpl extends AbstractService
 	}
 	
 	
-	public Boolean clearSelection(String userId, String sessionId, 
+	public void clearSelection(String userId, String sessionId, 
 			String dimensionName, List<String> memberNames) 
 	{
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
@@ -57,38 +57,35 @@ public class QueryServiceImpl extends AbstractService
 	    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
 	    String path = OlapUtil.normalizeMemberNames((String[])memberNames.toArray());
 	    Selection selection = OlapUtil.findSelection(path, qDim);
-	    if (selection == null) {
-	      return new Boolean(false);
-	    }
 	    qDim.getSelections().remove(selection);
-	    return new Boolean(true);
 	}
 
-	public Boolean createSelection(String userId, String sessionId, String dimensionName,
-			List<String> memberNames, Operator selectionType) {
-		
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-		String currentCube = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_CUBE_NAME);
-		
-		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
-		Cube cube = this.discoveryService.getCube(userId, sessionId, currentCube);
-		
-		try {
-		      Member member = cube.lookupMember((String[])memberNames.toArray(new String[]{}));
-		      QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-		      Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-		      Selection selection = qDim.createSelection(member, selectionMode);
-		      qDim.getSelections().add(selection);
-	    } catch (OlapException e) {
-	      e.printStackTrace();
-	      return new Boolean(false);
-	    }
-	    return new Boolean(true);
-	}
+	public void createSelection(String userId, String sessionId,
+            String dimensionName, List<String> memberNames,
+            Operator selectionType) throws OlapException{
 
-	public Boolean moveDimension(String userId, String sessionId, Axis axis, String dimensionName) {
+        String currentQuery = (String) this.sessionService
+                .getUserSessionVariable(userId, sessionId,
+                        Constants.CURRENT_QUERY_NAME);
+        String currentCube = (String) this.sessionService
+                .getUserSessionVariable(userId, sessionId,
+                        Constants.CURRENT_CUBE_NAME);
+
+        Query query = this.sessionService.getQuery(userId, sessionId,
+                currentQuery);
+        Cube cube = this.discoveryService.getCube(userId, sessionId,
+                currentCube);
+
+        Member member = cube.lookupMember((String[]) memberNames
+                .toArray(new String[] {}));
+        QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        Selection.Operator selectionMode = Selection.Operator.values()[selectionType
+                .ordinal()];
+        Selection selection = qDim.createSelection(member, selectionMode);
+        qDim.getSelections().add(selection);
+    }
+
+	public void moveDimension(String userId, String sessionId, Axis axis, String dimensionName) {
 
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
@@ -97,8 +94,6 @@ public class QueryServiceImpl extends AbstractService
 		
 	    query.getAxes().get(axis).getDimensions()
 	    	.add(query.getDimension(dimensionName));
-	    
-	    return true;
 	}
 
 

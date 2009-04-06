@@ -18,21 +18,21 @@ public interface QueryAsync {
 		String sessionId, 
 		Axis axis, 
 		String dimensionName,
-		AsyncCallback<Boolean> callback);
+		AsyncCallback callback);
 	
 	public void createSelection(
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames, 
 		String selectionType,
-		AsyncCallback<Boolean> callback);	
+		AsyncCallback callback);	
 	
 	
 	public void clearSelection(
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames,
-		AsyncCallback<Boolean> callback);
+		AsyncCallback callback);
 	
 	public void executeQuery(
 		String sessionId,

@@ -34,19 +34,21 @@ public interface DiscoveryService extends Service {
 	/**
 	 * Retreives a list of available cubes for the current connection.
 	 * One must first create a connection via the Session service.
-	 * @param userId
-	 * @param sessionId
+	 * @param userId The id of the user who requests this operation.
+     * @param sessionId The id of the current session into which
+     * to perform this operation.
 	 * @return
 	 */
 	@Secured ({"ROLE_USER"})
-	public List<String> getCubes(String userId, String sessionId);
+	public List<String> getCubes(String userId, String sessionId)
+	    throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
 	Cube getCube(String userId, String sessionId, String cubeName);
 	
 	@Secured ({"ROLE_USER"})
 	public StringTree getMembers(String userId, String sessionId,
-			String dimensionName) throws OlapException;
+		String dimensionName) throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
 	public String[] getDrivers();

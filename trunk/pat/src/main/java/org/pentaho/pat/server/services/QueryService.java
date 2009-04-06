@@ -25,10 +25,9 @@ public interface QueryService extends Service {
      * @param axis The axis into which we want the dimension to be put. 
      * Null to remove it from the current query.
      * @param dimensionName The name of the dimension to move.
-     * @return True if all is good.
      */
 	@Secured ({"ROLE_USER"})
-	public Boolean moveDimension(
+	public void moveDimension(
 		String userId, 
 		String sessionId,
 		Axis axis, 
@@ -45,15 +44,16 @@ public interface QueryService extends Service {
 	 * apply the selection.
 	 * @param memberNames A list of member names to select.
 	 * @param selectionType The type of selection to perform.
-	 * @return True if all is good.
+	 * @throws OlapException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean createSelection(
+	public void createSelection(
 		String userId, 
 		String sessionId,
 		String dimensionName, 
 		List<String> memberNames, 
-		Selection.Operator selectionType);	
+		Selection.Operator selectionType)
+	    throws OlapException;	
 	
 
 	/**
@@ -65,10 +65,9 @@ public interface QueryService extends Service {
 	 * @param dimensionName The name of the dimension that contains the
 	 * members to deselect.
 	 * @param memberNames A list of member names to deselect.
-	 * @return True if all is good.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean clearSelection(
+	public void clearSelection(
 		String userId, 
 		String sessionId,
 		String dimensionName, 

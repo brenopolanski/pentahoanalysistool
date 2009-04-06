@@ -28,11 +28,10 @@ public interface Session extends RemoteService {
 	 * Destroys the session on the server. Call this method when the browser
 	 * window is closed.
 	 * @param sessionId The session id to close and destroy.
-	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean closeSession(String sessionId) throws RpcException;
+	public void closeSession(String sessionId) throws RpcException;
 	
 
 	
@@ -46,7 +45,7 @@ public interface Session extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-    public Boolean connect(String sessionId, CubeConnection connection) throws RpcException;
+    public void connect(String sessionId, CubeConnection connection) throws RpcException;
 	
 	/**
 	 * Closes the current connection.
@@ -55,7 +54,7 @@ public interface Session extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean disconnect(String sessionId) throws RpcException;
+	public void disconnect(String sessionId) throws RpcException;
 	
 	/**
 	 * Loads a saved connection object for the database. The connection
@@ -77,7 +76,7 @@ public interface Session extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean saveConnection(String sessionId, CubeConnection connection) throws RpcException;
+	public void saveConnection(String sessionId, CubeConnection connection) throws RpcException;
 	
 	/**
 	 * Returns all the currently saved connections for a given user.
@@ -88,7 +87,13 @@ public interface Session extends RemoteService {
 	@Secured ({"ROLE_USER"})
     public CubeConnection[] getSavedConnections(String sessionId) throws RpcException;
 	
-	public Boolean deleteSavedConnection(String sessionId, String connectionName) throws RpcException;
+	/**
+	 * Deletes a saved user connection.
+	 * @param sessionId The window session id.
+	 * @param connectionName The name of the connection to delete.
+	 * @throws RpcException If anything goes sour.
+	 */
+	public void deleteSavedConnection(String sessionId, String connectionName) throws RpcException;
     
 	
 	
@@ -109,11 +114,10 @@ public interface Session extends RemoteService {
 	 * the specified query.
 	 * @param sessionId The window session id.
 	 * @param queryId The name of the query we'll be performing operations from now on.
-	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean setCurrentQuery(String sessionId, String queryId) throws RpcException;
+	public void setCurrentQuery(String sessionId, String queryId) throws RpcException;
 	
 	/**
 	 * Tells which is the currently selected query.
@@ -139,10 +143,9 @@ public interface Session extends RemoteService {
 	 * @param sessionId The window session id.
 	 * @param queryId The query we want to close and release.
 	 * @return True if all is good.
-	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean deleteQuery(String sessionId, String queryId) throws RpcException;
+	public void deleteQuery(String sessionId, String queryId) throws RpcException;
 	
 	
 	
@@ -163,11 +166,8 @@ public interface Session extends RemoteService {
 	 * To obtain a list of available cubes, refer to the Discovery RPC interface.
 	 * @param sessionId The window session id.
 	 * @param cubeId The cubeId we want to work with.
-	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean setCurrentCube(String sessionId, String cubeId) throws RpcException;
-
-	
+	public void setCurrentCube(String sessionId, String cubeId) throws RpcException;
 }

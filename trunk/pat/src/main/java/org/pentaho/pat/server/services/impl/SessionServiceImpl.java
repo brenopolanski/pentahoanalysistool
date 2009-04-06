@@ -206,73 +206,62 @@ public class SessionServiceImpl extends AbstractService
 				if (conn!=null)
 					conn.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				log.warn("Exception encountered while closing a connection.", e);
 			}
 			sessions.get(userId).get(sessionId).setConnection(null);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 
+	public String createNewQuery(String userId, String sessionId)
+            throws OlapException {
+        if (sessions.containsKey(userId)
+                && sessions.get(userId).containsKey(sessionId)) {
+            // We need to verify if the user has selected a cube.
+            String cubeName = (String) sessions.get(userId).get(sessionId)
+                    .getVariables().get(Constants.CURRENT_CUBE_NAME);
 
-	public String createNewQuery(String userId, String sessionId) 
-		throws OlapException 
-	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			// We need to verify if the user has selected a cube.
-			String cubeName = (String)sessions.get(userId).get(sessionId).getVariables()
-				.get(Constants.CURRENT_CUBE_NAME); 
-			
-			if (cubeName==null)
-				throw new OlapException("You asked to create a query but there was no cube previously selected.");
-			
-			Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
-			String generatedId = String.valueOf(UUID.randomUUID());
-			Query newQuery;
-			try {
-				newQuery = new Query(generatedId, cube);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-			
-			sessions.get(userId).get(sessionId).getQueries()
-				.put(generatedId, newQuery);
-			
-			return generatedId;
-		}
-		else
-			throw new RuntimeException("Invalid user/session ids provided.");
-	}
+            if (cubeName == null)
+                throw new OlapException(
+                        "You asked to create a query but there was no cube previously selected.");
+
+            Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
+            String generatedId = String.valueOf(UUID.randomUUID());
+            Query newQuery;
+            try {
+                newQuery = new Query(generatedId, cube);
+            } catch (SQLException e) {
+                throw new OlapException(
+                        "Exception encountered while creating a new Query object.",
+                        e);
+            }
+
+            sessions.get(userId).get(sessionId).getQueries().put(generatedId,
+                    newQuery);
+
+            return generatedId;
+        } else
+            throw new RuntimeException("Invalid user/session ids provided.");
+    }
 
 	
 	private Cube getCube4Guid(String userId, String sessionId, String cubeName) throws OlapException 
 	{
 		OlapConnection connection = this.getConnection(userId, sessionId);
-
-			NamedList<Cube> cubes = connection.getSchema().getCubes();
-			Cube cube = null;
-			Iterator<Cube> iter = cubes.iterator();
-			while (iter.hasNext() && cube == null) {
-				Cube testCube = iter.next();
-				if (cubeName.equals(testCube.getName())) {
-					cube = testCube;
-				}
+		NamedList<Cube> cubes = connection.getSchema().getCubes();
+		Cube cube = null;
+		Iterator<Cube> iter = cubes.iterator();
+		while (iter.hasNext() && cube == null) {
+			Cube testCube = iter.next();
+			if (cubeName.equals(testCube.getName())) {
+				cube = testCube;
 			}
-			if (cube != null) {
-				return cube;
-			}
-		throw new RuntimeException("Programatic error. Invalid cube name.");
+		}
+		if (cube != null) {
+			return cube;
+		}
+		
+		throw new OlapException("Programatic error. Invalid cube name.");
 	}
 	
 	

@@ -74,34 +74,29 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 	
 	
-	public List<String> getCubes(String userId, String sessionId) {
-		
-		try {
-			
-			List<String> list = new ArrayList<String>();
-			
-			OlapConnection conn = this.sessionService.getConnection(userId, sessionId);
-			
-			if (conn == null)
-				return list;
-			
-			NamedList<Cube> cubes = conn.getSchema().getCubes();
-			
-			for (int i = 0; i < cubes.size(); i++) {
-				list.add(cubes.get(i).getName());
-			}
-			
-			if (log.isDebugEnabled())
-				log.debug("Found the following cubes:"+list.toString());
-			
-			return list;
-			
-		} catch (OlapException e) {
-			log.error("Communications error while retrieving the cubes list.", e);
-		}
-		
-		return null;
-	}
+	public List<String> getCubes(String userId, String sessionId) 
+	    throws OlapException
+	{
+
+        List<String> list = new ArrayList<String>();
+
+        OlapConnection conn = this.sessionService.getConnection(userId,
+                sessionId);
+
+        if (conn == null)
+            return list;
+
+        NamedList<Cube> cubes = conn.getSchema().getCubes();
+
+        for (int i = 0; i < cubes.size(); i++) {
+            list.add(cubes.get(i).getName());
+        }
+
+        if (log.isDebugEnabled())
+            log.debug("Found the following cubes:" + list.toString());
+
+        return list;
+    }
 
 	
 	public Cube getCube(String userId, String sessionId, String name) {
@@ -132,42 +127,40 @@ public class DiscoveryServiceImpl extends AbstractService
 	    return dimNames;
 	}
 
-	public StringTree getMembers(String userId, String sessionId, String dimensionName) 
-		throws OlapException 
-	{
-		
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
-		
-		
-		List<String> uniqueNameList = new ArrayList<String>();
-	    
-		NamedList<Level> levels = query.getDimension(dimensionName).getDimension()
-	    	.getHierarchies().get(dimensionName).getLevels();
-	    
-	    for (Level level : levels) {
-	      try {
-	        List<Member> levelMembers = level.getMembers();
-	        for (Member member : levelMembers) {
-	          uniqueNameList.add(member.getUniqueName());
-	        }
-	      } catch (OlapException e) {
-	        e.printStackTrace();
-	      }
-	    }
-	    
-	    StringTree result = new StringTree(dimensionName, null);
-	    for (int i = 0; i < uniqueNameList.size(); i++) {
-	      String[] memberNames = uniqueNameList.get(i).split("\\."); //$NON-NLS-1$
-	      for (int j = 0; j < memberNames.length; j++) { // Trim off the brackets
-	        memberNames[j] = memberNames[j].substring(1, memberNames[j].length() - 1);
-	      }
-	      result = OlapUtil.parseMembers(memberNames, result);
-	    }
+	public StringTree getMembers(String userId, String sessionId,
+            String dimensionName) throws OlapException {
 
-	    return result;
-	}
+        String currentQuery = (String) this.sessionService
+                .getUserSessionVariable(userId, sessionId,
+                        Constants.CURRENT_QUERY_NAME);
+        Query query = this.sessionService.getQuery(userId, sessionId,
+                currentQuery);
+
+        List<String> uniqueNameList = new ArrayList<String>();
+
+        NamedList<Level> levels = query.getDimension(dimensionName)
+                .getDimension().getHierarchies().get(dimensionName).getLevels();
+
+        for (Level level : levels) {
+            List<Member> levelMembers = level.getMembers();
+            for (Member member : levelMembers) {
+                uniqueNameList.add(member.getUniqueName());
+            }
+        }
+
+        StringTree result = new StringTree(dimensionName, null);
+        for (int i = 0; i < uniqueNameList.size(); i++) {
+            String[] memberNames = uniqueNameList.get(i).split("\\."); //$NON-NLS-1$
+            for (int j = 0; j < memberNames.length; j++) { // Trim off the
+                                                           // brackets
+                memberNames[j] = memberNames[j].substring(1, memberNames[j]
+                        .length() - 1);
+            }
+            result = OlapUtil.parseMembers(memberNames, result);
+        }
+
+        return result;
+    }
 
 
 

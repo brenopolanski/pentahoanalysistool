@@ -11,6 +11,7 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.services.QueryService;
 
 /**
@@ -30,23 +31,27 @@ public class QueryServlet extends AbstractServlet implements Query {
 		    throw new ServletException("No query service was found in the application context.");
 	}
 
-	public Boolean clearSelection(String sessionId, String dimensionName, 
+	public void clearSelection(String sessionId, String dimensionName, 
 			List<String> memberNames) 
 	{
-		return this.queryService.clearSelection(getCurrentUserId(), 
+		this.queryService.clearSelection(getCurrentUserId(), 
 				sessionId, dimensionName, memberNames);
 	}
 
-	public Boolean createSelection(String sessionId, String dimensionName,
-			List<String> memberNames, String selectionType) {
-		return this.queryService.createSelection(getCurrentUserId(), sessionId, 
-				dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
+	public void createSelection(String sessionId, String dimensionName,
+			List<String> memberNames, String selectionType) throws RpcException {
+		try {
+            this.queryService.createSelection(getCurrentUserId(), sessionId, 
+            		dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
+        } catch (OlapException e) {
+            throw new RpcException("Unable to perform the members selection.",e);
+        }
 	}
 
-	public Boolean moveDimension(String sessionId, Axis axis, 
+	public void moveDimension(String sessionId, Axis axis, 
 			String dimensionName) 
 	{
-		return this.queryService.moveDimension(
+		this.queryService.moveDimension(
 			getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.getCaption()), dimensionName);
 	}
 
