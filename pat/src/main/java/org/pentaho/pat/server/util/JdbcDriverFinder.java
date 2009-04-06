@@ -28,6 +28,12 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader = null;
     
+    private boolean preLoad = true;
+    
+    public void setPreLoad(boolean preLoad) {
+        this.preLoad = preLoad;
+    }
+
     protected Logger log = Logger.getLogger(this.getClass());
 
     public void afterPropertiesSet() throws Exception {
@@ -49,6 +55,9 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
                 continue;
             
             this.jdbcDriverDirectory.add(currentFile);
+            
+            if (preLoad)
+                registerDrivers();
         }
         if (this.jdbcDriverDirectory.size()==0)
             log.warn("No valid JDBC driver directory specified.");
