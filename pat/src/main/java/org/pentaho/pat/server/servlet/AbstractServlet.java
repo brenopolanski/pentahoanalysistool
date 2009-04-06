@@ -84,6 +84,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	}
 
     protected void doUnexpectedFailure(Throwable e) {
-        super.doUnexpectedFailure(new RpcException(e.getMessage(),e));
+        log.error("A RPC call resulted in the following exception : ",e);
+        super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage(),e));
     }
 }

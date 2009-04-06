@@ -160,20 +160,12 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				// .connect(getCubeConnection())
 				connectButton.setEnabled(false);
 				
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Boolean>() {
-					public void onSuccess(Boolean arg0) {
-						if (arg0 == true) {
-							MessageBox.info("Success","Connect established!");
-							ConnectMondrianPanel.this.hide();  
-							setConnectionEstablished(true);
-                            connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);                              
-						}
-						else{
-                            setConnectionEstablished(false);
-                            connectionListeners.fireConnectionBroken(ConnectMondrianPanel.this);
-							MessageBox.error("Error", "Connect Failed");
-						}
-
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback() {
+					public void onSuccess(Object o) {
+						MessageBox.info("Success","Connect established!");
+						ConnectMondrianPanel.this.hide();  
+						setConnectionEstablished(true);
+                        connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
 					public void onFailure(Throwable arg0) {
 						// TODO use standardized message dialog when implemented

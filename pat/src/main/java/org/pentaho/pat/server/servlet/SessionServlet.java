@@ -17,6 +17,7 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.services.SessionService;
@@ -34,7 +35,8 @@ public class SessionServlet extends AbstractServlet implements Session {
 		    throw new ServletException("No SessionService was found in the application context.");
 	}
 
-	public Boolean connect(String sessionId, CubeConnection connection) {
+	public void connect(String sessionId, CubeConnection connection) throws RpcException 
+	{
 		try 
 		{
 		    String olap4jUrl=null;
@@ -59,53 +61,48 @@ public class SessionServlet extends AbstractServlet implements Session {
 			sessionService.createConnection(getCurrentUserId(),sessionId, 
 				olap4jDriver, olap4jUrl, 
 				connection.getUsername(), connection.getPassword());
-			
-			return true;
 		} 
 		catch (OlapException e) 
 		{
-			log.error("Unable to establish the connection.",e);
-			return false;
+			throw new RpcException("Connection failed.",e);
 		}
 	}
 	
-	public CubeConnection getConnection(String sessionId, String connectionName) {
+	public CubeConnection getConnection(String sessionId, String connectionName) throws RpcException
+	{
 	    SavedConnection savedConn = this.sessionService.getSavedConnection(getCurrentUserId(), connectionName);
 	    try {
             return this.convert(savedConn);
         } catch (IOException e) {
-            log.error("Unable to load the connection due to a file system access error.",e);
-            return null;
+            throw new RpcException("Unable to load the connection due to a file system access error.",e);
         }
 	}
 	
-	public Boolean saveConnection(String sessionId, CubeConnection connection) {
-	    try {
+	public void saveConnection(String sessionId, CubeConnection connection) throws RpcException
+	{
+        try {
             this.sessionService.saveConnection(getCurrentUserId(),
                     this.convert(connection));
-            return true;
         } catch (Exception e) {
-            log.error("Unable to load the connection due to a file system access error.",e);
-            return false;
+            throw new RpcException("Unable to load the connection due to a file system access error.",e);
         }
 	}
 	
-	public CubeConnection[] getSavedConnections(String sessionId) {
-	    List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
-	    CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
+	public CubeConnection[] getSavedConnections(String sessionId) throws RpcException
+	{
 	    try {
+	        List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
+	        CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
 	        for (int cpt=0;cpt<savedConnections.size();cpt++)
 	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
+	        return cubeConnections;
         } catch (IOException e) {
-            log.error("Unable to load the connection due to a file system access error.",e);
-            return null;
+            throw new RpcException("Unable to load the connection due to a file system access error.",e);
         }
-	    return cubeConnections;
 	}
 	
-	public Boolean deleteSavedConnection(String sessionId, String connectionName) {
+	public void deleteSavedConnection(String sessionId, String connectionName) {
 	    this.sessionService.deleteSavedConnection(getCurrentUserId(),connectionName);
-	    return true;
 	}
 
 	public String createNewQuery(String sessionId) {
@@ -117,14 +114,12 @@ public class SessionServlet extends AbstractServlet implements Session {
 		}
 	}
 
-	public Boolean deleteQuery(String sessionId, String queryId) {
+	public void deleteQuery(String sessionId, String queryId) {
 		sessionService.releaseQuery(getCurrentUserId(), sessionId, queryId);
-		return true;
 	}
 
-	public Boolean disconnect(String sessionId) {
+	public void disconnect(String sessionId) {
 		sessionService.releaseConnection(getCurrentUserId(),sessionId);
-		return true;
 	}
 
 	public String getCurrentCube(String sessionId) {
@@ -142,23 +137,20 @@ public class SessionServlet extends AbstractServlet implements Session {
 		return list.toArray(new String[list.size()]);
 	}
 
-	public Boolean setCurrentCube(String sessionId, String cubeId) {
+	public void setCurrentCube(String sessionId, String cubeId) {
 		sessionService.saveUserSessionVariable(getCurrentUserId(), 
 			sessionId, Constants.CURRENT_CUBE_NAME, cubeId);
-		return true;
 	}
 
-	public Boolean setCurrentQuery(String sessionId, String queryId) {
+	public void setCurrentQuery(String sessionId, String queryId) {
 		sessionService.saveUserSessionVariable(getCurrentUserId(), 
 				sessionId, Constants.CURRENT_QUERY_NAME, queryId);
-		return true;
 	}
 	
 	
 
-	public Boolean closeSession(String sessionId) {
+	public void closeSession(String sessionId) {
 		sessionService.releaseSession(getCurrentUserId(), sessionId);
-		return true;
 	}
 
 	public String createSession() {

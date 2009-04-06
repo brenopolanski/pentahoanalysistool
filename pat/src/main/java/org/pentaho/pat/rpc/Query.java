@@ -23,11 +23,10 @@ public interface Query extends RemoteService {
 	 * @param sessionId Identifies the window session id that requested the operation.
 	 * @param axis The destination axis.
 	 * @param dimensionName The name of the dimension to move.
-	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean moveDimension(
+	public void moveDimension(
 		String sessionId, 
 		Axis axis, 
 		String dimensionName) throws RpcException;
@@ -42,11 +41,10 @@ public interface Query extends RemoteService {
 	 * @param memberNames The actual names of the members to perform a 
 	 * selection on.
 	 * @param selectionType The type of selection to perform.
-	 * @return True if all is well.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean createSelection(
+	public void createSelection(
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames, 
@@ -65,7 +63,7 @@ public interface Query extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Boolean clearSelection(
+	public void clearSelection(
 		String sessionId, 
 		String dimensionName, 
 		List<String> memberNames) throws RpcException;
