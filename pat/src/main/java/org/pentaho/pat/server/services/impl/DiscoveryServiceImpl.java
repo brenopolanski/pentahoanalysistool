@@ -51,7 +51,7 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 	
 	
-	public String[] getDrivers() 
+	public List<String> getDrivers() 
 	{
 		
 		this.driverFinder.registerDrivers();
@@ -59,18 +59,11 @@ public class DiscoveryServiceImpl extends AbstractService
 		// An enumeration is a very unpractical thing, so let's convert it to a List.
 		// We can't even know it's size... what a shameful object.
 		Enumeration<Driver> driversEnum = DriverManager.getDrivers();
-		List<Driver> drivers = new ArrayList<Driver>();
+		List<String> drivers = new ArrayList<String>();
 		while (driversEnum.hasMoreElements()) 
-			{ drivers.add(driversEnum.nextElement()); }
+			{ drivers.add(driversEnum.nextElement().getClass().getName()); }
 		
-		// Now we can instanciate the string array properly.
-		String[] result = new String[drivers.size()];
-		
-		for (int cpt = 0; cpt < drivers.size(); cpt++) {
-			result[cpt] = drivers.get(cpt).getClass().getName();
-		}
-		
-		return result;
+		return drivers;
 	}
 	
 	

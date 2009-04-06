@@ -46,10 +46,26 @@ public interface DiscoveryService extends Service {
 	@Secured ({"ROLE_USER"})
 	Cube getCube(String userId, String sessionId, String cubeName);
 	
+	/**
+	 * Returns a tree representation of the members included in a 
+	 * given dimension. The representation only includes their names.
+	 * @param userId The id of the user who requests this operation.
+     * @param sessionId The id of the current session into which
+     * to perform this operation.
+	 * @param dimensionName The name of which we want the tree of members.
+	 * @return A {@link StringTree} representation of the members included
+	 * in a dimension.
+	 * @throws OlapException If anything goes sour.
+	 */
 	@Secured ({"ROLE_USER"})
 	public StringTree getMembers(String userId, String sessionId,
 		String dimensionName) throws OlapException;
 	
+	/**
+	 * Scans and updates if necessary the current Java classloader 
+	 * for registered JDBC drivers.
+	 * @return A list of JDBC driver class names.
+	 */
 	@Secured ({"ROLE_USER"})
-	public String[] getDrivers();
+	public List<String> getDrivers();
 }

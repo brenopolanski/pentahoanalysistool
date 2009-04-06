@@ -136,12 +136,12 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 	{
 		initTest();
 		
-		String[] drivers = this.discoveryService.getDrivers();
+		List<String> drivers = this.discoveryService.getDrivers();
 		assertNotNull(drivers);
-		assertTrue(drivers.length>0);
+		assertTrue(drivers.size()>0);
 		
-		for (int cpt = 0; cpt < drivers.length; cpt++)
-		    assertNotNull(drivers[cpt]);
+		for (String value : drivers)
+		    assertNotNull(value);
 		
 		finishTest();
 	}
