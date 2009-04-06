@@ -69,6 +69,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	
 	public String[] getDrivers()
 	{
-		return this.discoveryService.getDrivers();
+	    List<String> driverNames = this.discoveryService.getDrivers();
+		return driverNames.toArray(new String[driverNames.size()]);
 	}
 }
