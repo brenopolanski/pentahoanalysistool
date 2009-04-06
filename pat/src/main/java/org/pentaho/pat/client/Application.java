@@ -1,10 +1,14 @@
 package org.pentaho.pat.client;
 
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.InfoPanel;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
@@ -20,11 +24,16 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.OlapPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -174,7 +183,7 @@ public class Application extends Viewport implements ConnectionListener{
 
 		// bottomPanel.addCollapsedListener(cubeExplorerPanel, this);
 
-		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 100, 10,
+		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10,
 				250));
 		// bottomPanel.setCollapsed(westPanel, true);
 
@@ -182,7 +191,7 @@ public class Application extends Viewport implements ConnectionListener{
 		contentWrapper = new LayoutPanel(new FillLayout());
 		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper");
 		bottomPanel.add(contentWrapper);
-		
+		setupMainMenu();
 		setContent(null);
 	}
 
@@ -270,6 +279,72 @@ public class Application extends Viewport implements ConnectionListener{
 	}
 
 	/**
+	 * Generates a cube list for the Cube Menu 
+	 */
+	private void setupCubeMenu(){	
+		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
+			public void onSuccess(String[] o) {
+				//List<String> blah = (List)o;
+				//String tom = Integer.toString(blah.size());
+				Tree mainMenu = getMainMenu();
+				TreeItem homeMenu = mainMenu.addItem("Cubes");
+				
+				
+				for (int i=0; i<o.length; i++){
+					MessageBox.info("Schema", o[i]);
+					setupMainMenuOption(homeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
+				}
+				/*InfoPanel.show("Application", "Application on Connection Made");		
+				Tree mainMenu = getMainMenu();
+				TreeItem homeMenu = mainMenu.addItem("Cubes");
+				Iterator itr = blah.iterator();
+				while (itr.hasNext()){
+					 String name = (String) itr.next(); 
+					 MessageBox.info("Cube", name);
+					setupMainMenuOption(homeMenu, new OlapPanel(name), Pat.IMAGES.cube());
+				}*/
+			}
+			public void onFailure(Throwable arg0) {			  
+			       MessageBox.error("Error", "Failed to get a Cube List!");
+			}	
+		});
+		
+		
+	}
+
+	/**
+	 * Setup all of the options in the main menu.
+	 */
+	private void setupMainMenu() {
+		Tree mainMenu = getMainMenu();
+
+		TreeItem homeMenu = mainMenu.addItem("Home");
+		setupMainMenuOption(homeMenu, new OlapPanel("Blah"), Pat.IMAGES.cube());
+		
+	}
+
+	/**
+	 * Add an option to the main menu.
+	 * 
+	 * @param parent
+	 *            the {@link TreeItem} that is the option
+	 * @param content
+	 *            the {@link DataWidget} to display when selected
+	 * @param image
+	 *            the icon to display next to the {@link TreeItem}
+	 */
+	private static void setupMainMenuOption(TreeItem parent,
+			DataWidget content, AbstractImagePrototype image) {
+		// Create the TreeItem
+		TreeItem option = parent.addItem(image.getHTML() + " "
+				+ content.getName());
+
+		// Map the item to its history token and content widget
+		Pat.itemWidgets.put(option, content);
+		Pat.itemTokens.put(Pat.getContentWidgetToken(content), option);
+	}
+
+	/**
 	 * @return the {@link Widget} in the content area
 	 */
 	public Widget getContent() {
@@ -354,7 +429,7 @@ public class Application extends Viewport implements ConnectionListener{
 	}
 
 	public void onConnectionMade(Widget sender) {
-		InfoPanel.show("Application", "Application on Connection Made");		
+		setupCubeMenu();
 	}
 
 }

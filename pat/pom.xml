@@ -253,11 +253,6 @@
 			<id>pentaho-third-party</id>
 			<url>http://repo.pentaho.org/artifactory/third-party/</url>
 		</repository>
-		<repository>
-			<id>smartclient</id>
-			<name>smartclient.com</name>
-			<url>http://www.smartclient.com/smartgwt/maven2</url>
-		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
