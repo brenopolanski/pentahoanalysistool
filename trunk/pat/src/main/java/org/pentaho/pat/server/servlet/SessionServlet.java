@@ -22,6 +22,8 @@ import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.services.SessionService;
 
+import com.mysql.jdbc.Messages;
+
 public class SessionServlet extends AbstractServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
@@ -30,9 +32,9 @@ public class SessionServlet extends AbstractServlet implements Session {
 	
 	public void init() throws ServletException {
 		super.init();
-		sessionService = (SessionService)applicationContext.getBean("sessionService");
+		sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
 		if (sessionService==null)
-		    throw new ServletException("No SessionService was found in the application context.");
+		    throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
 	}
 
 	public void connect(String sessionId, CubeConnection connection) throws RpcException 
@@ -45,17 +47,17 @@ public class SessionServlet extends AbstractServlet implements Session {
 		    switch (connection.getConnectionType())
 		    {
 		    case XMLA:
-		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl());
-		        olap4jDriver = "org.olap4j.driver.xmla.Olap4jXmlaDriver";
+		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl()); //$NON-NLS-1$
+		        olap4jDriver = "org.olap4j.driver.xmla.Olap4jXmlaDriver"; //$NON-NLS-1$
 		        break;
 		    case Mondrian:
-		        olap4jUrl = "jdbc:mondrian:"
-		            .concat("Jdbc=").concat(connection.getUrl()).concat(";")
-		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";")
-		            .concat("JdbcUser=").concat(connection.getUsername()).concat(";")
-		            .concat("JdbcPassword=").concat(connection.getPassword()).concat(";")
-		            .concat("Catalog=").concat(connection.getSchemaPath());
-		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver";
+		        olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
+		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
+		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
+		            .concat("JdbcUser=").concat(connection.getUsername()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
+		            .concat("JdbcPassword=").concat(connection.getPassword()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
+		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
+		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
 		    }
 		    
 			sessionService.createConnection(getCurrentUserId(),sessionId, 
@@ -64,7 +66,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		} 
 		catch (OlapException e) 
 		{
-			throw new RpcException("Connection failed.",e);
+			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"),e); //$NON-NLS-1$
 		}
 	}
 	
@@ -74,7 +76,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    try {
             return this.convert(savedConn);
         } catch (IOException e) {
-            throw new RpcException("Unable to load the connection due to a file system access error.",e);
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
@@ -84,7 +86,7 @@ public class SessionServlet extends AbstractServlet implements Session {
             this.sessionService.saveConnection(getCurrentUserId(),
                     this.convert(connection));
         } catch (Exception e) {
-            throw new RpcException("Unable to load the connection due to a file system access error.",e);
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
@@ -97,7 +99,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
 	        return cubeConnections;
         } catch (IOException e) {
-            throw new RpcException("Unable to load the connection due to a file system access error.",e);
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
@@ -109,7 +111,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		try {
 			return sessionService.createNewQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
-			log.error("An exception was encountered while creating a new query.", e);
+			log.error(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
 			return null;
 		}
 	}
@@ -194,7 +196,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    DataInputStream in = new DataInputStream(fis);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String strLine;
-        StringBuilder schema = new StringBuilder("");
+        StringBuilder schema = new StringBuilder("");//$NON-NLS-1$
         //Read File Line By Line
         while ((strLine = br.readLine()) != null)   {
           // Print the content on the console

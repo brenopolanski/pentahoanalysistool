@@ -22,6 +22,7 @@ import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.data.pojo.User;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.springframework.util.Assert;
@@ -173,7 +174,7 @@ public class SessionServiceImpl extends AbstractService
 					
 				} else {
 					throw new OlapException(
-							"Creating a connection object returned null.");
+						Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
 				}
 	
 			} catch (ClassNotFoundException e) {
@@ -206,7 +207,7 @@ public class SessionServiceImpl extends AbstractService
 				if (conn!=null)
 					conn.close();
 			} catch (SQLException e) {
-				log.warn("Exception encountered while closing a connection.", e);
+				log.warn(Messages.getString("Services.Session.ConnectionCloseException"), e); //$NON-NLS-1$
 			}
 			sessions.get(userId).get(sessionId).setConnection(null);
 		}
@@ -223,7 +224,7 @@ public class SessionServiceImpl extends AbstractService
 
             if (cubeName == null)
                 throw new OlapException(
-                        "You asked to create a query but there was no cube previously selected.");
+                    Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
 
             Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
             String generatedId = String.valueOf(UUID.randomUUID());
@@ -232,8 +233,8 @@ public class SessionServiceImpl extends AbstractService
                 newQuery = new Query(generatedId, cube);
             } catch (SQLException e) {
                 throw new OlapException(
-                        "Exception encountered while creating a new Query object.",
-                        e);
+                    Messages.getString("Services.Session.CreateQueryException"), //$NON-NLS-1$
+                    e);
             }
 
             sessions.get(userId).get(sessionId).getQueries().put(generatedId,
@@ -241,7 +242,7 @@ public class SessionServiceImpl extends AbstractService
 
             return generatedId;
         } else
-            throw new RuntimeException("Invalid user/session ids provided.");
+            throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
     }
 
 	
@@ -261,7 +262,7 @@ public class SessionServiceImpl extends AbstractService
 			return cube;
 		}
 		
-		throw new OlapException("Programatic error. Invalid cube name.");
+		throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
 	}
 	
 	
@@ -273,7 +274,7 @@ public class SessionServiceImpl extends AbstractService
 			return sessions.get(userId).get(sessionId).getQueries().get(queryId);
 		}
 		else
-			throw new RuntimeException("Invalid user/session ids provided.");
+			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
 	}
 	
 
@@ -291,7 +292,7 @@ public class SessionServiceImpl extends AbstractService
 			return names;
 		}
 		else
-			throw new RuntimeException("Invalid user/session ids provided.");
+			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
 	}
 
 	
@@ -302,7 +303,7 @@ public class SessionServiceImpl extends AbstractService
 			sessions.get(userId).get(sessionId).getQueries().remove(queryId);
 		}
 		else
-			throw new RuntimeException("Invalid user/session ids provided.");
+			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
 	}
 
 

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.pentaho.pat.server.beans.FileUploadBean;
+import org.pentaho.pat.server.messages.Messages;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
@@ -22,11 +23,8 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 public class FileUploadController extends AbstractCommandController implements
 		ResourceLoaderAware, InitializingBean {
 	
-//	private static final String FILENAME_TAG_START = "#filename#";
-//	private static final String FILENAME_TAG_END = "#/filename#";
-//	
-	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
-	private static final String FILENAME_TAG_END = "pat_schema_filename_end";
+	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
+	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 	
 	Logger log = Logger.getLogger(this.getClass());
 
@@ -44,22 +42,20 @@ public class FileUploadController extends AbstractCommandController implements
 
 	public void afterPropertiesSet() throws Exception {
 		
-		Assert.notNull(this.resourceLoader, "A resourceLoader is required.");
-		Assert.notNull(this.basedir, "A basedir is required.");
+		Assert.notNull(this.resourceLoader);
+		Assert.notNull(this.basedir);
 		
 		try {
 			this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
 			this.schemaDirectory.mkdir();
 		} catch (Exception e) {
-			log
-					.warn("Unable to create the schema directory within the application directory. The application might be contained in a non expanded war file. Will try to store schemas in the java.io.tmpdir instead.");
+			log.warn(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory"));//$NON-NLS-1$
 			try {
-				File tempDirectory = new File(System.getProperty("java.io.tmpdir"));				
+				File tempDirectory = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
 				this.schemaDirectory = new File(tempDirectory,basedir);
 				this.schemaDirectory.mkdir();
 			} catch (Exception e2) {
-				throw new RuntimeException(
-						"Unable to create a directory to store the temporary schema files!!");
+				throw new RuntimeException(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -77,7 +73,7 @@ public class FileUploadController extends AbstractCommandController implements
 			files.transferTo(mvt);
 
 			// TODO find a better way to return filename to client
-			response.setContentType("text/plain");
+			response.setContentType("text/plain"); //$NON-NLS-1$
 			response.getWriter().print(
 					FILENAME_TAG_START + mvt.toString() + FILENAME_TAG_END);
 			response.setStatus(HttpServletResponse.SC_OK);

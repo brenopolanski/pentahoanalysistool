@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.pentaho.pat.server.messages.Messages;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
@@ -60,7 +61,7 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
                 registerDrivers();
         }
         if (this.jdbcDriverDirectory.size()==0)
-            log.warn("No valid JDBC driver directory specified.");
+            log.warn(Messages.getString("Util.JdbcDriverFinder.NoDriversInPath")); //$NON-NLS-1$
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {

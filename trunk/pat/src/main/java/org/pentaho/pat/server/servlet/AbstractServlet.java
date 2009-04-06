@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.messages.Messages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.Authentication;
@@ -27,8 +28,8 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	protected Logger log = Logger.getLogger(this.getClass());
 	
 	private final String[] contextFiles = {
-			"./src/main/webapp/WEB-INF/pat-applicationContext.xml",
-			"./src/main/webapp/WEB-INF/pat-securityContext.xml"
+			"./src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
+			"./src/main/webapp/WEB-INF/pat-securityContext.xml" //$NON-NLS-1$
 		};
 	
 	static 
@@ -48,7 +49,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	        
 	        if (applicationContext==null)
 	        {
-	            log.info("Initializing PAT in standalone mode.");
+	            log.info(Messages.getString("Servlet.AbstractServlet.StandAlone")); //$NON-NLS-1$
 	            
 	        	// This happens if we launch PAT without a web context, like in the 
 	        	// GWT shell for example. We'll initialize the context manually.
@@ -57,12 +58,12 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	        	standaloneMode=true;
 	        	
 	        	GrantedAuthority userAuths[] = {
-	    				new GrantedAuthorityImpl("ROLE_USER"),
-	    				new GrantedAuthorityImpl("ROLE_ADMIN")
+	    				new GrantedAuthorityImpl("ROLE_USER"), //$NON-NLS-1$
+	    				new GrantedAuthorityImpl("ROLE_ADMIN") //$NON-NLS-1$
 	    			};
 	    		
 	    		standaloneAuth = new PrincipalSpringSecurityUserToken(
-	    			"","admin","admin",userAuths,null);
+	    			"","admin","admin",userAuths,null); //$NON-NLS-1$ $NON-NLS-2$ $NON-NLS-3$
 	        }
 	        
 	        initDone=true;
@@ -84,7 +85,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	}
 
     protected void doUnexpectedFailure(Throwable e) {
-        log.error("A RPC call resulted in the following exception : ",e);
+        log.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"),e); //$NON-NLS-1$
         super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage(),e));
     }
 }

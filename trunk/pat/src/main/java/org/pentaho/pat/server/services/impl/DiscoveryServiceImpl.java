@@ -85,9 +85,6 @@ public class DiscoveryServiceImpl extends AbstractService
             list.add(cubes.get(i).getName());
         }
 
-        if (log.isDebugEnabled())
-            log.debug("Found the following cubes:" + list.toString());
-
         return list;
     }
 

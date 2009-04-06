@@ -14,13 +14,13 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.server.services;
+package org.pentaho.pat.server.messages;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
-    private static final String BUNDLE_NAME = "org.pentaho.pat.server.services.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.pentaho.pat.server.messages.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
             .getBundle(BUNDLE_NAME);
