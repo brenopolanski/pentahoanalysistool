@@ -14,6 +14,8 @@ import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.services.DiscoveryService;
 
+import com.mysql.jdbc.Messages;
+
 /**
  * 
  * This is an implementation of the discovery RPC servlet.
@@ -29,9 +31,9 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	
 	public void init() throws ServletException {
 		super.init();
-		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
+		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
 		if (discoveryService==null)
-            throw new ServletException("No discovery service was found in the application context.");
+            throw new ServletException(Messages.getString("Servlet.DiscoveryServiceNotFound")); //$NON-NLS-1$
 	}
 	
 	public String[] getCubes(String sessionId) throws RpcException
@@ -40,7 +42,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
         try {
             list = this.discoveryService.getCubes(getCurrentUserId(), sessionId);
         } catch (OlapException e) {
-            throw new RpcException("Unable to populate the list of available cubes.",e);
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateCubesList"),e); //$NON-NLS-1$
         } 
 		return list.toArray(new String[list.size()]);
 	}
@@ -49,10 +51,13 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	{
 		List<String> dimensionsList;
 		try {
-			dimensionsList = this.discoveryService.getDimensions(getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.name()));
+			dimensionsList = this.discoveryService.getDimensions(
+			    getCurrentUserId(), 
+			    sessionId, 
+			    org.olap4j.Axis.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
-		    throw new RpcException("An exception was encountered while populating the list of available dimensions.",e);
+		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"),e); //$NON-NLS-1$
 		}
 		
 		
@@ -63,7 +68,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		try {
 			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 		} catch (OlapException e) {
-		    throw new RpcException("An exception was encountered while populating the list of available members.",e);
+		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList"),e); //$NON-NLS-1$
 		}
 	}
 	

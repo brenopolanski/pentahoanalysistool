@@ -172,8 +172,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 			this.sessionService.createNewQuery("user", sessionId);
 			fail();
 		} catch (OlapException e) {
-			if (!e.getMessage().equals("You asked to create a query but there was no cube previously selected."))
-				fail();
+			// ignore
 		}
 		
 		// Create a query object.

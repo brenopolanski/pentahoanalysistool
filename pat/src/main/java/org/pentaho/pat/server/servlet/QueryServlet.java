@@ -14,6 +14,8 @@ import org.pentaho.pat.rpc.beans.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.services.QueryService;
 
+import com.mysql.jdbc.Messages;
+
 /**
  * @author luc Boudreau
  *
@@ -26,9 +28,9 @@ public class QueryServlet extends AbstractServlet implements Query {
 	
 	public void init() throws ServletException {
 		super.init();
-		queryService = (QueryService)applicationContext.getBean("queryService");
+		queryService = (QueryService)applicationContext.getBean("queryService"); //$NON-NLS-1$
 		if (queryService==null)
-		    throw new ServletException("No query service was found in the application context.");
+		    throw new ServletException(Messages.getString("Servlet.QueryServiceNotFound")); //$NON-NLS-1$
 	}
 
 	public void clearSelection(String sessionId, String dimensionName, 
@@ -44,7 +46,7 @@ public class QueryServlet extends AbstractServlet implements Query {
             this.queryService.createSelection(getCurrentUserId(), sessionId, 
             		dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
         } catch (OlapException e) {
-            throw new RpcException("Unable to perform the members selection.",e);
+            throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers"),e); //$NON-NLS-1$
         }
 	}
 
@@ -55,12 +57,11 @@ public class QueryServlet extends AbstractServlet implements Query {
 			getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.getCaption()), dimensionName);
 	}
 
-	public OlapData executeQuery(String sessionId) {
+	public OlapData executeQuery(String sessionId) throws RpcException {
 		try {
 			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
-			log.error("There was an error while executing the query.", e);
-			return null;
+			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
 		}
 	}
 }
