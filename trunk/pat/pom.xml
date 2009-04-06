@@ -194,6 +194,11 @@
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+      </plugin>
+      
 		</plugins>
 	</build>
 	<profiles>
@@ -231,6 +236,36 @@
 				<platform>linux</platform>
 			</properties>
 		</profile>
+    <profile>
+        <id>hudson</id>
+        <activation>
+            <property>
+                <name>BUILD_NUMBER</name>
+            </property>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <formats>
+                            <format>xml</format>
+                        </formats>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>cobertura</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
 	</profiles>
 	<repositories>
 		<repository>
