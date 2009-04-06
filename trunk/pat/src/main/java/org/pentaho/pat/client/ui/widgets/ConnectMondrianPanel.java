@@ -6,7 +6,6 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
-import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LoadingPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
@@ -19,7 +18,6 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
