@@ -2,24 +2,16 @@ package org.pentaho.pat.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.gwt.mosaic.ui.client.CollapsedListener;
-import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application.ApplicationListener;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.OlapPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -31,18 +23,13 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ClickListener;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * 
@@ -218,18 +205,13 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * Sets the SESSION_ID 
 	 */
 	private static void setSessionID(){
-		ServiceFactory.getSessionInstance().createSession(new AsyncCallback(){
+		ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>(){
 
 			public void onFailure(Throwable arg0) {
-			    Button errorBtn = new Button("Error");
-			    errorBtn.addClickListener(new ClickListener() {
-			      public void onClick(Widget sender) {
-			        MessageBox.error("Error", "Failed to get Session ID(Thats not great)!");
+			        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedSessionID());
 			      }
-			    });
-			}
 
-			public void onSuccess(Object arg0) {
+			public void onSuccess(String arg0) {
 				SESSION_ID = (String) arg0;
 			}
 			

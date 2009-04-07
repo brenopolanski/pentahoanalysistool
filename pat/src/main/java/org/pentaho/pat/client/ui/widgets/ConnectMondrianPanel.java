@@ -158,7 +158,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				// .connect(getCubeConnection())
 				connectButton.setEnabled(false);
 				
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback() {
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
 						MessageBox.info("Success","Connect established!");
 						ConnectMondrianPanel.this.hide();  

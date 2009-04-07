@@ -517,4 +517,8 @@ public interface PatConstants extends Constants{
 	String failedCubeList();
 
 	String cubes();
+
+	String failedDimensionList();
+
+	String failedSessionID();
 }

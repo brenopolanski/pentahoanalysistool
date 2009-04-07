@@ -1,13 +1,9 @@
 package org.pentaho.pat.client;
 
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
@@ -34,7 +30,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -226,8 +221,20 @@ public class Application extends Viewport implements ConnectionListener{
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
 					if (item.getParentItem().getText()==ConstantFactory.getInstance().available_cubes()){
-					stackPanel.showStack(1);
-					stackPanel.layout(true);
+					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText(), new AsyncCallback<String[]>() {
+
+						public void onFailure(Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionList());
+						}
+
+						public void onSuccess(String[] arg0) {
+							stackPanel.showStack(1);
+							stackPanel.layout(true);
+						}
+					});
+					
+					
+					
 					}
 				}
 			}
