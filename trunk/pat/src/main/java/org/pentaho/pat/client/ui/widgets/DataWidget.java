@@ -17,7 +17,6 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
