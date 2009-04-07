@@ -15,6 +15,7 @@ public interface PatConstants extends Constants{
 	 * STYLE_THEMES 
 	 */
     String[] STYLE_THEMES = {"standard", "chrome", "dark"};
+	String error();
 	  
     /**
 	 * Translated "Main Title".
@@ -509,5 +510,11 @@ public interface PatConstants extends Constants{
 	  
 	  String data();
 
-	  
+	String welcome();
+
+	String home();
+
+	String failedCubeList();
+
+	String cubes();
 }

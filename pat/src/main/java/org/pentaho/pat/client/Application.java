@@ -26,6 +26,7 @@ import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.OlapPanel;
+import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -155,15 +156,14 @@ public class Application extends Viewport implements ConnectionListener{
 		createMainMenu();
 
 		toolBarPanel.addConnectionListener(Application.this);
-		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel(
-				"Cool Stuff!");
+		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
 		stackPanel = new StackLayoutPanel();
 		westPanel.add(stackPanel);
 		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance()
-				.available_cubes());
+				.cubes());
 
 		DimensionPanel dimensionPanel = new DimensionPanel();
-		stackPanel.add(dimensionPanel, "Dimensions");
+		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
 		stackPanel.showStack(0);
 		//toolBarPanel.addConnectionListener(dimensionPanel);
 		
@@ -225,9 +225,10 @@ public class Application extends Viewport implements ConnectionListener{
 				if (listener != null) {
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
+					if (item.getParentItem().getText()==ConstantFactory.getInstance().available_cubes()){
 					stackPanel.showStack(1);
 					stackPanel.layout(true);
-					
+					}
 				}
 			}
 
@@ -284,28 +285,18 @@ public class Application extends Viewport implements ConnectionListener{
 	private void setupCubeMenu(){	
 		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
 			public void onSuccess(String[] o) {
-				//List<String> blah = (List)o;
-				//String tom = Integer.toString(blah.size());
+				
 				Tree mainMenu = getMainMenu();
-				TreeItem homeMenu = mainMenu.addItem("Cubes");
+				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().available_cubes());
 				
 				
 				for (int i=0; i<o.length; i++){
-					MessageBox.info("Schema", o[i]);
-					setupMainMenuOption(homeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
+					setupMainMenuOption(cubeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
 				}
-				/*InfoPanel.show("Application", "Application on Connection Made");		
-				Tree mainMenu = getMainMenu();
-				TreeItem homeMenu = mainMenu.addItem("Cubes");
-				Iterator itr = blah.iterator();
-				while (itr.hasNext()){
-					 String name = (String) itr.next(); 
-					 MessageBox.info("Cube", name);
-					setupMainMenuOption(homeMenu, new OlapPanel(name), Pat.IMAGES.cube());
-				}*/
+				
 			}
 			public void onFailure(Throwable arg0) {			  
-			       MessageBox.error("Error", "Failed to get a Cube List!");
+			       MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedCubeList());
 			}	
 		});
 		
@@ -318,8 +309,8 @@ public class Application extends Viewport implements ConnectionListener{
 	private void setupMainMenu() {
 		Tree mainMenu = getMainMenu();
 
-		TreeItem homeMenu = mainMenu.addItem("Home");
-		setupMainMenuOption(homeMenu, new OlapPanel("Blah"), Pat.IMAGES.cube());
+		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
+		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory.getInstance().welcome()), Pat.IMAGES.cube());
 		
 	}
 
@@ -338,7 +329,7 @@ public class Application extends Viewport implements ConnectionListener{
 		// Create the TreeItem
 		TreeItem option = parent.addItem(image.getHTML() + " "
 				+ content.getName());
-
+		
 		// Map the item to its history token and content widget
 		Pat.itemWidgets.put(option, content);
 		Pat.itemTokens.put(Pat.getContentWidgetToken(content), option);
