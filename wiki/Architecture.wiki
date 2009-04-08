@@ -52,7 +52,7 @@ The security is implemented with Spring Security. It intercepts any incoming web
 
 = OLAP =
 
-Everything related to the OLAP manipulation itself is relayed to the Olap4j API. PAT manipulates a org.olap4j.query.Query object and doesn'T care much about anything else.
+Everything related to the OLAP manipulation itself is relayed to the Olap4j API. PAT manipulates a org.olap4j.query.Query object and doesn't care much about anything else.
 
 Refer to Olap4j's documentation for more details.
 
