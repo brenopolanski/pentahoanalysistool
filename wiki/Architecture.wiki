@@ -50,4 +50,10 @@ By default, the data is persisted in an in-memory HSQLDB instance. Although this
 
 The security is implemented with Spring Security. It intercepts any incoming web requests and authenticates if necessary. By default, we use the HTTP Basic authentication mechanism, but Spring Security can be easily configured to support single sign-on or LDAP authentication as well.
 
+= OLAP =
+
+Everything related to the OLAP manipulation itself is relayed to the Olap4j API. PAT manipulates a org.olap4j.query.Query object and doesn'T care much about anything else.
+
+Refer to Olap4j's documentation for more details.
+
 http://pentahoanalysistool.googlecode.com/svn/trunk/pat/doc/Overall-PAT-Architecture.png
