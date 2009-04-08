@@ -49,3 +49,5 @@ By default, the data is persisted in an in-memory HSQLDB instance. Although this
 = Security =
 
 The security is implemented with Spring Security. It intercepts any incoming web requests and authenticates if necessary. By default, we use the HTTP Basic authentication mechanism, but Spring Security can be easily configured to support single sign-on or LDAP authentication as well.
+
+http://pentahoanalysistool.googlecode.com/svn/trunk/pat/doc/Overall-PAT-Architecture.png
