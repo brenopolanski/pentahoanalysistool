@@ -16,13 +16,10 @@ This project depends, among other things, on those other projects :
 
   * Spring framework.
   * Google web toolkit
-  * ACEGI security framework.
+  * Hibernate
 
-= Anatomy of a server request =
 
-This section describes how requests with the backend system are handled through the layers of the application.
-
-== First contact : RPC interfaces ==
+= Servlet Layer =
 
 The only layer that a client needs to be aware of is the RPC interfaces defined in org.pentaho.pat.rpc. Any GUI implementation MUST conform to it. Those interfaces are in turn implemented as web servlets. We could have implemented them with any other technology we needed.
 
@@ -33,27 +30,22 @@ The RPC implementations responsibilities are:
   * Allows a single user to work with more than one "window session" simult.
   * Prevent clients from spoofing a window session id using the specific implementation's authentications technologies.
 
-== Service layer ==
+By default, a set of GWT friendly servlets implement the RPC interfaces.
+
+= Service layer =
 
 At first sight, this might look like a duplication of the RPC implementations, but there is something fundamentally different done in this layer. 
 
-First off, those classes are not bound to any particular technology other than Olap4j. It is completely abstracted from the communication channels that feed it. It is neither a servlet or a GWT module. It is a plain old Java object implementing a given service interface.
-
-This ensures that the whole business logic can be wrapped with whatever server communication technology.
-
-It's responsibilities are as follows :
-
-  * Supposes that the window session id sent (guid) is valid and has not been spoofed, it will not perform any validation on it.
-  * Translates the service methods parameters into operations performed on Olap4j specifically.
+First off, those classes are not bound to any particular technology other than Olap4j and Spring. It is completely abstracted from the communication channels that feed it. It is neither a servlet or a GWT module. It is a plain old Java object implementing a given service interface. This ensures that the whole business logic can be wrapped with whatever server communication technology.
 
 The service layer is thus the core of PAT. PAT was meant to be this way so it keeps the overhead at a minimum and relays all query operations to the Olap4j model layer. This layer is the last invoked in a request.
 
-== Persistance helpers ==
+= Persistence layer =
 
-PAT is a stateful session system. It stores data internally concerning the user sessions. It is thus required that users create sessions and destroy them upon completion of their tasks.
+Pat stores some information about the users and groups. For instance, we can store saved connection parameters for later reuse. The persistence is done via Hibernate. There are no ORM mapping files involved, rather we use the Java Persistence API annotations with POJOs.
 
-The data that is stored varies in it's nature. It could be : 
+By default, the data is persisted in an in-memory HSQLDB instance. Although this is a simple and quite way of persisting data, it is strongly recommended to change this behavior in production deployments. It can be easily configured and PAT persistence layer leverages all Hibernate supported databases.
 
-  * Variables concerning the current state of the GUI controls; like which cube is currently selected for example.
-  * The connection objects created by window sessions.
-  * Olap4j query objects and result tables.
+= Security =
+
+The security is implemented with Spring Security. It intercepts any incoming web requests and authenticates if necessary. By default, we use the HTTP Basic authentication mechanism, but Spring Security can be easily configured to support single sign-on or LDAP authentication as well.
