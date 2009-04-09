@@ -159,7 +159,11 @@ public class SessionServiceImpl extends AbstractService
 	
 			try {
 				Class.forName(driverName);
-				connection = (OlapConnection) DriverManager
+				
+				if (username==null&&password==null)
+				    connection = (OlapConnection) DriverManager.getConnection(connectStr);
+				else
+				    connection = (OlapConnection) DriverManager
 						.getConnection(connectStr,username,password);
 				
 				OlapWrapper wrapper = connection;
