@@ -45,4 +45,14 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 *         no_selection_cleared
 	 */
 	String no_selection_cleared(String arg0);
+	
+	String file_upload_failed();
+	
+	String check_error_log();
+	
+	String file_upload_no_file();
+	
+	String connection_established();
+	
+	String no_jdbc_driver_found();
 }

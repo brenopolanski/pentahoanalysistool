@@ -13,6 +13,7 @@ import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
@@ -37,21 +38,21 @@ import com.google.gwt.user.client.ui.Widget;
  */
 
 public class ConnectMondrianPanel extends WindowPanel implements
-			SourcesConnectionEvents {
+SourcesConnectionEvents {
 
 	// TODO Finish this Widget
-	
+
 	private static final String FORM_NAME_FILE = "file";
 	private static final String FORM_ENCODING = "multipart/form-data";
 	private static final String FORM_METHOD = "POST";
 	private static final String FORM_ACTION = "schemaupload";
 	private static final String HEIGHT = "300";
 	private static final String WIDTH = "700";
-	private static final String REGISTER_NEW_MONDRIAN_CONNECTION = "Register new Mondrian Connection";
+	private static final String REGISTER_NEW_MONDRIAN_CONNECTION = ConstantFactory.getInstance().register_new_mondrian_connection();
 	private static final String LABEL_SUFFIX = ":";
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end";
-	
+
 
 	private final ListBox driverListBox;
 	private final TextBox urlTextBox;
@@ -62,7 +63,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 	private final Button connectButton;
 	private String schemaPath;
 	private boolean connectionEstablished = false;
-    private ConnectionListenerCollection connectionListeners;
+	private ConnectionListenerCollection connectionListeners;
 
 	public ConnectMondrianPanel() {
 		super();
@@ -78,14 +79,14 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		passwordTextBox = new PasswordTextBox();
 		fileUpload = new FileUpload();
 		schemaPath ="";
-		
+
 
 		this.setWidget(onInitialize());
 	}
 
 
 	private Widget onInitialize() {
-	
+
 		final FormPanel formPanel;
 		formPanel = new FormPanel();
 		formPanel.setAction(FORM_ACTION);
@@ -101,19 +102,17 @@ public class ConnectMondrianPanel extends WindowPanel implements
 						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
 						schemaPath = tmp;
 						connectButton.setEnabled(true);
-						uploadButton.setEnabled(false);
-						MessageBox.info("File uploaded","Filename" + tmp);
+						// TODO remove this later
+						MessageBox.info("File uploaded",tmp);
 					}
 					else {
-						// TODO use standardized message dialog when implemented
-						MessageBox.error("Error", "Schema Upload failed");	
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_failed());	
 					}
 				}
 				else
-					// TODO use standardized message dialog when implemented
-					MessageBox.error("Error", "Error occured. See Server log for details");
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().check_error_log());
 			}
-			
+
 			public void onSubmit(FormSubmitEvent arg0) {
 				// TODO add Submit Action - Probably validation? And mask UI
 				// Window.alert("onSubmit:" + arg0.toString());
@@ -125,7 +124,7 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 
 		final PanelBuilder builder = new PanelBuilder(layout);
-		
+
 		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
 		builder.add(driverListBox, CellConstraints.xyw(3, 2, 5));
 		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
@@ -142,37 +141,31 @@ public class ConnectMondrianPanel extends WindowPanel implements
 			public void onClick(Widget sender) {
 				String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
-					// TODO use standardized message dialog when implemented
-					MessageBox.error("Error","No file selected");
+					MessageBox.error(ConstantFactory.getInstance().error(),MessageFactory.getInstance().file_upload_no_file());
 				} else {
 					formPanel.submit();
 				}
 			}
 		});
-		
+
 		builder.add(uploadButton, CellConstraints.xyw(3,10,5));
 		connectButton.addClickListener(new ClickListener(){
 			public void onClick(Widget sender) {
-				// TODO implement Connection Routine
-				// .connect(getCubeConnection())
-				connectButton.setEnabled(false);
-				
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
+					ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
-						MessageBox.info("Success","Connect established!");
+						MessageBox.info(ConstantFactory.getInstance().success(),MessageFactory.getInstance().connection_established());
 						ConnectMondrianPanel.this.hide();  
 						setConnectionEstablished(true);
-                        connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
+						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
 					public void onFailure(Throwable arg0) {
-						// TODO use standardized message dialog when implemented
-						MessageBox.error("Error", "Connect Failed:" + arg0.getLocalizedMessage());
-						
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
+						connectButton.setEnabled(true);
 					}
 				});
 			}
 		});
-		
+
 		connectButton.setEnabled(false);
 		builder.add(connectButton, CellConstraints.xyw(3,12,5));
 
@@ -180,38 +173,36 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		return formPanel;
 	}
 
-    public boolean isConnectionEstablished() {
-            return connectionEstablished;
-    }
+	public boolean isConnectionEstablished() {
+		return connectionEstablished;
+	}
 
-    public void setConnectionEstablished(boolean connectionEstablished) {
-            this.connectionEstablished = connectionEstablished;
-    }
+	public void setConnectionEstablished(boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
+	}
 
 	private ListBox createDriverListComboBox() {
-	    final ListBox listBox = new ListBox();
-	    
+		final ListBox listBox = new ListBox();
 
-	    ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
+
+		ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
 			public void onSuccess(String[] arg0) {
-		
+
 				if (arg0 != null && arg0.length > 0) {
 					for(int i=0;i < arg0.length;i++) {
 						listBox.addItem(arg0[i]);
 					}
 				}
 				else {
-					// TODO use standardized message dialog when implemented
-					MessageBox.error("Error", "No installed JDBC Drivers found");	
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_jdbc_driver_found());	
 				}
 			}
 			public void onFailure(Throwable arg0) {
-				// TODO use standardized message dialog when implemented
-				MessageBox.error("Error", "Error occured. See Server log for details");	
+				MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());	
 			}
 		});
-	    return listBox;
-	  }
+		return listBox;
+	}
 
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
@@ -232,30 +223,30 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		cc.setSchemaPath(schemaPath);
 		return cc;
 	}
-	  /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-     * addConnectionListener
-     * (org.pentaho.halogen.client.listeners.ConnectionListener)
-     */
-    public void addConnectionListener(ConnectionListener listener) {
-            if (connectionListeners == null) {
-                    connectionListeners = new ConnectionListenerCollection();
-            }
-            connectionListeners.add(listener);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+	 * addConnectionListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	public void addConnectionListener(ConnectionListener listener) {
+		if (connectionListeners == null) {
+			connectionListeners = new ConnectionListenerCollection();
+		}
+		connectionListeners.add(listener);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-     * removeClickListener
-     * (org.pentaho.halogen.client.listeners.ConnectionListener)
-     */
-    public void removeConnectionListener(ConnectionListener listener) {
-            if (connectionListeners != null) {
-                    connectionListeners.remove(listener);
-            }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+	 * removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	public void removeConnectionListener(ConnectionListener listener) {
+		if (connectionListeners != null) {
+			connectionListeners.remove(listener);
+		}
+	}
 }

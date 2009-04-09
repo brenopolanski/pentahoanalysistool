@@ -8,10 +8,14 @@ import java.util.List;
 
 import com.google.gwt.user.client.Command;
 
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -96,7 +100,15 @@ ConnectionListener, SourcesConnectionEvents {
 					connectWindow.showModal();
 				}
 				else{
-
+					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
+						public void onSuccess(Object o) {
+							setConnectionEstablished(false);
+							ToolBarPanel.this.onConnectionBroken(ToolBarPanel.this);
+						}
+						public void onFailure(Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+						}
+					});
 				}
 			}
 		});
