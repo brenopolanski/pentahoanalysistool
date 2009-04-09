@@ -128,6 +128,8 @@ public class Application extends Viewport implements ConnectionListener{
 	private static LayoutPanel layoutPanel;
 	
 	private static LayoutPanel bottomPanel;
+	
+	private DimensionPanel dimensionPanel;
 	/**
 	 * Constructor.
 	 */
@@ -157,7 +159,7 @@ public class Application extends Viewport implements ConnectionListener{
 		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance()
 				.cubes());
 
-		DimensionPanel dimensionPanel = new DimensionPanel();
+		dimensionPanel = new DimensionPanel();
 		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
 		stackPanel.showStack(0);
 		//toolBarPanel.addConnectionListener(dimensionPanel);
@@ -218,9 +220,9 @@ public class Application extends Viewport implements ConnectionListener{
 		mainMenu.addTreeListener(new TreeListener() {
 			public void onTreeItemSelected(TreeItem item) {
 				if (listener != null) {
-					listener.onMenuItemSelected(item);
-					contentWrapper.layout(true);
-					if (item.getParentItem().getText()==ConstantFactory.getInstance().available_cubes()){
+					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())){
+						
+						
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText(), new AsyncCallback<String[]>() {
 
 						public void onFailure(Throwable arg0) {
@@ -233,6 +235,26 @@ public class Application extends Viewport implements ConnectionListener{
 						}
 					});
 					
+					
+					/*
+					 * ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>(){
+
+								public void onFailure(Throwable arg0) {
+									// TODO Auto-generated method stub
+									MessageBox.error("Query", "Failed");
+								}
+
+								public void onSuccess(String arg0) {
+									// TODO Auto-generated method stub
+									MessageBox.error("Query", "Ok");
+									dimensionPanel.createDimensionList();
+								}
+								
+							});
+					 */
+					
+					listener.onMenuItemSelected(item);
+					contentWrapper.layout(true);
 					
 					
 					}

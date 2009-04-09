@@ -19,6 +19,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableCellDragController;
 import org.pentaho.pat.client.util.FlexTableCellDropController;
 import org.pentaho.pat.client.util.ServiceFactory;
+import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -31,6 +32,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public final class DimensionFlexTable extends FlexTable {
 
+	//public final Axis AXIS_UNUSED = "UNUSED";
   /**
    * Creates a FlexTable with the desired number of rows and columns, making
    * each row draggable via the provided drag controller.
@@ -43,8 +45,10 @@ public final class DimensionFlexTable extends FlexTable {
    */
   public DimensionFlexTable(final FlexTableCellDragController tableCellDragController) {	  
 	  addStyleName("demo-flextable");
-     
-    ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), null, new AsyncCallback<String[]>() {
+	  
+	  
+    
+    ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Axis.UNUSED, new AsyncCallback<String[]>() {
 
 		public void onFailure(Throwable arg0) {
 			// TODO use standardized message dialog when implemented

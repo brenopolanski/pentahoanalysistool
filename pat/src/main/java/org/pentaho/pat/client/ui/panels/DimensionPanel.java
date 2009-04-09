@@ -31,7 +31,7 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener,
 		this.add(layoutPanel);
 	}
 
-	private void createDimensionList() {
+	public void createDimensionList() {
 		// Create the various components that make up the Dimension Flextable
 
 		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(
@@ -49,7 +49,7 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener,
 
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
-		createDimensionList();
+		//createDimensionList();
 	}
 
 	public void addConnectionListener(ConnectionListener listener) {
