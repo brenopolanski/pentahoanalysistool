@@ -1,24 +1,14 @@
 package org.pentaho.pat.server.beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.Factory;
-import org.apache.commons.collections.list.LazyList;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.multipart.MultipartFile; 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 
-public final class FileUploadBean {
+public final class FileUploadBean 
+{
     private final transient Log log = LogFactory.getLog(getClass());
-
-    private final transient Factory multipartFileFactory = new Factory() {
-        public Object create() {
-            return new Object();
-        }
-    };
 
     private MultipartFile file;
 

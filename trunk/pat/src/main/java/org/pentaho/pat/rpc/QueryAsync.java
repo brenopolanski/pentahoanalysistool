@@ -12,9 +12,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * object that was previously instanciated through the Session service.
  * @author Luc Boudreau
  */
+@SuppressWarnings("unchecked")
 public interface QueryAsync {
 	
-	public void moveDimension(
+    public void moveDimension(
 		String sessionId, 
 		Axis axis, 
 		String dimensionName,
