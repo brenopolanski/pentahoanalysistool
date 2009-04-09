@@ -60,11 +60,15 @@ public class SessionServlet extends AbstractServlet implements Session {
 		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
 		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
 		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
-		        if (connection.getUsername()!=null||connection.getPassword()!= null)
+		        if (connection.getUsername()!=null)
 		        {
 		            olap4jUrl = olap4jUrl
-		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()) //$NON-NLS-1$ $NON-NLS-2$
-		                .concat(";").concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$ $NON-NLS-2$
+		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ $NON-NLS-2$
+		        }
+		        if (connection.getPassword()!= null)
+		        {
+		        	olap4jUrl = olap4jUrl
+		        		.concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$ $NON-NLS-2$
 		        }
 		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
 		        

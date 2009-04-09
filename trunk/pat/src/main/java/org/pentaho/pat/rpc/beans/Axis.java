@@ -2,6 +2,8 @@ package org.pentaho.pat.rpc.beans;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 public interface Axis extends Serializable {
 
     Standard FILTER = Standard.FILTER;
@@ -14,7 +16,7 @@ public interface Axis extends Serializable {
     int axisOrdinal();
     String getCaption();
 
-    public enum Standard implements Axis {
+    public enum Standard implements Axis,IsSerializable {
         FILTER,
         COLUMNS,
         ROWS,
