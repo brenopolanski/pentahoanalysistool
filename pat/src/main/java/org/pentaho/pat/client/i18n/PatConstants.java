@@ -521,4 +521,9 @@ public interface PatConstants extends Constants{
 	String failedDimensionList();
 
 	String failedSessionID();
+	
+	String success();
+	
+	String register_new_mondrian_connection();
+	
 }
