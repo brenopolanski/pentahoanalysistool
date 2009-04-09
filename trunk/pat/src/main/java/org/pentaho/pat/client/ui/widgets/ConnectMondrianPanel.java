@@ -191,11 +191,11 @@ public class ConnectMondrianPanel extends WindowPanel implements
 
 	private ListBox createDriverListComboBox() {
 	    final ListBox listBox = new ListBox();
-	    final LoadingPanel loadingPanel = LoadingPanel.show(listBox,"Loading...");
+	    
 
 	    ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
 			public void onSuccess(String[] arg0) {
-				loadingPanel.hide();
+		
 				if (arg0 != null && arg0.length > 0) {
 					for(int i=0;i < arg0.length;i++) {
 						listBox.addItem(arg0[i]);
@@ -207,7 +207,6 @@ public class ConnectMondrianPanel extends WindowPanel implements
 				}
 			}
 			public void onFailure(Throwable arg0) {
-				loadingPanel.hide();
 				// TODO use standardized message dialog when implemented
 				MessageBox.error("Error", "Error occured. See Server log for details");	
 			}
@@ -219,8 +218,18 @@ public class ConnectMondrianPanel extends WindowPanel implements
 		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
 		cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
 		cc.setUrl(urlTextBox.getText());
-		cc.setUsername(userTextBox.getText());
-		cc.setPassword(passwordTextBox.getText());
+		if(userTextBox.getText() != null && userTextBox.getText().length() > 0) {
+			cc.setUsername(userTextBox.getText());
+		}
+		else {
+			cc.setUsername(null);
+		}
+		if(passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
+			cc.setPassword(passwordTextBox.getText());	
+		}
+		else {
+			cc.setPassword(null);
+		}
 		cc.setSchemaPath(schemaPath);
 		return cc;
 	}
