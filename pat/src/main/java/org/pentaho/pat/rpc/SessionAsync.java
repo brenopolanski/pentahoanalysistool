@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * 
  * @author Luc Boudreau
  */
+@SuppressWarnings("unchecked")
 public interface SessionAsync {
 
 	

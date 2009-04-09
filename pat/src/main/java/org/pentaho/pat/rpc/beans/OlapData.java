@@ -14,7 +14,6 @@
  * @author wseyler
  */
 
-
 package org.pentaho.pat.rpc.beans;
 
 import java.io.Serializable;
@@ -25,47 +24,48 @@ import org.pentaho.pat.client.util.RowHeaders;
 
 /**
  * @author wseyler
- *
+ * 
  */
 public class OlapData implements Serializable {
-  RowHeaders rowHeaders;
-  ColumnHeaders columnHeaders;
-  CellData cellData;
-  
-  public OlapData() {
-    super();
-  }
+    private static final long serialVersionUID = 1L;
+    RowHeaders rowHeaders;
+    ColumnHeaders columnHeaders;
+    CellData cellData;
 
-  public OlapData(RowHeaders rowHeaders, ColumnHeaders columnHeaders, CellData cellData) {
-    this();
-    this.rowHeaders = rowHeaders;
-    this.columnHeaders = columnHeaders;
-    this.cellData = cellData;
-  }
+    public OlapData() {
+        super();
+    }
 
-  public RowHeaders getRowHeaders() {
-    return rowHeaders;
-  }
+    public OlapData(RowHeaders rowHeaders, ColumnHeaders columnHeaders,
+            CellData cellData) {
+        this();
+        this.rowHeaders = rowHeaders;
+        this.columnHeaders = columnHeaders;
+        this.cellData = cellData;
+    }
 
-  public void setRowHeaders(RowHeaders rowHeaders) {
-    this.rowHeaders = rowHeaders;
-  }
+    public RowHeaders getRowHeaders() {
+        return rowHeaders;
+    }
 
-  public ColumnHeaders getColumnHeaders() {
-    return columnHeaders;
-  }
+    public void setRowHeaders(RowHeaders rowHeaders) {
+        this.rowHeaders = rowHeaders;
+    }
 
-  public void setColumnHeaders(ColumnHeaders columnHeaders) {
-    this.columnHeaders = columnHeaders;
-  }
+    public ColumnHeaders getColumnHeaders() {
+        return columnHeaders;
+    }
 
-  public CellData getCellData() {
-    return cellData;
-  }
+    public void setColumnHeaders(ColumnHeaders columnHeaders) {
+        this.columnHeaders = columnHeaders;
+    }
 
-  public void setCellData(CellData cellData) {
-    this.cellData = cellData;
-  }
-  
-  
+    public CellData getCellData() {
+        return cellData;
+    }
+
+    public void setCellData(CellData cellData) {
+        this.cellData = cellData;
+    }
+
 }

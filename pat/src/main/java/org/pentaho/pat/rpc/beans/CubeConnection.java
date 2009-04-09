@@ -6,7 +6,6 @@ package org.pentaho.pat.rpc.beans;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.google.gwt.user.client.rpc.impl.Serializer;
 /**
  * @author pstoellberger
  *
