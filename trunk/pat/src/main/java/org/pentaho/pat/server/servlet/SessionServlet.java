@@ -74,7 +74,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		} 
 		catch (OlapException e) 
 		{
-			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"),e); //$NON-NLS-1$
+			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed")); //$NON-NLS-1$
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    try {
             return this.convert(savedConn);
         } catch (IOException e) {
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
 	
@@ -94,7 +94,7 @@ public class SessionServlet extends AbstractServlet implements Session {
             this.sessionService.saveConnection(getCurrentUserId(),
                     this.convert(connection));
         } catch (Exception e) {
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
 	
@@ -107,7 +107,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
 	        return cubeConnections;
         } catch (IOException e) {
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
 	
