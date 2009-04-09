@@ -86,6 +86,6 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 
     protected void doUnexpectedFailure(Throwable e) {
         log.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"),e); //$NON-NLS-1$
-        super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage(),e));
+        super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage()));
     }
 }
