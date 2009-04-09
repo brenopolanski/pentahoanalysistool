@@ -159,7 +159,7 @@ SourcesConnectionEvents {
 						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
 					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getMessage()));
 						connectButton.setEnabled(true);
 					}
 				});
@@ -198,7 +198,7 @@ SourcesConnectionEvents {
 				}
 			}
 			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());	
+				MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());	
 			}
 		});
 		return listBox;
