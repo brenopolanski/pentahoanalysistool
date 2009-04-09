@@ -4,11 +4,14 @@
 package org.pentaho.pat.rpc.beans;
 
 import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.rpc.impl.Serializer;
 /**
  * @author pstoellberger
  *
  */
-public class CubeConnection implements Serializable {
+public class CubeConnection implements Serializable,IsSerializable {
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -29,7 +32,7 @@ public class CubeConnection implements Serializable {
 	
 	private ConnectionType connectionType = null;
 
-	public enum ConnectionType {
+	public enum ConnectionType implements IsSerializable {
 		XMLA, Mondrian
 	}
 	

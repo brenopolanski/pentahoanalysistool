@@ -66,7 +66,9 @@
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
 								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
 									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/hibernate.cfg.xml" />
-								<mkdir dir="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib"/>
+								<mkdir dir="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib" />
+								<copy file="${basedir}/src/main/jdbc/mysql-connector-java-5.1.6.jar"
+									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib/mysql-connector-java-5.1.6.jar" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -102,20 +104,18 @@
 								<copy
 									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-insert.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-insert.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-delete.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-delete.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml" />
-								<copy 
-                  file="${basedir}/src/test/java/jndi.properties"
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-insert.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-insert.sql" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-delete.sql"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-delete.sql" />
+								<copy
+									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml"
+									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml" />
+								<copy file="${basedir}/src/test/java/jndi.properties"
 									toFile="${basedir}/target/test-classes/jndi.properties" />
-								<copy 
-                  file="${basedir}/src/main/resources/hibernate.cfg.xml"
+								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
 									toFile="${basedir}/target/test-classes/hibernate.cfg.xml" />
 							</tasks>
 						</configuration>

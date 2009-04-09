@@ -6,7 +6,6 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
-import org.gwt.mosaic.ui.client.LoadingPanel;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.pentaho.pat.client.Pat;
