@@ -1,8 +1,8 @@
 package org.pentaho.pat.rpc.exceptions;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RpcException extends Exception implements Serializable {
+public class RpcException extends Exception implements IsSerializable {
 
     private static final long serialVersionUID = 1L;
     
