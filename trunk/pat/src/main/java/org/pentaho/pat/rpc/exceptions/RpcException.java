@@ -15,7 +15,17 @@ public class RpcException extends Exception implements IsSerializable, Serializa
     }
     
     public RpcException(String message) {
+        super(message);
         this.message = message;
+    }
+    
+    public RpcException(String message, Throwable cause) {
+        super(message,cause);
+        this.message = message;
+    }
+    
+    public RpcException(Throwable cause) {
+        super(cause);
     }
     
     @Override
