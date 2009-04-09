@@ -49,20 +49,28 @@ public class SessionServlet extends AbstractServlet implements Session {
 		    case XMLA:
 		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl()); //$NON-NLS-1$
 		        olap4jDriver = "org.olap4j.driver.xmla.Olap4jXmlaDriver"; //$NON-NLS-1$
+		        sessionService.createConnection(getCurrentUserId(),sessionId, 
+		                olap4jDriver, 
+		                olap4jUrl, 
+		                connection.getUsername(), 
+		                connection.getPassword());
 		        break;
 		    case Mondrian:
 		        olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
 		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
 		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
-		            .concat("JdbcUser=").concat(connection.getUsername()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
-		            .concat("JdbcPassword=").concat(connection.getPassword()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
 		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
+		        if (connection.getUsername()!=null||connection.getPassword()!= null)
+		        {
+		            olap4jUrl = olap4jUrl
+		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()) //$NON-NLS-1$ $NON-NLS-2$
+		                .concat(";").concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$ $NON-NLS-2$
+		        }
 		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
+		        
+		        sessionService.createConnection(getCurrentUserId(),sessionId, 
+		                olap4jDriver, olap4jUrl,null,null);
 		    }
-		    
-			sessionService.createConnection(getCurrentUserId(),sessionId, 
-				olap4jDriver, olap4jUrl, 
-				connection.getUsername(), connection.getPassword());
 		} 
 		catch (OlapException e) 
 		{
