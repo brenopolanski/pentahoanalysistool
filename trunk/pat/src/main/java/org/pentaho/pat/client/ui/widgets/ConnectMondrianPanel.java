@@ -58,7 +58,7 @@ SourcesConnectionEvents {
 	private final TextBox urlTextBox;
 	private final TextBox userTextBox;
 	private final PasswordTextBox passwordTextBox;
-	private final FileUpload fileUpload;
+	private FileUpload fileUpload;
 	private final Button uploadButton;
 	private final Button connectButton;
 	private String schemaPath;
@@ -248,5 +248,14 @@ SourcesConnectionEvents {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
+	}
+	
+	public void emptyForm() {
+		urlTextBox.setText("");
+		userTextBox.setText("");
+		passwordTextBox.setText("");
+		fileUpload = null;
+		fileUpload = new FileUpload();
+		schemaPath ="";
 	}
 }

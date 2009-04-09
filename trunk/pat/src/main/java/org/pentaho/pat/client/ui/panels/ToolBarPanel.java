@@ -97,6 +97,7 @@ ConnectionListener, SourcesConnectionEvents {
 						connectWindow = new ConnectMondrianPanel();
 						connectWindow.addConnectionListener(ToolBarPanel.this);
 					}
+					connectWindow.emptyForm();
 					connectWindow.showModal();
 				}
 				else{
