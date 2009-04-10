@@ -6,8 +6,10 @@ package org.pentaho.pat.client.ui;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
+import org.gwt.mosaic.ui.client.TabLayoutPanel.TabBarPosition;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.hibernate.jdbc.ConnectionManager;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
@@ -18,6 +20,8 @@ import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -26,18 +30,20 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents,ConnectionListener {
 	
-	private static final String HEIGHT = "300";
-	private static final String WIDTH = "700";
+	private static final String HEIGHT = "320";
+	private static final String WIDTH = "720";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
 	private boolean connectionEstablished = false;
 	private ConnectionListenerCollection connectionListeners;
-	
+	final TabLayoutPanel tabPanel= new TabLayoutPanel();
 	
 	public ConnectionWindow() {
 		super();
 		this.setTitle(TITLE);
+		this.setHeight(HEIGHT);
+		this.setWidth(WIDTH);
 		
 		
 		connectMondrian = new ConnectMondrianPanel();
@@ -45,24 +51,22 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		
 		this.setWidget(onInitialize());
 	}	
+    @Override
+    protected void onLoad() {
+      tabPanel.selectTab(0);
+      super.onLoad();
+    } 
 		
 	  protected Widget onInitialize() {
-	    // Create a layout panel to align the widgets
-	    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
-	    layoutPanel.setHeight(HEIGHT);
-	    layoutPanel.setWidth(WIDTH);
-	    final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
 	    tabPanel.setPadding(5);
 	    
-	    tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian());
-	    tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla());
-	    tabPanel.selectTab(0);
+	    tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian(),true);
+	    tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla(),true);
+
 	    connectXmla.addConnectionListener(ConnectionWindow.this);
 		connectMondrian.addConnectionListener(ConnectionWindow.this);
 	    
-	    layoutPanel.add(tabPanel);
-	    
-	    return layoutPanel;
+	    return tabPanel;
 	  }
 
 	  public boolean isConnectionEstablished() {
@@ -81,6 +85,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		public void onConnectionMade(Widget sender) {
 			setConnectionEstablished(true);
 			connectionListeners.fireConnectionMade(ConnectionWindow.this);
+			ConnectionWindow.this.hide();
 		}
 
 		/*

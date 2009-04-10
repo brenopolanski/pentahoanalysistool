@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
-public class ConnectXmlaPanel extends LayoutPanel implements
+public class ConnectXmlaPanel extends FormPanel implements
 SourcesConnectionEvents {
 
 	// TODO Finish this Widget
@@ -77,8 +77,9 @@ SourcesConnectionEvents {
 
 	private Widget onInitialize() {
 
-		final FormPanel formPanel;
-		formPanel = new FormPanel();
+		final FormPanel formPanel = new FormPanel();
+		formPanel.setWidth(WIDTH);
+		formPanel.setHeight(HEIGHT);
 
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
@@ -87,12 +88,12 @@ SourcesConnectionEvents {
 
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
-		builder.add(urlTextBox, CellConstraints.xyw(3, 4, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 6));
-		builder.add(userTextBox, CellConstraints.xy(3, 6));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 6));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 6));
+		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
+		builder.add(urlTextBox, CellConstraints.xyw(3, 2, 5));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
+		builder.add(userTextBox, CellConstraints.xy(3, 4));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 4));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 4));
 		// builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
 		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
@@ -112,7 +113,7 @@ SourcesConnectionEvents {
 			}
 		});
 
-		builder.add(connectButton, CellConstraints.xyw(3,12,5));
+		builder.add(connectButton, CellConstraints.xyw(3,10,5));
 
 		formPanel.add(builder.getPanel());
 		return formPanel;
