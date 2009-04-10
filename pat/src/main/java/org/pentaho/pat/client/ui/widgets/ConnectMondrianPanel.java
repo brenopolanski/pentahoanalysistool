@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
-public class ConnectMondrianPanel extends LayoutPanel implements
+public class ConnectMondrianPanel extends FormPanel implements
 SourcesConnectionEvents {
 
 	// TODO Finish this Widget
@@ -91,8 +91,9 @@ SourcesConnectionEvents {
 
 	private Widget onInitialize() {
 
-		final FormPanel formPanel;
-		formPanel = new FormPanel();
+		final FormPanel formPanel = new FormPanel();
+		formPanel.setWidth(WIDTH);
+		formPanel.setHeight(HEIGHT);
 		formPanel.setAction(FORM_ACTION);
 		formPanel.setMethod(FORM_METHOD);
 		formPanel.setEncoding(FORM_ENCODING);
@@ -126,9 +127,7 @@ SourcesConnectionEvents {
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 				+ "right:[40dlu,pref], 3dlu, 70dlu",
 		"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-
 		final PanelBuilder builder = new PanelBuilder(layout);
-
 		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
 		builder.add(driverListBox, CellConstraints.xyw(3, 2, 5));
 		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
@@ -262,16 +261,4 @@ SourcesConnectionEvents {
 		schemaPath ="";
 	}
 
-
-	@Override
-	public boolean remove(Widget arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public Iterator<Widget> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
