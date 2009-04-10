@@ -41,49 +41,35 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
-public class ConnectMondrianPanel extends LayoutPanel implements
+public class ConnectXmlaPanel extends LayoutPanel implements
 SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	private static final String FORM_NAME_FILE = "file";
-	private static final String FORM_ENCODING = "multipart/form-data";
-	private static final String FORM_METHOD = "POST";
-	private static final String FORM_ACTION = "schemaupload";
 	private static final String HEIGHT = "300";
 	private static final String WIDTH = "700";
-	private static final String TITLE = ConstantFactory.getInstance().register_new_mondrian_connection();
+	private static final String TITLE = ConstantFactory.getInstance().register_new_xmla_connection();
 	private static final String LABEL_SUFFIX = ":";
-	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
-	private static final String FILENAME_TAG_END = "pat_schema_filename_end";
+	private static final String LABEL_REQUIRED_SUFFIX = "*";
 
-
-	private final ListBox driverListBox;
 	private final TextBox urlTextBox;
+	// private final TextBox catalogTextBox;
 	private final TextBox userTextBox;
 	private final PasswordTextBox passwordTextBox;
-	private FileUpload fileUpload;
-	private final Button uploadButton;
 	private final Button connectButton;
-	private String schemaPath;
 	private boolean connectionEstablished = false;
 	private ConnectionListenerCollection connectionListeners;
 
-	public ConnectMondrianPanel() {
+	public ConnectXmlaPanel() {
 		super();
 		this.setTitle(TITLE);
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
-
 		connectButton = new Button(ConstantFactory.getInstance().connect());
-		uploadButton = new Button(ConstantFactory.getInstance().upload());
-		driverListBox = createDriverListComboBox();
+		// catalogTextBox = new TextBox();
 		urlTextBox = new TextBox();
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
-		fileUpload = new FileUpload();
-		schemaPath ="";
-
 
 		this.add(onInitialize());
 	}
@@ -93,35 +79,7 @@ SourcesConnectionEvents {
 
 		final FormPanel formPanel;
 		formPanel = new FormPanel();
-		formPanel.setAction(FORM_ACTION);
-		formPanel.setMethod(FORM_METHOD);
-		formPanel.setEncoding(FORM_ENCODING);
 
-		formPanel.addFormHandler(new FormHandler() {
-			public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
-				// TODO Replace filename handling with stored schema handling when implemented
-				if (arg0 != null || arg0.getResults() != null || arg0.getResults().length() > 0) {
-					if (arg0.getResults().contains(FILENAME_TAG_START))
-					{
-						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
-						schemaPath = tmp;
-						connectButton.setEnabled(true);
-						// TODO remove this later
-						MessageBox.info("File uploaded",tmp);
-					}
-					else {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_failed());	
-					}
-				}
-				else
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().check_error_log());
-			}
-
-			public void onSubmit(FormSubmitEvent arg0) {
-				// TODO add Submit Action - Probably validation? And mask UI
-				// Window.alert("onSubmit:" + arg0.toString());
-			}
-		});
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 				+ "right:[40dlu,pref], 3dlu, 70dlu",
@@ -129,47 +87,31 @@ SourcesConnectionEvents {
 
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
-		builder.add(driverListBox, CellConstraints.xyw(3, 2, 5));
-		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
+		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 4, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 6));
 		builder.add(userTextBox, CellConstraints.xy(3, 6));
 		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 6));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 6));
-		builder.addLabel(ConstantFactory.getInstance().schema_file() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
-		fileUpload.setName(FORM_NAME_FILE);
-		builder.add(fileUpload, CellConstraints.xyw(3,8,5));
+		// builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
+		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
-		uploadButton.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				String filename = fileUpload.getFilename();
-				if (filename == null || filename.length() == 0) {
-					MessageBox.error(ConstantFactory.getInstance().error(),MessageFactory.getInstance().file_upload_no_file());
-				} else {
-					formPanel.submit();
-				}
-			}
-		});
-
-		builder.add(uploadButton, CellConstraints.xyw(3,10,5));
 		connectButton.addClickListener(new ClickListener(){
 			public void onClick(Widget sender) {
 					ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(),MessageFactory.getInstance().connection_established());
 						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
+						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
 					}
 					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
 						connectButton.setEnabled(true);
 					}
 				});
 			}
 		});
 
-		connectButton.setEnabled(false);
 		builder.add(connectButton, CellConstraints.xyw(3,12,5));
 
 		formPanel.add(builder.getPanel());
@@ -184,32 +126,8 @@ SourcesConnectionEvents {
 		this.connectionEstablished = connectionEstablished;
 	}
 
-	private ListBox createDriverListComboBox() {
-		final ListBox listBox = new ListBox();
-
-
-		ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
-			public void onSuccess(String[] arg0) {
-
-				if (arg0 != null && arg0.length > 0) {
-					for(int i=0;i < arg0.length;i++) {
-						listBox.addItem(arg0[i]);
-					}
-				}
-				else {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_jdbc_driver_found());	
-				}
-			}
-			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());	
-			}
-		});
-		return listBox;
-	}
-
 	private CubeConnection getCubeConnection() {
-		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
-		cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
+		final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
 		cc.setUrl(urlTextBox.getText());
 		if(userTextBox.getText() != null && userTextBox.getText().length() > 0) {
 			cc.setUsername(userTextBox.getText());
@@ -223,7 +141,13 @@ SourcesConnectionEvents {
 		else {
 			cc.setPassword(null);
 		}
-		cc.setSchemaPath(schemaPath);
+		//if(catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0) {
+		//	cc.setCatalog(catalogTextBox.getText());	
+		//}
+		//else {
+		//	cc.setCatalog(null);
+		//}
+
 		return cc;
 	}
 	/*
@@ -257,21 +181,9 @@ SourcesConnectionEvents {
 		urlTextBox.setText("");
 		userTextBox.setText("");
 		passwordTextBox.setText("");
-		fileUpload = null;
-		fileUpload = new FileUpload();
-		schemaPath ="";
+		//catalogTextbox.setText("");
 	}
 
 
-	@Override
-	public boolean remove(Widget arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public Iterator<Widget> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
