@@ -526,4 +526,16 @@ public interface PatConstants extends Constants{
 	
 	String register_new_mondrian_connection();
 	
+	String register_new_xmla_connection();
+	
+	String register_new_connection();
+	
+	String xmla_url();
+	
+	String catalog();
+	
+	String xmla();
+	
+	String mondrian();
+	
 }
