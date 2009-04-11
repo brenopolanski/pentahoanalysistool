@@ -48,8 +48,8 @@ SourcesConnectionEvents {
 	private static final String FORM_ENCODING = "multipart/form-data";
 	private static final String FORM_METHOD = "POST";
 	private static final String FORM_ACTION = "schemaupload";
-	private static final String HEIGHT = "300px";
-	private static final String WIDTH = "700px";
+	private static final String HEIGHT = "340px";
+	private static final String WIDTH = "750px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_mondrian_connection();
 	private static final String LABEL_SUFFIX = ":";
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start";

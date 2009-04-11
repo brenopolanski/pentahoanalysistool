@@ -27,110 +27,108 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents,ConnectionListener {
-	
-	private static final String HEIGHT = "350px";
-	private static final String WIDTH = "760px";
+
+	private static final String HEIGHT = "400px";
+	private static final String WIDTH = "800px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
 	private boolean connectionEstablished = false;
 	private ConnectionListenerCollection connectionListeners;
 	final TabLayoutPanel tabPanel= new TabLayoutPanel();
-	
+
 	public ConnectionWindow() {
 		super(TITLE);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
-		
-		
+
+
 		connectMondrian = new ConnectMondrianPanel();
 		connectXmla = new ConnectXmlaPanel();
 		this.add(onInitialize());	
 	}	
-	
-    @Override
-    protected void onLoad() {
-      tabPanel.selectTab(0);
-      super.onLoad();
-    } 
-	
-	  protected LayoutPanel onInitialize() {
-		  LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
-		          Orientation.VERTICAL));
+
+	@Override
+	protected void onLoad() {
+		tabPanel.selectTab(0);
+		super.onLoad();
+	} 
+
+	protected LayoutPanel onInitialize() {
+		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
+				Orientation.VERTICAL));
+
+		tabPanel.setPadding(5);	    
+		tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian());
+		tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla());
+		connectMondrian.addConnectionListener(ConnectionWindow.this);
+		connectXmla.addConnectionListener(ConnectionWindow.this);
 		
-		  tabPanel.setPadding(5);	    
-	    
-	
-	    tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian());
-	   
-	    tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla());
-	      tabPanel.addTabListener(new TabListener() {
-	          public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) 
-	          {
-	            return true;
-	          }
-
-	          public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
-	            // FormLayout.getPreferredSize() needs to be improved so that pack()
-	            // works like expected. But you can try it.
-	   
-	        	  
-	  //           pack();
-	          }
-	        });
-	      layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH)); 
-	    return layoutPanel;
-	  }
-
-	  public boolean isConnectionEstablished() {
-			return connectionEstablished;
-		}
-
-		public void setConnectionEstablished(boolean connectionEstablished) {
-			this.connectionEstablished = connectionEstablished;
-		}
-
-		public void onConnectionBroken(Widget sender) {
-			setConnectionEstablished(false);
-			connectionListeners.fireConnectionBroken(ConnectionWindow.this);
-		}
-
-		public void onConnectionMade(Widget sender) {
-			setConnectionEstablished(true);
-			connectionListeners.fireConnectionMade(ConnectionWindow.this);
-			ConnectionWindow.this.hide();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-		 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-		 */
-		public void addConnectionListener(ConnectionListener listener) {
-			if (connectionListeners == null) {
-				connectionListeners = new ConnectionListenerCollection();
+		tabPanel.addTabListener(new TabListener() {
+			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) 
+			{
+				return true;
 			}
-			connectionListeners.add(listener);
-		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-		 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-		 */
-		public void removeConnectionListener(ConnectionListener listener) {
-			if (connectionListeners != null) {
-				connectionListeners.remove(listener);
+			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+				// FormLayout.getPreferredSize() needs to be improved so that pack()
+				// works like expected. But you can try it.
+				//           pack();
 			}
+		});
+		layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH)); 
+		return layoutPanel;
+	}
+
+	public boolean isConnectionEstablished() {
+		return connectionEstablished;
+	}
+
+	public void setConnectionEstablished(boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
+	}
+
+	public void onConnectionBroken(Widget sender) {
+		setConnectionEstablished(false);
+		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
+	}
+
+	public void onConnectionMade(Widget sender) {
+		setConnectionEstablished(true);
+		connectionListeners.fireConnectionMade(ConnectionWindow.this);
+		ConnectionWindow.this.hide();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	public void addConnectionListener(ConnectionListener listener) {
+		if (connectionListeners == null) {
+			connectionListeners = new ConnectionListenerCollection();
 		}
-		
-		public void emptyForms() {
-			connectMondrian.emptyForm();
-			connectXmla.emptyForm();
+		connectionListeners.add(listener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	public void removeConnectionListener(ConnectionListener listener) {
+		if (connectionListeners != null) {
+			connectionListeners.remove(listener);
 		}
+	}
+
+	public void emptyForms() {
+		connectMondrian.emptyForm();
+		connectXmla.emptyForm();
+	}
 
 }
