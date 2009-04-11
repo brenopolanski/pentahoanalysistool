@@ -47,8 +47,8 @@ SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	private static final String HEIGHT = "300";
-	private static final String WIDTH = "700";
+	private static final String HEIGHT = "300px";
+	private static final String WIDTH = "700px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_xmla_connection();
 	private static final String LABEL_SUFFIX = ":";
 	private static final String LABEL_REQUIRED_SUFFIX = "*";
@@ -94,8 +94,8 @@ SourcesConnectionEvents {
 		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(userTextBox, CellConstraints.xy(3, 3));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
 		// builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
 		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
