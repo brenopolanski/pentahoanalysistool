@@ -47,8 +47,8 @@ SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	private static final String HEIGHT = "300px";
-	private static final String WIDTH = "700px";
+	private static final String HEIGHT = "340px";
+	private static final String WIDTH = "750px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_xmla_connection();
 	private static final String LABEL_SUFFIX = ":";
 	private static final String LABEL_REQUIRED_SUFFIX = "*";
@@ -63,7 +63,7 @@ SourcesConnectionEvents {
 
 	public ConnectXmlaPanel() {
 		super();
-	/*	this.setTitle(TITLE);
+		/*	this.setTitle(TITLE);
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);*/
 		connectButton = new Button(ConstantFactory.getInstance().connect());
@@ -86,8 +86,8 @@ SourcesConnectionEvents {
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 				+ "right:[40dlu,pref], 3dlu, 70dlu",
-	//	"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-	"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");
+				//	"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
+		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");
 		final PanelBuilder builder = new PanelBuilder(layout);
 
 		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
@@ -101,7 +101,7 @@ SourcesConnectionEvents {
 
 		connectButton.addClickListener(new ClickListener(){
 			public void onClick(Widget sender) {
-					ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(),MessageFactory.getInstance().connection_established());
 						setConnectionEstablished(true);
@@ -180,7 +180,7 @@ SourcesConnectionEvents {
 			connectionListeners.remove(listener);
 		}
 	}
-	
+
 	public void emptyForm() {
 		urlTextBox.setText("");
 		userTextBox.setText("");
@@ -189,5 +189,5 @@ SourcesConnectionEvents {
 	}
 
 
-	
+
 }
