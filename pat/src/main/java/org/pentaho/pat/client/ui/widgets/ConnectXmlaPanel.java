@@ -10,6 +10,7 @@ import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
@@ -41,7 +42,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
-public class ConnectXmlaPanel extends FormPanel implements
+public class ConnectXmlaPanel extends LayoutPanel implements
 SourcesConnectionEvents {
 
 	// TODO Finish this Widget
@@ -62,38 +63,39 @@ SourcesConnectionEvents {
 
 	public ConnectXmlaPanel() {
 		super();
-		this.setTitle(TITLE);
+	/*	this.setTitle(TITLE);
 		this.setWidth(WIDTH);
-		this.setHeight(HEIGHT);
+		this.setHeight(HEIGHT);*/
 		connectButton = new Button(ConstantFactory.getInstance().connect());
 		// catalogTextBox = new TextBox();
 		urlTextBox = new TextBox();
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
-
-		this.add(onInitialize());
+		this.setLayout(new BorderLayout());
+		onInitialize();
+		//this.add(onInitialize());
 	}
 
 
-	private Widget onInitialize() {
+	private void onInitialize() {
 
-		final FormPanel formPanel = new FormPanel();
-		formPanel.setWidth(WIDTH);
-		formPanel.setHeight(HEIGHT);
+		//final FormPanel formPanel = new FormPanel();
+		//formPanel.setWidth(WIDTH);
+		//formPanel.setHeight(HEIGHT);
 
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
 				+ "right:[40dlu,pref], 3dlu, 70dlu",
-		"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-
+	//	"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
+	"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 2));
-		builder.add(urlTextBox, CellConstraints.xyw(3, 2, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 4));
-		builder.add(userTextBox, CellConstraints.xy(3, 4));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 4));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 4));
+		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.add(userTextBox, CellConstraints.xy(3, 3));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
 		// builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
 		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
@@ -113,10 +115,11 @@ SourcesConnectionEvents {
 			}
 		});
 
-		builder.add(connectButton, CellConstraints.xyw(3,10,5));
+		builder.add(connectButton, CellConstraints.xyw(3,9,5));
 
-		formPanel.add(builder.getPanel());
-		return formPanel;
+		//formPanel.add(builder.getPanel());
+		this.add(builder.getPanel());
+		//return formPanel;
 	}
 
 	public boolean isConnectionEstablished() {

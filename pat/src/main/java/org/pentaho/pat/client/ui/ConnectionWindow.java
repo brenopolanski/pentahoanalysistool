@@ -3,23 +3,21 @@
  */
 package org.pentaho.pat.client.ui;
 
-import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
-import org.gwt.mosaic.ui.client.TabLayoutPanel.TabBarPosition;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
-import org.hibernate.jdbc.ConnectionManager;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
-import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,8 +28,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents,ConnectionListener {
 	
-	private static final String HEIGHT = "320";
-	private static final String WIDTH = "720";
+	private static final String HEIGHT = "320px";
+	private static final String WIDTH = "720px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
@@ -40,33 +38,48 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	final TabLayoutPanel tabPanel= new TabLayoutPanel();
 	
 	public ConnectionWindow() {
-		super();
-		this.setTitle(TITLE);
+		super(TITLE);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
 		
 		
 		connectMondrian = new ConnectMondrianPanel();
 		connectXmla = new ConnectXmlaPanel();
-		
-		this.setWidget(onInitialize());
+		this.add(onInitialize());	
 	}	
+	
     @Override
     protected void onLoad() {
       tabPanel.selectTab(0);
       super.onLoad();
     } 
+	
+	  protected LayoutPanel onInitialize() {
+		  LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
+		          Orientation.VERTICAL));
 		
-	  protected Widget onInitialize() {
-	    tabPanel.setPadding(5);
+		  tabPanel.setPadding(5);	    
 	    
-	    tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian(),true);
-	    tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla(),true);
+	
+	    tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian());
+	   
+	    tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla());
+	      tabPanel.addTabListener(new TabListener() {
+	          public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) 
+	          {
+	            return true;
+	          }
 
-	    connectXmla.addConnectionListener(ConnectionWindow.this);
-		connectMondrian.addConnectionListener(ConnectionWindow.this);
-	    
-	    return tabPanel;
+	          public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+	            // FormLayout.getPreferredSize() needs to be improved so that pack()
+	            // works like expected. But you can try it.
+	   
+	        	  
+	  //           pack();
+	          }
+	        });
+	      layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH)); 
+	    return layoutPanel;
 	  }
 
 	  public boolean isConnectionEstablished() {
