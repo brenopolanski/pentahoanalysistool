@@ -25,6 +25,7 @@ import org.pentaho.pat.client.ui.widgets.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
@@ -223,35 +224,52 @@ public class Application extends Viewport implements ConnectionListener{
 					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())){
 						
 						
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText(), new AsyncCallback<String[]>() {
+					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
 						public void onFailure(Throwable arg0) {
 							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionList());
 						}
 
 						public void onSuccess(String[] arg0) {
-							stackPanel.showStack(1);
-							stackPanel.layout(true);
+							 ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>(){
+
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										MessageBox.error("Query", "Failed");
+									}
+
+									public void onSuccess(String arg0) {
+										ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Axis.UNUSED, new AsyncCallback<String[]>() {
+
+											public void onFailure(Throwable arg0) {
+												// TODO Auto-generated method stub
+												
+											}
+
+											public void onSuccess(String[] arg0) {
+												// TODO Auto-generated method stub
+												// TODO Auto-generated method stub
+												MessageBox.error("Query", "Ok");
+					//							dimensionPanel.createDimensionList();
+												
+												stackPanel.showStack(1);
+												stackPanel.layout(true);
+											}
+											
+										});
+										
+									
+									}
+									
+								});
+							
 						}
 					});
 					
 					
-					/*
-					 * ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>(){
+					
 
-								public void onFailure(Throwable arg0) {
-									// TODO Auto-generated method stub
-									MessageBox.error("Query", "Failed");
-								}
-
-								public void onSuccess(String arg0) {
-									// TODO Auto-generated method stub
-									MessageBox.error("Query", "Ok");
-									dimensionPanel.createDimensionList();
-								}
-								
-							});
-					 */
+					
 					
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
