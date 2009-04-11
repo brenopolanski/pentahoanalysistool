@@ -19,6 +19,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -47,8 +48,8 @@ SourcesConnectionEvents {
 	private static final String FORM_ENCODING = "multipart/form-data";
 	private static final String FORM_METHOD = "POST";
 	private static final String FORM_ACTION = "schemaupload";
-	private static final String HEIGHT = "300";
-	private static final String WIDTH = "700";
+	private static final String HEIGHT = "300px";
+	private static final String WIDTH = "700px";
 	private static final String TITLE = ConstantFactory.getInstance().register_new_mondrian_connection();
 	private static final String LABEL_SUFFIX = ":";
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
@@ -100,7 +101,7 @@ SourcesConnectionEvents {
 		formPanel.addFormHandler(new FormHandler() {
 			public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
 				// TODO Replace filename handling with stored schema handling when implemented
-				if (arg0 != null || arg0.getResults() != null || arg0.getResults().length() > 0) {
+				if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
 					if (arg0.getResults().contains(FILENAME_TAG_START))
 					{
 						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
@@ -256,8 +257,6 @@ SourcesConnectionEvents {
 		urlTextBox.setText("");
 		userTextBox.setText("");
 		passwordTextBox.setText("");
-		fileUpload = null;
-		fileUpload = new FileUpload();
 		schemaPath ="";
 	}
 
