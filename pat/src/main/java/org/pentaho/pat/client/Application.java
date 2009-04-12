@@ -237,27 +237,26 @@ public class Application extends Viewport implements ConnectionListener{
 										// TODO Auto-generated method stub
 										MessageBox.error("Query", "Failed");
 									}
-
+					
 									public void onSuccess(String arg0) {
-										ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Axis.UNUSED, new AsyncCallback<String[]>() {
+										
+										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback() {
 
 											public void onFailure(Throwable arg0) {
 												// TODO Auto-generated method stub
 												
 											}
 
-											public void onSuccess(String[] arg0) {
+											public void onSuccess(Object arg0) {
 												// TODO Auto-generated method stub
-												// TODO Auto-generated method stub
-												MessageBox.error("Query", "Ok");
-					//							dimensionPanel.createDimensionList();
+												dimensionPanel.createDimensionList();
 												
 												stackPanel.showStack(1);
 												stackPanel.layout(true);
 											}
 											
 										});
-										
+																				
 									
 									}
 									
