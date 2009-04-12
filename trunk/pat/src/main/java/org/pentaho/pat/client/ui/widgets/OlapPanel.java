@@ -9,25 +9,14 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.ui.panels.NorthPanel;
 import org.pentaho.pat.client.ui.panels.SouthPanel;
-import org.pentaho.pat.client.images.widgets.WidgetImages;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.FlexTableCellDragController;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -66,13 +55,13 @@ public class OlapPanel extends DataWidget{
 	private String createTabBarCaption(AbstractImagePrototype image, String text) {
 		StringBuffer sb = new StringBuffer();
 		sb
-				.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>");
-		sb.append("<td valign='middle'>");
+				.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
+		sb.append("<td valign='middle'>"); //$NON-NLS-1$
 		sb.append(image.getHTML());
 		sb
-				.append("</td><td valign='middle' style='white-space: nowrap;'>&nbsp;");
+				.append("</td><td valign='middle' style='white-space: nowrap;'>&nbsp;"); //$NON-NLS-1$
 		sb.append(text);
-		sb.append("</td></tr></thead></table>");
+		sb.append("</td></tr></thead></table>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 	
@@ -83,7 +72,7 @@ public class OlapPanel extends DataWidget{
 		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
 		
 		// MDX(north) panel
-		final NorthPanel northPanel = new NorthPanel("MDX Panel");
+		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
 		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES
 				.toolCollapseUp());
 		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
@@ -102,7 +91,7 @@ public class OlapPanel extends DataWidget{
 		
 		
 		// Drill(south) panel
-		final SouthPanel drillPanel = new SouthPanel("Drill Data");
+		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
 
 			final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES
 					.toolCollapseDown());
@@ -130,17 +119,17 @@ public class OlapPanel extends DataWidget{
 			panel1.setWidgetSpacing(0);
 			createLayout();
 			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
-					ConstantFactory.getInstance().data() + " (" + getName() + ")"),
+					ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 					true);
 
 			final LayoutPanel panel2 = new LayoutPanel();
 			sourceWidget = new HTML();
-			sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source");
+			sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source"); //$NON-NLS-1$
 			panel2.add(sourceWidget);
 			stackPanel.add(panel2,
 					createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory
 							.getInstance().chart()
-							+ " (" + getName() + ")"), true);
+							+ " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			stackPanel.showStack(0);
 			

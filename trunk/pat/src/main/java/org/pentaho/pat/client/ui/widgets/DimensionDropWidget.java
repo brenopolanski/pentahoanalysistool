@@ -38,17 +38,17 @@ public class DimensionDropWidget extends Grid {
 		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(Application.getPanel());
 		
 		Label dropLabel = new Label();
-		dropLabel.setStyleName("dropLabel");
+		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
 		
 		 DimensionFlexTable rowTable = new DimensionFlexTable(tableRowDragController);
-		 rowTable.setStyleName("dropTable");
+		 rowTable.setStyleName("dropTable"); //$NON-NLS-1$
 		 
-		 this.setStyleName("dropGrid");
+		 this.setStyleName("dropGrid"); //$NON-NLS-1$
 		 
 		 this.getCellFormatter().setAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT, HasVerticalAlignment.ALIGN_MIDDLE);
 		 this.setWidget(0, 0, IMAGES.flexend().createImage());
 		 this.setWidget(0, 1, new HTML(labelText));
-		 this.getCellFormatter().setStyleName(0, 1, "dropLabel");
+		 this.getCellFormatter().setStyleName(0, 1, "dropLabel"); //$NON-NLS-1$
 		 this.setWidget(0, 2, rowTable);
 		 this.setWidget(0, 3, IMAGES.flexend3().createImage());
 		 

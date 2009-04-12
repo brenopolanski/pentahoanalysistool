@@ -63,7 +63,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	    			};
 	    		
 	    		standaloneAuth = new PrincipalSpringSecurityUserToken(
-	    			"","admin","admin",userAuths,null); //$NON-NLS-1$ $NON-NLS-2$ $NON-NLS-3$
+	    			"","admin","admin",userAuths,null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$ $NON-NLS-3$
 	        }
 	        
 	        initDone=true;

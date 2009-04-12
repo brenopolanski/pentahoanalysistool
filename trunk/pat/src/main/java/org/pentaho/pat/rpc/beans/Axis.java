@@ -41,7 +41,7 @@ public interface Axis extends Serializable {
         public static Axis forOrdinal(final int ordinal) {
             if (ordinal < -1) {
                 throw new IllegalArgumentException(
-                    "Axis ordinal must be -1 or higher");
+                    "Axis ordinal must be -1 or higher"); //$NON-NLS-1$
             }
             if (ordinal + 1 < STANDARD_VALUES.length) {
                 return STANDARD_VALUES[ordinal + 1];
@@ -55,7 +55,7 @@ public interface Axis extends Serializable {
                 }
 
                 public String name() {
-                    return "AXIS(" + ordinal + ")";
+                    return "AXIS(" + ordinal + ")";  //$NON-NLS-1$//$NON-NLS-2$
                 }
 
                 public boolean isFilter() {

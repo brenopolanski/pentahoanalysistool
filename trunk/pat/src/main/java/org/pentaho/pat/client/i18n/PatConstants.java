@@ -14,7 +14,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "STYLE_THEMES"
 	 * STYLE_THEMES 
 	 */
-    String[] STYLE_THEMES = {"standard", "chrome", "dark"};
+    String[] STYLE_THEMES = {"standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	String error();
 	  
     /**
@@ -537,5 +537,7 @@ public interface PatConstants extends Constants{
 	String xmla();
 	
 	String mondrian();
+
+	String failedQueryCreate();
 	
 }

@@ -6,27 +6,22 @@ package org.pentaho.pat.client.ui.panels;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.Command;
-
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.events.SourcesConnectionEvents;
+import org.pentaho.pat.client.i18n.PatConstants;
+import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.ConnectionWindow;
-import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
-import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
-
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
-import org.pentaho.pat.client.i18n.PatConstants;
-import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 
 /**
  * PAT Toolbar
@@ -55,7 +50,7 @@ ConnectionListener, SourcesConnectionEvents {
 		public ThemeMenu(String theme, Command cmd) {
 			super(theme, cmd);
 			this.theme = theme;
-			addStyleName("sc-ThemeButton-" + theme);
+			addStyleName("sc-ThemeButton-" + theme); //$NON-NLS-1$
 
 			// Add this button to the static list
 			if (allButtons == null) {
@@ -88,7 +83,7 @@ ConnectionListener, SourcesConnectionEvents {
 
 		MenuBar fileMenuBar = new MenuBar(true);
 		fileMenuBar.setAnimationEnabled(true);
-		fileMenuBar.ensureDebugId("patMenuButton-normal");
+		fileMenuBar.ensureDebugId("patMenuButton-normal"); //$NON-NLS-1$
 
 		// Create Toolbar Menu Items
 
@@ -147,9 +142,9 @@ ConnectionListener, SourcesConnectionEvents {
 
 			styleSheetMenu.addItem(button);
 		}
-		viewMenu.addItem("Blah", styleSheetMenu);
+		viewMenu.addItem("Blah", styleSheetMenu); //$NON-NLS-1$
 
-		this.addItem(new MenuItem("View",viewMenu));
+		this.addItem(new MenuItem("View",viewMenu)); //$NON-NLS-1$
 	}
 
 	private void createHelpMenu(){
@@ -180,7 +175,7 @@ ConnectionListener, SourcesConnectionEvents {
 		// Add connect button
 		helpMenu.addItem(homeItem);
 		helpMenu.addItem(pentahoItem);
-		this.addItem(new MenuItem("Help", helpMenu));
+		this.addItem(new MenuItem("Help", helpMenu)); //$NON-NLS-1$
 	}
 	// Inherited on click method
 	public void onClick(Widget sender) {
@@ -199,14 +194,14 @@ ConnectionListener, SourcesConnectionEvents {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 		// Alter menu
-		connectItem.setText("Connect");
+		connectItem.setText("Connect"); //$NON-NLS-1$
 	}
 
 	public void onConnectionMade(Widget sender) {
 		setConnectionEstablished(true);
 		// Alter menu
 
-		connectItem.setText("Disconnect");
+		connectItem.setText("Disconnect"); //$NON-NLS-1$
 
 		connectionListeners.fireConnectionMade(ToolBarPanel.this);
 	}

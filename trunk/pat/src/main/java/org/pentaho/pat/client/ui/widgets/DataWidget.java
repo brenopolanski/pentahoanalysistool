@@ -42,14 +42,14 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>.sc-ContentWidget-name { Applied to the name }</li>
  * <li>.sc-ContentWidget-description { Applied to the description }</li> </ul>
  * 
- * @author georgopoulos.georgios(at)gmail.com
+ * @author tom(at)wamonline.org.uk
  */
 public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * The default style name.
 	 */
-	protected static final String DEFAULT_STYLE_NAME = "Pat-sc-ContentWidget";
+	protected static final String DEFAULT_STYLE_NAME = "Pat-sc-ContentWidget"; //$NON-NLS-1$
 
 	/**
 	 * A boolean indicating whether or not this widget has been initialized.

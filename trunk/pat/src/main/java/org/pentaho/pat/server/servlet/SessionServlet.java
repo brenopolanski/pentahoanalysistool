@@ -57,13 +57,13 @@ public class SessionServlet extends AbstractServlet implements Session {
 		        break;
 		    case Mondrian:
 		        olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
-		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
-		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ $NON-NLS-2$
+		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
 		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
 		        if (connection.getUsername()!=null)
 		        {
 		            olap4jUrl = olap4jUrl
-		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ $NON-NLS-2$
+		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$
 		        }
 		        if (connection.getPassword()!= null)
 		        {

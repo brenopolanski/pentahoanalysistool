@@ -19,7 +19,6 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
 import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -44,16 +43,16 @@ SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	private static final String FORM_NAME_FILE = "file";
-	private static final String FORM_ENCODING = "multipart/form-data";
-	private static final String FORM_METHOD = "POST";
-	private static final String FORM_ACTION = "schemaupload";
-	private static final String HEIGHT = "340px";
-	private static final String WIDTH = "750px";
+	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
+	private static final String FORM_ENCODING = "multipart/form-data"; //$NON-NLS-1$
+	private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
+	private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
+	private static final String HEIGHT = "340px"; //$NON-NLS-1$
+	private static final String WIDTH = "750px"; //$NON-NLS-1$
 	private static final String TITLE = ConstantFactory.getInstance().register_new_mondrian_connection();
-	private static final String LABEL_SUFFIX = ":";
-	private static final String FILENAME_TAG_START = "pat_schema_filename_start";
-	private static final String FILENAME_TAG_END = "pat_schema_filename_end";
+	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
+	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
+	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 
 
 	private final ListBox driverListBox;
@@ -82,7 +81,7 @@ SourcesConnectionEvents {
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
 		fileUpload = new FileUpload();
-		schemaPath ="";
+		schemaPath =""; //$NON-NLS-1$
 
 		onInitialize();
 
@@ -108,7 +107,7 @@ SourcesConnectionEvents {
 						schemaPath = tmp;
 						connectButton.setEnabled(true);
 						// TODO remove this later
-						MessageBox.info("File uploaded",tmp);
+						MessageBox.info("File uploaded",tmp); //$NON-NLS-1$
 					}
 					else {
 						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_failed());	
@@ -124,10 +123,10 @@ SourcesConnectionEvents {
 			}
 		});
 		final FormLayout layout = new FormLayout(
-				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
-				+ "right:[40dlu,pref], 3dlu, 70dlu",
+				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
 		//"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-			"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");	
+			"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");	 //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
 		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(driverListBox, CellConstraints.xyw(3, 1, 5));
@@ -254,10 +253,10 @@ SourcesConnectionEvents {
 	}
 	
 	public void emptyForm() {
-		urlTextBox.setText("");
-		userTextBox.setText("");
-		passwordTextBox.setText("");
-		schemaPath ="";
+		urlTextBox.setText(""); //$NON-NLS-1$
+		userTextBox.setText(""); //$NON-NLS-1$
+		passwordTextBox.setText(""); //$NON-NLS-1$
+		schemaPath =""; //$NON-NLS-1$
 	}
 
 }

@@ -19,28 +19,33 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener,
 		SourcesConnectionEvents {
 	private ConnectionListenerCollection connectionListeners;
 	private LayoutPanel layoutPanel;
-
+	private DimensionFlexTable table1;
 	public DimensionPanel() {
 
 		super();
+		
+
+
 		// Setup the main layout widget
 		layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 		layoutPanel.setPadding(0);
 		layoutPanel.setWidgetSpacing(0);
-		layoutPanel.setSize("100%", "100%");
+		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
+		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(
+				Application.getPanel());
+
+		table1 = new DimensionFlexTable(tableRowDragController);
+
+		layoutPanel.add(table1, new BoxLayoutData(FillStyle.BOTH));
 	}
 
 	public void createDimensionList() {
 		// Create the various components that make up the Dimension Flextable
 
-		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(
-				Application.getPanel());
-
-		DimensionFlexTable table1 = new DimensionFlexTable(tableRowDragController);
-
-		layoutPanel.add(table1, new BoxLayoutData(FillStyle.BOTH));
-	}
+			table1.populateDimensionTable();
+			
+			}
 
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub

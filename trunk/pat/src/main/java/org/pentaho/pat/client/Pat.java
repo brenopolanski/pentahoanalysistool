@@ -63,12 +63,13 @@ public class Pat implements EntryPoint, ConnectionListener {
 	/**
 	 * The current style theme.
 	 */
+	@SuppressWarnings("static-access")
 	public static String CUR_THEME = ConstantFactory.getInstance().STYLE_THEMES[0];
 
 	/**
 	 * The base style name.
 	 */
-	public static final String DEFAULT_STYLE_NAME = "Pat";
+	public static final String DEFAULT_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
 	/**
 	 * A mapping of history tokens to their associated menu items.
@@ -124,9 +125,9 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * @return the style name
 	 */
 	private static String getCurrentReferenceStyleName(String prefix) {
-		String gwtRef = prefix + "-Reference-" + CUR_THEME;
+		String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
-			gwtRef += "-rtl";
+			gwtRef += "-rtl"; //$NON-NLS-1$
 		}
 		return gwtRef;
 	}
@@ -188,7 +189,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 			displayContentWidget(itemWidgets.get(firstItem));
 		}
 
-		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none");
+		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 	}
 	
@@ -227,9 +228,9 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	private void setupTitlePanel() {
 		// Get the title from the internationalized constants
-		String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle()
-				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle()
-				+ "</h2>";
+		String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
+				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
+				+ "</h2>"; //$NON-NLS-1$
 
 		// Add the title and some images to the title bar
 		HorizontalPanel titlePanel = new HorizontalPanel();
@@ -245,15 +246,15 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include
-		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css";
-		String gwtMosaicStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css";
-		String showcaseStyleSheet = CUR_THEME + "/Showcase.css";
-		String widgetStyleSheet = "/widgets.css";
+		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String gwtMosaicStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
+		String showcaseStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
+		String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
-			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css");
-			gwtMosaicStyleSheet = gwtMosaicStyleSheet.replace(".css",
-					"_rtl.css");
-			showcaseStyleSheet = showcaseStyleSheet.replace(".css", "_rtl.css");
+			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
+			gwtMosaicStyleSheet = gwtMosaicStyleSheet.replace(".css", //$NON-NLS-1$
+					"_rtl.css"); //$NON-NLS-1$
+			showcaseStyleSheet = showcaseStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		// Find existing style sheets that need to be removed
@@ -265,11 +266,11 @@ public class Pat implements EntryPoint, ConnectionListener {
 			Node node = children.getItem(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element elem = Element.as(node);
-				if (elem.getTagName().equalsIgnoreCase("link")
-						&& elem.getPropertyString("rel").equalsIgnoreCase(
-								"stylesheet")) {
+				if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
+						&& elem.getPropertyString("rel").equalsIgnoreCase( //$NON-NLS-1$
+								"stylesheet")) { //$NON-NLS-1$
 					styleSheetsFound = true;
-					String href = elem.getPropertyString("href");
+					String href = elem.getPropertyString("href"); //$NON-NLS-1$
 					// If the correct style sheets are already loaded, then we
 					// should have
 					// nothing to remove.
@@ -308,25 +309,25 @@ public class Pat implements EntryPoint, ConnectionListener {
 				// page. By changing the display style on the body element, we
 				// force
 				// IE to redraw the background correctly.
-				RootPanel.getBodyElement().getStyle().setProperty("display",
-						"none");
+				RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
+						"none"); //$NON-NLS-1$
 				RootPanel.getBodyElement().getStyle()
-						.setProperty("display", "");
+						.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				RootPanel.get().add(app);
 			}
 		};
 
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
-				getCurrentReferenceStyleName("gwt"), null);
+				getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosaicStyleSheet,
-				getCurrentReferenceStyleName("mosaic"), null);
+				getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
 		// Load the showcase specific style sheet after the GWT & Mosaic theme
 		// style
 		// sheet so that custom styles supercede the theme styles.
 		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet,
-				getCurrentReferenceStyleName("Application"), callback);
+				getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet, 
-				getCurrentReferenceStyleName("widgets"), null);
+				getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
 		
 	}
 	

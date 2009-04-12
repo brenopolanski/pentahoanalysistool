@@ -1,7 +1,6 @@
 package org.pentaho.pat.client.util.factory;
 
 import org.pentaho.pat.client.i18n.PatConstants;
-import org.pentaho.pat.client.i18n.PatMessages;
 
 import com.google.gwt.core.client.GWT;
 /**
