@@ -79,7 +79,6 @@ public class ConnectPanel extends WindowPanel implements
 		  fpanel.addFormHandler(new FormHandler() {
 			 
 			  public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
-				// TODO Auto-generated method stub
 				  if (arg0.getResults().contains("#filename#")) //$NON-NLS-1$
 				  {
 					  String tmp = arg0.getResults().substring(arg0.getResults().indexOf("#filename#")+10,arg0.getResults().indexOf("#/filename#")); //$NON-NLS-1$ //$NON-NLS-2$
