@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ResolverUtil<T> {
 
-  private static final Log log = LogFactory.getLog("pat");
+  private static final Log log = LogFactory.getLog("pat"); //$NON-NLS-1$
 
   public static interface Test {
 

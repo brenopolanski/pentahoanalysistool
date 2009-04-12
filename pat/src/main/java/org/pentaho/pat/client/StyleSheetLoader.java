@@ -52,14 +52,14 @@ public class StyleSheetLoader {
       // Create the reference Widget
       refWidget = new Label();
       refWidget.setStyleName(refStyleName);
-      refWidget.getElement().getStyle().setProperty("position", "absolute");
-      refWidget.getElement().getStyle().setProperty("visibility", "hidden");
-      refWidget.getElement().getStyle().setProperty("display", "inline");
-      refWidget.getElement().getStyle().setPropertyPx("padding", 0);
-      refWidget.getElement().getStyle().setPropertyPx("margin", 0);
-      refWidget.getElement().getStyle().setPropertyPx("border", 0);
-      refWidget.getElement().getStyle().setPropertyPx("top", 0);
-      refWidget.getElement().getStyle().setPropertyPx("left", 0);
+      refWidget.getElement().getStyle().setProperty("position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+      refWidget.getElement().getStyle().setProperty("visibility", "hidden"); //$NON-NLS-1$ //$NON-NLS-2$
+      refWidget.getElement().getStyle().setProperty("display", "inline"); //$NON-NLS-1$ //$NON-NLS-2$
+      refWidget.getElement().getStyle().setPropertyPx("padding", 0); //$NON-NLS-1$
+      refWidget.getElement().getStyle().setPropertyPx("margin", 0); //$NON-NLS-1$
+      refWidget.getElement().getStyle().setPropertyPx("border", 0); //$NON-NLS-1$
+      refWidget.getElement().getStyle().setPropertyPx("top", 0); //$NON-NLS-1$
+      refWidget.getElement().getStyle().setPropertyPx("left", 0); //$NON-NLS-1$
       RootPanel.get().add(refWidget);
     }
 
@@ -102,8 +102,8 @@ public class StyleSheetLoader {
    */
   public static void loadStyleSheet(String href) {
     LinkElement linkElem = Document.get().createLinkElement();
-    linkElem.setRel("stylesheet");
-    linkElem.setType("text/css");
+    linkElem.setRel("stylesheet"); //$NON-NLS-1$
+    linkElem.setType("text/css"); //$NON-NLS-1$
     linkElem.setHref(href);
     getHeadElement().appendChild(linkElem);
   }

@@ -35,13 +35,13 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
     
     @SuppressWarnings("unchecked")
     public List<User> getUsers() {
-        return getHibernateTemplate().find("from User");
+        return getHibernateTemplate().find("from User"); //$NON-NLS-1$
     }
 
 	@SuppressWarnings("unchecked")
     public User getUser(final String userId)
 	{
-	    List<User> users = getHibernateTemplate().find("from User where username = ?", userId);
+	    List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
 	    return users.isEmpty()?null:users.get(0);
 	}
 	public void createUser(User user) {
@@ -53,7 +53,7 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
 
     @SuppressWarnings("unchecked")
     public SavedConnection getSavedConnection(String userId, String connectionName) {
-        List<User> users = getHibernateTemplate().find("from User where username = ?", userId);
+        List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         if (users.size()==1)
         {
             Set<SavedConnection> sc = users.get(0).getSavedConnections();

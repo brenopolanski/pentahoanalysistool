@@ -18,14 +18,14 @@ public final class FileUploadBean
     public void setFile(final MultipartFile _file) {
         file = _file;
 
-        log.debug(String.format("files: %s", file));
+        log.debug(String.format("files: %s", file)); //$NON-NLS-1$
     }
 
     /**
      * @return
      */
     public MultipartFile getFile() {
-        log.debug(String.format("files: %s", file));
+        log.debug(String.format("files: %s", file)); //$NON-NLS-1$
 
         return file;
     }

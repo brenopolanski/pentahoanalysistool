@@ -19,14 +19,14 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 		String result = SchemaValidator.validateAgainstXsd(this.schema);
 		assertNull(result,result);
 
-		result = SchemaValidator.validateAgainstXsd(this.schema+"ERROR STUFF");
-		assertEquals("Invalid XML file : Content is not allowed in trailing section.",result);
+		result = SchemaValidator.validateAgainstXsd(this.schema+"ERROR STUFF"); //$NON-NLS-1$
+		assertEquals("Invalid XML file : Content is not allowed in trailing section.",result); //$NON-NLS-1$
 		
 		result = SchemaValidator.validateAgainstXsd(
 			this.schema.replace(
-				"<Dimension name=\"Positions\">", 
-				"<Dimension name=\"Positions\" someRandomAttribute=\"whatever\">"));
-		assertEquals("Invalid XML file : cvc-complex-type.3.2.2: Attribute 'someRandomAttribute' is not allowed to appear in element 'Dimension'.", result);
+				"<Dimension name=\"Positions\">",  //$NON-NLS-1$
+				"<Dimension name=\"Positions\" someRandomAttribute=\"whatever\">")); //$NON-NLS-1$
+		assertEquals("Invalid XML file : cvc-complex-type.3.2.2: Attribute 'someRandomAttribute' is not allowed to appear in element 'Dimension'.", result); //$NON-NLS-1$
 	
 		finishTest();
 	}
@@ -36,14 +36,14 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 		if (schema==null)
 			try {
 				this.schema=readFileAsString(new File(
-					SchemaValidatorTest.class.getResource("SampleData.mondrian.xml").toURI()));
+					SchemaValidatorTest.class.getResource("SampleData.mondrian.xml").toURI())); //$NON-NLS-1$
 			} catch (URISyntaxException e) {
 				throw new RuntimeException(e);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		if(schema==null)
-			fail("Unable to read the test schema file.");
+			fail("Unable to read the test schema file."); //$NON-NLS-1$
 	}
 
 	private void finishTest() {

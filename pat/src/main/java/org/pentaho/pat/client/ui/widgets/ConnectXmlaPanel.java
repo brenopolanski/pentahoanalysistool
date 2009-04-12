@@ -3,13 +3,10 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import java.util.Iterator;
-
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
@@ -25,13 +22,6 @@ import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.FormHandler;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormSubmitEvent;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -47,12 +37,7 @@ SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	private static final String HEIGHT = "340px";
-	private static final String WIDTH = "750px";
-	private static final String TITLE = ConstantFactory.getInstance().register_new_xmla_connection();
-	private static final String LABEL_SUFFIX = ":";
-	private static final String LABEL_REQUIRED_SUFFIX = "*";
-
+	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
 	private final TextBox userTextBox;
@@ -84,10 +69,10 @@ SourcesConnectionEvents {
 		//formPanel.setHeight(HEIGHT);
 
 		final FormLayout layout = new FormLayout(
-				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, "
-				+ "right:[40dlu,pref], 3dlu, 70dlu",
+				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
 				//	"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");
+		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
 
 		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
@@ -182,9 +167,9 @@ SourcesConnectionEvents {
 	}
 
 	public void emptyForm() {
-		urlTextBox.setText("");
-		userTextBox.setText("");
-		passwordTextBox.setText("");
+		urlTextBox.setText(""); //$NON-NLS-1$
+		userTextBox.setText(""); //$NON-NLS-1$
+		passwordTextBox.setText(""); //$NON-NLS-1$
 		//catalogTextbox.setText("");
 	}
 

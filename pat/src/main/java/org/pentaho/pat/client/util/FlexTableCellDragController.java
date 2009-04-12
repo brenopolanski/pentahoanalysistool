@@ -16,7 +16,7 @@ public final class FlexTableCellDragController extends PickupDragController {
  * 
  * @author tom(at)wamonline.org.uk
  */
-  private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy";
+  private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
 
   private FlexTable draggableTable;
 
@@ -90,7 +90,7 @@ public final class FlexTableCellDragController extends PickupDragController {
         }
       }
     }
-    throw new RuntimeException("Unable to determine widget row");
+    throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$
   }
   
   private int getWidgetCol(Widget widget, FlexTable table) {
@@ -102,6 +102,6 @@ public final class FlexTableCellDragController extends PickupDragController {
 	        }
 	      }
 	    }
-	    throw new RuntimeException("Unable to determine widget row");
+	    throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$
 	  }
 }

@@ -10,8 +10,8 @@ public class ConnectionType implements Serializable {
 
     private String name;
 
-    public static final ConnectionType XMLA = new ConnectionType("XMLA");
-    public static final ConnectionType Mondrian = new ConnectionType("Mondrian");
+    public static final ConnectionType XMLA = new ConnectionType("XMLA"); //$NON-NLS-1$
+    public static final ConnectionType Mondrian = new ConnectionType("Mondrian"); //$NON-NLS-1$
     private static final Map<String, ConnectionType> INSTANCES = new HashMap<String, ConnectionType>();
 
     static {

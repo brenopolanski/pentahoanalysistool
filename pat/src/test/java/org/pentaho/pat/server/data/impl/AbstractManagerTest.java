@@ -25,8 +25,8 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public abstract class AbstractManagerTest extends TestCase {
 
     private final String[] contextFiles = new String[] { 
-        "/src/main/webapp/WEB-INF/pat-applicationContext.xml",
-        "/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
+        "/src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
+        "/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" //$NON-NLS-1$
     };
 
     private static Properties testProps = new Properties();
@@ -40,18 +40,18 @@ public abstract class AbstractManagerTest extends TestCase {
             try {
 
                 testProps.loadFromXML(AbstractManagerTest.class
-                        .getResourceAsStream("test.properties.xml"));
+                        .getResourceAsStream("test.properties.xml")); //$NON-NLS-1$
 
                 // Create the application datasource
                 jdbcDataSource ds = new jdbcDataSource();
-                ds.setDatabase(getTestProperty("context.application_database"));
-                ds.setUser(getTestProperty("context.username"));
-                ds.setPassword(getTestProperty("context.password"));
+                ds.setDatabase(getTestProperty("context.application_database")); //$NON-NLS-1$
+                ds.setUser(getTestProperty("context.username")); //$NON-NLS-1$
+                ds.setPassword(getTestProperty("context.password")); //$NON-NLS-1$
                 datasource = ds;
                 
                 // Bind the datasource in the directory
                 Context ctx = new InitialContext();
-                ctx.bind(getTestProperty("context.jndi"), ds);
+                ctx.bind(getTestProperty("context.jndi"), ds); //$NON-NLS-1$
 
                 // Initialize the application context. This will also create the
                 // default schema
@@ -76,7 +76,7 @@ public abstract class AbstractManagerTest extends TestCase {
          */
             Connection c = datasource.getConnection();
             Statement stm = c.createStatement();
-            slurp(stm, AbstractManagerTest.class.getResourceAsStream("pat-delete.sql"));
+            slurp(stm, AbstractManagerTest.class.getResourceAsStream("pat-delete.sql")); //$NON-NLS-1$
             stm.executeBatch();
             stm.clearBatch();
             stm.close();
@@ -89,7 +89,7 @@ public abstract class AbstractManagerTest extends TestCase {
              */
             c = datasource.getConnection();
             stm = c.createStatement();
-            slurp(stm, AbstractManagerTest.class.getResourceAsStream("pat-insert.sql"));
+            slurp(stm, AbstractManagerTest.class.getResourceAsStream("pat-insert.sql")); //$NON-NLS-1$
             stm.executeBatch();
             stm.clearBatch();
             stm.close();

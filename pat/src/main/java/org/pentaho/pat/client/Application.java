@@ -25,7 +25,6 @@ import org.pentaho.pat.client.ui.widgets.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
@@ -89,7 +88,7 @@ public class Application extends Viewport implements ConnectionListener{
 	/**
 	 * The base style name.
 	 */
-	public static final String DEFAULT_STYLE_NAME = "Application";
+	public static final String DEFAULT_STYLE_NAME = "Application"; //$NON-NLS-1$
 
 	/**
 	 * The wrapper around the content.
@@ -187,7 +186,7 @@ public class Application extends Viewport implements ConnectionListener{
 
 		// Add the content wrapper
 		contentWrapper = new LayoutPanel(new FillLayout());
-		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper");
+		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		bottomPanel.add(contentWrapper);
 		setupMainMenu();
 		setContent(null);
@@ -201,7 +200,7 @@ public class Application extends Viewport implements ConnectionListener{
 	 */
 	public void addLink(Widget link) {
 		if (linksPanel.getWidgetCount() > 0) {
-			linksPanel.add(new HTML("&nbsp;|&nbsp;"));
+			linksPanel.add(new HTML("&nbsp;|&nbsp;")); //$NON-NLS-1$
 		}
 		linksPanel.add(link);
 	}
@@ -217,7 +216,7 @@ public class Application extends Viewport implements ConnectionListener{
 		ApplicationImages treeImages = GWT.create(ApplicationImages.class);
 		mainMenu = new Tree(treeImages);
 		mainMenu.setAnimationEnabled(true);
-		mainMenu.addStyleName(DEFAULT_STYLE_NAME + "-menu");
+		mainMenu.addStyleName(DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
 		mainMenu.addTreeListener(new TreeListener() {
 			public void onTreeItemSelected(TreeItem item) {
 				if (listener != null) {
@@ -235,12 +234,12 @@ public class Application extends Viewport implements ConnectionListener{
 
 									public void onFailure(Throwable arg0) {
 										// TODO Auto-generated method stub
-										MessageBox.error("Query", "Failed");
+										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedQueryCreate());
 									}
 					
 									public void onSuccess(String arg0) {
 										
-										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback() {
+										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
 											public void onFailure(Throwable arg0) {
 												// TODO Auto-generated method stub
@@ -267,14 +266,10 @@ public class Application extends Viewport implements ConnectionListener{
 					
 					
 					
-
-					
-					
+					}
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
 					
-					
-					}
 				}
 			}
 
@@ -292,24 +287,24 @@ public class Application extends Viewport implements ConnectionListener{
 		topPanel = new FlexTable();
 		topPanel.setCellPadding(0);
 		topPanel.setCellSpacing(0);
-		topPanel.setStyleName(DEFAULT_STYLE_NAME + "-top");
+		topPanel.setStyleName(DEFAULT_STYLE_NAME + "-top"); //$NON-NLS-1$
 		FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
 		//Setup the toolbar
 		toolBarPanel = new ToolBarPanel();
 		
 		topPanel.setWidget(0, 0, toolBarPanel);
-		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu");
+		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
 
 		formatter.setColSpan(0, 0, 2);
 
 		// Setup the title cell
 		setTitleWidget(null);
-		formatter.setStyleName(1, 0, DEFAULT_STYLE_NAME + "-title");
+		formatter.setStyleName(1, 0, DEFAULT_STYLE_NAME + "-title"); //$NON-NLS-1$
 
 		// Setup the options cell
 		setOptionsWidget(null);
-		formatter.setStyleName(1, 1, DEFAULT_STYLE_NAME + "-options");
+		formatter.setStyleName(1, 1, DEFAULT_STYLE_NAME + "-options"); //$NON-NLS-1$
 		if (isRTL) {
 			formatter.setHorizontalAlignment(1, 1,
 					HasHorizontalAlignment.ALIGN_LEFT);
@@ -373,7 +368,7 @@ public class Application extends Viewport implements ConnectionListener{
 	private static void setupMainMenuOption(TreeItem parent,
 			DataWidget content, AbstractImagePrototype image) {
 		// Create the TreeItem
-		TreeItem option = parent.addItem(image.getHTML() + " "
+		TreeItem option = parent.addItem(image.getHTML() + " " //$NON-NLS-1$
 				+ content.getName());
 		
 		// Map the item to its history token and content widget

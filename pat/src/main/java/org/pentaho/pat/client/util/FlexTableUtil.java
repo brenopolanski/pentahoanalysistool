@@ -15,11 +15,9 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.client.ui.widgets.OlapFlexTable;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -145,7 +143,7 @@ public class FlexTableUtil {
 	  if (sourceRow != targetRow && sourceColumn!=targetColumn){
 		  targetTable.setWidget(targetRow, targetColumn, w);
 		
-			 targetTable.setWidget(sourceRow, sourceColumn, new Label(""));
+			 targetTable.setWidget(sourceRow, sourceColumn, new Label("")); //$NON-NLS-1$
 	  }
 }
 
@@ -169,13 +167,13 @@ public class FlexTableUtil {
 	    Widget widget = createCellWidget(columnHeading);
 	    int cell = targetTable.getCellCount(HeaderRowIndex);
 	    
-	    widget.setWidth("100%");
-	    widget.addStyleName("FlexTable-ColumnLabel");
+	    widget.setWidth("100%"); //$NON-NLS-1$
+	    widget.addStyleName("FlexTable-ColumnLabel"); //$NON-NLS-1$
 	    
 	    targetTable.setWidget(HeaderRowIndex, cell, widget);
 	    
 	    targetTable.getCellFormatter().addStyleName(
-	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell");
+	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell"); //$NON-NLS-1$
 	  }
   
   public static void insertColumn(FlexTable targetTable, int targetRow, int targetColumn, Widget columnHeading) {
@@ -184,8 +182,8 @@ public class FlexTableUtil {
 	    int cell = targetTable.getCellCount(HeaderRowIndex);
 	    if (targetColumn <= cell){
 	    
-	    columnHeading.setWidth("100%");
-	    columnHeading.addStyleName("FlexTable-ColumnLabel");
+	    columnHeading.setWidth("100%"); //$NON-NLS-1$
+	    columnHeading.addStyleName("FlexTable-ColumnLabel"); //$NON-NLS-1$
 	    
 	    for (int i=0; i < targetTable.getRowCount(); i++){
 	    	for (int j=cell; j > targetColumn; j--){
@@ -196,7 +194,7 @@ public class FlexTableUtil {
 	    targetTable.setWidget(targetRow, targetColumn, columnHeading);
 	    
 	    targetTable.getCellFormatter().addStyleName(
-	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell");
+	        HeaderRowIndex, cell,"FlexTable-ColumnLabelCell"); //$NON-NLS-1$
 	    }
 	  }
 	  
@@ -216,7 +214,7 @@ public class FlexTableUtil {
 	    for (int cell = 0; cell < cellObjects.length; cell++) {
 	      Widget widget = createCellWidget(cellObjects[cell]);
 	      targetTable.setWidget(rowIndex, cell, widget);
-	      targetTable.getCellFormatter().addStyleName(rowIndex,cell,"FlexTable-Cell");
+	      targetTable.getCellFormatter().addStyleName(rowIndex,cell,"FlexTable-Cell"); //$NON-NLS-1$
 	    }
 	    rowIndex++;
 	  }

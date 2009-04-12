@@ -36,10 +36,9 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
  */
 public class FlexTableCellDropController extends AbstractPositioningDropController {
 	
-	 private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner";
+	 private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 	 
 	private int targetRow;
-	private int targetColumn;
   private final FlexTable flexTable;
   public FlexTableCellDropController(FlexTable flexTable) {
     super(flexTable);

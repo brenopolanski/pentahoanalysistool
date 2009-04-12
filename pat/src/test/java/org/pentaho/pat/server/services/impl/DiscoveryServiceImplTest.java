@@ -21,17 +21,17 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user");
-		super.createConnection(this.sessionService, "user", sessionId);
+		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
 		
 		// Test returned cubes.
-		List<String> cubes = this.discoveryService.getCubes("user", sessionId);
+		List<String> cubes = this.discoveryService.getCubes("user", sessionId); //$NON-NLS-1$
 		assertNotNull(cubes);
 		assertEquals(1, cubes.size());
-		assertEquals("Quadrant Analysis", cubes.get(0));
+		assertEquals("Quadrant Analysis", cubes.get(0)); //$NON-NLS-1$
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId);
+		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -43,16 +43,16 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user");
-		super.createConnection(this.sessionService, "user", sessionId);
+		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
 		
 		// Test returned cubes.
-		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis");
+		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(cube);
-		assertEquals("Quadrant Analysis", cube.getName());
+		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId);
+		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -63,29 +63,29 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 	public void testGetDimensions() throws Exception 
 	{
 		String[] refDims = new String[] {
-				"Measures",
-				"Region",
-				"Department",
-				"Positions"
+				"Measures", //$NON-NLS-1$
+				"Region", //$NON-NLS-1$
+				"Department", //$NON-NLS-1$
+				"Positions" //$NON-NLS-1$
 		};
 		
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user");
-		super.createConnection(this.sessionService, "user", sessionId);
+		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
 		
 		// Create and select a cube
-		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis");
+		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(cube);
-		assertEquals("Quadrant Analysis", cube.getName());
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cube.getName());
+		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
 		
 		// Create and select a query
-		String queryId = this.sessionService.createNewQuery("user", sessionId);
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId);
+		String queryId = this.sessionService.createNewQuery("user", sessionId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
 		
-		List<String> dims = this.discoveryService.getDimensions("user", sessionId, Axis.UNUSED);
+		List<String> dims = this.discoveryService.getDimensions("user", sessionId, Axis.UNUSED); //$NON-NLS-1$
 		assertNotNull(dims);
 		assertEquals(4, dims.size());
 		String[] currentList = new String[4];
@@ -94,7 +94,7 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		Assert.assertArrayEquals(refDims, currentList);
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId);
+		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -107,25 +107,25 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user");
-		super.createConnection(this.sessionService, "user", sessionId);
+		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
 		
 		// Create and select a cube
-		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis");
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cube.getName());
+		Cube cube = this.discoveryService.getCube("user", sessionId, "Quadrant Analysis"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
 		
 		// Create and select a query
-		String queryId = this.sessionService.createNewQuery("user", sessionId);
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId);
+		String queryId = this.sessionService.createNewQuery("user", sessionId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
 		
-		StringTree members = this.discoveryService.getMembers("user", sessionId, "Region");
+		StringTree members = this.discoveryService.getMembers("user", sessionId, "Region"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(members);
-		assertEquals("Region", members.getValue());
+		assertEquals("Region", members.getValue()); //$NON-NLS-1$
 		assertEquals(1, members.getChildren().size());
 		assertEquals(4, members.getChildren().get(0).getChildren().size());
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId);
+		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -151,8 +151,8 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 	
 	private void initTest() {
 		initTestContext();
-		this.sessionService = (SessionService)applicationContext.getBean("sessionService");
-		this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService");
+		this.sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
+		this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
 	}
 	
 	

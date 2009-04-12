@@ -21,11 +21,11 @@ public abstract class SchemaValidator implements ErrorHandler {
 		try {
 			// build an XSD-aware SchemaFactory
 			SchemaFactory factory = 
-	            SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+	            SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
 
 			// get the custom xsd schema describing the required format for my XML files.
 			Schema schemaXSD = factory.newSchema( 
-					new File ( SchemaValidator.class.getResource("mondrian.xsd").toURI() ) );
+					new File ( SchemaValidator.class.getResource("mondrian.xsd").toURI() ) ); //$NON-NLS-1$
 			
 			// Create a Validator capable of validating XML files according to my custom schema.
 			Validator validator = schemaXSD.newValidator();
@@ -43,12 +43,12 @@ public abstract class SchemaValidator implements ErrorHandler {
 		}
 		catch (SAXException e)
 		{
-			return "Invalid XML file : "+e.getMessage();
+			return "Invalid XML file : "+e.getMessage(); //$NON-NLS-1$
 		}
 		catch (Throwable t)
 		{
 			return t.getClass().getCanonicalName() + 
-					" : " + t.getMessage();
+					" : " + t.getMessage(); //$NON-NLS-1$
 		}
 	}
 }
