@@ -233,7 +233,6 @@ public class Application extends Viewport implements ConnectionListener{
 							 ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>(){
 
 									public void onFailure(Throwable arg0) {
-										// TODO Auto-generated method stub
 										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedQueryCreate());
 									}
 					
@@ -247,7 +246,6 @@ public class Application extends Viewport implements ConnectionListener{
 											}
 
 											public void onSuccess(Object arg0) {
-												// TODO Auto-generated method stub
 												dimensionPanel.createDimensionList();
 												
 												stackPanel.showStack(1);

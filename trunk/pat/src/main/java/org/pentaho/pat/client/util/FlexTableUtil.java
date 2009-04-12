@@ -138,7 +138,6 @@ public class FlexTableUtil {
   }
   private static void insertCell(FlexTable targetTable, int targetRow,
 		int targetColumn, Widget w, int sourceRow, int sourceColumn) {
-	// TODO Auto-generated method stub
 
 	  if (sourceRow != targetRow && sourceColumn!=targetColumn){
 		  targetTable.setWidget(targetRow, targetColumn, w);
