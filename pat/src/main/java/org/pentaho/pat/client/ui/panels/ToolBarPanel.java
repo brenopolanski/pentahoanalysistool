@@ -95,7 +95,7 @@ ConnectionListener, SourcesConnectionEvents {
 						connectWindow.addConnectionListener(ToolBarPanel.this);
 					}
 					connectWindow.emptyForms();
-					connectWindow.showModal();
+					connectWindow.showModal(false);
 				}
 				else{
 					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {

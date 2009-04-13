@@ -27,8 +27,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents,ConnectionListener {
 
-	private static final String HEIGHT = "400px"; //$NON-NLS-1$
-	private static final String WIDTH = "800px"; //$NON-NLS-1$
+	private static final String HEIGHT = "330px"; //$NON-NLS-1$
+	private static final String WIDTH = "660px"; //$NON-NLS-1$
 	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
