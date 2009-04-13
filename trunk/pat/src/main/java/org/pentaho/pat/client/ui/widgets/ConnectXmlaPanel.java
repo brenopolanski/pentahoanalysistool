@@ -38,6 +38,8 @@ SourcesConnectionEvents {
 	// TODO Finish this Widget
 
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
+	private static final String HEIGHT = "280px"; //$NON-NLS-1$
+	private static final String WIDTH = "620px"; //$NON-NLS-1$
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
 	private final TextBox userTextBox;
@@ -48,9 +50,8 @@ SourcesConnectionEvents {
 
 	public ConnectXmlaPanel() {
 		super();
-		/*	this.setTitle(TITLE);
 		this.setWidth(WIDTH);
-		this.setHeight(HEIGHT);*/
+		this.setHeight(HEIGHT);
 		connectButton = new Button(ConstantFactory.getInstance().connect());
 		// catalogTextBox = new TextBox();
 		urlTextBox = new TextBox();

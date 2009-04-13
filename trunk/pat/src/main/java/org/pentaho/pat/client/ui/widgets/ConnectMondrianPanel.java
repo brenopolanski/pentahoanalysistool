@@ -47,9 +47,8 @@ SourcesConnectionEvents {
 	private static final String FORM_ENCODING = "multipart/form-data"; //$NON-NLS-1$
 	private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
 	private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
-	private static final String HEIGHT = "340px"; //$NON-NLS-1$
-	private static final String WIDTH = "750px"; //$NON-NLS-1$
-	private static final String TITLE = ConstantFactory.getInstance().register_new_mondrian_connection();
+	private static final String HEIGHT = "280px"; //$NON-NLS-1$
+	private static final String WIDTH = "620px"; //$NON-NLS-1$
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
@@ -68,11 +67,8 @@ SourcesConnectionEvents {
 
 	public ConnectMondrianPanel() {
 		super();
-		this.setTitle(TITLE);
 	
 		this.setLayout(new BorderLayout());
-		
-		
 
 		connectButton = new Button(ConstantFactory.getInstance().connect());
 		uploadButton = new Button(ConstantFactory.getInstance().upload());
