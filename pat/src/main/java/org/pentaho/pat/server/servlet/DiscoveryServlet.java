@@ -72,7 +72,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		}
 	}
 	
-	public String[] getDrivers()
+	public String[] getDrivers() throws RpcException
 	{
 	    List<String> driverNames = this.discoveryService.getDrivers();
 		return driverNames.toArray(new String[driverNames.size()]);
