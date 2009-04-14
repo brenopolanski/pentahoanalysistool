@@ -342,12 +342,17 @@
 		<dependency>
 			<groupId>org.olap4j</groupId>
 			<artifactId>olap4j</artifactId>
-			<version>0.9.7</version>
+			<version>0.9.7.146</version>
 		</dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.6.0</version>
+    </dependency>
 		<dependency>
-			<groupId>com.pentaho</groupId>
+			<groupId>pentaho</groupId>
 			<artifactId>mondrian</artifactId>
-			<version>3.0.4.11371</version>
+			<version>3.1.0-RC1</version>
 		</dependency>
 		<dependency>
 			<groupId>javacup</groupId>

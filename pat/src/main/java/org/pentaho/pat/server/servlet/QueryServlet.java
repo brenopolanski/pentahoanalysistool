@@ -54,7 +54,10 @@ public class QueryServlet extends AbstractServlet implements Query {
 			String dimensionName) throws RpcException
 	{
 		this.queryService.moveDimension(
-			getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.getCaption()), dimensionName);
+			getCurrentUserId(), 
+			sessionId, 
+			(axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
+			dimensionName);
 	}
 
 	public OlapData executeQuery(String sessionId) throws RpcException 

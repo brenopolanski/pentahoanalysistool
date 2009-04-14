@@ -99,14 +99,14 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	
 	public List<String> getDimensions(String userId, String sessionId, 
-		Axis axis) throws OlapException
+		Axis.Standard axis) throws OlapException
 	{
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
 		Axis targetAxis = null;
-		if (axis!=Axis.UNUSED)
+		if (axis!=null)
 			targetAxis=axis;
 		
 	    List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();

@@ -29,7 +29,7 @@ public interface DiscoveryService extends Service {
      */
 	@Secured ({"ROLE_USER"})
 	public List<String> getDimensions(String userId, String sessionId, 
-			Axis axis) throws OlapException;
+			Axis.Standard axis) throws OlapException;
 	
 	/**
 	 * Retreives a list of available cubes for the current connection.

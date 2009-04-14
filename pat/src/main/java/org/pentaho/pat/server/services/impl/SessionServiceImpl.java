@@ -182,8 +182,10 @@ public class SessionServiceImpl extends AbstractService
 				}
 	
 			} catch (ClassNotFoundException e) {
+			    log.error(e);
 				throw new OlapException(e.getMessage(), e);
 			} catch (SQLException e) {
+			    log.error(e);
 				throw new OlapException(e.getMessage(), e);
 			}
 		}
