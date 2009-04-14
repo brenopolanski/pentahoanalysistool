@@ -539,5 +539,7 @@ public interface PatConstants extends Constants{
 	String mondrian();
 
 	String failedQueryCreate();
+
+	String failedDimensionSet();
 	
 }

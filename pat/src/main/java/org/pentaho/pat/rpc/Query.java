@@ -30,7 +30,6 @@ public interface Query extends RemoteService {
 		String sessionId, 
 		Axis axis, 
 		String dimensionName) throws RpcException;
-	
 	/**
 	 * Performs a selection of certain members in a dimension.
 	 * You must first make sure to call Sesison.setCurrentQuery() to inform

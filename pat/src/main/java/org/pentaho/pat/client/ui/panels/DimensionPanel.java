@@ -6,20 +6,18 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
-import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.FlexTableRowDropController;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-public class DimensionPanel extends ScrollPanel implements ConnectionListener,
-		SourcesConnectionEvents {
+public class DimensionPanel extends ScrollPanel {
 	private ConnectionListenerCollection connectionListeners;
 	private LayoutPanel layoutPanel;
 	private DimensionFlexTable table1;
+	private static FlexTableRowDragController tableRowDragController;
 	public DimensionPanel() {
 
 		super();
@@ -32,11 +30,14 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener,
 		layoutPanel.setWidgetSpacing(0);
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
-		FlexTableCellDragController tableRowDragController = new FlexTableCellDragController(
-				Application.getPanel());
-
+		tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		
 		table1 = new DimensionFlexTable(tableRowDragController);
 
+		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1);
+	    tableRowDragController.registerDropController(flexTableRowDropController1);
+	
+	    
 		layoutPanel.add(table1, new BoxLayoutData(FillStyle.BOTH));
 	}
 
@@ -46,28 +47,10 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener,
 			table1.populateDimensionTable();
 			
 			}
-
-	public void onConnectionBroken(Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onConnectionMade(Widget sender) {
-		// TODO Auto-generated method stub
-		//createDimensionList();
-	}
-
-	public void addConnectionListener(ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
-
-	public void removeConnectionListener(ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
-
+	
+	public static FlexTableRowDragController getDragController(){
+		return tableRowDragController;
 	}
 }
+
+
