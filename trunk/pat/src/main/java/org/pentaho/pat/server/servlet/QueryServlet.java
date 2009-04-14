@@ -34,7 +34,7 @@ public class QueryServlet extends AbstractServlet implements Query {
 	}
 
 	public void clearSelection(String sessionId, String dimensionName, 
-			List<String> memberNames) 
+			List<String> memberNames) throws RpcException
 	{
 		this.queryService.clearSelection(getCurrentUserId(), 
 				sessionId, dimensionName, memberNames);
@@ -51,13 +51,14 @@ public class QueryServlet extends AbstractServlet implements Query {
 	}
 
 	public void moveDimension(String sessionId, Axis axis, 
-			String dimensionName) 
+			String dimensionName) throws RpcException
 	{
 		this.queryService.moveDimension(
 			getCurrentUserId(), sessionId, org.olap4j.Axis.valueOf(axis.getCaption()), dimensionName);
 	}
 
-	public OlapData executeQuery(String sessionId) throws RpcException {
+	public OlapData executeQuery(String sessionId) throws RpcException 
+	{
 		try {
 			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
