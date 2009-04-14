@@ -16,7 +16,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.FlexTableCellDragController;
+import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 
@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.HTML;
  */
 public final class DimensionFlexTable extends FlexTable {
 
-	private FlexTableCellDragController tcdc;
+	
 	//public final Axis AXIS_UNUSED = "UNUSED";
   /**
    * Creates a FlexTable with the desired number of rows and columns, making
@@ -42,16 +42,16 @@ public final class DimensionFlexTable extends FlexTable {
    *            
    * @author tom(at)wamonline.org.uk
    */
-  public DimensionFlexTable(final FlexTableCellDragController tableCellDragController) {	  
+	private FlexTableRowDragController trdc;
+  public DimensionFlexTable(FlexTableRowDragController tableRowDragController) {	  
 	  addStyleName("demo-flextable"); //$NON-NLS-1$
 	  
-	  tcdc = tableCellDragController;
+	  this.trdc=tableRowDragController;
     HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
     empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
 	 setWidget(0,0, empty);
-    	//TODO Rework the drop stuff
-	      //  FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
-		  //  tableCellDragController.registerDropController(flexTableRowDropController1);
+	 
+	
 	      }
 
   public void populateDimensionTable(){
@@ -69,7 +69,7 @@ public final class DimensionFlexTable extends FlexTable {
 				        HTML handle = new HTML(arg0[row]);
 				        handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
 				        setWidget(row, 0, handle);
-				        tcdc.makeDraggable(handle);	
+				        trdc.makeDraggable(handle);	
 			}
 	    	
 	    }

@@ -96,6 +96,7 @@ ConnectionListener, SourcesConnectionEvents {
 					}
 					connectWindow.emptyForms();
 					connectWindow.showModal(false);
+					//connectWindow.show();
 				}
 				else{
 					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {

@@ -32,7 +32,7 @@ public interface QueryService extends Service {
 		String sessionId,
 		Axis axis, 
 		String dimensionName);
-	
+		
 
 	/**
 	 * Creates a selection of members on a given dimension.

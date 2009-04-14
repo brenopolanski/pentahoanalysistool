@@ -1,7 +1,8 @@
 package org.pentaho.pat.client.ui.widgets;
 
-import org.pentaho.pat.client.util.FlexTableCellDragController;
-import org.pentaho.pat.client.util.FlexTableCellDropController;
+
+import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.FlexTableRowDropController;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -21,7 +22,7 @@ public class OlapFlexTable extends FlexTable {
 	   */
 	private static final int HeaderRowIndex = 0;
 
-	  public OlapFlexTable(int rows, int cols, FlexTableCellDragController tableCellDragController) {
+	  public OlapFlexTable(int rows, int cols, FlexTableRowDragController tableCellDragController) {
 		  this.insertRow(HeaderRowIndex);
 		  this.getRowFormatter().addStyleName(HeaderRowIndex,"FlexTable-Header"); //$NON-NLS-1$
 		  addStyleName("demo-flextable"); //$NON-NLS-1$
@@ -45,7 +46,7 @@ public class OlapFlexTable extends FlexTable {
 		        	
 		        	  
 				        tableCellDragController.makeDraggable(handle);
-				        FlexTableCellDropController flexTableRowDropController1 = new FlexTableCellDropController(this);
+				        FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(this);
 						   tableCellDragController.registerDropController(flexTableRowDropController1);
 						   if (col == 1 || col == 0)rowData[row][col] = handle;
 						   else rowData[row][col] = new Label(""); //$NON-NLS-1$

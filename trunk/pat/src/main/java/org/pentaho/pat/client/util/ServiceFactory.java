@@ -50,7 +50,7 @@ public class ServiceFactory {
 	    if (qService == null) {
 	      qService = (QueryAsync) GWT.create(Query.class);
 	      ServiceDefTarget endpoint = (ServiceDefTarget) qService;
-	      String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
+	      String moduleRelativeURL = GWT.getModuleBaseURL() + "query.rpc"; //$NON-NLS-1$
 	      endpoint.setServiceEntryPoint(moduleRelativeURL);
 	    }
 	    return qService;

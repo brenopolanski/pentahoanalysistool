@@ -10,15 +10,17 @@ import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.ui.panels.NorthPanel;
 import org.pentaho.pat.client.ui.panels.SouthPanel;
+import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-
+import org.pentaho.pat.rpc.beans.Axis;
 
 
 
@@ -117,7 +119,9 @@ public class OlapPanel extends DataWidget{
 			panel1 = new LayoutPanel(new GridLayout(2, 4));
 			panel1.setPadding(0);
 			panel1.setWidgetSpacing(0);
-			createLayout();
+			createRows();
+			createCols();
+			createFilter();
 			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
 					ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 					true);
@@ -161,14 +165,51 @@ public class OlapPanel extends DataWidget{
 	    //this.add(tableExamplePanel);
 	}
 
-	private void createLayout(){
+	private void createRows(){
 		 
 		  
-		//DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
+//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
  
 	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
+	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
 		
-		//panel1.add(rowDrop);
+		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
+
+		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.ROWS);
+	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
+		panel1.add(table1);
+	//	panel1.add(colDrop); 
+	}
+
+	private void createCols(){
+		 
+		  
+//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
+ 
+	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
+	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		
+		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
+
+		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.COLUMNS);
+	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
+		panel1.add(table1);
+	//	panel1.add(colDrop); 
+	}
+	
+	private void createFilter(){
+		 
+		  
+//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
+ 
+	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
+	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		
+		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
+
+		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.FILTER);
+	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
+		panel1.add(table1);
 	//	panel1.add(colDrop); 
 	}
 	@Override
