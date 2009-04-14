@@ -84,7 +84,7 @@ public class QueryServiceImpl extends AbstractService
         qDim.getSelections().add(selection);
     }
 
-	public void moveDimension(String userId, String sessionId, Axis axis, String dimensionName) {
+	public void moveDimension(String userId, String sessionId, Axis.Standard axis, String dimensionName) {
 
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);

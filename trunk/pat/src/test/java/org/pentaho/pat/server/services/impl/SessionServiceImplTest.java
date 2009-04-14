@@ -137,7 +137,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 		
 		// Check some basic stuff to test the connection.
 		assertEquals("LOCALDB", this.sessionService.getConnection("user", sessionId).getCatalogs().get(0).getName()); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNotNull(this.sessionService.getConnection("user", sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on ROWS from [Quadrant Analysis]")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(this.sessionService.getConnection("user", sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on COLUMNS from [Quadrant Analysis]")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Tests the destruction of the connection
 		this.sessionService.releaseConnection("user", sessionId); //$NON-NLS-1$

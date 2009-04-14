@@ -30,7 +30,7 @@ public interface QueryService extends Service {
 	public void moveDimension(
 		String userId, 
 		String sessionId,
-		Axis axis, 
+		Axis.Standard axis, 
 		String dimensionName);
 		
 

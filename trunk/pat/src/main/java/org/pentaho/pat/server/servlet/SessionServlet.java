@@ -48,7 +48,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		    {
 		    case XMLA:
 		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl()); //$NON-NLS-1$
-		        olap4jDriver = "org.olap4j.driver.xmla.Olap4jXmlaDriver"; //$NON-NLS-1$
+		        olap4jDriver = "org.olap4j.driver.xmla.XmlaOlap4jDriver"; //$NON-NLS-1$
 		        sessionService.createConnection(getCurrentUserId(),sessionId, 
 		                olap4jDriver, 
 		                olap4jUrl, 

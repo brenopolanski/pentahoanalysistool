@@ -54,7 +54,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 			dimensionsList = this.discoveryService.getDimensions(
 			    getCurrentUserId(), 
 			    sessionId, 
-			    org.olap4j.Axis.valueOf(axis.name()));
+			    (axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
 		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList")); //$NON-NLS-1$
