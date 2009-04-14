@@ -7,16 +7,18 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
+import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class DimensionPanel extends ScrollPanel {
 	private ConnectionListenerCollection connectionListeners;
 	private LayoutPanel layoutPanel;
-	private DimensionFlexTable table1;
+	private DimensionDropWidget dimDrop;
 	private static FlexTableRowDragController tableRowDragController;
 	public DimensionPanel() {
 
@@ -31,20 +33,15 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
 		tableRowDragController = new FlexTableRowDragController(Application.getPanel());
-		
-		table1 = new DimensionFlexTable(tableRowDragController);
 
-		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1);
-	    tableRowDragController.registerDropController(flexTableRowDropController1);
-	
-	    
-		layoutPanel.add(table1, new BoxLayoutData(FillStyle.BOTH));
+		DimensionDropWidget dimDrop = new DimensionDropWidget("Unused", Axis.UNUSED);
+		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	}
 
 	public void createDimensionList() {
 		// Create the various components that make up the Dimension Flextable
 
-			table1.populateDimensionTable();
+			dimDrop.populateDimensionTable();
 			
 			}
 	

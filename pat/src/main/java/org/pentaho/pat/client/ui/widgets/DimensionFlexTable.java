@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.HTML;
 public final class DimensionFlexTable extends FlexTable {
 
 	
-	//public final Axis AXIS_UNUSED = "UNUSED";
+
   /**
    * Creates a FlexTable with the desired number of rows and columns, making
    * each row draggable via the provided drag controller.
@@ -54,10 +54,10 @@ public final class DimensionFlexTable extends FlexTable {
 	
 	      }
 
-  public void populateDimensionTable(){
+  public void populateDimensionTable(Axis targetAxis){
 	 this.clear();
 	  
-	  ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Axis.UNUSED, new AsyncCallback<String[]>() {
+	  ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
 
 			public void onFailure(Throwable arg0) {
 				// TODO use standardized message dialog when implemented
