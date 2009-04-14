@@ -6,6 +6,7 @@ import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
@@ -18,6 +19,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import org.pentaho.pat.rpc.beans.Axis;
@@ -27,7 +29,7 @@ import org.pentaho.pat.rpc.beans.Axis;
 public class OlapPanel extends DataWidget{
 	public static OlapTable olapTable;
 
-	
+	private Grid grid;
 	/**
 	 * The widget used to display source code.
 	 */
@@ -116,12 +118,16 @@ public class OlapPanel extends DataWidget{
 			
 			
 			// Create the container for the main example
-			panel1 = new LayoutPanel(new GridLayout(2, 4));
+			panel1 = new LayoutPanel();
 			panel1.setPadding(0);
 			panel1.setWidgetSpacing(0);
-			createRows();
-			createCols();
-			createFilter();
+			grid = new Grid(3,2);
+			
+			grid.setWidget(0, 0, new DimensionDropWidget("Rows", Axis.ROWS));
+			grid.setWidget(1, 0, new DimensionDropWidget("Columns", Axis.COLUMNS));
+			grid.setWidget(2, 0, new DimensionDropWidget("Filter", Axis.FILTER));
+
+			panel1.add(grid);
 			stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
 					ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 					true);
@@ -138,80 +144,10 @@ public class OlapPanel extends DataWidget{
 			stackPanel.showStack(0);
 			
 			return layoutPanel;
-	
 
-		//olapTable = new OlapTable(MessageFactory.getInstance());
-		//this.add(olapTable);
-		/*AbsolutePanel tableExamplePanel = new AbsolutePanel();
-	    tableExamplePanel.setPixelSize(450, 300);*/
-	    //setWidget(tableExamplePanel);
-	    //this.add(tableExamplePanel);
-	    // instantiate our drag controller
-	    //FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(
-	    //    tableExamplePanel);
-	    //tableRowDragController.addDragHandler(demoDragHandler);
-
-	    // instantiate two flex tables
-	    //DemoFlexTable table1 = new DemoFlexTable(5, 3, tableRowDragController);
-	    //OlapFlexTable table2 = new OlapFlexTable(4, 4, DimensionPanel.tableRowDragController);
-	    //tableExamplePanel.add(table1, 10, 20);
-	    //tableExamplePanel.add(table2, 230, 40);
-	    
-	    // instantiate a drop controller for each table
-	    //FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1);
-	    //FlexTableRowDropController flexTableRowDropController2 = new FlexTableRowDropController(table2);
-	    //tableRowDragController.registerDropController(flexTableRowDropController1);
-	    //DimensionPanel.tableRowDragController.registerDropController(flexTableRowDropController2);
-	    //this.add(tableExamplePanel);
 	}
 
-	private void createRows(){
-		 
-		  
-//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
- 
-	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
-	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
-		
-		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
 
-		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.ROWS);
-	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
-		panel1.add(table1);
-	//	panel1.add(colDrop); 
-	}
-
-	private void createCols(){
-		 
-		  
-//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
- 
-	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
-	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
-		
-		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
-
-		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.COLUMNS);
-	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
-		panel1.add(table1);
-	//	panel1.add(colDrop); 
-	}
-	
-	private void createFilter(){
-		 
-		  
-//		DimensionDropWidget rowDrop = new DimensionDropWidget("Rows");
- 
-	//	DimensionDropWidget colDrop = new DimensionDropWidget("Cols");
-	//	FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
-		
-		DimensionFlexTable	table1 = new DimensionFlexTable(DimensionPanel.getDragController());
-
-		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, Axis.FILTER);
-	    DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
-		panel1.add(table1);
-	//	panel1.add(colDrop); 
-	}
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
