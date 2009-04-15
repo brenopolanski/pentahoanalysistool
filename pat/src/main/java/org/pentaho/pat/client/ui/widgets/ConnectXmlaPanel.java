@@ -103,9 +103,9 @@ SourcesConnectionEvents {
 
 		builder.add(connectButton, CellConstraints.xyw(3,9,5));
 
-		//formPanel.add(builder.getPanel());
-		this.add(builder.getPanel());
-		//return formPanel;
+		LayoutPanel layoutPanel = builder.getPanel();
+		layoutPanel.setPadding(15);
+		this.add(layoutPanel);
 	}
 
 	public boolean isConnectionEstablished() {
