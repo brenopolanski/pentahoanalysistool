@@ -42,6 +42,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
         try {
             list = this.discoveryService.getCubes(getCurrentUserId(), sessionId);
         } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Discovery.CantGenerateCubesList"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateCubesList")); //$NON-NLS-1$
         } 
 		return list.toArray(new String[list.size()]);
@@ -57,6 +58,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 			    (axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
+		    log.error(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"),e); //$NON-NLS-1$
 		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList")); //$NON-NLS-1$
 		}
 		
@@ -68,6 +70,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		try {
 			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
 		} catch (OlapException e) {
+		    log.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"),e); //$NON-NLS-1$
 		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
 		}
 	}
