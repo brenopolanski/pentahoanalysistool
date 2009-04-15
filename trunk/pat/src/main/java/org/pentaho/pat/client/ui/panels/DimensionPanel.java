@@ -19,7 +19,7 @@ public class DimensionPanel extends ScrollPanel {
 	private ConnectionListenerCollection connectionListeners;
 	private LayoutPanel layoutPanel;
 	private DimensionDropWidget dimDrop;
-	private static FlexTableRowDragController tableRowDragController;
+	public static FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
 	public DimensionPanel() {
 
 		super();
@@ -32,9 +32,9 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setWidgetSpacing(0);
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
-		tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		
 
-		DimensionDropWidget dimDrop = new DimensionDropWidget("Unused", Axis.UNUSED);
+		dimDrop = new DimensionDropWidget("Unused", Axis.UNUSED);
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	}
 
@@ -45,9 +45,9 @@ public class DimensionPanel extends ScrollPanel {
 			
 			}
 	
-	public static FlexTableRowDragController getDragController(){
+/*	public static FlexTableRowDragController getDragController(){
 		return tableRowDragController;
-	}
+	}*/
 }
 
 
