@@ -78,6 +78,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		} 
 		catch (OlapException e) 
 		{
+		    log.error(Messages.getString("Servlet.Session.ConnectionFailed"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed")); //$NON-NLS-1$
 		}
 	}
@@ -88,6 +89,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    try {
             return this.convert(savedConn);
         } catch (IOException e) {
+            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
@@ -98,6 +100,7 @@ public class SessionServlet extends AbstractServlet implements Session {
             this.sessionService.saveConnection(getCurrentUserId(),
                     this.convert(connection));
         } catch (Exception e) {
+            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
@@ -111,6 +114,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
 	        return cubeConnections;
         } catch (IOException e) {
+            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
         }
 	}
@@ -125,6 +129,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		try {
 			return sessionService.createNewQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
+		    log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
 		}
 	}

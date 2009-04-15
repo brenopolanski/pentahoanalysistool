@@ -46,6 +46,7 @@ public class QueryServlet extends AbstractServlet implements Query {
             this.queryService.createSelection(getCurrentUserId(), sessionId, 
             		dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
         } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSelectMembers"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
 	}
@@ -65,6 +66,7 @@ public class QueryServlet extends AbstractServlet implements Query {
 		try {
 			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
+		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
 		}
 	}

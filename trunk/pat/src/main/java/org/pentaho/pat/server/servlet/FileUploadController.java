@@ -55,6 +55,7 @@ public class FileUploadController extends AbstractCommandController implements
 				this.schemaDirectory = new File(tempDirectory,basedir);
 				this.schemaDirectory.mkdir();
 			} catch (Exception e2) {
+			    log.error(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2"),e); //$NON-NLS-1$
 				throw new RuntimeException(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2")); //$NON-NLS-1$
 			}
 		}
