@@ -95,7 +95,7 @@ ConnectionListener, SourcesConnectionEvents {
 						connectWindow.addConnectionListener(ToolBarPanel.this);
 					}
 					connectWindow.emptyForms();
-					connectWindow.showModal(false);
+					connectWindow.showModal();
 					//connectWindow.show();
 				}
 				else{

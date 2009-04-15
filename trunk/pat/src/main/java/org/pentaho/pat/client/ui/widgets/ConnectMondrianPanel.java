@@ -167,7 +167,9 @@ SourcesConnectionEvents {
 		connectButton.setEnabled(false);
 		builder.add(connectButton, CellConstraints.xyw(3,11,5));
 
-		formPanel.add(builder.getPanel());
+		LayoutPanel layoutPanel = builder.getPanel();
+		layoutPanel.setPadding(15);
+		formPanel.add(layoutPanel);
 		this.add(formPanel);
 	}
 
