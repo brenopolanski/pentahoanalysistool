@@ -17,7 +17,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
-import org.pentaho.pat.client.util.ServiceFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.Window;
