@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.servlet.ServletException;
 
+import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.rpc.beans.CubeConnection;
@@ -27,6 +28,8 @@ import com.mysql.jdbc.Messages;
 public class SessionServlet extends AbstractServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
+	
+	private Logger log = Logger.getLogger(SessionServlet.class);
 	
 	private SessionService sessionService;
 	
@@ -79,7 +82,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		catch (OlapException e) 
 		{
 		    log.error(Messages.getString("Servlet.Session.ConnectionFailed"),e); //$NON-NLS-1$
-			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed")); //$NON-NLS-1$
+			throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"),e); //$NON-NLS-1$
 		}
 	}
 	
@@ -90,7 +93,7 @@ public class SessionServlet extends AbstractServlet implements Session {
             return this.convert(savedConn);
         } catch (IOException e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
@@ -101,7 +104,7 @@ public class SessionServlet extends AbstractServlet implements Session {
                     this.convert(connection));
         } catch (Exception e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
