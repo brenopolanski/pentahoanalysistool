@@ -8,8 +8,16 @@ import com.google.gwt.core.client.GWT;
  *
  */
 public class MessageFactory {
-	  static PatMessages messages = null;
-	  public static PatMessages getInstance() {
+	  /**
+	 *TODO JAVADOC
+	 */
+	static PatMessages messages = null;
+	  /**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	public static PatMessages getInstance() {
 	    if (messages == null) {
 	      messages = (PatMessages) GWT.create(PatMessages.class);
 	    }

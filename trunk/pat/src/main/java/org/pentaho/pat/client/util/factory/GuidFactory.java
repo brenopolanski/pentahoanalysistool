@@ -5,9 +5,17 @@ package org.pentaho.pat.client.util.factory;
  *
  */
 public class GuidFactory {
-	  static String guid = null;
+	  /**
+	 *TODO JAVADOC
+	 */
+	static String guid = null;
 	  
-	  public static String getGuid() {
+	  /**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	public static String getGuid() {
 	    if (guid == null) {
 	      guid = Long.toString(System.currentTimeMillis());
 	    }

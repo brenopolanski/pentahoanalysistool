@@ -27,15 +27,43 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String HEIGHT = "330px"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
+	/**
+	 *TODO JAVADOC
+	 */
 	private final ConnectMondrianPanel connectMondrian;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final ConnectXmlaPanel connectXmla;
+	/**
+	 *TODO JAVADOC
+	 */
 	private boolean connectionEstablished = false;
+	/**
+	 *TODO JAVADOC
+	 */
 	private ConnectionListenerCollection connectionListeners;
+	/**
+	 *TODO JAVADOC
+	 */
 	final TabLayoutPanel tabPanel = new TabLayoutPanel();
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public ConnectionWindow() {
 		super(TITLE);
 		this.setHeight(HEIGHT);
@@ -46,12 +74,20 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		this.add(onInitialize());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.gwt.mosaic.ui.client.WindowPanel#onLoad()
+	 */
 	@Override
 	protected void onLoad() {
 		tabPanel.selectTab(0);
 		super.onLoad();
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	protected LayoutPanel onInitialize() {
 		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
@@ -77,19 +113,35 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		return layoutPanel;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param connectionEstablished
+	 */
 	public void setConnectionEstablished(boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionBroken(Widget sender) {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionMade(Widget sender) {
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ConnectionWindow.this);
@@ -102,6 +154,9 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	 * @see
 	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		if (connectionListeners == null) {
@@ -117,12 +172,19 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void removeConnectionListener(ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public void emptyForms() {
 		connectMondrian.emptyForm();
 		connectXmla.emptyForm();

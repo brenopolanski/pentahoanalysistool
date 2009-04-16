@@ -27,7 +27,10 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 
 /**
- * Table to demonstrate draggable rows and columns.
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
  */
 public final class DimensionFlexTable extends FlexTable {
 
@@ -43,6 +46,11 @@ public final class DimensionFlexTable extends FlexTable {
 	 */
 	private FlexTableRowDragController trdc;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param tableRowDragController
+	 */
 	public DimensionFlexTable(FlexTableRowDragController tableRowDragController) {
 		addStyleName("demo-flextable"); //$NON-NLS-1$
 
@@ -54,6 +62,11 @@ public final class DimensionFlexTable extends FlexTable {
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param targetAxis
+	 */
 	public void populateDimensionTable(Axis targetAxis) {
 		this.clear();
 

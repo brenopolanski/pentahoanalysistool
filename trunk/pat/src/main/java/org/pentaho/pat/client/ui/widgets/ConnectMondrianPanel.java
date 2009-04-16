@@ -41,27 +41,88 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	// TODO Finish this Widget
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FORM_ENCODING = "multipart/form-data"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private final ListBox driverListBox;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final TextBox urlTextBox;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final TextBox userTextBox;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final PasswordTextBox passwordTextBox;
+	/**
+	 *TODO JAVADOC
+	 */
 	private FileUpload fileUpload;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final Button uploadButton;
+	/**
+	 *TODO JAVADOC
+	 */
 	private final Button connectButton;
+	/**
+	 *TODO JAVADOC
+	 */
 	private String schemaPath;
+	/**
+	 *TODO JAVADOC
+	 */
 	private boolean connectionEstablished = false;
+	/**
+	 *TODO JAVADOC
+	 */
 	private ConnectionListenerCollection connectionListeners;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public ConnectMondrianPanel() {
 		super();
 
@@ -80,6 +141,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	private void onInitialize() {
 
 		final FormPanel formPanel = new FormPanel();
@@ -168,14 +233,29 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 		this.add(formPanel);
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param connectionEstablished
+	 */
 	public void setConnectionEstablished(boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	private ListBox createDriverListComboBox() {
 		final ListBox listBox = new ListBox();
 
@@ -198,6 +278,11 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 		return listBox;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
 		cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
@@ -223,6 +308,9 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 	 * addConnectionListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		if (connectionListeners == null) {
 			connectionListeners = new ConnectionListenerCollection();
@@ -237,12 +325,19 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 	 * removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void removeConnectionListener(ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$

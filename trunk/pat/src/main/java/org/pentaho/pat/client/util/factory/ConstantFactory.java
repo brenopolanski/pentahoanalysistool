@@ -8,8 +8,16 @@ import com.google.gwt.core.client.GWT;
  *
  */
 public class ConstantFactory {
-	  static PatConstants constants = null;
-	  public static PatConstants getInstance() {
+	 /**
+	 *TODO JAVADOC
+	 */
+	static PatConstants constants = null;
+	  /**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	public static PatConstants getInstance() {
 	    if (constants == null) {
 	      constants = (PatConstants) GWT.create(PatConstants.class);
 	    }

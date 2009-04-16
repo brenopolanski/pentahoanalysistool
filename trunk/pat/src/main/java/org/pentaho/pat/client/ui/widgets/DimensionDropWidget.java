@@ -7,19 +7,29 @@ import org.pentaho.pat.rpc.beans.Axis;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class DimensionDropWidget extends Grid {
+
 	/**
-	 * Widget for allowing user to drop dimension rows/columns and mdx filters
-	 * onto canvas
-	 * 
-	 * @param labelText
-	 * 
-	 * @author tom(at)wamonline.org.uk
-	 * @return
+	 *TODO JAVADOC
 	 */
 	private Axis dimAxis;
+	/**
+	 *TODO JAVADOC
+	 */
 	private DimensionFlexTable table1;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param labelText
+	 * @param targetAxis
+	 */
 	public DimensionDropWidget(String labelText, Axis targetAxis) {
 
 		super(2, 1);
@@ -28,6 +38,12 @@ public class DimensionDropWidget extends Grid {
 		init(labelText, dimAxis);
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param labelText
+	 * @param targetAxis
+	 */
 	public void init(String labelText, Axis targetAxis) {
 
 		table1 = new DimensionFlexTable(DimensionPanel.getDragController());
@@ -42,6 +58,10 @@ public class DimensionDropWidget extends Grid {
 		this.setWidget(1, 0, table1);
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public void populateDimensionTable() {
 
 		table1.populateDimensionTable(dimAxis);
