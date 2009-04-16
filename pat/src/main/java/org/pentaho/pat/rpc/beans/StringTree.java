@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringTree implements Serializable {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class StringTree implements Serializable, IsSerializable {
     private static final long serialVersionUID = 1L;
 
     String value;
