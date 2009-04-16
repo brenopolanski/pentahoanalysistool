@@ -31,8 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 
-public class ConnectXmlaPanel extends LayoutPanel implements
-		SourcesConnectionEvents {
+public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
@@ -67,21 +66,17 @@ public class ConnectXmlaPanel extends LayoutPanel implements
 		// formPanel.setWidth(WIDTH);
 		// formPanel.setHeight(HEIGHT);
 
-		final FormLayout layout = new FormLayout(
-				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-						+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+		final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().xmla_url()
-				+ LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().username()
-				+ LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(userTextBox, CellConstraints.xy(3, 3));
-		builder.addLabel(ConstantFactory.getInstance().password()
-				+ LABEL_SUFFIX, CellConstraints.xy(5, 3));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
 		// builder.addLabel(ConstantFactory.getInstance().catalog() +
 		// LABEL_SUFFIX, CellConstraints.xy(1, 8));
@@ -89,27 +84,18 @@ public class ConnectXmlaPanel extends LayoutPanel implements
 
 		connectButton.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(),
-						getCubeConnection(), new AsyncCallback<Object>() {
-							public void onSuccess(Object o) {
-								MessageBox
-										.info(ConstantFactory.getInstance()
-												.success(), MessageFactory
-												.getInstance()
-												.connection_established());
-								setConnectionEstablished(true);
-								connectionListeners
-										.fireConnectionMade(ConnectXmlaPanel.this);
-							}
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
+					public void onSuccess(Object o) {
+						MessageBox.info(ConstantFactory.getInstance().success(), MessageFactory.getInstance().connection_established());
+						setConnectionEstablished(true);
+						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
+					}
 
-							public void onFailure(Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance()
-										.error(), MessageFactory.getInstance()
-										.no_connection_param(
-												arg0.getLocalizedMessage()));
-								connectButton.setEnabled(true);
-							}
-						});
+					public void onFailure(Throwable arg0) {
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
+						connectButton.setEnabled(true);
+					}
+				});
 			}
 		});
 
@@ -136,8 +122,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements
 		} else {
 			cc.setUsername(null);
 		}
-		if (passwordTextBox.getText() != null
-				&& passwordTextBox.getText().length() > 0) {
+		if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
 			cc.setPassword(passwordTextBox.getText());
 		} else {
 			cc.setPassword(null);

@@ -153,24 +153,20 @@ public class Application extends Viewport implements ConnectionListener {
 		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
 		stackPanel = new StackLayoutPanel();
 		westPanel.add(stackPanel);
-		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance()
-				.cubes());
+		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance().cubes());
 
 		dimensionPanel = new DimensionPanel();
-		stackPanel.add(dimensionPanel, ConstantFactory.getInstance()
-				.dimensions());
+		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
 		stackPanel.showStack(0);
 		// toolBarPanel.addConnectionListener(dimensionPanel);
 
 		// westPanel.getHeader().add(Showcase.IMAGES.showcaseDemos().createImage());
-		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
-				.toolCollapseLeft());
+		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
 		westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
 		collapseBtn.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				bottomPanel.setCollapsed(westPanel, !layoutPanel
-						.isCollapsed(westPanel));
+				bottomPanel.setCollapsed(westPanel, !layoutPanel.isCollapsed(westPanel));
 				bottomPanel.layout();
 			}
 		});
@@ -178,8 +174,7 @@ public class Application extends Viewport implements ConnectionListener {
 
 		// bottomPanel.addCollapsedListener(cubeExplorerPanel, this);
 
-		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10,
-				250));
+		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250));
 		// bottomPanel.setCollapsed(westPanel, true);
 
 		// Add the content wrapper
@@ -219,78 +214,46 @@ public class Application extends Viewport implements ConnectionListener {
 		mainMenu.addTreeListener(new TreeListener() {
 			public void onTreeItemSelected(TreeItem item) {
 				if (listener != null) {
-					if (item.getParentItem().getText().equals(
-							ConstantFactory.getInstance().available_cubes())) {
+					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())) {
 
-						ServiceFactory.getSessionInstance().setCurrentCube(
-								Pat.getSessionID(), item.getText().trim(),
-								new AsyncCallback<String[]>() {
+						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
+
+							public void onFailure(Throwable arg0) {
+								MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionList());
+							}
+
+							public void onSuccess(String[] arg0) {
+								ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
 
 									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory
-												.getInstance().error(),
-												ConstantFactory.getInstance()
-														.failedDimensionList());
+										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedQueryCreate());
 									}
 
-									public void onSuccess(String[] arg0) {
-										ServiceFactory
-												.getSessionInstance()
-												.createNewQuery(
-														Pat.getSessionID(),
-														new AsyncCallback<String>() {
+									public void onSuccess(String arg0) {
 
-															public void onFailure(
-																	Throwable arg0) {
-																MessageBox
-																		.error(
-																				ConstantFactory
-																						.getInstance()
-																						.error(),
-																				ConstantFactory
-																						.getInstance()
-																						.failedQueryCreate());
-															}
+										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
-															public void onSuccess(
-																	String arg0) {
+											public void onFailure(Throwable arg0) {
+												// TODO Auto-generated method
+												// stub
 
-																ServiceFactory
-																		.getSessionInstance()
-																		.setCurrentQuery(
-																				Pat
-																						.getSessionID(),
-																				arg0,
-																				new AsyncCallback<Object>() {
+											}
 
-																					public void onFailure(
-																							Throwable arg0) {
-																						// TODO
-																						// Auto-generated
-																						// method
-																						// stub
+											public void onSuccess(Object arg0) {
+												dimensionPanel.createDimensionList();
 
-																					}
+												stackPanel.showStack(1);
+												stackPanel.layout(true);
+											}
 
-																					public void onSuccess(
-																							Object arg0) {
-																						dimensionPanel
-																								.createDimensionList();
-
-																						stackPanel
-																								.showStack(1);
-																						stackPanel
-																								.layout(true);
-																					}
-
-																				});
-
-															}
-
-														});
+										});
 
 									}
+
 								});
+
+							}
+						});
 
 					}
 					listener.onMenuItemSelected(item);
@@ -332,77 +295,66 @@ public class Application extends Viewport implements ConnectionListener {
 		setOptionsWidget(null);
 		formatter.setStyleName(1, 1, DEFAULT_STYLE_NAME + "-options"); //$NON-NLS-1$
 		if (isRTL) {
-			formatter.setHorizontalAlignment(1, 1,
-					HasHorizontalAlignment.ALIGN_LEFT);
+			formatter.setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_LEFT);
 		} else {
-			formatter.setHorizontalAlignment(1, 1,
-					HasHorizontalAlignment.ALIGN_RIGHT);
+			formatter.setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
 
 		// Align the content to the top
-		topPanel.getRowFormatter().setVerticalAlign(0,
-				HasVerticalAlignment.ALIGN_TOP);
-		topPanel.getRowFormatter().setVerticalAlign(1,
-				HasVerticalAlignment.ALIGN_TOP);
+		topPanel.getRowFormatter().setVerticalAlign(0, HasVerticalAlignment.ALIGN_TOP);
+		topPanel.getRowFormatter().setVerticalAlign(1, HasVerticalAlignment.ALIGN_TOP);
 	}
 
 	/**
 	 * Generates a cube list for the Cube Menu
 	 */
 	private void setupCubeMenu() {
-		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(),
-				new AsyncCallback<String[]>() {
-					public void onSuccess(String[] o) {
+		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
+			public void onSuccess(String[] o) {
 
-						Tree mainMenu = getMainMenu();
-						TreeItem cubeMenu = mainMenu.addItem(ConstantFactory
-								.getInstance().available_cubes());
+				Tree mainMenu = getMainMenu();
+				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().available_cubes());
 
-						for (int i = 0; i < o.length; i++) {
-							setupMainMenuOption(cubeMenu, new OlapPanel(o[i]),
-									Pat.IMAGES.cube());
-						}
+				for (int i = 0; i < o.length; i++) {
+					setupMainMenuOption(cubeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
+				}
 
-					}
+			}
 
-					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(),
-								ConstantFactory.getInstance().failedCubeList());
-					}
-				});
+			public void onFailure(Throwable arg0) {
+				MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedCubeList());
+			}
+		});
 
 	}
 
 	private void destroyCubeMenu() {
-		ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(),
-				new AsyncCallback<String[]>() {
+		ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(), new AsyncCallback<String[]>() {
+
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onSuccess(String[] arg0) {
+				// TODO Auto-generated method stub
+				String queryID = ""; //$NON-NLS-1$
+				ServiceFactory.getSessionInstance().deleteQuery(Pat.getSessionID(), queryID, new AsyncCallback() {
 
 					public void onFailure(Throwable arg0) {
 						// TODO Auto-generated method stub
 
 					}
 
-					public void onSuccess(String[] arg0) {
+					public void onSuccess(Object arg0) {
 						// TODO Auto-generated method stub
-						String queryID = ""; //$NON-NLS-1$
-						ServiceFactory.getSessionInstance().deleteQuery(
-								Pat.getSessionID(), queryID,
-								new AsyncCallback() {
 
-									public void onFailure(Throwable arg0) {
-										// TODO Auto-generated method stub
-
-									}
-
-									public void onSuccess(Object arg0) {
-										// TODO Auto-generated method stub
-
-									}
-
-								});
 					}
 
 				});
+			}
+
+		});
 	}
 
 	/**
@@ -411,10 +363,8 @@ public class Application extends Viewport implements ConnectionListener {
 	private void setupMainMenu() {
 		Tree mainMenu = getMainMenu();
 
-		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance()
-				.home());
-		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory
-				.getInstance().welcome()), Pat.IMAGES.cube());
+		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
+		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory.getInstance().welcome()), Pat.IMAGES.cube());
 
 	}
 
@@ -428,8 +378,7 @@ public class Application extends Viewport implements ConnectionListener {
 	 * @param image
 	 *            the icon to display next to the {@link TreeItem}
 	 */
-	private static void setupMainMenuOption(TreeItem parent,
-			DataWidget content, AbstractImagePrototype image) {
+	private static void setupMainMenuOption(TreeItem parent, DataWidget content, AbstractImagePrototype image) {
 		// Create the TreeItem
 		TreeItem option = parent.addItem(image.getHTML() + " " //$NON-NLS-1$
 				+ content.getName());

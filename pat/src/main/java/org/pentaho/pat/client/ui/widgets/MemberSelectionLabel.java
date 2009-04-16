@@ -17,8 +17,7 @@ import com.google.gwt.user.client.ui.TreeItem;
  * @author wseyler
  * 
  */
-public class MemberSelectionLabel extends HorizontalPanel implements
-		SourcesClickEvents {
+public class MemberSelectionLabel extends HorizontalPanel implements SourcesClickEvents {
 	// protected SelectionModeImageBundle selectionImageBundle;
 
 	protected ClickListenerCollection clickListeners;
@@ -131,12 +130,9 @@ public class MemberSelectionLabel extends HorizontalPanel implements
 		List pathList = new ArrayList();
 		pathList.add(label.getText());
 		TreeItem currentTreeItem = treeItem;
-		while (currentTreeItem.getParentItem() != null
-				&& currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
+		while (currentTreeItem.getParentItem() != null && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
 			currentTreeItem = currentTreeItem.getParentItem();
-			pathList.add(0,
-					((MemberSelectionLabel) currentTreeItem.getWidget())
-							.getText());
+			pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
 		}
 		String[] values = new String[pathList.size()];
 		return (String[]) pathList.toArray(values);

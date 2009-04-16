@@ -52,12 +52,10 @@ public class OlapPanel extends DataWidget {
 
 	private String createTabBarCaption(AbstractImagePrototype image, String text) {
 		StringBuffer sb = new StringBuffer();
-		sb
-				.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
+		sb.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
 		sb.append("<td valign='middle'>"); //$NON-NLS-1$
 		sb.append(image.getHTML());
-		sb
-				.append("</td><td valign='middle' style='white-space: nowrap;'>&nbsp;"); //$NON-NLS-1$
+		sb.append("</td><td valign='middle' style='white-space: nowrap;'>&nbsp;"); //$NON-NLS-1$
 		sb.append(text);
 		sb.append("</td></tr></thead></table>"); //$NON-NLS-1$
 		return sb.toString();
@@ -69,39 +67,33 @@ public class OlapPanel extends DataWidget {
 
 		// MDX(north) panel
 		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
-		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES
-				.toolCollapseUp());
+		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES.toolCollapseUp());
 		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
 
 		collapseBtn1.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				layoutPanel.setCollapsed(northPanel, !layoutPanel
-						.isCollapsed(northPanel));
+				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
 				layoutPanel.layout();
 			}
 		});
 
-		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10,
-				250));
+		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
 		layoutPanel.setCollapsed(northPanel, true);
 
 		// Drill(south) panel
 		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
 
-		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES
-				.toolCollapseDown());
+		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES.toolCollapseDown());
 		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
 
 		collapseBtn2.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				layoutPanel.setCollapsed(drillPanel, !layoutPanel
-						.isCollapsed(drillPanel));
+				layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
 				layoutPanel.layout();
 			}
 		});
 
-		layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10,
-				250));
+		layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
 		layoutPanel.setCollapsed(drillPanel, true);
 
 		stackPanel = new StackLayoutPanel();
@@ -113,26 +105,19 @@ public class OlapPanel extends DataWidget {
 		// panel1.setWidgetSpacing(0);
 		grid = new Grid(3, 2);
 
-		grid.setWidget(0, 0, new DimensionDropWidget(ConstantFactory
-				.getInstance().rows(), Axis.ROWS));
-		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory
-				.getInstance().columns(), Axis.COLUMNS));
-		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory
-				.getInstance().filter(), Axis.FILTER));
+		grid.setWidget(0, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
+		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
+		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
 
 		panel1.add(grid);
-		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(),
-				ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
+		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 				true);
 
 		final LayoutPanel panel2 = new LayoutPanel();
 		sourceWidget = new HTML();
 		sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source"); //$NON-NLS-1$
 		panel2.add(sourceWidget);
-		stackPanel.add(panel2,
-				createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory
-						.getInstance().chart()
-						+ " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		stackPanel.add(panel2, createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory.getInstance().chart() + " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
 
 		stackPanel.showStack(0);
 

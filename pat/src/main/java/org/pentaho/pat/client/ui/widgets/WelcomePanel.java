@@ -18,9 +18,7 @@ public class WelcomePanel extends DataWidget {
 	public Widget onInitialize() {
 		// Not Permanent, but better than a big white space.
 		LayoutPanel layoutPanel = new LayoutPanel();
-		layoutPanel
-				.add(new Frame(
-						"http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6")); //$NON-NLS-1$
+		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6")); //$NON-NLS-1$
 		return layoutPanel;
 	}
 

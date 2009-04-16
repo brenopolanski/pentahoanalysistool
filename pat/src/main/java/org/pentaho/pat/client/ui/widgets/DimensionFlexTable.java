@@ -57,25 +57,23 @@ public final class DimensionFlexTable extends FlexTable {
 	public void populateDimensionTable(Axis targetAxis) {
 		this.clear();
 
-		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(),
-				targetAxis, new AsyncCallback<String[]>() {
+		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
 
-					public void onFailure(Throwable arg0) {
-						// TODO use standardized message dialog when implemented
-						Window
-								.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
-					}
+			public void onFailure(Throwable arg0) {
+				// TODO use standardized message dialog when implemented
+				Window.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
+			}
 
-					public void onSuccess(String[] arg0) {
-						for (int row = 0; row < arg0.length; row++) {
-							Label handle = new Label(arg0[row]);
-							handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
-							setWidget(row, 0, handle);
-							trdc.makeDraggable(handle);
-						}
+			public void onSuccess(String[] arg0) {
+				for (int row = 0; row < arg0.length; row++) {
+					Label handle = new Label(arg0[row]);
+					handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
+					setWidget(row, 0, handle);
+					trdc.makeDraggable(handle);
+				}
 
-					}
-				});
+			}
+		});
 
 	}
 }

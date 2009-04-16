@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * 
@@ -38,9 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 
 public class Pat implements EntryPoint, ConnectionListener {
-	
 
-	
 	/**
 	 * Get the token for a given content widget.
 	 * 
@@ -52,13 +51,10 @@ public class Pat implements EntryPoint, ConnectionListener {
 		return className;
 	}
 
-
 	/**
 	 * PatImages ImageBundle
 	 */
-	public static final PatImages IMAGES = (PatImages) GWT
-			.create(PatImages.class);
-
+	public static final PatImages IMAGES = (PatImages) GWT.create(PatImages.class);
 
 	/**
 	 * The current style theme.
@@ -86,19 +82,17 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	private static Application app = new Application();
 
-	
 	/**
 	 * Global Session ID
 	 */
 	private static String SESSION_ID;
 
-	
 	/**
 	 * Pat Constructor
 	 */
 	public Pat() {
 		super();
-		
+
 	}
 
 	/**
@@ -132,10 +126,9 @@ public class Pat implements EntryPoint, ConnectionListener {
 		return gwtRef;
 	}
 
-
-
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() {
@@ -147,7 +140,6 @@ public class Pat implements EntryPoint, ConnectionListener {
 		// Create the application
 		setupTitlePanel();
 		// setupOptionsPanel();
-		
 
 		// Setup a history listener to reselect the associate menu item
 		final HistoryListener historyListener = new HistoryListener() {
@@ -175,7 +167,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 				if (content != null && !content.equals(app.getContent())) {
 					History.newItem(getContentWidgetToken(content));
 				}
-			}
+			} 
 		});
 
 		// Show the initial example
@@ -190,34 +182,34 @@ public class Pat implements EntryPoint, ConnectionListener {
 		}
 
 		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 	}
-	
+
 	/**
 	 * Returns the SESSION_ID
+	 * 
 	 * @return SESSION_ID
 	 */
-	public static String getSessionID(){
+	public static String getSessionID() {
 		return SESSION_ID;
 	}
-	
-	
+
 	/**
-	 * Sets the SESSION_ID 
+	 * Sets the SESSION_ID
 	 */
-	private static void setSessionID(){
-		ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>(){
+	private static void setSessionID() {
+		ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
 
 			public void onFailure(Throwable arg0) {
-			        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedSessionID());
-			      }
+				MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedSessionID());
+			}
 
 			public void onSuccess(String arg0) {
 				SESSION_ID = arg0;
 			}
-			
+
 		});
-		
+
 	}
 
 	/**
@@ -274,9 +266,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 					// If the correct style sheets are already loaded, then we
 					// should have
 					// nothing to remove.
-					if (!href.contains(gwtStyleSheet)
-							&& !href.contains(gwtMosaicStyleSheet)
-							&& !href.contains(showcaseStyleSheet)) {
+					if (!href.contains(gwtStyleSheet) && !href.contains(gwtMosaicStyleSheet) && !href.contains(showcaseStyleSheet)) {
 						toRemove.add(elem);
 					}
 				}
@@ -311,43 +301,43 @@ public class Pat implements EntryPoint, ConnectionListener {
 				// IE to redraw the background correctly.
 				RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
 						"none"); //$NON-NLS-1$
-				RootPanel.getBodyElement().getStyle()
-						.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				RootPanel.getBodyElement().getStyle().setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				RootPanel.get().add(app);
 			}
 		};
 
-		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
-				getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
-		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosaicStyleSheet,
-				getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet, getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosaicStyleSheet, getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
 		// Load the showcase specific style sheet after the GWT & Mosaic theme
 		// style
 		// sheet so that custom styles supercede the theme styles.
-		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet,
-				getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
-		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet, 
-				getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
-		
+		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet, getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet, getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
+
 	}
-	
-	
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken
+	 * (com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(
+	 * com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionMade(Widget sender) {
-//		setupCubeMenu();
-		
+		// setupCubeMenu();
+
 	}
-	
-	
-	
+
 }

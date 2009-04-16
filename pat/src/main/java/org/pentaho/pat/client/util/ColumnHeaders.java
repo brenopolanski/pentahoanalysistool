@@ -63,8 +63,7 @@ public class ColumnHeaders implements IOlapDataStructure, Serializable {
 	 * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
 	 */
 	public CellInfo getCell(int row, int column) {
-		return columnHeaderMembers == null ? null
-				: columnHeaderMembers[row][column];
+		return columnHeaderMembers == null ? null : columnHeaderMembers[row][column];
 	}
 
 	/**

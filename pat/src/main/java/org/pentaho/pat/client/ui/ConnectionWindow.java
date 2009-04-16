@@ -25,13 +25,11 @@ import com.google.gwt.user.client.ui.Widget;
  * @author pstoellberger
  * 
  */
-public class ConnectionWindow extends WindowPanel implements
-		SourcesConnectionEvents, ConnectionListener {
+public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
 
 	private static final String HEIGHT = "330px"; //$NON-NLS-1$
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
-	private static final String TITLE = ConstantFactory.getInstance()
-			.register_new_connection();
+	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
 	private boolean connectionEstablished = false;
@@ -55,8 +53,7 @@ public class ConnectionWindow extends WindowPanel implements
 	}
 
 	protected LayoutPanel onInitialize() {
-		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
-				Orientation.VERTICAL));
+		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
 		tabPanel.setPadding(5);
 		tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
@@ -65,8 +62,7 @@ public class ConnectionWindow extends WindowPanel implements
 		connectXmla.addConnectionListener(ConnectionWindow.this);
 
 		tabPanel.addTabListener(new TabListener() {
-			public boolean onBeforeTabSelected(SourcesTabEvents sender,
-					int tabIndex) {
+			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
 				return true;
 			}
 

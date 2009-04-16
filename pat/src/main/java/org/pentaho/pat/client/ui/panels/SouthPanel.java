@@ -12,8 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author root
  * 
  */
-public class SouthPanel extends CaptionLayoutPanel implements
-		ConnectionListener {
+public class SouthPanel extends CaptionLayoutPanel implements ConnectionListener {
 
 	public SouthPanel(String text) {
 		super(text);

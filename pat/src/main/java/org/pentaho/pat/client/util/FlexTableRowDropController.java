@@ -14,8 +14,7 @@ import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class FlexTableRowDropController extends
-		AbstractPositioningDropController {
+public class FlexTableRowDropController extends AbstractPositioningDropController {
 
 	private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 
@@ -60,8 +59,7 @@ public class FlexTableRowDropController extends
 	@Override
 	public void onDrop(DragContext context) {
 		FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
-		FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable,
-				trDragController.getDragRow(), targetRow + 1, targetAxis);
+		FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(), targetRow + 1, targetAxis);
 		super.onDrop(context);
 	}
 
@@ -81,17 +79,13 @@ public class FlexTableRowDropController extends
 	@Override
 	public void onMove(DragContext context) {
 		super.onMove(context);
-		targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel,
-				new CoordinateLocation(context.mouseX, context.mouseY),
+		targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX, context.mouseY),
 				LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
 
 		Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
 		Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
-		Location tableLocation = new WidgetLocation(flexTable,
-				context.boundaryPanel);
-		context.boundaryPanel.add(positioner, tableLocation.getLeft(),
-				widgetLocation.getTop()
-						+ (targetRow == -1 ? 0 : w.getOffsetHeight()));
+		Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
+		context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (targetRow == -1 ? 0 : w.getOffsetHeight()));
 	}
 
 	Widget newPositioner(DragContext context) {
