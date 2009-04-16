@@ -21,35 +21,62 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class OlapPanel extends DataWidget {
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private Grid grid;
 	/**
 	 * The widget used to display source code.
+	 */
+	/**
+	 *TODO JAVADOC
 	 */
 	private HTML sourceWidget = null;
 
 	/**
 	 * The stack panel with the contents.
 	 */
+	/**
+	 *TODO JAVADOC
+	 */
 	private StackLayoutPanel stackPanel;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private ScrollPanel panel1;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private String name;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param constants2
-	 *            the constants
-	 */
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param name
+	 */
 	public OlapPanel(String name) {
 		super();
 		this.name = name;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param image
+	 * @param text
+	 * @return
+	 */
 	private String createTabBarCaption(AbstractImagePrototype image, String text) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
@@ -61,6 +88,9 @@ public class OlapPanel extends DataWidget {
 		return sb.toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
+	 */
 	@Override
 	public Widget onInitialize() {
 		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
@@ -125,12 +155,18 @@ public class OlapPanel extends DataWidget {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getDescription()
+	 */
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getName()
+	 */
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub

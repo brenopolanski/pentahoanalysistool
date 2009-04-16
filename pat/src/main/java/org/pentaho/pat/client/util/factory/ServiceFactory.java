@@ -20,9 +20,17 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 public class ServiceFactory {
 
 // TODO activate new services, as soon as RPC can be client-side included 
-	  static DiscoveryAsync dService = null;
+	  /**
+	 *TODO JAVADOC
+	 */
+	static DiscoveryAsync dService = null;
 	  
-	  public static DiscoveryAsync getDiscoveryInstance() {
+	  /**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	public static DiscoveryAsync getDiscoveryInstance() {
 	    if (dService == null) {
 	      dService = (DiscoveryAsync) GWT.create(Discovery.class);
 	      ServiceDefTarget endpoint = (ServiceDefTarget) dService;
@@ -32,9 +40,17 @@ public class ServiceFactory {
 	    return dService;
 	  }
 	  
-	  static SessionAsync sService = null;
+	  /**
+	 *TODO JAVADOC
+	 */
+	static SessionAsync sService = null;
 	  
-	  public static SessionAsync getSessionInstance() {
+	  /**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	public static SessionAsync getSessionInstance() {
 	    if (sService == null) {
 	      sService = (SessionAsync) GWT.create(Session.class);
 	      ServiceDefTarget endpoint = (ServiceDefTarget) sService;

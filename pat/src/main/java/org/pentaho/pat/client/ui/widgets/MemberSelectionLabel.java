@@ -17,15 +17,37 @@ import com.google.gwt.user.client.ui.TreeItem;
  * @author wseyler
  * 
  */
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class MemberSelectionLabel extends HorizontalPanel implements SourcesClickEvents {
 	// protected SelectionModeImageBundle selectionImageBundle;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	protected ClickListenerCollection clickListeners;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private Label label = new Label();
+	/**
+	 *TODO JAVADOC
+	 */
 	private Image image;
+	/**
+	 *TODO JAVADOC
+	 */
 	private TreeItem treeItem;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public MemberSelectionLabel() {
 		this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT);
 		// selectionImageBundle =
@@ -36,11 +58,21 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		this.add(label);
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param text
+	 */
 	public MemberSelectionLabel(String text) {
 		this();
 		label.setText(text);
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param image
+	 */
 	public void setImage(Image image) {
 		if (this.image != null) {
 			this.remove(this.image);
@@ -51,10 +83,20 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		}
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public String getText() {
 		return label.getText();
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param text
+	 */
 	public void setText(String text) {
 		label.setText(text);
 	}
@@ -65,6 +107,9 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 * @see
 	 * com.google.gwt.user.client.ui.SourcesClickEvents#addClickListener(com
 	 * .google.gwt.user.client.ui.ClickListener)
+	 */
+	/* (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#addClickListener(com.google.gwt.user.client.ui.ClickListener)
 	 */
 	public void addClickListener(ClickListener listener) {
 		if (clickListeners == null) {
@@ -80,20 +125,36 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 * com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(
 	 * com.google.gwt.user.client.ui.ClickListener)
 	 */
+	/* (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(com.google.gwt.user.client.ui.ClickListener)
+	 */
 	public void removeClickListener(ClickListener listener) {
 		if (clickListeners != null) {
 			clickListeners.remove(listener);
 		}
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public TreeItem getTreeItem() {
 		return treeItem;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param treeItem
+	 */
 	public void setTreeItem(TreeItem treeItem) {
 		this.treeItem = treeItem;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
+	 */
 	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
@@ -119,11 +180,21 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 * setImage(selectionImage); }
 	 */
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public Label getLabel() {
 		return label;
 	}
 
 	/**
+	 * @return
+	 */
+	/**
+	 *TODO JAVADOC
+	 *
 	 * @return
 	 */
 	public String[] getFullPath() {

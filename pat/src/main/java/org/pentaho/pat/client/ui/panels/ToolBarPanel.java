@@ -30,17 +30,39 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener, SourcesConnectionEvents {
+	/**
+	 *TODO JAVADOC
+	 */
 	private ConnectionWindow connectWindow;
+	/**
+	 *TODO JAVADOC
+	 */
 	private boolean connectionEstablished = false;
+	/**
+	 *TODO JAVADOC
+	 */
 	private MenuItem connectItem;
+	/**
+	 *TODO JAVADOC
+	 */
 	private ConnectionListenerCollection connectionListeners;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public ToolBarPanel() {
 		super();
 
 		init();
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @author bugg
+	 *
+	 */
 	private static final class ThemeMenu extends MenuItem {
 		private static List<ThemeMenu> allButtons = null;
 
@@ -66,6 +88,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public void init() {
 		createFileMenu();
 		createViewMenu();
@@ -73,6 +99,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	private void createFileMenu() {
 
 		MenuBar fileMenuBar = new MenuBar(true);
@@ -114,6 +144,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	private void createViewMenu() {
 		MenuBar viewMenu = new MenuBar(true);
 		viewMenu.setAnimationEnabled(true);
@@ -141,6 +175,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		this.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	private void createHelpMenu() {
 
 		MenuBar helpMenu = new MenuBar(true);
@@ -169,18 +207,34 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	}
 
 	// Inherited on click method
+	/* (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onClick(Widget sender) {
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param connectionEstablished
+	 */
 	public void setConnectionEstablished(boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionBroken(Widget sender) {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
@@ -188,6 +242,9 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		connectItem.setText("Connect"); //$NON-NLS-1$
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionMade(Widget sender) {
 		setConnectionEstablished(true);
 		// Alter menu
@@ -204,6 +261,9 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		if (connectionListeners == null) {
 			connectionListeners = new ConnectionListenerCollection();
@@ -217,6 +277,9 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	 * @see
 	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 */
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
 	public void removeConnectionListener(ConnectionListener listener) {
 		if (connectionListeners != null) {

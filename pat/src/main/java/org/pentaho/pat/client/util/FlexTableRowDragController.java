@@ -7,20 +7,43 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class FlexTableRowDragController extends PickupDragController {
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private FlexTable draggableTable;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private int dragRow;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param boundaryPanel
+	 */
 	public FlexTableRowDragController(AbsolutePanel boundaryPanel) {
 		super(boundaryPanel, false);
 		setBehaviorDragProxy(true);
 		setBehaviorMultipleSelection(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#dragEnd()
+	 */
 	@Override
 	public void dragEnd() {
 		super.dragEnd();
@@ -29,6 +52,9 @@ public class FlexTableRowDragController extends PickupDragController {
 		draggableTable = null;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
+	 */
 	@Override
 	public void setBehaviorDragProxy(boolean dragProxyEnabled) {
 		if (!dragProxyEnabled) {
@@ -38,6 +64,9 @@ public class FlexTableRowDragController extends PickupDragController {
 		super.setBehaviorDragProxy(dragProxyEnabled);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.AbsolutePanel, boolean)
+	 */
 	@Override
 	protected BoundaryDropController newBoundaryDropController(AbsolutePanel boundaryPanel, boolean allowDroppingOnBoundaryPanel) {
 		if (allowDroppingOnBoundaryPanel) {
@@ -46,6 +75,9 @@ public class FlexTableRowDragController extends PickupDragController {
 		return super.newBoundaryDropController(boundaryPanel, allowDroppingOnBoundaryPanel);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newDragProxy(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
 	@Override
 	protected Widget newDragProxy(DragContext context) {
 		FlexTable proxy;
@@ -57,14 +89,31 @@ public class FlexTableRowDragController extends PickupDragController {
 		return proxy;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	FlexTable getDraggableTable() {
 		return draggableTable;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	int getDragRow() {
 		return dragRow;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param widget
+	 * @param table
+	 * @return
+	 */
 	private int getWidgetRow(Widget widget, FlexTable table) {
 		for (int row = 0; row < table.getRowCount(); row++) {
 			for (int col = 0; col < table.getCellCount(row); col++) {

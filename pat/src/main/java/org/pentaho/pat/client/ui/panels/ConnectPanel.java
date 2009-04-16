@@ -30,21 +30,67 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
 
+	/**
+	 *TODO JAVADOC
+	 */
 	Button connectBtn;
+	/**
+	 *TODO JAVADOC
+	 */
 	TextBox serverTB;
+	/**
+	 *TODO JAVADOC
+	 */
 	Label serverLbl;
+	/**
+	 *TODO JAVADOC
+	 */
 	TextBox portTB;
+	/**
+	 *TODO JAVADOC
+	 */
 	Label portLbl;
+	/**
+	 *TODO JAVADOC
+	 */
 	TextBox databaseTB;
+	/**
+	 *TODO JAVADOC
+	 */
 	Label databaseLbl;
+	/**
+	 *TODO JAVADOC
+	 */
 	TextBox userTB;
+	/**
+	 *TODO JAVADOC
+	 */
 	Label userLbl;
+	/**
+	 *TODO JAVADOC
+	 */
 	PasswordTextBox passwordTB;
+	/**
+	 *TODO JAVADOC
+	 */
 	Label passwordLbl;
+	/**
+	 *TODO JAVADOC
+	 */
 	FileUpload fileUpload;
+	/**
+	 *TODO JAVADOC
+	 */
 	Button uploadButton;
+	/**
+	 *TODO JAVADOC
+	 */
 	FormPanel fpanel;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public ConnectPanel() {
 
 		this.setTitle("Register new Mondrian Connection"); //$NON-NLS-1$
@@ -63,6 +109,11 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	protected Widget onInitialize() {
 		fpanel = new FormPanel();
 		fpanel.setAction("schemaupload"); //$NON-NLS-1$
@@ -136,21 +187,33 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		return fpanel;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void addConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
 	public void removeConnectionListener(ConnectionListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
 		System.out.println("ConnectPanel on Connection Made"); //$NON-NLS-1$

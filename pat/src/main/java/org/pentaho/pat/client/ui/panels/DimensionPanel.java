@@ -13,11 +13,30 @@ import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class DimensionPanel extends ScrollPanel {
+	/**
+	 *TODO JAVADOC
+	 */
 	private LayoutPanel layoutPanel;
+	/**
+	 *TODO JAVADOC
+	 */
 	private DimensionDropWidget dimDrop;
+	/**
+	 *TODO JAVADOC
+	 */
 	private static FlexTableRowDragController tableRowDragController;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public DimensionPanel() {
 
 		super();
@@ -34,6 +53,10 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
 	public void createDimensionList() {
 		// Create the various components that make up the Dimension Flextable
 
@@ -41,6 +64,11 @@ public class DimensionPanel extends ScrollPanel {
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
 	public static FlexTableRowDragController getDragController() {
 		return tableRowDragController;
 	}

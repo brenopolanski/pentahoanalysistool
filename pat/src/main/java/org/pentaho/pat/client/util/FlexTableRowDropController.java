@@ -14,12 +14,27 @@ import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class FlexTableRowDropController extends AbstractPositioningDropController {
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private FlexTable flexTable;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
 
 		public Widget getWidget(int index) {
@@ -39,23 +54,46 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 		}
 	};
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private Widget positioner = null;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private int targetRow;
 
+	/**
+	 *TODO JAVADOC
+	 */
 	private org.pentaho.pat.rpc.beans.Axis targetAxis;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param flexTable
+	 */
 	public FlexTableRowDropController(FlexTable flexTable) {
 		super(flexTable);
 		this.flexTable = flexTable;
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param flexTable
+	 * @param rows
+	 */
 	public FlexTableRowDropController(FlexTable flexTable, Axis rows) {
 		super(flexTable);
 		this.flexTable = flexTable;
 		targetAxis = rows;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
 	@Override
 	public void onDrop(DragContext context) {
 		FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
@@ -63,12 +101,18 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 		super.onDrop(context);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
 	@Override
 	public void onEnter(DragContext context) {
 		super.onEnter(context);
 		positioner = newPositioner(context);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
 	@Override
 	public void onLeave(DragContext context) {
 		positioner.removeFromParent();
@@ -76,6 +120,9 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 		super.onLeave(context);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
 	@Override
 	public void onMove(DragContext context) {
 		super.onMove(context);
@@ -88,6 +135,12 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 		context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (targetRow == -1 ? 0 : w.getOffsetHeight()));
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param context
+	 * @return
+	 */
 	Widget newPositioner(DragContext context) {
 		Widget p = new SimplePanel();
 		p.addStyleName(CSS_DEMO_TABLE_POSITIONER);

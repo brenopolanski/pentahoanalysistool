@@ -21,6 +21,12 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
+/**
+ *TODO JAVADOC
+ *
+ * @author bugg
+ *
+ */
 public class FlexTableUtil {
 
 	/**
@@ -152,6 +158,13 @@ public class FlexTableUtil {
 
 	}
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param parent
+	 * @param node
+	 * @return
+	 */
 	protected static TreeItem createPathForMember(TreeItem parent, StringTree node) {
 		MemberSelectionLabel memberLabel = new MemberSelectionLabel(node.getValue());
 
@@ -186,6 +199,11 @@ public class FlexTableUtil {
 
 	private static PopupMenu contextMenu;
 
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param event
+	 */
 	private static void showContextMenu(final Event event) {
 		if (contextMenu == null) {
 			contextMenu = new PopupMenu();
