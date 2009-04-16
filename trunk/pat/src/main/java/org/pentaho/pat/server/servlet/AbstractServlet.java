@@ -24,8 +24,8 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	private static boolean standaloneMode;
 	private static Authentication standaloneAuth;
 	protected static ApplicationContext applicationContext;
-	
-	protected Logger log = Logger.getLogger(this.getClass());
+
+    private Logger log = Logger.getLogger(AbstractServlet.class);
 	
 	private final String[] contextFiles = {
 			"./src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
@@ -57,21 +57,26 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	        	
 	        	standaloneMode=true;
 	        	
-	        	GrantedAuthority userAuths[] = {
-	    				new GrantedAuthorityImpl("ROLE_USER"), //$NON-NLS-1$
-	    				new GrantedAuthorityImpl("ROLE_ADMIN") //$NON-NLS-1$
-	    			};
-	    		
-	    		standaloneAuth = new PrincipalSpringSecurityUserToken(
-	    			"","admin","admin",userAuths,null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$ $NON-NLS-3$
+	        	initSecurityTokens();
 	        }
 	        
 	        initDone=true;
 		}
-		
 	}
-	
-	/**
+
+	private static void initSecurityTokens() {
+	    if (standaloneAuth==null&&standaloneMode)
+	    {
+	        GrantedAuthority userAuths[] = {
+                    new GrantedAuthorityImpl("ROLE_USER"), //$NON-NLS-1$
+                    new GrantedAuthorityImpl("ROLE_ADMIN") //$NON-NLS-1$
+                };
+            
+            standaloneAuth = new PrincipalSpringSecurityUserToken(
+                "","admin","admin",userAuths,null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$ $NON-NLS-3$
+	    }
+	}
+    /**
 	 * Helper method to gain access to the current user's security object.
 	 * @return The current user name.
 	 */
@@ -83,9 +88,22 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 		
 	}
+	
+	/**
+	 * Setter for testing purposes. Injects the application context to use.
+	 * Calling this method also configures the servlets in "stand alone" mode. No security
+	 * config will be used.
+	 * @param applicationContext The application context to use.
+	 */
+	public static void setApplicationContext(ApplicationContext applicationContext) {
+        AbstractServlet.applicationContext = applicationContext;
+        standaloneMode=true;
+        initSecurityTokens();
+        initDone=true;
+    }
 
     protected void doUnexpectedFailure(Throwable e) {
         log.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"),e); //$NON-NLS-1$
-        super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage()));
+        super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage(),e));
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
+import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Discovery;
 import org.pentaho.pat.rpc.beans.Axis;
@@ -28,6 +29,8 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	private static final long serialVersionUID = 1L;
 	
 	private DiscoveryService discoveryService;
+	
+	private Logger log = Logger.getLogger(DiscoveryServlet.class);
 	
 	public void init() throws ServletException {
 		super.init();
