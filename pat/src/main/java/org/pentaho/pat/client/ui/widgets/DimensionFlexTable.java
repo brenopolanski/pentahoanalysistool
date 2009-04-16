@@ -50,7 +50,7 @@ public final class DimensionFlexTable extends FlexTable {
 	  this.trdc=tableRowDragController;
     HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
     empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
-    trdc.makeDraggable(empty);	
+    
 	 setWidget(0,0, empty);
 	 
 	
