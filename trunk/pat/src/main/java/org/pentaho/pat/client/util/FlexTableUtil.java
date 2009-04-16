@@ -6,6 +6,7 @@ import org.gwt.mosaic.ui.client.infopanel.TrayInfoPanelNotifier;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
 
