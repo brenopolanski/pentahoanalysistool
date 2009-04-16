@@ -39,13 +39,11 @@ public class FlexTableRowDragController extends PickupDragController {
 	}
 
 	@Override
-	protected BoundaryDropController newBoundaryDropController(
-			AbsolutePanel boundaryPanel, boolean allowDroppingOnBoundaryPanel) {
+	protected BoundaryDropController newBoundaryDropController(AbsolutePanel boundaryPanel, boolean allowDroppingOnBoundaryPanel) {
 		if (allowDroppingOnBoundaryPanel) {
 			throw new IllegalArgumentException();
 		}
-		return super.newBoundaryDropController(boundaryPanel,
-				allowDroppingOnBoundaryPanel);
+		return super.newBoundaryDropController(boundaryPanel, allowDroppingOnBoundaryPanel);
 	}
 
 	@Override

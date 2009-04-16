@@ -29,8 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Tom Barber
  * 
  */
-public class ToolBarPanel extends MenuBar implements ClickListener,
-		ConnectionListener, SourcesConnectionEvents {
+public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener, SourcesConnectionEvents {
 	private ConnectionWindow connectWindow;
 	private boolean connectionEstablished = false;
 	private MenuItem connectItem;
@@ -82,44 +81,36 @@ public class ToolBarPanel extends MenuBar implements ClickListener,
 
 		// Create Toolbar Menu Items
 
-		connectItem = new MenuItem(ConstantFactory.getInstance().connect(),
-				new Command() {
-					public void execute() {
-						if (!connectionEstablished) {
-							if (connectWindow == null) {
-								connectWindow = new ConnectionWindow();
-								connectWindow
-										.addConnectionListener(ToolBarPanel.this);
-							}
-							connectWindow.emptyForms();
-							connectWindow.showModal();
-							// connectWindow.show();
-						} else {
-							ServiceFactory.getSessionInstance().disconnect(
-									Pat.getSessionID(),
-									new AsyncCallback<Object>() {
-										public void onSuccess(Object o) {
-											setConnectionEstablished(false);
-											ToolBarPanel.this
-													.onConnectionBroken(ToolBarPanel.this);
-										}
-
-										public void onFailure(Throwable arg0) {
-											MessageBox.error(ConstantFactory
-													.getInstance().error(),
-													arg0.getLocalizedMessage());
-										}
-									});
-						}
+		connectItem = new MenuItem(ConstantFactory.getInstance().connect(), new Command() {
+			public void execute() {
+				if (!connectionEstablished) {
+					if (connectWindow == null) {
+						connectWindow = new ConnectionWindow();
+						connectWindow.addConnectionListener(ToolBarPanel.this);
 					}
-				});
+					connectWindow.emptyForms();
+					connectWindow.showModal();
+					// connectWindow.show();
+				} else {
+					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
+						public void onSuccess(Object o) {
+							setConnectionEstablished(false);
+							ToolBarPanel.this.onConnectionBroken(ToolBarPanel.this);
+						}
+
+						public void onFailure(Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+						}
+					});
+				}
+			}
+		});
 
 		// Add connect button
 		fileMenuBar.addItem(connectItem);
 
 		// Add File menu to Toolbar
-		this.addItem(new MenuItem(ConstantFactory.getInstance().file(),
-				fileMenuBar));
+		this.addItem(new MenuItem(ConstantFactory.getInstance().file(), fileMenuBar));
 
 	}
 
@@ -131,18 +122,17 @@ public class ToolBarPanel extends MenuBar implements ClickListener,
 		ConstantFactory.getInstance();
 		for (int i = 0; i < PatConstants.STYLE_THEMES.length; i++) {
 			ConstantFactory.getInstance();
-			final ThemeMenu button = new ThemeMenu(
-					PatConstants.STYLE_THEMES[i], new Command() {
+			final ThemeMenu button = new ThemeMenu(PatConstants.STYLE_THEMES[i], new Command() {
 
-						public void execute() {
+				public void execute() {
 
-							// Update the current theme
-							// Pat.CUR_THEME = button.getTheme();
+					// Update the current theme
+					// Pat.CUR_THEME = button.getTheme();
 
-							// Load the new style sheets
-							Pat.updateStyleSheets();
-						}
-					});
+					// Load the new style sheets
+					Pat.updateStyleSheets();
+				}
+			});
 
 			styleSheetMenu.addItem(button);
 		}
@@ -158,19 +148,16 @@ public class ToolBarPanel extends MenuBar implements ClickListener,
 
 		// Create Toolbar Menu Items
 
-		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance()
-				.mainLinkPat(), new Command() {
+		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(), new Command() {
 			public void execute() {
 				System.out.print(ConstantFactory.getInstance().pat_homepage());
 			}
 
 		});
 
-		MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance()
-				.mainLinkHomepage(), new Command() {
+		MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance().mainLinkHomepage(), new Command() {
 			public void execute() {
-				System.out.print(ConstantFactory.getInstance()
-						.pentaho_homepage());
+				System.out.print(ConstantFactory.getInstance().pentaho_homepage());
 			}
 
 		});

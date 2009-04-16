@@ -37,8 +37,7 @@ public class FlexTableUtil {
 	 * @param targetRow
 	 *            the index before which to insert the copied row
 	 */
-	public static void copyRow(FlexTable sourceTable, FlexTable targetTable,
-			int sourceRow, int targetRow) {
+	public static void copyRow(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int targetRow) {
 		targetTable.insertRow(targetRow);
 		for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
 			HTML html = new HTML(sourceTable.getHTML(sourceRow, col));
@@ -63,9 +62,7 @@ public class FlexTableUtil {
 	 * @param targetRow
 	 *            the index before which to insert the moved row
 	 */
-	public static void moveRow(final FlexTable sourceTable,
-			final FlexTable targetTable, int sourceRow, final int targetRow,
-			Axis targetAxis) {
+	public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, int sourceRow, final int targetRow, Axis targetAxis) {
 		// targetRow = targetTable.getRowCount();
 		if (sourceTable != targetTable) {
 			if (sourceTable == targetTable && sourceRow >= targetRow) {
@@ -90,74 +87,43 @@ public class FlexTableUtil {
 						 * w2.setText(((Label) w).getText());
 						 */
 
-						ServiceFactory.getQueryInstance().moveDimension(
-								Pat.getSessionID(), targetAxis,
-								w.getElement().getInnerText().trim(),
+						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),
 								new AsyncCallback() {
 
 									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory
-												.getInstance().error(),
-												ConstantFactory.getInstance()
-														.failedDimensionSet());
+										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionSet());
 									}
 
 									public void onSuccess(Object arg0) {
-										ServiceFactory
-												.getDiscoveryInstance()
-												.getMembers(
-														Pat.getSessionID(),
-														w.getElement()
-																.getInnerText()
-																.trim(),
-														new AsyncCallback<StringTree>() {
+										ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), w.getElement().getInnerText().trim(),
+												new AsyncCallback<StringTree>() {
 
-															public void onFailure(
-																	Throwable arg0) {
-																// TODO
-																// Auto-generated
-																// method stub
+													public void onFailure(Throwable arg0) {
+														// TODO Auto-generated
+														// method stub
 
-															}
+													}
 
-															public void onSuccess(
-																	StringTree arg0) {
-																// TODO
-																// Auto-generated
-																// method stub
-																final Tree dimTree = new Tree();
-																// TreeItem tn =
-																// new
-																// TreeItem(w.getElement().getInnerText().trim());
-																// dimTree.addItem(tn);
+													public void onSuccess(StringTree arg0) {
+														// TODO Auto-generated
+														// method stub
+														final Tree dimTree = new Tree();
+														// TreeItem tn = new
+														// TreeItem(w.getElement().getInnerText().trim());
+														// dimTree.addItem(tn);
 
-																StringTree memberTree = arg0;
-																Label rootLabel = new Label(
-																		memberTree
-																				.getValue());
-																TreeItem root = new TreeItem(
-																		rootLabel);
-																for (int i = 0; i < memberTree
-																		.getChildren()
-																		.size(); i++) {
-																	root = createPathForMember(
-																			root,
-																			memberTree
-																					.getChildren()
-																					.get(
-																							i));
-																}
-																dimTree
-																		.addItem(root);
-																targetTable
-																		.setWidget(
-																				targetRow,
-																				col2,
-																				dimTree);
+														StringTree memberTree = arg0;
+														Label rootLabel = new Label(memberTree.getValue());
+														TreeItem root = new TreeItem(rootLabel);
+														for (int i = 0; i < memberTree.getChildren().size(); i++) {
+															root = createPathForMember(root, memberTree.getChildren().get(i));
+														}
+														dimTree.addItem(root);
+														targetTable.setWidget(targetRow, col2, dimTree);
 
-															}
+													}
 
-														});
+												});
 									}
 
 								});
@@ -165,25 +131,19 @@ public class FlexTableUtil {
 						targetTable.setWidget(targetRow, col, w);
 
 				} else {
-					final HTML html = new HTML(sourceTable.getHTML(sourceRow,
-							col));
+					final HTML html = new HTML(sourceTable.getHTML(sourceRow, col));
 					targetTable.setWidget(targetRow, col, html);
-					ServiceFactory.getQueryInstance().moveDimension(
-							Pat.getSessionID(), targetAxis,
-							html.getText().trim(), new AsyncCallback() {
+					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback() {
 
-								public void onFailure(Throwable arg0) {
-									MessageBox.error(ConstantFactory
-											.getInstance().error(),
-											ConstantFactory.getInstance()
-													.failedDimensionSet());
-								}
+						public void onFailure(Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionSet());
+						}
 
-								public void onSuccess(Object arg0) {
+						public void onSuccess(Object arg0) {
 
-								}
+						}
 
-							});
+					});
 				}
 			}
 			copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
@@ -192,10 +152,8 @@ public class FlexTableUtil {
 
 	}
 
-	protected static TreeItem createPathForMember(TreeItem parent,
-			StringTree node) {
-		MemberSelectionLabel memberLabel = new MemberSelectionLabel(node
-				.getValue());
+	protected static TreeItem createPathForMember(TreeItem parent, StringTree node) {
+		MemberSelectionLabel memberLabel = new MemberSelectionLabel(node.getValue());
 
 		memberLabel.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
@@ -222,8 +180,7 @@ public class FlexTableUtil {
 	 */
 	private static Command cmd = new Command() {
 		public void execute() {
-			TrayInfoPanelNotifier.notifyTrayEvent(
-					"Menu Button", "You selected a menu item!"); //$NON-NLS-1$ //$NON-NLS-2$
+			TrayInfoPanelNotifier.notifyTrayEvent("Menu Button", "You selected a menu item!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	};
 
@@ -256,8 +213,7 @@ public class FlexTableUtil {
 
 		contextMenu.setPopupPositionAndShow(new PositionCallback() {
 			public void setPosition(int offsetWidth, int offsetHeight) {
-				contextMenu.setPopupPosition(event.getClientX(), event
-						.getClientY());
+				contextMenu.setPopupPosition(event.getClientX(), event.getClientY());
 			}
 		});
 	}
@@ -270,8 +226,7 @@ public class FlexTableUtil {
 	 * @param sourceRow
 	 * @param targetRow
 	 */
-	private static void copyRowStyle(FlexTable sourceTable,
-			FlexTable targetTable, int sourceRow, int targetRow) {
+	private static void copyRowStyle(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int targetRow) {
 		String rowStyle = sourceTable.getRowFormatter().getStyleName(sourceRow);
 		targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
 	}

@@ -29,10 +29,8 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
 
-		tableRowDragController = new FlexTableRowDragController(Application
-				.getPanel());
-		dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
-				.unused(), Axis.UNUSED);
+		tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		dimDrop = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	}
 

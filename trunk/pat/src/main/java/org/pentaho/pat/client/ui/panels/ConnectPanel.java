@@ -28,8 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author paul
  * 
  */
-public class ConnectPanel extends WindowPanel implements
-		SourcesConnectionEvents, ConnectionListener {
+public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
 
 	Button connectBtn;
 	TextBox serverTB;
@@ -75,10 +74,7 @@ public class ConnectPanel extends WindowPanel implements
 			public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
 				if (arg0.getResults().contains("#filename#")) //$NON-NLS-1$
 				{
-					String tmp = arg0
-							.getResults()
-							.substring(
-									arg0.getResults().indexOf("#filename#") + 10, arg0.getResults().indexOf("#/filename#")); //$NON-NLS-1$ //$NON-NLS-2$
+					String tmp = arg0.getResults().substring(arg0.getResults().indexOf("#filename#") + 10, arg0.getResults().indexOf("#/filename#")); //$NON-NLS-1$ //$NON-NLS-2$
 					Window.alert(tmp);
 				} else
 					Window.alert("Schema Upload failed"); //$NON-NLS-1$
@@ -91,36 +87,23 @@ public class ConnectPanel extends WindowPanel implements
 
 			}
 		});
-		FormLayout layout = new FormLayout(
-				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-						+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+		FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
 				"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px"); //$NON-NLS-1$
 
 		PanelBuilder builder = new PanelBuilder(layout);
 		this.setTitle("title"); //$NON-NLS-1$
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().server() + ":", CellConstraints.xy(1, 2)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().server() + ":", CellConstraints.xy(1, 2)); //$NON-NLS-1$
 		builder.add(serverTB, CellConstraints.xy(3, 2));
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().port() + ":", CellConstraints.xy(5, 2)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().port() + ":", CellConstraints.xy(5, 2)); //$NON-NLS-1$
 		builder.add(portTB, CellConstraints.xy(7, 2));
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().database() + ":", CellConstraints.xy(1, 4)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().database() + ":", CellConstraints.xy(1, 4)); //$NON-NLS-1$
 		builder.add(databaseTB, CellConstraints.xyw(3, 4, 5));
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().username() + ":", CellConstraints.xy(1, 6)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().username() + ":", CellConstraints.xy(1, 6)); //$NON-NLS-1$
 		builder.add(userTB, CellConstraints.xy(3, 6));
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().password() + ":", CellConstraints.xy(5, 6)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().password() + ":", CellConstraints.xy(5, 6)); //$NON-NLS-1$
 		builder.add(passwordTB, CellConstraints.xy(7, 6));
-		builder
-				.addLabel(
-						ConstantFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8)); //$NON-NLS-1$
 		fileUpload.setName("file"); //$NON-NLS-1$
 
 		builder.add(fileUpload, CellConstraints.xyw(3, 8, 5));
