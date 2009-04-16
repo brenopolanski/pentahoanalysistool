@@ -1,14 +1,22 @@
 package org.pentaho.pat.client.util;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.PopupMenu;
+import org.gwt.mosaic.ui.client.infopanel.TrayInfoPanelNotifier;
 import org.olap4j.Axis;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 public class FlexTableUtil {
 
@@ -48,14 +56,32 @@ public class FlexTableUtil {
 	  public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, int sourceRow,
 	      int targetRow, org.pentaho.pat.rpc.beans.Axis targetAxis) {
 		  targetRow = targetTable.getRowCount();
+		if (sourceTable != targetTable){
 	    if (sourceTable == targetTable && sourceRow >= targetRow) {
 	      sourceRow++;
 	    }
 	    targetTable.insertRow(targetRow);
 	    for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
-	      final Widget w = sourceTable.getWidget(sourceRow, col);
+	      Widget w = sourceTable.getWidget(sourceRow, col);
 	      if (w != null) {
-	    	  targetTable.setWidget(targetRow, col, w);
+	    	/*  if (w instanceof Label == true){
+	    		  final Label w2 = new Label(){
+	    			  @Override
+	    		      public void onBrowserEvent(Event event) {
+	    		          if (event.getTypeInt() == Event.ONMOUSEOVER) {
+	    		            DOM.eventPreventDefault(event);
+	    		            showContextMenu(event);
+	    		          }
+	    		        
+	    		        super.onBrowserEvent(event);
+	    		      }
+	    		  };
+	    		  
+	    		  w2.setText(((Label) w).getText());
+	    		  targetTable.setWidget(targetRow, col, w2);
+	    		  }
+	    	  else*/ targetTable.setWidget(targetRow, col, w);
+	    	  
 	        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback(){
 
 				public void onFailure(Throwable arg0) {
@@ -86,10 +112,41 @@ public class FlexTableUtil {
 	    }
 	    copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
 	    sourceTable.removeRow(sourceRow);
-	    
+		}
 	    
 	  }
+	  
+	  /**
+	   * Make a command that we will execute from all menu items.
+	   */
+	  private static Command cmd = new Command() {
+	    public void execute() {
+	      TrayInfoPanelNotifier.notifyTrayEvent("Menu Button", "You selected a menu item!");
+	    }
+	  };
+	
+	  private static PopupMenu contextMenu;
+	  
+	  private static void showContextMenu(final Event event) {
+		    if (contextMenu == null) {
+		      contextMenu = new PopupMenu();
 
+		      contextMenu.addItem("MenuItem 1", cmd);
+		      contextMenu.addItem("MenuItem 2", cmd);
+
+		      contextMenu.addSeparator();
+
+		      contextMenu.addItem("MenuItem 3", cmd);
+		      contextMenu.addItem("MenuItem 4", cmd);
+		    }
+
+		    contextMenu.setPopupPositionAndShow(new PositionCallback() {
+		      public void setPosition(int offsetWidth, int offsetHeight) {
+		        contextMenu.setPopupPosition(event.getClientX(), event.getClientY());
+		      }
+		    });
+	 }
+	  
 	  /**
 	   * Copies the CSS style of a source row to a target row.
 	   * 

@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * Table to demonstrate draggable rows and columns.
@@ -49,6 +50,7 @@ public final class DimensionFlexTable extends FlexTable {
 	  this.trdc=tableRowDragController;
     HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
     empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
+    trdc.makeDraggable(empty);	
 	 setWidget(0,0, empty);
 	 
 	
@@ -66,7 +68,7 @@ public final class DimensionFlexTable extends FlexTable {
 
 			public void onSuccess(String[] arg0) {
 				 for (int row = 0; row < arg0.length; row++) {
-				        HTML handle = new HTML(arg0[row]);
+				        Label handle = new Label(arg0[row]);
 				        handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
 				        setWidget(row, 0, handle);
 				        trdc.makeDraggable(handle);	

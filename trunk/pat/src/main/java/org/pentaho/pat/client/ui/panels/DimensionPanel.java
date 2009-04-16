@@ -13,13 +13,14 @@ import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.rpc.beans.Axis;
 
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class DimensionPanel extends ScrollPanel {
 	private ConnectionListenerCollection connectionListeners;
 	private LayoutPanel layoutPanel;
 	private DimensionDropWidget dimDrop;
-	public static FlexTableRowDragController tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+	private static FlexTableRowDragController tableRowDragController;
 	public DimensionPanel() {
 
 		super();
@@ -33,7 +34,7 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(layoutPanel);
 		
-
+		tableRowDragController = new FlexTableRowDragController(RootPanel.get());
 		dimDrop = new DimensionDropWidget("Unused", Axis.UNUSED);
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	}
@@ -45,9 +46,9 @@ public class DimensionPanel extends ScrollPanel {
 			
 			}
 	
-/*	public static FlexTableRowDragController getDragController(){
+	public static FlexTableRowDragController getDragController(){
 		return tableRowDragController;
-	}*/
+	}
 }
 
 
