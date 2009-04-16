@@ -1,6 +1,8 @@
 package org.pentaho.pat.client;
 
 
+import java.util.Iterator;
+
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -342,6 +344,36 @@ public class Application extends Viewport implements ConnectionListener{
 		
 	}
 
+	private void destroyCubeMenu() {
+	ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(), new AsyncCallback<String[]>(){
+
+		public void onFailure(Throwable arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void onSuccess(String[] arg0) {
+			// TODO Auto-generated method stub
+			String queryID = "";
+			ServiceFactory.getSessionInstance().deleteQuery(Pat.getSessionID(), queryID, new AsyncCallback(){
+
+				public void onFailure(Throwable arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				public void onSuccess(Object arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+		}
+		
+	});
+	}
+	
+	
 	/**
 	 * Setup all of the options in the main menu.
 	 */
@@ -455,7 +487,7 @@ public class Application extends Viewport implements ConnectionListener{
 
 	public void onConnectionBroken(Widget sender) {
 		// TODO Auto-generated method stub
-		
+		destroyCubeMenu();
 	}
 
 	public void onConnectionMade(Widget sender) {
