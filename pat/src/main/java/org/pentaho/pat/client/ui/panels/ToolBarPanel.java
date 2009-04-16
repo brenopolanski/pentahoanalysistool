@@ -30,12 +30,11 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class ToolBarPanel extends MenuBar implements ClickListener,
-ConnectionListener, SourcesConnectionEvents {
+		ConnectionListener, SourcesConnectionEvents {
 	private ConnectionWindow connectWindow;
 	private boolean connectionEstablished = false;
 	private MenuItem connectItem;
 	private ConnectionListenerCollection connectionListeners;
-
 
 	public ToolBarPanel() {
 		super();
@@ -47,6 +46,7 @@ ConnectionListener, SourcesConnectionEvents {
 		private static List<ThemeMenu> allButtons = null;
 
 		private String theme;
+
 		public ThemeMenu(String theme, Command cmd) {
 			super(theme, cmd);
 			this.theme = theme;
@@ -55,31 +55,26 @@ ConnectionListener, SourcesConnectionEvents {
 			// Add this button to the static list
 			if (allButtons == null) {
 				allButtons = new ArrayList<ThemeMenu>();
-				//setDown(true);
+				// setDown(true);
 
 			}
 			allButtons.add(this);
 		}
-		
+
 		public String getTheme() {
 			return theme;
 		}
 
-
-
 	}
-
 
 	public void init() {
 		createFileMenu();
 		createViewMenu();
 		createHelpMenu();
 
-
-
 	}
 
-	private void createFileMenu(){
+	private void createFileMenu() {
 
 		MenuBar fileMenuBar = new MenuBar(true);
 		fileMenuBar.setAnimationEnabled(true);
@@ -87,97 +82,105 @@ ConnectionListener, SourcesConnectionEvents {
 
 		// Create Toolbar Menu Items
 
-		connectItem = new MenuItem(ConstantFactory.getInstance().connect(), new Command(){ 
-			public void execute() {
-				if (!connectionEstablished){
-					if (connectWindow == null) {
-						connectWindow = new ConnectionWindow();
-						connectWindow.addConnectionListener(ToolBarPanel.this);
+		connectItem = new MenuItem(ConstantFactory.getInstance().connect(),
+				new Command() {
+					public void execute() {
+						if (!connectionEstablished) {
+							if (connectWindow == null) {
+								connectWindow = new ConnectionWindow();
+								connectWindow
+										.addConnectionListener(ToolBarPanel.this);
+							}
+							connectWindow.emptyForms();
+							connectWindow.showModal();
+							// connectWindow.show();
+						} else {
+							ServiceFactory.getSessionInstance().disconnect(
+									Pat.getSessionID(),
+									new AsyncCallback<Object>() {
+										public void onSuccess(Object o) {
+											setConnectionEstablished(false);
+											ToolBarPanel.this
+													.onConnectionBroken(ToolBarPanel.this);
+										}
+
+										public void onFailure(Throwable arg0) {
+											MessageBox.error(ConstantFactory
+													.getInstance().error(),
+													arg0.getLocalizedMessage());
+										}
+									});
+						}
 					}
-					connectWindow.emptyForms();
-					connectWindow.showModal();
-					//connectWindow.show();
-				}
-				else{
-					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
-						public void onSuccess(Object o) {
-							setConnectionEstablished(false);
-							ToolBarPanel.this.onConnectionBroken(ToolBarPanel.this);
-						}
-						public void onFailure(Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-						}
-					});
-				}
-			}
-		});
+				});
 
 		// Add connect button
 		fileMenuBar.addItem(connectItem);
 
 		// Add File menu to Toolbar
-		this.addItem(new MenuItem(ConstantFactory.getInstance().file(), fileMenuBar));
+		this.addItem(new MenuItem(ConstantFactory.getInstance().file(),
+				fileMenuBar));
 
 	}
 
-	private void createViewMenu(){
+	private void createViewMenu() {
 		MenuBar viewMenu = new MenuBar(true);
 		viewMenu.setAnimationEnabled(true);
 		MenuBar styleSheetMenu = new MenuBar(true);
-
 
 		ConstantFactory.getInstance();
 		for (int i = 0; i < PatConstants.STYLE_THEMES.length; i++) {
 			ConstantFactory.getInstance();
 			final ThemeMenu button = new ThemeMenu(
-					PatConstants.STYLE_THEMES[i], new Command(){
+					PatConstants.STYLE_THEMES[i], new Command() {
 
 						public void execute() {
 
 							// Update the current theme
-							//		    	   	 Pat.CUR_THEME = button.getTheme();
+							// Pat.CUR_THEME = button.getTheme();
 
 							// Load the new style sheets
 							Pat.updateStyleSheets();
-						}});
+						}
+					});
 
 			styleSheetMenu.addItem(button);
 		}
 		viewMenu.addItem("Blah", styleSheetMenu); //$NON-NLS-1$
 
-		this.addItem(new MenuItem("View",viewMenu)); //$NON-NLS-1$
+		this.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
 	}
 
-	private void createHelpMenu(){
+	private void createHelpMenu() {
 
 		MenuBar helpMenu = new MenuBar(true);
 		helpMenu.setAnimationEnabled(true);
 
 		// Create Toolbar Menu Items
 
-		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(),
-				new Command()
-		{
-			public void execute(){
+		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance()
+				.mainLinkPat(), new Command() {
+			public void execute() {
 				System.out.print(ConstantFactory.getInstance().pat_homepage());
 			}
 
 		});
 
-		MenuItem pentahoItem = new MenuItem(
-				ConstantFactory.getInstance().mainLinkHomepage(),new Command()
-				{
-					public void execute(){
-						System.out.print(ConstantFactory.getInstance().pentaho_homepage());
-					}
+		MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance()
+				.mainLinkHomepage(), new Command() {
+			public void execute() {
+				System.out.print(ConstantFactory.getInstance()
+						.pentaho_homepage());
+			}
 
-				});
+		});
 
 		// Add connect button
 		helpMenu.addItem(homeItem);
 		helpMenu.addItem(pentahoItem);
 		this.addItem(new MenuItem("Help", helpMenu)); //$NON-NLS-1$
 	}
+
 	// Inherited on click method
 	public void onClick(Widget sender) {
 

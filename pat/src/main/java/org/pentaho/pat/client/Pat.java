@@ -213,7 +213,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 			      }
 
 			public void onSuccess(String arg0) {
-				SESSION_ID = (String) arg0;
+				SESSION_ID = arg0;
 			}
 			
 		});

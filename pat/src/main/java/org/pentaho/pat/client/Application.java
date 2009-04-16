@@ -1,8 +1,5 @@
 package org.pentaho.pat.client;
 
-
-import java.util.Iterator;
-
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -21,9 +18,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -48,7 +45,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * <p>
- * The Application wrapper that includes a menu bar, title and content 
+ * The Application wrapper that includes a menu bar, title and content
  * </p>
  * <h3>CSS Style Rules</h3> <ul class="css"> <li>.Application { Applied to the
  * entire Application }</li> <li>.Application-top { The top portion of the
@@ -60,7 +57,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * @author tom(at)wamonline.org.uk
  */
 
-public class Application extends Viewport implements ConnectionListener{
+public class Application extends Viewport implements ConnectionListener {
 	/**
 	 * Images used in the {@link Application}.
 	 */
@@ -121,17 +118,18 @@ public class Application extends Viewport implements ConnectionListener{
 	 * Create StackPanel
 	 */
 	private StackLayoutPanel stackPanel;
-	
+
 	/*
 	 * The tool bar
 	 */
 	private ToolBarPanel toolBarPanel;
-	
+
 	private static LayoutPanel layoutPanel;
-	
+
 	private static LayoutPanel bottomPanel;
-	
+
 	private DimensionPanel dimensionPanel;
+
 	/**
 	 * Constructor.
 	 */
@@ -145,9 +143,6 @@ public class Application extends Viewport implements ConnectionListener{
 		createTopPanel();
 		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 
-		
-		
-		
 		bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
@@ -162,10 +157,11 @@ public class Application extends Viewport implements ConnectionListener{
 				.cubes());
 
 		dimensionPanel = new DimensionPanel();
-		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
+		stackPanel.add(dimensionPanel, ConstantFactory.getInstance()
+				.dimensions());
 		stackPanel.showStack(0);
-		//toolBarPanel.addConnectionListener(dimensionPanel);
-		
+		// toolBarPanel.addConnectionListener(dimensionPanel);
+
 		// westPanel.getHeader().add(Showcase.IMAGES.showcaseDemos().createImage());
 		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
 				.toolCollapseLeft());
@@ -207,9 +203,10 @@ public class Application extends Viewport implements ConnectionListener{
 		linksPanel.add(link);
 	}
 
-	public static LayoutPanel getPanel(){
+	public static LayoutPanel getPanel() {
 		return bottomPanel;
 	}
+
 	/**
 	 * Create the main menu.
 	 */
@@ -222,54 +219,83 @@ public class Application extends Viewport implements ConnectionListener{
 		mainMenu.addTreeListener(new TreeListener() {
 			public void onTreeItemSelected(TreeItem item) {
 				if (listener != null) {
-					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())){
-						
-						
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
+					if (item.getParentItem().getText().equals(
+							ConstantFactory.getInstance().available_cubes())) {
 
-						public void onFailure(Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionList());
-						}
-
-						public void onSuccess(String[] arg0) {
-							 ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>(){
+						ServiceFactory.getSessionInstance().setCurrentCube(
+								Pat.getSessionID(), item.getText().trim(),
+								new AsyncCallback<String[]>() {
 
 									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedQueryCreate());
+										MessageBox.error(ConstantFactory
+												.getInstance().error(),
+												ConstantFactory.getInstance()
+														.failedDimensionList());
 									}
-					
-									public void onSuccess(String arg0) {
-										
-										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
-											public void onFailure(Throwable arg0) {
-												// TODO Auto-generated method stub
-												
-											}
+									public void onSuccess(String[] arg0) {
+										ServiceFactory
+												.getSessionInstance()
+												.createNewQuery(
+														Pat.getSessionID(),
+														new AsyncCallback<String>() {
 
-											public void onSuccess(Object arg0) {
-												dimensionPanel.createDimensionList();
-												
-												stackPanel.showStack(1);
-												stackPanel.layout(true);
-											}
-											
-										});
-																				
-									
+															public void onFailure(
+																	Throwable arg0) {
+																MessageBox
+																		.error(
+																				ConstantFactory
+																						.getInstance()
+																						.error(),
+																				ConstantFactory
+																						.getInstance()
+																						.failedQueryCreate());
+															}
+
+															public void onSuccess(
+																	String arg0) {
+
+																ServiceFactory
+																		.getSessionInstance()
+																		.setCurrentQuery(
+																				Pat
+																						.getSessionID(),
+																				arg0,
+																				new AsyncCallback<Object>() {
+
+																					public void onFailure(
+																							Throwable arg0) {
+																						// TODO
+																						// Auto-generated
+																						// method
+																						// stub
+
+																					}
+
+																					public void onSuccess(
+																							Object arg0) {
+																						dimensionPanel
+																								.createDimensionList();
+
+																						stackPanel
+																								.showStack(1);
+																						stackPanel
+																								.layout(true);
+																					}
+
+																				});
+
+															}
+
+														});
+
 									}
-									
 								});
-							
-						}
-					});
-					
-					
-					
+
 					}
 					listener.onMenuItemSelected(item);
 					contentWrapper.layout(true);
-					
+
 				}
 			}
 
@@ -290,9 +316,9 @@ public class Application extends Viewport implements ConnectionListener{
 		topPanel.setStyleName(DEFAULT_STYLE_NAME + "-top"); //$NON-NLS-1$
 		FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
-		//Setup the toolbar
+		// Setup the toolbar
 		toolBarPanel = new ToolBarPanel();
-		
+
 		topPanel.setWidget(0, 0, toolBarPanel);
 		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
 
@@ -321,68 +347,75 @@ public class Application extends Viewport implements ConnectionListener{
 	}
 
 	/**
-	 * Generates a cube list for the Cube Menu 
+	 * Generates a cube list for the Cube Menu
 	 */
-	private void setupCubeMenu(){	
-		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
-			public void onSuccess(String[] o) {
-				
-				Tree mainMenu = getMainMenu();
-				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().available_cubes());
-				
-				
-				for (int i=0; i<o.length; i++){
-					setupMainMenuOption(cubeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
-				}
-				
-			}
-			public void onFailure(Throwable arg0) {			  
-			       MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedCubeList());
-			}	
-		});
-		
-		
+	private void setupCubeMenu() {
+		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(),
+				new AsyncCallback<String[]>() {
+					public void onSuccess(String[] o) {
+
+						Tree mainMenu = getMainMenu();
+						TreeItem cubeMenu = mainMenu.addItem(ConstantFactory
+								.getInstance().available_cubes());
+
+						for (int i = 0; i < o.length; i++) {
+							setupMainMenuOption(cubeMenu, new OlapPanel(o[i]),
+									Pat.IMAGES.cube());
+						}
+
+					}
+
+					public void onFailure(Throwable arg0) {
+						MessageBox.error(ConstantFactory.getInstance().error(),
+								ConstantFactory.getInstance().failedCubeList());
+					}
+				});
+
 	}
 
 	private void destroyCubeMenu() {
-	ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(), new AsyncCallback<String[]>(){
+		ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(),
+				new AsyncCallback<String[]>() {
 
-		public void onFailure(Throwable arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
 
-		public void onSuccess(String[] arg0) {
-			// TODO Auto-generated method stub
-			String queryID = "";
-			ServiceFactory.getSessionInstance().deleteQuery(Pat.getSessionID(), queryID, new AsyncCallback(){
+					}
 
-				public void onFailure(Throwable arg0) {
-					// TODO Auto-generated method stub
-					
-				}
+					public void onSuccess(String[] arg0) {
+						// TODO Auto-generated method stub
+						String queryID = ""; //$NON-NLS-1$
+						ServiceFactory.getSessionInstance().deleteQuery(
+								Pat.getSessionID(), queryID,
+								new AsyncCallback() {
 
-				public void onSuccess(Object arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-			});
-		}
-		
-	});
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+
+									}
+
+									public void onSuccess(Object arg0) {
+										// TODO Auto-generated method stub
+
+									}
+
+								});
+					}
+
+				});
 	}
-	
-	
+
 	/**
 	 * Setup all of the options in the main menu.
 	 */
 	private void setupMainMenu() {
 		Tree mainMenu = getMainMenu();
 
-		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
-		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory.getInstance().welcome()), Pat.IMAGES.cube());
-		
+		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance()
+				.home());
+		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory
+				.getInstance().welcome()), Pat.IMAGES.cube());
+
 	}
 
 	/**
@@ -400,7 +433,7 @@ public class Application extends Viewport implements ConnectionListener{
 		// Create the TreeItem
 		TreeItem option = parent.addItem(image.getHTML() + " " //$NON-NLS-1$
 				+ content.getName());
-		
+
 		// Map the item to its history token and content widget
 		Pat.itemWidgets.put(option, content);
 		Pat.itemTokens.put(Pat.getContentWidgetToken(content), option);

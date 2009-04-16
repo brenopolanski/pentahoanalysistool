@@ -4,26 +4,26 @@
 
   <Dimension name="Region">
     <Hierarchy hasAll="true" allMemberName="All Regions">
-      <Table name="QUADRANT_ACTUALS"/>
+      <Table name="quadrant_actuals"/>
       <Level name="Region" column="REGION" uniqueMembers="true"/>
     </Hierarchy>
   </Dimension>
   <Dimension name="Department">
     <Hierarchy hasAll="true" allMemberName="All Departments">
-      <Table name="QUADRANT_ACTUALS"/>
+      <Table name="quadrant_actuals"/>
       <Level name="Department" column="DEPARTMENT" uniqueMembers="true"/>
     </Hierarchy>
   </Dimension>
 
   <Dimension name="Positions">
     <Hierarchy hasAll="true" allMemberName="All Positions">
-      <Table name="QUADRANT_ACTUALS"/>
+      <Table name="quadrant_actuals"/>
       <Level name="Positions" column="POSITIONTITLE" uniqueMembers="true"/>
     </Hierarchy>
   </Dimension>
 
   <Cube name="Quadrant Analysis">
-    <Table name="QUADRANT_ACTUALS"/>
+    <Table name="quadrant_actuals"/>
     <DimensionUsage name="Region" source="Region"/>
     <DimensionUsage name="Department" source="Department" />
     <DimensionUsage name="Positions" source="Positions" />

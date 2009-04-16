@@ -14,57 +14,67 @@
  * @author wseyler
  */
 
-
 package org.pentaho.pat.client.util;
 
 import java.io.Serializable;
 
 /**
  * @author wseyler
- *
+ * 
  */
 public class CellInfo implements Serializable {
-  String formattedValue;
-  String rawValue;
-  boolean isColumnHeader = false;
-  boolean isRowHeader = false;
-  String colorValue = null; // Color held as hex String
-  
-  public String getFormattedValue() {
-    return formattedValue;
-  }
-  public void setFormattedValue(String formattedValue) {
-    this.formattedValue = formattedValue;
-  }
-  public boolean isHeader() {
-  	return isRowHeader() || isColumnHeader();
-  }
-  public boolean isColumnHeader() {
-    return isColumnHeader;
-  }
-  public void setColumnHeader(boolean isColumnHeader) {
-    this.isColumnHeader = isColumnHeader;
-  }
-  public boolean isRowHeader() {
-    return isRowHeader;
-  }
-  public void setRowHeader(boolean isRowHeader) {
-    this.isRowHeader = isRowHeader;
-  }
-  public String getColorValue() {
-    return colorValue;
-  }
-  public void setColorValue(String colorValue) {
-    this.colorValue = colorValue;
-  }
-  public String getRawValue() {
-    return rawValue;
-  }
-  public void setRawValue(String rawValue) {
-    this.rawValue = rawValue;
-  }
-  
-  public String toString() {
-  	return formattedValue;
-  }
+	String formattedValue;
+	String rawValue;
+	boolean isColumnHeader = false;
+	boolean isRowHeader = false;
+	String colorValue = null; // Color held as hex String
+
+	public String getFormattedValue() {
+		return formattedValue;
+	}
+
+	public void setFormattedValue(String formattedValue) {
+		this.formattedValue = formattedValue;
+	}
+
+	public boolean isHeader() {
+		return isRowHeader() || isColumnHeader();
+	}
+
+	public boolean isColumnHeader() {
+		return isColumnHeader;
+	}
+
+	public void setColumnHeader(boolean isColumnHeader) {
+		this.isColumnHeader = isColumnHeader;
+	}
+
+	public boolean isRowHeader() {
+		return isRowHeader;
+	}
+
+	public void setRowHeader(boolean isRowHeader) {
+		this.isRowHeader = isRowHeader;
+	}
+
+	public String getColorValue() {
+		return colorValue;
+	}
+
+	public void setColorValue(String colorValue) {
+		this.colorValue = colorValue;
+	}
+
+	public String getRawValue() {
+		return rawValue;
+	}
+
+	public void setRawValue(String rawValue) {
+		this.rawValue = rawValue;
+	}
+
+	@Override
+	public String toString() {
+		return formattedValue;
+	}
 }

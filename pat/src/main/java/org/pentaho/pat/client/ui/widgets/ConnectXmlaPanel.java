@@ -26,14 +26,13 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
  * @author pstoellberger
- *
+ * 
  */
 
 public class ConnectXmlaPanel extends LayoutPanel implements
-SourcesConnectionEvents {
+		SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
@@ -59,49 +58,62 @@ SourcesConnectionEvents {
 		passwordTextBox = new PasswordTextBox();
 		this.setLayout(new BorderLayout());
 		onInitialize();
-		//this.add(onInitialize());
+		// this.add(onInitialize());
 	}
-
 
 	private void onInitialize() {
 
-		//final FormPanel formPanel = new FormPanel();
-		//formPanel.setWidth(WIDTH);
-		//formPanel.setHeight(HEIGHT);
+		// final FormPanel formPanel = new FormPanel();
+		// formPanel.setWidth(WIDTH);
+		// formPanel.setHeight(HEIGHT);
 
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-				//	"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+						+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
+				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().xmla_url()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.addLabel(ConstantFactory.getInstance().username()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(userTextBox, CellConstraints.xy(3, 3));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
+		builder.addLabel(ConstantFactory.getInstance().password()
+				+ LABEL_SUFFIX, CellConstraints.xy(5, 3));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
-		// builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 8));
+		// builder.addLabel(ConstantFactory.getInstance().catalog() +
+		// LABEL_SUFFIX, CellConstraints.xy(1, 8));
 		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
-		connectButton.addClickListener(new ClickListener(){
+		connectButton.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
-					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(),MessageFactory.getInstance().connection_established());
-						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
-					}
-					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
-						connectButton.setEnabled(true);
-					}
-				});
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(),
+						getCubeConnection(), new AsyncCallback<Object>() {
+							public void onSuccess(Object o) {
+								MessageBox
+										.info(ConstantFactory.getInstance()
+												.success(), MessageFactory
+												.getInstance()
+												.connection_established());
+								setConnectionEstablished(true);
+								connectionListeners
+										.fireConnectionMade(ConnectXmlaPanel.this);
+							}
+
+							public void onFailure(Throwable arg0) {
+								MessageBox.error(ConstantFactory.getInstance()
+										.error(), MessageFactory.getInstance()
+										.no_connection_param(
+												arg0.getLocalizedMessage()));
+								connectButton.setEnabled(true);
+							}
+						});
 			}
 		});
 
-		builder.add(connectButton, CellConstraints.xyw(3,9,5));
+		builder.add(connectButton, CellConstraints.xyw(3, 9, 5));
 
 		LayoutPanel layoutPanel = builder.getPanel();
 		layoutPanel.setPadding(15);
@@ -119,27 +131,28 @@ SourcesConnectionEvents {
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
 		cc.setUrl(urlTextBox.getText());
-		if(userTextBox.getText() != null && userTextBox.getText().length() > 0) {
+		if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
 			cc.setUsername(userTextBox.getText());
-		}
-		else {
+		} else {
 			cc.setUsername(null);
 		}
-		if(passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
-			cc.setPassword(passwordTextBox.getText());	
-		}
-		else {
+		if (passwordTextBox.getText() != null
+				&& passwordTextBox.getText().length() > 0) {
+			cc.setPassword(passwordTextBox.getText());
+		} else {
 			cc.setPassword(null);
 		}
-		//if(catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0) {
-		//	cc.setCatalog(catalogTextBox.getText());	
-		//}
-		//else {
-		//	cc.setCatalog(null);
-		//}
+		// if(catalogTextBox.getText() != null &&
+		// catalogTextBox.getText().length() > 0) {
+		// cc.setCatalog(catalogTextBox.getText());
+		// }
+		// else {
+		// cc.setCatalog(null);
+		// }
 
 		return cc;
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -171,9 +184,7 @@ SourcesConnectionEvents {
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
-		//catalogTextbox.setText("");
+		// catalogTextbox.setText("");
 	}
-
-
 
 }

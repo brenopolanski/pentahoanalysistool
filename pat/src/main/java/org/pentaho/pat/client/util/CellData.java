@@ -14,54 +14,55 @@
  * @author wseyler
  */
 
-
 package org.pentaho.pat.client.util;
 
 import java.io.Serializable;
 
 /**
  * @author wseyler
- *
+ * 
  */
 public class CellData implements IOlapDataStructure, Serializable {
-  CellInfo[][] olapDataCells;
-  
-  public CellData() {
-    super();
-  }
-  
-  public CellData(CellInfo[][] olapDataCells) {
-    this();
-    this.olapDataCells = olapDataCells;
-  }
+	CellInfo[][] olapDataCells;
 
-  public CellInfo[][] getOlapDataCells() {
-    return olapDataCells;
-  }
+	public CellData() {
+		super();
+	}
 
-  public void setOlapCells(CellInfo[][] olapDataCells) {
-    this.olapDataCells = olapDataCells;
-  }
-  
-  public int getAcrossCount() {
-    if (olapDataCells == null) {
-      return 0;
-    }
-    return olapDataCells[0].length;
-  }
-  
-  public int getDownCount() {
-    if (olapDataCells == null) {
-      return 0;
-    }
-    return olapDataCells.length;
-  }
+	public CellData(CellInfo[][] olapDataCells) {
+		this();
+		this.olapDataCells = olapDataCells;
+	}
 
-  /* (non-Javadoc)
-   * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
-   */
-  public CellInfo getCell(int row, int column) {
-    return olapDataCells == null ? null : olapDataCells[row][column];
-  }
-  
+	public CellInfo[][] getOlapDataCells() {
+		return olapDataCells;
+	}
+
+	public void setOlapCells(CellInfo[][] olapDataCells) {
+		this.olapDataCells = olapDataCells;
+	}
+
+	public int getAcrossCount() {
+		if (olapDataCells == null) {
+			return 0;
+		}
+		return olapDataCells[0].length;
+	}
+
+	public int getDownCount() {
+		if (olapDataCells == null) {
+			return 0;
+		}
+		return olapDataCells.length;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
+	 */
+	public CellInfo getCell(int row, int column) {
+		return olapDataCells == null ? null : olapDataCells[row][column];
+	}
+
 }
