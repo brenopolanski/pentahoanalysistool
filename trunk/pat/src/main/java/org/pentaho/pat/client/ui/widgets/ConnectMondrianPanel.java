@@ -32,14 +32,13 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
  * @author pstoellberger
- *
+ * 
  */
 
 public class ConnectMondrianPanel extends LayoutPanel implements
-SourcesConnectionEvents {
+		SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
@@ -52,7 +51,6 @@ SourcesConnectionEvents {
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
-
 
 	private final ListBox driverListBox;
 	private final TextBox urlTextBox;
@@ -67,7 +65,7 @@ SourcesConnectionEvents {
 
 	public ConnectMondrianPanel() {
 		super();
-	
+
 		this.setLayout(new BorderLayout());
 
 		connectButton = new Button(ConstantFactory.getInstance().connect());
@@ -77,12 +75,11 @@ SourcesConnectionEvents {
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
 		fileUpload = new FileUpload();
-		schemaPath =""; //$NON-NLS-1$
+		schemaPath = ""; //$NON-NLS-1$
 
 		onInitialize();
 
 	}
-
 
 	private void onInitialize() {
 
@@ -95,22 +92,27 @@ SourcesConnectionEvents {
 
 		formPanel.addFormHandler(new FormHandler() {
 			public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
-				// TODO Replace filename handling with stored schema handling when implemented
-				if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
-					if (arg0.getResults().contains(FILENAME_TAG_START))
-					{
-						String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START)+FILENAME_TAG_START.length(),arg0.getResults().indexOf(FILENAME_TAG_END));
+				// TODO Replace filename handling with stored schema handling
+				// when implemented
+				if (arg0 != null && arg0.getResults() != null
+						&& arg0.getResults().length() > 0) {
+					if (arg0.getResults().contains(FILENAME_TAG_START)) {
+						String tmp = arg0.getResults().substring(
+								arg0.getResults().indexOf(FILENAME_TAG_START)
+										+ FILENAME_TAG_START.length(),
+								arg0.getResults().indexOf(FILENAME_TAG_END));
 						schemaPath = tmp;
 						connectButton.setEnabled(true);
 						// TODO remove this later
-						MessageBox.info("File uploaded",tmp); //$NON-NLS-1$
+						MessageBox.info("File uploaded", tmp); //$NON-NLS-1$
+					} else {
+						MessageBox.error(ConstantFactory.getInstance().error(),
+								MessageFactory.getInstance()
+										.file_upload_failed());
 					}
-					else {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_failed());	
-					}
-				}
-				else
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().check_error_log());
+				} else
+					MessageBox.error(ConstantFactory.getInstance().error(),
+							MessageFactory.getInstance().check_error_log());
 			}
 
 			public void onSubmit(FormSubmitEvent arg0) {
@@ -120,52 +122,70 @@ SourcesConnectionEvents {
 		});
 		final FormLayout layout = new FormLayout(
 				"right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-		//"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-			"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p");	 //$NON-NLS-1$
+						+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
+				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
-		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().jdbc_driver()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(driverListBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.addLabel(ConstantFactory.getInstance().jdbc_url()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
+		builder.addLabel(ConstantFactory.getInstance().username()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 5));
 		builder.add(userTextBox, CellConstraints.xy(3, 5));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
+		builder.addLabel(ConstantFactory.getInstance().password()
+				+ LABEL_SUFFIX, CellConstraints.xy(5, 5));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-		builder.addLabel(ConstantFactory.getInstance().schema_file() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+		builder.addLabel(ConstantFactory.getInstance().schema_file()
+				+ LABEL_SUFFIX, CellConstraints.xy(1, 7));
 		fileUpload.setName(FORM_NAME_FILE);
-		builder.add(fileUpload, CellConstraints.xyw(3,7,5));
+		builder.add(fileUpload, CellConstraints.xyw(3, 7, 5));
 
 		uploadButton.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
 				String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
-					MessageBox.error(ConstantFactory.getInstance().error(),MessageFactory.getInstance().file_upload_no_file());
+					MessageBox.error(ConstantFactory.getInstance().error(),
+							MessageFactory.getInstance().file_upload_no_file());
 				} else {
 					formPanel.submit();
 				}
 			}
 		});
 
-		builder.add(uploadButton, CellConstraints.xyw(3,9,5));
-		connectButton.addClickListener(new ClickListener(){
+		builder.add(uploadButton, CellConstraints.xyw(3, 9, 5));
+		connectButton.addClickListener(new ClickListener() {
 			public void onClick(Widget sender) {
-					ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
-					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(),MessageFactory.getInstance().connection_established());
-						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
-					}
-					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getMessage()));
-						connectButton.setEnabled(true);
-					}
-				});
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(),
+						getCubeConnection(), new AsyncCallback<Object>() {
+							public void onSuccess(Object o) {
+								MessageBox
+										.info(ConstantFactory.getInstance()
+												.success(), MessageFactory
+												.getInstance()
+												.connection_established());
+								setConnectionEstablished(true);
+								connectionListeners
+										.fireConnectionMade(ConnectMondrianPanel.this);
+							}
+
+							public void onFailure(Throwable arg0) {
+								MessageBox
+										.error(ConstantFactory.getInstance()
+												.error(), MessageFactory
+												.getInstance()
+												.no_connection_param(
+														arg0.getMessage()));
+								connectButton.setEnabled(true);
+							}
+						});
 			}
 		});
 
 		connectButton.setEnabled(false);
-		builder.add(connectButton, CellConstraints.xyw(3,11,5));
+		builder.add(connectButton, CellConstraints.xyw(3, 11, 5));
 
 		LayoutPanel layoutPanel = builder.getPanel();
 		layoutPanel.setPadding(15);
@@ -184,45 +204,49 @@ SourcesConnectionEvents {
 	private ListBox createDriverListComboBox() {
 		final ListBox listBox = new ListBox();
 
+		ServiceFactory.getDiscoveryInstance().getDrivers(
+				new AsyncCallback<String[]>() {
+					public void onSuccess(String[] arg0) {
 
-		ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
-			public void onSuccess(String[] arg0) {
-
-				if (arg0 != null && arg0.length > 0) {
-					for(int i=0;i < arg0.length;i++) {
-						listBox.addItem(arg0[i]);
+						if (arg0 != null && arg0.length > 0) {
+							for (int i = 0; i < arg0.length; i++) {
+								listBox.addItem(arg0[i]);
+							}
+						} else {
+							MessageBox.error(ConstantFactory.getInstance()
+									.error(), MessageFactory.getInstance()
+									.no_jdbc_driver_found());
+						}
 					}
-				}
-				else {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_jdbc_driver_found());	
-				}
-			}
-			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());	
-			}
-		});
+
+					public void onFailure(Throwable arg0) {
+						MessageBox.error(ConstantFactory.getInstance().error(),
+								arg0.getMessage());
+					}
+				});
 		return listBox;
 	}
 
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
-		cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
+		cc.setDriverClassName(driverListBox.getItemText(driverListBox
+				.getSelectedIndex()));
 		cc.setUrl(urlTextBox.getText());
-		if(userTextBox.getText() != null && userTextBox.getText().length() > 0) {
+		if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
 			cc.setUsername(userTextBox.getText());
-		}
-		else {
+		} else {
 			cc.setUsername(null);
 		}
-		if(passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
-			cc.setPassword(passwordTextBox.getText());	
-		}
-		else {
+		if (passwordTextBox.getText() != null
+				&& passwordTextBox.getText().length() > 0) {
+			cc.setPassword(passwordTextBox.getText());
+		} else {
 			cc.setPassword(null);
 		}
 		cc.setSchemaPath(schemaPath);
 		return cc;
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -249,12 +273,12 @@ SourcesConnectionEvents {
 			connectionListeners.remove(listener);
 		}
 	}
-	
+
 	public void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
-		schemaPath =""; //$NON-NLS-1$
+		schemaPath = ""; //$NON-NLS-1$
 	}
 
 }

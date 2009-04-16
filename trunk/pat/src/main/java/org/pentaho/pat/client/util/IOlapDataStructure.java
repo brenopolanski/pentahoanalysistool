@@ -14,15 +14,16 @@
  * @author wseyler
  */
 
-
 package org.pentaho.pat.client.util;
 
 /**
  * @author wseyler
- *
+ * 
  */
 public interface IOlapDataStructure {
-  public int getAcrossCount();    
-  public int getDownCount();
-  public CellInfo getCell(int row, int column);
+	public int getAcrossCount();
+
+	public int getDownCount();
+
+	public CellInfo getCell(int row, int column);
 }

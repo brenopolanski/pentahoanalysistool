@@ -541,5 +541,13 @@ public interface PatConstants extends Constants{
 	String failedQueryCreate();
 
 	String failedDimensionSet();
+
+	String rows();
+
+	String columns();
+
+	String filter();
+
+	String unused();
 	
 }

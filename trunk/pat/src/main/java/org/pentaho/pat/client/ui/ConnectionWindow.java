@@ -23,59 +23,61 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author pstoellberger
- *
+ * 
  */
-public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents,ConnectionListener {
+public class ConnectionWindow extends WindowPanel implements
+		SourcesConnectionEvents, ConnectionListener {
 
 	private static final String HEIGHT = "330px"; //$NON-NLS-1$
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
-	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
+	private static final String TITLE = ConstantFactory.getInstance()
+			.register_new_connection();
 	private final ConnectMondrianPanel connectMondrian;
 	private final ConnectXmlaPanel connectXmla;
 	private boolean connectionEstablished = false;
 	private ConnectionListenerCollection connectionListeners;
-	final TabLayoutPanel tabPanel= new TabLayoutPanel();
+	final TabLayoutPanel tabPanel = new TabLayoutPanel();
 
 	public ConnectionWindow() {
 		super(TITLE);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
 
-
 		connectMondrian = new ConnectMondrianPanel();
 		connectXmla = new ConnectXmlaPanel();
-		this.add(onInitialize());	
-	}	
+		this.add(onInitialize());
+	}
 
 	@Override
 	protected void onLoad() {
 		tabPanel.selectTab(0);
 		super.onLoad();
-	} 
+	}
 
 	protected LayoutPanel onInitialize() {
 		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
 				Orientation.VERTICAL));
 
-		tabPanel.setPadding(5);	    
-		tabPanel.add(connectMondrian,ConstantFactory.getInstance().mondrian());
-		tabPanel.add(connectXmla,ConstantFactory.getInstance().xmla());
+		tabPanel.setPadding(5);
+		tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+		tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
 		connectMondrian.addConnectionListener(ConnectionWindow.this);
 		connectXmla.addConnectionListener(ConnectionWindow.this);
-		
+
 		tabPanel.addTabListener(new TabListener() {
-			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) 
-			{
+			public boolean onBeforeTabSelected(SourcesTabEvents sender,
+					int tabIndex) {
 				return true;
 			}
 
 			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
-				// FormLayout.getPreferredSize() needs to be improved so that pack()
+				// FormLayout.getPreferredSize() needs to be improved so that
+				// pack()
 				// works like expected. But you can try it.
-				//           pack();
+				// pack();
 			}
 		});
-		layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH)); 
+		layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
 		return layoutPanel;
 	}
 

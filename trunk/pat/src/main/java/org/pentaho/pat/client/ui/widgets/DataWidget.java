@@ -63,11 +63,9 @@ public abstract class DataWidget extends LayoutPanel {
 	 *            the constants
 	 */
 	public DataWidget() {
-		
+
 		setStyleName(DEFAULT_STYLE_NAME);
 	}
-
-	
 
 	/**
 	 * Get the description of this example.
@@ -98,13 +96,6 @@ public abstract class DataWidget extends LayoutPanel {
 		}
 		initialized = true;
 
-		
-		
-		
-
-
-		
-	
 		// Initialize the widget and add it to the page
 		final Widget widget = onInitialize();
 		if (widget != null) {

@@ -31,55 +31,51 @@ import com.google.gwt.user.client.ui.Label;
  */
 public final class DimensionFlexTable extends FlexTable {
 
-	
-
-  /**
-   * Creates a FlexTable with the desired number of rows and columns, making
-   * each row draggable via the provided drag controller.
-   * 
-   * 
-   * @param tableRowDragController the drag controller to enable dragging of
-   *            table rows
-   *            
-   * @author tom(at)wamonline.org.uk
-   */
+	/**
+	 * Creates a FlexTable with the desired number of rows and columns, making
+	 * each row draggable via the provided drag controller.
+	 * 
+	 * 
+	 * @param tableRowDragController
+	 *            the drag controller to enable dragging of table rows
+	 * 
+	 * @author tom(at)wamonline.org.uk
+	 */
 	private FlexTableRowDragController trdc;
-  public DimensionFlexTable(FlexTableRowDragController tableRowDragController) {	  
-	  addStyleName("demo-flextable"); //$NON-NLS-1$
-	  
-	  this.trdc=tableRowDragController;
-    HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
-    empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
-    
-	 setWidget(0,0, empty);
-	 
-	
-	      }
 
-  public void populateDimensionTable(Axis targetAxis){
-	 this.clear();
-	  
-	  ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
+	public DimensionFlexTable(FlexTableRowDragController tableRowDragController) {
+		addStyleName("demo-flextable"); //$NON-NLS-1$
 
-			public void onFailure(Throwable arg0) {
-				// TODO use standardized message dialog when implemented
-				Window.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
-			}
+		this.trdc = tableRowDragController;
+		HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
+		empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
 
-			public void onSuccess(String[] arg0) {
-				 for (int row = 0; row < arg0.length; row++) {
-				        Label handle = new Label(arg0[row]);
-				        handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
-				        setWidget(row, 0, handle);
-				        trdc.makeDraggable(handle);	
-			}
-	    	
-	    }
-		});
+		setWidget(0, 0, empty);
 
-  }
+	}
+
+	public void populateDimensionTable(Axis targetAxis) {
+		this.clear();
+
+		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(),
+				targetAxis, new AsyncCallback<String[]>() {
+
+					public void onFailure(Throwable arg0) {
+						// TODO use standardized message dialog when implemented
+						Window
+								.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
+					}
+
+					public void onSuccess(String[] arg0) {
+						for (int row = 0; row < arg0.length; row++) {
+							Label handle = new Label(arg0[row]);
+							handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
+							setWidget(row, 0, handle);
+							trdc.makeDraggable(handle);
+						}
+
+					}
+				});
+
+	}
 }
-
-
-  
-
