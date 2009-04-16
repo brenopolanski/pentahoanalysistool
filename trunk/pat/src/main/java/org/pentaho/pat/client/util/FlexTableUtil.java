@@ -10,6 +10,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -64,23 +65,22 @@ public class FlexTableUtil {
 	    for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
 	      Widget w = sourceTable.getWidget(sourceRow, col);
 	      if (w != null) {
-	    	/*  if (w instanceof Label == true){
+	    	  if (w instanceof Label == true){
 	    		  final Label w2 = new Label(){
-	    			  @Override
-	    		      public void onBrowserEvent(Event event) {
-	    		          if (event.getTypeInt() == Event.ONMOUSEOVER) {
-	    		            DOM.eventPreventDefault(event);
-	    		            showContextMenu(event);
-	    		          }
-	    		        
-	    		        super.onBrowserEvent(event);
-	    		      }
+	    			  public void onBrowserEvent(Event event) {
+	    				  	super.onBrowserEvent(event);
+	    					if(DOM.eventGetType(event)== Event.ONDBLCLICK){
+	    						DOM.eventPreventDefault(event);
+	    						showContextMenu(event);
+	    					}
+	    			  } 
+
 	    		  };
-	    		  
+	    		  w2.sinkEvents(Event.ONDBLCLICK);
 	    		  w2.setText(((Label) w).getText());
 	    		  targetTable.setWidget(targetRow, col, w2);
 	    		  }
-	    	  else*/ targetTable.setWidget(targetRow, col, w);
+	    	  else targetTable.setWidget(targetRow, col, w);
 	    	  
 	        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback(){
 
