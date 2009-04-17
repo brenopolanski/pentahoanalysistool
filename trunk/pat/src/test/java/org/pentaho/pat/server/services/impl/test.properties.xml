@@ -20,7 +20,7 @@
 	<entry key="context.driver">org.hsqldb.jdbcDriver</entry> 
 	<entry key="context.database">jdbc:hsqldb:mem:pat_mondrian;default_schema=true;type=cached;write_delay=false</entry>
 	<entry key="context.username">sa</entry>
-	<entry key="context.password">password</entry>
+	<entry key="context.password"></entry>
   
   
   
@@ -28,6 +28,6 @@
   <entry key="pat.driver">org.hsqldb.jdbcDriver</entry>
   <entry key="pat.database">jdbc:hsqldb:mem:pat_app_services;default_schema=true;type=cached;write_delay=false</entry>
   <entry key="pat.username">sa</entry>
-  <entry key="pat.password">password</entry>
+  <entry key="pat.password"></entry>
 
 </properties>

@@ -6,6 +6,6 @@
 	<entry key="context.driver">org.hsqldb.jdbcDriver</entry>
   <entry key="context.application_database">jdbc:hsqldb:mem:pat_app;default_schema=true;type=cached;write_delay=false</entry>
 	<entry key="context.username">sa</entry>
-	<entry key="context.password">password</entry>
+	<entry key="context.password"></entry>
 
 </properties>
