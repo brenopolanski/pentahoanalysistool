@@ -49,6 +49,8 @@ public class QueryServiceImpl extends AbstractService
 	public void clearSelection(String userId, String sessionId, 
 			String dimensionName, List<String> memberNames) 
 	{
+	    this.sessionService.validateSession(userId, sessionId);
+	    
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
@@ -61,7 +63,9 @@ public class QueryServiceImpl extends AbstractService
 
 	public void createSelection(String userId, String sessionId,
             String dimensionName, List<String> memberNames,
-            Operator selectionType) throws OlapException{
+            Operator selectionType) throws OlapException
+    {
+	    this.sessionService.validateSession(userId, sessionId);
 
         String currentQuery = (String) this.sessionService
                 .getUserSessionVariable(userId, sessionId,
@@ -84,7 +88,9 @@ public class QueryServiceImpl extends AbstractService
         qDim.getSelections().add(selection);
     }
 
-	public void moveDimension(String userId, String sessionId, Axis.Standard axis, String dimensionName) {
+	public void moveDimension(String userId, String sessionId, Axis.Standard axis, String dimensionName) 
+	{
+	    this.sessionService.validateSession(userId, sessionId);
 
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
@@ -98,6 +104,8 @@ public class QueryServiceImpl extends AbstractService
 
 	public OlapData executeQuery(String userId, String sessionId) throws OlapException 
 	{
+	    this.sessionService.validateSession(userId, sessionId);
+	    
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 

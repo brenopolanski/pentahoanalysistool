@@ -4,6 +4,8 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.data.UserManager;
+import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -67,15 +69,23 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	private static void initSecurityTokens() {
 	    if (standaloneAuth==null&&standaloneMode)
 	    {
+	        UserManager userManager = (UserManager)applicationContext.getBean("userManager"); //$NON-NLS-1$
+	        User user = userManager.getUser("admin"); //$NON-NLS-1$
+	        
 	        GrantedAuthority userAuths[] = {
                     new GrantedAuthorityImpl("ROLE_USER"), //$NON-NLS-1$
                     new GrantedAuthorityImpl("ROLE_ADMIN") //$NON-NLS-1$
                 };
             
             standaloneAuth = new PrincipalSpringSecurityUserToken(
-                "","admin","admin",userAuths,null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$ $NON-NLS-3$
+                "",
+                "admin",
+                "admin",
+                userAuths,
+                user);
 	    }
 	}
+	
     /**
 	 * Helper method to gain access to the current user's security object.
 	 * @return The current user name.

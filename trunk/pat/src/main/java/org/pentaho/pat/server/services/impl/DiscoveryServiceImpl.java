@@ -71,6 +71,8 @@ public class DiscoveryServiceImpl extends AbstractService
 	    throws OlapException
 	{
 
+	    this.sessionService.validateSession(userId, sessionId);
+	    
         List<String> list = new ArrayList<String>();
 
         OlapConnection conn = this.sessionService.getConnection(userId,
@@ -89,18 +91,19 @@ public class DiscoveryServiceImpl extends AbstractService
     }
 
 	
-	public Cube getCube(String userId, String sessionId, String name) {
-		try {
-			OlapConnection conn = this.sessionService.getConnection(userId,sessionId);
-			return conn.getSchema().getCubes().get(name);
-		} catch (Exception e) {}
-		return null;
+	public Cube getCube(String userId, String sessionId, String name) throws OlapException 
+	{
+	    this.sessionService.validateSession(userId, sessionId);
+	    OlapConnection conn = this.sessionService.getConnection(userId,sessionId);
+		return conn.getSchema().getCubes().get(name);
 	}
 	
 	
 	public List<String> getDimensions(String userId, String sessionId, 
 		Axis.Standard axis) throws OlapException
 	{
+	    this.sessionService.validateSession(userId, sessionId);
+	    
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
@@ -118,7 +121,9 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 
 	public StringTree getMembers(String userId, String sessionId,
-            String dimensionName) throws OlapException {
+            String dimensionName) throws OlapException 
+    {
+	    this.sessionService.validateSession(userId, sessionId);
 
         String currentQuery = (String) this.sessionService
                 .getUserSessionVariable(userId, sessionId,

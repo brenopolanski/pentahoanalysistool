@@ -113,6 +113,30 @@
 								<copy
 									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml"
 									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml" />
+                
+                
+                
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/pat-insert.sql"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/pat-insert.sql" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/pat-delete.sql"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/pat-delete.sql" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/applicationContextOverrides.xml"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/applicationContextOverrides.xml" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/SampleData.mondrian.xml"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/SampleData.mondrian.xml" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/sampledata.sql"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/sampledata.sql" />
+                <copy
+                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/test.properties.xml"
+                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/test.properties.xml" />
+                
+                
+                
 								<copy file="${basedir}/src/test/java/jndi.properties"
 									toFile="${basedir}/target/test-classes/jndi.properties" />
 								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
