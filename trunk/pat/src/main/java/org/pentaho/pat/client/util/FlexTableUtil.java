@@ -1,9 +1,16 @@
 package org.pentaho.pat.client.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.infopanel.TrayInfoPanelNotifier;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.SelectionModePopup;
+import org.pentaho.pat.client.ui.panels.SelectionModePopup;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -11,12 +18,15 @@ import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,7 +39,12 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  *
  */
 public class FlexTableUtil {
-
+	
+	 static SelectionModePopup selectionModePopup;
+	 
+	 public FlexTableUtil() {
+		 selectionModePopup = new SelectionModePopup();
+	 }
 	/**
 	 * Copy an entire FlexTable from one FlexTable to another. Each element is
 	 * copied by creating a new {@link HTML} widget by calling
@@ -82,18 +97,6 @@ public class FlexTableUtil {
 				final Widget w = sourceTable.getWidget(sourceRow, col);
 				if (w != null) {
 					if (w instanceof Label == true) {
-						/*
-						 * final Label w2 = new Label(){ public void
-						 * onBrowserEvent(Event event) {
-						 * super.onBrowserEvent(event);
-						 * if(DOM.eventGetType(event)== Event.ONDBLCLICK){
-						 * DOM.eventPreventDefault(event);
-						 * showContextMenu(event); } }
-						 * 
-						 * }; w2.sinkEvents(Event.ONDBLCLICK);
-						 * w2.setText(((Label) w).getText());
-						 */
-
 						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),
 								new AsyncCallback() {
 
@@ -114,7 +117,29 @@ public class FlexTableUtil {
 													public void onSuccess(StringTree arg0) {
 														// TODO Auto-generated
 														// method stub
-														final Tree dimTree = new Tree();
+														final Tree dimTree = new Tree(){
+															@Override
+														public void onBrowserEvent(final Event event) {
+													        if (getSelectedItem() != null) {
+													          if (event.getTypeInt() == Event.ONCONTEXTMENU) {
+													            DOM.eventPreventDefault(event);
+													            final SelectionModePopup test = new SelectionModePopup();
+													            test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
+													            test.setPopupPositionAndShow(new PositionCallback() {
+													                public void setPosition(int offsetWidth, int offsetHeight) {
+													                  test.setPopupPosition(event.getClientX(), event.getClientY());
+													                }
+													              });
+													          }
+													        }
+													        super.onBrowserEvent(event);
+													      }
+															@Override
+													      protected void setElement(Element elem) {
+													        super.setElement(elem);
+													        sinkEvents(Event.ONCONTEXTMENU);
+													      }
+														};
 														// TreeItem tn = new
 														// TreeItem(w.getElement().getInnerText().trim());
 														// dimTree.addItem(tn);
@@ -169,17 +194,6 @@ public class FlexTableUtil {
 	protected static TreeItem createPathForMember(TreeItem parent, StringTree node) {
 		MemberSelectionLabel memberLabel = new MemberSelectionLabel(node.getValue());
 
-		memberLabel.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				/*
-				 * selectionModePopup.setPopupPosition(sender.getAbsoluteLeft(),
-				 * sender.getAbsoluteTop());
-				 * selectionModePopup.setSource(sender);
-				 * selectionModePopup.show();
-				 */
-			}
-
-		});
 		TreeItem childItem = new TreeItem(memberLabel);
 		memberLabel.setTreeItem(childItem);
 		parent.addItem(childItem);
@@ -187,55 +201,20 @@ public class FlexTableUtil {
 			createPathForMember(childItem, node.getChildren().get(i));
 		}
 		return parent;
-	}
+	}	
+	
+	  /**
+	   * @param targetLabel
+	   * @return
+	   */
+	  protected static String getDimensionName(MemberSelectionLabel targetLabel) {
+	    Tree tree = (Tree) targetLabel.getParent();
+	    TreeItem rootItem = tree.getItem(0);
+	    Label rootLabel = (Label) rootItem.getWidget();
+	    return rootLabel.getText();
+	  }
 
-	/**
-	 * Make a command that we will execute from all menu items.
-	 */
-	private static Command cmd = new Command() {
-		public void execute() {
-			TrayInfoPanelNotifier.notifyTrayEvent("Menu Button", "You selected a menu item!"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	};
-
-	private static PopupMenu contextMenu;
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param event
-	 */
-	private static void showContextMenu(final Event event) {
-		if (contextMenu == null) {
-			contextMenu = new PopupMenu();
-			// contextMenu.addItem(ConstantFactory.getInstance().member(), new
-			// SelectionModeCommand(MEMBER));
-			/*
-			 * contextMenu.addItem(new
-			 * MenuItem(MessageFactory.getInstance().children(), new
-			 * SelectionModeCommand(CHILDREN))); contextMenu.addItem(new
-			 * MenuItem(MessageFactory.getInstance().include_children(), new
-			 * SelectionModeCommand(INCLUDE_CHILDREN))); contextMenu.addItem(new
-			 * MenuItem(MessageFactory.getInstance().siblings(), new
-			 * SelectionModeCommand(SIBLINGS))); contextMenu.addItem(new
-			 * MenuItem(MessageFactory.getInstance().clear_selections(), new
-			 * SelectionModeClearCommand()));
-			 */
-			contextMenu.addItem("MenuItem 1", cmd); //$NON-NLS-1$
-			contextMenu.addItem("MenuItem 2", cmd); //$NON-NLS-1$
-
-			contextMenu.addSeparator();
-
-			contextMenu.addItem("MenuItem 3", cmd); //$NON-NLS-1$
-			contextMenu.addItem("MenuItem 4", cmd); //$NON-NLS-1$
-		}
-
-		contextMenu.setPopupPositionAndShow(new PositionCallback() {
-			public void setPosition(int offsetWidth, int offsetHeight) {
-				contextMenu.setPopupPosition(event.getClientX(), event.getClientY());
-			}
-		});
-	}
+	  
 
 	/**
 	 * Copies the CSS style of a source row to a target row.
@@ -249,5 +228,7 @@ public class FlexTableUtil {
 		String rowStyle = sourceTable.getRowFormatter().getStyleName(sourceRow);
 		targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
 	}
+
+
 
 }
