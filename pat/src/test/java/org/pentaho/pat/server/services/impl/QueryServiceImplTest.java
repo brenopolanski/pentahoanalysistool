@@ -22,14 +22,14 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	
 	public void testMoveDimensions() throws Exception 
 	{
-		String userId = "user"; //$NON-NLS-1$
+		String userId = "admin"; //$NON-NLS-1$
 		String expectedMDX = "SELECT*new_line*{} ON COLUMNS,*new_line*CrossJoin({}, {}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
-		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
+		super.createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
 		
 		// Select a cube
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
@@ -61,7 +61,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -70,13 +70,13 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	public void testSelections() throws Exception
 	{
 		initTest();
-		String userId = "user"; //$NON-NLS-1$
+		String userId = "admin"; //$NON-NLS-1$
 		String expectedMDX = "SELECT*new_line*{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions].[CTO]}, {{[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
-		super.createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
+		super.createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
 		
 		// Select a cube
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
@@ -111,7 +111,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}

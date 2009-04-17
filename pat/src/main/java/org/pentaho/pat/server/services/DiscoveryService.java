@@ -44,7 +44,8 @@ public interface DiscoveryService extends Service {
 	    throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
-	Cube getCube(String userId, String sessionId, String cubeName);
+	Cube getCube(String userId, String sessionId, String cubeName) 
+	    throws OlapException;
 	
 	/**
 	 * Returns a tree representation of the members included in a 

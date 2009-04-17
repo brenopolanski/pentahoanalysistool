@@ -21,20 +21,21 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	 */
 	public void testCreateSession() throws Exception 
 	{
+	    final String userId = "admin";
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Check if it has been saved.
-		assertNotNull(this.sessionService.getSession("user",sessionId)); //$NON-NLS-1$
+		assertNotNull(this.sessionService.getSession(userId,sessionId)); //$NON-NLS-1$
 		
 		// Check if the created session object is valid.
-		assertTrue(this.sessionService.getSession("user",sessionId).getQueries()!=null); //$NON-NLS-1$
-		assertTrue(this.sessionService.getSession("user",sessionId).getVariables()!=null); //$NON-NLS-1$
+		assertTrue(this.sessionService.getSession(userId,sessionId).getQueries()!=null); //$NON-NLS-1$
+		assertTrue(this.sessionService.getSession(userId,sessionId).getVariables()!=null); //$NON-NLS-1$
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -52,37 +53,42 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	 */
 	public void testDestroySession() throws Exception 
 	{
+	    final String userId = "admin";
 		initTest();
 		
 		// Create a single session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Check if it has been saved.
-		assertNotNull(this.sessionService.getSession("user",sessionId)); //$NON-NLS-1$
+		assertNotNull(this.sessionService.getSession(userId,sessionId)); //$NON-NLS-1$
 		
 		// Release the session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		// Check if it was released along with the user space.
-		assertNull(this.sessionService.getSession("user",sessionId)); //$NON-NLS-1$
+		try {
+		    this.sessionService.getSession(userId,sessionId); //$NON-NLS-1$
+		} catch (SecurityException e) {}
 		
 		// Create two sessions.
-		String sessionId1 = this.sessionService.createNewSession("user"); //$NON-NLS-1$
-		String sessionId2 = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId1 = this.sessionService.createNewSession(userId); //$NON-NLS-1$
+		String sessionId2 = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Check if they are saved properly
-		assertNotNull(this.sessionService.getSession("user",sessionId1)); //$NON-NLS-1$
-		assertNotNull(this.sessionService.getSession("user",sessionId2)); //$NON-NLS-1$
+		assertNotNull(this.sessionService.getSession(userId,sessionId1)); //$NON-NLS-1$
+		assertNotNull(this.sessionService.getSession(userId,sessionId2)); //$NON-NLS-1$
 		
 		// Release one of the sessions
-		this.sessionService.releaseSession("user", sessionId1); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId1); //$NON-NLS-1$
 		
 		// Assert only the session space was released and the other session is still there.
-		assertNull(this.sessionService.getSession("user",sessionId1)); //$NON-NLS-1$
-        assertNotNull(this.sessionService.getSession("user",sessionId2)); //$NON-NLS-1$
+		try {
+		    this.sessionService.getSession(userId,sessionId1); //$NON-NLS-1$
+		} catch (SecurityException e) {}
+        assertNotNull(this.sessionService.getSession(userId,sessionId2)); //$NON-NLS-1$
 		
 		// release the last session
-		this.sessionService.releaseSession("user", sessionId2); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId2); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -95,25 +101,26 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	public void testSessionVariables() throws Exception 
 	{
+	    final String userId = "admin";
 		initTest();
 		
 		// Create a single session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Save a variable to the session
-		this.sessionService.saveUserSessionVariable("user", sessionId, "key", "value"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, "key", "value"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		// Check if it's there through a call to the object.
-		assertEquals("value", this.sessionService.getUserSessionVariable("user", sessionId, "key")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("value", this.sessionService.getUserSessionVariable(userId, sessionId, "key")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		// Release it
-		this.sessionService.deleteUserSessionVariable("user", sessionId, "key"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.sessionService.deleteUserSessionVariable(userId, sessionId, "key"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Make sure it's gone
-		assertNull(this.sessionService.getUserSessionVariable("user", sessionId, "key")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNull(this.sessionService.getUserSessionVariable(userId, sessionId, "key")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Close this session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 		
@@ -127,24 +134,25 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	public void testConnection() throws Exception 
 	{
+	    final String userId = "admin";
 		initTest();
 		
 		// Create a single session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Create a connection.
-		createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
+		createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
 		
 		// Check some basic stuff to test the connection.
-		assertEquals("LOCALDB", this.sessionService.getConnection("user", sessionId).getCatalogs().get(0).getName()); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNotNull(this.sessionService.getConnection("user", sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on COLUMNS from [Quadrant Analysis]")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("LOCALDB", this.sessionService.getConnection(userId, sessionId).getCatalogs().get(0).getName()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(this.sessionService.getConnection(userId, sessionId).createStatement().executeOlapQuery("SELECT {[Measures].Children} on COLUMNS from [Quadrant Analysis]")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Tests the destruction of the connection
-		this.sessionService.releaseConnection("user", sessionId); //$NON-NLS-1$
-		assertNull(this.sessionService.getConnection("user", sessionId)); //$NON-NLS-1$
+		this.sessionService.releaseConnection(userId, sessionId); //$NON-NLS-1$
+		assertNull(this.sessionService.getConnection(userId, sessionId)); //$NON-NLS-1$
 		
 		// Close this session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -158,42 +166,42 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	public void testCreateQuery() throws Exception 
 	{
-		
+	    final String userId = "admin";
 		initTest();
 		
 		// Create a single session.
-		String sessionId = this.sessionService.createNewSession("user"); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
 		
 		// Create a connection.
-		createConnection(this.sessionService, "user", sessionId); //$NON-NLS-1$
+		createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
 		
 		// Creating a query without selecting a cube should fail
 		try {
-			this.sessionService.createNewQuery("user", sessionId); //$NON-NLS-1$
+			this.sessionService.createNewQuery(userId, sessionId); //$NON-NLS-1$
 			fail();
 		} catch (OlapException e) {
 			// ignore
 		}
 		
 		// Create a query object.
-		String cubeName = this.discoveryService.getCubes("user", sessionId).get(0); //$NON-NLS-1$
+		String cubeName = this.discoveryService.getCubes(userId, sessionId).get(0); //$NON-NLS-1$
 		assertNotNull(cubeName);
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_CUBE_NAME, cubeName); //$NON-NLS-1$
-		String queryId = this.sessionService.createNewQuery("user", sessionId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, cubeName); //$NON-NLS-1$
+		String queryId = this.sessionService.createNewQuery(userId, sessionId); //$NON-NLS-1$
 		assertNotNull(queryId);
-		this.sessionService.saveUserSessionVariable("user", sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
-		assertNotNull(this.sessionService.getQuery("user", sessionId, queryId)); //$NON-NLS-1$
-		assertEquals(1, this.sessionService.getQueries("user", sessionId).size()); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
+		assertNotNull(this.sessionService.getQuery(userId, sessionId, queryId)); //$NON-NLS-1$
+		assertEquals(1, this.sessionService.getQueries(userId, sessionId).size()); //$NON-NLS-1$
 		
 		
 		// Test the release of a query.
-		this.sessionService.releaseQuery("user", sessionId, queryId); //$NON-NLS-1$
-		assertNull(this.sessionService.getQuery("user", sessionId, queryId)); //$NON-NLS-1$
-		assertEquals(0, this.sessionService.getQueries("user", sessionId).size()); //$NON-NLS-1$
+		this.sessionService.releaseQuery(userId, sessionId, queryId); //$NON-NLS-1$
+		assertNull(this.sessionService.getQuery(userId, sessionId, queryId)); //$NON-NLS-1$
+		assertEquals(0, this.sessionService.getQueries(userId, sessionId).size()); //$NON-NLS-1$
 		
 		
 		// Close this session.
-		this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
 		
 		finishTest();
 	}
@@ -204,8 +212,8 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	public void testSavedConnections() throws Exception
 	{
 	    String[][] expectedConnectionsArray = new String[][] {
-                {"administrator_connection", "driver_name", "password", null, "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-                {"my_connection", "driver_name", "password", null, "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+                {"administrator_connection", "driver_name", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+                {"my_connection", "driver_name", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
         };
         String[][] expectedMembershipsArray = new String[][] {
                 {"admin","administrator_connection"}, //$NON-NLS-1$ //$NON-NLS-2$
@@ -259,7 +267,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         assertNull(this.sessionService.getSavedConnection(userId, "my_connection")); //$NON-NLS-1$
         
         // Close this session.
-        this.sessionService.releaseSession("user", sessionId); //$NON-NLS-1$
+        this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
         
 	    finishTest();
 	}

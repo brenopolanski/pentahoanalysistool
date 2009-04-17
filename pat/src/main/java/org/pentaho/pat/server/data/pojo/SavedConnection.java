@@ -8,13 +8,23 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+/**
+ * A connection saved by a user for future reuse.
+ * @author Luc Boudreau
+ */
 @Entity
 @Table(name="connections")
 public class SavedConnection implements Comparable<SavedConnection> {
 
+    /**
+     * The name of this connection.
+     */
     @Basic
 	private String name;
 	
+    /**
+     * Name of the 
+     */
     @Basic
 	private String driverClassName;
 	
@@ -87,7 +97,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
     }
 
     public String getSchema() {
-        return schema;
+        return schema==null?"":schema;
     }
 
     public void setSchema(String schema) {

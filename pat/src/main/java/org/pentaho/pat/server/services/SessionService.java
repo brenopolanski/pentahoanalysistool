@@ -18,8 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface SessionService extends Service {
 
+	/**
+	 * Validates that a user session id is valid. 
+	 * @param userId The owner of the session
+	 * @param sessionId The session unique id
+	 * @throws SecurityException If either the userId or the sessionId are invalid.
+	 */
+	public void validateSession(String userId, String sessionId) 
+	    throws SecurityException;
 	
-	
+	/**
+	 * Validates that this userId exists.
+	 * @param userId The user unique id to validate.
+	 * @throws SecurityException If this user doesn't exist.
+	 */
+	public void validateUser(String userId) throws SecurityException;
 	
 	
 	/**
@@ -103,7 +116,7 @@ public interface SessionService extends Service {
 	/**
 	 * Closes a connection.
 	 * @param userId The owner of the connection.
-	 * @param sessionId The session id to which the 
+	 * @param sessionId The session id that contains the connection
 	 */
 	@Secured ({"ROLE_USER"})
 	public void releaseConnection(String userId, String sessionId);

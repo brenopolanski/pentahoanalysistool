@@ -57,7 +57,9 @@ public class SessionServiceImpl extends AbstractService
 	
 	
 	
-	public String createNewSession(String userId) {
+	public String createNewSession(String userId) 
+	{
+	    this.validateUser(userId);
 		
 		String generatedId = String.valueOf(UUID.randomUUID());
 		
@@ -72,27 +74,22 @@ public class SessionServiceImpl extends AbstractService
 	
 	
 	
-	public void releaseSession(String userId, String sessionId) {
-		if (sessions.containsKey(userId) &&
-			sessions.get(userId).containsKey(sessionId))
-		{
-			this.releaseConnection(userId, sessionId);
-			sessions.get(userId).get(sessionId).destroy();
-			sessions.get(userId).remove(sessionId);
-			
-			if (sessions.get(userId).size()==0)
-				sessions.remove(userId);
-		}
+	public void releaseSession(String userId, String sessionId) 
+	{
+	    this.validateSession(userId, sessionId);
+		this.releaseConnection(userId, sessionId);
+		sessions.get(userId).get(sessionId).destroy();
+		sessions.get(userId).remove(sessionId);
+		
+		if (sessions.get(userId).size()==0)
+			sessions.remove(userId);
 	}
 	
 	
-	public Session getSession(String userId, String sessionId) {
-	    if (sessions.containsKey(userId) &&
-	            sessions.get(userId).containsKey(sessionId))
-	    {
-	        return sessions.get(userId).get(sessionId);
-	    }
-	    return null;
+	public Session getSession(String userId, String sessionId) 
+	{
+	    this.validateSession(userId, sessionId);
+	    return sessions.get(userId).get(sessionId);
 	}
 	
 	
@@ -100,12 +97,9 @@ public class SessionServiceImpl extends AbstractService
 	public void deleteUserSessionVariable(String userId, String sessionId, 
 		String key) 
 	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			sessions.get(userId).get(sessionId)
-				.getVariables().remove(key);
-		}
+	    this.validateSession(userId, sessionId);
+		sessions.get(userId).get(sessionId)
+			.getVariables().remove(key);
 	}
 
 	
@@ -113,26 +107,20 @@ public class SessionServiceImpl extends AbstractService
 	public void saveUserSessionVariable(String userId, String sessionId, 
 		String key, Object value) 
 	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			sessions.get(userId).get(sessionId)
-				.getVariables().put(key, value);
-		}
+	    this.validateSession(userId, sessionId);
+		sessions.get(userId).get(sessionId)
+			.getVariables().put(key, value);
 	}
 
 	
 	
 	
 	public Object getUserSessionVariable(String userId, String sessionId,
-			String key) {
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			return sessions.get(userId).get(sessionId)
-				.getVariables().get(key);
-		}
-		return null;
+			String key) 
+	{
+	    this.validateSession(userId, sessionId);
+		return sessions.get(userId).get(sessionId)
+			.getVariables().get(key);
 	}
 
 
@@ -151,104 +139,93 @@ public class SessionServiceImpl extends AbstractService
 			String driverName, String connectStr, String username,
 			String password) throws OlapException 
 	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
+	    this.validateSession(userId, sessionId);
 		
-			OlapConnection connection;
-	
-			try {
-				Class.forName(driverName);
+		OlapConnection connection;
+
+		try {
+			Class.forName(driverName);
+			
+			if (username==null&&password==null)
+			    connection = (OlapConnection) DriverManager.getConnection(connectStr);
+			else
+			    connection = (OlapConnection) DriverManager
+					.getConnection(connectStr,username,password);
+			
+			OlapWrapper wrapper = connection;
+			
+			OlapConnection olapConnection = wrapper
+					.unwrap(OlapConnection.class);
+
+			if (olapConnection != null) {
 				
-				if (username==null&&password==null)
-				    connection = (OlapConnection) DriverManager.getConnection(connectStr);
-				else
-				    connection = (OlapConnection) DriverManager
-						.getConnection(connectStr,username,password);
+				sessions.get(userId).get(sessionId)
+					.setConnection(connection);
 				
-				OlapWrapper wrapper = connection;
-				
-				OlapConnection olapConnection = wrapper
-						.unwrap(OlapConnection.class);
-	
-				if (olapConnection != null) {
-					
-					sessions.get(userId).get(sessionId)
-						.setConnection(connection);
-					
-				} else {
-					throw new OlapException(
-						Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
-				}
-	
-			} catch (ClassNotFoundException e) {
-			    log.error(e);
-				throw new OlapException(e.getMessage(), e);
-			} catch (SQLException e) {
-			    log.error(e);
-				throw new OlapException(e.getMessage(), e);
+			} else {
+				throw new OlapException(
+					Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
 			}
+
+		} catch (ClassNotFoundException e) {
+		    log.error(e);
+			throw new OlapException(e.getMessage(), e);
+		} catch (SQLException e) {
+		    log.error(e);
+			throw new OlapException(e.getMessage(), e);
 		}
 	}
 	
 	
 	
-	public OlapConnection getConnection(String userId, String sessionId) {
-		if (sessions.containsKey(userId) &&
-			sessions.get(userId).containsKey(sessionId))
-		{
-			return sessions.get(userId).get(sessionId).getConnection();
-		}
-		return null;
+	public OlapConnection getConnection(String userId, String sessionId) 
+	{
+	    this.validateSession(userId, sessionId);
+		return sessions.get(userId).get(sessionId).getConnection();
 	}
 	
 
 	public void releaseConnection(String userId, String sessionId) 
 	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			try {
-				OlapConnection conn = sessions.get(userId).get(sessionId).getConnection();
-				if (conn!=null)
-					conn.close();
-			} catch (SQLException e) {
-				log.warn(Messages.getString("Services.Session.ConnectionCloseException"), e); //$NON-NLS-1$
-			}
-			sessions.get(userId).get(sessionId).setConnection(null);
+	    this.validateSession(userId, sessionId);
+		try {
+			OlapConnection conn = sessions.get(userId).get(sessionId).getConnection();
+			if (conn!=null)
+				conn.close();
+		} catch (SQLException e) {
+			log.warn(Messages.getString("Services.Session.ConnectionCloseException"), e); //$NON-NLS-1$
 		}
+		sessions.get(userId).get(sessionId).setConnection(null);
 	}
 
 
 	public String createNewQuery(String userId, String sessionId)
-            throws OlapException {
-        if (sessions.containsKey(userId)
-                && sessions.get(userId).containsKey(sessionId)) {
-            // We need to verify if the user has selected a cube.
-            String cubeName = (String) sessions.get(userId).get(sessionId)
-                    .getVariables().get(Constants.CURRENT_CUBE_NAME);
+            throws OlapException 
+    {
+	    this.validateUser(userId);
+        // We need to verify if the user has selected a cube.
+        String cubeName = (String) sessions.get(userId).get(sessionId)
+                .getVariables().get(Constants.CURRENT_CUBE_NAME);
 
-            if (cubeName == null)
-                throw new OlapException(
-                    Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
+        if (cubeName == null)
+            throw new OlapException(
+                Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
 
-            Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
-            String generatedId = String.valueOf(UUID.randomUUID());
-            Query newQuery;
-            try {
-                newQuery = new Query(generatedId, cube);
-            } catch (SQLException e) {
-                throw new OlapException(
-                    Messages.getString("Services.Session.CreateQueryException"), //$NON-NLS-1$
-                    e);
-            }
+        Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
+        String generatedId = String.valueOf(UUID.randomUUID());
+        Query newQuery;
+        try {
+            newQuery = new Query(generatedId, cube);
+        } catch (SQLException e) {
+            throw new OlapException(
+                Messages.getString("Services.Session.CreateQueryException"), //$NON-NLS-1$
+                e);
+        }
 
-            sessions.get(userId).get(sessionId).getQueries().put(generatedId,
-                    newQuery);
+        sessions.get(userId).get(sessionId).getQueries().put(generatedId,
+                newQuery);
 
-            return generatedId;
-        } else
-            throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+        return generatedId;
     }
 
 	
@@ -274,64 +251,58 @@ public class SessionServiceImpl extends AbstractService
 	
 	public Query getQuery(String userId, String sessionId, String queryId) 
 	{
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			return sessions.get(userId).get(sessionId).getQueries().get(queryId);
-		}
-		else
-			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+	    this.validateSession(userId, sessionId);
+		return sessions.get(userId).get(sessionId).getQueries().get(queryId);
 	}
 	
 
-	public List<String> getQueries(String userId, String sessionId) {
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
+	public List<String> getQueries(String userId, String sessionId) 
+	{
+	    this.validateSession(userId, sessionId);
+		List<String> names = new ArrayList<String>();
+		Set<Entry<String, Query>> entries = 
+			sessions.get(userId).get(sessionId).getQueries().entrySet();
+		for(Entry<String,Query> entry : entries)
 		{
-			List<String> names = new ArrayList<String>();
-			Set<Entry<String, Query>> entries = 
-				sessions.get(userId).get(sessionId).getQueries().entrySet();
-			for(Entry<String,Query> entry : entries)
-			{
-				names.add(entry.getKey());
-			}
-			return names;
+			names.add(entry.getKey());
 		}
-		else
-			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+		return names;
 	}
 
 	
 	public void releaseQuery(String userId, String sessionId, String queryId) {
-		if (sessions.containsKey(userId) &&
-				sessions.get(userId).containsKey(sessionId))
-		{
-			sessions.get(userId).get(sessionId).getQueries().remove(queryId);
-		}
-		else
-			throw new RuntimeException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+	    this.validateSession(userId, sessionId);
+		sessions.get(userId).get(sessionId).getQueries().remove(queryId);
 	}
 
 
 	public SavedConnection getSavedConnection(String userId,
-	        String connectionName) {
+	        String connectionName) 
+	{
+	    this.validateUser(userId);
 	    return this.userManager.getSavedConnection(userId, connectionName);
 	}
 	
-	public void saveConnection(String userId, SavedConnection connection) {
+	public void saveConnection(String userId, SavedConnection connection) 
+	{
+	    this.validateUser(userId);
         User user = this.userManager.getUser(userId);
         user.getSavedConnections().add(connection);
         this.userManager.updateUser(user);
     }
 	
-	public List<SavedConnection> getSavedConnections(String userId) {
+	public List<SavedConnection> getSavedConnections(String userId) 
+	{
+	    this.validateUser(userId);
 	    List<SavedConnection> connections = new ArrayList<SavedConnection>();
 	    User user = this.userManager.getUser(userId);
 	    connections.addAll(user.getSavedConnections());
 	    return connections;
 	}
 	
-	public void deleteSavedConnection(String userId, String connectionName) {
+	public void deleteSavedConnection(String userId, String connectionName) 
+	{
+	    this.validateUser(userId);
 	    User user = this.userManager.getUser(userId);
 	    SavedConnection conn = getSavedConnection(userId, connectionName);
 	    user.getSavedConnections().remove(conn);
@@ -352,4 +323,25 @@ public class SessionServiceImpl extends AbstractService
 	protected Map<String,Map<String,Session>> getSessions() {
 		return sessions;
 	}
+
+
+
+    public void validateSession(String userId, String sessionId)
+            throws SecurityException {
+        this.validateUser(userId);
+        if (!sessions.containsKey(userId)
+            || !sessions.get(userId).containsKey(sessionId))
+            throw new SecurityException(
+                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+    }
+
+
+
+    public void validateUser(String userId) throws SecurityException 
+    {
+        User user = this.userManager.getUser(userId);
+        if (user==null)
+            throw new SecurityException(
+                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+    }
 }

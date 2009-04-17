@@ -60,18 +60,18 @@ public class SessionServlet extends AbstractServlet implements Session {
 		        break;
 		    case Mondrian:
 		        olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
-		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
+		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
 		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
 		        if (connection.getUsername()!=null)
 		        {
 		            olap4jUrl = olap4jUrl
-		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ $NON-NLS-2$
+		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		        }
 		        if (connection.getPassword()!= null)
 		        {
 		        	olap4jUrl = olap4jUrl
-		        		.concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$ $NON-NLS-2$
+		        		.concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$
 		        }
 		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
 		        
@@ -198,15 +198,16 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    cc.setUrl(sc.getUrl());
 	    cc.setUsername(sc.getUsername());
 	    cc.setPassword(sc.getPassword());
-	    
-	    String tmpFileName = String.valueOf(UUID.randomUUID());
-	    File schema = File.createTempFile(tmpFileName,null);
+
+	    File schema = File.createTempFile(String.valueOf(UUID.randomUUID()),""); //$NON-NLS-1$
+	    schema.deleteOnExit();
 	    FileWriter fw = new FileWriter(schema);
 	    BufferedWriter bw = new BufferedWriter(fw);
 	    bw.write(sc.getSchema());
 	    bw.close();
+	    fw.close();
 	    
-	    cc.setCatalog(tmpFileName);
+	    cc.setSchemaPath(schema.getAbsolutePath());
 	    
 	    return cc;
 	}
@@ -222,7 +223,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    sc.setPassword(cc.getPassword());
 	    sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));
 	    
-	    FileInputStream fis = new FileInputStream(cc.getCatalog());
+	    FileInputStream fis = new FileInputStream(cc.getSchemaPath());
 	    DataInputStream in = new DataInputStream(fis);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String strLine;
