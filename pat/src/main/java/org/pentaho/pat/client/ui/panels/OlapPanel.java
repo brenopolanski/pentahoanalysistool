@@ -11,10 +11,17 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.beans.OlapData;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -29,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapPanel extends DataWidget {
 
+	OlapTable olapTable;
 	/**
 	 *TODO JAVADOC
 	 */
@@ -68,6 +76,17 @@ public class OlapPanel extends DataWidget {
 	public OlapPanel(String name) {
 		super();
 		this.name = name;
+		init();
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
+	private void init() {
+		// TODO Auto-generated method stub
+		olapTable = new OlapTable(MessageFactory.getInstance());
+
 	}
 
 	/**
@@ -133,12 +152,21 @@ public class OlapPanel extends DataWidget {
 		panel1 = new ScrollPanel();
 		// panel1.setPadding(0);
 		// panel1.setWidgetSpacing(0);
-		grid = new Grid(3, 2);
+		Button executeButton = new Button();
+		executeButton.addClickListener(new ClickListener(){
 
-		grid.setWidget(0, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
-		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
-		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
-
+			public void onClick(Widget arg0) {
+				// TODO Auto-generated method stub
+				doExecuteQueryModel();
+			}
+			
+		});
+		grid = new Grid(4, 2);
+		grid.setWidget(0, 0, executeButton);
+		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
+		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
+		grid.setWidget(3, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
+		grid.setWidget(0, 1, olapTable);
 		panel1.add(grid);
 		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 				true);
@@ -172,5 +200,22 @@ public class OlapPanel extends DataWidget {
 		// TODO Auto-generated method stub
 		return name;
 	}
+	
+	 public void doExecuteQueryModel() {
+		    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback() {
+
+		      public void onSuccess(Object result1) {
+		        olapTable.setData((OlapData)result1);
+		        //doCreateChart();
+		      }
+		      
+		      public void onFailure(Throwable caught) {
+		        Window.alert(MessageFactory.getInstance().no_server_data(caught.toString()));      
+		      }
+
+		    });
+		        
+		  }
+		  
 
 }
