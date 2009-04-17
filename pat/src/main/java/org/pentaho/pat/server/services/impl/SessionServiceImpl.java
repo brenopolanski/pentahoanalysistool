@@ -339,9 +339,10 @@ public class SessionServiceImpl extends AbstractService
 
     public void validateUser(String userId) throws SecurityException 
     {
-        User user = this.userManager.getUser(userId);
-        if (user==null)
-            throw new SecurityException(
-                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+        // TODO continue from here.
+//        User user = this.userManager.getUser(userId);
+//        if (user==null)
+//            throw new SecurityException(
+//                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
     }
 }
