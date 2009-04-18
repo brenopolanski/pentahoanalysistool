@@ -12,6 +12,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.ui.widgets.SelectionModePopup;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
@@ -100,7 +101,7 @@ public class FlexTableUtil {
 								new AsyncCallback() {
 
 									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionSet());
+										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
 									}
 
 									public void onSuccess(Object arg0) {
@@ -168,7 +169,7 @@ public class FlexTableUtil {
 					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback() {
 
 						public void onFailure(Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionSet());
+							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
 						}
 
 						public void onSuccess(Object arg0) {

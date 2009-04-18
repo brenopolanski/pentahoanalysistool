@@ -514,13 +514,7 @@ public interface PatConstants extends Constants{
 
 	String home();
 
-	String failedCubeList();
-
 	String cubes();
-
-	String failedDimensionList();
-
-	String failedSessionID();
 	
 	String success();
 	
@@ -537,10 +531,6 @@ public interface PatConstants extends Constants{
 	String xmla();
 	
 	String mondrian();
-
-	String failedQueryCreate();
-
-	String failedDimensionSet();
 
 	String rows();
 
