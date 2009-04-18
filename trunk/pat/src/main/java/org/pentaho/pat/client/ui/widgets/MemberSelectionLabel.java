@@ -3,8 +3,10 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.images.SelectionModeImageBundle;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -26,7 +28,11 @@ import com.google.gwt.user.client.ui.TreeItem;
  *
  */
 public class MemberSelectionLabel extends HorizontalPanel implements SourcesClickEvents {
-	 protected SelectionModeImageBundle selectionImageBundle;
+	
+		/**
+		 * PatImages ImageBundle
+		 */
+		protected SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
 
 	/**
 	 *TODO JAVADOC
