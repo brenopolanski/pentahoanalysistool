@@ -3,6 +3,8 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.pat.client.images.SelectionModeImageBundle;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -24,7 +26,7 @@ import com.google.gwt.user.client.ui.TreeItem;
  *
  */
 public class MemberSelectionLabel extends HorizontalPanel implements SourcesClickEvents {
-	// protected SelectionModeImageBundle selectionImageBundle;
+	 protected SelectionModeImageBundle selectionImageBundle;
 
 	/**
 	 *TODO JAVADOC
@@ -167,18 +169,21 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		}
 	}
 
-	/*
-	 * public void setSelectionMode(int mode) { Image selectionImage = null;
-	 * switch (mode) { case SelectionModePopup.MEMBER: selectionImage =
-	 * selectionImageBundle.member_select_icon().createImage(); break; case
-	 * SelectionModePopup.CHILDREN: selectionImage =
-	 * selectionImageBundle.children_select_icon().createImage(); break; case
-	 * SelectionModePopup.INCLUDE_CHILDREN: selectionImage =
-	 * selectionImageBundle.include_children_select_icon().createImage(); break;
-	 * case SelectionModePopup.SIBLINGS: selectionImage =
-	 * selectionImageBundle.siblings_select_icon().createImage(); }
-	 * setImage(selectionImage); }
-	 */
+	
+	  public void setSelectionMode(int mode) { 
+		  Image selectionImage = null;
+	  switch (mode) { 
+	  case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.member_select_icon().createImage(); 
+	  break; 
+	  case SelectionModePopup.CHILDREN: selectionImage = selectionImageBundle.children_select_icon().createImage(); 
+	  break; 
+	  case SelectionModePopup.INCLUDE_CHILDREN: selectionImage = selectionImageBundle.include_children_select_icon().createImage(); 
+	  break;
+	  case SelectionModePopup.SIBLINGS: selectionImage = selectionImageBundle.siblings_select_icon().createImage(); 
+	  }
+	  setImage(selectionImage); 
+	  }
+	 
 
 	/**
 	 *TODO JAVADOC

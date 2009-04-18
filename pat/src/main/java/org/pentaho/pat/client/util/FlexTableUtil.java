@@ -9,9 +9,8 @@ import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.infopanel.TrayInfoPanelNotifier;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.SelectionModePopup;
-import org.pentaho.pat.client.ui.panels.SelectionModePopup;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
+import org.pentaho.pat.client.ui.widgets.SelectionModePopup;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
@@ -124,7 +123,8 @@ public class FlexTableUtil {
 													          if (event.getTypeInt() == Event.ONCONTEXTMENU) {
 													            DOM.eventPreventDefault(event);
 													            final SelectionModePopup test = new SelectionModePopup();
-													            test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
+													            //test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
+													            test.showContextMenu(event, getSelectedItem());
 													            test.setPopupPositionAndShow(new PositionCallback() {
 													                public void setPosition(int offsetWidth, int offsetHeight) {
 													                  test.setPopupPosition(event.getClientX(), event.getClientY());

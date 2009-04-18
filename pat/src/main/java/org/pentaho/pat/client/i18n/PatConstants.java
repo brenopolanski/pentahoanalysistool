@@ -550,4 +550,13 @@ public interface PatConstants extends Constants{
 
 	String unused();
 	
+	String file_upload_failed();
+	
+	String check_error_log();
+	
+	String file_upload_no_file();
+	
+	String connection_established();
+	
+	String no_jdbc_driver_found();
 }
