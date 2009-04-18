@@ -18,11 +18,13 @@ package org.pentaho.pat.client.util;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author wseyler
  * 
  */
-public class ColumnHeaders implements IOlapDataStructure, Serializable {
+public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serializable {
 	CellInfo[][] columnHeaderMembers;
 
 	public ColumnHeaders() {
