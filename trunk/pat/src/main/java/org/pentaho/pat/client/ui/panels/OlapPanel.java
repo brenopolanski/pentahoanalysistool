@@ -6,6 +6,7 @@ import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
@@ -23,8 +24,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -40,7 +43,7 @@ public class OlapPanel extends DataWidget {
 	/**
 	 *TODO JAVADOC
 	 */
-	private Grid grid;
+	private FlexTable grid;
 	/**
 	 * The widget used to display source code.
 	 */
@@ -152,21 +155,25 @@ public class OlapPanel extends DataWidget {
 		panel1 = new ScrollPanel();
 		// panel1.setPadding(0);
 		// panel1.setWidgetSpacing(0);
-		Button executeButton = new Button();
+		Button executeButton = new Button(ConstantFactory.getInstance().execute_query());
 		executeButton.addClickListener(new ClickListener(){
 
 			public void onClick(Widget arg0) {
-				// TODO Auto-generated method stub
 				doExecuteQueryModel();
 			}
 			
 		});
-		grid = new Grid(4, 2);
+		grid = new FlexTable();
+		GridLayoutData gl = new GridLayoutData(1,4,true);
+		gl.setHorizontalAlignment(GridLayoutData.ALIGN_CENTER);
+	    gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
 		grid.setWidget(0, 0, executeButton);
 		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
 		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
 		grid.setWidget(3, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
 		grid.setWidget(0, 1, olapTable);
+		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
+		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
 		panel1.add(grid);
 		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 				true);
