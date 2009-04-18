@@ -111,45 +111,28 @@ public class SelectionModePopup extends PopupPanel{
 	      List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 	
 	      
-	      /*String dimName = getDimensionName(tItem);
-			List<String> dimSelections = new ArrayList<String>();
-			dimSelections.add(tText);*/
-			//String test = targetLabel.getFullPath()[0];
 	      String selection = setSelectionMode(selectionMode);
 	      ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections,
 					selection, new AsyncCallback(){
 
 				public void onFailure(Throwable arg0) {
-					// TODO Auto-generated method stub
-					SelectionModePopup.this.hide();
-					MessageBox.info(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_selection_set(arg0.getLocalizedMessage()));
-				       //Window.alert(MessageFactory.getInstance().no_selection_set(caught.getLocalizedMessage()));			
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_selection_set(arg0.getLocalizedMessage()));			
 				}
 
 				public void onSuccess(Object arg0) {
-					// TODO Auto-generated method stub
 					targetLabel.setSelectionMode(selectionMode);
-					MessageBox.info("Set", "whoop");
-					SelectionModePopup.this.hide();
+					MessageBox.info("Set", "whoop"); //$NON-NLS-1$ //$NON-NLS-2$
+		
 				}
 		
 	});
 	   
-	      //SelectionModePopup.this.hide();
+	      SelectionModePopup.this.hide();
 	    }
 	  }
 
 	  private PopupMenu contextMenu;
-	private String tText;
 	  
-	  public void showContextMenu(final Event event, String text, Tree treeItem) {
-		    if (contextMenu == null) {
-		    	this.tItem = treeItem;
-		    	this.tText = text;
-		     init();
-		    }
-		    
-		  }
 
 	/**
 	 *TODO JAVADOC
@@ -166,15 +149,15 @@ public class SelectionModePopup extends PopupPanel{
 	}
 
 	  public String setSelectionMode(int selectionMode) { 
-		  String selection = "";
+		  String selection = ""; //$NON-NLS-1$
 	  switch (selectionMode) { 
-	  case 0: selection = "MEMBER"; 
+	  case 0: selection = "MEMBER";  //$NON-NLS-1$
 	  break; 
-	  case 1: selection = "CHILDREN"; 
+	  case 1: selection = "CHILDREN";  //$NON-NLS-1$
 	  break; 
-	  case 2: selection = "INCLUDE_CHILDREN"; 
+	  case 2: selection = "INCLUDE_CHILDREN";  //$NON-NLS-1$
 	  break;
-	  case 3: selection = "SIBLINGS"; 
+	  case 3: selection = "SIBLINGS";  //$NON-NLS-1$
 	  }
 	   return selection;
 	  

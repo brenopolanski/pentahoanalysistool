@@ -11,6 +11,7 @@ import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -138,7 +139,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 		ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
 
 			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedSessionID());
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSessionID(arg0.getLocalizedMessage()));
 			}
 
 			public void onSuccess(String arg0) {

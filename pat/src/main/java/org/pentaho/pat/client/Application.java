@@ -26,6 +26,7 @@ import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.core.client.GWT;
@@ -246,14 +247,14 @@ public class Application extends Viewport implements ConnectionListener {
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
 							public void onFailure(Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedDimensionList());
+								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
 							}
 
 							public void onSuccess(String[] arg0) {
 								ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
 
 									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedQueryCreate());
+										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(arg0.getLocalizedMessage()));
 									}
 
 									public void onSuccess(String arg0) {
@@ -261,9 +262,8 @@ public class Application extends Viewport implements ConnectionListener {
 										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
 											public void onFailure(Throwable arg0) {
-												// TODO Auto-generated method
-												// stub
 
+												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().no_query_set(arg0.getLocalizedMessage()));
 											}
 
 											public void onSuccess(Object arg0) {
@@ -283,9 +283,7 @@ public class Application extends Viewport implements ConnectionListener {
 						});
 
 					}
-					//listener.onMenuItemSelected(item);
-					//DataWidget content = Pat.itemWidgets.get(item);
-					//displayContentWidget(Pat.itemWidgets.get(firstItem));
+
 					getMainMenu().setSelectedItem(item, false);
 					getMainMenu().ensureSelectedItemVisible();
 
@@ -371,7 +369,7 @@ public class Application extends Viewport implements ConnectionListener {
 			}
 
 			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().failedCubeList());
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
 			}
 		});
 

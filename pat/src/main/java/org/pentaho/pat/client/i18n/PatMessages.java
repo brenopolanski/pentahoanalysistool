@@ -45,6 +45,59 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 *         no_selection_cleared
 	 */
 	String no_selection_cleared(String arg0);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param localizedMessage
+	 * @return
+	 */
+	String failedDimensionList(String localizedMessage);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param localizedMessage
+	 * @return
+	 */
+	String failedQueryCreate(String localizedMessage);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param localizedMessage
+	 * @return
+	 */
+	String no_query_set(String localizedMessage);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param localizedMessage
+	 * @return
+	 */
+	String failedSessionID(String localizedMessage);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String failedDimensionSet(String localizedMessage);
+
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param localizedMessage
+	 * @return
+	 */
+	String failedCubeList(String localizedMessage);
 	
 
 }
