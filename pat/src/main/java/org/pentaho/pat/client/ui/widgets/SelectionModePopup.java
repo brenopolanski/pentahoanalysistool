@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.InfoPanel;
@@ -106,11 +107,9 @@ public class SelectionModePopup extends PopupPanel{
 	    public void execute() {
 	      final MemberSelectionLabel targetLabel = (MemberSelectionLabel)getSource();
 	      String dimName = getDimensionName(targetLabel);
-	      List<String> dimSelections = null;
-	      for(int i=0; i<targetLabel.getFullPath().length;i++)
-	    	  {
-	    	  dimSelections.add(targetLabel.getFullPath()[i]);
-	    	  }
+	  
+	      List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
+	
 	      
 	      /*String dimName = getDimensionName(tItem);
 			List<String> dimSelections = new ArrayList<String>();
@@ -159,7 +158,9 @@ public class SelectionModePopup extends PopupPanel{
 	 * @param selectedItem
 	 */
 	public void showContextMenu(Event event, TreeItem selectedItem) {
-	
+		if (contextMenu == null) {
+	     init();
+	    }
 		setSource(selectedItem.getWidget());
 		
 	}
