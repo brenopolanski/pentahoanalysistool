@@ -67,16 +67,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	public static final String DEFAULT_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
-	/**
-	 * A mapping of history tokens to their associated menu items.
-	 */
-	public static Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
-
-	/**
-	 * A mapping of menu items to the widget display when the item is selected.
-	 */
-	public static Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
-
+	
 	/**
 	 * The {@link Application}.
 	 */
@@ -95,21 +86,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 
 	}
 
-	/**
-	 * Set the content to the {@link DataWidget}.
-	 * 
-	 * @param content
-	 *            the {@link DataWidget} to display
-	 */
-	private void displayContentWidget(final DataWidget content) {
-		if (content != null) {
-			if (!content.isInitialized()) {
-				content.initialize();
-			}
-			app.setContent(content);
-		}
-	}
-
+	
 	/**
 	 * Get the style name of the reference element defined in the current GWT
 	 * theme style sheet.
@@ -141,47 +118,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 		setupTitlePanel();
 		// setupOptionsPanel();
 
-		// Setup a history listener to reselect the associate menu item
-		final HistoryListener historyListener = new HistoryListener() {
-			public void onHistoryChanged(String historyToken) {
-				TreeItem item = itemTokens.get(historyToken);
-				if (item == null) {
-					item = app.getMainMenu().getItem(0).getChild(0);
-				}
-
-				// Select the associated TreeItem
-				app.getMainMenu().setSelectedItem(item, false);
-				app.getMainMenu().ensureSelectedItemVisible();
-
-				// Show the associated ContentWidget
-				displayContentWidget(itemWidgets.get(item));
-			}
-		};
-
-		History.addHistoryListener(historyListener);
-		// Add an listener that sets the content widget when a menu item is
-		// selected
-		app.setListener(new ApplicationListener() {
-			public void onMenuItemSelected(TreeItem item) {
-				DataWidget content = itemWidgets.get(item);
-				if (content != null && !content.equals(app.getContent())) {
-					History.newItem(getContentWidgetToken(content));
-				}
-			} 
-		});
-
-		// Show the initial example
-		String initToken = History.getToken();
-		if (initToken.length() > 0) {
-			historyListener.onHistoryChanged(initToken);
-		} else { // Use the first token available
-			TreeItem firstItem = app.getMainMenu().getItem(0).getChild(0);
-			app.getMainMenu().setSelectedItem(firstItem, false);
-			app.getMainMenu().ensureSelectedItemVisible();
-			displayContentWidget(itemWidgets.get(firstItem));
-		}
-
-		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
