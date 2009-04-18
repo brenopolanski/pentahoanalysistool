@@ -22,11 +22,13 @@ import org.pentaho.pat.client.util.CellData;
 import org.pentaho.pat.client.util.ColumnHeaders;
 import org.pentaho.pat.client.util.RowHeaders;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author wseyler
  * 
  */
-public class OlapData implements Serializable {
+public class OlapData implements Serializable, IsSerializable {
     private static final long serialVersionUID = 1L;
     RowHeaders rowHeaders;
     ColumnHeaders columnHeaders;
