@@ -18,11 +18,13 @@ package org.pentaho.pat.client.util;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author wseyler
  * 
  */
-public class CellData implements IOlapDataStructure, Serializable {
+public class CellData implements IOlapDataStructure, Serializable, IsSerializable {
 	CellInfo[][] olapDataCells;
 
 	public CellData() {

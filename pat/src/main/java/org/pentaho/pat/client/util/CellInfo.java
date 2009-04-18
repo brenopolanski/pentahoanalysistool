@@ -18,11 +18,13 @@ package org.pentaho.pat.client.util;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author wseyler
  * 
  */
-public class CellInfo implements Serializable {
+public class CellInfo implements Serializable, IsSerializable {
 	String formattedValue;
 	String rawValue;
 	boolean isColumnHeader = false;
