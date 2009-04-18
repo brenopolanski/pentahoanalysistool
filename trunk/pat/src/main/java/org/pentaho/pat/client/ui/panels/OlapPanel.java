@@ -164,9 +164,6 @@ public class OlapPanel extends DataWidget {
 			
 		});
 		grid = new FlexTable();
-		GridLayoutData gl = new GridLayoutData(1,4,true);
-		gl.setHorizontalAlignment(GridLayoutData.ALIGN_CENTER);
-	    gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
 		grid.setWidget(0, 0, executeButton);
 		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
 		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));

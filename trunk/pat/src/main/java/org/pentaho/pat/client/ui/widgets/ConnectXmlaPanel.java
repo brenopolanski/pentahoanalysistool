@@ -121,7 +121,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 			public void onClick(Widget sender) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), MessageFactory.getInstance().connection_established());
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connection_established());
 						setConnectionEstablished(true);
 						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
 					}

@@ -167,10 +167,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 						// TODO remove this later
 						MessageBox.info("File uploaded", tmp); //$NON-NLS-1$
 					} else {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_failed());
+						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().file_upload_failed());
 					}
 				} else
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().check_error_log());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().check_error_log());
 			}
 
 			public void onSubmit(FormSubmitEvent arg0) {
@@ -199,7 +199,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 			public void onClick(Widget sender) {
 				String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().file_upload_no_file());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().file_upload_no_file());
 				} else {
 					formPanel.submit();
 				}
@@ -211,7 +211,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 			public void onClick(Widget sender) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), MessageFactory.getInstance().connection_established());
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connection_established());
 						setConnectionEstablished(true);
 						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
@@ -267,7 +267,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 						listBox.addItem(arg0[i]);
 					}
 				} else {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_jdbc_driver_found());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().no_jdbc_driver_found());
 				}
 			}
 
