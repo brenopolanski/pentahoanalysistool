@@ -1,5 +1,8 @@
 package org.pentaho.pat.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -85,6 +88,16 @@ public class Application extends Viewport implements ConnectionListener {
 	}
 
 	/**
+	 * A mapping of history tokens to their associated menu items.
+	 */
+	public static Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
+
+	/**
+	 * A mapping of menu items to the widget display when the item is selected.
+	 */
+	public static Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
+
+	/**
 	 * The base style name.
 	 */
 	public static final String DEFAULT_STYLE_NAME = "Application"; //$NON-NLS-1$
@@ -92,7 +105,7 @@ public class Application extends Viewport implements ConnectionListener {
 	/**
 	 * The wrapper around the content.
 	 */
-	private LayoutPanel contentWrapper;
+	private static LayoutPanel contentWrapper;
 
 	/**
 	 * The panel that holds the main links.
@@ -183,6 +196,20 @@ public class Application extends Viewport implements ConnectionListener {
 		bottomPanel.add(contentWrapper);
 		setupMainMenu();
 		setContent(null);
+		setListener(new ApplicationListener() {
+			 public void onMenuItemSelected(TreeItem item) {
+
+				   DataWidget content = itemWidgets.get(item);
+                   if (content != null && !content.equals(getContent())) {
+                    //       History.newItem(getContentWidgetToken(content));
+                   }
+           } 
+   });
+
+		TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
+        getMainMenu().setSelectedItem(firstItem, false);
+        getMainMenu().ensureSelectedItemVisible();
+        displayContentWidget(itemWidgets.get(firstItem));
 	}
 
 	/**
@@ -256,7 +283,14 @@ public class Application extends Viewport implements ConnectionListener {
 						});
 
 					}
-					listener.onMenuItemSelected(item);
+					//listener.onMenuItemSelected(item);
+					//DataWidget content = Pat.itemWidgets.get(item);
+					//displayContentWidget(Pat.itemWidgets.get(firstItem));
+					getMainMenu().setSelectedItem(item, false);
+					getMainMenu().ensureSelectedItemVisible();
+
+					// Show the associated ContentWidget
+					displayContentWidget(itemWidgets.get(item));
 					contentWrapper.layout(true);
 
 				}
@@ -265,6 +299,21 @@ public class Application extends Viewport implements ConnectionListener {
 			public void onTreeItemStateChanged(TreeItem item) {
 			}
 		});
+	}
+
+	/**
+	 * Set the content to the {@link DataWidget}.
+	 * 
+	 * @param content
+	 *            the {@link DataWidget} to display
+	 */
+	public static void displayContentWidget(final DataWidget content) {
+		if (content != null) {
+			if (!content.isInitialized()) {
+				content.initialize();
+			}
+			setContent(content);
+		}
 	}
 
 	/**
@@ -384,8 +433,8 @@ public class Application extends Viewport implements ConnectionListener {
 				+ content.getName());
 
 		// Map the item to its history token and content widget
-		Pat.itemWidgets.put(option, content);
-		Pat.itemTokens.put(Pat.getContentWidgetToken(content), option);
+		itemWidgets.put(option, content);
+		itemTokens.put(Pat.getContentWidgetToken(content), option);
 	}
 
 	/**
@@ -429,7 +478,7 @@ public class Application extends Viewport implements ConnectionListener {
 	 * @param content
 	 *            the content widget
 	 */
-	public void setContent(Widget content) {
+	public static void setContent(Widget content) {
 		contentWrapper.clear();
 		if (content != null) {
 			contentWrapper.add(content);
