@@ -55,10 +55,11 @@ public final class DimensionFlexTable extends FlexTable {
 		addStyleName("demo-flextable"); //$NON-NLS-1$
 
 		this.trdc = tableRowDragController;
-		HTML empty = new HTML("EMPTY"); //$NON-NLS-1$
-		empty.addStyleName("drag-Dimension"); //$NON-NLS-1$
+		 Label spacerLabel = new Label("");
+		 spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
 
-		setWidget(0, 0, empty);
+
+		setWidget(0, 0, spacerLabel);
 
 	}
 

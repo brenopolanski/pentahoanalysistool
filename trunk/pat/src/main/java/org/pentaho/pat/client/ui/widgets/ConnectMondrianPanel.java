@@ -217,7 +217,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 					}
 
 					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
 						connectButton.setEnabled(true);
 					}
 				});

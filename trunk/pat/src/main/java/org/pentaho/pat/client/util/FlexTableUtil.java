@@ -1,13 +1,7 @@
 package org.pentaho.pat.client.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.PopupMenu;
-import org.gwt.mosaic.ui.client.infopanel.TrayInfoPanelNotifier;
-import org.olap4j.query.Selection;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.ui.widgets.SelectionModePopup;
@@ -17,16 +11,12 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
 
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -196,6 +186,7 @@ public class FlexTableUtil {
 		MemberSelectionLabel memberLabel = new MemberSelectionLabel(node.getValue());
 
 		TreeItem childItem = new TreeItem(memberLabel);
+		
 		memberLabel.setTreeItem(childItem);
 		parent.addItem(childItem);
 		for (int i = 0; i < node.getChildren().size(); i++) {
