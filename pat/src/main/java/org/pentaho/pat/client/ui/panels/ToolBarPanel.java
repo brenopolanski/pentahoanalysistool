@@ -188,14 +188,16 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 		MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(), new Command() {
 			public void execute() {
-				System.out.print(ConstantFactory.getInstance().pat_homepage());
+			//	System.out.print(ConstantFactory.getInstance().pathomepage());
+				//TODO Webpage
 			}
 
 		});
 
 		MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance().mainLinkHomepage(), new Command() {
 			public void execute() {
-				System.out.print(ConstantFactory.getInstance().pentaho_homepage());
+			//	System.out.print(ConstantFactory.getInstance().pentahohomepage());
+				//TODO Webpage
 			}
 
 		});

@@ -11,7 +11,7 @@ public class ConstantFactory {
 	 /**
 	 *TODO JAVADOC
 	 */
-	static PatConstants constants = null;
+	private static PatConstants constants = null;
 	  /**
 	 *TODO JAVADOC
 	 *

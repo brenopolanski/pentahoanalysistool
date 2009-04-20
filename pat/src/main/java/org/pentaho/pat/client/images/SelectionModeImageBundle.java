@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.ImageBundle;
  *
  */
 public interface SelectionModeImageBundle extends ImageBundle {
-  public AbstractImagePrototype children_select_icon();
-  public AbstractImagePrototype include_children_select_icon();
-  public AbstractImagePrototype member_select_icon();
-  public AbstractImagePrototype siblings_select_icon();
+  public AbstractImagePrototype childrenSelectIcon();
+  public AbstractImagePrototype includeChildrenSelectIcon();
+  public AbstractImagePrototype memberSelectIcon();
+  public AbstractImagePrototype siblingsSelectIcon();
 }

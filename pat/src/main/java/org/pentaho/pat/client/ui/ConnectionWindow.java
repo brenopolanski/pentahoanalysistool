@@ -38,15 +38,15 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/**
 	 *TODO JAVADOC
 	 */
-	private static final String TITLE = ConstantFactory.getInstance().register_new_connection();
+	private static final String TITLE = ConstantFactory.getInstance().registernewconnection();
 	/**
 	 *TODO JAVADOC
 	 */
-	private final ConnectMondrianPanel connectMondrian;
+	private transient final ConnectMondrianPanel connectMondrian;
 	/**
 	 *TODO JAVADOC
 	 */
-	private final ConnectXmlaPanel connectXmla;
+	private transient final ConnectXmlaPanel connectXmla;
 	/**
 	 *TODO JAVADOC
 	 */
@@ -54,11 +54,11 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/**
 	 *TODO JAVADOC
 	 */
-	private ConnectionListenerCollection connectionListeners;
+	private transient ConnectionListenerCollection connectionListeners;
 	/**
 	 *TODO JAVADOC
 	 */
-	final TabLayoutPanel tabPanel = new TabLayoutPanel();
+	private transient final TabLayoutPanel tabPanel = new TabLayoutPanel();
 
 	/**
 	 *TODO JAVADOC
@@ -89,7 +89,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	 * @return
 	 */
 	protected LayoutPanel onInitialize() {
-		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+		final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
 		tabPanel.setPadding(5);
 		tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
@@ -98,11 +98,11 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		connectXmla.addConnectionListener(ConnectionWindow.this);
 
 		tabPanel.addTabListener(new TabListener() {
-			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+			public  boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
 				return true;
 			}
 
-			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+			public  void onTabSelected(final SourcesTabEvents sender, final int tabIndex) {
 				// FormLayout.getPreferredSize() needs to be improved so that
 				// pack()
 				// works like expected. But you can try it.
@@ -127,14 +127,14 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	 *
 	 * @param connectionEstablished
 	 */
-	public void setConnectionEstablished(boolean connectionEstablished) {
+	public void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionBroken(Widget sender) {
+	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
 		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
 	}
@@ -142,7 +142,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionMade(Widget sender) {
+	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
 		connectionListeners.fireConnectionMade(ConnectionWindow.this);
 		ConnectionWindow.this.hide();
@@ -158,7 +158,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
-	public void addConnectionListener(ConnectionListener listener) {
+	public void addConnectionListener(final ConnectionListener listener) {
 		if (connectionListeners == null) {
 			connectionListeners = new ConnectionListenerCollection();
 		}
@@ -175,7 +175,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
-	public void removeConnectionListener(ConnectionListener listener) {
+	public final void removeConnectionListener(final ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}

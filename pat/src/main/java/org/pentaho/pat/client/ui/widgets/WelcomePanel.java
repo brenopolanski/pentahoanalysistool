@@ -16,14 +16,14 @@ public class WelcomePanel extends DataWidget {
 	/**
 	 *TODO JAVADOC
 	 */
-	private String name;
+	private final transient String name;
 
 	/**
 	 *TODO JAVADOC
 	 *
 	 * @param name
 	 */
-	public WelcomePanel(String name) {
+	public WelcomePanel(final String name) {
 		super();
 		this.name = name;
 	}
@@ -34,7 +34,7 @@ public class WelcomePanel extends DataWidget {
 	@Override
 	public Widget onInitialize() {
 		// Not Permanent, but better than a big white space.
-		LayoutPanel layoutPanel = new LayoutPanel();
+		final LayoutPanel layoutPanel = new LayoutPanel();
 		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6")); //$NON-NLS-1$
 		return layoutPanel;
 	}

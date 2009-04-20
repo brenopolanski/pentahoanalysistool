@@ -48,7 +48,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	/**
 	 * The base style name.
 	 */
-	public static final String DEFAULT_STYLE_NAME = "Pat"; //$NON-NLS-1$
+	public static final String DEF_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
 	/**
 	 * The {@link Application}.
@@ -58,16 +58,9 @@ public class Pat implements EntryPoint, ConnectionListener {
 	/**
 	 * Global Session ID.
 	 */
-	private static String SESSION_ID; //$NON-NLS-1$
+	private static String sessionid;
 
-	/**
-	 * Pat Constructor.
-	 */
-	public Pat() {
-		super();
-
-	}
-
+	
 	/**
 	 * Get the style name of the reference element defined in the current GWT
 	 * theme style sheet.
@@ -114,7 +107,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * @return SESSION_ID
 	 */
 	public static String getSessionID() {
-		return SESSION_ID;
+		return sessionid;
 	}
 
 	/**
@@ -128,7 +121,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 			}
 
 			public void onSuccess(final String arg0) {
-				SESSION_ID = arg0;
+				sessionid = arg0;
 			}
 
 		});
@@ -140,12 +133,12 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	private void setupTitlePanel() {
 		// Get the title from the internationalized constants
-		String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
+		final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
 				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
 				+ "</h2>"; //$NON-NLS-1$
 
 		// Add the title and some images to the title bar
-		HorizontalPanel titlePanel = new HorizontalPanel();
+		final HorizontalPanel titlePanel = new HorizontalPanel();
 		titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		// titlePanel.add(IMAGES.gwtLogo().createImage());
 		titlePanel.add(new HTML(pageTitle));
@@ -158,34 +151,34 @@ public class Pat implements EntryPoint, ConnectionListener {
 	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String gwtMosaicStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
-		String showcaseStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
+		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
+		String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
 		String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
-			gwtMosaicStyleSheet = gwtMosaicStyleSheet.replace(".css", //$NON-NLS-1$
+			gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
 					"_rtl.css"); //$NON-NLS-1$
-			showcaseStyleSheet = showcaseStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
+			scStyleSheet = scStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		// Find existing style sheets that need to be removed
 		boolean styleSheetsFound = false;
 		final HeadElement headElem = StyleSheetLoader.getHeadElement();
 		final List<Element> toRemove = new ArrayList<Element>();
-		NodeList<Node> children = headElem.getChildNodes();
+		final NodeList<Node> children = headElem.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
-			Node node = children.getItem(i);
+			final Node node = children.getItem(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				Element elem = Element.as(node);
+				final Element elem = Element.as(node);
 				if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
 						&& elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
 								"stylesheet")) { //$NON-NLS-1$
 					styleSheetsFound = true;
-					String href = elem.getPropertyString("href"); //$NON-NLS-1$
+					final String href = elem.getPropertyString("href"); //$NON-NLS-1$
 					// If the correct style sheets are already loaded, then we
 					// should have
 					// nothing to remove.
-					if (!href.contains(gwtStyleSheet) && !href.contains(gwtMosaicStyleSheet) && !href.contains(showcaseStyleSheet)) {
+					if (!href.contains(gwtStyleSheet) && !href.contains(gwtMosStyleSheet) && !href.contains(scStyleSheet)) {
 						toRemove.add(elem);
 					}
 				}
@@ -193,7 +186,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 		}
 
 		// Return if we already have the correct style sheets
-		if (styleSheetsFound && toRemove.size() == 0) {
+		if (styleSheetsFound && toRemove.isEmpty()) {
 			return;
 		}
 
@@ -207,8 +200,8 @@ public class Pat implements EntryPoint, ConnectionListener {
 		}
 
 		// Load the GWT theme style sheet
-		String modulePath = GWT.getModuleBaseURL();
-		Command callback = new Command() {
+		final String modulePath = GWT.getModuleBaseURL();
+		final Command callback = new Command() {
 			public void execute() {
 				// Different themes use different background colors for the body
 				// element, but IE only changes the background of the visible
@@ -226,11 +219,11 @@ public class Pat implements EntryPoint, ConnectionListener {
 		};
 
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet, getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
-		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosaicStyleSheet, getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosStyleSheet, getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
 		// Load the showcase specific style sheet after the GWT & Mosaic theme
 		// style
 		// sheet so that custom styles supercede the theme styles.
-		StyleSheetLoader.loadStyleSheet(modulePath + showcaseStyleSheet, getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + scStyleSheet, getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet, getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
 
 	}

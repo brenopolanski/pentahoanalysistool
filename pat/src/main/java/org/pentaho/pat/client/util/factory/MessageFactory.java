@@ -11,7 +11,7 @@ public class MessageFactory {
 	  /**
 	 *TODO JAVADOC
 	 */
-	static PatMessages messages = null;
+	private static PatMessages messages = null;
 	  /**
 	 *TODO JAVADOC
 	 *

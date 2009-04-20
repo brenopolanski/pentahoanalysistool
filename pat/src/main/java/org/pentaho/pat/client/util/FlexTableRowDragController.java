@@ -123,7 +123,7 @@ public class FlexTableRowDragController extends PickupDragController {
 				}
 			}
 		}
-		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$
+		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
 	}
 
 }

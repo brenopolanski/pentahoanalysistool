@@ -323,8 +323,8 @@ public class OlapTable extends FlexTable {
                   source[0].length > destination[0].length)
           {
                   throw new IndexOutOfBoundsException
-                  ("The destination[" + destination.length + "][" + destination[0].length +"]" +
-                                 "is smaller than source[" + source.length + "][" + source[0].length +"]");
+                  ("The destination[" + destination.length + "][" + destination[0].length +"]" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                 "is smaller than source[" + source.length + "][" + source[0].length +"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           }
 
           for (int i = 0; i < source.length; i++)
@@ -345,9 +345,9 @@ public class OlapTable extends FlexTable {
           for (int i = 0; i < m.length; i++)
           {
                   for (int j = 0; j < m[0].length; j++)
-                          System.out.print( " [" + i + "][" + j +"]=" + m[i][j]);
+                          System.out.print( " [" + i + "][" + j +"]=" + m[i][j]);  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
                  
-                  System.out.println();
+               //   System.out.println();
           }
          
   }
@@ -374,8 +374,7 @@ public class OlapTable extends FlexTable {
  
   public class ClickCellCommand implements ClickListener{
           public void onClick(Widget sender){
-                  cellFormatPopup =  new CellFormatPopup(Pat.getSessionID(),
-                                  sender.getAbsoluteTop(), sender.getAbsoluteLeft(), sender );
+                  cellFormatPopup =  new CellFormatPopup(sender.getAbsoluteTop(), sender.getAbsoluteLeft(), sender );
                   cellFormatPopup.show();
                   //sender.addStyleName(cellFormatPopup.getReturnStyle());
                  

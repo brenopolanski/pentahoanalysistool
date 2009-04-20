@@ -23,11 +23,11 @@ public class CellFormatPopup extends PopupPanel {
 	public static final String DECORATION_UNDERLINE = "underline"; //$NON-NLS-1$
 
 
-	Widget sender;
-	MenuBar menuBar;
-	String returnStyle = ""; //$NON-NLS-1$
+	private transient Widget sender;
+	private transient MenuBar menuBar;
+	private transient String returnStyle = ""; //$NON-NLS-1$
 
-	public CellFormatPopup(String guid, int x, int y, Widget sender) {
+	public CellFormatPopup(final int x, final int y, final Widget sender) {
 		super(false, true);
 		this.sender = sender;
 
@@ -46,7 +46,7 @@ public class CellFormatPopup extends PopupPanel {
 		// com.google.gwt.user.client.DOM.setInnerText(caption, "MERDA!");
 		// com.google.gwt.user.client.DOM.appendChild(rootNode, caption);
 
-		MenuBar bgMenu = new MenuBar(true);
+		final MenuBar bgMenu = new MenuBar(true);
 		bgMenu.addItem(new MenuItem("Red", new CellFormatCommand(CellFormatType.BACKGROUND, COLOR_RED))); //$NON-NLS-1$
 		bgMenu.addItem(new MenuItem("Green", new CellFormatCommand(CellFormatType.BACKGROUND, COLOR_GREEN))); //$NON-NLS-1$
 		bgMenu.addItem(new MenuItem("Yellow", new CellFormatCommand(CellFormatType.BACKGROUND, COLOR_YELLOW))); //$NON-NLS-1$
@@ -54,7 +54,7 @@ public class CellFormatPopup extends PopupPanel {
 		bgMenu.addItem(new MenuItem("White", new CellFormatCommand(CellFormatType.BACKGROUND, COLOR_WHITE))); //$NON-NLS-1$
 		bgMenu.addItem(new MenuItem("Black", new CellFormatCommand(CellFormatType.BACKGROUND, COLOR_BLACK))); //$NON-NLS-1$
 
-		MenuBar fgMenu = new MenuBar(true);
+		final MenuBar fgMenu = new MenuBar(true);
 		fgMenu.addItem(new MenuItem("Red", new CellFormatCommand(CellFormatType.FOREGROUND, COLOR_RED))); //$NON-NLS-1$
 		fgMenu.addItem(new MenuItem("Green", new CellFormatCommand(CellFormatType.FOREGROUND, COLOR_GREEN))); //$NON-NLS-1$
 		fgMenu.addItem(new MenuItem("Yellow", new CellFormatCommand(CellFormatType.FOREGROUND, COLOR_YELLOW))); //$NON-NLS-1$
@@ -62,13 +62,13 @@ public class CellFormatPopup extends PopupPanel {
 		fgMenu.addItem(new MenuItem("White", new CellFormatCommand(CellFormatType.FOREGROUND, COLOR_WHITE))); //$NON-NLS-1$
 		fgMenu.addItem(new MenuItem("Black", new CellFormatCommand(CellFormatType.FOREGROUND, COLOR_BLACK))); //$NON-NLS-1$
 
-		MenuBar styleMenu = new MenuBar(true);
+		final MenuBar styleMenu = new MenuBar(true);
 		styleMenu.addItem(new MenuItem("Bold", new CellFormatCommand(CellFormatType.STYLE, STYLE_BOLD))); //$NON-NLS-1$
 		styleMenu.addItem(new MenuItem("Normal", new CellFormatCommand(CellFormatType.STYLE, STYLE_NORMAL))); //$NON-NLS-1$
 		styleMenu.addItem(new MenuItem("Underline", new CellFormatCommand(CellFormatType.DECORATION, DECORATION_UNDERLINE))); //$NON-NLS-1$
 		styleMenu.addItem(new MenuItem("Outline", new CellFormatCommand(CellFormatType.DECORATION, DECORATION_OUTLINE))); //$NON-NLS-1$
 
-		MenuBar sizeMenu = new MenuBar(true);
+		final MenuBar sizeMenu = new MenuBar(true);
 		sizeMenu.addItem(new MenuItem("70%", new CellFormatCommand(CellFormatType.SIZE, "70%"))); //$NON-NLS-1$ //$NON-NLS-2$
 		sizeMenu.addItem(new MenuItem("80%", new CellFormatCommand(CellFormatType.SIZE, "80%"))); //$NON-NLS-1$ //$NON-NLS-2$
 		sizeMenu.addItem(new MenuItem("90%", new CellFormatCommand(CellFormatType.SIZE, "90%"))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -77,7 +77,7 @@ public class CellFormatPopup extends PopupPanel {
 		sizeMenu.addItem(new MenuItem("120%", new CellFormatCommand(CellFormatType.SIZE, "120%"))); //$NON-NLS-1$ //$NON-NLS-2$
 		sizeMenu.addItem(new MenuItem("130%", new CellFormatCommand(CellFormatType.SIZE, "130%"))); //$NON-NLS-1$ //$NON-NLS-2$
 
-		MenuBar familyMenu = new MenuBar(true);
+		final MenuBar familyMenu = new MenuBar(true);
 		familyMenu.addItem(new MenuItem("Monospace", new CellFormatCommand(CellFormatType.FAMILY, "monospace"))); //$NON-NLS-1$ //$NON-NLS-2$
 		familyMenu.addItem(new MenuItem("Arial", new CellFormatCommand(CellFormatType.FAMILY, "arial"))); //$NON-NLS-1$ //$NON-NLS-2$
 		familyMenu.addItem(new MenuItem("Sans-serif", new CellFormatCommand(CellFormatType.FAMILY, "sans-serif"))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -97,13 +97,13 @@ public class CellFormatPopup extends PopupPanel {
 		return sender;
 	}
 
-	public void setSource(Widget sender) {
+	public void setSource(final Widget sender) {
 		this.sender = sender;
 	}
 
 	public class CellFormatCommand implements Command {
-		String value = ""; //$NON-NLS-1$
-		CellFormatType type;
+		private transient String value = ""; //$NON-NLS-1$
+		private final transient CellFormatType type;
 
 		public CellFormatCommand(CellFormatType type, String value) {
 			this.value = value;
@@ -115,17 +115,29 @@ public class CellFormatPopup extends PopupPanel {
 			// Widget widget = getSource();
 
 			if (type == CellFormatType.FOREGROUND)
-				DOM.setStyleAttribute(sender.getElement(), "color", value); //$NON-NLS-1$
+				{
+					DOM.setStyleAttribute(sender.getElement(), "color", value); //$NON-NLS-1$
+					}
 			else if (type == CellFormatType.BACKGROUND)
+				{
 				DOM.setStyleAttribute(sender.getElement(), "background", value); //$NON-NLS-1$
+				}
 			else if (type == CellFormatType.DECORATION)
+				{
 				DOM.setStyleAttribute(sender.getElement(), "textDecoration", value); //$NON-NLS-1$
+				}
 			else if (type == CellFormatType.STYLE)
+				{
 				DOM.setStyleAttribute(sender.getElement(), "fontWeight", value); //$NON-NLS-1$
+				}
 			else if (type == CellFormatType.SIZE)
+				{
 				DOM.setStyleAttribute(sender.getElement(), "fontSize", value); //$NON-NLS-1$
+				}
 			else if (type == CellFormatType.FAMILY)
+				{
 				DOM.setStyleAttribute(sender.getElement(), "fontFamily", value); //$NON-NLS-1$
+				}
 
 			CellFormatPopup.this.hide();
 		}
@@ -136,7 +148,7 @@ public class CellFormatPopup extends PopupPanel {
 		return returnStyle;
 	}
 
-	public void setReturnStyle(String returnStyle) {
+	public void setReturnStyle(final String returnStyle) {
 		this.returnStyle = returnStyle;
 	}
 

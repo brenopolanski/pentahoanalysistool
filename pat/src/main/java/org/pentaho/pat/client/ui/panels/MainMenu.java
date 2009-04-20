@@ -43,12 +43,12 @@ public class MainMenu extends StackPanel {
 	/**
 	 * A mapping of history tokens to their associated menu items.
 	 */
-	public static final Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
+	public static final Map<String, TreeItem> ITEMTOKENS = new HashMap<String, TreeItem>();
 
 	/**
 	 * A mapping of menu items to the widget display when the item is selected.
 	 */
-	public static final Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
+	public static final Map<TreeItem, DataWidget> ITEMWIDGETS = new HashMap<TreeItem, DataWidget>();
 
 	/**
 	 * @return the main menu.
@@ -88,7 +88,7 @@ public class MainMenu extends StackPanel {
 		setListener(new ApplicationListener() {
 			 public void onMenuItemSelected(final TreeItem item) {
 
-				   DataWidget content = itemWidgets.get(item);
+				   DataWidget content = ITEMWIDGETS.get(item);
                   if (content != null && !content.equals(getContent())) {
                    //       History.newItem(getContentWidgetToken(content));
                   }
@@ -98,7 +98,7 @@ public class MainMenu extends StackPanel {
 		TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
         getMainMenu().setSelectedItem(firstItem, false);
         getMainMenu().ensureSelectedItemVisible();
-        displayContentWidget(itemWidgets.get(firstItem));
+        displayContentWidget(ITEMWIDGETS.get(firstItem));
 	}
 
 	/**
@@ -116,11 +116,11 @@ public class MainMenu extends StackPanel {
 		ApplicationImages treeImages = GWT.create(ApplicationImages.class);
 		mainMenu = new Tree(treeImages);
 		mainMenu.setAnimationEnabled(true);
-		mainMenu.addStyleName(Pat.DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
+		mainMenu.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 		mainMenu.addTreeListener(new TreeListener() {
 			public void onTreeItemSelected(final TreeItem item) {
 				if (listener != null) {
-					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())) {
+					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availablecubes())) {
 
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
@@ -141,7 +141,7 @@ public class MainMenu extends StackPanel {
 
 											public void onFailure(final Throwable arg0) {
 
-												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().no_query_set(arg0.getLocalizedMessage()));
+												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().noqueryset(arg0.getLocalizedMessage()));
 											}
 
 											public void onSuccess(final Object arg0) {
@@ -166,7 +166,7 @@ public class MainMenu extends StackPanel {
 					getMainMenu().ensureSelectedItemVisible();
 
 					// Show the associated ContentWidget
-					displayContentWidget(itemWidgets.get(item));
+					displayContentWidget(ITEMWIDGETS.get(item));
 					Application.getContentWrapper().layout(true);
 
 				}
@@ -214,7 +214,7 @@ public class MainMenu extends StackPanel {
 			public void onSuccess(final String[] o) {
 
 				Tree mainMenu = getMainMenu();
-				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().available_cubes());
+				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().availablecubes());
 
 				for (int i = 0; i < o.length; i++) {
 					setupMainMenuOption(cubeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
@@ -259,8 +259,8 @@ public class MainMenu extends StackPanel {
 				+ content.getName());
 
 		// Map the item to its history token and content widget
-		itemWidgets.put(option, content);
-		itemTokens.put(getContentWidgetToken(content), option);
+		ITEMWIDGETS.put(option, content);
+		ITEMTOKENS.put(getContentWidgetToken(content), option);
 	}
 	/**
 	 * Get the token for a given content widget.

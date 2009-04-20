@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -30,8 +29,8 @@ public class SelectionModePopup extends PopupPanel {
 
 	
 
-	static Widget source;
-	MenuBar menuBar;
+	private static Widget source;
+	private transient MenuBar menuBar;
 
 	public SelectionModePopup() {
 		super(false, true);
@@ -46,9 +45,9 @@ public class SelectionModePopup extends PopupPanel {
 		menuBar.setAutoOpen(true);
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().include_children(), new SelectionModeCommand(INCLUDE_CHILDREN)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().includechildren(), new SelectionModeCommand(INCLUDE_CHILDREN)));
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clear_selections(), new SelectionModeClearCommand()));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearselections(), new SelectionModeClearCommand()));
 
 		this.setWidget(menuBar);
 	}
@@ -57,10 +56,10 @@ public class SelectionModePopup extends PopupPanel {
 	 * @param targetLabel
 	 * @return
 	 */
-	protected String getDimensionName(MemberSelectionLabel targetLabel) {
-		Tree tree = (Tree) targetLabel.getParent();
-		TreeItem rootItem = tree.getItem(0);
-		Label rootLabel = (Label) rootItem.getWidget();
+	protected String getDimensionName(final MemberSelectionLabel targetLabel) {
+		final Tree tree = (Tree) targetLabel.getParent();
+		final TreeItem rootItem = tree.getItem(0);
+		final Label rootLabel = (Label) rootItem.getWidget();
 		return rootLabel.getText();
 	}
 
@@ -68,14 +67,14 @@ public class SelectionModePopup extends PopupPanel {
 	 * @param targetLabel
 	 * @return
 	 */
-	protected String getDimensionName(Tree targetLabel) {
+	protected String getDimensionName(final Tree targetLabel) {
 		// Tree tree = (Tree) targetLabel.getParent();
-		TreeItem rootItem = targetLabel.getItem(0);
-		Label rootLabel = (Label) rootItem.getWidget();
+		final TreeItem rootItem = targetLabel.getItem(0);
+		final Label rootLabel = (Label) rootItem.getWidget();
 		return rootLabel.getText();
 	}
 
-	public static void setSource(Widget source2) {
+	public static void setSource(final Widget source2) {
 		source = source2;
 	}
 
@@ -88,13 +87,13 @@ public class SelectionModePopup extends PopupPanel {
 	 * 
 	 */
 	public class SelectionModeCommand implements Command {
-		protected int selectionMode = -1;
+		protected transient int selectionMode = -1;
 
 		/**
 		 * @param selectionMode
 		 * @param member
 		 */
-		public SelectionModeCommand(int selectionMode) {
+		public SelectionModeCommand(final int selectionMode) {
 			this.selectionMode = selectionMode;
 		}
 
@@ -105,19 +104,19 @@ public class SelectionModePopup extends PopupPanel {
 		 */
 		public void execute() {
 			final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
-			String dimName = getDimensionName(targetLabel);
+			final String dimName = getDimensionName(targetLabel);
 
-			List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
+			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
-			String selection = setSelectionMode(selectionMode);
+			final String selection = setSelectionMode(selectionMode);
 			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback() {
 
-				public void onFailure(Throwable arg0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_selection_set(arg0.getLocalizedMessage()));
+				public void onFailure(final Throwable arg0) {
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectionset(arg0.getLocalizedMessage()));
 				
 				}
 
-				public void onSuccess(Object arg0) {
+				public void onSuccess(final Object arg0) {
 					targetLabel.setSelectionMode(selectionMode);
 					
 				}
@@ -136,7 +135,7 @@ public class SelectionModePopup extends PopupPanel {
 	 * @param event
 	 * @param selectedItem
 	 */
-	public void showContextMenu(Event event, TreeItem selectedItem) {
+	public void showContextMenu(final Event event, final TreeItem selectedItem) {
 		
 			init();
 		
@@ -144,7 +143,7 @@ public class SelectionModePopup extends PopupPanel {
 
 	}
 
-	public String setSelectionMode(int selectionMode) {
+	public String setSelectionMode(final int selectionMode) {
 		String selection = ""; //$NON-NLS-1$
 		switch (selectionMode) {
 		case 0:
@@ -177,16 +176,16 @@ public class SelectionModePopup extends PopupPanel {
 		public void execute() {
 
 			final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
-			String dimName = getDimensionName(targetLabel);
-			List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
+			final String dimName = getDimensionName(targetLabel);
+			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
 			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback() {
-				public void onFailure(Throwable caught) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_selection_cleared(caught.getLocalizedMessage()));
+				public void onFailure(final Throwable caught) {
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectioncleared(caught.getLocalizedMessage()));
 				
 				}
 
-				public void onSuccess(Object result) {
+				public void onSuccess(final Object result) {
 					targetLabel.setSelectionMode(CLEAR);
 				
 				}

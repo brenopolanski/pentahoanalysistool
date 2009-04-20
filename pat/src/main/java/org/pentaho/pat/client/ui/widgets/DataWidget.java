@@ -108,7 +108,7 @@ public abstract class DataWidget extends LayoutPanel {
 		return initialized;
 	}
 
-	public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+	public boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
 		return true;
 	}
 
