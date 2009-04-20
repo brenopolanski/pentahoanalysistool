@@ -21,6 +21,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
+import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
@@ -29,7 +30,6 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -43,7 +43,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.TreeListener;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
@@ -88,50 +87,30 @@ public class Application extends Viewport implements ConnectionListener {
 		void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
 	}
 
-	/**
-	 * A mapping of history tokens to their associated menu items.
-	 */
-	public static Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
 
 	/**
-	 * A mapping of menu items to the widget display when the item is selected.
+	 * The wrapper around the content.
 	 */
-	public static Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
-
+	public static LayoutPanel contentWrapper;
+	
 	/**
 	 * The base style name.
 	 */
 	public static final String DEFAULT_STYLE_NAME = "Application"; //$NON-NLS-1$
 
 	/**
-	 * The wrapper around the content.
-	 */
-	private static LayoutPanel contentWrapper;
-
-	/**
 	 * The panel that holds the main links.
 	 */
 	private HorizontalPanel linksPanel;
 
-	/**
-	 * The {@link ApplicationListener}.
-	 */
-	private ApplicationListener listener = null;
 
-	/**
-	 * The main menu.
-	 */
-	private Tree mainMenu;
+
 
 	/**
 	 * The panel that contains the title widget and links.
 	 */
 	private FlexTable topPanel;
 
-	/**
-	 * Create StackPanel
-	 */
-	private StackLayoutPanel stackPanel;
 
 	/*
 	 * The tool bar
@@ -142,8 +121,8 @@ public class Application extends Viewport implements ConnectionListener {
 
 	private static LayoutPanel bottomPanel;
 
-	private DimensionPanel dimensionPanel;
-
+	
+	
 	/**
 	 * Constructor.
 	 */
@@ -161,17 +140,11 @@ public class Application extends Viewport implements ConnectionListener {
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
 		// Add the main menu
-		createMainMenu();
-
+		//createMainMenu();
+		
 		toolBarPanel.addConnectionListener(Application.this);
 		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-		stackPanel = new StackLayoutPanel();
-		westPanel.add(stackPanel);
-		stackPanel.add(new ScrollPanel(mainMenu), ConstantFactory.getInstance().cubes());
-
-		dimensionPanel = new DimensionPanel();
-		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
-		stackPanel.showStack(0);
+		
 		// toolBarPanel.addConnectionListener(dimensionPanel);
 
 		// westPanel.getHeader().add(Showcase.IMAGES.showcaseDemos().createImage());
@@ -194,25 +167,30 @@ public class Application extends Viewport implements ConnectionListener {
 		// Add the content wrapper
 		contentWrapper = new LayoutPanel(new FillLayout());
 		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
+		
 		bottomPanel.add(contentWrapper);
-		setupMainMenu();
+		MainMenu mainPanel = new MainMenu();
+		
+		westPanel.add(mainPanel);
+		
 		setContent(null);
-		setListener(new ApplicationListener() {
-			 public void onMenuItemSelected(TreeItem item) {
-
-				   DataWidget content = itemWidgets.get(item);
-                   if (content != null && !content.equals(getContent())) {
-                    //       History.newItem(getContentWidgetToken(content));
-                   }
-           } 
-   });
-
-		TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
-        getMainMenu().setSelectedItem(firstItem, false);
-        getMainMenu().ensureSelectedItemVisible();
-        displayContentWidget(itemWidgets.get(firstItem));
+	
+		
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mosaic.ui.client.layout.HasLayoutManager#getPreferredSize()
+	 */
+	public int[] getPreferredSize() {
+		return getWidget().getPreferredSize();
+	}
+	
+	@Override
+	protected LayoutPanel getWidget() {
+		return super.getWidget();
+	}
 	/**
 	 * Add a link to the top of the page.
 	 * 
@@ -229,91 +207,19 @@ public class Application extends Viewport implements ConnectionListener {
 	public static LayoutPanel getPanel() {
 		return bottomPanel;
 	}
-
+	
 	/**
-	 * Create the main menu.
-	 */
-	private void createMainMenu() {
-		// Setup the main menu
-		ApplicationImages treeImages = GWT.create(ApplicationImages.class);
-		mainMenu = new Tree(treeImages);
-		mainMenu.setAnimationEnabled(true);
-		mainMenu.addStyleName(DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
-		mainMenu.addTreeListener(new TreeListener() {
-			public void onTreeItemSelected(TreeItem item) {
-				if (listener != null) {
-					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().available_cubes())) {
-
-						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
-
-							public void onFailure(Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
-							}
-
-							public void onSuccess(String[] arg0) {
-								ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
-
-									public void onFailure(Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(arg0.getLocalizedMessage()));
-									}
-
-									public void onSuccess(String arg0) {
-
-										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
-
-											public void onFailure(Throwable arg0) {
-
-												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().no_query_set(arg0.getLocalizedMessage()));
-											}
-
-											public void onSuccess(Object arg0) {
-												dimensionPanel.createDimensionList();
-
-												stackPanel.showStack(1);
-												stackPanel.layout(true);
-											}
-
-										});
-
-									}
-
-								});
-
-							}
-						});
-
-					}
-
-					getMainMenu().setSelectedItem(item, false);
-					getMainMenu().ensureSelectedItemVisible();
-
-					// Show the associated ContentWidget
-					displayContentWidget(itemWidgets.get(item));
-					contentWrapper.layout(true);
-
-				}
-			}
-
-			public void onTreeItemStateChanged(TreeItem item) {
-			}
-		});
-	}
-
-	/**
-	 * Set the content to the {@link DataWidget}.
+	 * Set the {@link Widget} to display in the content area.
 	 * 
 	 * @param content
-	 *            the {@link DataWidget} to display
+	 *            the content widget
 	 */
-	public static void displayContentWidget(final DataWidget content) {
+	public static void setContent(Widget content) {
+		Application.contentWrapper.clear();
 		if (content != null) {
-			if (!content.isInitialized()) {
-				content.initialize();
-			}
-			setContent(content);
+			Application.contentWrapper.add(content);
 		}
 	}
-
 	/**
 	 * Create the panel at the top of the page that contains the title and
 	 * links.
@@ -352,29 +258,6 @@ public class Application extends Viewport implements ConnectionListener {
 		topPanel.getRowFormatter().setVerticalAlign(1, HasVerticalAlignment.ALIGN_TOP);
 	}
 
-	/**
-	 * Generates a cube list for the Cube Menu
-	 */
-	private void setupCubeMenu() {
-		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
-			public void onSuccess(String[] o) {
-
-				Tree mainMenu = getMainMenu();
-				TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().available_cubes());
-
-				for (int i = 0; i < o.length; i++) {
-					setupMainMenuOption(cubeMenu, new OlapPanel(o[i]), Pat.IMAGES.cube());
-				}
-
-			}
-
-			public void onFailure(Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
-			}
-		});
-
-	}
-
 	private void destroyCubeMenu() {
 		ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(), new AsyncCallback<String[]>() {
 
@@ -404,59 +287,10 @@ public class Application extends Viewport implements ConnectionListener {
 		});
 	}
 
-	/**
-	 * Setup all of the options in the main menu.
-	 */
-	private void setupMainMenu() {
-		Tree mainMenu = getMainMenu();
-
-		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
-		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory.getInstance().welcome()), Pat.IMAGES.cube());
-
-	}
-
-	/**
-	 * Add an option to the main menu.
-	 * 
-	 * @param parent
-	 *            the {@link TreeItem} that is the option
-	 * @param content
-	 *            the {@link DataWidget} to display when selected
-	 * @param image
-	 *            the icon to display next to the {@link TreeItem}
-	 */
-	private static void setupMainMenuOption(TreeItem parent, DataWidget content, AbstractImagePrototype image) {
-		// Create the TreeItem
-		TreeItem option = parent.addItem(image.getHTML() + " " //$NON-NLS-1$
-				+ content.getName());
-
-		// Map the item to its history token and content widget
-		itemWidgets.put(option, content);
-		itemTokens.put(Pat.getContentWidgetToken(content), option);
-	}
-
-	/**
-	 * @return the {@link Widget} in the content area
-	 */
-	public Widget getContent() {
-		return contentWrapper.getWidget(0);
-	}
-
-	/**
-	 * @return the main menu.
-	 */
-	public Tree getMainMenu() {
-		return mainMenu;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.mosaic.ui.client.layout.HasLayoutManager#getPreferredSize()
-	 */
-	public int[] getPreferredSize() {
-		return getWidget().getPreferredSize();
-	}
+	
+	
+	
+	
 
 	/**
 	 * @return the {@link Widget} used as the title
@@ -465,34 +299,8 @@ public class Application extends Viewport implements ConnectionListener {
 		return topPanel.getWidget(0, 0);
 	}
 
-	@Override
-	protected LayoutPanel getWidget() {
-		return super.getWidget();
-	}
 
-	/**
-	 * Set the {@link Widget} to display in the content area.
-	 * 
-	 * @param content
-	 *            the content widget
-	 */
-	public static void setContent(Widget content) {
-		contentWrapper.clear();
-		if (content != null) {
-			contentWrapper.add(content);
-		}
-	}
-
-	/**
-	 * Set the {@link ApplicationListener}.
-	 * 
-	 * @param listener
-	 *            the listener
-	 */
-	public void setListener(ApplicationListener listener) {
-		this.listener = listener;
-	}
-
+	
 	/**
 	 * Set the {@link Widget} to use as options, which appear to the right of
 	 * the title bar.
@@ -520,7 +328,7 @@ public class Application extends Viewport implements ConnectionListener {
 	}
 
 	public void onConnectionMade(Widget sender) {
-		setupCubeMenu();
+	//	setupCubeMenu();
 	}
 
 }
