@@ -145,7 +145,7 @@ public class SelectionModePopup extends PopupPanel {
 
 	public String setSelectionMode(final int selectionMode) {
 		String selection = ""; //$NON-NLS-1$
-		switch (selectionMode) {
+		switch (selectionMode) { // NOPMD by bugg on 20/04/09 21:37
 		case 0:
 			selection = "MEMBER"; //$NON-NLS-1$
 			break;
