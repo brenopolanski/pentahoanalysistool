@@ -29,9 +29,9 @@ public class SessionServlet extends AbstractServlet implements Session {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Logger log = Logger.getLogger(SessionServlet.class);
+	private transient Logger log = Logger.getLogger(SessionServlet.class);
 	
-	private SessionService sessionService;
+	private transient SessionService sessionService;
 	
 	public void init() throws ServletException {
 		super.init();
@@ -90,7 +90,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	{
 	    SavedConnection savedConn = this.sessionService.getSavedConnection(getCurrentUserId(), connectionName);
 	    try {
-            return this.convert(savedConn);
+            return savedConn==null?null:this.convert(savedConn);
         } catch (IOException e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
@@ -235,6 +235,10 @@ public class SessionServlet extends AbstractServlet implements Session {
         }
         
         sc.setSchema(schema.toString());
+        
+        br.close();
+        in.close();
+        fis.close();
 	    
 	    return sc;
 	}

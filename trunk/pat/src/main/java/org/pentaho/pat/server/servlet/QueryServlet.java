@@ -25,9 +25,9 @@ public class QueryServlet extends AbstractServlet implements Query {
 
 	private static final long serialVersionUID = 1L;
 	
-	private QueryService queryService;
+	private transient QueryService queryService;
 	
-	private Logger log = Logger.getLogger(QueryServlet.class);
+	private transient Logger log = Logger.getLogger(QueryServlet.class);
 	
 	public void init() throws ServletException {
 		super.init();
