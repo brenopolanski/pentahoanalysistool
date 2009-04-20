@@ -28,11 +28,10 @@ public class SelectionModePopup extends PopupPanel {
 	public static final int SIBLINGS = 3;
 	public static final int CLEAR = -1;
 
-	Integer selectionValue = new Integer(0); // Member
+	
 
 	static Widget source;
 	MenuBar menuBar;
-	Tree tItem;
 
 	public SelectionModePopup() {
 		super(false, true);
@@ -129,7 +128,7 @@ public class SelectionModePopup extends PopupPanel {
 		}
 	}
 
-	private PopupMenu contextMenu;
+
 
 	/**
 	 *TODO JAVADOC
@@ -138,9 +137,9 @@ public class SelectionModePopup extends PopupPanel {
 	 * @param selectedItem
 	 */
 	public void showContextMenu(Event event, TreeItem selectedItem) {
-		if (contextMenu == null) {
+		
 			init();
-		}
+		
 		setSource(selectedItem.getWidget());
 
 	}

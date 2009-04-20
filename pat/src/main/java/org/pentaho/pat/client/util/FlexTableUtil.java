@@ -30,10 +30,9 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  */
 public class FlexTableUtil {
 	
-	 static SelectionModePopup selectionModePopup;
 	 
 	 public FlexTableUtil() {
-		 selectionModePopup = new SelectionModePopup();
+		
 	 }
 	/**
 	 * Copy an entire FlexTable from one FlexTable to another. Each element is

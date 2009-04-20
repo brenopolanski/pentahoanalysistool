@@ -36,7 +36,6 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	private JdbcDriverFinder driverFinder = null;
 
-	Logger log = Logger.getLogger(this.getClass());
 
 	
 	public void setSessionService(SessionService sessionService) {

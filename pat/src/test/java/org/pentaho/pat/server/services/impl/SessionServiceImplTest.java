@@ -3,7 +3,7 @@ package org.pentaho.pat.server.services.impl;
 import java.util.List;
 
 import org.olap4j.OlapException;
-import org.pentaho.pat.Constants;
+import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -186,10 +186,10 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 		// Create a query object.
 		String cubeName = this.discoveryService.getCubes(userId, sessionId).get(0); //$NON-NLS-1$
 		assertNotNull(cubeName);
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, cubeName); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cubeName); //$NON-NLS-1$
 		String queryId = this.sessionService.createNewQuery(userId, sessionId); //$NON-NLS-1$
 		assertNotNull(queryId);
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
 		assertNotNull(this.sessionService.getQuery(userId, sessionId, queryId)); //$NON-NLS-1$
 		assertEquals(1, this.sessionService.getQueries(userId, sessionId).size()); //$NON-NLS-1$
 		

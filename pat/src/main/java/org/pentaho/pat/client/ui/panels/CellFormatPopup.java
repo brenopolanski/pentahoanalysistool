@@ -22,8 +22,7 @@ public class CellFormatPopup extends PopupPanel {
 	public static final String DECORATION_OUTLINE = "outline"; //$NON-NLS-1$
 	public static final String DECORATION_UNDERLINE = "underline"; //$NON-NLS-1$
 
-	int xPos, yPos;
-	String guid;
+
 	Widget sender;
 	MenuBar menuBar;
 	String returnStyle = ""; //$NON-NLS-1$
@@ -31,9 +30,6 @@ public class CellFormatPopup extends PopupPanel {
 	public CellFormatPopup(String guid, int x, int y, Widget sender) {
 		super(false, true);
 		this.sender = sender;
-		this.guid = guid;
-		xPos = x;
-		yPos = y;
 
 		this.setPopupPosition(y, x);
 		init();

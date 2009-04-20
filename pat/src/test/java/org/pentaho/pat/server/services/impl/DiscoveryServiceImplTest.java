@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
-import org.pentaho.pat.Constants;
+import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
@@ -82,11 +82,11 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		Cube cube = this.discoveryService.getCube(userId, sessionId, "Quadrant Analysis"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(cube);
 		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
 		
 		// Create and select a query
 		String queryId = this.sessionService.createNewQuery(userId, sessionId); //$NON-NLS-1$
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
 		
 		List<String> dims = this.discoveryService.getDimensions(userId, sessionId, Axis.UNUSED); //$NON-NLS-1$
 		assertNotNull(dims);
@@ -116,11 +116,11 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		
 		// Create and select a cube
 		Cube cube = this.discoveryService.getCube(userId, sessionId, "Quadrant Analysis"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); //$NON-NLS-1$
 		
 		// Create and select a query
 		String queryId = this.sessionService.createNewQuery(userId, sessionId); //$NON-NLS-1$
-		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
+		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); //$NON-NLS-1$
 		
 		StringTree members = this.discoveryService.getMembers(userId, sessionId, "Region"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(members);
