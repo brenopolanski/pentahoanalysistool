@@ -1,15 +1,11 @@
 package org.pentaho.pat.client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -22,14 +18,11 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -41,16 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Pat implements EntryPoint, ConnectionListener {
 
-	/**
-	 * Get the token for a given content widget.
-	 * 
-	 * @return the content widget token.
-	 */
-	public static String getContentWidgetToken(DataWidget content) {
-		String className = content.getClass().getName();
-		className = className.substring(className.lastIndexOf('.') + 1);
-		return className;
-	}
 
 	/**
 	 * PatImages ImageBundle
@@ -110,8 +93,10 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() {
-
+		
+		// Create a Pat unique session ID
 		setSessionID();
+		
 		// Swap out the style sheets for the RTL versions if needed
 		updateStyleSheets();
 
@@ -119,7 +104,8 @@ public class Pat implements EntryPoint, ConnectionListener {
 		setupTitlePanel();
 		// setupOptionsPanel();
 
-			com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//hide splash
+		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -274,8 +260,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionMade(Widget sender) {
-		// setupCubeMenu();
-
+		//TODO
 	}
 
 }
