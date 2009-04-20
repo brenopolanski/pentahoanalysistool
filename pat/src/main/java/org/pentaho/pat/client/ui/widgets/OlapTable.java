@@ -201,9 +201,9 @@ public class OlapTable extends FlexTable {
                         if (cellInfo != null) {
                                 Label label = new Label(cellInfo.getFormattedValue());
                                 label.addStyleName(OLAP_ROW_HEADER_CELL);
-                                cellFormatter.addStyleName(row + rowAddition,
-                                                showParentMembers ? column : column, OLAP_ROW_HEADER_CELL);
-                                                //showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, OLAP_COL_HEADER_CELL);
+                                cellFormatter.addStyleName(row + rowAddition,column, OLAP_ROW_HEADER_CELL);
+                                // TODO Code Review : why is this commented out??
+                                  //showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, OLAP_COL_HEADER_CELL);
                                 setWidget(row + rowAddition,
                                                 showParentMembers ? column : column, label);
                         }

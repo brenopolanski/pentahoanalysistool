@@ -56,7 +56,7 @@ public class QueryServiceImpl extends AbstractService
 		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
 		
 	    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-	    String path = OlapUtil.normalizeMemberNames((String[])memberNames.toArray());
+	    String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
 	    Selection selection = OlapUtil.findSelection(path, qDim);
 	    qDim.getSelections().remove(selection);
 	}
