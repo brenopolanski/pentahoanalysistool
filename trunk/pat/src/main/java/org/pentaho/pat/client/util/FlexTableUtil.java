@@ -31,9 +31,6 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class FlexTableUtil {
 	
 	 
-	 public FlexTableUtil() {
-		
-	 }
 	/**
 	 * Copy an entire FlexTable from one FlexTable to another. Each element is
 	 * copied by creating a new {@link HTML} widget by calling
@@ -48,10 +45,11 @@ public class FlexTableUtil {
 	 * @param targetRow
 	 *            the index before which to insert the copied row
 	 */
-	public static void copyRow(FlexTable sourceTable, FlexTable targetTable, int sourceRow, int targetRow) {
+	public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,final int targetRow) {
 		targetTable.insertRow(targetRow);
+		final HTML html = new HTML();
 		for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
-			HTML html = new HTML(sourceTable.getHTML(sourceRow, col));
+			html.setHTML(sourceTable.getHTML(sourceRow, col));
 			targetTable.setWidget(targetRow, col, html);
 		}
 		copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
@@ -73,17 +71,18 @@ public class FlexTableUtil {
 	 * @param targetRow
 	 *            the index before which to insert the moved row
 	 */
-	public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, int sourceRow, final int targetRow, Axis targetAxis) {
+	public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow, final int targetRow, final Axis targetAxis) {
 		// targetRow = targetTable.getRowCount();
+		int sRow = sourceRow;
 		if (sourceTable != targetTable) {
-			if (sourceTable == targetTable && sourceRow >= targetRow) {
-				sourceRow++;
+			if (sourceTable == targetTable && sRow >= targetRow) {
+				sRow++;
 			}
 			targetTable.insertRow(targetRow);
 
-			for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
+			for (int col = 0; col < sourceTable.getCellCount(sRow); col++) {
 				final int col2 = col;
-				final Widget w = sourceTable.getWidget(sourceRow, col);
+				final Widget w = sourceTable.getWidget(sRow, col);
 				if (w != null) {
 					if (w instanceof Label == true) {
 						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),

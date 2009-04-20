@@ -169,10 +169,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 						// TODO remove this later
 						MessageBox.info("File uploaded", tmp); //$NON-NLS-1$
 					} else {
-						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().file_upload_failed());
+						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadfailed());
 					}
 				} else
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().check_error_log());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().checkerrorlog());
 			}
 
 			public void onSubmit(FormSubmitEvent arg0) {
@@ -185,15 +185,15 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
-		builder.addLabel(ConstantFactory.getInstance().jdbc_driver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().jdbcdriver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(driverListBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().jdbc_url() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.addLabel(ConstantFactory.getInstance().jdbcurl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
 		builder.add(userTextBox, CellConstraints.xy(3, 5));
 		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-		builder.addLabel(ConstantFactory.getInstance().schema_file() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+		builder.addLabel(ConstantFactory.getInstance().schemafile() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
 		fileUpload.setName(FORM_NAME_FILE);
 		builder.add(fileUpload, CellConstraints.xyw(3, 7, 5));
 
@@ -201,7 +201,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 			public void onClick(Widget sender) {
 				String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().file_upload_no_file());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadnofile());
 				} else {
 					formPanel.submit();
 				}
@@ -213,13 +213,13 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 			public void onClick(Widget sender) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connection_established());
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
 						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
 
 					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));
 						connectButton.setEnabled(true);
 					}
 				});
@@ -269,7 +269,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 						listBox.addItem(arg0[i]);
 					}
 				} else {
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().no_jdbc_driver_found());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().nojdbcdriverfound());
 				}
 			}
 

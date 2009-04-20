@@ -134,7 +134,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		builder.add(userTB, CellConstraints.xy(3, 6));
 		builder.addLabel(ConstantFactory.getInstance().password() + ":", CellConstraints.xy(5, 6)); //$NON-NLS-1$
 		builder.add(passwordTB, CellConstraints.xy(7, 6));
-		builder.addLabel(ConstantFactory.getInstance().schema_file() + ":", CellConstraints.xy(1, 8)); //$NON-NLS-1$
+		builder.addLabel(ConstantFactory.getInstance().schemafile() + ":", CellConstraints.xy(1, 8)); //$NON-NLS-1$
 		fileUpload.setName("file"); //$NON-NLS-1$
 
 		builder.add(fileUpload, CellConstraints.xyw(3, 8, 5));

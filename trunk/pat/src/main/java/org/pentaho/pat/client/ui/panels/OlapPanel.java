@@ -155,7 +155,7 @@ public class OlapPanel extends DataWidget {
 		panel1 = new ScrollPanel();
 		// panel1.setPadding(0);
 		// panel1.setWidgetSpacing(0);
-		Button executeButton = new Button(ConstantFactory.getInstance().execute_query());
+		Button executeButton = new Button(ConstantFactory.getInstance().executequery());
 		executeButton.addClickListener(new ClickListener(){
 
 			public void onClick(Widget arg0) {
@@ -214,7 +214,7 @@ public class OlapPanel extends DataWidget {
 		      }
 		      
 		      public void onFailure(Throwable caught) {
-		        Window.alert(MessageFactory.getInstance().no_server_data(caught.toString()));      
+		        Window.alert(MessageFactory.getInstance().noserverdata(caught.toString()));      
 		      }
 
 		    });

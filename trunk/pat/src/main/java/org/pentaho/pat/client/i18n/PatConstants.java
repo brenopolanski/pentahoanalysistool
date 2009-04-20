@@ -42,7 +42,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Pat Homepage" 
 	 * pat_homepage
 	 */
-	String pat_homepage();
+	String pathomepage();
 	
 	/**
 	 * Translated "Main Link Pat".
@@ -58,7 +58,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Pentaho Homepage" 
 	 * pentaho_homepage
 	 */
-	String pentaho_homepage();
+	String pentahohomepage();
 	
 	/**
 	 * Translated "mainLinkHomepage".
@@ -74,7 +74,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "jdbc_url" 
 	 * jdbc_url
 	 */
-	String jdbc_url();
+	String jdbcurl();
 	
 	/**
 	 * Translated "jdbc_driver".
@@ -82,16 +82,16 @@ public interface PatConstants extends Constants{
 	 * @return translated "jdbc_driver" 
 	 * jdbc_driver
 	 */
-	String jdbc_driver();
+	String jdbcdriver();
 	
 	/* <Messages used by PAT> */
-	String connection_string();
+	String connectionstring();
 	String connect();
 	String disconnect();
 	String server();
 	String port();
 	String database();
-	String schema_file();
+	String schemafile();
 	String username();
 	String password();
 	String upload();
@@ -103,7 +103,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Row Dimensions" 
 	 * row_dimensions
 	 */
-	String row_dimensions();
+	String rowdimensions();
 
 	/**
 	 * Translated "Chart Height:".
@@ -111,7 +111,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Chart Height:" 
 	 * chart_height
 	 */
-	String chart_height();
+	String chartheight();
 
 	/**
 	 * Translated "Top".
@@ -135,7 +135,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "No Data Available.  Query may be invalid." 
 	 * no_data
 	 */
-	String no_data();
+	String nodata();
 
 	/**
 	 * Translated "Chart Width:".
@@ -143,7 +143,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Chart Width:" 
 	 * chart_width
 	 */
-	String chart_width();
+	String chartwidth();
 
 	/**
 	 * Translated "Show Parents".
@@ -151,7 +151,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Show Parents" 
 	 * show_parents
 	 */
-	String show_parents();
+	String showparents();
 
 	/**
 	 * Translated "Location:".
@@ -170,7 +170,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Move To Filter" 
 	 * move_to_filter
 	 */
-	String move_to_filter();
+	String movetofilter();
 
 	/**
 	 * Translated "Cancel".
@@ -194,7 +194,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "OLAP Chart" 
 	 * olap_chart
 	 */
-	String olap_chart();
+	String olapchart();
 
 	/**
 	 * Translated "Siblings".
@@ -218,7 +218,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "null" 
 	 * null_value
 	 */
-	String null_value();
+	String nullvalue();
 
 	/**
 	 * Translated "Use MDX".
@@ -226,7 +226,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Use MDX" 
 	 * use_mdx
 	 */
-	String use_mdx();
+	String usemdx();
 
 	/**
 	 * Translated "Bottom".
@@ -245,7 +245,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Move To Column" 
 	 * move_to_column
 	 */
-	String move_to_column();
+	String movetocolumn();
 
 	/**
 	 * Translated "Select Cube".
@@ -253,7 +253,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Select Cube"
 	 * select_cube
 	 */
-	String select_cube();
+	String selectcube();
 
 	/**
 	 * Translated "Chart".
@@ -277,7 +277,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Execute MDX" 
 	 * execute_mdx
 	 */
-	String execute_mdx();
+	String executemdx();
 
 	/**
 	 * Translated "Member".
@@ -302,7 +302,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Hide Parents" 
 	 * hide_parents
 	 */
-	String hide_parents();
+	String hideparents();
 
 	/**
 	 * Translated "Left".
@@ -326,7 +326,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Execute Query Model" 
 	 * execute_query
 	 */
-	String execute_query();
+	String executequery();
 
 	/**
 	 * Translated "Group Headers".
@@ -334,7 +334,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Group Headers" 
 	 * group_headers
 	 */
-	String group_headers();
+	String groupheaders();
 
 	/**
 	 * Translated "Clear".
@@ -342,7 +342,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Clear" 
 	 * clear_selections
 	 */
-	String clear_selections();
+	String clearselections();
 
 	/**
 	 * Translated"Connection could not be established.  Either you did not press the connect button, or there is a problem with your connection string."
@@ -351,7 +351,7 @@ public interface PatConstants extends Constants{
 	 * @return translated"Connection could not be established.  Either you did not press the connect button, or there is a problem with your connection string."
 	 *         no_connection
 	 */
-	String no_connection();
+	String noconnection();
 
 	/**
 	 * Translated "Chart Title:".
@@ -359,7 +359,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Chart Title:" 
 	 * chart_title
 	 */
-	String chart_title();
+	String charttitle();
 
 	/**
 	 * Translated "Column Dimensions".
@@ -367,7 +367,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Column Dimensions" 
 	 * column_dimensions
 	 */
-	String column_dimensions();
+	String columndimensions();
 
 	/**
 	 * Translated "Right".
@@ -383,7 +383,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "MDX Query:" 
 	 * mdx_query
 	 */
-	String mdx_query();
+	String mdxquery();
 
 	/**
 	 * Translated "Move To Row".
@@ -391,7 +391,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Move To Row" 
 	 * move_to_row
 	 */
-	String move_to_row();
+	String movetorow();
 
 	/**
 	 * Translated "Filter Dimensions".
@@ -399,7 +399,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Filter Dimensions" 
 	 * filter_dimensions
 	 */
-	String filter_dimensions();
+	String filterdimensions();
 
 
 
@@ -409,7 +409,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Swap Axis" 
 	 * swap_axis
 	 */
-	String swap_axis();
+	String swapaxis();
 
 	/**
 	 * Translated "Dimensions".
@@ -425,7 +425,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Include Children" 
 	 * include_children
 	 */
-	String include_children();
+	String includechildren();
 
 	/**
 	 * Translated "Ungroup Headers".
@@ -433,7 +433,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Ungroup Headers" 
 	 * ungroup_headers
 	 */
-	String ungroup_headers();
+	String ungroupheaders();
 
 	/**
 	 * Translated "Use Schema Navigator".
@@ -441,7 +441,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Use Schema Navigator" 
 	 * use_schema_nav
 	 */
-	String use_schema_nav();
+	String useschemanav();
 
 
 	/**
@@ -458,7 +458,7 @@ public interface PatConstants extends Constants{
 	 * @return translated "Chart Properties..." 
 	 * chart_properties
 	 */
-	String chart_properties();
+	String chartproperties();
 
 	/**
 	 * Translated "Children".
@@ -509,7 +509,7 @@ public interface PatConstants extends Constants{
 	String drillPanel();
 	
 	
-	  String available_cubes();
+	  String availablecubes();
 	  
 	  String data();
 
@@ -521,13 +521,13 @@ public interface PatConstants extends Constants{
 	
 	String success();
 	
-	String register_new_mondrian_connection();
+	String registernewmondrianconnection();
 	
-	String register_new_xmla_connection();
+	String registernewxmlaconnection();
 	
-	String register_new_connection();
+	String registernewconnection();
 	
-	String xmla_url();
+	String xmlaurl();
 	
 	String catalog();
 	
@@ -543,13 +543,13 @@ public interface PatConstants extends Constants{
 
 	String unused();
 	
-	String file_upload_failed();
+	String fileuploadfailed();
 	
-	String check_error_log();
+	String checkerrorlog();
 	
-	String file_upload_no_file();
+	String fileuploadnofile();
 	
-	String connection_established();
+	String connectionestablished();
 	
-	String no_jdbc_driver_found();
+	String nojdbcdriverfound();
 }

@@ -166,7 +166,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
-		switch (DOM.eventGetType(event)) {
+		switch (DOM.eventGetType(event)) { // NOPMD by bugg on 20/04/09 20:16
 		case Event.ONCLICK:
 			if (clickListeners != null) {
 				clickListeners.fireClick(this);
@@ -179,13 +179,13 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	  public void setSelectionMode(int mode) { 
 		  Image selectionImage = null;
 	  switch (mode) { 
-	  case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.member_select_icon().createImage(); 
+	  case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.memberSelectIcon().createImage(); 
 	  break; 
-	  case SelectionModePopup.CHILDREN: selectionImage = selectionImageBundle.children_select_icon().createImage(); 
+	  case SelectionModePopup.CHILDREN: selectionImage = selectionImageBundle.childrenSelectIcon().createImage(); 
 	  break; 
-	  case SelectionModePopup.INCLUDE_CHILDREN: selectionImage = selectionImageBundle.include_children_select_icon().createImage(); 
+	  case SelectionModePopup.INCLUDE_CHILDREN: selectionImage = selectionImageBundle.includeChildrenSelectIcon().createImage(); 
 	  break;
-	  case SelectionModePopup.SIBLINGS: selectionImage = selectionImageBundle.siblings_select_icon().createImage(); 
+	  case SelectionModePopup.SIBLINGS: selectionImage = selectionImageBundle.siblingsSelectIcon().createImage(); 
 	  }
 	  setImage(selectionImage); 
 	  }

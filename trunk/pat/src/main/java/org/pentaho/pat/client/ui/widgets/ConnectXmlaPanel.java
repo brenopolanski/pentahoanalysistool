@@ -107,7 +107,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
 
-		builder.addLabel(ConstantFactory.getInstance().xmla_url() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().xmlaurl() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(userTextBox, CellConstraints.xy(3, 3));
@@ -121,13 +121,13 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 			public void onClick(Widget sender) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connection_established());
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
 						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
 					}
 
 					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().no_connection_param(arg0.getLocalizedMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));
 						connectButton.setEnabled(true);
 					}
 				});
