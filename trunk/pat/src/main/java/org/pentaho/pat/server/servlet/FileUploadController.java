@@ -47,16 +47,20 @@ public class FileUploadController extends AbstractCommandController implements
 		
 		try {
 			this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
-			if (this.schemaDirectory.mkdir() == false) {
-				throw new Exception();
+			if (!this.schemaDirectory.isDirectory()) {
+				if (!this.schemaDirectory.mkdir()) {
+					throw new Exception();
+				}
 			}
 		} catch (Exception e) {
 			log.warn(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory"));//$NON-NLS-1$
 			try {
 				File tempDirectory = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
 				this.schemaDirectory = new File(tempDirectory,basedir);
-				if (this.schemaDirectory.mkdir() == false) {
-					throw new Exception();
+				if (!this.schemaDirectory.isDirectory()) {
+					if (!this.schemaDirectory.mkdir()) {
+						throw new Exception();
+					}
 				}
 			} catch (Exception e2) {
 			    log.error(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2"),e); //$NON-NLS-1$
