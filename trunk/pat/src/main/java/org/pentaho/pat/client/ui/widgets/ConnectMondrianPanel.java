@@ -33,8 +33,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author pstoellberger
- * 
+ * Connection Panel for Mondrian Connections
+ * @author Paul Stoellberger
  */
 
 public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnectionEvents {
@@ -42,35 +42,37 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 	// TODO Finish this Widget
 
 	/**
-	 *TODO JAVADOC
+	 * Form element name of the file component
 	 */
 	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Encoding type for the Connection form
 	 */
 	private static final String FORM_ENCODING = "multipart/form-data"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Submit method of the Connection form
 	 */
 	private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Defines the action of the form
 	 */
 	private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Height of the panel
 	 */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Width of the Panel
 	 */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Suffix for label constants
 	 */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 	/**
-	 *TODO JAVADOC
+	 * Custom start tag for recognizing the returned filename from the backend.
+	 * Has to match the one defined in the backend
+	 * @see org.pentaho.pat.server.servlet.FileuploadController.FILENAME_TAG_START
 	 */
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
 	/**
