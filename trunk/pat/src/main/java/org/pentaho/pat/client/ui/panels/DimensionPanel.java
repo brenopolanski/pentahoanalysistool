@@ -14,36 +14,45 @@ import org.pentaho.pat.rpc.beans.Axis;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
- *TODO JAVADOC
+ * The Dimension Panel lists the dimensions that are currently in the unused axis.
  *
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  *
  */
 public class DimensionPanel extends ScrollPanel {
 	/**
-	 *TODO JAVADOC
+	 * The Main LayoutPanel.
 	 */
 	private LayoutPanel layoutPanel;
 	/**
-	 *TODO JAVADOC
+	 * The Widget that allows you to drag and drop dimensions on it.
 	 */
 	private DimensionDropWidget dimDrop;
+
 	/**
-	 *TODO JAVADOC
+	 * The Drag Controller.
 	 */
 	private static FlexTableRowDragController tableRowDragController;
 
-	private static FlexTableRowDragController getTableRowDragController() {
+	/**
+	 * Returns the drag controller.
+	 * @return tableRowDragController
+	 */
+	public static FlexTableRowDragController getTableRowDragController() {
 		return tableRowDragController;
 	}
 
+	/**
+	 * Set the drag controller.
+	 * @param tableRowDragController Accepts a FlexTableRowDragController
+	 */
 	private static void setTableRowDragController(
-			FlexTableRowDragController tableRowDragController) {
+			final FlexTableRowDragController tableRowDragController) {
 		DimensionPanel.tableRowDragController = tableRowDragController;
 	}
 
 	/**
-	 *TODO JAVADOC
+	 * Constructor.
 	 *
 	 */
 	public DimensionPanel() {
@@ -55,7 +64,7 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setPadding(0);
 		layoutPanel.setWidgetSpacing(0);
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		setTableRowDragController(new FlexTableRowDragController(Application.getBottomPanel()));
 		dimDrop = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
@@ -64,23 +73,13 @@ public class DimensionPanel extends ScrollPanel {
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * Creates a list of dimensions for the axis specified for the widget.
 	 */
-	public void createDimensionList() {
+	public final void createDimensionList() {
 		// Create the various components that make up the Dimension Flextable
 
 		dimDrop.populateDimensionTable();
 
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
-	 */
-	public static FlexTableRowDragController getDragController() {
-		return tableRowDragController;
 	}
 }
 
