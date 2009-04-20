@@ -32,17 +32,17 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		/**
 		 * PatImages ImageBundle
 		 */
-		protected SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
+		protected transient SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
 
 	/**
 	 *TODO JAVADOC
 	 */
-	protected ClickListenerCollection clickListeners;
+	protected transient ClickListenerCollection clickListeners;
 
 	/**
 	 *TODO JAVADOC
 	 */
-	private Label label = new Label();
+	private final transient Label label = new Label();
 	/**
 	 *TODO JAVADOC
 	 */
@@ -57,6 +57,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 *
 	 */
 	public MemberSelectionLabel() {
+		super();
 		this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT);
 		// selectionImageBundle =
 		// (SelectionModeImageBundle)GWT.create(SelectionModeImageBundle.class);
@@ -71,8 +72,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 *
 	 * @param text
 	 */
-	public MemberSelectionLabel(String text) {
-		this();
+	public MemberSelectionLabel(final String text) {
 		label.setText(text);
 	}
 
@@ -81,7 +81,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 *
 	 * @param image
 	 */
-	public void setImage(Image image) {
+	public void setImage(final Image image) {
 		if (this.image != null) {
 			this.remove(this.image);
 		}
@@ -105,7 +105,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 *
 	 * @param text
 	 */
-	public void setText(String text) {
+	public void setText(final String text) {
 		label.setText(text);
 	}
 
@@ -119,7 +119,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	/* (non-Javadoc)
 	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#addClickListener(com.google.gwt.user.client.ui.ClickListener)
 	 */
-	public void addClickListener(ClickListener listener) {
+	public void addClickListener(final ClickListener listener) {
 		if (clickListeners == null) {
 			clickListeners = new ClickListenerCollection();
 		}
@@ -136,7 +136,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	/* (non-Javadoc)
 	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(com.google.gwt.user.client.ui.ClickListener)
 	 */
-	public void removeClickListener(ClickListener listener) {
+	public void removeClickListener(final ClickListener listener) {
 		if (clickListeners != null) {
 			clickListeners.remove(listener);
 		}
@@ -156,7 +156,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 *
 	 * @param treeItem
 	 */
-	public void setTreeItem(TreeItem treeItem) {
+	public void setTreeItem(final TreeItem treeItem) {
 		this.treeItem = treeItem;
 	}
 
@@ -164,7 +164,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
 	 */
 	@Override
-	public void onBrowserEvent(Event event) {
+	public void onBrowserEvent(final Event event) {
 		super.onBrowserEvent(event);
 		switch (DOM.eventGetType(event)) { // NOPMD by bugg on 20/04/09 20:16
 		case Event.ONCLICK:
@@ -176,7 +176,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	}
 
 	
-	  public void setSelectionMode(int mode) { 
+	  public void setSelectionMode(final int mode) { 
 		  Image selectionImage = null;
 	  switch (mode) { 
 	  case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.memberSelectIcon().createImage(); 
@@ -209,14 +209,14 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	 * @return
 	 */
 	public String[] getFullPath() {
-		List pathList = new ArrayList();
+		final List pathList = new ArrayList();
 		pathList.add(label.getText());
 		TreeItem currentTreeItem = treeItem;
 		while (currentTreeItem.getParentItem() != null && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
 			currentTreeItem = currentTreeItem.getParentItem();
 			pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
 		}
-		String[] values = new String[pathList.size()];
+		final String[] values = new String[pathList.size()];
 		return (String[]) pathList.toArray(values);
 	}
 

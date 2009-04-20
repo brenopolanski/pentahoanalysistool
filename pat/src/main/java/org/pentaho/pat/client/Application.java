@@ -79,27 +79,27 @@ public class Application extends Viewport implements ConnectionListener {
 	/**
 	 * The base style name.
 	 */
-	public static final String DEFAULT_STYLE_NAME = "Application"; //$NON-NLS-1$
+	public static final String DEF_STYLE_NAME = "Application"; //$NON-NLS-1$
 
 	/**
 	 * The Application Main Panel.
 	 */
-	private MainMenu mainPanel;
-
+	private transient final MainMenu mainPanel;
+	
 	/**
 	 * The panel that contains the title widget and links.
 	 */
-	private FlexTable topPanel;
+	private transient FlexTable topPanel;
 
 	/**
 	 * The Application's Toolbar Panel.
 	 */
-	private ToolBarPanel toolBarPanel;
+	private transient ToolBarPanel toolBarPanel;
 
 	/**
 	 * Application LayoutPanel.
 	 */
-	private LayoutPanel layoutPanel;
+	private transient final LayoutPanel layoutPanel;
 
 	/**
 	 * The bottom Panel for the Application, contains the main panels.
@@ -171,7 +171,7 @@ public class Application extends Viewport implements ConnectionListener {
 
 		// Add the content wrapper
 		setContentWrapper(new LayoutPanel(new FillLayout()));
-		contentWrapper.addStyleName(DEFAULT_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
+		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 
 		bottomPanel.add(contentWrapper);
 		mainPanel = new MainMenu();
@@ -187,28 +187,28 @@ public class Application extends Viewport implements ConnectionListener {
 	 * links.
 	 */
 	private void createTopPanel() {
-		boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
+		final boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
 		topPanel = new FlexTable();
 		topPanel.setCellPadding(0);
 		topPanel.setCellSpacing(0);
-		topPanel.setStyleName(DEFAULT_STYLE_NAME + "-top"); //$NON-NLS-1$
-		FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
+		topPanel.setStyleName(DEF_STYLE_NAME + "-top"); //$NON-NLS-1$
+		final FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
 		// Setup the toolbar
 		toolBarPanel = new ToolBarPanel();
 
 		topPanel.setWidget(0, 0, toolBarPanel);
-		formatter.setStyleName(0, 0, DEFAULT_STYLE_NAME + "-menu"); //$NON-NLS-1$
+		formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 
 		formatter.setColSpan(0, 0, 2);
 
 		// Setup the title cell
 		setTitleWidget(null);
-		formatter.setStyleName(1, 0, DEFAULT_STYLE_NAME + "-title"); //$NON-NLS-1$
+		formatter.setStyleName(1, 0, DEF_STYLE_NAME + "-title"); //$NON-NLS-1$
 
 		// Setup the options cell
 		setOptionsWidget(null);
-		formatter.setStyleName(1, 1, DEFAULT_STYLE_NAME + "-options"); //$NON-NLS-1$
+		formatter.setStyleName(1, 1, DEF_STYLE_NAME + "-options"); //$NON-NLS-1$
 		if (isRTL) {
 			formatter.setHorizontalAlignment(1, 1,
 					HasHorizontalAlignment.ALIGN_LEFT);
@@ -237,7 +237,7 @@ public class Application extends Viewport implements ConnectionListener {
 					}
 
 					public void onSuccess(final String[] arg0) {
-						String queryID = ""; //$NON-NLS-1$
+						final String queryID = ""; //$NON-NLS-1$
 						ServiceFactory.getSessionInstance().deleteQuery(
 								Pat.getSessionID(), queryID,
 								new AsyncCallback() {
