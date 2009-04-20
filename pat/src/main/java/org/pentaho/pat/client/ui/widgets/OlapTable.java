@@ -320,7 +320,7 @@ public class OlapTable extends FlexTable {
    */
   protected void copyMatrix( char source[][], char destination[][])
   {
-          if (source.length > destination.length |
+          if (source.length > destination.length ||
                   source[0].length > destination[0].length)
           {
                   throw new IndexOutOfBoundsException

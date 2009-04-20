@@ -28,9 +28,9 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DiscoveryService discoveryService;
+	private transient DiscoveryService discoveryService;
 	
-	private Logger log = Logger.getLogger(DiscoveryServlet.class);
+	private transient Logger log = Logger.getLogger(DiscoveryServlet.class);
 	
 	public void init() throws ServletException {
 		super.init();
