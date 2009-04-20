@@ -201,10 +201,12 @@ public class ResolverUtil<T> {
   }
 
   public void loadImplementationsInJar(String parent, URL jarfile,
-      Test... tests) {
+      Test... tests) 
+  {
+    JarInputStream jarStream=null;
     try {
       JarEntry entry;
-      JarInputStream jarStream = new JarInputStream(jarfile.openStream());
+      jarStream = new JarInputStream(jarfile.openStream());
       while ((entry = jarStream.getNextJarEntry()) != null) {
         String name = entry.getName();
         if (!entry.isDirectory() && name.startsWith(parent)
@@ -216,6 +218,14 @@ public class ResolverUtil<T> {
       log.debug("Could not search jar file \\\'" + jarfile //$NON-NLS-1$
           + "\\\' for classes matching criteria: " + tests //$NON-NLS-1$
           + " due to an IOException", ioe); //$NON-NLS-1$
+    }
+    finally {
+        if (jarStream!=null)
+            try {
+                jarStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
   }
 

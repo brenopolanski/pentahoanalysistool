@@ -55,7 +55,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	            
 	        	// This happens if we launch PAT without a web context, like in the 
 	        	// GWT shell for example. We'll initialize the context manually.
-	        	applicationContext = new FileSystemXmlApplicationContext(contextFiles);
+	            applicationContext = new FileSystemXmlApplicationContext(contextFiles);
 	        	
 	        	standaloneMode=true;
 	        	
