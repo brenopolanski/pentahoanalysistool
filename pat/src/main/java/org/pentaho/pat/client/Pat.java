@@ -27,16 +27,15 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
- * 
+ *
  * @author tom(at)wamonline.org.uk
- * 
  */
 
 public class Pat implements EntryPoint, ConnectionListener {
 
 
 	/**
-	 * PatImages ImageBundle
+	 * PatImages ImageBundle.
 	 */
 	public static final PatImages IMAGES = (PatImages) GWT.create(PatImages.class);
 
@@ -51,35 +50,33 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	public static final String DEFAULT_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
-	
 	/**
 	 * The {@link Application}.
 	 */
 	private static Application app = new Application();
 
 	/**
-	 * Global Session ID
+	 * Global Session ID.
 	 */
-	private static String SESSION_ID;
+	private static String SESSION_ID; //$NON-NLS-1$
 
 	/**
-	 * Pat Constructor
+	 * Pat Constructor.
 	 */
 	public Pat() {
 		super();
 
 	}
 
-	
 	/**
 	 * Get the style name of the reference element defined in the current GWT
 	 * theme style sheet.
-	 * 
+	 *
 	 * @param prefix
 	 *            the prefix of the reference style name
 	 * @return the style name
 	 */
-	private static String getCurrentReferenceStyleName(String prefix) {
+	private static String getCurrentReferenceStyleName(final String prefix) {
 		String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			gwtRef += "-rtl"; //$NON-NLS-1$
@@ -89,14 +86,16 @@ public class Pat implements EntryPoint, ConnectionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
-	public void onModuleLoad() {
-		
+	/**
+	 *
+	 */
+	public final void onModuleLoad() {
 		// Create a Pat unique session ID
 		setSessionID();
-		
+
 		// Swap out the style sheets for the RTL versions if needed
 		updateStyleSheets();
 
@@ -110,8 +109,8 @@ public class Pat implements EntryPoint, ConnectionListener {
 	}
 
 	/**
-	 * Returns the SESSION_ID
-	 * 
+	 * Returns the SESSION_ID.
+	 *
 	 * @return SESSION_ID
 	 */
 	public static String getSessionID() {
@@ -119,16 +118,16 @@ public class Pat implements EntryPoint, ConnectionListener {
 	}
 
 	/**
-	 * Sets the SESSION_ID
+	 * Sets the SESSION_ID.
 	 */
 	private static void setSessionID() {
 		ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
 
-			public void onFailure(Throwable arg0) {
+			public void onFailure(final Throwable arg0) {
 				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSessionID(arg0.getLocalizedMessage()));
 			}
 
-			public void onSuccess(String arg0) {
+			public void onSuccess(final String arg0) {
 				SESSION_ID = arg0;
 			}
 
@@ -138,9 +137,6 @@ public class Pat implements EntryPoint, ConnectionListener {
 
 	/**
 	 * Create the title bar at the top of the Application.
-	 * 
-	 * @param constants
-	 *            the constant values to use
 	 */
 	private void setupTitlePanel() {
 		// Get the title from the internationalized constants
@@ -158,7 +154,6 @@ public class Pat implements EntryPoint, ConnectionListener {
 
 	/**
 	 * Update the style sheets to reflect the current theme and direction.
-	 * 
 	 */
 	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include
@@ -183,7 +178,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element elem = Element.as(node);
 				if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
-						&& elem.getPropertyString("rel").equalsIgnoreCase( //$NON-NLS-1$
+						&& elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
 								"stylesheet")) { //$NON-NLS-1$
 					styleSheetsFound = true;
 					String href = elem.getPropertyString("href"); //$NON-NLS-1$
@@ -242,24 +237,32 @@ public class Pat implements EntryPoint, ConnectionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken
 	 * (com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionBroken(Widget sender) {
+	/**
+	 * Runs when a database connection is broken.
+	 * @param sender sender widget
+	 */
+	public void onConnectionBroken(final Widget sender) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(
 	 * com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionMade(Widget sender) {
+	/**
+	 * Runs when a database connection is made.
+	 * @param sender sender widget
+	 */
+	public void onConnectionMade(final Widget sender) {
 		//TODO
 	}
 

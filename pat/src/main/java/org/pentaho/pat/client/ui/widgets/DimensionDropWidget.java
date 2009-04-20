@@ -46,10 +46,10 @@ public class DimensionDropWidget extends Grid {
 	 */
 	public void init(String labelText, Axis targetAxis) {
 
-		table1 = new DimensionFlexTable(DimensionPanel.getDragController());
+		table1 = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
 		FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, targetAxis);
-		DimensionPanel.getDragController().registerDropController(flexTableRowDropController1);
+		DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
 		Label dropLabel = new Label(labelText);
 		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
 		table1.setStyleName("dropTable"); //$NON-NLS-1$
