@@ -43,9 +43,8 @@ public class OlapTable extends FlexTable {
   OlapData olapData = null;
   boolean showParentMembers = true;
   boolean groupHeaders = true;
-  PatMessages messages = null;
+
  
-  private ClickListener clickListener;
   private CellFormatPopup cellFormatPopup;
  
   /**
@@ -53,7 +52,7 @@ public class OlapTable extends FlexTable {
    */
   public OlapTable(PatMessages patMessages) {
     super();
-    this.messages = patMessages;
+    
    
     addStyleName("olap-table"); //$NON-NLS-1$
   }

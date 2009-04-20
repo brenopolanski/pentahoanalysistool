@@ -33,6 +33,15 @@ public class DimensionPanel extends ScrollPanel {
 	 */
 	private static FlexTableRowDragController tableRowDragController;
 
+	private static FlexTableRowDragController getTableRowDragController() {
+		return tableRowDragController;
+	}
+
+	private static void setTableRowDragController(
+			FlexTableRowDragController tableRowDragController) {
+		DimensionPanel.tableRowDragController = tableRowDragController;
+	}
+
 	/**
 	 *TODO JAVADOC
 	 *
@@ -46,11 +55,12 @@ public class DimensionPanel extends ScrollPanel {
 		layoutPanel.setPadding(0);
 		layoutPanel.setWidgetSpacing(0);
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.add(layoutPanel);
-
-		tableRowDragController = new FlexTableRowDragController(Application.getPanel());
+		
+		setTableRowDragController(new FlexTableRowDragController(Application.getBottomPanel()));
 		dimDrop = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
 		layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
+		//this.add(layoutPanel);
+		this.add(dimDrop);
 	}
 
 	/**
@@ -73,3 +83,4 @@ public class DimensionPanel extends ScrollPanel {
 		return tableRowDragController;
 	}
 }
+

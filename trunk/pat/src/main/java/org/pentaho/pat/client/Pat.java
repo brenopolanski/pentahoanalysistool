@@ -44,7 +44,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 * The current style theme.
 	 */
 	@SuppressWarnings("static-access")
-	public static String CUR_THEME = ConstantFactory.getInstance().STYLE_THEMES[0];
+	public static final String CUR_THEME = ConstantFactory.getInstance().STYLE_THEMES[0];
 
 	/**
 	 * The base style name.

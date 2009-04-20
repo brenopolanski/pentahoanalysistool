@@ -8,13 +8,10 @@ import java.util.Map;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
-import org.gwt.mosaic.ui.client.Viewport;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.Application.ApplicationListener;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -40,22 +37,16 @@ import com.google.gwt.user.client.ui.Widget;
 public class MainMenu extends StackPanel {
 
 	DimensionPanel dimensionPanel;
-	
-	/**
-	 * Create StackPanel
-	 */
-	StackLayoutPanel stackPanel;
-
 
 	/**
 	 * A mapping of history tokens to their associated menu items.
 	 */
-	public static Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
+	public static final Map<String, TreeItem> itemTokens = new HashMap<String, TreeItem>();
 	
 	/**
 	 * A mapping of menu items to the widget display when the item is selected.
 	 */
-	public static Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
+	public static final Map<TreeItem, DataWidget> itemWidgets = new HashMap<TreeItem, DataWidget>();
 
 	/**
 	 * @return the main menu.
@@ -117,7 +108,7 @@ public class MainMenu extends StackPanel {
 	 * @return the {@link Widget} in the content area
 	 */
 	public Widget getContent() {
-		return Application.contentWrapper.getWidget(0);
+		return Application.getContentWrapper().getWidget(0);
 	}
 
 	/**
@@ -159,8 +150,8 @@ public class MainMenu extends StackPanel {
 											public void onSuccess(Object arg0) {
 												dimensionPanel.createDimensionList();
 	
-												stackPanel.showStack(1);
-												stackPanel.layout(true);
+												MainMenu.this.showStack(1);
+												//MainMenu.this.layout(true);
 											}
 	
 										});
@@ -179,7 +170,7 @@ public class MainMenu extends StackPanel {
 	
 					// Show the associated ContentWidget
 					displayContentWidget(itemWidgets.get(item));
-					Application.contentWrapper.layout(true);
+					Application.getContentWrapper().layout(true);
 	
 				}
 			}
@@ -209,7 +200,7 @@ public class MainMenu extends StackPanel {
 	/**
 	 * Setup all of the options in the main menu.
 	 */
-	public static void setupMainMenu() {
+	private static void setupMainMenu() {
 		Tree mainMenu = getMainMenu();
 
 		TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
@@ -221,7 +212,7 @@ public class MainMenu extends StackPanel {
 	/**
 	 * Generates a cube list for the Cube Menu
 	 */
-	private void setupCubeMenu() {
+	public void setupCubeMenu() {
 		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
 			public void onSuccess(String[] o) {
 

@@ -41,15 +41,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	/**
 	 *TODO JAVADOC
 	 */
-	Label serverLbl;
-	/**
-	 *TODO JAVADOC
-	 */
 	TextBox portTB;
-	/**
-	 *TODO JAVADOC
-	 */
-	Label portLbl;
 	/**
 	 *TODO JAVADOC
 	 */
@@ -57,23 +49,11 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	/**
 	 *TODO JAVADOC
 	 */
-	Label databaseLbl;
-	/**
-	 *TODO JAVADOC
-	 */
 	TextBox userTB;
 	/**
 	 *TODO JAVADOC
 	 */
-	Label userLbl;
-	/**
-	 *TODO JAVADOC
-	 */
-	PasswordTextBox passwordTB;
-	/**
-	 *TODO JAVADOC
-	 */
-	Label passwordLbl;
+	PasswordTextBox passwordTB;;
 	/**
 	 *TODO JAVADOC
 	 */
