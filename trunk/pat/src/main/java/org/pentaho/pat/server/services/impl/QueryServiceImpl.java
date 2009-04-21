@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.olap4j.Axis;
@@ -12,6 +13,7 @@ import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.beans.OlapData;
 import org.pentaho.pat.server.Constants;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
@@ -79,8 +81,28 @@ public class QueryServiceImpl extends AbstractService
         Cube cube = this.discoveryService.getCube(userId, sessionId,
                 currentCube);
 
-        Member member = cube.lookupMember((String[]) memberNames
-                .toArray(new String[] {}));
+        // First try to resolve the member quick and dirty.
+        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
+        
+        if (member==null)
+        {
+            // Sometimes we need to find it in a different name format.
+            // To make sure we find the member, the first element
+            // will be sent as DimensionName.HierarchyName. Cubes which have
+            // more than one hierarchy in a given dimension will require this
+            // format anyways.
+            List<String> completeMemberNames = new ArrayList<String>();
+            completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+            completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+            member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+
+            if (member==null)
+            {
+                // We failed to find the member.
+                throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+            }
+        }
+
         QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
         Selection.Operator selectionMode = Selection.Operator.values()[selectionType
                 .ordinal()];
