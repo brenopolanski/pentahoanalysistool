@@ -29,9 +29,9 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * TODO JAVADOC.
+ * Creates the main dataview for Olap tables and charts.
  * 
  * @author bugg
  */
@@ -40,12 +40,12 @@ public class OlapPanel extends DataWidget {
 	/** The olap table. */
 	private transient OlapTable olapTable;
 
-	/** TODO JAVADOC. */
+	/** Panel Name. */
 	private transient final String name;
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Constructor.
 	 * 
 	 * @param name the name
 	 */
@@ -56,7 +56,7 @@ public class OlapPanel extends DataWidget {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Create the Tab Bar Text.
 	 * 
 	 * @param image the image
 	 * @param text the text
@@ -96,6 +96,10 @@ public class OlapPanel extends DataWidget {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getDescription()
 	 */
+	/**
+	 * Get the Panel Description
+	 * @return null
+	 */
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
@@ -105,6 +109,10 @@ public class OlapPanel extends DataWidget {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getName()
 	 */
+	/**
+	 * Get the Panel Name
+	 * @return name
+	 */
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -112,16 +120,18 @@ public class OlapPanel extends DataWidget {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Initialization routine.
 	 */
 	private void init() {
-		// TODO Auto-generated method stub
 		olapTable = new OlapTable(MessageFactory.getInstance());
 
 	}
 
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
+	 */
+	/**
+	 * Run when constructed.
 	 */
 	@Override
 	public Widget onInitialize() {
@@ -175,9 +185,17 @@ public class OlapPanel extends DataWidget {
 		});
 		final FlexTable grid = new FlexTable();
 		grid.setWidget(0, 0, executeButton);
-		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
-		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
-		grid.setWidget(3, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
+		DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+		rowDimDrop.setWidth("100%");
+		grid.setWidget(1, 0, rowDimDrop);
+		
+		DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+		colDimDrop.setWidth("100%");
+		grid.setWidget(2, 0, colDimDrop);
+		
+		DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+		filterDimDrop.setWidth("100%");
+		grid.setWidget(3, 0, filterDimDrop);
 		grid.setWidget(0, 1, olapTable);
 		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
 		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
