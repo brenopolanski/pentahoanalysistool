@@ -132,8 +132,9 @@ public class DiscoveryServiceImpl extends AbstractService
 
         List<String> uniqueNameList = new ArrayList<String>();
 
+        // FIXME Only uses the first hierarchy for now.
         NamedList<Level> levels = query.getDimension(dimensionName)
-                .getDimension().getHierarchies().get(dimensionName).getLevels();
+                .getDimension().getHierarchies().get(0).getLevels();
 
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
@@ -147,8 +148,9 @@ public class DiscoveryServiceImpl extends AbstractService
             String[] memberNames = uniqueNameList.get(i).split("\\."); //$NON-NLS-1$
             for (int j = 0; j < memberNames.length; j++) { // Trim off the
                                                            // brackets
-                memberNames[j] = memberNames[j].substring(1, memberNames[j]
-                        .length() - 1);
+                memberNames[j] = memberNames[j]
+                  .replaceAll("\\[", "")
+                  .replaceAll("\\]", "");
             }
             result = OlapUtil.parseMembers(memberNames, result);
         }
