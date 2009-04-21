@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -33,46 +32,46 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	/**
 	 *TODO JAVADOC
 	 */
-	Button connectBtn;
+	private final transient Button connectBtn;
 	/**
 	 *TODO JAVADOC
 	 */
-	TextBox serverTB;
+	private final transient TextBox serverTB;
 	/**
 	 *TODO JAVADOC
 	 */
-	TextBox portTB;
+	private final transient TextBox portTB;
 	/**
 	 *TODO JAVADOC
 	 */
-	TextBox databaseTB;
+	private final transient TextBox databaseTB;
 	/**
 	 *TODO JAVADOC
 	 */
-	TextBox userTB;
+	private final transient TextBox userTB;
 	/**
 	 *TODO JAVADOC
 	 */
-	PasswordTextBox passwordTB;;
+	private final transient PasswordTextBox passwordTB;;
 	/**
 	 *TODO JAVADOC
 	 */
-	FileUpload fileUpload;
+	private final transient FileUpload fileUpload;
 	/**
 	 *TODO JAVADOC
 	 */
-	Button uploadButton;
+	private final transient Button uploadButton;
 	/**
 	 *TODO JAVADOC
 	 */
-	FormPanel fpanel;
+	private transient FormPanel fpanel;
 
 	/**
 	 *TODO JAVADOC
 	 *
 	 */
 	public ConnectPanel() {
-
+		super();
 		this.setTitle("Register new Mondrian Connection"); //$NON-NLS-1$
 		ConstantFactory.getInstance().disconnect();
 		connectBtn = new Button(ConstantFactory.getInstance().connect());
@@ -89,6 +88,30 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
+	public void addConnectionListener(final ConnectionListener listener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionBroken(final Widget sender) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionMade(final Widget sender) {
+		// TODO Auto-generated method stub
+		System.out.println("ConnectPanel on Connection Made"); //$NON-NLS-1$
+	}
+
 	/**
 	 *TODO JAVADOC
 	 *
@@ -102,27 +125,28 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 
 		fpanel.addFormHandler(new FormHandler() {
 
-			public void onSubmitComplete(FormSubmitCompleteEvent arg0) {
-				if (arg0.getResults().contains("#filename#")) //$NON-NLS-1$
-				{
-					String tmp = arg0.getResults().substring(arg0.getResults().indexOf("#filename#") + 10, arg0.getResults().indexOf("#/filename#")); //$NON-NLS-1$ //$NON-NLS-2$
-					Window.alert(tmp);
-				} else
-					Window.alert("Schema Upload failed"); //$NON-NLS-1$
-
-			}
-
-			public void onSubmit(FormSubmitEvent arg0) {
+			public void onSubmit(final FormSubmitEvent arg0) {
 				// TODO Auto-generated method stub
 				// Window.alert(arg0.toString());
 
 			}
-		});
-		FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-				"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px"); //$NON-NLS-1$
 
-		PanelBuilder builder = new PanelBuilder(layout);
+			public void onSubmitComplete(final FormSubmitCompleteEvent arg0) {
+				if (arg0.getResults().contains("#filename#")) //$NON-NLS-1$
+				{
+					final String tmp = arg0.getResults().substring(arg0.getResults().indexOf("#filename#") + 10, arg0.getResults().indexOf("#/filename#")); //$NON-NLS-1$ //$NON-NLS-2$
+					Window.alert(tmp);
+				} else {
+					Window.alert("Schema Upload failed"); //$NON-NLS-1$
+				}
+
+			}
+		});
+		final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+		"12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px"); //$NON-NLS-1$
+
+		final PanelBuilder builder = new PanelBuilder(layout);
 		this.setTitle("title"); //$NON-NLS-1$
 		builder.addLabel(ConstantFactory.getInstance().server() + ":", CellConstraints.xy(1, 2)); //$NON-NLS-1$
 		builder.add(serverTB, CellConstraints.xy(3, 2));
@@ -140,8 +164,8 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		builder.add(fileUpload, CellConstraints.xyw(3, 8, 5));
 
 		uploadButton.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				String filename = fileUpload.getFilename();
+			public void onClick(final Widget sender) {
+				final String filename = fileUpload.getFilename();
 				if (filename.length() == 0) {
 					Window.alert("No File"); //$NON-NLS-1$
 				} else {
@@ -154,7 +178,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		});
 		builder.add(uploadButton, CellConstraints.xyw(3, 10, 5));
 		connectBtn.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
+			public void onClick(final Widget sender) {
 
 				// Connection Routine
 
@@ -168,35 +192,11 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	}
 
 	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
-	public void removeConnectionListener(ConnectionListener listener) {
+	public void removeConnectionListener(final ConnectionListener listener) {
 		// TODO Auto-generated method stub
 
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionBroken(Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionMade(Widget sender) {
-		// TODO Auto-generated method stub
-		System.out.println("ConnectPanel on Connection Made"); //$NON-NLS-1$
 	}
 
 }

@@ -5,9 +5,9 @@ import com.google.gwt.user.client.ui.ImageBundle;
 
 public interface WidgetImages extends ImageBundle{
 
-	 AbstractImagePrototype flexend();
-	 
-	 AbstractImagePrototype flexend3();
-	 
-	 
+	AbstractImagePrototype flexend();
+
+	AbstractImagePrototype flexend3();
+
+
 }

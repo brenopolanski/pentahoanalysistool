@@ -9,22 +9,65 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class CellFormatPopup extends PopupPanel {
 
+	public class CellFormatCommand implements Command {
+		private transient String value = ""; //$NON-NLS-1$
+		private final transient CellFormatType type;
+
+		public CellFormatCommand(final CellFormatType type, final String value) {
+			this.value = value;
+			this.type = type;
+
+		}
+
+		public void execute() {
+			// Widget widget = getSource();
+
+			if (type == CellFormatType.FOREGROUND)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "color", value); //$NON-NLS-1$
+			}
+			else if (type == CellFormatType.BACKGROUND)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "background", value); //$NON-NLS-1$
+			}
+			else if (type == CellFormatType.DECORATION)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "textDecoration", value); //$NON-NLS-1$
+			}
+			else if (type == CellFormatType.STYLE)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "fontWeight", value); //$NON-NLS-1$
+			}
+			else if (type == CellFormatType.SIZE)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "fontSize", value); //$NON-NLS-1$
+			}
+			else if (type == CellFormatType.FAMILY)
+			{
+				DOM.setStyleAttribute(sender.getElement(), "fontFamily", value); //$NON-NLS-1$
+			}
+
+			CellFormatPopup.this.hide();
+		}
+
+	}
 	public static final String COLOR_RED = "red"; //$NON-NLS-1$
 	public static final String COLOR_GREEN = "green"; //$NON-NLS-1$
 	public static final String COLOR_YELLOW = "yellow"; //$NON-NLS-1$
 	public static final String COLOR_BLUE = "blue"; //$NON-NLS-1$
 	public static final String COLOR_WHITE = "white"; //$NON-NLS-1$
+
 	public static final String COLOR_BLACK = "black"; //$NON-NLS-1$
-
 	public static final String STYLE_BOLD = "bold"; //$NON-NLS-1$
+
 	public static final String STYLE_NORMAL = "normal"; //$NON-NLS-1$
-
 	public static final String DECORATION_OUTLINE = "outline"; //$NON-NLS-1$
+
+
 	public static final String DECORATION_UNDERLINE = "underline"; //$NON-NLS-1$
-
-
 	private transient Widget sender;
 	private transient MenuBar menuBar;
+
 	private transient String returnStyle = ""; //$NON-NLS-1$
 
 	public CellFormatPopup(final int x, final int y, final Widget sender) {
@@ -33,6 +76,14 @@ public class CellFormatPopup extends PopupPanel {
 
 		this.setPopupPosition(y, x);
 		init();
+	}
+
+	public String getReturnStyle() {
+		return returnStyle;
+	}
+
+	public Widget getSource() {
+		return sender;
 	}
 
 	public void init() {
@@ -93,63 +144,12 @@ public class CellFormatPopup extends PopupPanel {
 
 	}
 
-	public Widget getSource() {
-		return sender;
+	public void setReturnStyle(final String returnStyle) {
+		this.returnStyle = returnStyle;
 	}
 
 	public void setSource(final Widget sender) {
 		this.sender = sender;
-	}
-
-	public class CellFormatCommand implements Command {
-		private transient String value = ""; //$NON-NLS-1$
-		private final transient CellFormatType type;
-
-		public CellFormatCommand(CellFormatType type, String value) {
-			this.value = value;
-			this.type = type;
-
-		}
-
-		public void execute() {
-			// Widget widget = getSource();
-
-			if (type == CellFormatType.FOREGROUND)
-				{
-					DOM.setStyleAttribute(sender.getElement(), "color", value); //$NON-NLS-1$
-					}
-			else if (type == CellFormatType.BACKGROUND)
-				{
-				DOM.setStyleAttribute(sender.getElement(), "background", value); //$NON-NLS-1$
-				}
-			else if (type == CellFormatType.DECORATION)
-				{
-				DOM.setStyleAttribute(sender.getElement(), "textDecoration", value); //$NON-NLS-1$
-				}
-			else if (type == CellFormatType.STYLE)
-				{
-				DOM.setStyleAttribute(sender.getElement(), "fontWeight", value); //$NON-NLS-1$
-				}
-			else if (type == CellFormatType.SIZE)
-				{
-				DOM.setStyleAttribute(sender.getElement(), "fontSize", value); //$NON-NLS-1$
-				}
-			else if (type == CellFormatType.FAMILY)
-				{
-				DOM.setStyleAttribute(sender.getElement(), "fontFamily", value); //$NON-NLS-1$
-				}
-
-			CellFormatPopup.this.hide();
-		}
-
-	}
-
-	public String getReturnStyle() {
-		return returnStyle;
-	}
-
-	public void setReturnStyle(final String returnStyle) {
-		this.returnStyle = returnStyle;
 	}
 
 }

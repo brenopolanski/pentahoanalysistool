@@ -23,40 +23,30 @@ import org.pentaho.pat.rpc.beans.Axis;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 
+// TODO: Auto-generated Javadoc
 /**
- *TODO JAVADOC
- *
+ * TODO JAVADOC.
+ * 
  * @author bugg
- *
  */
 public final class DimensionFlexTable extends FlexTable {
 
-	/**
-	 * Creates a FlexTable with the desired number of rows and columns, making
-	 * each row draggable via the provided drag controller.
-	 * 
-	 * 
-	 * @param tableRowDragController
-	 *            the drag controller to enable dragging of table rows
-	 * 
-	 * @author tom(at)wamonline.org.uk
-	 */
-	private FlexTableRowDragController trdc;
+	/** Creates a FlexTable with the desired number of rows and columns, making each row draggable via the provided drag controller. */
+	private final FlexTableRowDragController trdc;
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param tableRowDragController
+	 * TODO JAVADOC.
+	 * 
+	 * @param tableRowDragController the table row drag controller
 	 */
-	public DimensionFlexTable(FlexTableRowDragController tableRowDragController) {
+	public DimensionFlexTable(final FlexTableRowDragController tableRowDragController) {
 		addStyleName("demo-flextable"); //$NON-NLS-1$
 
 		this.trdc = tableRowDragController;
-		 Label spacerLabel = new Label("");
-		 spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
+		final Label spacerLabel = new Label("");
+		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
 
 
 		setWidget(0, 0, spacerLabel);
@@ -64,23 +54,23 @@ public final class DimensionFlexTable extends FlexTable {
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param targetAxis
+	 * TODO JAVADOC.
+	 * 
+	 * @param targetAxis the target axis
 	 */
-	public void populateDimensionTable(Axis targetAxis) {
+	public void populateDimensionTable(final Axis targetAxis) {
 		this.clear();
 
 		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
 
-			public void onFailure(Throwable arg0) {
+			public void onFailure(final Throwable arg0) {
 				// TODO use standardized message dialog when implemented
 				Window.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
 			}
 
-			public void onSuccess(String[] arg0) {
+			public void onSuccess(final String[] arg0) {
 				for (int row = 0; row < arg0.length; row++) {
-					Label handle = new Label(arg0[row]);
+					final Label handle = new Label(arg0[row]);
 					handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
 					setWidget(row, 0, handle);
 					trdc.makeDraggable(handle);

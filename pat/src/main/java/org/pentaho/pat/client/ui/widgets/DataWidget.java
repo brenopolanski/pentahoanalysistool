@@ -24,6 +24,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
  * A widget used to show the examples in the content panel. It includes a tab
  * bar with options to view the example, view the source, or view the css style
@@ -46,21 +47,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class DataWidget extends LayoutPanel {
 
-	/**
-	 * The default style name.
-	 */
+	/** The default style name. */
 	protected static final String DEFAULT_STYLE_NAME = "Pat-sc-ContentWidget"; //$NON-NLS-1$
 
-	/**
-	 * A boolean indicating whether or not this widget has been initialized.
-	 */
+	/** A boolean indicating whether or not this widget has been initialized. */
 	private boolean initialized = false;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param constants
-	 *            the constants
 	 */
 	public DataWidget() {
 
@@ -74,6 +68,11 @@ public abstract class DataWidget extends LayoutPanel {
 	 */
 	public abstract String getDescription();
 
+	/**
+	 * Gets the id.
+	 * 
+	 * @return the id
+	 */
 	public final String getId() {
 		final String s = this.getClass().getName();
 		return s.substring(s.lastIndexOf('.') + 1, s.length());
@@ -104,10 +103,23 @@ public abstract class DataWidget extends LayoutPanel {
 		onInitializeComplete();
 	}
 
+	/**
+	 * Checks if is initialized.
+	 * 
+	 * @return true, if is initialized
+	 */
 	public final boolean isInitialized() {
 		return initialized;
 	}
 
+	/**
+	 * On before tab selected.
+	 * 
+	 * @param sender the sender
+	 * @param tabIndex the tab index
+	 * 
+	 * @return true, if successful
+	 */
 	public boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
 		return true;
 	}
@@ -117,7 +129,7 @@ public abstract class DataWidget extends LayoutPanel {
 	 * returns a Widget, the widget will be added as the first tab. Return
 	 * <code>null</code> to disable the first tab.
 	 * 
-	 * @return
+	 * @return the widget
 	 */
 	protected abstract Widget onInitialize();
 
@@ -129,6 +141,9 @@ public abstract class DataWidget extends LayoutPanel {
 		// Nothing to do here!
 	}
 
+	/* (non-Javadoc)
+	 * @see org.gwt.mosaic.ui.client.layout.LayoutPanel#onLoad()
+	 */
 	@Override
 	protected void onLoad() {
 		// Initialize this widget if we haven't already

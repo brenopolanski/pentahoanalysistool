@@ -3,7 +3,6 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.images.SelectionModeImageBundle;
 
 import com.google.gwt.core.client.GWT;
@@ -17,9 +16,11 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.TreeItem;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author wseyler
+ * The Class MemberSelectionLabel.
  * 
+ * @author wseyler
  */
 /**
  *TODO JAVADOC
@@ -28,33 +29,24 @@ import com.google.gwt.user.client.ui.TreeItem;
  *
  */
 public class MemberSelectionLabel extends HorizontalPanel implements SourcesClickEvents {
-	
-		/**
-		 * PatImages ImageBundle
-		 */
-		protected transient SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** PatImages ImageBundle. */
+	protected transient SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
+
+	/** TODO JAVADOC. */
 	protected transient ClickListenerCollection clickListeners;
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private final transient Label label = new Label();
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private Image image;
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private TreeItem treeItem;
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
 	 */
 	public MemberSelectionLabel() {
 		super();
@@ -68,44 +60,11 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param text
+	 * TODO JAVADOC.
+	 * 
+	 * @param text the text
 	 */
 	public MemberSelectionLabel(final String text) {
-		label.setText(text);
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param image
-	 */
-	public void setImage(final Image image) {
-		if (this.image != null) {
-			this.remove(this.image);
-		}
-		this.image = image;
-		if (this.image != null) {
-			this.add(this.image);
-		}
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
-	 */
-	public String getText() {
-		return label.getText();
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param text
-	 */
-	public void setText(final String text) {
 		label.setText(text);
 	}
 
@@ -126,38 +85,53 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		clickListeners.add(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Gets the full path.
 	 * 
-	 * @see
-	 * com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(
-	 * com.google.gwt.user.client.ui.ClickListener)
+	 * @return the full path
 	 */
-	/* (non-Javadoc)
-	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(com.google.gwt.user.client.ui.ClickListener)
-	 */
-	public void removeClickListener(final ClickListener listener) {
-		if (clickListeners != null) {
-			clickListeners.remove(listener);
-		}
-	}
-
 	/**
 	 *TODO JAVADOC
 	 *
 	 * @return
 	 */
-	public TreeItem getTreeItem() {
-		return treeItem;
+	public String[] getFullPath() {
+		final List pathList = new ArrayList();
+		pathList.add(label.getText());
+		TreeItem currentTreeItem = treeItem;
+		while (currentTreeItem.getParentItem() != null && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
+			currentTreeItem = currentTreeItem.getParentItem();
+			pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
+		}
+		final String[] values = new String[pathList.size()];
+		return (String[]) pathList.toArray(values);
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param treeItem
+	 * TODO JAVADOC.
+	 * 
+	 * @return the label
 	 */
-	public void setTreeItem(final TreeItem treeItem) {
-		this.treeItem = treeItem;
+	public Label getLabel() {
+		return label;
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return the text
+	 */
+	public String getText() {
+		return label.getText();
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return the tree item
+	 */
+	public TreeItem getTreeItem() {
+		return treeItem;
 	}
 
 	/* (non-Javadoc)
@@ -175,49 +149,74 @@ public class MemberSelectionLabel extends HorizontalPanel implements SourcesClic
 		}
 	}
 
-	
-	  public void setSelectionMode(final int mode) { 
-		  Image selectionImage = null;
-	  switch (mode) { 
-	  case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.memberSelectIcon().createImage(); 
-	  break; 
-	  case SelectionModePopup.CHILDREN: selectionImage = selectionImageBundle.childrenSelectIcon().createImage(); 
-	  break; 
-	  case SelectionModePopup.INCLUDE_CHILDREN: selectionImage = selectionImageBundle.includeChildrenSelectIcon().createImage(); 
-	  break;
-	  case SelectionModePopup.SIBLINGS: selectionImage = selectionImageBundle.siblingsSelectIcon().createImage(); 
-	  }
-	  setImage(selectionImage); 
-	  }
-	 
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(
+	 * com.google.gwt.user.client.ui.ClickListener)
 	 */
-	public Label getLabel() {
-		return label;
+	/* (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(com.google.gwt.user.client.ui.ClickListener)
+	 */
+	public void removeClickListener(final ClickListener listener) {
+		if (clickListeners != null) {
+			clickListeners.remove(listener);
+		}
 	}
 
 	/**
-	 * @return
+	 * TODO JAVADOC.
+	 * 
+	 * @param image the image
 	 */
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
-	 */
-	public String[] getFullPath() {
-		final List pathList = new ArrayList();
-		pathList.add(label.getText());
-		TreeItem currentTreeItem = treeItem;
-		while (currentTreeItem.getParentItem() != null && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
-			currentTreeItem = currentTreeItem.getParentItem();
-			pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
+	public void setImage(final Image image) {
+		if (this.image != null) {
+			this.remove(this.image);
 		}
-		final String[] values = new String[pathList.size()];
-		return (String[]) pathList.toArray(values);
+		this.image = image;
+		if (this.image != null) {
+			this.add(this.image);
+		}
+	}
+
+
+	/**
+	 * Sets the selection mode.
+	 * 
+	 * @param mode the new selection mode
+	 */
+	public void setSelectionMode(final int mode) {
+		Image selectionImage = null;
+		switch (mode) {
+		case SelectionModePopup.MEMBER: selectionImage = selectionImageBundle.memberSelectIcon().createImage();
+		break;
+		case SelectionModePopup.CHILDREN: selectionImage = selectionImageBundle.childrenSelectIcon().createImage();
+		break;
+		case SelectionModePopup.INCLUDE_CHILDREN: selectionImage = selectionImageBundle.includeChildrenSelectIcon().createImage();
+		break;
+		case SelectionModePopup.SIBLINGS: selectionImage = selectionImageBundle.siblingsSelectIcon().createImage();
+		}
+		setImage(selectionImage);
+	}
+
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @param text the text
+	 */
+	public void setText(final String text) {
+		label.setText(text);
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @param treeItem the tree item
+	 */
+	public void setTreeItem(final TreeItem treeItem) {
+		this.treeItem = treeItem;
 	}
 
 }

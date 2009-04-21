@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  */
 
-public class Pat implements EntryPoint, ConnectionListener {
+public class Pat implements EntryPoint, ConnectionListener { // NOPMD by bugg on 21/04/09 05:30
 
 
 	/**
@@ -60,7 +60,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	private static String sessionid;
 
-	
+
 	/**
 	 * Get the style name of the reference element defined in the current GWT
 	 * theme style sheet.
@@ -75,30 +75,6 @@ public class Pat implements EntryPoint, ConnectionListener {
 			gwtRef += "-rtl"; //$NON-NLS-1$
 		}
 		return gwtRef;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
-	 */
-	/**
-	 *
-	 */
-	public final void onModuleLoad() {
-		// Create a Pat unique session ID
-		setSessionID();
-
-		// Swap out the style sheets for the RTL versions if needed
-		updateStyleSheets();
-
-		// Create the application
-		setupTitlePanel();
-		// setupOptionsPanel();
-
-		//hide splash
-		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
 	}
 
 	/**
@@ -129,23 +105,6 @@ public class Pat implements EntryPoint, ConnectionListener {
 	}
 
 	/**
-	 * Create the title bar at the top of the Application.
-	 */
-	private void setupTitlePanel() {
-		// Get the title from the internationalized constants
-		final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
-				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
-				+ "</h2>"; //$NON-NLS-1$
-
-		// Add the title and some images to the title bar
-		final HorizontalPanel titlePanel = new HorizontalPanel();
-		titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		// titlePanel.add(IMAGES.gwtLogo().createImage());
-		titlePanel.add(new HTML(pageTitle));
-		app.setTitleWidget(titlePanel);
-	}
-
-	/**
 	 * Update the style sheets to reflect the current theme and direction.
 	 */
 	public static void updateStyleSheets() {
@@ -153,11 +112,11 @@ public class Pat implements EntryPoint, ConnectionListener {
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
 		String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
-		String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$
+		final String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
 			gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
-					"_rtl.css"); //$NON-NLS-1$
+			"_rtl.css"); //$NON-NLS-1$
 			scStyleSheet = scStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
@@ -172,7 +131,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 				final Element elem = Element.as(node);
 				if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
 						&& elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
-								"stylesheet")) { //$NON-NLS-1$
+						"stylesheet")) { //$NON-NLS-1$
 					styleSheetsFound = true;
 					final String href = elem.getPropertyString("href"); //$NON-NLS-1$
 					// If the correct style sheets are already loaded, then we
@@ -195,7 +154,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 		RootPanel.get().remove(app);
 
 		// Remove the old style sheets
-		for (Element elem : toRemove) {
+		for (final Element elem : toRemove) {
 			headElem.removeChild(elem);
 		}
 
@@ -212,7 +171,7 @@ public class Pat implements EntryPoint, ConnectionListener {
 				// force
 				// IE to redraw the background correctly.
 				RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
-						"none"); //$NON-NLS-1$
+				"none"); //$NON-NLS-1$
 				RootPanel.getBodyElement().getStyle().setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				RootPanel.get().add(app);
 			}
@@ -257,6 +216,47 @@ public class Pat implements EntryPoint, ConnectionListener {
 	 */
 	public void onConnectionMade(final Widget sender) {
 		//TODO
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+	 */
+	/**
+	 *
+	 */
+	public final void onModuleLoad() {
+		// Create a Pat unique session ID
+		setSessionID();
+
+		// Swap out the style sheets for the RTL versions if needed
+		updateStyleSheets();
+
+		// Create the application
+		setupTitlePanel();
+		// setupOptionsPanel();
+
+		//hide splash
+		com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+	}
+
+	/**
+	 * Create the title bar at the top of the Application.
+	 */
+	private void setupTitlePanel() {
+		// Get the title from the internationalized constants
+		final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
+		+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
+		+ "</h2>"; //$NON-NLS-1$
+
+		// Add the title and some images to the title bar
+		final HorizontalPanel titlePanel = new HorizontalPanel();
+		titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		// titlePanel.add(IMAGES.gwtLogo().createImage());
+		titlePanel.add(new HTML(pageTitle));
+		app.setTitleWidget(titlePanel);
 	}
 
 }

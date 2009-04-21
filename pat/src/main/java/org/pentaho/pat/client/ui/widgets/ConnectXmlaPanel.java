@@ -26,56 +26,46 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author pstoellberger
+ * The Class ConnectXmlaPanel.
  * 
+ * @author pstoellberger
  */
 
 public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEvents {
 
 	// TODO Finish this Widget
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private final TextBox userTextBox;
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private final PasswordTextBox passwordTextBox;
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private final Button connectButton;
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
-	/**
-	 *TODO JAVADOC
-	 */
+	
+	/** TODO JAVADOC. */
 	private ConnectionListenerCollection connectionListeners;
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
 	 */
 	public ConnectXmlaPanel() {
 		super();
@@ -91,78 +81,37 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 		// this.add(onInitialize());
 	}
 
-	/**
-	 *TODO JAVADOC
-	 *
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+	 * addConnectionListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
-	private void onInitialize() {
-
-		// final FormPanel formPanel = new FormPanel();
-		// formPanel.setWidth(WIDTH);
-		// formPanel.setHeight(HEIGHT);
-
-		final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-				"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
-		final PanelBuilder builder = new PanelBuilder(layout);
-
-		builder.addLabel(ConstantFactory.getInstance().xmlaurl() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
-		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
-		builder.add(userTextBox, CellConstraints.xy(3, 3));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
-		// builder.addLabel(ConstantFactory.getInstance().catalog() +
-		// LABEL_SUFFIX, CellConstraints.xy(1, 8));
-		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
-
-		connectButton.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
-					public void onSuccess(Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
-						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
-					}
-
-					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));
-						connectButton.setEnabled(true);
-					}
-				});
-			}
-		});
-
-		builder.add(connectButton, CellConstraints.xyw(3, 9, 5));
-
-		LayoutPanel layoutPanel = builder.getPanel();
-		layoutPanel.setPadding(15);
-		this.add(layoutPanel);
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
+	public void addConnectionListener(final ConnectionListener listener) {
+		if (connectionListeners == null) {
+			connectionListeners = new ConnectionListenerCollection();
+		}
+		connectionListeners.add(listener);
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
+	 * TODO JAVADOC.
 	 */
-	public boolean isConnectionEstablished() {
-		return connectionEstablished;
+	public void emptyForm() {
+		urlTextBox.setText(""); //$NON-NLS-1$
+		userTextBox.setText(""); //$NON-NLS-1$
+		passwordTextBox.setText(""); //$NON-NLS-1$
+		// catalogTextbox.setText("");
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param connectionEstablished
-	 */
-	public void setConnectionEstablished(boolean connectionEstablished) {
-		this.connectionEstablished = connectionEstablished;
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
+	 * TODO JAVADOC.
+	 * 
+	 * @return the cube connection
 	 */
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
@@ -188,21 +137,62 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 		return cc;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * TODO JAVADOC.
 	 * 
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * addConnectionListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
+	 * @return true, if checks if is connection established
 	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	public boolean isConnectionEstablished() {
+		return connectionEstablished;
+	}
+
+	/**
+	 * TODO JAVADOC.
 	 */
-	public void addConnectionListener(ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
+	private void onInitialize() {
+
+		// final FormPanel formPanel = new FormPanel();
+		// formPanel.setWidth(WIDTH);
+		// formPanel.setHeight(HEIGHT);
+
+		final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
+		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+		final PanelBuilder builder = new PanelBuilder(layout);
+
+		builder.addLabel(ConstantFactory.getInstance().xmlaurl() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.add(userTextBox, CellConstraints.xy(3, 3));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
+		// builder.addLabel(ConstantFactory.getInstance().catalog() +
+		// LABEL_SUFFIX, CellConstraints.xy(1, 8));
+		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
+
+		connectButton.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
+					public void onFailure(final Throwable arg0) {
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));
+						connectButton.setEnabled(true);
+					}
+
+					public void onSuccess(final Object o) {
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
+						setConnectionEstablished(true);
+						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
+					}
+				});
+			}
+		});
+
+		builder.add(connectButton, CellConstraints.xyw(3, 9, 5));
+
+		final LayoutPanel layoutPanel = builder.getPanel();
+		layoutPanel.setPadding(15);
+		this.add(layoutPanel);
 	}
 
 	/*
@@ -215,21 +205,19 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
-	public void removeConnectionListener(ConnectionListener listener) {
+	public void removeConnectionListener(final ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
+	 * 
+	 * @param connectionEstablished the connection established
 	 */
-	public void emptyForm() {
-		urlTextBox.setText(""); //$NON-NLS-1$
-		userTextBox.setText(""); //$NON-NLS-1$
-		passwordTextBox.setText(""); //$NON-NLS-1$
-		// catalogTextbox.setText("");
+	public void setConnectionEstablished(final boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
 	}
 
 }

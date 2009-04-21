@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package org.pentaho.pat.client;
 
 import org.gwt.mosaic.ui.client.Caption;
@@ -40,18 +43,19 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * .Application-links { The main external links }</li> <li>.Application-options
  * { The options widget }</li> <li>.Application-menu { The main menu }</li> <li>
  * .Application-content-wrapper { The element around the content }</li> </ul>
- *
+ * 
  * @author tom(at)wamonline.org.uk
  */
 
-public class Application extends Viewport implements ConnectionListener {
+public class Application extends Viewport implements ConnectionListener { // NOPMD by bugg on 21/04/09 05:50
 	/**
-	 * Images used in the {@link Application}.
-	 */
+  * Images used in the {@link Application}.
+  */
 	public interface ApplicationImages extends TreeImages {
+		
 		/**
 		 * An image indicating a leaf.
-		 *
+		 * 
 		 * @return a prototype of this image
 		 */
 		@Resource("noimage.png")
@@ -62,51 +66,57 @@ public class Application extends Viewport implements ConnectionListener {
 	 * A listener to handle events from the Application.
 	 */
 	public interface ApplicationListener {
+		
 		/**
 		 * Fired when a menu item is selected.
-		 *
-		 * @param item
-		 *            the item that was selected
+		 * 
+		 * @param item the item that was selected
 		 */
 		void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
 	}
 
-	/**
-	 * The wrapper around the content.
-	 */
+	/** The wrapper around the content. */
 	private static LayoutPanel contentWrapper;
 
-	/**
-	 * The base style name.
-	 */
+	/** The base style name. */
 	public static final String DEF_STYLE_NAME = "Application"; //$NON-NLS-1$
 
 	/**
-	 * The Application Main Panel.
+	 * Returns the Applications Content Wrapper.
+	 * 
+	 * @return the Content Wrapper
 	 */
-	private transient final MainMenu mainPanel;
-	
+	public static LayoutPanel getContentWrapper() {
+		return contentWrapper;
+	}
+
 	/**
-	 * The panel that contains the title widget and links.
+	 * Sets the Applications Content Wrapper.
+	 * 
+	 * @param contentWrapper The Application Content Wrapper
 	 */
+	public static void setContentWrapper(final LayoutPanel contentWrapper) {
+		Application.contentWrapper = contentWrapper;
+	}
+
+	/** The Application Main Panel. */
+	private transient final MainMenu mainPanel;
+
+	/** The panel that contains the title widget and links. */
 	private transient FlexTable topPanel;
 
-	/**
-	 * The Application's Toolbar Panel.
-	 */
+	/** The Application's Toolbar Panel. */
 	private transient ToolBarPanel toolBarPanel;
 
-	/**
-	 * Application LayoutPanel.
-	 */
+	/** Application LayoutPanel. */
 	private transient final LayoutPanel layoutPanel;
 
-	/**
-	 * The bottom Panel for the Application, contains the main panels.
-	 */
+	/** The bottom Panel for the Application, contains the main panels. */
 	private static LayoutPanel bottomPanel;
 
 	/**
+	 * Gets the bottom panel.
+	 * 
 	 * @return the bottom panel
 	 */
 	public static LayoutPanel getBottomPanel() {
@@ -114,8 +124,9 @@ public class Application extends Viewport implements ConnectionListener {
 	}
 
 	/**
-	 * @param bottomPanel
-	 *            Returns the bottom Panel(dimension and data container)
+	 * Sets the bottom panel.
+	 * 
+	 * @param bottomPanel Returns the bottom Panel(dimension and data container)
 	 */
 	private static void setBottomPanel(final LayoutPanel bottomPanel) {
 		Application.bottomPanel = bottomPanel;
@@ -123,9 +134,8 @@ public class Application extends Viewport implements ConnectionListener {
 
 	/**
 	 * Set the {@link Widget} to display in the content area.
-	 *
-	 * @param content
-	 *            the content widget
+	 * 
+	 * @param content the content widget
 	 */
 	public static void setContent(final Widget content) {
 		Application.contentWrapper.clear();
@@ -258,21 +268,14 @@ public class Application extends Viewport implements ConnectionListener {
 				});
 	}
 
-	/**
-	 * Returns the Applications Content Wrapper.
-	 *
-	 * @return the Content Wrapper
-	 */
-	public static LayoutPanel getContentWrapper() {
-		return contentWrapper;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.mosaic.ui.client.layout.HasLayoutManager#getPreferredSize()
 	 */
 	/**
+	 * Gets the preferred size.
+	 * 
 	 * @return the widgets preferred size
 	 */
 	public final int[] getPreferredSize() {
@@ -280,6 +283,8 @@ public class Application extends Viewport implements ConnectionListener {
 	}
 
 	/**
+	 * Gets the title widget.
+	 * 
 	 * @return the {@link Widget} used as the title
 	 */
 	public final Widget getTitleWidget() {
@@ -292,6 +297,8 @@ public class Application extends Viewport implements ConnectionListener {
 	 * @see org.gwt.mosaic.ui.client.Viewport#getWidget()
 	 */
 	/**
+	 * Gets the widget.
+	 * 
 	 * @return the widget.
 	 */
 	@Override
@@ -308,9 +315,8 @@ public class Application extends Viewport implements ConnectionListener {
 	 */
 	/**
 	 * Runs when a database disconnect is called.
-	 *
-	 * @param sender
-	 *            sender widget
+	 * 
+	 * @param sender sender widget
 	 */
 	public final void onConnectionBroken(final Widget sender) {
 		destroyCubeMenu();
@@ -325,30 +331,18 @@ public class Application extends Viewport implements ConnectionListener {
 	 */
 	/**
 	 * Runs when a database connection is made.
-	 *
-	 * @param sender
-	 *            sender widget
+	 * 
+	 * @param sender sender widget
 	 */
 	public final void onConnectionMade(final Widget sender) {
 		mainPanel.setupCubeMenu();
 	}
 
 	/**
-	 * Sets the Applications Content Wrapper.
-	 *
-	 * @param contentWrapper
-	 *            The Application Content Wrapper
-	 */
-	public static void setContentWrapper(final LayoutPanel contentWrapper) {
-		Application.contentWrapper = contentWrapper;
-	}
-
-	/**
 	 * Set the {@link Widget} to use as options, which appear to the right of
 	 * the title bar.
-	 *
-	 * @param options
-	 *            the options widget
+	 * 
+	 * @param options the options widget
 	 */
 	public final void setOptionsWidget(final Widget options) {
 		topPanel.setWidget(1, 1, options);
@@ -356,9 +350,8 @@ public class Application extends Viewport implements ConnectionListener {
 
 	/**
 	 * Set the {@link Widget} to use as the title bar.
-	 *
-	 * @param title
-	 *            the title widget
+	 * 
+	 * @param title the title widget
 	 */
 	public final void setTitleWidget(final Widget title) {
 		topPanel.setWidget(1, 0, title);

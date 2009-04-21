@@ -23,17 +23,17 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
  */
 public interface SourcesConnectionEvents {
 
-  /**
-   * Adds a listener interface to receive connection events.
-   * 
-   * @param listener the listener interface to add
-   */
-  void addConnectionListener(ConnectionListener listener);
+	/**
+	 * Adds a listener interface to receive connection events.
+	 * 
+	 * @param listener the listener interface to add
+	 */
+	void addConnectionListener(ConnectionListener listener);
 
-  /**
-   * Removes a previously added listener interface.
-   * 
-   * @param listener the listener interface to remove
-   */
-  void removeConnectionListener(ConnectionListener listener);
+	/**
+	 * Removes a previously added listener interface.
+	 * 
+	 * @param listener the listener interface to remove
+	 */
+	void removeConnectionListener(ConnectionListener listener);
 }
