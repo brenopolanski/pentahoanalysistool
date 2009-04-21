@@ -34,13 +34,13 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
   * Copy an entire FlexTable from one FlexTable to another. Each element is
   * copied by creating a new {@link HTML} widget by calling
   * {@link FlexTable#getHTML(int, int)} on the source table.
-  * 
+  *
   * @param sourceTable the FlexTable to copy a row from
   * @param targetTable the FlexTable to copy a row to
   * @param sourceRow the index of the source row
   * @param targetRow the index before which to insert the copied row
   */
-	public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,final int targetRow) {
+	public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow, final int targetRow) {
 		targetTable.insertRow(targetRow);
 		final HTML html = new HTML();
 		for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
@@ -52,7 +52,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 
 	/**
 	 * Copies the CSS style of a source row to a target row.
-	 * 
+	 *
 	 * @param sourceTable the source table
 	 * @param targetTable the target table
 	 * @param sourceRow the source row
@@ -65,10 +65,10 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param parent the parent
 	 * @param node the node
-	 * 
+	 *
 	 * @return the tree item
 	 */
 	protected static TreeItem createPathForMember(final TreeItem parent, final StringTree node) {
@@ -86,9 +86,9 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 
 	/**
 	 * Gets the dimension name.
-	 * 
+	 *
 	 * @param targetLabel the target label
-	 * 
+	 *
 	 * @return the dimension name
 	 */
 	protected static String getDimensionName(final MemberSelectionLabel targetLabel) {
@@ -106,7 +106,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 	 * source table. If no widget is found (because <code>null</code> is
 	 * returned), a new {@link HTML} is created instead by calling
 	 * {@link FlexTable#getHTML(int, int)} on the source table.
-	 * 
+	 *
 	 * @param sourceTable the FlexTable to move a row from
 	 * @param targetTable the FlexTable to move a row to
 	 * @param sourceRow the index of the source row

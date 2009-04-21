@@ -32,10 +32,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * Connection Panel for Mondrian Connections.
- * 
+ *
  * @author Paul Stoellberger
  */
 
@@ -45,58 +44,58 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/** Form element name of the file component. */
 	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
-	
+
 	/** Encoding type for the Connection form. */
 	private static final String FORM_ENCODING = "multipart/form-data"; //$NON-NLS-1$
-	
+
 	/** Submit method of the Connection form. */
 	private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
-	
+
 	/** Defines the action of the form. */
 	private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
-	
+
 	/** Height of the panel. */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
-	
+
 	/** Width of the Panel. */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
-	
+
 	/** Suffix for label constants. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
-	
+
 	/** Custom start tag for recognizing the returned filename from the backend. Has to match the one defined in the backend */
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
-	
+
 	/** TODO JAVADOC. */
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 
 	/** TODO JAVADOC. */
 	private final ListBox driverListBox;
-	
+
 	/** TODO JAVADOC. */
 	private final TextBox urlTextBox;
-	
+
 	/** TODO JAVADOC. */
 	private final TextBox userTextBox;
-	
+
 	/** TODO JAVADOC. */
 	private final PasswordTextBox passwordTextBox;
-	
+
 	/** TODO JAVADOC. */
 	private final FileUpload fileUpload;
-	
+
 	/** TODO JAVADOC. */
 	private final Button uploadButton;
-	
+
 	/** TODO JAVADOC. */
 	private final Button connectButton;
-	
+
 	/** TODO JAVADOC. */
 	private String schemaPath;
-	
+
 	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
-	
+
 	/** TODO JAVADOC. */
 	private ConnectionListenerCollection connectionListeners;
 
@@ -123,13 +122,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+	 *
+	 * @see org.pentaho.halogen.client.listeners.SourcesConnectionEvents#
 	 * addConnectionListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
 	public void addConnectionListener(final ConnectionListener listener) {
 		if (connectionListeners == null) {
@@ -140,7 +136,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @return the list box
 	 */
 	private ListBox createDriverListComboBox() {
@@ -168,7 +164,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 	/**
 	 * TODO JAVADOC.
 	 */
-	public void emptyForm() {
+	public final void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
@@ -177,7 +173,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @return the cube connection
 	 */
 	private CubeConnection getCubeConnection() {
@@ -200,10 +196,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @return true, if checks if is connection established
 	 */
-	public boolean isConnectionEstablished() {
+	public final boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
@@ -301,7 +297,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
 	 * removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
@@ -317,10 +313,10 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param connectionEstablished the connection established
 	 */
-	public void setConnectionEstablished(final boolean connectionEstablished) {
+	public final void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 

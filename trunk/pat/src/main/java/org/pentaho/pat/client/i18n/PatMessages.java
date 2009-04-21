@@ -1,7 +1,5 @@
 package org.pentaho.pat.client.i18n;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Interface PatMessages.
  */
@@ -9,9 +7,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String failedCubeList(String localizedMessage);
@@ -19,9 +17,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String failedDimensionList(String localizedMessage);
@@ -29,9 +27,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String failedDimensionSet(String localizedMessage);
@@ -39,18 +37,18 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String failedQueryCreate(String localizedMessage);
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String failedSessionID(String localizedMessage);
@@ -58,9 +56,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * Translated "Connection could not be established: {0}".
-	 * 
+	 *
 	 * @param arg0 the arg0
-	 * 
+	 *
 	 * @return translated "Connection could not be established: {0}"
 	 * no_connection_param
 	 */
@@ -69,9 +67,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param localizedMessage the localized message
-	 * 
+	 *
 	 * @return the string
 	 */
 	String noqueryset(String localizedMessage);
@@ -79,9 +77,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * Translated "Selection could not be cleared: {0}".
-	 * 
+	 *
 	 * @param arg0 the arg0
-	 * 
+	 *
 	 * @return translated "Selection could not be cleared: {0}"
 	 * no_selection_cleared
 	 */
@@ -90,9 +88,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * Translated "Selection mode could not be set: {0}".
-	 * 
+	 *
 	 * @param arg0 the arg0
-	 * 
+	 *
 	 * @return translated "Selection mode could not be set: {0}"
 	 * no_selection_set
 	 */
@@ -101,9 +99,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * Translated "Unable to get data from server: {0}".
-	 * 
+	 *
 	 * @param arg0 the arg0
-	 * 
+	 *
 	 * @return translated "Unable to get data from server: {0}"
 	 * no_server_data
 	 */
@@ -112,9 +110,9 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
 	 * Translated "Welcome.  The current time is {0}.".
-	 * 
+	 *
 	 * @param arg0 the arg0
-	 * 
+	 *
 	 * @return translated "Welcome.  The current time is {0}."
 	 * welcome
 	 */

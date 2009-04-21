@@ -5,20 +5,19 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
- * 
- * @author bugg
+ * Basic Welcome Panel that currently opens the PAT Homepage.
+ *
+ * @author tom(at)wamonline.org.uk
  */
 public class WelcomePanel extends DataWidget {
 
-	/** TODO JAVADOC. */
+	/** Name. */
 	private final transient String name;
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Constructor pass panel Name.
+	 *
 	 * @param name the name
 	 */
 	public WelcomePanel(final String name) {
@@ -29,8 +28,12 @@ public class WelcomePanel extends DataWidget {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getDescription()
 	 */
+	/**
+	 * Get the panel description.
+	 * @return null
+	 */
 	@Override
-	public String getDescription() {
+	public final String getDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -38,8 +41,12 @@ public class WelcomePanel extends DataWidget {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#getName()
 	 */
+	/**
+	 * get the Panel Name.
+	 * @return name;
+	 */
 	@Override
-	public String getName() {
+	public final String getName() {
 		// TODO Auto-generated method stub
 		return name;
 	}
@@ -47,8 +54,12 @@ public class WelcomePanel extends DataWidget {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
 	 */
+	/**
+	 * Initialization routine.
+	 * @return layoutPanel;
+	 */
 	@Override
-	public Widget onInitialize() {
+	public final Widget onInitialize() {
 		// Not Permanent, but better than a big white space.
 		final LayoutPanel layoutPanel = new LayoutPanel();
 		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6")); //$NON-NLS-1$

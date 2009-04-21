@@ -15,30 +15,33 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
- * 
- * @author bugg
+ * DimensionFlexTable creates a flextable that accepts drag and drop widgets for OLAP axis.
+ *
+ * @author tom(at)wamonline.org.uk
  */
 public final class DimensionFlexTable extends FlexTable {
 
-	/** Creates a FlexTable with the desired number of rows and columns, making each row draggable via the provided drag controller. */
-	private final FlexTableRowDragController trdc;
+	/**
+	 *Creates a {@link FlexTableRowDragController}.
+	 */
+    	private final FlexTableRowDragController trdc;
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Creates the flextable, empty apart from a spacer label to stop the table collapsing.
+	 *
 	 * @param tableRowDragController the table row drag controller
 	 */
 	public DimensionFlexTable(final FlexTableRowDragController tableRowDragController) {
@@ -54,8 +57,7 @@ public final class DimensionFlexTable extends FlexTable {
 	}
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Populates the {@link DimensionFlexTable} with the axis specified.
 	 * @param targetAxis the target axis
 	 */
 	public void populateDimensionTable(final Axis targetAxis) {
@@ -65,7 +67,7 @@ public final class DimensionFlexTable extends FlexTable {
 
 			public void onFailure(final Throwable arg0) {
 				// TODO use standardized message dialog when implemented
-				Window.alert("Dimension Listing Failed:" + arg0.getLocalizedMessage()); //$NON-NLS-1$
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage())); //$NON-NLS-1$
 			}
 
 			public void onSuccess(final String[] arg0) {

@@ -30,14 +30,14 @@ import com.google.gwt.user.client.ui.Widget;
 // TODO: Auto-generated Javadoc
 /**
  * The Main Menu that contains the cube list and dimension list.
- * 
+ *
  * @author bugg
  */
 public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 
 	/**
   * Set the content to the {@link DataWidget}.
-  * 
+  *
   * @param content the {@link DataWidget} to display
   */
 	public static void displayContentWidget(final DataWidget content) {
@@ -51,9 +51,9 @@ public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 
 	/**
 	 * Get the token for a given content widget.
-	 * 
+	 *
 	 * @param content the content
-	 * 
+	 *
 	 * @return the content widget token.
 	 */
 	public static String getContentWidgetToken(final DataWidget content) {
@@ -91,7 +91,7 @@ public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 	}
 
 	/** The dimension panel, a scroll panel containing a dimension drop widget. */
-	private transient final DimensionPanel dimensionPanel;
+	private final transient DimensionPanel dimensionPanel;
 
 	/** A mapping of history tokens to their associated menu items. */
 	public static final Map<String, TreeItem> ITEMTOKENS = new HashMap<String, TreeItem>();

@@ -7,23 +7,22 @@ import org.pentaho.pat.rpc.beans.Axis;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
- * 
- * @author bugg
+ * Creates the Drag and Drop enabled dimension widget.
+ *
+ * @author tom(at)wamonline.org.uk
  */
 public class DimensionDropWidget extends Grid {
 
-	/** TODO JAVADOC. */
+	/** The Olap4j Axis. */
 	private final Axis dimAxis;
-	
-	/** TODO JAVADOC. */
+
+	/** Creates the DimensionFlexTable. */
 	private DimensionFlexTable table1;
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Creates the widget structure.
+	 *
 	 * @param labelText the label text
 	 * @param targetAxis the target axis
 	 */
@@ -36,12 +35,12 @@ public class DimensionDropWidget extends Grid {
 	}
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Initialization.
+	 *
 	 * @param labelText the label text
 	 * @param targetAxis the target axis
 	 */
-	public void init(final String labelText, final Axis targetAxis) {
+	public final void init(final String labelText, final Axis targetAxis) {
 
 		table1 = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
@@ -56,9 +55,9 @@ public class DimensionDropWidget extends Grid {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Populate the Dimension table on the passed axis.
 	 */
-	public void populateDimensionTable() {
+	public final void populateDimensionTable() {
 
 		table1.populateDimensionTable(dimAxis);
 

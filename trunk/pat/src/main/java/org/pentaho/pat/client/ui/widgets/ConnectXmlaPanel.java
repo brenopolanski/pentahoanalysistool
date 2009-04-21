@@ -26,10 +26,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ConnectXmlaPanel.
- * 
+ *
  * @author pstoellberger
  */
 
@@ -39,28 +38,28 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/** TODO JAVADOC. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
-	
+
 	/** TODO JAVADOC. */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
-	
+
 	/** TODO JAVADOC. */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
-	
+
 	/** TODO JAVADOC. */
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
 	/** TODO JAVADOC. */
 	private final TextBox userTextBox;
-	
+
 	/** TODO JAVADOC. */
 	private final PasswordTextBox passwordTextBox;
-	
+
 	/** TODO JAVADOC. */
 	private final Button connectButton;
-	
+
 	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
-	
+
 	/** TODO JAVADOC. */
 	private ConnectionListenerCollection connectionListeners;
 
@@ -83,7 +82,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
 	 * addConnectionListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
@@ -101,7 +100,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 	/**
 	 * TODO JAVADOC.
 	 */
-	public void emptyForm() {
+	public final void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
@@ -110,7 +109,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @return the cube connection
 	 */
 	private CubeConnection getCubeConnection() {
@@ -139,10 +138,10 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @return true, if checks if is connection established
 	 */
-	public boolean isConnectionEstablished() {
+	public final boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
@@ -197,14 +196,12 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
+	 *
+	 * @see org.pentaho.halogen.client.listeners.SourcesConnectionEvents#
 	 * removeClickListener
 	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
+
 	public void removeConnectionListener(final ConnectionListener listener) {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
@@ -213,10 +210,10 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 
 	/**
 	 * TODO JAVADOC.
-	 * 
+	 *
 	 * @param connectionEstablished the connection established
 	 */
-	public void setConnectionEstablished(final boolean connectionEstablished) {
+	public final void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 

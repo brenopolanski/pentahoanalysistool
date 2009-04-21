@@ -24,7 +24,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * A widget used to show the examples in the content panel. It includes a tab
  * bar with options to view the example, view the source, or view the css style
@@ -34,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  * rendered until the onInitialize method is called, which happens the first
  * time the widget is added to the page. The data in the source and css tabs are
  * loaded using RPC call to the server.
- * 
+ *
  * <h3>CSS Style Rules</h3>
  * <ul class="css">
  * <li>.mosaic-sc-Page { Applied to the entire widget }</li>
@@ -42,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>.sc-ContentWidget-deckPanel { Applied to the DeckPanel }</li>
  * <li>.sc-ContentWidget-name { Applied to the name }</li>
  * <li>.sc-ContentWidget-description { Applied to the description }</li> </ul>
- * 
+ *
  * @author tom(at)wamonline.org.uk
  */
 public abstract class DataWidget extends LayoutPanel {
@@ -63,14 +62,14 @@ public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * Get the description of this example.
-	 * 
+	 *
 	 * @return a description for this example
 	 */
 	public abstract String getDescription();
 
 	/**
 	 * Gets the id.
-	 * 
+	 *
 	 * @return the id
 	 */
 	public final String getId() {
@@ -80,7 +79,7 @@ public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * Get the name of this example to use as a title.
-	 * 
+	 *
 	 * @return a name for this example
 	 */
 	public abstract String getName();
@@ -105,7 +104,7 @@ public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * Checks if is initialized.
-	 * 
+	 *
 	 * @return true, if is initialized
 	 */
 	public final boolean isInitialized() {
@@ -114,13 +113,13 @@ public abstract class DataWidget extends LayoutPanel {
 
 	/**
 	 * On before tab selected.
-	 * 
+	 *
 	 * @param sender the sender
 	 * @param tabIndex the tab index
-	 * 
+	 *
 	 * @return true, if successful
 	 */
-	public boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
+	public final boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
 		return true;
 	}
 
@@ -128,7 +127,7 @@ public abstract class DataWidget extends LayoutPanel {
 	 * When the widget is first initialized, this method is called. If it
 	 * returns a Widget, the widget will be added as the first tab. Return
 	 * <code>null</code> to disable the first tab.
-	 * 
+	 *
 	 * @return the widget
 	 */
 	protected abstract Widget onInitialize();
