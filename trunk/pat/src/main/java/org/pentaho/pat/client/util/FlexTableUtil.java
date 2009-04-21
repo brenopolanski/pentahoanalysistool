@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
-// TODO: Auto-generated Javadoc
 /**
  * TODO JAVADOC.
  * 
@@ -73,7 +72,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 	 */
 	protected static TreeItem createPathForMember(final TreeItem parent, final StringTree node) {
 		final MemberSelectionLabel memberLabel = new MemberSelectionLabel(node.getValue());
-
+		    
 		final TreeItem childItem = new TreeItem(memberLabel);
 
 		memberLabel.setTreeItem(childItem);
@@ -148,7 +147,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 										// TODO Auto-generated
 										// method stub
 										final Tree dimTree = new Tree(){
-											@Override
+										    /*@Override
 											public void onBrowserEvent(final Event event) {
 												if (getSelectedItem() != null) {
 													if (event.getTypeInt() == Event.ONCONTEXTMENU) { // NOPMD by bugg on 21/04/09 05:54
@@ -169,7 +168,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 											protected void setElement(final Element elem) {
 												super.setElement(elem);
 												sinkEvents(Event.ONCONTEXTMENU);
-											}
+											}*/
 										};
 										// TreeItem tn = new
 										// TreeItem(w.getElement().getInnerText().trim());
