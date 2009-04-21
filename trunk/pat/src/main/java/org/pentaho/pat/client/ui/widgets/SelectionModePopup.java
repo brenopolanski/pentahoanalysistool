@@ -20,78 +20,59 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SelectionModePopup.
+ */
 public class SelectionModePopup extends PopupPanel {
-	public static final int MEMBER = 0;
-	public static final int CHILDREN = 1;
-	public static final int INCLUDE_CHILDREN = 2;
-	public static final int SIBLINGS = 3;
-	public static final int CLEAR = -1;
-
 	
-
-	private static Widget source;
-	private transient MenuBar menuBar;
-
-	public SelectionModePopup() {
-		super(false, true);
-		init();
-	}
-
 	/**
-	   * 
-	   */
-	protected void init() {
-		menuBar = new MenuBar(true);
-		menuBar.setAutoOpen(true);
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().includechildren(), new SelectionModeCommand(INCLUDE_CHILDREN)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearselections(), new SelectionModeClearCommand()));
-
-		this.setWidget(menuBar);
-	}
-
-	/**
-	 * @param targetLabel
-	 * @return
-	 */
-	protected String getDimensionName(final MemberSelectionLabel targetLabel) {
-		final Tree tree = (Tree) targetLabel.getParent();
-		final TreeItem rootItem = tree.getItem(0);
-		final Label rootLabel = (Label) rootItem.getWidget();
-		return rootLabel.getText();
-	}
-
-	/**
-	 * @param targetLabel
-	 * @return
-	 */
-	protected String getDimensionName(final Tree targetLabel) {
-		// Tree tree = (Tree) targetLabel.getParent();
-		final TreeItem rootItem = targetLabel.getItem(0);
-		final Label rootLabel = (Label) rootItem.getWidget();
-		return rootLabel.getText();
-	}
-
-	public static void setSource(final Widget source2) {
-		source = source2;
-	}
-
-	public static Widget getSource() {
-		return source;
-	}
-
-	/**
-	 * @author wseyler
+	 * The Class SelectionModeClearCommand.
 	 * 
+	 * @author wseyler
+	 */
+	public class SelectionModeClearCommand implements Command {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.google.gwt.user.client.Command#execute()
+		 */
+		public void execute() {
+
+			final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
+			final String dimName = getDimensionName(targetLabel);
+			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
+
+			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback() {
+				public void onFailure(final Throwable caught) {
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectioncleared(caught.getLocalizedMessage()));
+
+				}
+
+				public void onSuccess(final Object result) {
+					targetLabel.setSelectionMode(CLEAR);
+
+				}
+			});
+			SelectionModePopup.this.hide();
+		}
+	}
+	
+	/**
+	 * The Class SelectionModeCommand.
+	 * 
+	 * @author wseyler
 	 */
 	public class SelectionModeCommand implements Command {
+		
+		/** The selection mode. */
 		protected transient int selectionMode = -1;
 
 		/**
-		 * @param selectionMode
-		 * @param member
+		 * The Constructor.
+		 * 
+		 * @param selectionMode the selection mode
 		 */
 		public SelectionModeCommand(final int selectionMode) {
 			this.selectionMode = selectionMode;
@@ -113,12 +94,12 @@ public class SelectionModePopup extends PopupPanel {
 
 				public void onFailure(final Throwable arg0) {
 					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectionset(arg0.getLocalizedMessage()));
-				
+
 				}
 
 				public void onSuccess(final Object arg0) {
 					targetLabel.setSelectionMode(selectionMode);
-					
+
 				}
 
 			});
@@ -126,23 +107,108 @@ public class SelectionModePopup extends PopupPanel {
 			SelectionModePopup.this.hide();
 		}
 	}
+	
+	/** The Constant MEMBER. */
+	public static final int MEMBER = 0;
+	
+	/** The Constant CHILDREN. */
+	public static final int CHILDREN = 1;
+	
+	/** The Constant INCLUDE_CHILDREN. */
+	public static final int INCLUDE_CHILDREN = 2;
+
+
+
+	/** The Constant SIBLINGS. */
+	public static final int SIBLINGS = 3;
+	
+	/** The Constant CLEAR. */
+	public static final int CLEAR = -1;
+
+	/** The source. */
+	private static Widget source;
+
+	/**
+	 * Gets the source.
+	 * 
+	 * @return the source
+	 */
+	public static Widget getSource() {
+		return source;
+	}
+
+	/**
+	 * Sets the source.
+	 * 
+	 * @param source2 the new source
+	 */
+	public static void setSource(final Widget source2) {
+		source = source2;
+	}
+
+	/** The menu bar. */
+	private transient MenuBar menuBar;
+
+	/**
+	 * Instantiates a new selection mode popup.
+	 */
+	public SelectionModePopup() {
+		super(false, true);
+		init();
+	}
+
+	/**
+	 * Gets the dimension name.
+	 * 
+	 * @param targetLabel the target label
+	 * 
+	 * @return the dimension name
+	 */
+	protected String getDimensionName(final MemberSelectionLabel targetLabel) {
+		final Tree tree = (Tree) targetLabel.getParent();
+		final TreeItem rootItem = tree.getItem(0);
+		final Label rootLabel = (Label) rootItem.getWidget();
+		return rootLabel.getText();
+	}
+
+	/**
+	 * Gets the dimension name.
+	 * 
+	 * @param targetLabel the target label
+	 * 
+	 * @return the dimension name
+	 */
+	protected String getDimensionName(final Tree targetLabel) {
+		// Tree tree = (Tree) targetLabel.getParent();
+		final TreeItem rootItem = targetLabel.getItem(0);
+		final Label rootLabel = (Label) rootItem.getWidget();
+		return rootLabel.getText();
+	}
 
 
 
 	/**
-	 *TODO JAVADOC
-	 * 
-	 * @param event
-	 * @param selectedItem
+	 * Inits the.
 	 */
-	public void showContextMenu(final Event event, final TreeItem selectedItem) {
-		
-			init();
-		
-		setSource(selectedItem.getWidget());
+	protected void init() {
+		menuBar = new MenuBar(true);
+		menuBar.setAutoOpen(true);
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().includechildren(), new SelectionModeCommand(INCLUDE_CHILDREN)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearselections(), new SelectionModeClearCommand()));
 
+		this.setWidget(menuBar);
 	}
 
+	/**
+	 * Sets the selection mode.
+	 * 
+	 * @param selectionMode the selection mode
+	 * 
+	 * @return the string
+	 */
 	public String setSelectionMode(final int selectionMode) {
 		String selection = ""; //$NON-NLS-1$
 		switch (selectionMode) { // NOPMD by bugg on 20/04/09 21:37
@@ -163,34 +229,16 @@ public class SelectionModePopup extends PopupPanel {
 	}
 
 	/**
-	 * @author wseyler
+	 * TODO JAVADOC.
 	 * 
+	 * @param event the event
+	 * @param selectedItem the selected item
 	 */
-	public class SelectionModeClearCommand implements Command {
+	public void showContextMenu(final Event event, final TreeItem selectedItem) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.google.gwt.user.client.Command#execute()
-		 */
-		public void execute() {
+		init();
 
-			final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
-			final String dimName = getDimensionName(targetLabel);
-			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
+		setSource(selectedItem.getWidget());
 
-			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback() {
-				public void onFailure(final Throwable caught) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectioncleared(caught.getLocalizedMessage()));
-				
-				}
-
-				public void onSuccess(final Object result) {
-					targetLabel.setSelectionMode(CLEAR);
-				
-				}
-			});
-			SelectionModePopup.this.hide();
-		}
 	}
 }

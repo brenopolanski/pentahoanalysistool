@@ -3,9 +3,49 @@ package org.pentaho.pat.client.util;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OlapUtils.
+ */
 public class OlapUtils {
-	public static List getCellSpans(CellInfo[] cellInfos) {
-		List spans = new ArrayList();
+	
+	/**
+	 * Extract column.
+	 * 
+	 * @param cellInfoGrid the cell info grid
+	 * @param column the column
+	 * 
+	 * @return the cell info[]
+	 */
+	public static CellInfo[] extractColumn(final CellInfo[][] cellInfoGrid, final int column) {
+		final CellInfo[] values = new CellInfo[cellInfoGrid.length];
+		for (int row = 0; row < cellInfoGrid.length; row++) {
+			values[row] = cellInfoGrid[row][column];
+		}
+		return values;
+	}
+
+	/**
+	 * Extract row.
+	 * 
+	 * @param cellInfoGrid the cell info grid
+	 * @param row the row
+	 * 
+	 * @return the cell info[]
+	 */
+	public static CellInfo[] extractRow(final CellInfo[][] cellInfoGrid, final int row) {
+		return cellInfoGrid[row];
+	}
+
+	/**
+	 * Gets the cell spans.
+	 * 
+	 * @param cellInfos the cell infos
+	 * 
+	 * @return the cell spans
+	 */
+	public static List getCellSpans(final CellInfo[] cellInfos) {
+		final List spans = new ArrayList();
 		CellInfo holdValue = cellInfos != null && cellInfos.length > 0 ? cellInfos[0] : null;
 		int span = 1;
 
@@ -21,17 +61,5 @@ public class OlapUtils {
 		spans.add(new CellSpanInfo(holdValue, span));
 
 		return spans;
-	}
-
-	public static CellInfo[] extractRow(CellInfo[][] cellInfoGrid, int row) {
-		return cellInfoGrid[row];
-	}
-
-	public static CellInfo[] extractColumn(CellInfo[][] cellInfoGrid, int column) {
-		CellInfo[] values = new CellInfo[cellInfoGrid.length];
-		for (int row = 0; row < cellInfoGrid.length; row++) {
-			values[row] = cellInfoGrid[row][column];
-		}
-		return values;
 	}
 }

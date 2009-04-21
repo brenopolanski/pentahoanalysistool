@@ -21,48 +21,40 @@ import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author pstoellberger
+ * The Class ConnectionWindow.
  * 
+ * @author pstoellberger
  */
 public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private static final String HEIGHT = "330px"; //$NON-NLS-1$
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private static final String TITLE = ConstantFactory.getInstance().registernewconnection();
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private transient final ConnectMondrianPanel connectMondrian;
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private transient final ConnectXmlaPanel connectXmla;
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private transient ConnectionListenerCollection connectionListeners;
-	/**
-	 *TODO JAVADOC
-	 */
+
+	/** TODO JAVADOC. */
 	private transient final TabLayoutPanel tabPanel = new TabLayoutPanel();
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
 	 */
 	public ConnectionWindow() {
 		super(TITLE);
@@ -74,19 +66,61 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		this.add(onInitialize());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.gwt.mosaic.ui.client.WindowPanel#onLoad()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
+	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
 	 */
-	@Override
-	protected void onLoad() {
-		tabPanel.selectTab(0);
-		super.onLoad();
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
+	public void addConnectionListener(final ConnectionListener listener) {
+		if (connectionListeners == null) {
+			connectionListeners = new ConnectionListenerCollection();
+		}
+		connectionListeners.add(listener);
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
+	 * TODO JAVADOC.
+	 */
+	public void emptyForms() {
+		connectMondrian.emptyForm();
+		connectXmla.emptyForm();
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return true, if checks if is connection established
+	 */
+	public boolean isConnectionEstablished() {
+		return connectionEstablished;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionBroken(final Widget sender) {
+		setConnectionEstablished(false);
+		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionMade(final Widget sender) {
+		setConnectionEstablished(true);
+		connectionListeners.fireConnectionMade(ConnectionWindow.this);
+		ConnectionWindow.this.hide();
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return the layout panel
 	 */
 	protected LayoutPanel onInitialize() {
 		final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
@@ -113,65 +147,16 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		return layoutPanel;
 	}
 
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
-	 */
-	public boolean isConnectionEstablished() {
-		return connectionEstablished;
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param connectionEstablished
-	 */
-	public void setConnectionEstablished(final boolean connectionEstablished) {
-		this.connectionEstablished = connectionEstablished;
-	}
-
 	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 * @see org.gwt.mosaic.ui.client.WindowPanel#onLoad()
 	 */
-	public void onConnectionBroken(final Widget sender) {
-		setConnectionEstablished(false);
-		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
+	@Override
+	protected void onLoad() {
+		tabPanel.selectTab(0);
+		super.onLoad();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionMade(final Widget sender) {
-		setConnectionEstablished(true);
-		connectionListeners.fireConnectionMade(ConnectionWindow.this);
-		ConnectionWindow.this.hide();
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
@@ -182,12 +167,12 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
+	 * 
+	 * @param connectionEstablished the connection established
 	 */
-	public void emptyForms() {
-		connectMondrian.emptyForm();
-		connectXmla.emptyForm();
+	public void setConnectionEstablished(final boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
 	}
 
 }

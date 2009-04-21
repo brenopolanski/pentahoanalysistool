@@ -37,8 +37,8 @@ public class StyleSheetLoader {
 	 * into the constructor that defines a height and width greater than 0px.
 	 */
 	private static class StyleTesterTimer extends Timer {
-		private Command callback;
-		private Label refWidget;
+		private final Command callback;
+		private final Label refWidget;
 
 		/**
 		 * Create a new {@link StyleTesterTimer}.
@@ -48,7 +48,7 @@ public class StyleSheetLoader {
 		 * @param callback
 		 *            the callback to execute when the style sheet loads
 		 */
-		public StyleTesterTimer(String refStyleName, Command callback) {
+		public StyleTesterTimer(final String refStyleName, final Command callback) {
 			this.callback = callback;
 
 			// Create the reference Widget
@@ -105,8 +105,8 @@ public class StyleSheetLoader {
 	 * @param href
 	 *            the url of the style sheet
 	 */
-	public static void loadStyleSheet(String href) {
-		LinkElement linkElem = Document.get().createLinkElement();
+	public static void loadStyleSheet(final String href) {
+		final LinkElement linkElem = Document.get().createLinkElement();
 		linkElem.setRel("stylesheet"); //$NON-NLS-1$
 		linkElem.setType("text/css"); //$NON-NLS-1$
 		linkElem.setHref(href);
@@ -125,7 +125,7 @@ public class StyleSheetLoader {
 	 * @param callback
 	 *            the callback executed when the style sheet has loaded
 	 */
-	public static void loadStyleSheet(String href, String refStyleName, Command callback) {
+	public static void loadStyleSheet(final String href, final String refStyleName, final Command callback) {
 		loadStyleSheet(href);
 		waitForStyleSheet(refStyleName, callback);
 	}
@@ -141,7 +141,7 @@ public class StyleSheetLoader {
 	 * @param callback
 	 *            the callback executed when the style sheet has loaded
 	 */
-	public static void waitForStyleSheet(String refStyleName, Command callback) {
+	public static void waitForStyleSheet(final String refStyleName, final Command callback) {
 		new StyleTesterTimer(refStyleName, callback).run();
 	}
 }

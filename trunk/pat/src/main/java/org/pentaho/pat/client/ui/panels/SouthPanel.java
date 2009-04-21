@@ -8,26 +8,27 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author root
+ * The Class SouthPanel.
  * 
+ * @author root
  */
 public class SouthPanel extends CaptionLayoutPanel implements ConnectionListener {
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param text
+	 * TODO JAVADOC.
+	 * 
+	 * @param text the text
 	 */
-	public SouthPanel(String text) {
+	public SouthPanel(final String text) {
 		super(text);
 		// this(null, false);
 		init();
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
 	 */
 	public void init() {
 
@@ -36,7 +37,7 @@ public class SouthPanel extends CaptionLayoutPanel implements ConnectionListener
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionBroken(Widget sender) {
+	public void onConnectionBroken(final Widget sender) {
 		// TODO Auto-generated method stub
 
 	}
@@ -44,7 +45,7 @@ public class SouthPanel extends CaptionLayoutPanel implements ConnectionListener
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
 	 */
-	public void onConnectionMade(Widget sender) {
+	public void onConnectionMade(final Widget sender) {
 		// TODO Auto-generated method stub
 
 	}

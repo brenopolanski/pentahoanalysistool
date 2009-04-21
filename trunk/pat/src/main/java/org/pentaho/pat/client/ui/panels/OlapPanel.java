@@ -6,7 +6,6 @@ import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
-import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
@@ -25,82 +24,47 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
- *TODO JAVADOC
- *
+ * TODO JAVADOC.
+ * 
  * @author bugg
- *
  */
 public class OlapPanel extends DataWidget {
 
-	OlapTable olapTable;
-	/**
-	 *TODO JAVADOC
-	 */
-	private FlexTable grid;
-	/**
-	 * The widget used to display source code.
-	 */
-	/**
-	 *TODO JAVADOC
-	 */
-	private HTML sourceWidget = null;
+	/** The olap table. */
+	private transient OlapTable olapTable;
 
-	/**
-	 * The stack panel with the contents.
-	 */
-	/**
-	 *TODO JAVADOC
-	 */
-	private StackLayoutPanel stackPanel;
-
-	/**
-	 *TODO JAVADOC
-	 */
-	private ScrollPanel panel1;
-
-	/**
-	 *TODO JAVADOC
-	 */
-	private String name;
+	/** TODO JAVADOC. */
+	private transient final String name;
 
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param name
+	 * TODO JAVADOC.
+	 * 
+	 * @param name the name
 	 */
-	public OlapPanel(String name) {
+	public OlapPanel(final String name) {
 		super();
 		this.name = name;
 		init();
 	}
 
 	/**
-	 *TODO JAVADOC
-	 *
+	 * TODO JAVADOC.
+	 * 
+	 * @param image the image
+	 * @param text the text
+	 * 
+	 * @return the string
 	 */
-	private void init() {
-		// TODO Auto-generated method stub
-		olapTable = new OlapTable(MessageFactory.getInstance());
-
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param image
-	 * @param text
-	 * @return
-	 */
-	private String createTabBarCaption(AbstractImagePrototype image, String text) {
-		StringBuffer sb = new StringBuffer();
+	private String createTabBarCaption(final AbstractImagePrototype image, final String text) {
+		final StringBuffer sb = new StringBuffer(); // NOPMD by bugg on 21/04/09 05:48
 		sb.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
 		sb.append("<td valign='middle'>"); //$NON-NLS-1$
 		sb.append(image.getHTML());
@@ -110,80 +74,22 @@ public class OlapPanel extends DataWidget {
 		return sb.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
+	/**
+	 * Do execute query model.
 	 */
-	@Override
-	public Widget onInitialize() {
-		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+	public void doExecuteQueryModel() {
+		ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback() {
 
-		// MDX(north) panel
-		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
-		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES.toolCollapseUp());
-		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
-
-		collapseBtn1.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
-				layoutPanel.layout();
+			public void onFailure(final Throwable caught) {
+				Window.alert(MessageFactory.getInstance().noserverdata(caught.toString()));
 			}
-		});
 
-		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
-		layoutPanel.setCollapsed(northPanel, true);
-
-		// Drill(south) panel
-		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
-
-		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES.toolCollapseDown());
-		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
-
-		collapseBtn2.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
-				layoutPanel.layout();
+			public void onSuccess(final Object result1) {
+				olapTable.setData((OlapData)result1);
+				//doCreateChart();
 			}
+
 		});
-
-		layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
-		layoutPanel.setCollapsed(drillPanel, true);
-
-		stackPanel = new StackLayoutPanel();
-		layoutPanel.add(stackPanel);
-
-		// Create the container for the main example
-		panel1 = new ScrollPanel();
-		// panel1.setPadding(0);
-		// panel1.setWidgetSpacing(0);
-		Button executeButton = new Button(ConstantFactory.getInstance().executequery());
-		executeButton.addClickListener(new ClickListener(){
-
-			public void onClick(Widget arg0) {
-				doExecuteQueryModel();
-			}
-			
-		});
-		grid = new FlexTable();
-		grid.setWidget(0, 0, executeButton);
-		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
-		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
-		grid.setWidget(3, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
-		grid.setWidget(0, 1, olapTable);
-		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
-		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
-		panel1.add(grid);
-		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
-				true);
-
-		final LayoutPanel panel2 = new LayoutPanel();
-		sourceWidget = new HTML();
-		sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source"); //$NON-NLS-1$
-		panel2.add(sourceWidget);
-		stackPanel.add(panel2, createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory.getInstance().chart() + " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
-
-		stackPanel.showStack(0);
-
-		return layoutPanel;
 
 	}
 
@@ -204,22 +110,92 @@ public class OlapPanel extends DataWidget {
 		// TODO Auto-generated method stub
 		return name;
 	}
-	
-	 public void doExecuteQueryModel() {
-		    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback() {
 
-		      public void onSuccess(Object result1) {
-		        olapTable.setData((OlapData)result1);
-		        //doCreateChart();
-		      }
-		      
-		      public void onFailure(Throwable caught) {
-		        Window.alert(MessageFactory.getInstance().noserverdata(caught.toString()));      
-		      }
+	/**
+	 * TODO JAVADOC.
+	 */
+	private void init() {
+		// TODO Auto-generated method stub
+		olapTable = new OlapTable(MessageFactory.getInstance());
 
-		    });
-		        
-		  }
-		  
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
+	 */
+	@Override
+	public Widget onInitialize() {
+		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+
+		// MDX(north) panel
+		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
+		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES.toolCollapseUp());
+		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
+
+		collapseBtn1.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
+				layoutPanel.layout();
+			}
+		});
+
+		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
+		layoutPanel.setCollapsed(northPanel, true);
+
+		// Drill(south) panel
+		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
+
+		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES.toolCollapseDown());
+		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
+
+		collapseBtn2.addClickListener(new ClickListener() {
+			public void onClick(final Widget sender) {
+				layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
+				layoutPanel.layout();
+			}
+		});
+
+		layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
+		layoutPanel.setCollapsed(drillPanel, true);
+
+		final StackLayoutPanel stackPanel = new StackLayoutPanel();
+		layoutPanel.add(stackPanel);
+
+		// Create the container for the main example
+		final ScrollPanel panel1 = new ScrollPanel();
+		// panel1.setPadding(0);
+		// panel1.setWidgetSpacing(0);
+		final Button executeButton = new Button(ConstantFactory.getInstance().executequery());
+		executeButton.addClickListener(new ClickListener(){
+
+			public void onClick(final Widget arg0) {
+				doExecuteQueryModel();
+			}
+
+		});
+		final FlexTable grid = new FlexTable();
+		grid.setWidget(0, 0, executeButton);
+		grid.setWidget(1, 0, new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS));
+		grid.setWidget(2, 0, new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS));
+		grid.setWidget(3, 0, new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER));
+		grid.setWidget(0, 1, olapTable);
+		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
+		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
+		panel1.add(grid);
+		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
+				true);
+
+		final LayoutPanel panel2 = new LayoutPanel();
+		final HTML sourceWidget = new HTML();
+		sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source"); //$NON-NLS-1$
+		panel2.add(sourceWidget);
+		stackPanel.add(panel2, createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory.getInstance().chart() + " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
+
+		stackPanel.showStack(0);
+
+		return layoutPanel;
+
+	}
+
 
 }

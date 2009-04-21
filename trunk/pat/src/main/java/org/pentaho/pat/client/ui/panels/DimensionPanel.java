@@ -13,29 +13,23 @@ import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Dimension Panel lists the dimensions that are currently in the unused axis.
- *
+ * 
  * @author tom(at)wamonline.org.uk
- *
  */
 public class DimensionPanel extends ScrollPanel {
-	/**
-	 * The Main LayoutPanel.
-	 */
-	private LayoutPanel layoutPanel;
-	/**
-	 * The Widget that allows you to drag and drop dimensions on it.
-	 */
-	private DimensionDropWidget dimDrop;
 
-	/**
-	 * The Drag Controller.
-	 */
+	/** The Widget that allows you to drag and drop dimensions on it. */
+	private transient final DimensionDropWidget dimDrop;
+
+	/** The Drag Controller. */
 	private static FlexTableRowDragController tableRowDragController;
 
 	/**
 	 * Returns the drag controller.
+	 * 
 	 * @return tableRowDragController
 	 */
 	public static FlexTableRowDragController getTableRowDragController() {
@@ -44,6 +38,7 @@ public class DimensionPanel extends ScrollPanel {
 
 	/**
 	 * Set the drag controller.
+	 * 
 	 * @param tableRowDragController Accepts a FlexTableRowDragController
 	 */
 	private static void setTableRowDragController(
@@ -53,14 +48,13 @@ public class DimensionPanel extends ScrollPanel {
 
 	/**
 	 * Constructor.
-	 *
 	 */
 	public DimensionPanel() {
 
 		super();
 
 		// Setup the main layout widget
-		layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+		LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 		layoutPanel.setPadding(0);
 		layoutPanel.setWidgetSpacing(0);
 		layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$

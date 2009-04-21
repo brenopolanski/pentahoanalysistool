@@ -7,35 +7,29 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
+// TODO: Auto-generated Javadoc
 /**
- *TODO JAVADOC
- *
+ * TODO JAVADOC.
+ * 
  * @author bugg
- *
  */
 public class FlexTableRowDragController extends PickupDragController {
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private FlexTable draggableTable;
 
-	/**
-	 *TODO JAVADOC
-	 */
+	/** TODO JAVADOC. */
 	private int dragRow;
 
 	/**
-	 *TODO JAVADOC
-	 *
-	 * @param boundaryPanel
+	 * TODO JAVADOC.
+	 * 
+	 * @param boundaryPanel the boundary panel
 	 */
-	public FlexTableRowDragController(AbsolutePanel boundaryPanel) {
+	public FlexTableRowDragController(final AbsolutePanel boundaryPanel) {
 		super(boundaryPanel, false);
 		setBehaviorDragProxy(true);
 		setBehaviorMultipleSelection(false);
@@ -52,23 +46,49 @@ public class FlexTableRowDragController extends PickupDragController {
 		draggableTable = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return the draggable table
 	 */
-	@Override
-	public void setBehaviorDragProxy(boolean dragProxyEnabled) {
-		if (!dragProxyEnabled) {
-			// TODO implement drag proxy behavior
-			throw new IllegalArgumentException();
+	FlexTable getDraggableTable() {
+		return draggableTable;
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @return the drag row
+	 */
+	int getDragRow() {
+		return dragRow;
+	}
+
+	/**
+	 * TODO JAVADOC.
+	 * 
+	 * @param widget the widget
+	 * @param table the table
+	 * 
+	 * @return the widget row
+	 */
+	private int getWidgetRow(final Widget widget, final FlexTable table) {
+		for (int row = 0; row < table.getRowCount(); row++) {
+			for (int col = 0; col < table.getCellCount(row); col++) {
+				final Widget w = table.getWidget(row, col);
+				if (w == widget) {
+					return row;
+				}
+			}
 		}
-		super.setBehaviorDragProxy(dragProxyEnabled);
+		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
 	}
 
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.AbsolutePanel, boolean)
 	 */
 	@Override
-	protected BoundaryDropController newBoundaryDropController(AbsolutePanel boundaryPanel, boolean allowDroppingOnBoundaryPanel) {
+	protected BoundaryDropController newBoundaryDropController(final AbsolutePanel boundaryPanel, final boolean allowDroppingOnBoundaryPanel) {
 		if (allowDroppingOnBoundaryPanel) {
 			throw new IllegalArgumentException();
 		}
@@ -79,7 +99,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newDragProxy(com.allen_sauer.gwt.dnd.client.DragContext)
 	 */
 	@Override
-	protected Widget newDragProxy(DragContext context) {
+	protected Widget newDragProxy(final DragContext context) {
 		FlexTable proxy;
 		proxy = new FlexTable();
 		proxy.addStyleName(CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY);
@@ -89,41 +109,16 @@ public class FlexTableRowDragController extends PickupDragController {
 		return proxy;
 	}
 
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
+	/* (non-Javadoc)
+	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
 	 */
-	FlexTable getDraggableTable() {
-		return draggableTable;
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @return
-	 */
-	int getDragRow() {
-		return dragRow;
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param widget
-	 * @param table
-	 * @return
-	 */
-	private int getWidgetRow(Widget widget, FlexTable table) {
-		for (int row = 0; row < table.getRowCount(); row++) {
-			for (int col = 0; col < table.getCellCount(row); col++) {
-				Widget w = table.getWidget(row, col);
-				if (w == widget) {
-					return row;
-				}
-			}
+	@Override
+	public void setBehaviorDragProxy(final boolean dragProxyEnabled) {
+		if (!dragProxyEnabled) {
+			// TODO implement drag proxy behavior
+			throw new IllegalArgumentException();
 		}
-		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
+		super.setBehaviorDragProxy(dragProxyEnabled);
 	}
 
 }
