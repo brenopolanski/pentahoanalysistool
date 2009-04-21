@@ -21,9 +21,8 @@ import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.SessionService;
-
-import com.mysql.jdbc.Messages;
 
 public class SessionServlet extends AbstractServlet implements Session {
 
