@@ -11,4 +11,6 @@
 
 * [Lifecycle Usage/Lifecycle]
 
+* [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
+
 * [ContactUs Get in Contact]
