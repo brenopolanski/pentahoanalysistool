@@ -66,6 +66,7 @@ public class DimensionPanel extends ScrollPanel {
 		.getBottomPanel()));
 	dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
 		.unused(), Axis.UNUSED);
+	dimDrop.setSize("100%", "100%");
 	layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	// this.add(layoutPanel);
 	this.add(dimDrop);

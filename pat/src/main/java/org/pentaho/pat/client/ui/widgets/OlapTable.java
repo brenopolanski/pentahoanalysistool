@@ -3,7 +3,6 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.Iterator;
 
 import org.pentaho.pat.client.i18n.PatMessages;
-import org.pentaho.pat.client.ui.panels.CellFormatPopup;
 import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.OlapUtils;
