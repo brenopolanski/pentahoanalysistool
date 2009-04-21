@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
  * The Class MemberSelectionLabel.
@@ -45,7 +46,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements
      */
     public MemberSelectionLabel() {
 	super();
-	this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT);
+	this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
 	 selectionImageBundle =
 	 (SelectionModeImageBundle) GWT.create(SelectionModeImageBundle.class);
 
@@ -148,6 +149,15 @@ public class MemberSelectionLabel extends HorizontalPanel implements
 		clickListeners.fireClick(this);
 	    }
 	    break;
+	case Event.ONCONTEXTMENU:
+	    final SelectionModePopup test = new SelectionModePopup();
+		//test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
+		test.showContextMenu(event, getTreeItem());
+		test.setPopupPositionAndShow(new PositionCallback() {
+			public void setPosition(final int offsetWidth, final int offsetHeight) {
+				test.setPopupPosition(event.getClientX(), event.getClientY());
+			}
+		});
 	default:
 	    break;
 	}
