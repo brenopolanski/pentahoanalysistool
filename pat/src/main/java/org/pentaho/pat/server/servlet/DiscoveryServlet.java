@@ -13,9 +13,8 @@ import org.pentaho.pat.rpc.Discovery;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
-
-import com.mysql.jdbc.Messages;
 
 /**
  * 

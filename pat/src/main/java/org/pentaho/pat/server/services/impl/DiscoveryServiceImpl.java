@@ -145,7 +145,7 @@ public class DiscoveryServiceImpl extends AbstractService
 
         StringTree result = new StringTree(dimensionName, null);
         for (int i = 0; i < uniqueNameList.size(); i++) {
-            String[] memberNames = uniqueNameList.get(i).split("\\."); //$NON-NLS-1$
+            String[] memberNames = uniqueNameList.get(i).split("\\]\\.\\["); //$NON-NLS-1$
             for (int j = 0; j < memberNames.length; j++) { // Trim off the
                                                            // brackets
                 memberNames[j] = memberNames[j]

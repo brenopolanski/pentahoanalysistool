@@ -13,9 +13,8 @@ import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.beans.Axis;
 import org.pentaho.pat.rpc.beans.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
-
-import com.mysql.jdbc.Messages;
 
 /**
  * @author luc Boudreau
