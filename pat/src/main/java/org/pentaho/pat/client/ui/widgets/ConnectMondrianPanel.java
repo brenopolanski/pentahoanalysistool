@@ -13,7 +13,9 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
@@ -38,7 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Paul Stoellberger
  */
 
-public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnectionEvents {
+public class ConnectMondrianPanel extends LayoutPanel {
 
 	// TODO Finish this Widget
 
@@ -96,9 +98,6 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
 
-	/** TODO JAVADOC. */
-	private ConnectionListenerCollection connectionListeners;
-
 	/**
 	 * TODO JAVADOC.
 	 */
@@ -118,20 +117,6 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 
 		onInitialize();
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * addConnectionListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
 	}
 
 	/**
@@ -280,7 +265,7 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 					public void onSuccess(final Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
+						GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
 					}
 				});
 			}
@@ -293,22 +278,6 @@ public class ConnectMondrianPanel extends LayoutPanel implements SourcesConnecti
 		layoutPanel.setPadding(15);
 		formPanel.add(layoutPanel);
 		this.add(formPanel);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void removeConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
 	}
 
 	/**

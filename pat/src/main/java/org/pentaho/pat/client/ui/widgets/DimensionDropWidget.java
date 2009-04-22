@@ -1,18 +1,20 @@
 package org.pentaho.pat.client.ui.widgets;
 
+import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Creates the Drag and Drop enabled dimension widget.
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionDropWidget extends Grid {
+public class DimensionDropWidget extends Grid  implements ConnectionListener{
 
 	/** The Olap4j Axis. */
 	private final Axis dimAxis;
@@ -61,5 +63,21 @@ public class DimensionDropWidget extends Grid {
 
 		table1.populateDimensionTable(dimAxis);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionBroken(Widget sender) {
+		// TODO Auto-generated method stub
+		table1.clearDimensionTable();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onConnectionMade(Widget sender) {
+		// TODO Auto-generated method stub
+		
 	}
 }

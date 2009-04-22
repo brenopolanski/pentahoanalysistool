@@ -11,9 +11,12 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.Application.ApplicationListener;
+import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -27,13 +30,12 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.TreeListener;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Main Menu that contains the cube list and dimension list.
  *
  * @author bugg
  */
-public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
+public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD by bugg on 21/04/09 05:42
 
 	/**
   * Set the content to the {@link DataWidget}.
@@ -121,7 +123,7 @@ public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 	 */
 	public MainMenu() {
 		super();
-
+		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		createMainMenu();
 		setupMainMenu();
 
@@ -243,7 +245,7 @@ public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 	/**
 	 * Generates a cube list for the Cube Menu.
 	 */
-	public final void setupCubeMenu() {
+	private final void setupCubeMenu() {
 		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
 			public void onFailure(final Throwable arg0) {
 				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
@@ -261,5 +263,28 @@ public class MainMenu extends StackPanel { // NOPMD by bugg on 21/04/09 05:42
 			}
 		});
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires when a db connection is broken.
+	 * @param sender the sender.
+	 */
+	public void onConnectionBroken(final Widget sender) {
+		mainMenuTree.clear();
+		setupMainMenu();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires when db connection is made.
+	 * @param sender the sender.
+	 */
+	public void onConnectionMade(final Widget sender) {
+	setupCubeMenu();	
 	}
 }

@@ -15,7 +15,9 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
@@ -128,8 +130,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 		tabPanel.setPadding(5);
 		tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
 		tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-		connectMondrian.addConnectionListener(ConnectionWindow.this);
-		connectXmla.addConnectionListener(ConnectionWindow.this);
+		GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionWindow.this);
 
 		tabPanel.addTabListener(new TabListener() {
 			public  boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {

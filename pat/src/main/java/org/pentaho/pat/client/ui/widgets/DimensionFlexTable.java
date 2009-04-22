@@ -82,4 +82,15 @@ public final class DimensionFlexTable extends FlexTable {
 		});
 
 	}
+
+	/**
+	 *Clears the populated Dimension Table
+	 *
+	 */
+	public void clearDimensionTable() {
+		// TODO Auto-generated method stub
+		this.clear();
+		final Label spacerLabel = new Label("");
+		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
+	}
 }
