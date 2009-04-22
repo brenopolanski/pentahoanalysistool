@@ -24,17 +24,17 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  *
  * @author tom(at)wamonline.org.uk
  */
 
-public class Pat implements EntryPoint, ConnectionListener { // NOPMD by bugg on
+public class Pat implements EntryPoint { // NOPMD by bugg on
     // 21/04/09 05:30
 
-    /**
+	/**
      * PatImages ImageBundle.
      */
     public static final PatImages IMAGES = (PatImages) GWT
@@ -196,42 +196,7 @@ public class Pat implements EntryPoint, ConnectionListener { // NOPMD by bugg on
 		getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
 
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken
-     * (com.google.gwt.user.client.ui.Widget)
-     */
-    /**
-     * Runs when a database connection is broken.
-     *
-     * @param sender
-     *            sender widget
-     */
-    public void onConnectionBroken(final Widget sender) {
-	// TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(
-     * com.google.gwt.user.client.ui.Widget)
-     */
-    /**
-     * Runs when a database connection is made.
-     *
-     * @param sender
-     *            sender widget
-     */
-    public void onConnectionMade(final Widget sender) {
-	// TODO
-    }
-
+    
     /*
      * (non-Javadoc)
      *

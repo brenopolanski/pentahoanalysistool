@@ -21,7 +21,7 @@ import java.util.EventListener;
 
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ConnectionListener.
  * 

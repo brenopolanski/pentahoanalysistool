@@ -20,6 +20,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.i18n.client.LocaleInfo;
@@ -47,7 +48,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * @author tom(at)wamonline.org.uk
  */
 
-public class Application extends Viewport implements ConnectionListener { // NOPMD
+public class Application extends Viewport { // NOPMD
 									  // by
 									  // bugg
 									  // on
@@ -170,7 +171,7 @@ public class Application extends Viewport implements ConnectionListener { // NOP
 	layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
 	// Add the main menu
-	toolBarPanel.addConnectionListener(Application.this);
+	
 	final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
 
 	final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
@@ -194,7 +195,6 @@ public class Application extends Viewport implements ConnectionListener { // NOP
 
 	bottomPanel.add(contentWrapper);
 	mainPanel = new MainMenu();
-
 	westPanel.add(mainPanel);
 
 	setContent(null);
@@ -243,40 +243,6 @@ public class Application extends Viewport implements ConnectionListener { // NOP
 		HasVerticalAlignment.ALIGN_TOP);
     }
 
-    /**
-     * Destroy the cube menu when an onConnectionBroken is called.
-     */
-    private void destroyCubeMenu() {
-	ServiceFactory.getSessionInstance().getQueries(Pat.getSessionID(),
-		new AsyncCallback<String[]>() {
-
-		    public void onFailure(final Throwable arg0) {
-			// TODO Auto-generated method stub
-
-		    }
-
-		    public void onSuccess(final String[] arg0) {
-			final String queryID = ""; //$NON-NLS-1$
-			ServiceFactory.getSessionInstance().deleteQuery(
-				Pat.getSessionID(), queryID,
-				new AsyncCallback() {
-
-				    public void onFailure(final Throwable arg0) {
-					// TODO Auto-generated method stub
-
-				    }
-
-				    public void onSuccess(final Object arg0) {
-					// TODO Auto-generated method stub
-
-				    }
-
-				});
-		    }
-
-		});
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -314,41 +280,7 @@ public class Application extends Viewport implements ConnectionListener { // NOP
     protected final LayoutPanel getWidget() {
 	return super.getWidget();
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken
-     * (com.google.gwt.user.client.ui.Widget)
-     */
-    /**
-     * Runs when a database disconnect is called.
-     *
-     * @param sender
-     *            sender widget
-     */
-    public final void onConnectionBroken(final Widget sender) {
-	destroyCubeMenu();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(
-     * com.google.gwt.user.client.ui.Widget)
-     */
-    /**
-     * Runs when a database connection is made.
-     *
-     * @param sender
-     *            sender widget
-     */
-    public final void onConnectionMade(final Widget sender) {
-	mainPanel.setupCubeMenu();
-    }
-
+    
     /**
      * Set the {@link Widget} to use as options, which appear to the right of
      * the title bar.

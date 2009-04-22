@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * A helper class for implementers of the SourcesConnectionEvents interface. This
  * subclass of {@link ArrayList} assumes that all objects added to it will be of

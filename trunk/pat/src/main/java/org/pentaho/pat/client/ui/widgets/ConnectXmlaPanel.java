@@ -14,6 +14,7 @@ import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.beans.CubeConnection;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author pstoellberger
  */
 
-public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEvents {
+public class ConnectXmlaPanel extends LayoutPanel {
 
 	// TODO Finish this Widget
 
@@ -80,22 +81,6 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 		// this.add(onInitialize());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @seeorg.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * addConnectionListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
 
 	/**
 	 * TODO JAVADOC.
@@ -181,7 +166,7 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 					public void onSuccess(final Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
-						connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
+						GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
 					}
 				});
 			}
@@ -194,19 +179,6 @@ public class ConnectXmlaPanel extends LayoutPanel implements SourcesConnectionEv
 		this.add(layoutPanel);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.pentaho.halogen.client.listeners.SourcesConnectionEvents#
-	 * removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-
-	public void removeConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
-	}
 
 	/**
 	 * TODO JAVADOC.

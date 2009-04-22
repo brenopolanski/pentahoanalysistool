@@ -13,7 +13,9 @@ import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.ConnectionWindow;
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.user.client.Command;
@@ -23,13 +25,12 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * PAT Toolbar.
  * 
  * @author Tom Barber
  */
-public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener, SourcesConnectionEvents {
+public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener {
 	
 	/**
 	 * TODO JAVADOC.
@@ -54,7 +55,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 			super(theme, cmd);
 			this.theme = theme;
 			addStyleName("sc-ThemeButton-" + theme); //$NON-NLS-1$
-
 			// Add this button to the static list
 			if (allButtons == null) {
 				allButtons = new ArrayList<ThemeMenu>();
@@ -96,22 +96,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		init();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
 
 	/**
 	 * TODO JAVADOC.
@@ -142,7 +126,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 						public void onSuccess(final Object o) {
 							setConnectionEstablished(false);
-							ToolBarPanel.this.onConnectionBroken(ToolBarPanel.this);
+							GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 						}
 					});
 				}
@@ -223,6 +207,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	 * TODO JAVADOC.
 	 */
 	public void init() {
+		GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
 		createFileMenu();
 		createViewMenu();
 		createHelpMenu();
@@ -251,7 +236,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	 */
 	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
-		connectionListeners.fireConnectionBroken(ToolBarPanel.this);
 		// Alter menu
 		connectItem.setText("Connect"); //$NON-NLS-1$
 	}
@@ -264,24 +248,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		// Alter menu
 
 		connectItem.setText("Disconnect"); //$NON-NLS-1$
-
-		connectionListeners.fireConnectionMade(ToolBarPanel.this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void removeConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
 	}
 
 	/**
