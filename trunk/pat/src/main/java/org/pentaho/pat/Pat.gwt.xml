@@ -27,11 +27,12 @@
 	<source path='client' />
   
   <!--<inherits name='org.gwt.mosaic.actions.Actions' />-->
-
+  <stylesheet src='halogen.css' />
   <stylesheet src="gwt/standard/Mosaic.css" />
-        
+     
 	<stylesheet src='Pat.css' />
 	<stylesheet src='widgets.css' />
+	
 	<entry-point class="org.pentaho.pat.client.Pat"/>
 
 

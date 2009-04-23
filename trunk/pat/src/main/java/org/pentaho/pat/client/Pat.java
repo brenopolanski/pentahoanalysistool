@@ -116,6 +116,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
 	String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
 	final String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
+	final String halogenStyleSheet = "/halogen.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
 	if (LocaleInfo.getCurrentLocale().isRTL()) {
 	    gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
 	    gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
@@ -194,6 +195,8 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
 	StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet,
 		getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
+	StyleSheetLoader.loadStyleSheet(modulePath + halogenStyleSheet,
+			getCurrentReferenceStyleName("halogen"), null); //$NON-NLS-1$
 
     }
     

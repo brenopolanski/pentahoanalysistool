@@ -1,5 +1,5 @@
 /**
- * TODO JAVADOC
+ * 
  */
 package org.pentaho.pat.client.ui.panels;
 
@@ -14,7 +14,6 @@ import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.WelcomePanel;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -33,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * The Main Menu that contains the cube list and dimension list.
  *
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD by bugg on 21/04/09 05:42
 
@@ -126,7 +125,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		createMainMenu();
 		setupMainMenu();
-
+		mainMenuTree.setSize("100%", "100%");
 		this.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
 
 		dimensionPanel = new DimensionPanel();
@@ -273,6 +272,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 	 * @param sender the sender.
 	 */
 	public void onConnectionBroken(final Widget sender) {
+		this.showStack(0);
 		mainMenuTree.clear();
 		setupMainMenu();
 	}
