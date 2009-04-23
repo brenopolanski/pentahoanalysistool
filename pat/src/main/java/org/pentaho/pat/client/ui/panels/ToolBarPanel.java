@@ -33,6 +33,33 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener {
 	
+    private static final class ThemeMenuItemCommand implements Command {
+	    private String theme;
+	        public ThemeMenuItemCommand(String element2) {
+	    	// TODO Auto-generated constructor stub
+	    	this.theme = element2;
+	        }
+
+	        public void execute() {
+	    	// TODO Auto-generated method stub
+	    	Pat.CUR_THEME = this.theme;
+	    	// Load the new style sheets
+	    	Pat.updateStyleSheets();
+	        }
+
+	    }
+
+	    private final static class ThemeMenuItem extends MenuItem {
+	        private String theme;
+	        public ThemeMenuItem(String element2, Command command){
+	    	super(element2, command);
+	    	this.theme = element2;
+	        }
+
+	        public String getTheme(){
+	    	return theme;
+	        }
+	    }
 	/**
 	 * TODO JAVADOC.
 	 * 
@@ -250,31 +277,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		this.connectionEstablished = connectionEstablished;
 	}
 
-public class ThemeMenuItemCommand implements Command {
-private String theme;
-    public ThemeMenuItemCommand(String element2) {
-	// TODO Auto-generated constructor stub
-	this.theme = element2;
-    }
 
-    public void execute() {
-	// TODO Auto-generated method stub
-	Pat.CUR_THEME = this.theme;
-	// Load the new style sheets
-	Pat.updateStyleSheets();
-    }
 
-}
-
-public class ThemeMenuItem extends MenuItem {
-    private String theme;
-    public ThemeMenuItem(String element2, Command command){
-	super(element2, command);
-	this.theme = element2;
-    }
-
-    public String getTheme(){
-	return theme;
-    }
-}
 }
