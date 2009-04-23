@@ -13,7 +13,7 @@ public final class FileUploadBean
     private MultipartFile file;
 
     /**
-     * @param _files
+     * @param _file
      */
     public void setFile(final MultipartFile _file) {
         file = _file;
@@ -22,7 +22,7 @@ public final class FileUploadBean
     }
 
     /**
-     * @return
+     * @return file
      */
     public MultipartFile getFile() {
         log.debug(String.format("files: %s", file)); //$NON-NLS-1$

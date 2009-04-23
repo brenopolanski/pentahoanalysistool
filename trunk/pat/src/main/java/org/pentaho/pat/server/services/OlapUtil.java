@@ -51,7 +51,7 @@ public class OlapUtil {
 	  /**
 	   * @param dimName
 	   * @param query
-	   * @return
+	   * @return result
 	   */
 	  public static QueryDimension getQueryDimension(Query query, String dimName) {
 	    Map<Axis, QueryAxis> axes = query.getAxes();
@@ -91,7 +91,7 @@ public class OlapUtil {
 	  /**
 	   * @param path
 	   * @param selections
-	   * @return
+	   * @return null
 	   */
 	  public static Selection findSelection(String path, List<Selection> selections) {
 	    for (Selection selection : selections) {
@@ -242,7 +242,7 @@ public class OlapUtil {
 
 			  /**
 			   * @param formattedValue
-			   * @return
+			   * @return color
 			   */
 			  public static String getColorValue(String formattedValue) {
 			    String[] values = formattedValue.split("\\|"); //$NON-NLS-1$
@@ -290,7 +290,7 @@ public class OlapUtil {
 			  
 			  /**
 			   * @param formattedValue
-			   * @return
+			   * @return values
 			   */
 			  public static String getValueString(String formattedValue) {
 			    String[] values = formattedValue.split("\\|"); //$NON-NLS-1$

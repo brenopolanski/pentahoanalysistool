@@ -19,7 +19,7 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 
 /**
  * A widget that implements this interface sources the events defined by the
- * {@link org.pentaho.halogen.client.ConnectionListener} interface.
+ * {@link org.pentaho.pat.client.listeners.ConnectionListener} interface.
  */
 public interface SourcesConnectionEvents {
 

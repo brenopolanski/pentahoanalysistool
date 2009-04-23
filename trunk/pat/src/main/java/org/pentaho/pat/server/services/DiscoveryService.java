@@ -37,7 +37,7 @@ public interface DiscoveryService extends Service {
 	 * @param userId The id of the user who requests this operation.
      * @param sessionId The id of the current session into which
      * to perform this operation.
-	 * @return
+	 * @return A list of cubes.
 	 */
 	@Secured ({"ROLE_USER"})
 	public List<String> getCubes(String userId, String sessionId)
