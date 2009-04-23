@@ -722,4 +722,6 @@ public interface PatConstants extends Constants {
 	 * @return the string
 	 */
 	String xmlaurl();
+
+	String theme();
 }

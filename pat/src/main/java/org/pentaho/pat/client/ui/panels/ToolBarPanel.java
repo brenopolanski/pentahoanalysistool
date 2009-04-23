@@ -3,23 +3,17 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.ConnectionWindow;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
-import com.anotherbigidea.flash.movie.Button;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -28,20 +22,23 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * PAT Toolbar.
- * 
+ *
  * @author Tom Barber
  */
 public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener {
-	
+
+    /**
+     * 
+     * @author tom(at)wamonline.org.uk
+     *
+     */
     private static final class ThemeMenuItemCommand implements Command {
 	    private String theme;
 	        public ThemeMenuItemCommand(String element2) {
-	    	// TODO Auto-generated constructor stub
 	    	this.theme = element2;
 	        }
 
 	        public void execute() {
-	    	// TODO Auto-generated method stub
 	    	Pat.CUR_THEME = this.theme;
 	    	// Load the new style sheets
 	    	Pat.updateStyleSheets();
@@ -49,6 +46,11 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 	    }
 
+    /**
+     * 
+     * @author tom(at)wamonline.org.uk
+     *
+     */
 	    private final static class ThemeMenuItem extends MenuItem {
 	        private String theme;
 	        public ThemeMenuItem(String element2, Command command){
@@ -60,63 +62,19 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	    	return theme;
 	        }
 	    }
-	/**
-	 * TODO JAVADOC.
-	 * 
-	 * @author bugg
-	 */
-	private static final class ThemeMenu extends MenuItem {
-		
-		/** The all buttons. */
-		private static List<ThemeMenu> allButtons = null;
 
-		/** The theme. */
-		private final String theme;
 
-		/**
-		 * Instantiates a new theme menu.
-		 * 
-		 * @param theme the theme
-		 * @param cmd the cmd
-		 */
-		public ThemeMenu(final String theme, final Command cmd) {
-			super(theme, cmd);
-			this.theme = theme;
-			addStyleName("sc-ThemeButton-" + theme); //$NON-NLS-1$
-			// Add this button to the static list
-			if (allButtons == null) {
-				allButtons = new ArrayList<ThemeMenu>();
-				// setDown(true);
-
-			}
-			allButtons.add(this);
-		}
-
-		/**
-		 * Gets the theme.
-		 * 
-		 * @return the theme
-		 */
-		public String getTheme() {
-			return theme;
-		}
-
-	}
-	
-	/** TODO JAVADOC. */
+	/** The Connection Dialog. */
 	private ConnectionWindow connectWindow;
-	
-	/** TODO JAVADOC. */
+
+	/** Connection Established. */
 	private boolean connectionEstablished = false;
-	
-	/** TODO JAVADOC. */
+
+	/** Connect Item. */
 	private MenuItem connectItem;
 
-	/** TODO JAVADOC. */
-	private ConnectionListenerCollection connectionListeners;
-
 	/**
-	 * TODO JAVADOC.
+	 * Constructor.
 	 */
 	public ToolBarPanel() {
 		super();
@@ -126,7 +84,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Create the file menu.
 	 */
 	private void createFileMenu() {
 
@@ -170,7 +128,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Create the help menu.
 	 */
 	private void createHelpMenu() {
 
@@ -181,16 +139,18 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 		final MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(), new Command() {
 			public void execute() {
-				//	System.out.print(ConstantFactory.getInstance().pathomepage());
-				//TODO Webpage
+				
+			    Window.open("http://code.google.com/p/pentahoanalysistool/", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 			}
 
 		});
 
 		final MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance().mainLinkHomepage(), new Command() {
 			public void execute() {
-				//	System.out.print(ConstantFactory.getInstance().pentahohomepage());
-				//TODO Webpage
+				
+			    Window.open("http://www.pentaho.com", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 			}
 
 		});
@@ -213,10 +173,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		for (final String element2 : PatConstants.STYLE_THEMES) {
 			ConstantFactory.getInstance();
 			final ThemeMenuItem button = new ThemeMenuItem(element2, new ThemeMenuItemCommand(element2));
-			
+
 			styleSheetMenu.addItem(button);
 		}
-		viewMenu.addItem("Blah", styleSheetMenu); //$NON-NLS-1$
+		viewMenu.addItem(ConstantFactory.getInstance().theme(), styleSheetMenu); //$NON-NLS-1$
 
 		this.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
 	}
@@ -224,7 +184,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	/**
 	 * TODO JAVADOC.
 	 */
-	public void init() {
+	public final void init() {
 		GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
 		createFileMenu();
 		createViewMenu();
@@ -233,17 +193,20 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	}
 
 	/**
-	 * TODO JAVADOC.
-	 * 
+	 * Checks connection status.
+	 *
 	 * @return true, if checks if is connection established
 	 */
-	public boolean isConnectionEstablished() {
+	private final boolean isConnectionEstablished() {
 		return connectionEstablished;
 	}
 
-	// Inherited on click method
 	/* (non-Javadoc)
 	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires on click
+	 * @param sender the sender
 	 */
 	public void onClick(final Widget sender) {
 
@@ -251,6 +214,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires when the database connection is broken.
+	 * @param sender the sender
 	 */
 	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
@@ -261,6 +228,10 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
 	 */
+	/**
+	 * Fires when a database connection is established.
+	 * @param sender the sender
+	 */
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
 		// Alter menu
@@ -269,11 +240,11 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Sets the connection status
 	 * 
 	 * @param connectionEstablished the connection established
 	 */
-	public void setConnectionEstablished(final boolean connectionEstablished) {
+	private final void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
 

@@ -26,11 +26,11 @@ import org.pentaho.pat.server.services.DiscoveryService;
 public class DiscoveryServlet extends AbstractServlet implements Discovery {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private transient DiscoveryService discoveryService;
-	
+
 	private transient Logger log = Logger.getLogger(DiscoveryServlet.class);
-	
+
 	public void init() throws ServletException {
 		super.init();
 		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$

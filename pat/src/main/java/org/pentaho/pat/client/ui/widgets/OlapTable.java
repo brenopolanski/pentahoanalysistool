@@ -50,9 +50,7 @@ public class OlapTable extends FlexTable {
   boolean showParentMembers = true;
   boolean groupHeaders = true;
   PatMessages messages = null;
- 
-  private ClickListener clickListener;
-  private CellFormatPopup cellFormatPopup;
+  CellFormatPopup cellFormatPopup;
  
   /**
    * @param messages
