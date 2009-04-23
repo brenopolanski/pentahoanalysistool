@@ -18,6 +18,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
+import com.anotherbigidea.flash.movie.Button;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -184,18 +185,8 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		ConstantFactory.getInstance();
 		for (final String element2 : PatConstants.STYLE_THEMES) {
 			ConstantFactory.getInstance();
-			final ThemeMenu button = new ThemeMenu(element2, new Command() {
-
-				public void execute() {
-
-					// Update the current theme
-					// Pat.CUR_THEME = button.getTheme();
-
-					// Load the new style sheets
-					Pat.updateStyleSheets();
-				}
-			});
-
+			final ThemeMenuItem button = new ThemeMenuItem(element2, new ThemeMenuItemCommand(element2));
+			
 			styleSheetMenu.addItem(button);
 		}
 		viewMenu.addItem("Blah", styleSheetMenu); //$NON-NLS-1$
@@ -258,4 +249,32 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	public void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
+
+public class ThemeMenuItemCommand implements Command {
+private String theme;
+    public ThemeMenuItemCommand(String element2) {
+	// TODO Auto-generated constructor stub
+	this.theme = element2;
+    }
+
+    public void execute() {
+	// TODO Auto-generated method stub
+	Pat.CUR_THEME = this.theme;
+	// Load the new style sheets
+	Pat.updateStyleSheets();
+    }
+
+}
+
+public class ThemeMenuItem extends MenuItem {
+    private String theme;
+    public ThemeMenuItem(String element2, Command command){
+	super(element2, command);
+	this.theme = element2;
+    }
+
+    public String getTheme(){
+	return theme;
+    }
+}
 }
