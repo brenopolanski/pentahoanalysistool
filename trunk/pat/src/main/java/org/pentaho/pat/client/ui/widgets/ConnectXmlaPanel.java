@@ -61,9 +61,6 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	/** TODO JAVADOC. */
 	private boolean connectionEstablished = false;
 
-	/** TODO JAVADOC. */
-	private ConnectionListenerCollection connectionListeners;
-
 	/**
 	 * TODO JAVADOC.
 	 */
