@@ -3,6 +3,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.Grid;
@@ -31,7 +32,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener{
 	public DimensionDropWidget(final String labelText, final Axis targetAxis) {
 
 		super(2, 1);
-
+		GlobalConnectionFactory.getInstance().addConnectionListener(DimensionDropWidget.this);
 		this.dimAxis = targetAxis;
 		init(labelText, dimAxis);
 	}
