@@ -115,7 +115,7 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 	/**
 	 *TODO JAVADOC
 	 *
-	 * @return
+	 * @return fpanel
 	 */
 	protected Widget onInitialize() {
 		fpanel = new FormPanel();

@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * A helper class for implementers of the SourcesConnectionEvents interface. This
  * subclass of {@link ArrayList} assumes that all objects added to it will be of
- * type {@link @link org.pentaho.pat.client.ConnectionListener}.
+ * type {@link org.pentaho.pat.client.listeners.ConnectionListener}.
  */
 public class ConnectionListenerCollection extends ArrayList {
 

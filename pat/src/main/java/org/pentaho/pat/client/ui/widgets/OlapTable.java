@@ -281,8 +281,8 @@ public class OlapTable extends FlexTable {
   }
  
   /**
-   * @param groupHeaders2
-   * @param b
+   * @param groupHeaders
+   * @param refresh
    */
   public void setGroupHeaders(boolean groupHeaders, boolean refresh) {
     this.groupHeaders = groupHeaders;
