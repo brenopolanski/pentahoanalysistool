@@ -13,6 +13,8 @@
 	
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name='com.google.gwt.user.theme.chrome.Chrome'/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	
 	
 	<!-- GWT to Spring controllers -->
 	<servlet path="/session.rpc" class="org.pentaho.pat.server.servlet.SessionServlet"/>
@@ -37,5 +39,6 @@
 
 
 	<extend-property name="locale" values="es"/>
-  <extend-property name="locale" values="fr"/>
+  	<extend-property name="locale" values="fr"/>
+  	<extend-property name="locale" values="de"/>
 </module>
