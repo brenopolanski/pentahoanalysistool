@@ -1,4 +1,3 @@
-
 = Introduction =
 
 We (pentahoanalysistool project team) work on creating a lightweight Query Model for OLAP cubes, since we need to connect our GWT application to the java (olap4j) backend. All of the following data/methods are serializable and used in RPC calls in GWT.
@@ -10,9 +9,9 @@ The method calls are session-aware and can be executed asynchronously
 === org.pentaho.pat.rpc.beans ===
 
 The data we get from the backend is being structured in:
-   * Rowheaders [][]
-   * Columnheaders [][]
-   * CellData [][]
+   * Rowheaders `[][]`
+   * Columnheaders `[][]`
+   * CellData `[][]`
 
 
 = Discovery service =
