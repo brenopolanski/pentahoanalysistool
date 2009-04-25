@@ -9,6 +9,8 @@
 
 * [Architecture PAT Architecture]
 
+    * [FrontendBackendInterface Frontend/Backend Communication]
+
 * [Lifecycle Usage/Lifecycle]
 
 * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
