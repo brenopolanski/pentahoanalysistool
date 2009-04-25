@@ -19,7 +19,7 @@ The data we get from the backend is being structured in:
 It allows users to:
    * get List of available Cubes
    * get List of available Dimensions in a Cube on a specific Axis
-   * get TreeList of available Members of a specific Dimension
+   * get Tree List of available Members of a specific Dimension
 
 
 = Query Service =
