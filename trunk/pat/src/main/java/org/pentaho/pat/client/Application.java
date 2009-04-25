@@ -27,14 +27,10 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;

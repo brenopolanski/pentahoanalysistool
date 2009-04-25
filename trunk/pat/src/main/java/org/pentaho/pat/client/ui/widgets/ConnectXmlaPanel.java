@@ -44,34 +44,32 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ConnectXmlaPanel extends LayoutPanel {
 
-	// TODO Finish this Widget
-
-	/** TODO JAVADOC. */
+	/** Label Suffix. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Panel Height. */
 	private static final String HEIGHT = "280px"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Panel Width. */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Url Textbox. */
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
-	/** TODO JAVADOC. */
+	/** User Textbox. */
 	private final TextBox userTextBox;
 
-	/** TODO JAVADOC. */
+	/** Password Textbox. */
 	private final PasswordTextBox passwordTextBox;
 
-	/** TODO JAVADOC. */
+	/** Connect button. */
 	private final Button connectButton;
 
-	/** TODO JAVADOC. */
+	/** Connection Status. */
 	private boolean connectionEstablished = false;
 
 	/**
-	 * TODO JAVADOC.
+	 * ConnectXmlaPanel Constructor.
 	 */
 	public ConnectXmlaPanel() {
 		super();
@@ -89,7 +87,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Empty the form.
 	 */
 	public final void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
@@ -99,7 +97,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Setup Cube Connection.
 	 *
 	 * @return the cube connection
 	 */
@@ -128,7 +126,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Return the connection Status.
 	 *
 	 * @return true, if checks if is connection established
 	 */
@@ -137,7 +135,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Initialize the panel.
 	 */
 	private void onInitialize() {
 
@@ -187,7 +185,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Set the connection status
 	 *
 	 * @param connectionEstablished the connection established
 	 */

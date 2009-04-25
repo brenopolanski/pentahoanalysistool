@@ -15,7 +15,7 @@ package org.pentaho.pat.client.util.factory;
 import org.pentaho.pat.client.i18n.PatMessages;
 
 import com.google.gwt.core.client.GWT;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class MessageFactory.
@@ -24,11 +24,11 @@ import com.google.gwt.core.client.GWT;
  */
 public class MessageFactory {
 	
-	/** TODO JAVADOC. */
+	/** PatMessages object. */
 	private static PatMessages messages = null;
 	
 	/**
-	 * TODO JAVADOC.
+	 * Create a message instance.
 	 * 
 	 * @return the instance
 	 */

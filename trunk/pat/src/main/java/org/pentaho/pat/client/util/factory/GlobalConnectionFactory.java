@@ -17,9 +17,9 @@ import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import com.google.gwt.core.client.GWT;
 
 /**
- *TODO JAVADOC
+ * Create Global Connection Factory to store connection listeners 
  *
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  *
  */
 public class GlobalConnectionFactory {

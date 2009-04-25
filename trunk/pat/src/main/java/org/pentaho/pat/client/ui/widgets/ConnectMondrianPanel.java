@@ -19,10 +19,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
-import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -51,8 +47,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ConnectMondrianPanel extends LayoutPanel {
 
-	// TODO Finish this Widget
-
 	/** Form element name of the file component. */
 	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
 
@@ -77,38 +71,38 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	/** Custom start tag for recognizing the returned filename from the backend. Has to match the one defined in the backend */
 	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Custom end tag for recognizing the returned filename from the backend. Has to match the one defined in the backend. */
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Listbox for drivers. */
 	private final ListBox driverListBox;
 
-	/** TODO JAVADOC. */
+	/** Textbox for url. */
 	private final TextBox urlTextBox;
 
-	/** TODO JAVADOC. */
+	/** Textbox for user. */
 	private final TextBox userTextBox;
 
-	/** TODO JAVADOC. */
+	/** Textbox for Password. */
 	private final PasswordTextBox passwordTextBox;
 
-	/** TODO JAVADOC. */
+	/** File upload widget. */
 	private final FileUpload fileUpload;
 
-	/** TODO JAVADOC. */
+	/** Schema upload button. */
 	private final Button uploadButton;
 
-	/** TODO JAVADOC. */
+	/** Connect button. */
 	private final Button connectButton;
 
-	/** TODO JAVADOC. */
+	/** Schema path string. */
 	private String schemaPath;
 
-	/** TODO JAVADOC. */
+	/** Connect status. */
 	private boolean connectionEstablished = false;
 
 	/**
-	 * TODO JAVADOC.
+	 * ConnectMondrianPanel Constructor.
 	 */
 	public ConnectMondrianPanel() {
 		super();
@@ -129,7 +123,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Driver Listbox setup.
 	 *
 	 * @return the list box
 	 */
@@ -156,7 +150,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Empty form contents.
 	 */
 	public final void emptyForm() {
 		urlTextBox.setText(""); //$NON-NLS-1$
@@ -166,7 +160,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Cube connection setup.
 	 *
 	 * @return the cube connection
 	 */
@@ -189,7 +183,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Returns connection status.
 	 *
 	 * @return true, if checks if is connection established
 	 */
@@ -198,7 +192,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Run on panel initialize.
 	 */
 	private void onInitialize() {
 
@@ -290,7 +284,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Set connection status.
 	 *
 	 * @param connectionEstablished the connection established
 	 */

@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.images.PatImages;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -37,8 +36,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  *

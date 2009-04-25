@@ -28,8 +28,8 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		initTest();
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
-		super.createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); 
+		super.createConnection(this.sessionService, userId, sessionId); 
 		
 		// Select a cube
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
@@ -61,7 +61,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
-		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); 
 		
 		finishTest();
 	}
@@ -75,8 +75,8 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Create a session.
-		String sessionId = this.sessionService.createNewSession(userId); //$NON-NLS-1$
-		super.createConnection(this.sessionService, userId, sessionId); //$NON-NLS-1$
+		String sessionId = this.sessionService.createNewSession(userId); 
+		super.createConnection(this.sessionService, userId, sessionId); 
 		
 		// Select a cube
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
@@ -111,7 +111,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
-		this.sessionService.releaseSession(userId, sessionId); //$NON-NLS-1$
+		this.sessionService.releaseSession(userId, sessionId); 
 		
 		finishTest();
 	}

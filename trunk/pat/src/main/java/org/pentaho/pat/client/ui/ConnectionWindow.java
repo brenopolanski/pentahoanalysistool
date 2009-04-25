@@ -19,12 +19,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 
@@ -32,70 +30,52 @@ import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ConnectionWindow.
  * 
  * @author pstoellberger
  */
-public class ConnectionWindow extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
+public class ConnectionWindow extends WindowPanel implements ConnectionListener {
 
-	/** TODO JAVADOC. */
+	/** The Window Height. */
 	private static final String HEIGHT = "330px"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** The Window Width. */
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** The Window Title. */
 	private static final String TITLE = ConstantFactory.getInstance().registernewconnection();
 
-	/** TODO JAVADOC. */
+	/** Mondrian Panel. */
 	private transient final ConnectMondrianPanel connectMondrian;
 
-	/** TODO JAVADOC. */
+	/** Xmla Panel. */
 	private transient final ConnectXmlaPanel connectXmla;
 
-	/** TODO JAVADOC. */
+	/** Connection Established indicator. */
 	private boolean connectionEstablished = false;
 
-	/** TODO JAVADOC. */
+	/** Connection Listeners. */
 	private transient ConnectionListenerCollection connectionListeners;
 
-	/** TODO JAVADOC. */
+	/** A Tab Layout Panel. */
 	private transient final TabLayoutPanel tabPanel = new TabLayoutPanel();
 
 	/**
-	 * TODO JAVADOC.
+	 * Connection Window Constructor.
 	 */
 	public ConnectionWindow() {
 		super(TITLE);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
-
+		
 		connectMondrian = new ConnectMondrianPanel();
 		connectXmla = new ConnectXmlaPanel();
 		this.add(onInitialize());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pentaho.pat.client.listeners.SourcesConnectionEvents#removeClickListener
-	 * (org.pentaho.halogen.client.listeners.ConnectionListener)
-	 */
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
-		connectionListeners.add(listener);
-	}
-
 	/**
-	 * TODO JAVADOC.
+	 * Empties the form contents.
 	 */
 	public void emptyForms() {
 		connectMondrian.emptyForm();
@@ -103,7 +83,7 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Check connection.
 	 * 
 	 * @return true, if checks if is connection established
 	 */
@@ -114,22 +94,30 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
 	 */
+	/**
+	 * Fire when database connection is broken.
+	 * @param sender the sender
+	 */
 	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
-		connectionListeners.fireConnectionBroken(ConnectionWindow.this);
+		//connectionListeners.fireConnectionBroken(ConnectionWindow.this);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
 	 */
+	/**
+	 * Fire when database connection is made.
+	 * @param sender the sender
+	 */
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
-		connectionListeners.fireConnectionMade(ConnectionWindow.this);
+		//connectionListeners.fireConnectionMade(ConnectionWindow.this);
 		ConnectionWindow.this.hide();
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Initialize the window.
 	 * 
 	 * @return the layout panel
 	 */
@@ -160,24 +148,17 @@ public class ConnectionWindow extends WindowPanel implements SourcesConnectionEv
 	/* (non-Javadoc)
 	 * @see org.gwt.mosaic.ui.client.WindowPanel#onLoad()
 	 */
+	/**
+	 * Fire on window load.
+	 */
 	@Override
 	protected void onLoad() {
 		tabPanel.selectTab(0);
 		super.onLoad();
 	}
 
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public final void removeConnectionListener(final ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
-	}
-
 	/**
-	 * TODO JAVADOC.
+	 * Set the connectionEstablished status.
 	 * 
 	 * @param connectionEstablished the connection established
 	 */

@@ -83,7 +83,6 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener{
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionBroken(Widget sender) {
-		// TODO Auto-generated method stub
 		table1.clearDimensionTable();
 	}
 

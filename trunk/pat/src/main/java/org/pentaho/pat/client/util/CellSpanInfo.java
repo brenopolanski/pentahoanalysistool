@@ -1,6 +1,5 @@
 package org.pentaho.pat.client.util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CellSpanInfo.
  */

@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CellData.
  * 

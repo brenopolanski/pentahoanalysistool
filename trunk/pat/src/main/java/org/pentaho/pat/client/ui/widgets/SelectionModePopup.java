@@ -235,7 +235,7 @@ public class SelectionModePopup extends PopupPanel {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Show the context menu.
 	 *
 	 * @param event the event
 	 * @param selectedItem the selected item

@@ -97,7 +97,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
     }
 
     public String getSchema() {
-        return schema==null?"":schema;
+        return schema==null?"":schema; //$NON-NLS-1$
     }
 
     public void setSchema(String schema) {

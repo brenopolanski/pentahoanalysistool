@@ -33,15 +33,10 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * PAT Toolbar.
  *
- * @author Tom Barber
+ * @author tom(at)wamonline.org.uk
  */
 public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener {
 
-    /**
-     * 
-     * @author tom(at)wamonline.org.uk
-     *
-     */
     private static final class ThemeMenuItemCommand implements Command {
 	    private String theme;
 	        public ThemeMenuItemCommand(String element2) {
@@ -109,7 +104,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 				if (!connectionEstablished) {
 					if (connectWindow == null) {
 						connectWindow = new ConnectionWindow();
-						connectWindow.addConnectionListener(ToolBarPanel.this);
+						GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
 					}
 					connectWindow.emptyForms();
 					connectWindow.showModal();
@@ -172,7 +167,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Create the view Menu.
 	 */
 	private void createViewMenu() {
 		final MenuBar viewMenu = new MenuBar(true);
@@ -186,13 +181,13 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 			styleSheetMenu.addItem(button);
 		}
-		viewMenu.addItem(ConstantFactory.getInstance().theme(), styleSheetMenu); //$NON-NLS-1$
+		viewMenu.addItem(ConstantFactory.getInstance().theme(), styleSheetMenu);
 
 		this.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Initialize the panel.
 	 */
 	public final void init() {
 		GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
@@ -200,15 +195,6 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 		createViewMenu();
 		createHelpMenu();
 
-	}
-
-	/**
-	 * Checks connection status.
-	 *
-	 * @return true, if checks if is connection established
-	 */
-	private final boolean isConnectionEstablished() {
-		return connectionEstablished;
 	}
 
 	/* (non-Javadoc)

@@ -19,25 +19,24 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
+ * FlexTableRowDragController allows you to drag cell widgets from flextable to flextable.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public class FlexTableRowDragController extends PickupDragController {
 
-	/** TODO JAVADOC. */
+	/** CSS tag. */
 	private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** The flextable. */
 	private FlexTable draggableTable;
 
-	/** TODO JAVADOC. */
+	/** The source row. */
 	private int dragRow;
 
 	/**
-	 * TODO JAVADOC.
+	 * Constructor.
 	 * 
 	 * @param boundaryPanel the boundary panel
 	 */
@@ -50,6 +49,9 @@ public class FlexTableRowDragController extends PickupDragController {
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#dragEnd()
 	 */
+	/**
+	 * Fire on drag end.
+	 */
 	@Override
 	public void dragEnd() {
 		super.dragEnd();
@@ -59,7 +61,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * get the source table.
 	 * 
 	 * @return the draggable table
 	 */
@@ -68,7 +70,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Get the source row.
 	 * 
 	 * @return the drag row
 	 */
@@ -77,7 +79,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Get the Widget Row.
 	 * 
 	 * @param widget the widget
 	 * @param table the table
@@ -99,6 +101,13 @@ public class FlexTableRowDragController extends PickupDragController {
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.AbsolutePanel, boolean)
 	 */
+	/**
+	 *  Boundary Controller
+	 *  @param boundaryPanel the boundaryPanel
+	 *  @param allowDroppingOnBoundaryPanel boolean to allow drops
+	 *  
+	 *  @return the BoundaryDropContoller
+	 */
 	@Override
 	protected BoundaryDropController newBoundaryDropController(final AbsolutePanel boundaryPanel, final boolean allowDroppingOnBoundaryPanel) {
 		if (allowDroppingOnBoundaryPanel) {
@@ -109,6 +118,12 @@ public class FlexTableRowDragController extends PickupDragController {
 
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newDragProxy(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
+	/**
+	 * New Drag Proxy
+	 * @param context the context
+	 * 
+	 * @return the proxy widget
 	 */
 	@Override
 	protected Widget newDragProxy(final DragContext context) {
@@ -123,6 +138,11 @@ public class FlexTableRowDragController extends PickupDragController {
 
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
+	 */
+	/**
+	 * The proxy drag behaviour
+	 * 
+	 * @param dragProxyEnabled boolean indicator
 	 */
 	@Override
 	public void setBehaviorDragProxy(final boolean dragProxyEnabled) {

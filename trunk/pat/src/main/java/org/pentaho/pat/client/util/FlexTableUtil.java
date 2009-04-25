@@ -31,9 +31,9 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * TODO JAVADOC.
+ * Flex Table DnD utils
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 
@@ -72,7 +72,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Create the tree hierarchy.
 	 *
 	 * @param parent the parent
 	 * @param node the node
@@ -147,42 +147,11 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 										new AsyncCallback<StringTree>() {
 
 									public void onFailure(final Throwable arg0) {
-										// TODO Auto-generated
-										// method stub
-
+										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
 									}
 
 									public void onSuccess(final StringTree arg0) {
-										// TODO Auto-generated
-										// method stub
-										final Tree dimTree = new Tree(){
-										    /*@Override
-											public void onBrowserEvent(final Event event) {
-												if (getSelectedItem() != null) {
-													if (event.getTypeInt() == Event.ONCONTEXTMENU) { // NOPMD by bugg on 21/04/09 05:54
-														com.google.gwt.user.client.DOM.eventPreventDefault(event);
-														final SelectionModePopup test = new SelectionModePopup();
-														//test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
-														test.showContextMenu(event, getSelectedItem());
-														test.setPopupPositionAndShow(new PositionCallback() {
-															public void setPosition(final int offsetWidth, final int offsetHeight) {
-																test.setPopupPosition(event.getClientX(), event.getClientY());
-															}
-														});
-													}
-												}
-												super.onBrowserEvent(event);
-											}
-											@Override
-											protected void setElement(final Element elem) {
-												super.setElement(elem);
-												sinkEvents(Event.ONCONTEXTMENU);
-											}*/
-										};
-										// TreeItem tn = new
-										// TreeItem(w.getElement().getInnerText().trim());
-										// dimTree.addItem(tn);
-
+										final Tree dimTree = new Tree();
 										final StringTree memberTree = arg0;
 										final Label rootLabel = new Label(memberTree.getValue());
 										TreeItem root = new TreeItem(rootLabel);
