@@ -26,21 +26,20 @@ import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
+ * FlexTableRowDropConroller allows flextable cell drops.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public class FlexTableRowDropController extends AbstractPositioningDropController {
 
-	/** TODO JAVADOC. */
+	/** CSS Tag. */
 	private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 
-	/** TODO JAVADOC. */
+	/** Flextable object. */
 	private final FlexTable flexTable;
 
-	/** TODO JAVADOC. */
+	/** Indexed Panel Object. */
 	private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
 
 		public Widget getWidget(final int index) {
@@ -60,17 +59,17 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 		}
 	};
 
-	/** TODO JAVADOC. */
+	/** Positioner Widget. */
 	private Widget positioner = null;
 
-	/** TODO JAVADOC. */
+	/** Target Row. */
 	private int targetRow;
 
-	/** TODO JAVADOC. */
+	/** The Drop Axis. */
 	private org.pentaho.pat.rpc.beans.Axis targetAxis;
 
 	/**
-	 * TODO JAVADOC.
+	 * Constructor.
 	 * 
 	 * @param flexTable the flex table
 	 */
@@ -80,7 +79,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Constructor.
 	 * 
 	 * @param flexTable the flex table
 	 * @param rows the rows
@@ -92,7 +91,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 	}
 
 	/**
-	 * TODO JAVADOC.
+	 * Positioner.
 	 * 
 	 * @param context the context
 	 * 
@@ -108,6 +107,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
 	 */
+	/**
+	 * Fires on drop.
+	 * @param context the context
+	 */
 	@Override
 	public void onDrop(final DragContext context) {
 		final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
@@ -118,6 +121,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
 	 */
+	/**
+	 * Fires when the widget enters the drop zone.
+	 * @param context the context
+	 */
 	@Override
 	public void onEnter(final DragContext context) {
 		super.onEnter(context);
@@ -126,6 +133,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
+	/**
+	 * Fires on leaving the drop zone.
+	 * @param context the context
 	 */
 	@Override
 	public void onLeave(final DragContext context) {
@@ -136,6 +147,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
+	 */
+	/**
+	 * Fires when the widget is moved.
+	 * @param context the context
 	 */
 	@Override
 	public void onMove(final DragContext context) {

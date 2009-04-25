@@ -134,7 +134,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		createMainMenu();
 		setupMainMenu();
-		mainMenuTree.setSize("100%", "100%");
+		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
 
 		dimensionPanel = new DimensionPanel();

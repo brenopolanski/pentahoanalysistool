@@ -47,7 +47,6 @@ public class WelcomePanel extends DataWidget {
 	 */
 	@Override
 	public final String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -60,7 +59,6 @@ public class WelcomePanel extends DataWidget {
 	 */
 	@Override
 	public final String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 

@@ -16,8 +16,6 @@ import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.WindowPanel;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.Window;
@@ -33,50 +31,50 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author paul
+ * @author Paul Stoellberger
  * 
  */
-public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents, ConnectionListener {
+public class ConnectPanel extends WindowPanel {
 
 	/**
-	 *TODO JAVADOC
+	 * Connect Button.
 	 */
 	private final transient Button connectBtn;
 	/**
-	 *TODO JAVADOC
+	 * Server Textbox.
 	 */
 	private final transient TextBox serverTB;
 	/**
-	 *TODO JAVADOC
+	 * Port Textbox.
 	 */
 	private final transient TextBox portTB;
 	/**
-	 *TODO JAVADOC
+	 * Database Textbox.
 	 */
 	private final transient TextBox databaseTB;
 	/**
-	 *TODO JAVADOC
+	 * User Textbox.
 	 */
 	private final transient TextBox userTB;
 	/**
-	 *TODO JAVADOC
+	 * Password Textbox.
 	 */
 	private final transient PasswordTextBox passwordTB;;
 	/**
-	 *TODO JAVADOC
+	 * File Upload Widget.
 	 */
 	private final transient FileUpload fileUpload;
 	/**
-	 *TODO JAVADOC
+	 * Schema upload button.
 	 */
 	private final transient Button uploadButton;
 	/**
-	 *TODO JAVADOC
+	 * Form Panel.
 	 */
 	private transient FormPanel fpanel;
 
 	/**
-	 *TODO JAVADOC
+	 * Connect Panel Constructor.
 	 *
 	 */
 	public ConnectPanel() {
@@ -97,32 +95,9 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void addConnectionListener(final ConnectionListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionBroken(final Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionMade(final Widget sender) {
-		// TODO Auto-generated method stub
-		System.out.println("ConnectPanel on Connection Made"); //$NON-NLS-1$
-	}
 
 	/**
-	 *TODO JAVADOC
+	 * Intialize the UI
 	 *
 	 * @return fpanel
 	 */
@@ -135,7 +110,6 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		fpanel.addFormHandler(new FormHandler() {
 
 			public void onSubmit(final FormSubmitEvent arg0) {
-				// TODO Auto-generated method stub
 				// Window.alert(arg0.toString());
 
 			}
@@ -200,12 +174,5 @@ public class ConnectPanel extends WindowPanel implements SourcesConnectionEvents
 		return fpanel;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
-	 */
-	public void removeConnectionListener(final ConnectionListener listener) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

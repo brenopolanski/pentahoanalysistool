@@ -20,7 +20,6 @@ package org.pentaho.pat.client.images;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface SelectionModeImageBundle.
  * 

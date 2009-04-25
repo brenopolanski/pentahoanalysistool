@@ -14,50 +14,23 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 
-import com.google.gwt.user.client.ui.Widget;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class SouthPanel.
  * 
- * @author root
+ * @author tom(at)wamonline.org.uk
  */
-public class SouthPanel extends CaptionLayoutPanel implements ConnectionListener {
+public class SouthPanel extends CaptionLayoutPanel {
 
 	/**
-	 * TODO JAVADOC.
+	 * SoutPanel Constructor.
 	 * 
 	 * @param text the text
 	 */
 	public SouthPanel(final String text) {
 		super(text);
 		// this(null, false);
-		init();
 	}
 
-	/**
-	 * TODO JAVADOC.
-	 */
-	public void init() {
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionBroken(final Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionMade(final Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

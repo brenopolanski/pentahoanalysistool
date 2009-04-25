@@ -17,18 +17,21 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 
 /**
- *TODO JAVADOC
- *
- * @author bugg
+ * Register you widget with GlobalConnectionListeners so that it knows when a db connection is established.
+ * Rewritten from panel level, to allow for easier connection building.
+ * @author tom(at)wamonline.org.uk
  *
  */
 public class GlobalConnectionListeners implements SourcesConnectionEvents  {
 
-	/** TODO JAVADOC. */
+	/** ConnectionListenerCollection Object. */
 	public static ConnectionListenerCollection connectionListeners;
 	
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	 */
+	/**
+	 * Initialize the connectionListeners instance.
 	 */
 	public void addConnectionListener(ConnectionListener listener) {
 
@@ -41,8 +44,10 @@ public class GlobalConnectionListeners implements SourcesConnectionEvents  {
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
+	/**
+	 * Remove a connectionListener
+	 */
 	public void removeConnectionListener(ConnectionListener listener) {
-		// TODO Auto-generated method stub
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}

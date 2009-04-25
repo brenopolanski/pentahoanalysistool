@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Creates the main dataview for Olap tables and charts.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public class OlapPanel extends DataWidget {
 
@@ -114,7 +114,6 @@ public class OlapPanel extends DataWidget {
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -127,7 +126,6 @@ public class OlapPanel extends DataWidget {
 	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 
@@ -198,15 +196,15 @@ public class OlapPanel extends DataWidget {
 		final FlexTable grid = new FlexTable();
 		grid.setWidget(0, 0, executeButton);
 		DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
-		rowDimDrop.setWidth("100%");
+		rowDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(1, 0, rowDimDrop);
 		
 		DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
-		colDimDrop.setWidth("100%");
+		colDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(2, 0, colDimDrop);
 		
 		DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
-		filterDimDrop.setWidth("100%");
+		filterDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(3, 0, filterDimDrop);
 		grid.setWidget(0, 1, olapTable);
 		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);

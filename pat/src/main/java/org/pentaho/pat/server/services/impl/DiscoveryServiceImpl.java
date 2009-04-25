@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
@@ -149,8 +148,8 @@ public class DiscoveryServiceImpl extends AbstractService
             for (int j = 0; j < memberNames.length; j++) { // Trim off the
                                                            // brackets
                 memberNames[j] = memberNames[j]
-                  .replaceAll("\\[", "")
-                  .replaceAll("\\]", "");
+                  .replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                  .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
             }
             result = OlapUtil.parseMembers(memberNames, result);
         }

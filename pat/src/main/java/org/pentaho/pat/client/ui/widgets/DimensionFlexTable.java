@@ -45,8 +45,8 @@ public final class DimensionFlexTable extends FlexTable {
 		addStyleName("demo-flextable"); //$NON-NLS-1$
 
 		this.trdc = tableRowDragController;
-		final Label spacerLabel = new Label("");
-		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
+		final Label spacerLabel = new Label(""); //$NON-NLS-1$
+		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
 
 
 		setWidget(0, 0, spacerLabel);
@@ -64,7 +64,7 @@ public final class DimensionFlexTable extends FlexTable {
 
 			public void onFailure(final Throwable arg0) {
 				// TODO use standardized message dialog when implemented
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage())); //$NON-NLS-1$
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
 			}
 
 			public void onSuccess(final String[] arg0) {
@@ -85,9 +85,8 @@ public final class DimensionFlexTable extends FlexTable {
 	 *
 	 */
 	public void clearDimensionTable() {
-		// TODO Auto-generated method stub
 		this.clear();
-		final Label spacerLabel = new Label("");
-		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER");
+		final Label spacerLabel = new Label(""); //$NON-NLS-1$
+		spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
 	}
 }

@@ -19,7 +19,7 @@ package org.pentaho.pat.client.i18n;
 public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 	/**
-	 * TODO JAVADOC.
+	 * Failed to get a list of cubes.
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -29,7 +29,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Failed to get a list of dimensions.
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -39,7 +39,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Failed to set the dimension.
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -49,7 +49,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * Failed to create a query.
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -58,7 +58,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	String failedQueryCreate(String localizedMessage);
 
 	/**
-	 * TODO JAVADOC.
+	 * Failed to set sessionID.
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -79,7 +79,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 
 
 	/**
-	 * TODO JAVADOC.
+	 * No Query Set
 	 *
 	 * @param localizedMessage the localized message
 	 *
@@ -130,6 +130,16 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 * welcome
 	 */
 	String welcome(String arg0);
+
+
+	/**
+	 * Translated "Failed to Fetch Members: {0}.".
+	 *
+	 * @param arg- the arg0
+	 *
+	 * @return translated "Failed to Fetch Members: {0}."
+	 */
+	String failedMemberFetch(String arg0);
 
 
 }

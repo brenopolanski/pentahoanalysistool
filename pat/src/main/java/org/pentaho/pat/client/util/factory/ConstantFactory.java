@@ -15,20 +15,20 @@ package org.pentaho.pat.client.util.factory;
 import org.pentaho.pat.client.i18n.PatConstants;
 
 import com.google.gwt.core.client.GWT;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class ConstantFactory.
  * 
- * @author Tom Barber
+ * @author tom(at)wamonline.org.uk
  */
 public class ConstantFactory {
 	
-	/** TODO JAVADOC. */
+	/** Pat Constansts Object. */
 	private static PatConstants constants = null;
 	
 	/**
-	 * TODO JAVADOC.
+	 * Create the PatConstants instance.
 	 * 
 	 * @return the instance
 	 */

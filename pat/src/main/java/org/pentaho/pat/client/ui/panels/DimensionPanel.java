@@ -18,23 +18,20 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
-import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.beans.Axis;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Dimension Panel lists the dimensions that are currently in the unused
  * axis.
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionPanel extends ScrollPanel implements ConnectionListener {
+public class DimensionPanel extends ScrollPanel {
 
     /** The Widget that allows you to drag and drop dimensions on it. */
     private final transient DimensionDropWidget dimDrop;
@@ -80,7 +77,7 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener {
 		.getBottomPanel()));
 	dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
 		.unused(), Axis.UNUSED);
-	dimDrop.setSize("100%", "100%");
+	dimDrop.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 	layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	// this.add(layoutPanel);
 	this.add(dimDrop);
@@ -95,20 +92,4 @@ public class DimensionPanel extends ScrollPanel implements ConnectionListener {
 	dimDrop.populateDimensionTable();
 
     }
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionBroken(Widget sender) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
-	 */
-	public void onConnectionMade(Widget sender) {
-		// TODO Auto-generated method stub
-		
-	}
 }

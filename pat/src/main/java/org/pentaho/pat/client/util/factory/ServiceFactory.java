@@ -22,7 +22,6 @@ import org.pentaho.pat.rpc.SessionAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ServiceFactory.
  * 
@@ -30,13 +29,13 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  */
 public class ServiceFactory {
 
-	/** The d service. */
+	/** The discovery service. */
 	private static DiscoveryAsync dService = null;
 
-	/** The s service. */
+	/** The session service. */
 	private static SessionAsync sService = null;
 
-	/** The q service. */
+	/** The query service. */
 	private static QueryAsync qService = null;
 
 	/**

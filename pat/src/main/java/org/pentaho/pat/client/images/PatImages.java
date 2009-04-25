@@ -16,23 +16,22 @@ package org.pentaho.pat.client.images;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;
 
-// TODO: Auto-generated Javadoc
 /**
- * TODO JAVADOC.
+ * Pat Images.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  */
 public interface PatImages extends ImageBundle{
 
 	/**
-	 * TODO JAVADOC.
+	 * Chart Image.
 	 * 
 	 * @return the abstract image prototype
 	 */
 	AbstractImagePrototype chart();
 
 	/**
-	 * TODO JAVADOC.
+	 * Cube Image.
 	 * 
 	 * @return the abstract image prototype
 	 */
