@@ -1,6 +1,5 @@
 <%@ page session="true" contentType="text/html;" %>
 <html>
-<meta name="gwt:property" content="locale=<%=request.getLocale()%>">
         <head>
 
                 <!--                                           -->
@@ -13,9 +12,10 @@
                 <!-- between html and your Web Toolkit module  -->
                 <!--                                           -->
                 <meta name='gwt:module' content='org.pentaho.pat.Pat'/>
+				<meta name="gwt:property" content="locale=<%= request.getLocale() %>">
 
-                  <!-- <link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>-->
-<!--    <link rel="stylesheet" type="text/css" href="js/ext/resources/css/xtheme-gray.css" />-->
+                  	<!-- <link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>-->
+					<!--    <link rel="stylesheet" type="text/css" href="js/ext/resources/css/xtheme-gray.css" />-->
 
         </head>
 
