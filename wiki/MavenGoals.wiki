@@ -13,7 +13,7 @@ The first time you do this it will download a lot of dependencies so will take a
 {{{
 com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
 }}}
-Runs the application
+Runs the application in GWT Hosted Mode.
 
 
 *DEBUG*
@@ -22,7 +22,7 @@ Runs the application
 com.totsp.gwt:maven-googlewebtoolkit2-plugin:debug
 }}}
 
-Runs the application in debug mode, you can then connect with a new
+Runs the application in GWT Hosted debug mode, you can then connect with a new
 debugging runtime configuration (New Remote Java Application)
 
 
