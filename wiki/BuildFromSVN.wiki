@@ -30,6 +30,14 @@ clean package
 Cleans and then packages the application into a WAR file, which you
 can deploy easily by dropping it into tomcat/webapps e.g
 
+*JETTY RUN*
+
+{{{
+jetty:run-exploded
+}}}
+
+Runs PAT and runs it in a Jetty web server
+
 Check out Maven Goals for more goals that can be used
 
 = Known Problems with Eclipse building =
