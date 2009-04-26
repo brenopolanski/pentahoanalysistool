@@ -40,3 +40,6 @@ A complete changelog can be found [http://jira.pentaho.com/ReleaseNote.jspa?vers
   * Fork and Mavenize Halogen
   * Port it to GWT-EXT
   * Get some ideas where PAT should head to
+
+
+A complete changelog can be found [http://jira.pentaho.com/ReleaseNote.jspa?version=10613&styleName=Html&projectId=10165&Create=Create here]
