@@ -44,6 +44,29 @@ clean package
 Cleans and then packages the application into a WAR file, which you
 can deploy easily by dropping it into tomcat/webapps e.g
 
+*JAVADOC*
+
+{{{
+javadoc:javadoc
+}}}
+
+Creates the PAT Javadoc files.
+
+*TEST*
+
+{{{
+test
+}}}
+
+Runs the PAT Test Suite
+
+*RUN JETTY*
+
+{{{
+jetty:run-exploded
+}}}
+
+Runs PAT in a hosted jetty webserver
 
 *ECLIPSE*
 
