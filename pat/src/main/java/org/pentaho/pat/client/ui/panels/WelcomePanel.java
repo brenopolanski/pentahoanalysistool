@@ -11,9 +11,10 @@
  * @author Tom Barber
  */
 
-package org.pentaho.pat.client.ui.widgets;
+package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
 
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;

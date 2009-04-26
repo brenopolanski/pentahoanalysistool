@@ -22,7 +22,6 @@ import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.WelcomePanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -284,6 +283,10 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 		this.showStack(0);
 		mainMenuTree.clear();
 		setupMainMenu();
+		final TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
+		getMainMenu().setSelectedItem(firstItem, false);
+		getMainMenu().ensureSelectedItemVisible();
+		displayContentWidget(ITEMWIDGETS.get(firstItem));
 	}
 
 	/* (non-Javadoc)

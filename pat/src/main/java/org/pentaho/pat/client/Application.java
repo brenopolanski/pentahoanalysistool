@@ -198,12 +198,11 @@ public class Application extends Viewport { // NOPMD
 	// Add the content wrapper
 	setContentWrapper(new LayoutPanel(new FillLayout()));
 	contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
-
 	bottomPanel.add(contentWrapper);
 	mainPanel = new MainMenu();
 	westPanel.add(mainPanel);
 
-	setContent(null);
+	//setContent(null);
 
     }
 

@@ -28,7 +28,7 @@ public interface PatConstants extends Constants {
 	String CURRENT_CUBE_NAME = "current-cube-name"; //$NON-NLS-1$
 
 	/** The STYLE_THEMES. */
-	String[] STYLE_THEMES = {"standard", "chrome", "dark", "pattheme"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	String[] STYLE_THEMES = {"standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	/**
 	 * Availablecubes.
 	 *
