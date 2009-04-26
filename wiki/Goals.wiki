@@ -1,92 +1,38 @@
-= Introduction =
-These are the goals(so far) of the project and where we aim to be heading.
+= Roadmap =
+This is the Roadmap (so far) of the project and where we aim to be heading.
 
+A detailed list of tasks can be found [http://jira.pentaho.com/browse/PAT?report=com.atlassian.jira.plugin.system.project:roadmap-panel here]
 
-= Details =
-==Stage 1==
+= Future Releases = 
+  * Save View as xaction
+  * Enable mixed DnD and MDX querying
+  * Charting
+  * Saving filter sets
+  * New Calculated Measures wizard
+  * Formatting options
+  * Be very user friendly with most possible functionality
+  * Export options
+  * Provide JSON/WebService connectivity to backend
 
-  * Connectivity (XMLA or JDBC)
-       * Register Cubes in Config
-       * ( Cube Selection out of Config)
+==PAT 0.3==
+  * Fix Bugs
+  * Improve DnD Selection and user interaction in general
+  * Save Connections in Persistence Layer
+  * Replace Table with the new Scrolltable
 
-  * Working cube selection
+= Released Versions =
 
-  * Working Dim/Measure Selection
+==PAT 0.2==
+  * Design new backend/frontend architecture
+  * Choose GWT Widget Set (GWT Mosaic it is)
+  * Connectivity (XMLA and Mondrian Connection)
+  * Get/Set Cubes/Dims
+  * Do basic Drag 'n Drop selection
+  * Localization (French, German, English, Spanish)
+  * Integrate Spring Security
+  * Prepare Hibernate Persistance Layer
 
-  * Decide on the backend parse tree architecture.
-
-  * Migrate all server calls to the non-lagacy servlets.
-
-This will effectively get us back to where the idea branch ends, but with nice code and a proper design and layout.
-
-Alpha release (0.1)
-==Stage 2==
-
-  * Work on the Table decide which way to proced, GWT-EXT grid or other way. Olap4j was supposed to include some sort of table model, but multi dimensions in mind. It was initially planned to exist as the org.olap4j.layout package. If we are to put efforts in a table model, why not do it in Olap4j core API ? See http://www.olap4j.org/olap4j_fs.html#Layout for more details.
-
-  * Loading the Table with MDX
-
-  * Full Localization Support
-
-  * Data cells  View Drill-through records  Annotate cells (comments) - future  Attach file - future  Add hyperlink - future - should include ability to pass context 
-
-  * Sort Icon on all column headers - sort modes are default (outline order), ascending, descending 
-
-  * Hide Spans (suppress repeating headers for nested dimensions) 
-
-  * Show/Hide member properties 
-
-  * Show/Hide banding
-
-  * Pivot - pivots entire table 
-
-  * Support for right-click menu on: Members keep only/remove only sort  scending/descending show/hide parent show/hide member properties pivot - maybe an arrow out for selecting nested location upon pivot top/bottom filters 
-
-  * Tree control for browsing cubes and dimensions  drag and drop members/dimensions from tree onto grid  right-click  Add to columns - expand to column position  Add to rows - expand to row position
-
-alpha release
-==Stage 3==
-  * Ability to work with both Drag and Drop Dimensions and pure MDX, and the ability for the Drag and Drop to update the MDX code.
-
-  * Drill-down/Roll-up - This will need synchronized work with Olap4j team because the current Olap4j release doesn't implement those trnasformations yet. Fear not, they were considered in it's architecture. (Drill Interaction  Support for all drill modes - drill member, drill position, drill replace  Double-click on member to drill down, shift-dk (?) to drill up )
-
-  * Easy Cell Colour Coding
-
-  * Dynamic Totals
-
-  * Support for inline images in data cells (i.e. KPI indicators, trend indicators, other images) 
-
-  * Support for background color control based on conditional formatting definitions in the Mondrian Schema (header and data cells)
-
-  * Resizing Columns - custom column sizes stored with reports, should be attached to a tuple (not positional) 
-
-  *Report level formatting - Ability to set font, font color, background color, border style at the cell, row or column (definitions should follow metadata - not be positional)&nbsp; 
-
-  * Selection Modes:  Individual member selection  Also select Children  Also select Level  Also select descendants  Also select ancestors  Also select bottom level 
-
-==Planned Functionality==
-  * Ability to be able to select individual properties instead of all or none(ask Daniel Einspanjer)
-
-  * Phantal 2) Add some more ways of interacting directly with the crosstab table. For example, I'm constantly running into situations where I say "Alright, I'm only interested in this day", so I either need to modify the query to filter only for that day, or I have to drag'n drop all other days off the grid 
-
-  * Phantal 3) I love the charting, but it'd be nice if they were more interactive, eg, the ability to drill down based on something visual. 
-
-  * Phantal 4) The treemap would be cool if it actually worked. 
-
-  * Phantal If it's ever made to function as a web applet or what-have-you, I'd really like to see hyperlinking capabilities added in 
-  
-  * Modular Pluggable Design
-
-  * Implement interfaces (connectionstring, mdx statement, ...) that enables a call from a xaction like jpivot
-
-  * Different Mode's (View only, user, admin)
-
-  * New Calculated Measures via GUI
-
-  * Save View as Xaction
-
-  * Show single records
-
-  * Export selection (including single records) (excel? html?)
-
-  * Show charts (pie, bar,..)
+==PAT 0.1==
+  * Fork and Mavenize Halogen
+  * Port it to GWT-EXT
+  * Get some ideas where PAT should head to
