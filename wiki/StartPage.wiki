@@ -5,7 +5,7 @@
 
 This Wiki shall give you all the information you need about PAT
 
-= News=
+== News==
 
 27/4/2009: PAT 0.2 Released.
 PAT 0.2 was released today you can find the release notes [http://pentahomusings.blogspot.com/2009/04/pat-02-arrives.html here]. To grab a copy head to the [http://code.google.com/p/pentahoanalysistool/downloads/list download] section.
