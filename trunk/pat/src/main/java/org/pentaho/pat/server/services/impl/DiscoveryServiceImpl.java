@@ -15,7 +15,7 @@ import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
-import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;

@@ -16,12 +16,12 @@ import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 
-import org.pentaho.pat.client.util.CellData;
-import org.pentaho.pat.client.util.CellInfo;
-import org.pentaho.pat.client.util.ColumnHeaders;
-import org.pentaho.pat.client.util.RowHeaders;
-import org.pentaho.pat.rpc.beans.OlapData;
-import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.rpc.dto.CellData;
+import org.pentaho.pat.rpc.dto.CellInfo;
+import org.pentaho.pat.rpc.dto.ColumnHeaders;
+import org.pentaho.pat.rpc.dto.OlapData;
+import org.pentaho.pat.rpc.dto.RowHeaders;
+import org.pentaho.pat.rpc.dto.StringTree;
 
 
 

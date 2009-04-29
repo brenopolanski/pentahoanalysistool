@@ -27,8 +27,8 @@ import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.beans.Axis;
-import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;

@@ -14,9 +14,10 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
+
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -26,6 +27,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author wseyler
  */
 public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/** The row header members. */
 	CellInfo[][] rowHeaderMembers;

@@ -1,7 +1,7 @@
 package org.pentaho.pat.server.servlet;
 
 import org.junit.Assert;
-import org.pentaho.pat.rpc.beans.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 
 
 /**

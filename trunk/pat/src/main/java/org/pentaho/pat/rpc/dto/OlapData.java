@@ -14,13 +14,10 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.rpc.beans;
+package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
-import org.pentaho.pat.client.util.CellData;
-import org.pentaho.pat.client.util.ColumnHeaders;
-import org.pentaho.pat.client.util.RowHeaders;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
