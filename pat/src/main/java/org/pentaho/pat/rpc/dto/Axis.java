@@ -1,4 +1,4 @@
-package org.pentaho.pat.rpc.beans;
+package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 

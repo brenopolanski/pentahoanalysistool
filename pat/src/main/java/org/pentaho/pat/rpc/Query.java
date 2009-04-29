@@ -2,8 +2,8 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.pentaho.pat.rpc.beans.Axis;
-import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 

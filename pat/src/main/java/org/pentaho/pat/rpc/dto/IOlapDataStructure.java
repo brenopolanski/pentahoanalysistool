@@ -14,7 +14,8 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.rpc.dto;
+
 
 /**
  * The Interface IOlapDataStructure.

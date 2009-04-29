@@ -17,7 +17,7 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;

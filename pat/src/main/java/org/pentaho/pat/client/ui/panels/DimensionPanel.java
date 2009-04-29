@@ -21,7 +21,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 

@@ -1,8 +1,8 @@
 package org.pentaho.pat.rpc;
 
 
-import org.pentaho.pat.rpc.beans.Axis;
-import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 

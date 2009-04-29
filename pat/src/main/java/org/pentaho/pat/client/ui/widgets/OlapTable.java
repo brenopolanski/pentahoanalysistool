@@ -20,10 +20,10 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.Iterator;
 
 import org.pentaho.pat.client.i18n.PatMessages;
-import org.pentaho.pat.client.util.CellInfo;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.OlapUtils;
-import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.dto.CellInfo;
+import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;

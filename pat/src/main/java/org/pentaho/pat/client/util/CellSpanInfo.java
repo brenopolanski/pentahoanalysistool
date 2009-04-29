@@ -1,5 +1,7 @@
 package org.pentaho.pat.client.util;
 
+import org.pentaho.pat.rpc.dto.CellInfo;
+
 /**
  * The Class CellSpanInfo.
  */

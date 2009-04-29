@@ -23,8 +23,8 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.beans.CubeConnection;
-import org.pentaho.pat.rpc.beans.CubeConnection.ConnectionType;
+import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;

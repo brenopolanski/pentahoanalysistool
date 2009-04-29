@@ -19,8 +19,8 @@ import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.beans.Axis;
-import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;

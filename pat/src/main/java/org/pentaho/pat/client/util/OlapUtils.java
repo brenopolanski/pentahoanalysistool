@@ -3,6 +3,8 @@ package org.pentaho.pat.client.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.pat.rpc.dto.CellInfo;
+
 /**
  * The Class OlapUtils.
  */

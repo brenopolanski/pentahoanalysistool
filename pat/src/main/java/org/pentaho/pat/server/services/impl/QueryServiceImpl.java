@@ -11,7 +11,7 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
-import org.pentaho.pat.rpc.beans.OlapData;
+import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;

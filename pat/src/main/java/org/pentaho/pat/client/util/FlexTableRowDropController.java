@@ -12,7 +12,7 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.rpc.beans.Axis;
+import org.pentaho.pat.rpc.dto.Axis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
@@ -66,7 +66,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 	private int targetRow;
 
 	/** The Drop Axis. */
-	private org.pentaho.pat.rpc.beans.Axis targetAxis;
+	private org.pentaho.pat.rpc.dto.Axis targetAxis;
 
 	/**
 	 * Constructor.

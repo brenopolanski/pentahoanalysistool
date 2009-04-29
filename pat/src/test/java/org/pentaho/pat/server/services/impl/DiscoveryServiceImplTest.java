@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.client.i18n.PatConstants;
-import org.pentaho.pat.rpc.beans.StringTree;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 

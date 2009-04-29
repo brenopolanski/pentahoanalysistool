@@ -14,7 +14,7 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
@@ -26,6 +26,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author wseyler
  */
 public class CellInfo implements Serializable, IsSerializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/** The formatted value. */
 	String formattedValue;
