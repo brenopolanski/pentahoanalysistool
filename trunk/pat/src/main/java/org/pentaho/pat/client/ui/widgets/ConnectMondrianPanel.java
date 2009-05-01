@@ -219,7 +219,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 						schemaPath = tmp;
 						connectButton.setEnabled(true);
 						// TODO remove this later
-						MessageBox.info("File uploaded", tmp); //$NON-NLS-1$
+						MessageBox.info("File uploaded", "Success"); //$NON-NLS-1$
 					} else {
 						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadfailed());
 					}
