@@ -31,7 +31,7 @@
                 <!-- You can put it in the HEAD, but startup    -->
                 <!-- is slightly faster if you include it here. -->
                 <!--                                            -->
-                <script language="javascript" src="org.pentaho.pat.Pat.nocache.js"></script>
+                <script language="javascript" src="pat.nocache.js"></script>
 
                 <!-- OPTIONAL: include this if you want history support -->
         <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'

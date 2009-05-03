@@ -7,7 +7,7 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-        <prop key="/org.pentaho.pat.Pat/schemaupload">fileUploadController</prop>
+        <prop key="/pat/schemaupload">fileUploadController</prop>
 			</props>
 		</property>
 	</bean>
