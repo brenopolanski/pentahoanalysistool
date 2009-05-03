@@ -94,19 +94,19 @@
 
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/org.pentaho.pat.Pat/schemaupload</url-pattern>
+    <url-pattern>/pat/schemaupload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>SessionServlet</servlet-name>
-    <url-pattern>/org.pentaho.pat.Pat/session.rpc</url-pattern>
+    <url-pattern>/pat/session.rpc</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>QueryServlet</servlet-name>
-    <url-pattern>/org.pentaho.pat.Pat/query.rpc</url-pattern>
+    <url-pattern>/pat/query.rpc</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DiscoveryServlet</servlet-name>
-    <url-pattern>/org.pentaho.pat.Pat/discovery.rpc</url-pattern>
+    <url-pattern>/pat/discovery.rpc</url-pattern>
   </servlet-mapping>
 
   

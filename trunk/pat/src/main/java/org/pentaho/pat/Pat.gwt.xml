@@ -1,4 +1,4 @@
-<module>
+<module rename-to='pat'>
 <!-- Inherit Mosaic Web Toolkit stuff.                          -->
 	<inherits name='org.gwt.mosaic.Mosaic' />
 	<inherits name='org.gwt.mosaic.actions.Actions' />
