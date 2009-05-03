@@ -268,7 +268,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 					public void onSuccess(final Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
-						GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionMade(ConnectMondrianPanel.this);
+						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
 					}
 				});
 			}
