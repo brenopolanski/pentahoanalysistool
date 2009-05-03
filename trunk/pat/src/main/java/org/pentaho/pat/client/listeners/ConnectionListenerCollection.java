@@ -23,8 +23,9 @@ import com.google.gwt.user.client.ui.Widget;
  * subclass of {@link ArrayList} assumes that all objects added to it will be of
  * type {@link org.pentaho.pat.client.listeners.ConnectionListener}.
  */
-public class ConnectionListenerCollection extends ArrayList {
+public class ConnectionListenerCollection extends ArrayList<ConnectionListener> {
 
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Fire connection broken.
 	 * 

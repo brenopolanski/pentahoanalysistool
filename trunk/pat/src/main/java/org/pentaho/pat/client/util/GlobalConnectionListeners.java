@@ -25,7 +25,7 @@ import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 public class GlobalConnectionListeners implements SourcesConnectionEvents  {
 
 	/** ConnectionListenerCollection Object. */
-	public static ConnectionListenerCollection connectionListeners;
+	private static ConnectionListenerCollection connectionListeners;
 	
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
@@ -51,6 +51,15 @@ public class GlobalConnectionListeners implements SourcesConnectionEvents  {
 		if (connectionListeners != null) {
 			connectionListeners.remove(listener);
 		}
+	}
+
+	public static ConnectionListenerCollection getConnectionListeners() {
+		return connectionListeners;
+	}
+
+	public static void setConnectionListeners(
+			ConnectionListenerCollection connectionListeners) {
+		GlobalConnectionListeners.connectionListeners = connectionListeners;
 	}
 
 	

@@ -24,7 +24,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class GlobalConnectionFactory {
 
-	public static GlobalConnectionListeners gcl;
+	private static GlobalConnectionListeners gcl;
 	
 	public static GlobalConnectionListeners getInstance() {
 		if (gcl == null) {

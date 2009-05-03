@@ -19,9 +19,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
-import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -170,7 +167,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 					public void onSuccess(final Object o) {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
 						setConnectionEstablished(true);
-						GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionMade(ConnectXmlaPanel.this);
+						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectXmlaPanel.this);
 					}
 				});
 			}

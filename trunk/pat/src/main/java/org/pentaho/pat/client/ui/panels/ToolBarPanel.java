@@ -117,7 +117,7 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 
 						public void onSuccess(final Object o) {
 							setConnectionEstablished(false);
-							GlobalConnectionFactory.getInstance().connectionListeners.fireConnectionBroken(ToolBarPanel.this);
+							GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionBroken(ToolBarPanel.this);
 						}
 					});
 				}
