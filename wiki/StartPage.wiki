@@ -14,5 +14,3 @@ This wiki is source of information for users and developers of PAT.
 _PAT 0.2 was released today._
 
 You can find the release notes [http://pentahomusings.blogspot.com/2009/04/pat-02-arrives.html here]. To grab a copy head to the [http://code.google.com/p/pentahoanalysistool/downloads/list download] section.
-
-=== Getting Started ==
