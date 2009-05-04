@@ -1,6 +1,8 @@
 #sidebar TableOfContents
 * [StartPage Home]
 
+* [GettingStarted Getting Started]
+
 * [Goals PAT Roadmap]
 
 * [BuildFromSVN Build from SVN]
