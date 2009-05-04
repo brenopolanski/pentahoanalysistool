@@ -1,13 +1,10 @@
 #summary Getting started
 
-= Introduction =
+== Introduction ==
 
-Add your content here.
+Here are guides to getting started with PAT (Pentaho Analysis Tool) if you are either a user or developer.
 
+=== Users ===
 
-= Details =
+* Deploy with Tomcat (New & Existing)
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
