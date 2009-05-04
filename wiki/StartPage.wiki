@@ -1,5 +1,5 @@
+#summary PAT Wiki Welcome Page
 #labels Featured
-##PAT Wiki Welcome Page
 
 = Home =
 
