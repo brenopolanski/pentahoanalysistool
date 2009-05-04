@@ -1,13 +1,17 @@
 #summary PAT Wiki Welcome Page
 #labels Featured
 
-=== Introduction ===
+== Introduction ==
 
 Welcome to the PAT (Pentaho Analysis Tool) Wiki!
 
 This wiki is source of information for users and developers of PAT.
 
-=== Latest News ===
+== What Is PAT? ==
+
+What we aim to create is a GWT based analysis tool designed to replace JPivot and work along side the Pentaho suite, giving end users better control of their data.
+
+== Latest News ==
 
 *27/4/2009 - PAT 0.2 Released*
 
