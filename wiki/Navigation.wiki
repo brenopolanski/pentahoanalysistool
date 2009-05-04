@@ -3,6 +3,10 @@
 
 * [GettingStarted Getting Started]
 
+  * [GettingStartedUsers Users]
+
+  * [GettingStartedDevelopers Developers]
+
 * [Goals PAT Roadmap]
 
 * [BuildFromSVN Build from SVN]
