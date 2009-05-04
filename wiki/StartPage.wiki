@@ -7,9 +7,9 @@ This wiki is source of information for users and developers of PAT.
 
 === Latest News ===
 
-27/4/2009 - _PAT 0.2 Released_
+*27/4/2009 - PAT 0.2 Released*
 
-PAT 0.2 was released today.
+_PAT 0.2 was released today._
 
 You can find the release notes [http://pentahomusings.blogspot.com/2009/04/pat-02-arrives.html here]. To grab a copy head to the [http://code.google.com/p/pentahoanalysistool/downloads/list download] section.
 
