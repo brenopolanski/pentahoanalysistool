@@ -1,7 +1,7 @@
 #summary PAT Wiki Welcome Page
 #labels Featured
 
-== Introduction ==
+=== Introduction ===
 
 Welcome to the PAT (Pentaho Analysis Tool) Wiki!
 
