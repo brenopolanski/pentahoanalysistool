@@ -258,9 +258,10 @@ public class Application extends Viewport { // NOPMD
      *
      * @return the widgets preferred size
      */
-    public final int[] getPreferredSize() {
-	return getWidget().getPreferredSize();
-    }
+    // TODO what was this good for?
+    //public final int[] getPreferredSize() {
+//	return getWidget().getPreferredSize();
+//    }
 
     /**
      * Gets the title widget.
@@ -281,9 +282,10 @@ public class Application extends Viewport { // NOPMD
      *
      * @return the widget.
      */
+    // TODO is it ok to cast to LayoutPanel here?
     @Override
     protected final LayoutPanel getWidget() {
-	return super.getWidget();
+    	return (LayoutPanel)super.getWidget();
     }
     
     /**
