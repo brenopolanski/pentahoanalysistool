@@ -1,13 +1,46 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+= PAT Hosted Demo =
 
-Add your content here.
+You can run the PAT hosted demo for both Linux and Windows, below are the relative guides for each operating system.
 
+== Linux ==
 
-= Details =
+First create a working directory to extract the hosted demo:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+{{{
+  user@term:~# sudo mkdir tmp/
+  user@term:~# cd tmp/
+  user@term:/tmp#
+}}}
+
+Then download the PentahoAnalysisTool-0.2-Linux.tar.gz file from the [http://code.google.com/p/pentahoanalysistool/downloads/list downloads] area or download it directly into your working directory:
+
+{{{
+  user@term:/tmp# sudo wget http://pentahoanalysistool.googlecode.com/files/PentahoAnalysisTool-0.2-Linux.tar.gz
+}}}
+
+After you have downloaded the file, extract the file:
+
+{{{
+  user@term:/tmp# sudo tar -xvzf http://pentahoanalysistool.googlecode.com/files/PentahoAnalysisTool-0.2-Linux.tar.gz
+}}}
+
+Once that has extracted succesfully enter the PentahoAnalysisTool/ directory and run the start.sh command:
+
+{{{
+  user@term:/tmp# cd PentahoAnalysisTool
+  user@term:/tmp/PentahoAnalysisTool# sh ./start.sh
+}}}
+
+Navigate the following URL in your browser to view the demo:
+
+{{{
+  http://localhost:8080/
+}}}
+or
+{{{ 
+  http://your_ip_address:8080/
+}}}
+
+When prompted to login use the username *admin* and the password *admin*. 
