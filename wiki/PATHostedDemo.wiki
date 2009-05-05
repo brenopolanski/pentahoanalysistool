@@ -4,6 +4,8 @@
 
 You can run the PAT hosted demo for both Linux and Windows, below are the relative guides for each operating system.
 
+At the moment the hosted demo comes pre-configured with hsqldb.
+
 == Linux ==
 
 First create a working directory to extract the hosted demo:
