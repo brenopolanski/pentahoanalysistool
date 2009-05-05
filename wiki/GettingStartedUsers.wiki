@@ -1,0 +1,10 @@
+#summary Getting Started For Users
+
+== Introduction ==
+
+Below are different methods on how a User can deploy PAT (Pentaho Analysis Tool) 0.2 alpha.
+
+
+=== Methods ===
+
+  * Deploying with Tomcat 6.x (Windows & Linux)
