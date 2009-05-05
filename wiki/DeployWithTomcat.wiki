@@ -54,4 +54,30 @@ This should extract succesfully and an apache-tomcat-6.0.18/ directory will be c
   mv apache-tomcat-6.0.18 tomcat
 }}}
 
-=== Deploying The PAT 0.2 WAR ===
+=== Deploying The Latest PAT WAR ===
+
+Navigate to your webapps directory within your tomcat installation directory:
+
+{{{
+  cd /opt/tomcat/webapps/
+}}}
+
+Once in the webapps directory you will need to download the latest PAT WAR file (latest version 0.2). You can do this either by downloading the file directly from the [http://code.google.com/p/pentahoanalysistool/downloads/list downloads]] section or typing the following command while still in the webapps directory:
+
+{{{
+  sudo wget http://pentahoanalysistool.googlecode.com/files/pat-0.2.0-GA.war
+}}}
+
+You will now need to start Tomcat, navigate to the bin directory within your Tomcat directory:
+
+{{{
+  cd /opt/tomcat/bin
+}}}
+
+Then run the startup.sh file:
+
+{{{
+  sh ./startup.sh
+}}}
+
+After running this command Tomcat will create a 
