@@ -2,7 +2,7 @@
 * [StartPage Home]
 
 * [GettingStartedUsers Getting Started - Users]
-  * [PATHostedDemo Deploying Hosted Demo]
+  * [PATHostedDemo Deploying the Hosted Demo]
   * [DeployWithTomcat Deploying with Tomcat 6.x]
 
 * [GettingStartedDevelopers Getting Started - Developers]
