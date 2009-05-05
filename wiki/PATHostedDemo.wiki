@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Deploying the PAT Hosted Demo
 
 = Deploying the Hosted Demo =
 
