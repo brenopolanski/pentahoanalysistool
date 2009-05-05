@@ -19,13 +19,13 @@ Tomcat will need two enviroment variables setup before it can start succesfully.
 *JAVA_HOME*
 
 {{{
-  user@term:~# export JAVA_HOME=
+  user@term:~# export JAVA_HOME=your_java_installation_directory
 }}}
 
 *JAVA_OPTS*
 
 {{{
-  user@term:~# export JAVA_OPTS=
+  user@term:~# export JAVA_OPTS=-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m
 }}}
 
 === Installing Tomcat 6.X ===
