@@ -1,10 +1,11 @@
-* [StartPage Home]
+  * [StartPage ↑ Home]
+  * Getting Started
+    * [GettingStartedUsers Users]
+      * [PATHostedDemo Deploying the Hosted Demo]
+      * [DeployWithTomcat Deploying with Tomcat 6.x]
+    * [GettingStartedDevelopers Developers]
 
-* [GettingStartedUsers Getting Started - Users]
-  * [PATHostedDemo Deploying the Hosted Demo]
-  * [DeployWithTomcat Deploying with Tomcat 6.x]
 
-* [GettingStartedDevelopers Getting Started - Developers]
 
 * [Goals PAT Roadmap]
 
