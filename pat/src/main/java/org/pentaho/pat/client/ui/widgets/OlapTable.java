@@ -27,6 +27,7 @@ import org.pentaho.pat.client.util.OlapUtils;
 import org.pentaho.pat.rpc.dto.CellInfo;
 import org.pentaho.pat.rpc.dto.OlapData;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -116,11 +117,14 @@ public class OlapTable extends SimplePanel {
     }  
   }
 
-/* protected void removeAllRows() {
-    while (this.getRowCount() > 0) {
-      this.removeRow(0);
+ protected void removeAllRows() {
+    while (dataTable.getRowCount() > 0) {
+      dataTable.removeRow(0);
     }
-  }*/
+    while (headerTable.getRowCount()>0){
+	headerTable.removeRow(0);
+    }
+  }
  
 
   
@@ -141,11 +145,11 @@ protected void createColumnHeaders() {
         Iterator iter = OlapUtils.getCellSpans(OlapUtils.extractRow(headerData, row)).iterator();
         while (iter.hasNext()) {
                 CellSpanInfo spanInfo = (CellSpanInfo) iter.next();
-           //     Label label = new Label(spanInfo.getInfo().getFormattedValue());
-           //     label.addStyleName(OLAP_COL_HEADER_LABEL);
-                headerTable.setHTML(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), spanInfo.getInfo().getFormattedValue());
-         //       headerFormatter.addStyleName(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), OLAP_COL_HEADER_CELL);
-         //       headerFormatter.setColSpan(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), spanInfo.getSpan());
+                Label label = new Label(spanInfo.getInfo().getFormattedValue());
+                label.addStyleName(OLAP_COL_HEADER_LABEL);
+                headerTable.setWidget(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), label);
+                headerFormatter.addStyleName(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), OLAP_COL_HEADER_CELL);
+                headerFormatter.setColSpan(row, currentColumn + olapData.getRowHeaders().getAcrossCount(), spanInfo.getSpan());
                 currentColumn ++;
         }
       }
@@ -154,11 +158,11 @@ protected void createColumnHeaders() {
         for (int column=0; column<headerData[row].length; column++) {
                 CellInfo cellInfo = headerData[row][column];
                 if (cellInfo != null) {
-           //             Label label = new Label(cellInfo.getFormattedValue());
-           //             label.addStyleName(OLAP_COL_HEADER_LABEL);
-           //             headerFormatter.addStyleName(row, showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, OLAP_COL_HEADER_CELL);
+                        Label label = new Label(cellInfo.getFormattedValue());
+                        label.addStyleName(OLAP_COL_HEADER_LABEL);
+                        headerFormatter.addStyleName(row, showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, OLAP_COL_HEADER_CELL);
                         // aki tinha +1 antes do label (em cima tbm, no correspondente)
-                        headerTable.setHTML(row, showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, cellInfo.getFormattedValue());
+                        headerTable.setWidget(row, showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, label);
                 }
         }
       }
@@ -200,8 +204,8 @@ protected void createColumnHeaders() {
                                 actualRow--;
                         CellSpanInfo spanInfo = (CellSpanInfo) iter.next();
                         //Prepares the label
-                      //  Label label = new Label(spanInfo.getInfo().getFormattedValue());
-                      //  label.addStyleName(OLAP_ROW_HEADER_LABEL);
+                        Label label = new Label(spanInfo.getInfo().getFormattedValue());
+                        label.addStyleName(OLAP_ROW_HEADER_LABEL);
 
                         int newColumn = offset;
                         matrix[columnHeadersHeight + actualRow][column] = USED;
@@ -211,8 +215,8 @@ protected void createColumnHeaders() {
                                         newColumn - getSpanInRow(matrix, columnHeadersHeight +actualRow), spanInfo.getSpan());*/
                      //   cellFormatter.addStyleName(columnHeadersHeight + actualRow ,
                      //                   newColumn - getSpanInRow(matrix, columnHeadersHeight +actualRow), OLAP_ROW_HEADER_CELL);
-                        dataTable.setHTML (columnHeadersHeight + actualRow ,
-                                        newColumn - getSpanInRow(matrix, columnHeadersHeight + actualRow), spanInfo.getInfo().getFormattedValue());
+                        dataTable.setWidget (columnHeadersHeight + actualRow ,
+                                        newColumn - getSpanInRow(matrix, columnHeadersHeight + actualRow), label);
                        
                         actualRow+=spanInfo.getSpan();
                        
@@ -231,13 +235,13 @@ protected void createColumnHeaders() {
                 for (int column=0; column<headerData[row].length; column++) {
                         CellInfo cellInfo = headerData[row][column];
                         if (cellInfo != null) {
-                             //   Label label = new Label(cellInfo.getFormattedValue());
-                             //   label.addStyleName(OLAP_ROW_HEADER_CELL);
+                                Label label = new Label(cellInfo.getFormattedValue());
+                                label.addStyleName(OLAP_ROW_HEADER_CELL);
                              //   cellFormatter.addStyleName(row + rowAddition,
                              //                   showParentMembers ? column : column, OLAP_ROW_HEADER_CELL);
                                                 //showParentMembers ? column + olapData.getRowHeaders().getAcrossCount() : column + 1, OLAP_COL_HEADER_CELL);
-                                dataTable.setHTML(row + rowAddition,
-                                                showParentMembers ? column : column, cellInfo.getFormattedValue());
+                                dataTable.setWidget(row + rowAddition,
+                                                showParentMembers ? column : column, label);
                         }
                 }
          }//for
@@ -270,13 +274,13 @@ protected void createColumnHeaders() {
                 CellInfo cellInfo = olapData.getCellData().getCell(row, column);
                 if (cellInfo != null) {
                         Label label = new Label(cellInfo.getFormattedValue());
-             //   label.addStyleName("olap-cell-label"); //$NON-NLS-1$
-            //    String colorValueStr = cellInfo.getColorValue();
-            //    if (colorValueStr != null) {
-            //      DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-            //    }
-            //    label.addClickListener(new ClickCellCommand());
-                dataTable.setHTML(showParentMembers ? row/* + olapData.getColumnHeaders().getDownCount()*/ : row + 1, showParentMembers ? getFirstUnusedColumnForRow(row /*+ olapData.getColumnHeaders().getDownCount()*/)/*column + olapData.getRowHeaders().getAcrossCount() */: column + 1, cellInfo.getFormattedValue());
+                label.addStyleName("olap-cell-label"); //$NON-NLS-1$
+                String colorValueStr = cellInfo.getColorValue();
+                if (colorValueStr != null) {
+                  DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                }
+                label.addClickListener(new ClickCellCommand());
+                dataTable.setWidget(showParentMembers ? row/* + olapData.getColumnHeaders().getDownCount()*/ : row + 1, showParentMembers ? getFirstUnusedColumnForRow(row /*+ olapData.getColumnHeaders().getDownCount()*/)/*column + olapData.getRowHeaders().getAcrossCount() */: column + 1, label);
                 }
         }
     }  
