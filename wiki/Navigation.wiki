@@ -3,6 +3,8 @@
 
 * [GettingStarted Getting Started]
 
+  * [DeployWithTomcat Deploying with Tomcat 6.x]
+
 * [Goals PAT Roadmap]
 
 * [BuildFromSVN Build from SVN]
