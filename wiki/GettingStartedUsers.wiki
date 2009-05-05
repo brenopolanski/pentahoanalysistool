@@ -8,3 +8,4 @@ Below are different methods on how a User can deploy PAT (Pentaho Analysis Tool)
 === Methods ===
 
   * [DeployWithTomcat Deploying with Tomcat 6.x (Windows & Linux)]
+  * [PATHostedDemo Deploying the Hosted Demo (Windows & Linux)]
