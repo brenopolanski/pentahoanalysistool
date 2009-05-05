@@ -11,7 +11,7 @@ Below are guides on how to deploy PAT with Tomcat 6.X on Linux and Windows.
 If you don't currently have Tomcat installed you will need to get the latest Java JDK, you can do this from the terminal prompt by running a command similar to below depending on your Linux distribution:
 
 {{{
-  sudo apt-get install sun-java6-jdk sun-java6-jre
+  user@term:~# sudo apt-get install sun-java6-jdk sun-java6-jre
 }}}
 
 Tomcat will need two enviroment variables setup before it can start succesfully. You can either run these from the terminal prompt (once off) or add them to your Linux's startup script.
@@ -19,13 +19,13 @@ Tomcat will need two enviroment variables setup before it can start succesfully.
 *JAVA_HOME*
 
 {{{
-  export JAVA_HOME=
+  user@term:~# export JAVA_HOME=
 }}}
 
 *JAVA_OPTS*
 
 {{{
-  export JAVA_OPTS=
+  user@term:~# export JAVA_OPTS=
 }}}
 
 === Installing Tomcat 6.X ===
@@ -35,25 +35,26 @@ If you already have Tomcat running you can skip this step.
 Pick a place to extract Tomcat 6.X, for this tutorial I will be extracting it to my opt/ directory. Navigate to your opts directory from the terminal prompt:
 
 {{{
-  cd /opt/
+  user@term:~# cd /opt/
+  user@term:/opt#
 }}}
 
 Once in the opt/ directory run the following command at your terminal prompt to get the Tomcat 6.X .tar.gz file (latest tomcat version as of this wiki entry is 6.0.18):
 
 {{{
-  sudo wget http://apache.mirror.aussiehq.net.au/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.tar.gz
+  user@term:/opt# sudo wget http://apache.mirror.aussiehq.net.au/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.tar.gz
 }}}
 
 Once that has downloaded, at your terminal prompt extract it by running the following command:
 
 {{{
-  sudo tar -xvzf apache-tomcat-6.0.18.tar.gz
+  user@term:/opt# sudo tar -xvzf apache-tomcat-6.0.18.tar.gz
 }}}
 
 This should extract succesfully and an apache-tomcat-6.0.18/ directory will be created. To make things simplier rename the directory to tomcat:
 
 {{{
-  mv apache-tomcat-6.0.18 tomcat
+  user@term:/opt# mv apache-tomcat-6.0.18 tomcat
 }}}
 
 === Deploying The Latest PAT WAR ===
@@ -61,25 +62,26 @@ This should extract succesfully and an apache-tomcat-6.0.18/ directory will be c
 Navigate to your webapps directory within your tomcat installation directory:
 
 {{{
-  cd /opt/tomcat/webapps/
+  user@term:/opt# cd tomcat/webapps/
+  user@term:/opt/tomcat/webapps#
 }}}
 
 Once in the webapps directory you will need to download the latest PAT WAR file (latest version 0.2). You can do this either by downloading the file directly from the [http://code.google.com/p/pentahoanalysistool/downloads/list downloads]] section or typing the following command while still in the webapps directory:
 
 {{{
-  sudo wget http://pentahoanalysistool.googlecode.com/files/pat-0.2.0-GA.war
+  user@term:/opt/tomcat/webapps# sudo wget http://pentahoanalysistool.googlecode.com/files/pat-0.2.0-GA.war
 }}}
 
 You will now need to start Tomcat, navigate to the bin directory within your Tomcat directory:
 
 {{{
-  cd /opt/tomcat/bin
+  user@term:/opt/tomcat/webapps# cd /opt/tomcat/bin
 }}}
 
 Then run the startup.sh file:
 
 {{{
-  sh ./startup.sh
+  user@term:/opt/tomcat/bin# sh ./startup.sh
 }}}
 
 After running this command Tomcat will create a pat-0.2.0-GA/ directory under your webapps/ directory.
