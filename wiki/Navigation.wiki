@@ -4,20 +4,11 @@
       * [PATHostedDemo Deploying the Hosted Demo]
       * [DeployWithTomcat Deploying with Tomcat 6.x]
     * [GettingStartedDevelopers Developers]
-
-
-
-* [Goals PAT Roadmap]
-
-* [BuildFromSVN Build from SVN]
-
-* [MavenGoals Maven Build Goals]
-
-* [Architecture PAT Architecture]
-  * [FrontendBackendInterface Frontend/Backend Communication]
-
-* [Lifecycle Usage/Lifecycle]
-
-* [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
-
-* [ContactUs Contact Us]
+    * [Goals PAT Roadmap]
+    * [BuildFromSVN Build from SVN]
+    * [MavenGoals Maven Build Goals]
+    * [Architecture PAT Architecture]
+      * [FrontendBackendInterface Frontend/Backend Communication]
+    * [Lifecycle Usage/Lifecycle]
+    * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
+    * [ContactUs Contact Us]
