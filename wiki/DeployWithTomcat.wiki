@@ -1,3 +1,57 @@
-#summary Deploying PAT With Tomcat 6.X
+#summary Deploying PAT 0.2a With Tomcat 6.X
 
-Add your content here.
+Below are guides on how to deploy PAT with Tomcat 6.X on Linux or Windows.
+
+== Linux ==
+
+=== Before You Start ===
+
+If you don't currently have Tomcat installed you will need to get the latest Java JDK, you can do this from the terminal prompt by running a command similar to below depending on your Linux distribution:
+
+{{{
+  sudo apt-get install sun-java6-jdk sun-java6-jre
+}}}
+
+Tomcat will need two enviroment variables setup before it can start succesfully. You can either run these from the terminal prompt (once off) or add them to your Linux's startup script.
+
+*JAVA_HOME*
+
+{{{
+  export JAVA_HOME=
+}}}
+
+*JAVA_OPTS*
+
+{{{
+  export JAVA_OPTS=
+}}}
+
+=== Installing Tomcat 6.X ===
+
+If you already have Tomcat running you can skip this step.
+
+Pick a place to extract Tomcat 6.X, for this tutorial I will be extracting it to my opt/ directory. Navigate to your opts directory from the terminal prompt:
+
+{{{
+  cd /opt/
+}}}
+
+Once in the opt/ directory run the following command at your terminal prompt to get the Tomcat 6.X .tar.gz file (latest tomcat version as of this wiki entry is 6.0.18):
+
+{{{
+  sudo wget http://apache.mirror.aussiehq.net.au/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.tar.gz
+}}}
+
+Once that has downloaded, at your terminal prompt extract it by running the following command:
+
+{{{
+  sudo tar -xvzf apache-tomcat-6.0.18.tar.gz
+}}}
+
+This should extract succesfully and an apache-tomcat-6.0.18/ directory will be created. To make things simplier rename the directory to tomcat:
+
+{{{
+  mv apache-tomcat-6.0.18 tomcat
+}}}
+
+=== Deploying The PAT 0.2 WAR ===
