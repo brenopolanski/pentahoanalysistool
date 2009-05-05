@@ -80,4 +80,16 @@ Then run the startup.sh file:
   sh ./startup.sh
 }}}
 
-After running this command Tomcat will create a 
+After running this command Tomcat will create a pat-0.2.0-GA/ directory under your webapps/ directory.
+
+Open up your browser and navigate to the following address:
+
+{{{
+  http://localhost:8080/pat-0.2.0-GA/
+}}}
+or
+{{{
+  http://ip_address:8080/pat-0.2.0-GA
+}}}
+
+When prompted to login use the username *admin* and the password *admin*.
