@@ -1,5 +1,7 @@
 #summary Deploying PAT 0.2a With Tomcat 6.X
 
+= Deploying With Tomcat 6.X =
+
 Below are guides on how to deploy PAT with Tomcat 6.X on Linux and Windows.
 
 == Linux ==
