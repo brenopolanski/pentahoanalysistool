@@ -1,6 +1,6 @@
 #summary Deploying PAT 0.2a With Tomcat 6.X
 
-Below are guides on how to deploy PAT with Tomcat 6.X on Linux or Windows.
+Below are guides on how to deploy PAT with Tomcat 6.X on Linux and Windows.
 
 == Linux ==
 
@@ -93,3 +93,7 @@ or
 }}}
 
 When prompted to login use the username *admin* and the password *admin*.
+
+== Windows ==
+
+To be done.
