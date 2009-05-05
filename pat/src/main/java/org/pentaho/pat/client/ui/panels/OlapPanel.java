@@ -23,6 +23,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -97,7 +98,8 @@ public class OlapPanel extends DataWidget {
 			}
 
 			public void onSuccess(final Object result1) {
-				olapTable.setData((OlapData)result1);
+			   // olapTable.layout(true);
+			    olapTable.setData((OlapData)result1);
 				//doCreateChart();
 			}
 
@@ -206,6 +208,8 @@ public class OlapPanel extends DataWidget {
 		DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
 		filterDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(3, 0, filterDimDrop);
+		olapTable.setWidth("100%");
+		olapTable.setHeight("100%");
 		grid.setWidget(0, 1, olapTable);
 		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
 		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
