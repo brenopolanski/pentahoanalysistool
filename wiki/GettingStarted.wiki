@@ -6,6 +6,6 @@ Here are guides to getting started with PAT (Pentaho Analysis Tool) if you are e
 
 === Users ===
 
-* Deploying with a new or existing Tomcat installation
+  * Deploying with a new or existing Tomcat installation
 
 === Developers ===
