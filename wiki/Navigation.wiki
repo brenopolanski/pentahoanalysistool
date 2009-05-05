@@ -3,8 +3,8 @@
 
 * Getting Started
  * [GettingStartedUsers Users]
-   * [PATHostedDemo Deploying the Hosted Demo]
-   * [DeployWithTomcat Deploying with Tomcat 6.x]
+     * [PATHostedDemo Deploying the Hosted Demo]
+     * [DeployWithTomcat Deploying with Tomcat 6.x]
  * [GettingStartedDevelopers Developers]
 
 * [Goals PAT Roadmap]
