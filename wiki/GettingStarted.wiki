@@ -6,4 +6,4 @@ Here are guides to getting started with PAT (Pentaho Analysis Tool) if you are e
 
 === Users ===
 
-# [Deploy with Tomcat (New & Existing)]
+=== Developers ===
