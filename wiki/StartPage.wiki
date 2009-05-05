@@ -1,11 +1,11 @@
-#summary PAT Wiki Welcome Page
+#summary Welcome to the Pentaho Analysis Wiki
 #labels Featured
 
 == Introduction ==
 
-Welcome to the PAT (Pentaho Analysis Tool) Wiki!
+Welcome to the Pentaho Analysis Tool (PAT) Wiki!
 
-This wiki is source of information for users and developers of PAT. Use the sidebar on the left to navigate.
+This wiki is source of information for users and developers of PAT.
 
 == Latest News ==
 
