@@ -1,26 +1,14 @@
 #sidebar TableOfContents
 * [StartPage Home]
-
 * [GettingStartedUsers Getting Started - Users]
-
   * [PATHostedDemo PAT Hosted Demo]
-
   * [DeployWithTomcat Deploying with Tomcat 6.x]
-
 * [GettingStartedDevelopers Getting Started - Developers]
-
 * [Goals PAT Roadmap]
-
 * [BuildFromSVN Build from SVN]
-
 * [MavenGoals Maven Build Goals]
-
 * [Architecture PAT Architecture]
-
   * [FrontendBackendInterface Frontend/Backend Communication]
-
 * [Lifecycle Usage/Lifecycle]
-
 * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
-
 * [ContactUs Get in Contact]
