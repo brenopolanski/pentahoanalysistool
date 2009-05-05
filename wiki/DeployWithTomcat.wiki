@@ -3,7 +3,7 @@
 Below are guides on how to deploy PAT with Tomcat 6.X on Linux or Windows.
 
 == Linux ==
-----
+
 === Before You Start ===
 
 If you don't currently have Tomcat installed you will need to get the latest Java JDK, you can do this from the terminal prompt by running a command similar to below depending on your Linux distribution:
