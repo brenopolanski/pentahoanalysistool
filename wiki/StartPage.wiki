@@ -5,7 +5,7 @@
 
 Welcome to the PAT (Pentaho Analysis Tool) Wiki!
 
-This wiki is source of information for users and developers of PAT.
+This wiki is source of information for users and developers of PAT. Use the sidebar on the left to navigate.
 
 == Latest News ==
 
