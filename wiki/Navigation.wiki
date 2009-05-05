@@ -3,6 +3,8 @@
 
 * [GettingStartedUsers Getting Started - Users]
 
+  * [PATHostedDemo PAT Hosted Demo (Linux)]
+
   * [DeployWithTomcat Deploying with Tomcat 6.x]
 
 * [GettingStartedDevelopers Getting Started - Developers]
