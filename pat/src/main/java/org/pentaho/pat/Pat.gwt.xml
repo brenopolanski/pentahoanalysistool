@@ -30,7 +30,7 @@
   
   <!--<inherits name='org.gwt.mosaic.actions.Actions' />-->
   <stylesheet src='halogen.css' />
-  <stylesheet src="gwt/standard/Mosaic.css" />
+  
      
 	
 	<stylesheet src='widgets.css' />

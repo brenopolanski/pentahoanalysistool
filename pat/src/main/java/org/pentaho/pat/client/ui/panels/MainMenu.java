@@ -216,7 +216,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 
 					// Show the associated ContentWidget
 					displayContentWidget(ITEMWIDGETS.get(item));
-					Application.getContentWrapper().layout(true);
+					Application.getContentWrapper().layout();
 
 				}
 			}
