@@ -1,9 +1,11 @@
 #sidebar TableOfContents
 * [StartPage Home]
 
-* [GettingStarted Getting Started]
+* [GettingStartedUsers Getting Started - Users]
 
   * [DeployWithTomcat Deploying with Tomcat 6.x]
+
+* [GettingStartedDevelopers Getting Started - Developers]
 
 * [Goals PAT Roadmap]
 
