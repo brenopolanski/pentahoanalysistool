@@ -2,10 +2,8 @@
 
   * [StartPage ↑ Home]
   * Getting Started
-    * [GettingStartedUsers Users]
-      * [PATHostedDemo Hosted Demo]
-      * [DeployWithTomcat With Tomcat 6.x]
-    * [GettingStartedDevelopers Developers]
+    * [GettingStartedUsers For Users]
+    * [GettingStartedDevelopers For Developers]
   * [Goals PAT Roadmap]
   * [BuildFromSVN Build from SVN]
   * [MavenGoals Maven Build Goals]
