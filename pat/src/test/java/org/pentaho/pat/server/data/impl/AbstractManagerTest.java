@@ -26,7 +26,7 @@ public abstract class AbstractManagerTest extends TestCase {
 
     private final String[] contextFiles = new String[] { 
         "/src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
-        "/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" //$NON-NLS-1$
+        "/src/test/resources/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" //$NON-NLS-1$
     };
 
     private static Properties testProps = new Properties();
