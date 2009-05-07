@@ -11,143 +11,119 @@
 	<name>Pentaho Analysis Tool</name>
 	<version>0.3.0-SNAPSHOT</version>
 	<url>http://code.google.com/p/pentahoanalysistool/</url>
-
+	<properties>
+		<gwt.module.alias>pat</gwt.module.alias>
+		<maven.compiler.source>1.5</maven.compiler.source>
+		<maven.compiler.target>1.5</maven.compiler.target>
+		<gwt.output.directory>${basedir}/target/gwt</gwt.output.directory>
+		<gwtVersion>1.6.4</gwtVersion>
+		<spring.version>2.5.6</spring.version>
+		<spring.security.version>2.0.4</spring.security.version>
+		<hibernate.version>3.3.1.GA</hibernate.version>
+	</properties>
 	<build>
+		<!-- Compile classes into the war transient directory for hosted mode live editing -->
+		<outputDirectory>${gwt.output.directory}/WEB-INF/classes</outputDirectory>
+		
 		<plugins>
 			<plugin>
-				<groupId>com.totsp.gwt</groupId>
-				<artifactId>maven-googlewebtoolkit2-plugin</artifactId>
-				<version>2.0-RC1</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.1-SNAPSHOT</version>
 				<executions>
 					<execution>
+						<phase>process-classes</phase>
+						<configuration>
+							<output>${gwt.output.directory}</output>
+							<logLevel>INFO</logLevel>
+						</configuration>
 						<goals>
 							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<compileTargets>
-						<value>org.pentaho.pat.Pat</value>
-					</compileTargets>
-					<runTarget>pat/Pat.jsp</runTarget>
-					<logLevel>WARN</logLevel>
-					<style>OBF</style>
-					<noServer>false</noServer>
-					<extraJvmArgs>-Xmx512m</extraJvmArgs>
-					<gwtVersion>${gwtVersion}</gwtVersion>
-					<debugSuspend>false</debugSuspend>
+                            <compileTargets>
+	                            <value>org.pentaho.pat.Pat</value>
+                            </compileTargets>
+                            <runTarget>pat/Pat.jsp</runTarget>
+                            <output>${gwt.output.directory}</output>
+                            <logLevel>WARN</logLevel>
+                            <style>OBF</style>
+                            <extraJvmArgs>-Xss1024k -Xms64M -Xmx1024M</extraJvmArgs>
+                            <gwtVersion>${gwtVersion}</gwtVersion>
+                            <debugSuspend>false</debugSuspend>
+                            <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+                            <webResources>
+								<resource>
+									<directory>${gwt.output.directory}/${gwt.module.alias}</directory>
+									<targetPath>${gwt.module.alias}</targetPath>
+								</resource>
+							</webResources>
+          					<hostedWebapp>${basedir}/target/gwt</hostedWebapp> 
 				</configuration>
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<encoding>UTF-8</encoding>
+		            <!-- Fix for GWT issue #3439 -->
+					<excludes>
+						<exclude>javax/servlet/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.3</version>
+				<!-- set encoding to something not platform dependent -->
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.2</version>
 				<executions>
+					<!-- This execution copies the war folder to the gwt transient output directory -->
 					<execution>
-						<id>applicationContextCopy</id>
-						<phase>compile</phase>
-						<configuration>
-							<tasks>
-								<copy
-									file="${basedir}/src/main/webapp/WEB-INF/pat-applicationContext.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-applicationContext.xml" />
-								<copy
-									file="${basedir}/src/main/webapp/WEB-INF/pat-securityContext.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/pat-securityContext.xml" />
-								<copy
-									file="${basedir}/src/main/webapp/WEB-INF/application.properties"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/application.properties" />
-								<copy
-									file="${basedir}/src/main/webapp/WEB-INF/dispatcher-servlet.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/dispatcher-servlet.xml" />
-								<copy
-									file="${basedir}/src/main/java/org/pentaho/pat/server/util/mondrian.xsd"
-									toFile="${basedir}/target/classes/org/pentaho/pat/server/util/mondrian.xsd" />
-								<copy file="${basedir}/src/main/resources/log4j.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml" />
-								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/classes/hibernate.cfg.xml" />
-								<mkdir dir="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib" />
-								<copy file="${basedir}/src/main/jdbc/mysql-connector-java-5.1.6.jar"
-									toFile="${basedir}/target/tomcat/webapps/ROOT/WEB-INF/lib/mysql-connector-java-5.1.6.jar" />
-							</tasks>
-						</configuration>
+						<id>war-folder-creation</id>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
-					</execution>
-					<execution>
-						<id>testResourcesCopy</id>
-						<phase>test-compile</phase>
 						<configuration>
 							<tasks>
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/sampledata.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/sampledata.sql" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/test.properties.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/test.properties.xml" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/SampleData.mondrian.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/util/SampleData.mondrian.xml" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/test.properties.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/test.properties.xml" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-insert.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-insert.sql" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/pat-delete.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/pat-delete.sql" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-insert.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-insert.sql" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/pat-delete.sql"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/pat-delete.sql" />
-								<copy
-									file="${basedir}/src/test/java/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml"
-									toFile="${basedir}/target/test-classes/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml" />
-                
-                
-                
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/pat-insert.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/pat-insert.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/pat-delete.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/pat-delete.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/applicationContextOverrides.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/applicationContextOverrides.xml" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/SampleData.mondrian.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/SampleData.mondrian.xml" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/sampledata.sql"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/sampledata.sql" />
-                <copy
-                  file="${basedir}/src/test/java/org/pentaho/pat/server/servlet/test.properties.xml"
-                  toFile="${basedir}/target/test-classes/org/pentaho/pat/server/servlet/test.properties.xml" />
-                
-                
-                
-								<copy file="${basedir}/src/test/java/jndi.properties"
-									toFile="${basedir}/target/test-classes/jndi.properties" />
-								<copy file="${basedir}/src/main/resources/hibernate.cfg.xml"
-									toFile="${basedir}/target/test-classes/hibernate.cfg.xml" />
+								<copy todir="${gwt.output.directory}">
+									<fileset dir="${basedir}/src/main/webapp" />
+								</copy>
 							</tasks>
 						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+				    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<webResources>
+						<resource>
+							<directory>${gwt.output.directory}/${gwt.module.alias}</directory>
+							<targetPath>${gwt.module.alias}</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -163,28 +139,6 @@
 							<outputDirectory>${settings.localRepository}/com/google/gwt/gwt-dev/${gwtVersion}</outputDirectory>
 						</artifactItem>
 					</artifactItems>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-					<webResources>
-						<resource>
-							<directory>src/main/java</directory>
-							<targetPath>WEB-INF/classes</targetPath>
-							<includes>
-								<include>hibernate.cfg.xml</include>
-							</includes>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -254,7 +208,7 @@
 		</repository>
 		<repository>
 			<id>central</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>http://www.ibiblio.org/maven2</url>
 		</repository>
 		<repository>
 			<id>libs-releases-local</id>
@@ -270,6 +224,10 @@
 		</repository>
 	</repositories>
 	<pluginRepositories>
+		<pluginRepository>
+			<id>Codehaus Mojo Snapshot</id>
+			<url>http://snapshots.repository.codehaus.org/</url>
+		</pluginRepository>
 		<pluginRepository>
 			<id>gwt-maven-plugins</id>
 			<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
@@ -581,11 +539,6 @@
 			<artifactId>maven-javadoc-plugin</artifactId>
 			<version>1.9</version>
 		</dependency>
+
 	</dependencies>
-	<properties>
-		<gwtVersion>1.6.4</gwtVersion>
-		<spring.version>2.5.6</spring.version>
-		<spring.security.version>2.0.4</spring.security.version>
-		<hibernate.version>3.3.1.GA</hibernate.version>
-	</properties>
 </project>
