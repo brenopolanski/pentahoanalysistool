@@ -11,8 +11,8 @@
   <body onload="document.f.j_username.focus();">
     <h1>Pentaho Analysis Tool - Login</h1>
 
-	<p>Valid users:</p>
-	<p>username <b>admin</b>, password <b>admin</b></p>
+	  <p>Valid users:<br/>
+	  username <b>admin</b>, password <b>admin</b></p>
 
     <c:if test="${not empty param.login_error}">
       <font color="red">
@@ -21,7 +21,7 @@
       </font>
     </c:if>
 
-    <form name="f" action="<c:url value='/loginProcess'/>" method="POST">
+    <form name="f" action="<c:url value='/pat/loginProcess'/>" method="POST">
       <table>
         <tr><td>User:</td><td><input type='text' name='j_username' value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/></td></tr>
         <tr><td>Password:</td><td><input type='password' name='j_password'></td></tr>
