@@ -13,8 +13,10 @@ import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
+import org.pentaho.pat.server.services.SessionService;
 
 /**
  * @author luc Boudreau
@@ -26,14 +28,52 @@ public class QueryServlet extends AbstractServlet implements Query {
 	
 	private transient QueryService queryService;
 	
+	private transient SessionService sessionService;
+	
 	private transient Logger log = Logger.getLogger(QueryServlet.class);
 	
 	public void init() throws ServletException {
 		super.init();
 		queryService = (QueryService)applicationContext.getBean("queryService"); //$NON-NLS-1$
+		sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
 		if (queryService==null)
 		    throw new ServletException(Messages.getString("Servlet.QueryServiceNotFound")); //$NON-NLS-1$
+		if (sessionService==null)
+            throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
 	}
+
+	public String createNewQuery(String sessionId)  throws RpcException
+    {
+        try {
+            return queryService.createNewQuery(getCurrentUserId(), sessionId);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
+        }
+    }
+
+    public void deleteQuery(String sessionId, String queryId) throws RpcException
+    {
+        queryService.releaseQuery(getCurrentUserId(), sessionId, queryId);
+    }
+
+    public String getCurrentQuery(String sessionId) throws RpcException
+    {
+        return (String)sessionService.getUserSessionVariable(
+                getCurrentUserId(), sessionId, Constants.CURRENT_QUERY_NAME);
+    }
+
+    public String[] getQueries(String sessionId) throws RpcException
+    {
+        List<String> list = queryService.getQueries(getCurrentUserId(), sessionId);
+        return list.toArray(new String[list.size()]);
+    }
+
+    public void setCurrentQuery(String sessionId, String queryId) throws RpcException
+    {
+        sessionService.saveUserSessionVariable(getCurrentUserId(), 
+                sessionId, Constants.CURRENT_QUERY_NAME, queryId);
+    }
 
 	public void clearSelection(String sessionId, String dimensionName, 
 			List<String> memberNames) throws RpcException

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
-import org.olap4j.query.Query;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
 import org.springframework.security.annotation.Secured;
@@ -158,39 +157,4 @@ public interface SessionService extends Service {
 	@Secured ({"ROLE_USER"})
 	@Transactional(readOnly=false)
     public void deleteSavedConnection(String userId, String connectionName);
-	
-	
-	
-	/**
-	 * Creates a new query for a given session.
-	 * @param userId The owner of the query to create.
-	 * @param sessionId The session id into which we want to create a new query.
-	 * @return A unique query identification number.
-	 * @throws OlapException If creating the query fails.
-	 */
-	@Secured ({"ROLE_USER"})
-	public String createNewQuery(String userId, String sessionId) throws OlapException;
-	
-	@Secured ({"ROLE_USER"})
-	Query getQuery(String userId, String sessionId, String queryId);
-	
-	/**
-	 * Returns a list of the currently created queries inside a
-	 * given session.
-	 * @param userId The owner of the session and queries. 
-	 * @param sessionId The unique id of the session for which we want the current opened queries.
-	 * @return A list of query names.
-	 */
-	@Secured ({"ROLE_USER"})
-	public List<String> getQueries(String userId, String sessionId);
-	
-	/**
-	 * Releases and closes a query inside a given session.
-	 * @param userId The owner of the query.
-	 * @param sessionId The unique session id for which we want to close and delete a query.
-	 * @param queryId The unique id of the query to close and release.
-	 */
-	@Secured ({"ROLE_USER"})
-	public void releaseQuery(String userId, String sessionId, String queryId);
-
 }

@@ -15,7 +15,57 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * @author Luc Boudreau
  */
 public interface Query extends RemoteService {
-	
+
+    /**
+     * Tells the server that we want to create a new query. 
+     * It will create a new query against the currently selected cube.
+     * You can set the currently selected cube with Session.setCurrentCube.
+     * It returns a unique identification string to identify the query created.
+     * @param sessionId The window session id.
+     * @return The unique ame of the created query.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"ROLE_USER"})
+    public String createNewQuery(String sessionId) throws RpcException;
+    
+    /**
+     * Tells the backend that from now on, operations will be performed on
+     * the specified query.
+     * @param sessionId The window session id.
+     * @param queryId The name of the query we'll be performing operations from now on.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"ROLE_USER"})
+    public void setCurrentQuery(String sessionId, String queryId) throws RpcException;
+    
+    /**
+     * Tells which is the currently selected query.
+     * @param sessionId The window session id.
+     * @return The unique id of the currently selected query.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"ROLE_USER"})
+    public String getCurrentQuery(String sessionId) throws RpcException;
+    
+    
+    /**
+     * Returns the list of currently created queries.
+     * @param sessionId The window session id.
+     * @return An array of query unique names.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"ROLE_USER"})
+    public String[] getQueries(String sessionId) throws RpcException;
+
+    /**
+     * Closes and releases a given query.
+     * @param sessionId The window session id.
+     * @param queryId The query we want to close and release.
+     * @return True if all is good.
+     */
+    @Secured ({"ROLE_USER"})
+    public void deleteQuery(String sessionId, String queryId) throws RpcException;
+
 	/**
 	 * Moves a dimension to a different axis.
 	 * You must first make sure to call Sesison.setCurrentQuery() to inform

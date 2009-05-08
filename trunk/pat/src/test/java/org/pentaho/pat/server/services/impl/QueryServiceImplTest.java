@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.olap4j.Axis;
+import org.olap4j.OlapException;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
+import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.server.Constants;
+import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 
@@ -18,7 +21,49 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 
 	private SessionService sessionService;
 	private QueryService queryService;
+	private DiscoveryService discoveryService;
 	
+	public void testCreateQuery() throws Exception 
+    {
+        final String userId = "admin"; //$NON-NLS-1$
+        initTest();
+        
+        // Create a single session.
+        String sessionId = this.sessionService.createNewSession(userId); 
+        
+        // Create a connection.
+        createConnection(this.sessionService, userId, sessionId); 
+        
+        // Creating a query without selecting a cube should fail
+        try {
+            this.queryService.createNewQuery(userId, sessionId); 
+            fail();
+        } catch (OlapException e) {
+            // ignore
+        }
+        
+        // Create a query object.
+        String cubeName = this.discoveryService.getCubes(userId, sessionId).get(0); 
+        assertNotNull(cubeName);
+        this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cubeName); 
+        String queryId = this.queryService.createNewQuery(userId, sessionId); 
+        assertNotNull(queryId);
+        this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
+        assertNotNull(this.queryService.getQuery(userId, sessionId, queryId)); 
+        assertEquals(1, this.queryService.getQueries(userId, sessionId).size()); 
+        
+        
+        // Test the release of a query.
+        this.queryService.releaseQuery(userId, sessionId, queryId); 
+        assertNull(this.queryService.getQuery(userId, sessionId, queryId)); 
+        assertEquals(0, this.queryService.getQueries(userId, sessionId).size()); 
+        
+        
+        // Close this session.
+        this.sessionService.releaseSession(userId, sessionId); 
+        
+        finishTest();
+    }
 	
 	public void testMoveDimensions() throws Exception 
 	{
@@ -35,7 +80,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
 		
 		// Create a new query
-		String queryId = this.sessionService.createNewQuery(userId, sessionId);
+		String queryId = this.queryService.createNewQuery(userId, sessionId);
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		
 		// Move some dimensions around
@@ -45,7 +90,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.moveDimension(userId, sessionId, Axis.COLUMNS, "Region"); //$NON-NLS-1$
 		
 		// Verify the axis
-		Query query = this.sessionService.getQuery(userId, sessionId, queryId);
+		Query query = this.queryService.getQuery(userId, sessionId, queryId);
 		assertNotNull(query);
 		assertEquals(2, query.getAxes().get(Axis.ROWS).getDimensions().size());
 		assertEquals(1, query.getAxes().get(Axis.COLUMNS).getDimensions().size());
@@ -82,7 +127,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_CUBE_NAME, "Quadrant Analysis"); //$NON-NLS-1$
 		
 		// Create a new query
-		String queryId = this.sessionService.createNewQuery(userId, sessionId);
+		String queryId = this.queryService.createNewQuery(userId, sessionId);
 		this.sessionService.saveUserSessionVariable(userId, sessionId, Constants.CURRENT_QUERY_NAME, queryId);
 		
 		// Place dimensions on axis
@@ -102,7 +147,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.createSelection(userId, sessionId, "Region", regionSelections, Selection.Operator.INCLUDE_CHILDREN); //$NON-NLS-1$
 		
 		// Verify MDX
-		Query query = this.sessionService.getQuery(userId, sessionId, queryId);
+		Query query = this.queryService.getQuery(userId, sessionId, queryId);
 		Writer writer = new StringWriter();
 		query.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
 		assertEquals(expectedMDX, writer.toString());
@@ -124,7 +169,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		initTestContext();
 		this.sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
         this.queryService = (QueryService)applicationContext.getBean("queryService"); //$NON-NLS-1$
-        
+        this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
 	}
 	
 	

@@ -126,21 +126,6 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    this.sessionService.deleteSavedConnection(getCurrentUserId(),connectionName);
 	}
 
-	public String createNewQuery(String sessionId)  throws RpcException
-	{
-		try {
-			return sessionService.createNewQuery(getCurrentUserId(), sessionId);
-		} catch (OlapException e) {
-		    log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
-			throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
-		}
-	}
-
-	public void deleteQuery(String sessionId, String queryId) throws RpcException
-	{
-		sessionService.releaseQuery(getCurrentUserId(), sessionId, queryId);
-	}
-
 	public void disconnect(String sessionId) throws RpcException
 	{
 		sessionService.releaseConnection(getCurrentUserId(),sessionId);
@@ -152,31 +137,11 @@ public class SessionServlet extends AbstractServlet implements Session {
 				getCurrentUserId(), sessionId, Constants.CURRENT_CUBE_NAME);
 	}
 
-	public String getCurrentQuery(String sessionId) throws RpcException
-	{
-		return (String)sessionService.getUserSessionVariable(
-				getCurrentUserId(), sessionId, Constants.CURRENT_QUERY_NAME);
-	}
-
-	public String[] getQueries(String sessionId) throws RpcException
-	{
-	    List<String> list = sessionService.getQueries(getCurrentUserId(), sessionId);
-		return list.toArray(new String[list.size()]);
-	}
-
 	public void setCurrentCube(String sessionId, String cubeId) throws RpcException
 	{
 		sessionService.saveUserSessionVariable(getCurrentUserId(), 
 			sessionId, Constants.CURRENT_CUBE_NAME, cubeId);
 	}
-
-	public void setCurrentQuery(String sessionId, String queryId) throws RpcException
-	{
-		sessionService.saveUserSessionVariable(getCurrentUserId(), 
-				sessionId, Constants.CURRENT_QUERY_NAME, queryId);
-	}
-	
-	
 
 	public void closeSession(String sessionId) throws RpcException
 	{

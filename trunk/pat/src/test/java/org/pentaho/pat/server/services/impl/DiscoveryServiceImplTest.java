@@ -8,12 +8,14 @@ import org.olap4j.metadata.Cube;
 import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
+import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 
 public class DiscoveryServiceImplTest extends AbstractServiceTest {
 
 	private SessionService sessionService;
 	private DiscoveryService discoveryService;
+	private QueryService queryService;
 	
 	
 	public void testGetCubes() throws Exception 
@@ -85,7 +87,7 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); 
 		
 		// Create and select a query
-		String queryId = this.sessionService.createNewQuery(userId, sessionId); 
+		String queryId = this.queryService.createNewQuery(userId, sessionId); 
 		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
 		
 		List<String> dims = this.discoveryService.getDimensions(userId, sessionId, Axis.UNUSED); 
@@ -119,7 +121,7 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); 
 		
 		// Create and select a query
-		String queryId = this.sessionService.createNewQuery(userId, sessionId); 
+		String queryId = this.queryService.createNewQuery(userId, sessionId); 
 		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
 		
 		StringTree members = this.discoveryService.getMembers(userId, sessionId, "Region"); //$NON-NLS-1$ 
@@ -157,6 +159,7 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		initTestContext();
 		this.sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
 		this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
+		this.queryService = (QueryService)applicationContext.getBean("queryService"); //$NON-NLS-1$
 	}
 	
 	

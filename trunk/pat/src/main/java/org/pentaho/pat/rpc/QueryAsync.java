@@ -38,4 +38,14 @@ public interface QueryAsync {
 	public void executeQuery(
 		String sessionId,
 		AsyncCallback<OlapData> callback);
+	
+	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
+    
+    public void setCurrentQuery(String sessionId, String queryId, AsyncCallback callback);
+    
+    public void getCurrentQuery(String sessionId, AsyncCallback<String> callback);
+    
+    public void getQueries(String sessionId, AsyncCallback<String[]> callback);
+
+    public void deleteQuery(String sessionId, String queryId, AsyncCallback callback);
 }
