@@ -322,7 +322,25 @@
 		<dependency>
 			<groupId>org.olap4j</groupId>
 			<artifactId>olap4j</artifactId>
-			<version>0.9.7.146</version>
+			<version>0.9.8-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm-commons</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>retroweaver</groupId>
+          <artifactId>retroweaver</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>retroweaver</groupId>
+          <artifactId>retroweaver-rt</artifactId>
+        </exclusion>
+      </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>xerces</groupId>
