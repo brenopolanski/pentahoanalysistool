@@ -3,22 +3,15 @@ package org.pentaho.pat.server.services.impl;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
-import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.NamedList;
-import org.olap4j.query.Query;
-import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
 import org.pentaho.pat.server.data.pojo.User;
@@ -208,84 +201,6 @@ public class SessionServiceImpl extends AbstractService
 		}
 		sessions.get(userId).get(sessionId).setConnection(null);
 	}
-
-
-	public String createNewQuery(String userId, String sessionId)
-            throws OlapException 
-    {
-	    this.validateUser(userId);
-        // We need to verify if the user has selected a cube.
-        String cubeName = (String) sessions.get(userId).get(sessionId)
-                .getVariables().get(Constants.CURRENT_CUBE_NAME);
-
-        if (cubeName == null)
-            throw new OlapException(
-                Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
-
-        Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
-        String generatedId = String.valueOf(UUID.randomUUID());
-        Query newQuery;
-        try {
-            newQuery = new Query(generatedId, cube);
-        } catch (SQLException e) {
-            throw new OlapException(
-                Messages.getString("Services.Session.CreateQueryException"), //$NON-NLS-1$
-                e);
-        }
-
-        sessions.get(userId).get(sessionId).getQueries().put(generatedId,
-                newQuery);
-
-        return generatedId;
-    }
-
-	
-	private Cube getCube4Guid(String userId, String sessionId, String cubeName) throws OlapException 
-	{
-		OlapConnection connection = this.getConnection(userId, sessionId);
-		NamedList<Cube> cubes = connection.getSchema().getCubes();
-		Cube cube = null;
-		Iterator<Cube> iter = cubes.iterator();
-		while (iter.hasNext() && cube == null) {
-			Cube testCube = iter.next();
-			if (cubeName.equals(testCube.getName())) {
-				cube = testCube;
-			}
-		}
-		if (cube != null) {
-			return cube;
-		}
-		
-		throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
-	}
-	
-	
-	public Query getQuery(String userId, String sessionId, String queryId) 
-	{
-	    this.validateSession(userId, sessionId);
-		return sessions.get(userId).get(sessionId).getQueries().get(queryId);
-	}
-	
-
-	public List<String> getQueries(String userId, String sessionId) 
-	{
-	    this.validateSession(userId, sessionId);
-		List<String> names = new ArrayList<String>();
-		Set<Entry<String, Query>> entries = 
-			sessions.get(userId).get(sessionId).getQueries().entrySet();
-		for(Entry<String,Query> entry : entries)
-		{
-			names.add(entry.getKey());
-		}
-		return names;
-	}
-
-	
-	public void releaseQuery(String userId, String sessionId, String queryId) {
-	    this.validateSession(userId, sessionId);
-		sessions.get(userId).get(sessionId).getQueries().remove(queryId);
-	}
-
 
 	public SavedConnection getSavedConnection(String userId,
 	        String connectionName) 

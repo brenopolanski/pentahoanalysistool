@@ -178,7 +178,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 							}
 
 							public void onSuccess(final String[] arg0) {
-								ServiceFactory.getSessionInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
+								ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
 
 									public void onFailure(final Throwable arg0) {
 										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(arg0.getLocalizedMessage()));
@@ -186,7 +186,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 
 									public void onSuccess(final String arg0) {
 
-										ServiceFactory.getSessionInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
+										ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
 											public void onFailure(final Throwable arg0) {
 

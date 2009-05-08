@@ -107,9 +107,8 @@ public class OlapUtil {
 	   * @param dim
 	   */
 	  public static Selection findSelection(String path, QueryDimension dim) {
-	    //path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
-		  
-	    return findSelection(path, dim.getSelections());
+	    path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
+		return findSelection(path, dim.getSelections());
 	  }
 	  
 	  public static OlapData cellSet2OlapData(CellSet cellSet) {
@@ -192,7 +191,8 @@ public class OlapUtil {
 		        String cellValue = cell.getFormattedValue();  // First try to get a formatted value
 		        if (cellValue.length()<1) {
 		          Number value = (Number) cell.getValue();
-		          if (value.doubleValue() < 1.23457E08) {
+		          if (value==null 
+		              || value.doubleValue() < 1.23457E08) {
 		            cellValue = "null"; //$NON-NLS-1$
 		          } else {
 		            cellValue = cell.getValue().toString();   // Otherwise return the raw value

@@ -38,19 +38,6 @@ public interface SessionAsync {
 	
 	
 	
-	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
-	
-	public void setCurrentQuery(String sessionId, String queryId, AsyncCallback callback);
-	
-	public void getCurrentQuery(String sessionId, AsyncCallback<String> callback);
-	
-	public void getQueries(String sessionId, AsyncCallback<String[]> callback);
-
-	public void deleteQuery(String sessionId, String queryId, AsyncCallback callback);
-
-	
-	
-	
 	
 	public void getCurrentCube(String sessionId, AsyncCallback<String> callback);
 	

@@ -2,17 +2,13 @@ package org.pentaho.pat.server.services.impl;
 
 import java.util.List;
 
-import org.olap4j.OlapException;
-import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
-import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.SessionService;
 
 public class SessionServiceImplTest extends AbstractServiceTest {
 
 	private SessionService sessionService;
-	private DiscoveryService discoveryService;
 	
 	
 	/**
@@ -160,55 +156,6 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	
 	
-	
-	
-	
-	
-	public void testCreateQuery() throws Exception 
-	{
-	    final String userId = "admin"; //$NON-NLS-1$
-		initTest();
-		
-		// Create a single session.
-		String sessionId = this.sessionService.createNewSession(userId); 
-		
-		// Create a connection.
-		createConnection(this.sessionService, userId, sessionId); 
-		
-		// Creating a query without selecting a cube should fail
-		try {
-			this.sessionService.createNewQuery(userId, sessionId); 
-			fail();
-		} catch (OlapException e) {
-			// ignore
-		}
-		
-		// Create a query object.
-		String cubeName = this.discoveryService.getCubes(userId, sessionId).get(0); 
-		assertNotNull(cubeName);
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cubeName); 
-		String queryId = this.sessionService.createNewQuery(userId, sessionId); 
-		assertNotNull(queryId);
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
-		assertNotNull(this.sessionService.getQuery(userId, sessionId, queryId)); 
-		assertEquals(1, this.sessionService.getQueries(userId, sessionId).size()); 
-		
-		
-		// Test the release of a query.
-		this.sessionService.releaseQuery(userId, sessionId, queryId); 
-		assertNull(this.sessionService.getQuery(userId, sessionId, queryId)); 
-		assertEquals(0, this.sessionService.getQueries(userId, sessionId).size()); 
-		
-		
-		// Close this session.
-		this.sessionService.releaseSession(userId, sessionId); 
-		
-		finishTest();
-	}
-	
-	
-	
-	
 	public void testSavedConnections() throws Exception
 	{
 	    String[][] expectedConnectionsArray = new String[][] {
@@ -278,7 +225,6 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	private void initTest() {
 		initTestContext();
 		this.sessionService = (SessionService)applicationContext.getBean("sessionService"); //$NON-NLS-1$
-        this.discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
 	}
 	
 	

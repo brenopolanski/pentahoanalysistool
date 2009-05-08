@@ -19,6 +19,7 @@ import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
+import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.JdbcDriverFinder;
 import org.springframework.util.Assert;
@@ -33,6 +34,8 @@ public class DiscoveryServiceImpl extends AbstractService
 
 	private SessionService sessionService = null;
 	
+	private QueryService queryService = null;
+	
 	private JdbcDriverFinder driverFinder = null;
 
 
@@ -43,8 +46,15 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	
 	
-	public void afterPropertiesSet() throws Exception {
+	public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
+
+
+
+    public void afterPropertiesSet() throws Exception {
 		Assert.notNull(sessionService);
+		Assert.notNull(queryService);
 		Assert.notNull(driverFinder);
 	}
 	
@@ -104,7 +114,7 @@ public class DiscoveryServiceImpl extends AbstractService
 	    
 		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
 				sessionId, Constants.CURRENT_QUERY_NAME);
-		Query query = this.sessionService.getQuery(userId, sessionId, currentQuery);
+		Query query = this.queryService.getQuery(userId, sessionId, currentQuery);
 		
 		Axis targetAxis = null;
 		if (axis!=null)
@@ -126,7 +136,7 @@ public class DiscoveryServiceImpl extends AbstractService
         String currentQuery = (String) this.sessionService
                 .getUserSessionVariable(userId, sessionId,
                         Constants.CURRENT_QUERY_NAME);
-        Query query = this.sessionService.getQuery(userId, sessionId,
+        Query query = this.queryService.getQuery(userId, sessionId,
                 currentQuery);
 
         List<String> uniqueNameList = new ArrayList<String>();
