@@ -1,0 +1,23 @@
+#summary Collaborative description of the BI<->PAT integration protocol
+
+   1. The user gives the BI server an URL that points to a XMLA server. It can be external or be the BI server XMLA servlet itself, it doesn'T matter. The only requirement is that the URL can be reached by the PAT application.
+
+   2. The BI server builds a URL that will be sent to the client as a forward command for his browser. (HTTP 302). This url has to point to the PAT server and must include 3 parameters.
+
+         1. XMLA url
+            The adress of the XMLA endpoint.
+         2. XMLA username
+            If a username is required to access the XMLA server, it is supplied in the call to the PAT server.
+         3. XML password
+            If a password is required to access the XMLA server, it is supplied in the call to the PAT server. This could be a security issue, obviously, but there are numerous way to encode the transmission of the credentials in the URL so we'll bross that bridge once we get there.
+         4. Basic MDX query to start with.
+
+   3. The PAT server receives the call but it is first intercepted by the security layer. In an ideal setup, the user is redirected to the CAS authentication server and once authenticated, he is sent back to PAT. For the first draft though we'll simply ask for the user's credentials yet again.
+
+   4. A special servlet in the PAT server recieves the call. This servlet can interact with PAT's service layer and do all the preparatory work. It creates a window session and creates the connection with the supplied parameters.
+
+   5. The next step is to initialize the Query model with the supplied MDX query. This is a bit tricky. Of two things, first, we support any query whatsoever, but we need to develop PAT's advanced mode along with it, or second, we only support queries that can be represented as an Olap4j's Query object. I propose the later, since it's way simpler to start with, and we'll tackle the "any MDX" problem later on.
+
+   6. PAT then redirects the client to the main PAT servlet. (/pat/Pat.jsp). The only difference is that the integration servlet adds a parameter to the call to PAT.jsp; the session ID to use.
+
+      Since the integration servlet has already created a session space and established connections, the new PAT window only needs to be aware of the ID to use and pick up the work from there. It is obvious though that the GUI will need to be in the proper "state", that is, connected and displaying a list of cubes.
