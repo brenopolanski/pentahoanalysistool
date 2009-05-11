@@ -45,7 +45,7 @@ public class SelectionModePopup extends PopupPanel {
 			final String dimName = getDimensionName(targetLabel);
 			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
-			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback() {
+			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback<Object>() {
 				public void onFailure(final Throwable caught) {
 					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectioncleared(caught.getLocalizedMessage()));
 
@@ -94,7 +94,7 @@ public class SelectionModePopup extends PopupPanel {
 			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
 			final String selection = setSelectionMode(selectionMode);
-			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback() {
+			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback<Object>() {
 
 				public void onFailure(final Throwable arg0) {
 					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectionset(arg0.getLocalizedMessage()));

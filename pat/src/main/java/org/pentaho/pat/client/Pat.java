@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -56,7 +57,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
      * The current style theme.
      */
     
-    public static String CUR_THEME = ConstantFactory.getInstance().STYLE_THEMES[0];
+    public static String CUR_THEME = PatConstants.STYLE_THEMES[0];
 
     /**
      * The base style name.

@@ -30,9 +30,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -184,8 +185,8 @@ public class Application extends Viewport { // NOPMD
 		.toolCollapseLeft());
 	westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
-	collapseBtn.addClickListener(new ClickListener() {
-	    public void onClick(final Widget sender) {
+	collapseBtn.addClickHandler(new ClickHandler() {
+	    public void onClick(final ClickEvent click_event) {
 		bottomPanel.setCollapsed(westPanel, !layoutPanel
 			.isCollapsed(westPanel));
 		bottomPanel.layout();

@@ -14,7 +14,6 @@
 package org.pentaho.pat.client.listeners;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,8 +31,7 @@ public class ConnectionListenerCollection extends ArrayList<ConnectionListener> 
 	 * @param sender the sender
 	 */
 	public void fireConnectionBroken(final Widget sender) {
-		for (final Iterator it = iterator(); it.hasNext();) {
-			final ConnectionListener listener = (ConnectionListener) it.next();
+		for(ConnectionListener listener:this) {
 			listener.onConnectionBroken(sender);
 		}
 	}
@@ -44,8 +42,7 @@ public class ConnectionListenerCollection extends ArrayList<ConnectionListener> 
 	 * @param sender the widget sending the event.
 	 */
 	public void fireConnectionMade(final Widget sender) {
-		for (final Iterator it = iterator(); it.hasNext();) {
-			final ConnectionListener listener = (ConnectionListener) it.next();
+		for(ConnectionListener listener:this) {
 			listener.onConnectionMade(sender);
 		}
 	}

@@ -19,7 +19,7 @@ package org.pentaho.pat.server.messages;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class Messages {
+public final class Messages {
     private static final String BUNDLE_NAME = "org.pentaho.pat.server.messages.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle

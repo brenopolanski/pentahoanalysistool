@@ -89,7 +89,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements
      * @return the full path
      */
     public final String[] getFullPath() {
-	final List pathList = new ArrayList();
+	final List<String> pathList = new ArrayList<String>();
 	pathList.add(label.getText());
 	TreeItem currentTreeItem = treeItem;
 	while (currentTreeItem.getParentItem() != null
