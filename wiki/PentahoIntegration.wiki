@@ -4,11 +4,11 @@
 
   * The BI server builds a URL that will be sent to the client as a forward command for his browser. (HTTP 302). This url has to point to the PAT server and must include 3 parameters.
 
-    * XMLA url - The adress of the XMLA endpoint.
+    # XMLA url - The adress of the XMLA endpoint.
 
-    * XMLA username - If a username is required to access the XMLA server, it is supplied in the call to the PAT server.
+    # XMLA username - If a username is required to access the XMLA server, it is supplied in the call to the PAT server.
 
-    * XML password - If a password is required to access the XMLA server, it is supplied in the call to the PAT server. This could be a security issue, obviously, but there are numerous way to encode the transmission of the credentials in the URL so we'll bross that bridge once we get there.
+    # XML password - If a password is required to access the XMLA server, it is supplied in the call to the PAT server. This could be a security issue, obviously, but there are numerous way to encode the transmission of the credentials in the URL so we'll bross that bridge once we get there.
 
   * Basic MDX query to start with.
 
