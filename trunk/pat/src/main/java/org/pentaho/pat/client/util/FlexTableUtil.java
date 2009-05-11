@@ -136,7 +136,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 				if (w != null) {
 					if (w instanceof Label) {
 						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),
-								new AsyncCallback() { // NOPMD by bugg on 21/04/09 05:53
+								new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:53
 
 							public void onFailure(final Throwable arg0) {
 								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
@@ -174,7 +174,7 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 				} else {
 					final HTML html = new HTML(sourceTable.getHTML(sourceRow, col)); // NOPMD by bugg on 21/04/09 05:54
 					targetTable.setWidget(targetRow, col, html);
-					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback() { // NOPMD by bugg on 21/04/09 05:54
+					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:54
 
 						public void onFailure(final Throwable arg0) {
 							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));

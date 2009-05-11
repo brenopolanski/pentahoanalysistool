@@ -17,50 +17,52 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 
 /**
- * Register you widget with GlobalConnectionListeners so that it knows when a db connection is established.
- * Rewritten from panel level, to allow for easier connection building.
+ * Register you widget with GlobalConnectionListeners so that it knows when a db
+ * connection is established. Rewritten from panel level, to allow for easier
+ * connection building.
+ * 
  * @author tom(at)wamonline.org.uk
- *
+ * 
  */
-public class GlobalConnectionListeners implements SourcesConnectionEvents  {
+public class GlobalConnectionListeners implements SourcesConnectionEvents {
 
 	/** ConnectionListenerCollection Object. */
-	private static ConnectionListenerCollection connectionListeners;
-	
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	private final ConnectionListenerCollection connectionListeners = new ConnectionListenerCollection();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.pentaho.pat.client.events.SourcesConnectionEvents#addConnectionListener
+	 * (org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
 	/**
 	 * Initialize the connectionListeners instance.
 	 */
 	public void addConnectionListener(ConnectionListener listener) {
-
-		if (connectionListeners == null) {
-			connectionListeners = new ConnectionListenerCollection();
-		}
 		connectionListeners.add(listener);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pentaho.pat.client.events.SourcesConnectionEvents#removeConnectionListener(org.pentaho.pat.client.listeners.ConnectionListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.pentaho.pat.client.events.SourcesConnectionEvents#
+	 * removeConnectionListener
+	 * (org.pentaho.pat.client.listeners.ConnectionListener)
 	 */
 	/**
 	 * Remove a connectionListener
 	 */
 	public void removeConnectionListener(ConnectionListener listener) {
-		if (connectionListeners != null) {
-			connectionListeners.remove(listener);
-		}
+		this.connectionListeners.remove(listener);
 	}
 
-	public static ConnectionListenerCollection getConnectionListeners() {
-		return connectionListeners;
+	public ConnectionListenerCollection getConnectionListeners() {
+		return this.connectionListeners;
 	}
-
-	public static void setConnectionListeners(
-			ConnectionListenerCollection connectionListeners) {
-		GlobalConnectionListeners.connectionListeners = connectionListeners;
-	}
-
 	
+	public void clearAllConnectionListeners() {
+		this.connectionListeners.clear();
+	}
+
 }

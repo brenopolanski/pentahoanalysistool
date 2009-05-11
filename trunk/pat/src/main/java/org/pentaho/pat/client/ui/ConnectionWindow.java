@@ -20,7 +20,6 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -55,8 +54,6 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 	/** Connection Established indicator. */
 	private boolean connectionEstablished = false;
 
-	/** Connection Listeners. */
-	private transient ConnectionListenerCollection connectionListeners;
 
 	/** A Tab Layout Panel. */
 	private transient final TabLayoutPanel tabPanel = new TabLayoutPanel();

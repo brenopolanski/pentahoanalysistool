@@ -45,8 +45,8 @@ public class OlapUtils {
 	 * 
 	 * @return the cell spans
 	 */
-	public static List getCellSpans(final CellInfo[] cellInfos) {
-		final List spans = new ArrayList();
+	public static List<CellSpanInfo> getCellSpans(final CellInfo[] cellInfos) {
+		final List<CellSpanInfo> spans = new ArrayList<CellSpanInfo>();
 		CellInfo holdValue = cellInfos != null && cellInfos.length > 0 ? cellInfos[0] : null;
 		int span = 1;
 

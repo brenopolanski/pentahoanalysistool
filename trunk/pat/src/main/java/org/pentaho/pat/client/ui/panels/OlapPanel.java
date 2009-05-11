@@ -91,13 +91,13 @@ public class OlapPanel extends DataWidget {
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-		ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback() {
+		ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<OlapData>() {
 
 			public void onFailure(final Throwable caught) {
 				Window.alert(MessageFactory.getInstance().noserverdata(caught.toString()));
 			}
 
-			public void onSuccess(final Object result1) {
+			public void onSuccess(final OlapData result1) {
 			   // olapTable.layout(true);
 			    olapTable.setData((OlapData)result1);
 				//doCreateChart();
