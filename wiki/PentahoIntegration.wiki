@@ -2,9 +2,9 @@
 
   # The user gives the BI server an URL that points to a XMLA server. It can be external or be the BI server XMLA servlet itself, it doesn'T matter. The only requirement is that the URL can be reached by the PAT application.
   # The BI server builds a URL that will be sent to the client as a forward command for his browser. (HTTP 302). This url has to point to the PAT server and must include 3 parameters.
-    # XMLA url - The adress of the XMLA endpoint.
-    # XMLA username - If a username is required to access the XMLA server, it is supplied in the call to the PAT server.
-    # XML password - If a password is required to access the XMLA server, it is supplied in the call to the PAT server. This could be a security issue, obviously, but there are numerous way to encode the transmission of the credentials in the URL so we'll bross that bridge once we get there.
+    # XMLA url - The adress of the XMLA endpoint. The parameter will be named _XMLA_URL_ and will contain the XMLA server end-point URL encoded according to Java's URLEncoder API object.
+    # XMLA username - If a username is required to access the XMLA server, it is supplied in the call to the PAT server. The parameter will be named XMLA_USERNAME and will contain the XMLA login in plain text, for the first prototype that is.
+    # XML password - If a password is required to access the XMLA server, it is supplied in the call to the PAT server. This could be a security issue, obviously, but there are numerous way to encode the transmission of the credentials in the URL so we'll bross that bridge once we get there. The parameter will be named XMLA_PASSWORD and will contain the XMLA password in plain text, for the first prototype that is.
   # Basic MDX query to start with.
   # The PAT server receives the call but it is first intercepted by the security layer. In an ideal setup, the user is redirected to the CAS authentication server and once authenticated, he is sent back to PAT. For the first draft though we'll simply ask for the user's credentials yet again.
   # A special servlet in the PAT server recieves the call. This servlet can interact with PAT's service layer and do all the preparatory work. It creates a window session and creates the connection with the supplied parameters.
