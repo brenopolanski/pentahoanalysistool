@@ -207,7 +207,9 @@ public class Application extends Viewport { // NOPMD
 
     }
 
-    /**
+    
+
+	/**
      * Create the panel at the top of the page that contains the title and
      * links.
      */
@@ -311,5 +313,9 @@ public class Application extends Viewport { // NOPMD
     public final void setTitleWidget(final Widget title) {
 	topPanel.setWidget(1, 0, title);
     }
+    
+    public MainMenu getMainPanel() {
+		return mainPanel;
+	}
 
 }
