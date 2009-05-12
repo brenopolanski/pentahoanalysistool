@@ -10,13 +10,13 @@ package org.pentaho.pat.client.util;
 public class State {
 
 	public static enum Mode {
-		BISERVERPUC("biserverpuc", false), 
-		STANDALONE("standalone", true);
+		BISERVERPUC("BISERVERPUC", false), 
+		STANDALONE("STANDALONE", true);
 
 		private String param;
 		
 		private boolean showToolbar;
-
+		
 		private Mode(final String param, final boolean showToolbar) {
 			this.param = param;
 			this.showToolbar = showToolbar;
@@ -25,6 +25,8 @@ public class State {
 		public boolean isShowToolbar() {
 			return showToolbar;
 		}
+
+	
 
 		public String getParam() {
 			return param;
@@ -43,6 +45,8 @@ public class State {
 	private Mode mode = null;
 
 	private String sessionId = null;
+	
+	private boolean connected = false;
 
 	public State() {
 
@@ -64,4 +68,11 @@ public class State {
 		sessionId = session;
 	}
 
+	public boolean isConnected() {
+		return connected;
+	}
+	
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
 }

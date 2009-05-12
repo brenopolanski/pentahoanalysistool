@@ -21,8 +21,10 @@ import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.images.PatImages;
+import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -39,6 +41,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -75,7 +78,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	 * Global Session ID.
 	 */
 
-	private static State initialState = null;
+	private static State initialState = new State();
 	
 	/**
 	 * Get the style name of the reference element defined in the current GWT
@@ -231,9 +234,8 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	public final void onModuleLoad() {
 
 		// parse possible parameters
-		initialState = parseInitialStateFromParameter();
+		parseInitialStateFromParameter();
 		// Create a Pat unique session ID
-		assignSessionID(initialState.getSession());
 		
 		app = new Application();
 		// Swap out the style sheets for the RTL versions if needed
@@ -241,8 +243,11 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 
 		// Create the application
 		setupTitlePanel();
-		// setupOptionsPanel();
-
+		
+		if (initialState.isConnected())
+		{
+			GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(new Widget());
+		}
 		// hide splash
 		com.google.gwt.user.client.DOM
 				.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -270,17 +275,18 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		
 	}
 
-	private State parseInitialStateFromParameter() {
-		State _state = new State();
+	private void parseInitialStateFromParameter() {
 		Location loadURL = WindowUtils.getLocation();
-		State.Mode mode = State.Mode.getModeByParameter(loadURL
-				.getParameter("MODE"));
+		State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE"));
 		if (mode == null)
-			_state.setMode(State.Mode.STANDALONE);
+			initialState.setMode(State.Mode.STANDALONE);
 		else
-			_state.setMode(mode);
-		assignSessionID(loadURL.getParameter("SESSION"));
-		return _state;
+			initialState.setMode(mode);
+		String _sessionParam = loadURL.getParameter("SESSION");
+		assignSessionID(_sessionParam);
+		if (_sessionParam != null)
+			initialState.setConnected(true);
+
 	}
 
 	public static State getInitialState() {
