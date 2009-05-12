@@ -11,15 +11,17 @@
  * @author Tom Barber
  */
 
-
 package org.pentaho.pat.client;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwtwidgets.client.util.Location;
+import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.images.PatImages;
+import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -40,219 +42,249 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
- *
+ * 
  * @author tom(at)wamonline.org.uk
  */
 
 public class Pat implements EntryPoint { // NOPMD by bugg on
-    // 21/04/09 05:30
+	// 21/04/09 05:30
 
 	/**
-     * PatImages ImageBundle.
-     */
-    public static final PatImages IMAGES = (PatImages) GWT
-	    .create(PatImages.class);
+	 * PatImages ImageBundle.
+	 */
+	public static final PatImages IMAGES = (PatImages) GWT
+			.create(PatImages.class);
 
-    /**
-     * The current style theme.
-     */
-    
-    public static String CUR_THEME = PatConstants.STYLE_THEMES[0];
+	/**
+	 * The current style theme.
+	 */
 
-    /**
-     * The base style name.
-     */
-    public static final String DEF_STYLE_NAME = "Pat"; //$NON-NLS-1$
+	public static String CUR_THEME = PatConstants.STYLE_THEMES[0];
 
-    /**
-     * The {@link Application}.
-     */
-    private static Application app = new Application();
+	/**
+	 * The base style name.
+	 */
+	public static final String DEF_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
-    /**
-     * Global Session ID.
-     */
-    private static String sessionid;
+	/**
+	 * The {@link Application}.
+	 */
+	private static Application app;
 
-    /**
-     * Get the style name of the reference element defined in the current GWT
-     * theme style sheet.
-     *
-     * @param prefix
-     *            the prefix of the reference style name
-     * @return the style name
-     */
-    private static String getCurrentReferenceStyleName(final String prefix) {
-	String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
-	if (LocaleInfo.getCurrentLocale().isRTL()) {
-	    gwtRef += "-rtl"; //$NON-NLS-1$
-	}
-	return gwtRef;
-    }
+	/**
+	 * Global Session ID.
+	 */
 
-    /**
-     * Returns the SESSION_ID.
-     *
-     * @return SESSION_ID
-     */
-    public static String getSessionID() {
-	return sessionid;
-    }
-
-    /**
-     * Sets the SESSION_ID.
-     */
-    private static void setSessionID() {
-	ServiceFactory.getSessionInstance().createSession(
-		new AsyncCallback<String>() {
-
-		    public void onFailure(final Throwable arg0) {
-			MessageBox.error(ConstantFactory.getInstance().error(),
-				MessageFactory.getInstance().failedSessionID(
-					arg0.getLocalizedMessage()));
-		    }
-
-		    public void onSuccess(final String arg0) {
-			sessionid = arg0;
-		    }
-
-		});
-
-    }
-
-    /**
-     * Update the style sheets to reflect the current theme and direction.
-     */
-    public static void updateStyleSheets() {
-	// Generate the names of the style sheets to include
-	String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
-	String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
-	final String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
-	final String halogenStyleSheet = "/halogen.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
-	if (LocaleInfo.getCurrentLocale().isRTL()) {
-	    gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
-	    gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
-		    "_rtl.css"); //$NON-NLS-1$
-	    scStyleSheet = scStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	// Find existing style sheets that need to be removed
-	boolean styleSheetsFound = false;
-	final HeadElement headElem = StyleSheetLoader.getHeadElement();
-	final List<Element> toRemove = new ArrayList<Element>();
-	final NodeList<Node> children = headElem.getChildNodes();
-	for (int i = 0; i < children.getLength(); i++) {
-	    final Node node = children.getItem(i);
-	    if (node.getNodeType() == Node.ELEMENT_NODE) {
-		final Element elem = Element.as(node);
-		if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
-			&& elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
-				"stylesheet")) { //$NON-NLS-1$
-		    styleSheetsFound = true;
-		    final String href = elem.getPropertyString("href"); //$NON-NLS-1$
-		    // If the correct style sheets are already loaded, then we
-		    // should have
-		    // nothing to remove.
-		    if (!href.contains(gwtStyleSheet)
-			    && !href.contains(gwtMosStyleSheet)
-			    && !href.contains(scStyleSheet)) {
-			toRemove.add(elem);
-		    }
+	private static State initialState = null;
+	
+	/**
+	 * Get the style name of the reference element defined in the current GWT
+	 * theme style sheet.
+	 * 
+	 * @param prefix
+	 *            the prefix of the reference style name
+	 * @return the style name
+	 */
+	private static String getCurrentReferenceStyleName(final String prefix) {
+		String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
+		if (LocaleInfo.getCurrentLocale().isRTL()) {
+			gwtRef += "-rtl"; //$NON-NLS-1$
 		}
-	    }
+		return gwtRef;
 	}
 
-	// Return if we already have the correct style sheets
-	if (styleSheetsFound && toRemove.isEmpty()) {
-	    return;
+	/**
+	 * Returns the SESSION_ID.
+	 * 
+	 * @return SESSION_ID
+	 */
+	public static String getSessionID() {
+		return initialState.getSession();
 	}
 
-	// Detach the app while we manipulate the styles to avoid rendering
-	// issues
-	RootPanel.get().remove(app);
-
-	// Remove the old style sheets
-	for (final Element elem : toRemove) {
-	    headElem.removeChild(elem);
+	/**
+	 * Sets the SESSION_ID.
+	 */
+	private void assignSessionID(String session) {
+	    if (session == null)
+	    {
+		    ServiceFactory.getSessionInstance().createSession(
+				new AsyncCallback<String>() {
+		
+				    public void onFailure(final Throwable arg0) {
+					MessageBox.error(ConstantFactory.getInstance().error(),
+						MessageFactory.getInstance().failedSessionID(
+							arg0.getLocalizedMessage()));
+				    }
+		
+				    public void onSuccess(final String arg0) {
+					initialState.setSession(arg0);
+				    }
+				});
+		    }
+		else {
+			initialState.setSession(session);
+		}
 	}
 
-	// Load the GWT theme style sheet
-	final String modulePath = GWT.getModuleBaseURL();
-	final Command callback = new Command() {
-	    public void execute() {
-		// Different themes use different background colors for the body
-		// element, but IE only changes the background of the visible
-		// content
-		// on the page instead of changing the background color of the
-		// entire
-		// page. By changing the display style on the body element, we
-		// force
-		// IE to redraw the background correctly.
-		RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
-			"none"); //$NON-NLS-1$
-		RootPanel.getBodyElement().getStyle()
-			.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		RootPanel.get().add(app);
-	    }
-	};
+	/**
+	 * Update the style sheets to reflect the current theme and direction.
+	 */
+	public static void updateStyleSheets() {
+		// Generate the names of the style sheets to include
+		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
+		String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
+		final String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
+		final String halogenStyleSheet = "/halogen.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
+		if (LocaleInfo.getCurrentLocale().isRTL()) {
+			gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
+			gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
+					"_rtl.css"); //$NON-NLS-1$
+			scStyleSheet = scStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-	StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
-		getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
-	StyleSheetLoader.loadStyleSheet(modulePath + gwtMosStyleSheet,
-		getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
-	// Load the showcase specific style sheet after the GWT & Mosaic theme
-	// style
-	// sheet so that custom styles supercede the theme styles.
-	StyleSheetLoader.loadStyleSheet(modulePath + scStyleSheet,
-		getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
-	StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet,
-		getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
-	StyleSheetLoader.loadStyleSheet(modulePath + halogenStyleSheet,
-			getCurrentReferenceStyleName("halogen"), null); //$NON-NLS-1$
+		// Find existing style sheets that need to be removed
+		boolean styleSheetsFound = false;
+		final HeadElement headElem = StyleSheetLoader.getHeadElement();
+		final List<Element> toRemove = new ArrayList<Element>();
+		final NodeList<Node> children = headElem.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			final Node node = children.getItem(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				final Element elem = Element.as(node);
+				if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
+						&& elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
+								"stylesheet")) { //$NON-NLS-1$
+					styleSheetsFound = true;
+					final String href = elem.getPropertyString("href"); //$NON-NLS-1$
+					// If the correct style sheets are already loaded, then we
+					// should have
+					// nothing to remove.
+					if (!href.contains(gwtStyleSheet)
+							&& !href.contains(gwtMosStyleSheet)
+							&& !href.contains(scStyleSheet)) {
+						toRemove.add(elem);
+					}
+				}
+			}
+		}
 
-    }
-    
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
-     */
-    /**
+		// Return if we already have the correct style sheets
+		if (styleSheetsFound && toRemove.isEmpty()) {
+			return;
+		}
+
+		// Detach the app while we manipulate the styles to avoid rendering
+		// issues
+		RootPanel.get().remove(app);
+
+		// Remove the old style sheets
+		for (final Element elem : toRemove) {
+			headElem.removeChild(elem);
+		}
+
+		// Load the GWT theme style sheet
+		final String modulePath = GWT.getModuleBaseURL();
+		final Command callback = new Command() {
+			public void execute() {
+				// Different themes use different background colors for the body
+				// element, but IE only changes the background of the visible
+				// content
+				// on the page instead of changing the background color of the
+				// entire
+				// page. By changing the display style on the body element, we
+				// force
+				// IE to redraw the background correctly.
+				RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
+						"none"); //$NON-NLS-1$
+				RootPanel.getBodyElement().getStyle()
+						.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				RootPanel.get().add(app);
+			}
+		};
+
+		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
+				getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosStyleSheet,
+				getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
+		// Load the showcase specific style sheet after the GWT & Mosaic theme
+		// style
+		// sheet so that custom styles supercede the theme styles.
+		StyleSheetLoader.loadStyleSheet(modulePath + scStyleSheet,
+				getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet,
+				getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
+		StyleSheetLoader.loadStyleSheet(modulePath + halogenStyleSheet,
+				getCurrentReferenceStyleName("halogen"), null); //$NON-NLS-1$
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+	 */
+	/**
 	 *
 	 */
-    public final void onModuleLoad() {
-	// Create a Pat unique session ID
-	setSessionID();
+	public final void onModuleLoad() {
 
-	// Swap out the style sheets for the RTL versions if needed
-	updateStyleSheets();
+		// parse possible parameters
+		initialState = parseInitialStateFromParameter();
+		// Create a Pat unique session ID
+		assignSessionID(initialState.getSession());
+		
+		app = new Application();
+		// Swap out the style sheets for the RTL versions if needed
+		updateStyleSheets();
 
-	// Create the application
-	setupTitlePanel();
-	// setupOptionsPanel();
+		// Create the application
+		setupTitlePanel();
+		// setupOptionsPanel();
 
-	// hide splash
-	com.google.gwt.user.client.DOM
-		.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		// hide splash
+		com.google.gwt.user.client.DOM
+				.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    }
+	}
 
-    /**
-     * Create the title bar at the top of the Application.
-     */
-    private void setupTitlePanel() {
-	// Get the title from the internationalized constants
-	final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
-		+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
-		+ "</h2>"; //$NON-NLS-1$
+	/**
+	 * Create the title bar at the top of the Application.
+	 */
+	private void setupTitlePanel() {
+		// Get the title from the internationalized constants
+		final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
+				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
+				+ "</h2>"; //$NON-NLS-1$
 
-	// Add the title and some images to the title bar
-	final HorizontalPanel titlePanel = new HorizontalPanel();
-	titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-	// titlePanel.add(IMAGES.gwtLogo().createImage());
-	titlePanel.add(new HTML(pageTitle));
-	app.setTitleWidget(titlePanel);
-    }
+		// Add the title and some images to the title bar
+		final HorizontalPanel titlePanel = new HorizontalPanel();
+		titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		// titlePanel.add(IMAGES.gwtLogo().createImage());
+		titlePanel.add(new HTML(pageTitle));
+		
+		if (initialState.getMode().isShowToolbar()) {
+			app.setTitleWidget(titlePanel);
+		}
+		
+	}
+
+	private State parseInitialStateFromParameter() {
+		State _state = new State();
+		Location loadURL = WindowUtils.getLocation();
+		State.Mode mode = State.Mode.getModeByParameter(loadURL
+				.getParameter("MODE"));
+		if (mode == null)
+			_state.setMode(State.Mode.STANDALONE);
+		else
+			_state.setMode(mode);
+		assignSessionID(loadURL.getParameter("SESSION"));
+		return _state;
+	}
+
+	public static State getInitialState() {
+		return initialState;
+	}
 
 }

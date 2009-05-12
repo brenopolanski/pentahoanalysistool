@@ -164,16 +164,17 @@ public class Application extends Viewport { // NOPMD
     /**
      * Constructor.
      */
+    
     public Application() {
 	super();
+	
 	// Setup the main layout widget
 	layoutPanel = getWidget();
 	layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
-	// Setup the top panel with the title and links
-	createTopPanel();
-	layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-
+		// Setup the top panel with the title and links
+		createTopPanel();
+		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 	setBottomPanel(new LayoutPanel(new BorderLayout()));
 	layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
@@ -220,9 +221,11 @@ public class Application extends Viewport { // NOPMD
 	final FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
 	// Setup the toolbar
-	toolBarPanel = new ToolBarPanel();
-
-	topPanel.setWidget(0, 0, toolBarPanel);
+	if (Pat.getInitialState().getMode().isShowToolbar())
+	{
+		toolBarPanel = new ToolBarPanel();
+		topPanel.setWidget(0, 0, toolBarPanel);
+	}
 	formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 
 	formatter.setColSpan(0, 0, 2);
