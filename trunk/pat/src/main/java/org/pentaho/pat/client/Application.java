@@ -124,7 +124,7 @@ public class Application extends Viewport { // NOPMD
     private transient ToolBarPanel toolBarPanel;
 
     /** Application LayoutPanel. */
-    private final transient LayoutPanel layoutPanel;
+    private transient LayoutPanel layoutPanel;
 
     /** The bottom Panel for the Application, contains the main panels. */
     private static LayoutPanel bottomPanel;
@@ -175,7 +175,7 @@ public class Application extends Viewport { // NOPMD
 		// Setup the top panel with the title and links
 		createTopPanel();
 		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-	setBottomPanel(new LayoutPanel(new BorderLayout()));
+	bottomPanel = new LayoutPanel(new BorderLayout());
 	layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
 	// Add the main menu
@@ -193,10 +193,9 @@ public class Application extends Viewport { // NOPMD
 		bottomPanel.layout();
 	    }
 	});
-	bottomPanel.setCollapsed(westPanel, true);
+	
 	bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10,
 		250));
-
 	// Add the content wrapper
 	setContentWrapper(new LayoutPanel(new FillLayout()));
 	contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
