@@ -83,7 +83,7 @@
   </servlet>
 
 
-  <!-- <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>jsp</servlet-name>
     <url-pattern>*.jsp</url-pattern>
     <url-pattern>*.jspf</url-pattern>
@@ -94,7 +94,7 @@
     <url-pattern>*.JSPX</url-pattern>
     <url-pattern>*.XSP</url-pattern>
   </servlet-mapping>
- -->
+
 
   
   <servlet-mapping>
