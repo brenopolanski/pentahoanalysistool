@@ -39,7 +39,24 @@
     <property name="maxUploadSize" value="100000" /> 
   </bean>
 	
-	
+
+  <bean id="pentahoIntegrationController"
+      class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+    <property name="methodNameResolver">
+        <bean class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver">
+        </bean>
+    </property>
+    <property name="delegate">
+        <bean class="org.pentaho.pat.server.servlet.PentahoServlet">
+          <property name="sessionService" ref="sessionService" />
+          <property name="discoveryService" ref="discoveryService" />
+          <property name="queryService" ref="queryService" />
+          <property name="redirectTarget" value="/pat/Pat.jsp" />
+        </bean>
+    </property>
+  </bean>
+
+  
 	
 	
 	<!-- ############################################################################# -->

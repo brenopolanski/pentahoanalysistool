@@ -26,6 +26,18 @@ public interface QueryService extends Service {
     @Secured ({"ROLE_USER"})
     public String createNewQuery(String userId, String sessionId) throws OlapException;
     
+    /**
+     * Creates a new query for a given session using a supplied MDX query.
+     * @param userId The owner of the query to create.
+     * @param sessionId The session id into which we want to create a new query.
+     * @param mdx The initial MDX to initialize the query object with.
+     * @return A unique query identification number.
+     * @throws OlapException If creating the query fails or the supplied MDX cannot
+     * be parsed as a Query object.
+     */
+    @Secured ({"ROLE_USER"})
+    public String createNewQuery(String userId, String sessionId, String mdx) throws OlapException;
+    
     @Secured ({"ROLE_USER"})
     Query getQuery(String userId, String sessionId, String queryId);
     

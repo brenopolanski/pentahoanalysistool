@@ -5,9 +5,11 @@
 
 	<bean id="urlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="alwaysUseFullPath" value="true"/>
 		<property name="mappings">
 			<props>
         <prop key="/pat/schemaupload">fileUploadController</prop>
+        <prop key="/pentaho/*.do">pentahoIntegrationController</prop>
 			</props>
 		</property>
 	</bean>

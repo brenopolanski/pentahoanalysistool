@@ -84,6 +84,28 @@ public class QueryServiceImpl extends AbstractService
         return generatedId;
     }
 
+	public String createNewQuery(String userId, String sessionId, String mdx) 
+	    throws OlapException 
+	{
+	    // Validate the user.
+	    sessionService.validateUser(userId);
+	    
+	    // Generate a unique query name.
+	    String generatedId = String.valueOf(UUID.randomUUID());
+	    
+	    
+	    Query query = null;
+	    
+	    //query = Query.parse(mdx);
+	    // FIXME Not implemented yet.
+	    if (true)
+	        throw new UnsupportedOperationException();
+	    
+	    sessionService.getSession(userId, sessionId).getQueries().put(generatedId,query);
+	    
+	    return generatedId;
+	}
+	
     private Cube getCube4Guid(String userId, String sessionId, String cubeName)
             throws OlapException {
         OlapConnection connection = sessionService.getConnection(userId, sessionId);
