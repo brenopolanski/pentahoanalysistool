@@ -11,5 +11,5 @@
   # The next step is to initialize the Query model with the supplied MDX query. This is a bit tricky. Of two things, first, we support any query whatsoever, but we need to develop PAT's advanced mode along with it, or second, we only support queries that can be represented as an Olap4j's Query object. I propose the later, since it's way simpler to start with, and we'll tackle the "any MDX" problem later on.
   # PAT then redirects the client to the main PAT servlet. (/pat/Pat.jsp). The URL must include two parameters. 
     # The session id to use - PAT will need to know inside of which session space the work must be done. The parameter will be named _SESSION_.
-    # A "mode" variable - PAT needs to know that it is in BI server integrated mode. The variable will be named _MODE_ and have the value _BI-SERVER-PUC_.
+    # A "mode" variable - PAT needs to know that it is in BI server integrated mode. The variable will be named _MODE_ and have the value _BISERVERPUC_.
   # Since the integration servlet has already created a session space and established connections, the new PAT window only needs to be aware of the ID to use and pick up the work from there. It is obvious though that the GUI will need to be in the proper "state", that is, connected and displaying a list of cubes.
