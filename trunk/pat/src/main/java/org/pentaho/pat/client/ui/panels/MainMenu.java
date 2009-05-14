@@ -34,7 +34,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.TreeListener;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -166,8 +167,9 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 		mainMenuTree = new Tree(treeImages);
 		mainMenuTree.setAnimationEnabled(true);
 		mainMenuTree.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
-		mainMenuTree.addTreeListener(new TreeListener() {
-			public void onTreeItemSelected(final TreeItem item) {
+		mainMenuTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+			public void onSelection(SelectionEvent<TreeItem> selectionEvent) {
+				TreeItem item = selectionEvent.getSelectedItem();
 				if (listener != null) {
 					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availablecubes())) {
 
@@ -219,10 +221,6 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 					Application.getContentWrapper().layout();
 
 				}
-			}
-
-
-			public void onTreeItemStateChanged(final TreeItem item) {
 			}
 		});
 	}

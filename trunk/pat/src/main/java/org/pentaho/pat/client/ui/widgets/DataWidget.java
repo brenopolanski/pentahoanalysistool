@@ -21,7 +21,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 
-import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -110,18 +109,18 @@ public abstract class DataWidget extends LayoutPanel {
 	public final boolean isInitialized() {
 		return initialized;
 	}
-
-	/**
-	 * On before tab selected.
-	 *
-	 * @param sender the sender
-	 * @param tabIndex the tab index
-	 *
-	 * @return true, if successful
-	 */
-	public final boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
-		return true;
-	}
+//
+//	/**
+//	 * On before tab selected.
+//	 *
+//	 * @param sender the sender
+//	 * @param tabIndex the tab index
+//	 *
+//	 * @return true, if successful
+//	 */
+//	public final boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
+//		return true;
+//	}
 
 	/**
 	 * When the widget is first initialized, this method is called. If it

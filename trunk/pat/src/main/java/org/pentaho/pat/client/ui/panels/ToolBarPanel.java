@@ -22,10 +22,11 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionListener {
+public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionListener {
 
     private static final class ThemeMenuItemCommand implements Command {
 	    private String theme;
@@ -202,9 +203,9 @@ public class ToolBarPanel extends MenuBar implements ClickListener, ConnectionLi
 	 */
 	/**
 	 * Fires on click
-	 * @param sender the sender
+	 * @param event the event
 	 */
-	public void onClick(final Widget sender) {
+	public void onClick(final ClickEvent event) {
 
 	}
 
