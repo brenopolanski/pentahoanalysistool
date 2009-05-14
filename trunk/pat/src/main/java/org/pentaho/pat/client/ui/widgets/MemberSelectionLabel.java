@@ -7,14 +7,15 @@ import java.util.List;
 import org.pentaho.pat.client.images.SelectionModeImageBundle;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.ClickListenerCollection;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
@@ -23,15 +24,14 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  *
  * @author wseyler
  */
-public class MemberSelectionLabel extends HorizontalPanel implements
-	SourcesClickEvents {
+public class MemberSelectionLabel extends HorizontalPanel  {
 
     /** PatImages ImageBundle. */
     private transient SelectionModeImageBundle selectionImageBundle = GWT
 	    .create(SelectionModeImageBundle.class);
 
     /** Click Listener Collection. */
-    private transient ClickListenerCollection clickListeners;
+    //private transient ClickListenerCollection clickListeners;
 
     /** Label. */
     private final transient Label label = new Label();
@@ -66,22 +66,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements
 	label.setText(text);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.google.gwt.user.client.ui.SourcesClickEvents#addClickListener(com
-     * .google.gwt.user.client.ui.ClickListener)
-     */
-    /**
-     *@param listener the listener
-     */
-    public final void addClickListener(final ClickListener listener) {
-	if (clickListeners == null) {
-	    clickListeners = new ClickListenerCollection();
-	}
-	clickListeners.add(listener);
-    }
+    
 
     /**
      * Gets the full path.
@@ -146,9 +131,10 @@ public class MemberSelectionLabel extends HorizontalPanel implements
 	super.onBrowserEvent(event);
 	switch (DOM.eventGetType(event)) { // NOPMD by bugg on 20/04/09 20:16
 	case Event.ONCLICK:
-	    if (clickListeners != null) {
-		clickListeners.fireClick(this);
-	    }
+	    //if (clickListeners != null) {
+		//clickListeners.fireClick(this);
+//		fireEvent(this);
+	    //}
 	    break;
 	case Event.ONCONTEXTMENU:
 	    final SelectionModePopup test = new SelectionModePopup();
@@ -164,21 +150,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements
 	}
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.google.gwt.user.client.ui.SourcesClickEvents#removeClickListener(
-     * com.google.gwt.user.client.ui.ClickListener)
-     */
-    /**
-     *@param listener the listener
-     */
-    public final void removeClickListener(final ClickListener listener) {
-	if (clickListeners != null) {
-	    clickListeners.remove(listener);
-	}
-    }
+
 
     /**
      * Sets the label's image.
@@ -241,5 +213,7 @@ public class MemberSelectionLabel extends HorizontalPanel implements
     public final void setTreeItem(final TreeItem treeItem) {
 	this.treeItem = treeItem;
     }
+
+
 
 }
