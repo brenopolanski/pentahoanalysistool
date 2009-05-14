@@ -23,7 +23,6 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
-
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -31,11 +30,12 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.OlapData;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -154,8 +154,8 @@ public class OlapPanel extends DataWidget {
 		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES.toolCollapseUp());
 		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
 
-		collapseBtn1.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
+		collapseBtn1.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
 				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
 				layoutPanel.layout();
 			}
@@ -170,8 +170,8 @@ public class OlapPanel extends DataWidget {
 		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES.toolCollapseDown());
 		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
 
-		collapseBtn2.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
+		collapseBtn2.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
 				layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
 				layoutPanel.layout();
 			}
@@ -188,9 +188,8 @@ public class OlapPanel extends DataWidget {
 		// panel1.setPadding(0);
 		// panel1.setWidgetSpacing(0);
 		final Button executeButton = new Button(ConstantFactory.getInstance().executequery());
-		executeButton.addClickListener(new ClickListener(){
-
-			public void onClick(final Widget arg0) {
+		executeButton.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
 				doExecuteQueryModel();
 			}
 

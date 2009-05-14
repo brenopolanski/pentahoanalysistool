@@ -19,7 +19,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -27,18 +26,17 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 
 /**
  * Connection Panel for Mondrian Connections.
@@ -204,13 +202,9 @@ public class ConnectMondrianPanel extends LayoutPanel {
 		formPanel.setMethod(FORM_METHOD);
 		formPanel.setEncoding(FORM_ENCODING);
 
-		formPanel.addFormHandler(new FormHandler() {
-			public void onSubmit(final FormSubmitEvent arg0) {
-				// TODO add Submit Action - Probably validation? And mask UI
-				// Window.alert("onSubmit:" + arg0.toString());
-			}
+		formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
-			public void onSubmitComplete(final FormSubmitCompleteEvent arg0) {
+			public void onSubmitComplete(final SubmitCompleteEvent arg0) {
 				// TODO Replace filename handling with stored schema handling
 				// when implemented
 				if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
@@ -246,8 +240,8 @@ public class ConnectMondrianPanel extends LayoutPanel {
 		fileUpload.setName(FORM_NAME_FILE);
 		builder.add(fileUpload, CellConstraints.xyw(3, 7, 5));
 
-		uploadButton.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
+		uploadButton.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
 				final String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
 					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadnofile());
@@ -258,8 +252,8 @@ public class ConnectMondrianPanel extends LayoutPanel {
 		});
 
 		builder.add(uploadButton, CellConstraints.xyw(3, 9, 5));
-		connectButton.addClickListener(new ClickListener() {
-			public void onClick(final Widget sender) {
+		connectButton.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onFailure(final Throwable arg0) {
 						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));

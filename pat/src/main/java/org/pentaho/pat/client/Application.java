@@ -144,9 +144,10 @@ public class Application extends Viewport { // NOPMD
      * @param bottomPanel
      *            Returns the bottom Panel(dimension and data container)
      */
-    private static void setBottomPanel(final LayoutPanel bottomPanel) {
-	Application.bottomPanel = bottomPanel;
-    }
+    // TODO add again when really needed, otherwise delete
+//    private static void setBottomPanel(final LayoutPanel bottomPanel) {
+//	Application.bottomPanel = bottomPanel;
+//    }
 
     /**
      * Set the {@link Widget} to display in the content area.

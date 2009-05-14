@@ -25,8 +25,6 @@ import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 
-import com.google.gwt.user.client.ui.SourcesTabEvents;
-import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -125,19 +123,6 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 		tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
 		tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
 		GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionWindow.this);
-
-		tabPanel.addTabListener(new TabListener() {
-			public  boolean onBeforeTabSelected(final SourcesTabEvents sender, final int tabIndex) {
-				return true;
-			}
-
-			public  void onTabSelected(final SourcesTabEvents sender, final int tabIndex) {
-				// FormLayout.getPreferredSize() needs to be improved so that
-				// pack()
-				// works like expected. But you can try it.
-				// pack();
-			}
-		});
 		layoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
 		return layoutPanel;
 	}
