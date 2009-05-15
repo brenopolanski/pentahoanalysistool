@@ -72,6 +72,13 @@ Once in the webapps directory you will need to download the latest PAT WAR file 
   user@term:/opt/tomcat/webapps# sudo wget http://pentahoanalysistool.googlecode.com/files/pat-0.2.0-GA.war
 }}}
 
+You are required to rename the war file to _pat.war_ before deploying it. The PAT application can only work properly in the _/pat_ context.
+
+
+{{{
+  user@term:/opt/tomcat/webapps# mv pat-0.2.0-GA.war pat.war
+}}}
+
 You will now need to start Tomcat, navigate to the bin directory within your Tomcat directory:
 
 {{{
