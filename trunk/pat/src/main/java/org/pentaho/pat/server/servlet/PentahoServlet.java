@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.pentaho.pat.server.services.SessionService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.util.Assert;
+import org.springframework.web.context.ServletContextAware;
 
 /**
  * This controller is meant to recieve redirects from Pentaho
@@ -21,7 +23,7 @@ import org.springframework.util.Assert;
  * so a user can create analysis views.
  * @author Luc Boudreau
  */
-public class PentahoServlet implements InitializingBean {
+public class PentahoServlet implements InitializingBean, ServletContextAware {
 
     protected SessionService sessionService = null;
     protected QueryService queryService = null;
@@ -32,6 +34,7 @@ public class PentahoServlet implements InitializingBean {
     protected String xmlaUsernameParameter =  "XMLA_USERNAME";
     protected String xmlaPasswordParameter =  "XMLA_PASSWORD";
 //    protected String mdxQueryParameter =      "MDX";
+    private ServletContext servletContext;
     
     public void simpleXmla(HttpServletRequest request, HttpServletResponse response, 
         HttpSession session) throws Exception 
@@ -85,7 +88,7 @@ public class PentahoServlet implements InitializingBean {
         redirect.append("&SESSION=").append(sessionId);
         
         // Send the redirect HTTP message
-        response.sendRedirect(redirect.toString());
+        response.sendRedirect(servletContext.getContextPath().concat(redirect.toString()));
     }
 
     private boolean verifyXmlaUrl(String xmlaUrl) 
@@ -143,5 +146,9 @@ public class PentahoServlet implements InitializingBean {
         Assert.notNull(this.sessionService);
         Assert.notNull(this.queryService);
         Assert.notNull(this.discoveryService);
+    }
+
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
     }
 }
