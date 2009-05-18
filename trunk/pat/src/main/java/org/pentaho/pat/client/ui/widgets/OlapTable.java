@@ -19,6 +19,7 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.table.ScrollTable;
 import org.gwt.mosaic.ui.client.table.ScrollTable.DataGrid;
 import org.pentaho.pat.client.i18n.PatMessages;
@@ -72,10 +73,11 @@ public class OlapTable extends LayoutPanel {
 	 */
 	public OlapTable(PatMessages messages) {
 		// super(dataTable, headerTable);
+		super();
 		this.setMessages(messages);
 		// this.setCellPadding(3);
 		// this.setCellSpacing(0);
-		this.setSize("100%", "100%");
+//		this.setSize("100%", "100%");
 		// Add the scroll table to the page
 
 		// this.setFooterTable(footerTable);
@@ -118,7 +120,8 @@ public class OlapTable extends LayoutPanel {
 			createRowHeaders();
 			populateData();
 			ScrollTable scrollTable = new ScrollTable(dataTable, headerTable);
-			this.add(scrollTable);
+		    this.setPixelSize(600,400);
+			this.add(scrollTable,new FillLayoutData(true));
 		}
 	}
 
