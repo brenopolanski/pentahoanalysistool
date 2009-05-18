@@ -136,7 +136,7 @@ public class OlapPanel extends DataWidget {
 	 */
 	private void init() {
 		olapTable = new OlapTable(MessageFactory.getInstance());
-
+		
 	}
 
 	/* (non-Javadoc)
@@ -207,8 +207,8 @@ public class OlapPanel extends DataWidget {
 		DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
 		filterDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(3, 0, filterDimDrop);
-		olapTable.setWidth("100%");
-		olapTable.setHeight("100%");
+//		olapTable.setWidth("100%");
+//		olapTable.setHeight("100%");
 		grid.setWidget(0, 1, olapTable);
 		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
 		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);

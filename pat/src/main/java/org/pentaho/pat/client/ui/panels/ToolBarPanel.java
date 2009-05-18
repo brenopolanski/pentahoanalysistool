@@ -108,7 +108,7 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 						GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
 					}
 					connectWindow.emptyForms();
-					connectWindow.showModal();
+					connectWindow.showModal(true);
 					// connectWindow.show();
 				} else {
 					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
