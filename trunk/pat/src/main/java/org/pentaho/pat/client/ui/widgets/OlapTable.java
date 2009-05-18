@@ -18,6 +18,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.table.ScrollTable;
 import org.gwt.mosaic.ui.client.table.ScrollTable.DataGrid;
 import org.pentaho.pat.client.i18n.PatMessages;
@@ -29,7 +30,6 @@ import org.pentaho.pat.rpc.dto.OlapData;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
 import com.google.gwt.widgetideas.table.client.overrides.FlexTable.FlexCellFormatter;
@@ -39,7 +39,7 @@ import com.google.gwt.widgetideas.table.client.overrides.FlexTable.FlexCellForma
  * 
  */
 @SuppressWarnings("deprecation")
-public class OlapTable extends SimplePanel {
+public class OlapTable extends LayoutPanel {
 
 	private static final String OLAP_ROW_HEADER_LABEL = "olap-row-header-label"; //$NON-NLS-1$
 	private static final String OLAP_ROW_HEADER_CELL = "olap-row-header-cell"; //$NON-NLS-1$
@@ -118,7 +118,7 @@ public class OlapTable extends SimplePanel {
 			createRowHeaders();
 			populateData();
 			ScrollTable scrollTable = new ScrollTable(dataTable, headerTable);
-			this.setWidget(scrollTable);
+			this.add(scrollTable);
 		}
 	}
 

@@ -218,10 +218,6 @@
 			<url>http://www.ibiblio.org/maven2</url>
 		</repository>
 		<repository>
-			<id>libs-releases-local</id>
-			<url>http://pentahoanalysistool.googlecode.com/svn/trunk/mavenrepo/</url>
-		</repository>
-		<repository>
 			<id>pentaho-repo</id>
 			<url>http://repo.pentaho.org/artifactory/pentaho/</url>
 		</repository>
@@ -355,13 +351,19 @@
 		<dependency>
 			<groupId>javacup</groupId>
 			<artifactId>javacup</artifactId>
-			<version>0.10k</version>
+			<version>10k</version>
 		</dependency>
 		<dependency>
-			<groupId>gwt-dnd</groupId>
+			<groupId>com.google.code</groupId>
 			<artifactId>gwt-dnd</artifactId>
 			<version>2.6.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code</groupId>
+			<artifactId>gwt-beans-binding</artifactId>
+			<version>0.2.3</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.google.code.gwtx</groupId>
 			<artifactId>gwtx</artifactId>
@@ -369,13 +371,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org</groupId>
-			<artifactId>gwt-beans-binding</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org</groupId>
 			<artifactId>gwt-mosaic</artifactId>
-			<version>0.2.0-rc3</version>
+			<version>0.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.gwt-widget</groupId>
@@ -557,7 +554,7 @@
 		<dependency>
 			<groupId>com.gwt</groupId>
 			<artifactId>incubator</artifactId>
-			<version>trunk-r1624</version>
+			<version>trunk-r1650</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
