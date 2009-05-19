@@ -55,7 +55,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 			if (!content.isInitialized()) {
 				content.initialize();
 			}
-			Application.setContent(content);
+			Application.addContent(content, content.getName());
 		}
 	}
 
@@ -171,8 +171,10 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 			public void onSelection(SelectionEvent<TreeItem> selectionEvent) {
 				TreeItem item = selectionEvent.getSelectedItem();
 				if (listener != null) {
+					final DataWidget widget = (DataWidget) ITEMWIDGETS.get(item);
+					
 					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availablecubes())) {
-
+						((OlapPanel) widget).setCube(item.getText().trim());
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
 							public void onFailure(final Throwable arg0) {
@@ -180,6 +182,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 							}
 
 							public void onSuccess(final String[] arg0) {
+								
 								ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
 
 									public void onFailure(final Throwable arg0) {
@@ -187,7 +190,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 									}
 
 									public void onSuccess(final String arg0) {
-
+										((OlapPanel) widget).setQuery(arg0);
 										ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
 											public void onFailure(final Throwable arg0) {
@@ -216,8 +219,9 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 					getMainMenu().setSelectedItem(item, false);
 					getMainMenu().ensureSelectedItemVisible();
 
+					
 					// Show the associated ContentWidget
-					displayContentWidget(ITEMWIDGETS.get(item));
+					displayContentWidget(widget);
 					Application.getContentWrapper().layout();
 
 				}
