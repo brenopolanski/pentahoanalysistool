@@ -13,22 +13,27 @@
 
  package org.pentaho.pat.client;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
+import org.gwt.mosaic.ui.client.HTML;
 import org.gwt.mosaic.ui.client.ImageButton;
+import org.gwt.mosaic.ui.client.Label;
+import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,6 +42,9 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -55,12 +63,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * @author tom(at)wamonline.org.uk
  */
 
-public class Application extends Viewport { // NOPMD
-									  // by
-									  // bugg
-									  // on
-									  // 21/04/09
-									  // 05:50
+public class Application extends Viewport {
     /**
      * Images used in the {@link Application}.
      */
@@ -75,6 +78,7 @@ public class Application extends Viewport { // NOPMD
 	AbstractImagePrototype treeLeaf();
     }
 
+    private static int counter = 0;
     /**
      * A listener to handle events from the Application.
      */
@@ -90,7 +94,7 @@ public class Application extends Viewport { // NOPMD
     }
 
     /** The wrapper around the content. */
-    private static LayoutPanel contentWrapper;
+    private static DecoratedTabLayoutPanel contentWrapper;
 
     /** The base style name. */
     public static final String DEF_STYLE_NAME = "Application"; //$NON-NLS-1$
@@ -100,7 +104,7 @@ public class Application extends Viewport { // NOPMD
      *
      * @return the Content Wrapper
      */
-    public static LayoutPanel getContentWrapper() {
+    public static TabLayoutPanel getContentWrapper() {
 	return contentWrapper;
     }
 
@@ -110,7 +114,7 @@ public class Application extends Viewport { // NOPMD
      * @param contentWrapper
      *            The Application Content Wrapper
      */
-    public static void setContentWrapper(final LayoutPanel contentWrapper) {
+    public static void setContentWrapper(final DecoratedTabLayoutPanel contentWrapper) {
 	Application.contentWrapper = contentWrapper;
     }
 
@@ -139,72 +143,56 @@ public class Application extends Viewport { // NOPMD
     }
 
     /**
-     * Sets the bottom panel.
-     *
-     * @param bottomPanel
-     *            Returns the bottom Panel(dimension and data container)
-     */
-    // TODO add again when really needed, otherwise delete
-//    private static void setBottomPanel(final LayoutPanel bottomPanel) {
-//	Application.bottomPanel = bottomPanel;
-//    }
-
-    /**
-     * Set the {@link Widget} to display in the content area.
-     *
-     * @param content
-     *            the content widget
-     */
-    public static void setContent(final Widget content) {
-	Application.contentWrapper.clear();
-	if (content != null) {
-	    Application.contentWrapper.add(content);
-	}
-    }
-
-    /**
      * Constructor.
      */
     
     public Application() {
 	super();
-	
-	// Setup the main layout widget
-	layoutPanel = getWidget();
-	layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+
+		// Setup the main layout widget
+		layoutPanel = getWidget();
+		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 		// Setup the top panel with the title and links
 		createTopPanel();
 		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-	bottomPanel = new LayoutPanel(new BorderLayout());
-	layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
+		bottomPanel = new LayoutPanel(new BorderLayout());
+		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
-	// Add the main menu
-	
-	final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+		// Add the main menu
 
-	final ImageButton collapseBtn = new ImageButton(Caption.IMAGES
-		.toolCollapseLeft());
-	westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
 
-	collapseBtn.addClickHandler(new ClickHandler() {
-	    public void onClick(final ClickEvent click_event) {
-		bottomPanel.setCollapsed(westPanel, !layoutPanel
-			.isCollapsed(westPanel));
-		bottomPanel.layout();
-	    }
-	});
-	
-	bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10,
-		250));
-	// Add the content wrapper
-	setContentWrapper(new LayoutPanel(new FillLayout()));
-	contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
-	bottomPanel.add(contentWrapper);
-	mainPanel = new MainMenu();
-	westPanel.add(mainPanel);
+		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+		westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
-	//setContent(null);
+		collapseBtn.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent click_event) {
+				bottomPanel.setCollapsed(westPanel, !layoutPanel.isCollapsed(westPanel));
+				bottomPanel.layout();
+			}
+		});
+
+		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250));
+		// Add the content wrapper
+		contentWrapper = new DecoratedTabLayoutPanel();
+		contentWrapper.addTabListener(new TabListener(){
+			//Fix Deprication.
+			public boolean onBeforeTabSelected(SourcesTabEvents arg0, int arg1) {
+				// Cube/Query Sync Logic
+				return false;
+			}
+
+			public void onTabSelected(SourcesTabEvents arg0, int arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
+		bottomPanel.add(contentWrapper);
+		mainPanel = new MainMenu();
+		westPanel.add(mainPanel);
 
     }
 
@@ -254,21 +242,6 @@ public class Application extends Viewport { // NOPMD
 		HasVerticalAlignment.ALIGN_TOP);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.mosaic.ui.client.layout.HasLayoutManager#getPreferredSize()
-     */
-    /**
-     * Gets the preferred size.
-     *
-     * @return the widgets preferred size
-     */
-    // TODO what was this good for?
-    //public final int[] getPreferredSize() {
-//	return getWidget().getPreferredSize();
-//    }
-
     /**
      * Gets the title widget.
      *
@@ -288,7 +261,7 @@ public class Application extends Viewport { // NOPMD
      *
      * @return the widget.
      */
-    // TODO is it ok to cast to LayoutPanel here?
+    // TODO is it ok to cast to LayoutPanel here? Yes
     @Override
     protected final LayoutPanel getWidget() {
     	return (LayoutPanel)super.getWidget();
@@ -306,17 +279,64 @@ public class Application extends Viewport { // NOPMD
     }
 
     /**
-     * Set the {@link Widget} to use as the title bar.
-     *
-     * @param title
-     *            the title widget
-     */
-    public final void setTitleWidget(final Widget title) {
-	topPanel.setWidget(1, 0, title);
-    }
-    
-    public MainMenu getMainPanel() {
+	 * Set the {@link Widget} to use as the title bar.
+	 * 
+	 * @param title
+	 *            the title widget
+	 */
+	public final void setTitleWidget(final Widget title) {
+		topPanel.setWidget(1, 0, title);
+	}
+
+	public MainMenu getMainPanel() {
 		return mainPanel;
 	}
 
+	/**
+	 * Adds a new Tab to the contentPanel.
+	 *
+	 * @param content
+	 * @param tabName
+	 */
+    
+	public static void addContent(final Widget content, String tabName) {
+		tabName = tabName + "" + counter;
+		if (content != null) {
+			contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+			counter++;
+			contentWrapper.layout();
+		}
+	}
+
+	/**
+	 * 
+	 * Creates a new Closeable tab.
+	 *
+	 * @param widget
+	 * @param string
+	 * @param index
+	 * @return a closeable tab for a tab panel.
+	 */
+	private static Widget tabCloseLabel(final Widget widget, final String string, final int index) {
+		final HorizontalPanel hPanel = new HorizontalPanel();
+		final Label label = new Label(string + index);
+		DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap");
+		ImageButton closeBtn = new ImageButton(Pat.IMAGES.chart());
+		closeBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				int widgetIndex = contentWrapper.getWidgetIndex(widget);
+				if (widgetIndex == contentWrapper.getSelectedTab()) {
+					contentWrapper.remove(widgetIndex);
+					contentWrapper.selectTab(widgetIndex - 1);
+				} else {
+					contentWrapper.remove(widgetIndex);
+					contentWrapper.layout();
+				}
+			}
+		});
+		hPanel.add(label);
+		hPanel.add(new HTML("&nbsp&nbsp&nbsp"));
+		hPanel.add(closeBtn);
+		return hPanel;
+	}
 }

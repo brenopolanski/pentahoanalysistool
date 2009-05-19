@@ -46,7 +46,7 @@ import com.google.gwt.user.client.ui.Widget;
 public abstract class DataWidget extends LayoutPanel {
 
 	/** The default style name. */
-	protected static final String DEFAULT_STYLE_NAME = "Pat-sc-ContentWidget"; //$NON-NLS-1$
+	protected static final String DEFAULT_STYLE_NAME = "Pat-ContentWidget"; //$NON-NLS-1$
 
 	/** A boolean indicating whether or not this widget has been initialized. */
 	private boolean initialized = false;

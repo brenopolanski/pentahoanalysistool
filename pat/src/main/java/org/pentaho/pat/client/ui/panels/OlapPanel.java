@@ -56,7 +56,9 @@ public class OlapPanel extends DataWidget {
 	/** Panel Name. */
 	private transient final String name;
 
-
+	private transient String query;
+	
+	private transient String cube;
 	/**
 	 * Constructor.
 	 * 
@@ -228,5 +230,25 @@ public class OlapPanel extends DataWidget {
 
 	}
 
+	public String getQuery(){
+		return query;
+	}
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param arg0
+	 */
+	public void setQuery(String query) {
+		// TODO Auto-generated method stub
+		this.query = query;
+	}
 
+
+	public void setCube(String cube){
+		this.cube = cube;
+	}
+	
+	public String getCube(){
+		return cube;
+	}
 }

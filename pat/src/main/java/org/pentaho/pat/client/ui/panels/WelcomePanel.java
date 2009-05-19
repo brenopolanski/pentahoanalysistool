@@ -13,7 +13,11 @@
 
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 
 import com.google.gwt.user.client.ui.Frame;
@@ -73,8 +77,11 @@ public class WelcomePanel extends DataWidget {
 	@Override
 	public final Widget onInitialize() {
 		// Not Permanent, but better than a big white space.
-		final LayoutPanel layoutPanel = new LayoutPanel();
-		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6")); //$NON-NLS-1$
+		 final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
+			        Orientation.VERTICAL));
+			    layoutPanel.setPadding(0);
+			    layoutPanel.setWidgetSpacing(20);
+		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"), new BoxLayoutData(FillStyle.HORIZONTAL)); //$NON-NLS-1$
 		return layoutPanel;
 	}
 

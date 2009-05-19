@@ -18,6 +18,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.table.ScrollTable;
@@ -289,58 +290,49 @@ public class OlapTable extends LayoutPanel {
 	 * System.out.println((j)); } System.out.println("=============="); }
 	 */
 
-	protected void populateData() {
-		for (int row = 0; row < olapData.getCellData().getDownCount(); row++) {
-			for (int column = 0; column < olapData.getCellData()
-					.getAcrossCount(); column++) {
-				CellInfo cellInfo = olapData.getCellData().getCell(row, column);
-				if (cellInfo != null) {
-					Label label = new Label(cellInfo.getFormattedValue());
-					label.addStyleName("olap-cell-label"); //$NON-NLS-1$
-					String colorValueStr = cellInfo.getColorValue();
-					if (colorValueStr != null) {
-						DOM
-								.setElementAttribute(
-										label.getElement(),
-										"style", "background-color: " + cellInfo.getColorValue() + ";"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-					}
-					label.addClickListener(new ClickCellCommand());
-					dataTable
-							.setWidget(
-									showParentMembers ? row/*
-															 * +olapData.
-															 * getColumnHeaders
-															 * ().getDownCount()
-															 */: row + 1,
-									showParentMembers ? getFirstUnusedColumnForRow(row /*
-																						 * +
-																						 * olapData
-																						 * .
-																						 * getColumnHeaders
-																						 * (
-																						 * )
-																						 * .
-																						 * getDownCount
-																						 * (
-																						 * )
-																						 */)/*
-																							 * column
-																							 * +
-																							 * olapData
-																							 * .
-																							 * getRowHeaders
-																							 * (
-																							 * )
-																							 * .
-																							 * getAcrossCount
-																							 * (
-																							 * )
-																							 */
-											: column + 1, label);
-				}
-			}
-		}
-	}
+//	protected void populateData() {
+//		for (int row = 0; row < olapData.getCellData().getDownCount(); row++) {
+//			for (int column = 0; column < olapData.getCellData()
+//					.getAcrossCount(); column++) {
+//				CellInfo cellInfo = olapData.getCellData().getCell(row, column);
+//				if (cellInfo != null) {
+//					Label label = new Label(cellInfo.getFormattedValue());
+//					label.addStyleName("olap-cell-label"); //$NON-NLS-1$
+//					String colorValueStr = cellInfo.getColorValue();
+//					if (colorValueStr != null) {
+//						DOM
+//								.setElementAttribute(
+//										label.getElement(),
+//										"style", "background-color: " + cellInfo.getColorValue() + ";"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+//					}
+//					label.addClickListener(new ClickCellCommand());
+//					dataTable
+//							.setWidget(showParentMembers ? row/* +olapData.getColumnHeaders().getDownCount()*/: row + 1,showParentMembers ? getFirstUnusedColumnForRow(row) : column + 1, label);
+//				}
+//			}
+//		}
+//	}
+	  protected void populateData() {
+		    for (int row=0; row<olapData.getCellData().getDownCount(); row++) {
+		        for (int column=0; column<olapData.getCellData().getAcrossCount(); column++) {
+		                CellInfo cellInfo = olapData.getCellData().getCell(row, column);
+		                if (cellInfo != null) {
+		                        Label label = new Label(cellInfo.getFormattedValue());
+		                label.addStyleName("olap-cell-label"); //$NON-NLS-1$
+		                String colorValueStr = cellInfo.getColorValue();
+		                if (colorValueStr != null) {
+		                  DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		                }
+		                label.addClickListener(new ClickCellCommand());
+		                MessageBox.alert("Actual Row=", Integer.toString(row));
+		                System.out.println("actual row=" + row);
+		                dataTable.setWidget(showParentMembers ? row: row + 1, 
+		                					showParentMembers ? getFirstUnusedColumnForRow(row): column + 1, 
+		                							label);
+		                }
+		        }
+		    }   
+		  }
 
 	public boolean isShowParentMembers() {
 		return showParentMembers;
@@ -386,6 +378,7 @@ public class OlapTable extends LayoutPanel {
 				String text = dataTable.getText(row, column);
 				if ((text == null || text.length() < 1) && widget == null) {
 					return column;
+	                
 				}
 				column++;
 			}
