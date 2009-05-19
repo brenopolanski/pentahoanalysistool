@@ -33,18 +33,19 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SourcesTabEvents;
-import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -176,18 +177,16 @@ public class Application extends Viewport {
 		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250));
 		// Add the content wrapper
 		contentWrapper = new DecoratedTabLayoutPanel();
-		contentWrapper.addTabListener(new TabListener(){
-			//Fix Deprication.
-			public boolean onBeforeTabSelected(SourcesTabEvents arg0, int arg1) {
-				// Cube/Query Sync Logic
-				return false;
+		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
+			public void onSelection(SelectionEvent<Integer> selectEvent) {
+				// TODO do something in here
+				// contentWrapper.getSelectedTab() OR  selectEvent.getSelectedItem()
 			}
-
-			public void onTabSelected(SourcesTabEvents arg0, int arg1) {
-				// TODO Auto-generated method stub
-				
+		});
+		contentWrapper.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+			public void onBeforeSelection(BeforeSelectionEvent<Integer> beforeSelection) {
+				// TODO do whatever before selection
 			}
-			
 		});
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		bottomPanel.add(contentWrapper);
