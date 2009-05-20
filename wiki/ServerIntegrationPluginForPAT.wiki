@@ -42,9 +42,7 @@ These commands will build, then deploy the PAT plugin and solution files to your
   * Open the sample.xpav file in the pentaho-solutions\bi-developers\PatPlugin folder. 
   * Change the {{{<app-connection>}}} node's text value to contain the server, port and context path to your PAT web application. The rest of the URL is the access point into PAT and must be left alone. 
 
-   EX. If your domain is *mydomain.com*, and PAT is deployed to *port 8888*, and the context path is *pat* then your {{{<app-connection>}}} text value should be:
-
-       {{{ http://mydomain.com:8888/pat/pentaho/simpleXmla.do }}} 
+   EX. If your domain is *mydomain.com*, and PAT is deployed to *port 8888*, and the context path is *pat* then your {{{<app-connection>}}} text value should be {{{ http://mydomain.com:8888/pat/pentaho/simpleXmla.do }}} 
 
   * Change the {{{<xmla-provider>}}} node's attribute values for url, username and password to point to your XML/a provider. The default values in the solution point to the XML/a servlet available in a Pentaho BI Server deployed to localhost. 
   * Save and close sample.xpav. 
@@ -63,5 +61,4 @@ Please post any comments, feedback, problems or bugs to http://forums.pentaho.or
 
 If you want to compile and work on the PAT plugin in Eclipse or any other IDE, you will need to create a classpath reference to the Pentaho platform jars in your Pentaho BI Server installation. I accomplished this by linking the classes directory of my development BI server into the PAT plugin project' s classpath. You may find another route suitable. 
 
-For help with understanding Pentaho BI Server plugins in general, or seeing how a simple plugin is setup, visit 
-http://wiki.pentaho.com/display/ServerDoc2x/BI+Platform+Plugins+in+V2
+For help with understanding Pentaho BI Server plugins in general, or seeing how a simple plugin is setup, visit [ http://wiki.pentaho.com/display/ServerDoc2x/BI+Platform+Plugins+in+V2 this page].
