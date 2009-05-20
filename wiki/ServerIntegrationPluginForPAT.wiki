@@ -55,10 +55,10 @@ Once you have built, deployed,and modified your solution, open a browser and log
 
 Now, return to the home page of PUC, the user console for the BI Server. Navigate the solutions folders to the PatPlugin folder. You should see one piece of content there, "My First Analysis View". Click the content item and PAT should launch. Enjoy!
 
-Please post any comments, feedback, problems or bugs to http://forums.pentaho.org/forumdisplay.php?f=258.
+Please post any comments, feedback, problems or bugs to [http://forums.pentaho.org/forumdisplay.php?f=258 the PAT forum].
 
 ==Development==
 
 If you want to compile and work on the PAT plugin in Eclipse or any other IDE, you will need to create a classpath reference to the Pentaho platform jars in your Pentaho BI Server installation. I accomplished this by linking the classes directory of my development BI server into the PAT plugin project' s classpath. You may find another route suitable. 
 
-For help with understanding Pentaho BI Server plugins in general, or seeing how a simple plugin is setup, visit [ http://wiki.pentaho.com/display/ServerDoc2x/BI+Platform+Plugins+in+V2 this page].
+For help with understanding Pentaho BI Server plugins in general, or seeing how a simple plugin is setup, visit [http://wiki.pentaho.com/display/ServerDoc2x/BI+Platform+Plugins+in+V2 this page].
