@@ -12,5 +12,6 @@
     * [FrontendBackendInterface Communication Layer]
   * [Lifecycle Usage/Lifecycle]
   * [PentahoIntegration Simple BI-Server Integration]
+    *[ServerIntegrationPluginForPAT PAT Plugin for Pentaho BI Server Integration]
   * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
   * [ContactUs Contact Us]
