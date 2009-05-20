@@ -30,12 +30,12 @@ The tools you need are as follows:
   * Open the build.properties file, found in the root of the plugin project.
   * Change the path for the pentaho.dir property to the location of your BI Server installation. Save and close the file when completed.
 
-    EX. pentaho.dir=E:/workspaces/trunk_workspace/tomcat-pci-test/biserver-ce
+    EX. {{{ pentaho.dir=E:/workspaces/trunk_workspace/tomcat-pci-test/biserver-ce }}}
 
   * From a command prompt, in the root of the pentaho plugin project, run the following commands: *ant*, then *ant install*.
 
-    EX. E:\workspaces\pat_workspace\PentahoAnalysisTool>ant
-        E:\workspaces\pat_workspace\PentahoAnalysisTool>ant install
+    EX. {{{ E:\workspaces\pat_workspace\PentahoAnalysisTool>ant }}}
+        {{{ E:\workspaces\pat_workspace\PentahoAnalysisTool>ant install }}}
 
 These commands will build, then deploy the PAT plugin and solution files to your BI Server. You can verify by checking your pentaho-solutions\system folder for a new folder named pat-plugin. There will also be new solution files under pentaho-solutions\bi-developers\PatPlugin. In the next set of steps, you will modify the deployed solution to point to your PAT and XML/a resources. 
 
@@ -44,7 +44,7 @@ These commands will build, then deploy the PAT plugin and solution files to your
 
    EX. If your domain is *mydomain.com*, and PAT is deployed to *port 8888*, and the context path is *pat* then your {{{<app-connection>}}} text value should be:
 
-       http://mydomain.com:8888/pat/pentaho/simpleXmla.do
+       {{{ http://mydomain.com:8888/pat/pentaho/simpleXmla.do }}} 
 
   * Change the {{{<xmla-provider>}}} node's attribute values for url, username and password to point to your XML/a provider. The default values in the solution point to the XML/a servlet available in a Pentaho BI Server deployed to localhost. 
   * Save and close sample.xpav. 
