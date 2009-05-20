@@ -88,7 +88,7 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         redirect.append("&SESSION=").append(sessionId);
         
         // Send the redirect HTTP message
-        response.sendRedirect(servletContext.getContextPath().concat(redirect.toString()));
+        response.sendRedirect(request.getContextPath().concat(redirect.toString()));
     }
 
     private boolean verifyXmlaUrl(String xmlaUrl) 
