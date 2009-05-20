@@ -1,0 +1,16 @@
+<pav>
+	<fileinfo
+		title="My First Pentaho Analysis View"
+		author="Gretchen Moran"
+		description="Launch PAT with a sample Mondrian cube and sample data."
+		icon="pat-icon.png"/>
+		
+	<app-connection>http://localhost:8080/pat/pentaho/simpleXmla.do</app-connection>
+	
+	<xmla-provider
+		scope="use-local"
+		url="http://localhost:8080/pentaho/Xmla"
+		username="joe"
+		password="password"	/>
+	
+</pav>

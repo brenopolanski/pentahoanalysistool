@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin title="Pentaho Analysis Tool Plugin">
+  
+    <content-type type="xpav" mime-type="text/html">
+    <title>Pentaho Analysis View</title>
+    <description>Pentaho analysis view definition file</description>
+    <icon-url>content/pat-res/pat-icon.png</icon-url>
+    <meta-provider>org.pentaho.pat.PatContentTypeMetaProvider</meta-provider>
+    <operations>
+      <operation>
+        <id>RUN</id>
+        <command>content/pat?solution={solution}&amp;path={path}&amp;action={name}</command>
+      </operation>
+    </operations>
+  </content-type>
+  
+  <content-generator
+    id="pat"
+    title="Pentaho Analysis Tool"
+    type="xpav"
+    class="org.pentaho.pat.PatContentGenerator"/>
+    
+    <static-paths>
+      <static-path url="/pat-res" localFolder="resources"/>
+    </static-paths>  
+    
+  
+</plugin>
