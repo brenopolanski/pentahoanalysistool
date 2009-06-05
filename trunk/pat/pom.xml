@@ -225,6 +225,12 @@
 			<id>pentaho-third-party</id>
 			<url>http://repo.pentaho.org/artifactory/third-party/</url>
 		</repository>
+		<repository>
+			<id>MagicBeans-releases</id>
+			<url>http://174.143.235.84/artifactory/pat-libs</url>
+			<releases>
+			</releases>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -372,7 +378,7 @@
 		<dependency>
 			<groupId>org</groupId>
 			<artifactId>gwt-mosaic</artifactId>
-			<version>0.2.0</version>
+			<version>0.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.gwt-widget</groupId>
