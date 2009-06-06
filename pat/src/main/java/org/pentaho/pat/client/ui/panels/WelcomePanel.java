@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class WelcomePanel extends DataWidget {
 
 	/** Name. */
-	private final transient String name;
+	private transient String name;
 
 	/**
 	 * Constructor pass panel Name.
@@ -41,6 +41,14 @@ public class WelcomePanel extends DataWidget {
 	public WelcomePanel(final String name) {
 		super();
 		this.name = name;
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
+	public WelcomePanel() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -67,6 +75,9 @@ public class WelcomePanel extends DataWidget {
 		return name;
 	}
 
+	public void setName(String name){
+		this.name = name;	
+	}
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
 	 */
@@ -85,4 +96,4 @@ public class WelcomePanel extends DataWidget {
 		return layoutPanel;
 	}
 
-}
+} 

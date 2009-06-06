@@ -13,6 +13,10 @@
 
  package org.pentaho.pat.client;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
@@ -20,6 +24,7 @@ import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.HTML;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.Label;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
@@ -32,7 +37,12 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainMenu;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.panels.ToolBarPanel;
+import org.pentaho.pat.client.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,11 +51,14 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -149,8 +162,8 @@ public class Application extends Viewport {
     
     public Application() {
 	super();
-
-		// Setup the main layout widget
+	
+	// Setup the main layout widget
 		layoutPanel = getWidget();
 		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
@@ -177,10 +190,44 @@ public class Application extends Viewport {
 		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250));
 		// Add the content wrapper
 		contentWrapper = new DecoratedTabLayoutPanel();
+		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(SelectionEvent<Integer> selectEvent) {
 				// TODO do something in here
 				// contentWrapper.getSelectedTab() OR  selectEvent.getSelectedItem()
+				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
+				if (widget instanceof OlapPanel){
+					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((OlapPanel) widget).getCube(), new AsyncCallback(){
+
+						public void onFailure(Throwable arg0) {
+							
+							MessageBox.error("Balls", "Couldn't set the cube");
+						}
+
+						public void onSuccess(Object arg0) {
+							
+			
+							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((OlapPanel) widget).getQuery(), new AsyncCallback(){
+
+								public void onFailure(Throwable arg0) {
+									MessageBox.error("Balls", "Couldn't set the query");
+								}
+
+								public void onSuccess(Object arg0) {
+									
+									MessageBox.info("Rock on", "Query Changed");
+									GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(Application.this);
+								}
+								
+							});
+							
+						}
+						
+					});
+			
+				}
+				
+		
 			}
 		});
 		contentWrapper.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
@@ -188,7 +235,7 @@ public class Application extends Viewport {
 				// TODO do whatever before selection
 			}
 		});
-		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
+	
 		bottomPanel.add(contentWrapper);
 		mainPanel = new MainMenu();
 		westPanel.add(mainPanel);
@@ -297,16 +344,36 @@ public class Application extends Viewport {
 	 * @param content
 	 * @param tabName
 	 */
-    
-	public static void addContent(final Widget content, String tabName) {
+	
+	public static void addContent(final DataWidget content, String tabName) {
 		tabName = tabName + "" + counter;
+		 DataWidget returned = null;
+		boolean test = false;
 		if (content != null) {
-			contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
-			counter++;
-			contentWrapper.layout();
+			if (content instanceof WelcomePanel){
+			    Iterator iter = contentWrapper.iterator();
+			    while ( iter.hasNext() ){
+			    	if (iter.next() instanceof WelcomePanel)
+			    	test = true;
+			    }
+			
+			    if(!test) 
+			    	{
+			    	contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+					counter++;
+					contentWrapper.layout();    	
+			    	}
+			
+			}
+			else{
+				contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+				counter++;
+				contentWrapper.layout();  
+			}
+			
 		}
 	}
-
+	
 	/**
 	 * 
 	 * Creates a new Closeable tab.
