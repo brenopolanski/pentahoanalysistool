@@ -50,15 +50,40 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
   *
   * @param content the {@link DataWidget} to display
   */
+	static Integer counter = 0;
 	public static void displayContentWidget(final DataWidget content) {
 		if (content != null) {
 			if (!content.isInitialized()) {
 				content.initialize();
 			}
-			Application.addContent(content, content.getName());
+			DataWidget contentdupe = null;
+			contentdupe = copyMatrix(content, contentdupe, counter);
+			counter++;
+			Application.addContent(contentdupe, content.getName());
 		}
 	}
 
+	  protected static DataWidget copyMatrix( DataWidget source, DataWidget destination, Integer counter)
+	  {
+		
+		  if(source != null){
+			  
+			  if (source instanceof WelcomePanel){
+			    destination = new WelcomePanel();
+			  String name = source.getName()+Integer.toString(counter);
+			  ((WelcomePanel) destination).setName(name);
+			  }
+			  
+			  else if (source instanceof OlapPanel){
+				 destination = new OlapPanel();
+				  ((OlapPanel) destination).setName(((OlapPanel) source).getName()+Integer.toString(counter));
+				  ((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
+				  ((OlapPanel) destination).setQuery(((OlapPanel) source).getCube());
+			  }
+		  }
+		  return destination;
+	  }	
+	  
 	/**
 	 * Get the token for a given content widget.
 	 *

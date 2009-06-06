@@ -25,22 +25,10 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * The Interface ConnectionListener.
  * 
- * @author wseyler
+ * @author tom(at)wamonline.org.uk
  */
-public interface ConnectionListener extends EventListener {
+public interface QueryListener extends EventListener {
 	
-	/**
-	 * On connection broken.
-	 * 
-	 * @param sender the sender
-	 */
-	public void onConnectionBroken(Widget sender);
-	
-	/**
-	 * On connection made.
-	 * 
-	 * @param sender the sender
-	 */
-	public void onConnectionMade(Widget sender);
+	public void onQueryChange(Widget sender);
 	
 }

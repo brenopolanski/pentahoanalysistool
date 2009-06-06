@@ -54,7 +54,7 @@ public class OlapPanel extends DataWidget {
 	private transient OlapTable olapTable;
 
 	/** Panel Name. */
-	private transient final String name;
+	private transient String name;
 
 	private transient String query;
 	
@@ -67,6 +67,15 @@ public class OlapPanel extends DataWidget {
 	public OlapPanel(final String name) {
 		super();
 		this.name = name;
+		init();
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
+	public OlapPanel() {
+		super();
 		init();
 	}
 
@@ -250,5 +259,14 @@ public class OlapPanel extends DataWidget {
 	
 	public String getCube(){
 		return cube;
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param string
+	 */
+	public void setName(String string) {
+		this.name = string;
 	}
 }

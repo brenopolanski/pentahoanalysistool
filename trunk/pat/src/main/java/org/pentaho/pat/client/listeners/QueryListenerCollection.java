@@ -10,36 +10,26 @@
  * @created Apr 23, 2009 
  * @author Tom Barber
  */
-package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.client.util.GlobalConnectionListeners;
-import org.pentaho.pat.client.util.QueryChangeListeners;
+package org.pentaho.pat.client.listeners;
 
-import com.google.gwt.core.client.GWT;
+import java.util.ArrayList;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Create Global Connection Factory to store connection listeners 
- *
- * @author tom(at)wamonline.org.uk
- *
+ * A helper class for implementers of the SourcesConnectionEvents interface. This
+ * subclass of {@link ArrayList} assumes that all objects added to it will be of
+ * type {@link org.pentaho.pat.client.listeners.ConnectionListener}.
  */
-public class GlobalConnectionFactory {
+public class QueryListenerCollection extends ArrayList<QueryListener> {
 
-	private static GlobalConnectionListeners gcl;
-	
-	public static GlobalConnectionListeners getInstance() {
-		if (gcl == null) {
-			gcl = (GlobalConnectionListeners) GWT.create(GlobalConnectionListeners.class);
+	private static final long serialVersionUID = 1L;
+
+	public void fireQueryChanged(final Widget sender){
+		for(QueryListener listener:this){
+			listener.onQueryChange(sender);
 		}
-		return gcl;
 	}
-	
-public static QueryChangeListeners qcl;
-	
-	public static QueryChangeListeners getQueryInstance(){
-		if (qcl == null){
-			qcl = (QueryChangeListeners) GWT.create(QueryChangeListeners.class);
-		}
-		return qcl;
-	}
+
 }

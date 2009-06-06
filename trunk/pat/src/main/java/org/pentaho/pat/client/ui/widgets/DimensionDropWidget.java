@@ -14,6 +14,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -28,7 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionDropWidget extends Grid  implements ConnectionListener{
+public class DimensionDropWidget extends Grid  implements ConnectionListener, QueryListener{
 
 	/** The Olap4j Axis. */
 	private final Axis dimAxis;
@@ -57,7 +58,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener{
 	 * @param targetAxis the target axis
 	 */
 	public final void init(final String labelText, final Axis targetAxis) {
-
+		
 		table1 = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
 		final FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, targetAxis);
@@ -92,5 +93,13 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener{
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
+	 */
+	public void onQueryChange(Widget sender) {
+	
+		table1.populateDimensionTable(dimAxis);
 	}
 }
