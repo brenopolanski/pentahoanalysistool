@@ -13,10 +13,7 @@
 
  package org.pentaho.pat.client;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;

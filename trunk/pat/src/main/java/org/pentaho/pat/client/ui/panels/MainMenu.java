@@ -75,10 +75,11 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 			  }
 			  
 			  else if (source instanceof OlapPanel){
+			      	
 				 destination = new OlapPanel();
 				  ((OlapPanel) destination).setName(((OlapPanel) source).getName()+Integer.toString(counter));
 				  ((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
-				  ((OlapPanel) destination).setQuery(((OlapPanel) source).getCube());
+				  ((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
 			  }
 		  }
 		  return destination;
@@ -225,7 +226,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 
 											public void onSuccess(final Object arg0) {
 												dimensionPanel.createDimensionList();
-
+												displayContentWidget(widget);
 												MainMenu.this.showStack(1);
 												//MainMenu.this.layout(true);
 											}
@@ -246,7 +247,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 
 					
 					// Show the associated ContentWidget
-					displayContentWidget(widget);
+					
 					Application.getContentWrapper().layout();
 
 				}
