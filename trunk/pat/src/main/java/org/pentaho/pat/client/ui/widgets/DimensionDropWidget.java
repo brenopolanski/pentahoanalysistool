@@ -16,6 +16,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
+import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Axis;
@@ -48,6 +49,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 
 		super(2, 1);
 		GlobalConnectionFactory.getInstance().addConnectionListener(DimensionDropWidget.this);
+		GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 		this.dimAxis = targetAxis;
 		init(labelText, dimAxis);
 	}
@@ -109,6 +111,6 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	 */
 	public void onQueryChange(Widget sender) {
 	
-		table1.populateDimensionTable(dimAxis);
+		//table1.populateDimensionTable(dimAxis);
 	}
 }
