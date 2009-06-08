@@ -37,6 +37,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	/** Creates the DimensionFlexTable. */
 	private DimensionFlexTable table1;
 
+	private FlexTableRowDropController flexTableRowDropController1;
 	/**
 	 * Creates the widget structure.
 	 *
@@ -61,8 +62,6 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 		
 		table1 = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
-		final FlexTableRowDropController flexTableRowDropController1 = new FlexTableRowDropController(table1, targetAxis);
-		DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
 		final Label dropLabel = new Label(labelText);
 		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
 		table1.setStyleName("dropTable"); //$NON-NLS-1$
@@ -70,7 +69,17 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 
 		this.setWidget(1, 0, table1);
 	}
+	@Override
+	public void onLoad(){
+		flexTableRowDropController1 = new FlexTableRowDropController(table1, dimAxis);
+		DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
 
+	}
+	
+	@Override
+	public void onUnload(){
+	    DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
+	}
 	/**
 	 * Populate the Dimension table on the passed axis.
 	 */
