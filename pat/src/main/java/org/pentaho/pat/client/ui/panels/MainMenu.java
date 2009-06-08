@@ -21,7 +21,9 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -43,7 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD by bugg on 21/04/09 05:42
+public class MainMenu extends StackPanel implements ConnectionListener, QueryListener{ // NOPMD by bugg on 21/04/09 05:42
 
 	/**
   * Set the content to the {@link DataWidget}.
@@ -158,6 +160,7 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 	public MainMenu() {
 		super();
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
+		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
 		createMainMenu();
 		setupMainMenu();
 		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -326,5 +329,10 @@ public class MainMenu extends StackPanel implements ConnectionListener{ // NOPMD
 	 */
 	public void onConnectionMade(final Widget sender) {
 	setupCubeMenu();	
+	}
+
+	public void onQueryChange(Widget sender) {
+	    // TODO Auto-generated method stub
+	    dimensionPanel.createDimensionList();
 	}
 }
