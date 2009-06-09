@@ -7,7 +7,7 @@
  *
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
  *
- * @created Apr 23, 2009 
+ * @created Apr 23, 2009
  * @author Tom Barber
  */
 
@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,38 +37,40 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionListener {
+public class ToolBarPanel extends Composite implements ClickHandler, ConnectionListener {
 
-    private static final class ThemeMenuItemCommand implements Command {
-	    private String theme;
-	        public ThemeMenuItemCommand(String element2) {
-	    	this.theme = element2;
-	        }
+	/**
+	 * 
+	 * @author tom(at)wamonline.org.uk
+	 *
+	 */
+	private final static class ThemeMenuItem extends MenuItem {
+		private final String theme;
+		public ThemeMenuItem(final String element2, final Command command){
+			super(element2, command);
+			this.theme = element2;
+		}
 
-	        public void execute() {
-	    	Pat.CUR_THEME = this.theme;
-	    	// Load the new style sheets
-	    	Pat.updateStyleSheets();
-	        }
+		public String getTheme(){
+			return theme;
+		}
+	}
 
-	    }
+	private static final class ThemeMenuItemCommand implements Command {
+		private final String theme;
+		public ThemeMenuItemCommand(final String element2) {
+			this.theme = element2;
+		}
 
-    /**
-     * 
-     * @author tom(at)wamonline.org.uk
-     *
-     */
-	    private final static class ThemeMenuItem extends MenuItem {
-	        private String theme;
-	        public ThemeMenuItem(String element2, Command command){
-	    	super(element2, command);
-	    	this.theme = element2;
-	        }
+		public void execute() {
+			Pat.CUR_THEME = this.theme;
+			// Load the new style sheets
+			Pat.updateStyleSheets();
+		}
 
-	        public String getTheme(){
-	    	return theme;
-	        }
-	    }
+	}
+
+	private final MenuBar menuBar;
 
 
 	/** The Connection Dialog. */
@@ -84,7 +87,8 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 	 */
 	public ToolBarPanel() {
 		super();
-
+		menuBar= new MenuBar();
+		initWidget(menuBar);
 		init();
 	}
 
@@ -129,7 +133,7 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 		fileMenuBar.addItem(connectItem);
 
 		// Add File menu to Toolbar
-		this.addItem(new MenuItem(ConstantFactory.getInstance().file(), fileMenuBar));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().file(), fileMenuBar));
 
 	}
 
@@ -145,8 +149,8 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 
 		final MenuItem homeItem = new MenuItem(ConstantFactory.getInstance().mainLinkPat(), new Command() {
 			public void execute() {
-				
-			    Window.open("http://code.google.com/p/pentahoanalysistool/", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+				Window.open("http://code.google.com/p/pentahoanalysistool/", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			}
 
@@ -154,8 +158,8 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 
 		final MenuItem pentahoItem = new MenuItem(ConstantFactory.getInstance().mainLinkHomepage(), new Command() {
 			public void execute() {
-				
-			    Window.open("http://www.pentaho.com", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+				Window.open("http://www.pentaho.com", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			}
 
@@ -164,7 +168,7 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 		// Add connect button
 		helpMenu.addItem(homeItem);
 		helpMenu.addItem(pentahoItem);
-		this.addItem(new MenuItem("Help", helpMenu)); //$NON-NLS-1$
+		menuBar.addItem(new MenuItem("Help", helpMenu)); //$NON-NLS-1$
 	}
 
 	/**
@@ -184,7 +188,7 @@ public class ToolBarPanel extends MenuBar implements ClickHandler, ConnectionLis
 		}
 		viewMenu.addItem(ConstantFactory.getInstance().theme(), styleSheetMenu);
 
-		this.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
+		menuBar.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
 	}
 
 	/**

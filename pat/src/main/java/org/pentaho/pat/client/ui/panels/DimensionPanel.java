@@ -23,6 +23,7 @@ import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
@@ -31,8 +32,9 @@ import com.google.gwt.user.client.ui.ScrollPanel;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionPanel extends ScrollPanel {
+public class DimensionPanel extends Composite {
 
+	private final ScrollPanel scrollPanel;
     /** The Widget that allows you to drag and drop dimensions on it. */
     private final transient DimensionDropWidget dimDrop;
 
@@ -65,7 +67,9 @@ public class DimensionPanel extends ScrollPanel {
     public DimensionPanel() {
 
 	super();
-
+	scrollPanel = new ScrollPanel();
+	initWidget(scrollPanel);
+	
 	// Setup the main layout widget
 	LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
 		Orientation.VERTICAL));
@@ -79,8 +83,8 @@ public class DimensionPanel extends ScrollPanel {
 		.unused(), Axis.UNUSED);
 	dimDrop.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 	layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
-	// this.add(layoutPanel);
-	this.add(dimDrop);
+	
+	scrollPanel.add(dimDrop);
     }
 
     /**

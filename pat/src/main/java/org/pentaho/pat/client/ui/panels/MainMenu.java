@@ -32,6 +32,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.Tree;
@@ -45,8 +46,9 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class MainMenu extends StackPanel implements ConnectionListener, QueryListener{ // NOPMD by bugg on 21/04/09 05:42
+public class MainMenu extends Composite implements ConnectionListener, QueryListener{ // NOPMD by bugg on 21/04/09 05:42
 
+	private final StackPanel stackPanel;
 	/**
   * Set the content to the {@link DataWidget}.
   *
@@ -159,17 +161,19 @@ public class MainMenu extends StackPanel implements ConnectionListener, QueryLis
 	 */
 	public MainMenu() {
 		super();
+		stackPanel = new StackPanel();
+		initWidget(stackPanel);
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
 		createMainMenu();
 		setupMainMenu();
 		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
+		stackPanel.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
 
 		dimensionPanel = new DimensionPanel();
-		this.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
+		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
 
-		this.showStack(0);
+		stackPanel.showStack(0);
 
 
 		setListener(new ApplicationListener() {
@@ -202,7 +206,7 @@ public class MainMenu extends StackPanel implements ConnectionListener, QueryLis
 				if (listener != null) {
 					final DataWidget widget = (DataWidget) ITEMWIDGETS.get(item);
 					
-					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availablecubes())) {
+					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availableCubes())) {
 						((OlapPanel) widget).setCube(item.getText().trim());
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
@@ -224,13 +228,13 @@ public class MainMenu extends StackPanel implements ConnectionListener, QueryLis
 
 											public void onFailure(final Throwable arg0) {
 
-												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().noqueryset(arg0.getLocalizedMessage()));
+												MessageBox.error(ConstantFactory.getInstance().error() , MessageFactory.getInstance().noQuerySet(arg0.getLocalizedMessage()));
 											}
 
 											public void onSuccess(final Object arg0) {
 												dimensionPanel.createDimensionList();
 												displayContentWidget(widget);
-												MainMenu.this.showStack(1);
+												stackPanel.showStack(1);
 												//MainMenu.this.layout(true);
 											}
 
@@ -292,7 +296,7 @@ public class MainMenu extends StackPanel implements ConnectionListener, QueryLis
 			public void onSuccess(final String[] o) {
 
 				final Tree mainMenu = getMainMenu();
-				final TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().availablecubes());
+				final TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().availableCubes());
 
 				for (final String element2 : o) {
 					setupMainMenuOption(cubeMenu, new OlapPanel(element2), Pat.IMAGES.cube());
@@ -311,7 +315,7 @@ public class MainMenu extends StackPanel implements ConnectionListener, QueryLis
 	 * @param sender the sender.
 	 */
 	public void onConnectionBroken(final Widget sender) {
-		this.showStack(0);
+		stackPanel.showStack(0);
 		mainMenuTree.clear();
 		setupMainMenu();
 		final TreeItem firstItem = getMainMenu().getItem(0).getChild(0);

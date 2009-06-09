@@ -47,7 +47,7 @@ public class SelectionModePopup extends PopupPanel {
 
 			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback<Object>() {
 				public void onFailure(final Throwable caught) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectioncleared(caught.getLocalizedMessage()));
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionCleared(caught.getLocalizedMessage()));
 
 				}
 
@@ -97,7 +97,7 @@ public class SelectionModePopup extends PopupPanel {
 			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback<Object>() {
 
 				public void onFailure(final Throwable arg0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noselectionset(arg0.getLocalizedMessage()));
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
 
 				}
 
@@ -199,9 +199,9 @@ public class SelectionModePopup extends PopupPanel {
 		menuBar.setAutoOpen(true);
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().includechildren(), new SelectionModeCommand(INCLUDE_CHILDREN)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(INCLUDE_CHILDREN)));
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
-		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearselections(), new SelectionModeClearCommand()));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
 
 		this.setWidget(menuBar);
 	}
