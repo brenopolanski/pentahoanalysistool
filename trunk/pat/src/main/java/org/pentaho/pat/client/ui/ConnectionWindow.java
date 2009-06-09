@@ -41,7 +41,7 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 	private static final String WIDTH = "660px"; //$NON-NLS-1$
 
 	/** The Window Title. */
-	private static final String TITLE = ConstantFactory.getInstance().registernewconnection();
+	private static final String TITLE = ConstantFactory.getInstance().registerNewConnection();
 
 	/** Mondrian Panel. */
 	private transient final ConnectMondrianPanel connectMondrian;

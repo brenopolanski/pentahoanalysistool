@@ -7,7 +7,7 @@
  *
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
  *
- * @created Apr 23, 2009 
+ * @created Apr 23, 2009
  * @author Tom Barber
  */
 package org.pentaho.pat.client.ui.panels;
@@ -57,8 +57,17 @@ public class OlapPanel extends DataWidget {
 	private transient String name;
 
 	private transient String query;
-	
+
 	private transient String cube;
+	/**
+	 *TODO JAVADOC
+	 *
+	 */
+	public OlapPanel() {
+		super();
+		init();
+	}
+
 	/**
 	 * Constructor.
 	 * 
@@ -67,15 +76,6 @@ public class OlapPanel extends DataWidget {
 	public OlapPanel(final String name) {
 		super();
 		this.name = name;
-		init();
-	}
-
-	/**
-	 *TODO JAVADOC
-	 *
-	 */
-	public OlapPanel() {
-		super();
 		init();
 	}
 
@@ -105,17 +105,21 @@ public class OlapPanel extends DataWidget {
 		ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<OlapData>() {
 
 			public void onFailure(final Throwable caught) {
-				Window.alert(MessageFactory.getInstance().noserverdata(caught.toString()));
+				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
 			}
 
 			public void onSuccess(final OlapData result1) {
-			   // olapTable.layout(true);
-			    olapTable.setData((OlapData)result1);
+				// olapTable.layout(true);
+				olapTable.setData(result1);
 				//doCreateChart();
 			}
 
 		});
 
+	}
+
+	public String getCube(){
+		return cube;
 	}
 
 	/* (non-Javadoc)
@@ -142,14 +146,17 @@ public class OlapPanel extends DataWidget {
 		return name;
 	}
 
+	public String getQuery(){
+		return query;
+	}
+
 	/**
 	 * Initialization routine.
 	 */
 	private void init() {
 		olapTable = new OlapTable(MessageFactory.getInstance());
-		
-	}
 
+	}
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
 	 */
@@ -198,7 +205,7 @@ public class OlapPanel extends DataWidget {
 		final ScrollPanel panel1 = new ScrollPanel();
 		// panel1.setPadding(0);
 		// panel1.setWidgetSpacing(0);
-		final Button executeButton = new Button(ConstantFactory.getInstance().executequery());
+		final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
 				doExecuteQueryModel();
@@ -207,19 +214,19 @@ public class OlapPanel extends DataWidget {
 		});
 		final FlexTable grid = new FlexTable();
 		grid.setWidget(0, 0, executeButton);
-		DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+		final DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
 		rowDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(1, 0, rowDimDrop);
-		
-		DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+
+		final DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
 		colDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(2, 0, colDimDrop);
-		
-		DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+
+		final DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
 		filterDimDrop.setWidth("100%"); //$NON-NLS-1$
 		grid.setWidget(3, 0, filterDimDrop);
-//		olapTable.setWidth("100%");
-//		olapTable.setHeight("100%");
+		//		olapTable.setWidth("100%");
+		//		olapTable.setHeight("100%");
 		grid.setWidget(0, 1, olapTable);
 		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
 		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
@@ -239,26 +246,9 @@ public class OlapPanel extends DataWidget {
 
 	}
 
-	public String getQuery(){
-		return query;
-	}
-	/**
-	 *TODO JAVADOC
-	 *
-	 * @param arg0
-	 */
-	public void setQuery(String query) {
-		// TODO Auto-generated method stub
-		this.query = query;
-	}
 
-
-	public void setCube(String cube){
+	public void setCube(final String cube){
 		this.cube = cube;
-	}
-	
-	public String getCube(){
-		return cube;
 	}
 
 	/**
@@ -266,7 +256,17 @@ public class OlapPanel extends DataWidget {
 	 *
 	 * @param string
 	 */
-	public void setName(String string) {
+	public void setName(final String string) {
 		this.name = string;
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param arg0
+	 */
+	public void setQuery(final String query) {
+		// TODO Auto-generated method stub
+		this.query = query;
 	}
 }

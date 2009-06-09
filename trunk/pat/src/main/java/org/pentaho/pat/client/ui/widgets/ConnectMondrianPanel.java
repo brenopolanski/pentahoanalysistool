@@ -141,7 +141,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 						listBox.addItem(element2);
 					}
 				} else {
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().nojdbcdriverfound());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().noJdbcDriverFound());
 				}
 			}
 		});
@@ -216,10 +216,10 @@ public class ConnectMondrianPanel extends LayoutPanel {
 						// TODO remove this later
 						MessageBox.info("File uploaded", "Success"); //$NON-NLS-1$
 					} else {
-						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadfailed());
+						MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileUploadFailed());
 					}
 				} else {
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().checkerrorlog());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().checkErrorLog());
 				}
 			}
 		});
@@ -228,15 +228,15 @@ public class ConnectMondrianPanel extends LayoutPanel {
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
-		builder.addLabel(ConstantFactory.getInstance().jdbcdriver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.addLabel(ConstantFactory.getInstance().jdbcDriver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
 		builder.add(driverListBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().jdbcurl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.addLabel(ConstantFactory.getInstance().jdbcUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
 		builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
 		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
 		builder.add(userTextBox, CellConstraints.xy(3, 5));
 		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
 		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-		builder.addLabel(ConstantFactory.getInstance().schemafile() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+		builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
 		fileUpload.setName(FORM_NAME_FILE);
 		builder.add(fileUpload, CellConstraints.xyw(3, 7, 5));
 
@@ -244,7 +244,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 			public void onClick(final ClickEvent event) {
 				final String filename = fileUpload.getFilename();
 				if (filename == null || filename.length() == 0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileuploadnofile());
+					MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().fileUploadNoFile());
 				} else {
 					formPanel.submit();
 				}
@@ -256,12 +256,12 @@ public class ConnectMondrianPanel extends LayoutPanel {
 			public void onClick(final ClickEvent event) {
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onFailure(final Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noconnectionparam(arg0.getLocalizedMessage()));
+						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
 						connectButton.setEnabled(true);
 					}
 
 					public void onSuccess(final Object o) {
-						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionestablished());
+						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
 						setConnectionEstablished(true);
 						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
 					}

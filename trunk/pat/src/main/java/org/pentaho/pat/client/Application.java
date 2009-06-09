@@ -190,8 +190,6 @@ public class Application extends Viewport {
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(SelectionEvent<Integer> selectEvent) {
-				// TODO do something in here
-				// contentWrapper.getSelectedTab() OR  selectEvent.getSelectedItem()
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof OlapPanel){
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((OlapPanel) widget).getCube(), new AsyncCallback(){
@@ -283,7 +281,7 @@ public class Application extends Viewport {
 		HasVerticalAlignment.ALIGN_TOP);
 	topPanel.getRowFormatter().setVerticalAlign(1,
 		HasVerticalAlignment.ALIGN_TOP);
-    }
+	}
 
     /**
      * Gets the title widget.

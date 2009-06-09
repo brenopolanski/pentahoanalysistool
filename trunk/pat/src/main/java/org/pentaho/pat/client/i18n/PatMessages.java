@@ -75,7 +75,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 * @return translated "Connection could not be established: {0}"
 	 * no_connection_param
 	 */
-	String noconnectionparam(String arg0);
+	String noConnectionParam(String arg0);
 
 
 	/**
@@ -85,7 +85,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 *
 	 * @return the string
 	 */
-	String noqueryset(String localizedMessage);
+	String noQuerySet(String localizedMessage);
 
 
 	/**
@@ -96,7 +96,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 * @return translated "Selection could not be cleared: {0}"
 	 * no_selection_cleared
 	 */
-	String noselectioncleared(String arg0);
+	String noSelectionCleared(String arg0);
 
 
 	/**
@@ -107,7 +107,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 * @return translated "Selection mode could not be set: {0}"
 	 * no_selection_set
 	 */
-	String noselectionset(String arg0);
+	String noSelectionSet(String arg0);
 
 
 	/**
@@ -118,7 +118,7 @@ public interface PatMessages extends com.google.gwt.i18n.client.Messages {
 	 * @return translated "Unable to get data from server: {0}"
 	 * no_server_data
 	 */
-	String noserverdata(String arg0);
+	String noServerData(String arg0);
 
 
 	/**

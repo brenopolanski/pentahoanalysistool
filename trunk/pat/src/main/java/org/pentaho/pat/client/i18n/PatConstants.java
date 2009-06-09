@@ -34,7 +34,7 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String availablecubes();
+	String availableCubes();
 
 	/**
 	 * Translated "Bottom".
@@ -73,7 +73,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Chart Height:"
 	 * chart_height
 	 */
-	String chartheight();
+	String chartHeight();
 
 	/**
 	 * Translated "Chart Properties...".
@@ -81,7 +81,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Chart Properties..."
 	 * chart_properties
 	 */
-	String chartproperties();
+	String chartProperties();
 
 	/**
 	 * Translated "Chart Title:".
@@ -89,7 +89,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Chart Title:"
 	 * chart_title
 	 */
-	String charttitle();
+	String chartTitle();
 
 	/**
 	 * Translated "Chart Width:".
@@ -97,14 +97,14 @@ public interface PatConstants extends Constants {
 	 * @return translated "Chart Width:"
 	 * chart_width
 	 */
-	String chartwidth();
+	String chartWidth();
 
 	/**
 	 * Checkerrorlog.
 	 *
 	 * @return the string
 	 */
-	String checkerrorlog();
+	String checkErrorLog();
 
 	/**
 	 * Translated "Children".
@@ -120,7 +120,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Clear"
 	 * clear_selections
 	 */
-	String clearselections();
+	String clearSelections();
 
 	/**
 	 * Translated "Column Dimensions".
@@ -128,7 +128,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Column Dimensions"
 	 * column_dimensions
 	 */
-	String columndimensions();
+	String columnDimensions();
 
 	/**
 	 * Columns.
@@ -157,14 +157,14 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String connectionestablished();
+	String connectionEstablished();
 	/* <Messages used by PAT> */
 	/**
 	 * Connectionstring.
 	 *
 	 * @return the string
 	 */
-	String connectionstring();
+	String connectionString();
 
 	/**
 	 * Translated "Cube".
@@ -242,7 +242,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Execute MDX"
 	 * execute_mdx
 	 */
-	String executemdx();
+	String executeMdx();
 
 	/**
 	 * Translated "Execute Query Model".
@@ -250,7 +250,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Execute Query Model"
 	 * execute_query
 	 */
-	String executequery();
+	String executeQuery();
 
 	/**
 	 * Translated "File".
@@ -265,14 +265,14 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String fileuploadfailed();
+	String fileUploadFailed();
 
 	/**
 	 * Fileuploadnofile.
 	 *
 	 * @return the string
 	 */
-	String fileuploadnofile();
+	String fileUploadNoFile();
 
 	/**
 	 * Filter.
@@ -287,7 +287,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Filter Dimensions"
 	 * filter_dimensions
 	 */
-	String filterdimensions();
+	String filterDimensions();
 
 	/**
 	 * Translated "Grid".
@@ -303,7 +303,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Group Headers"
 	 * group_headers
 	 */
-	String groupheaders();
+	String groupHeaders();
 
 
 
@@ -314,7 +314,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Hide Parents"
 	 * hide_parents
 	 */
-	String hideparents();
+	String hideParents();
 
 	/**
 	 * Home.
@@ -329,7 +329,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Include Children"
 	 * include_children
 	 */
-	String includechildren();
+	String includeChildren();
 
 	/**
 	 * Translated "jdbc_driver".
@@ -337,7 +337,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "jdbc_driver"
 	 * jdbc_driver
 	 */
-	String jdbcdriver();
+	String jdbcDriver();
 
 	/**
 	 * Translated "jdbc_url".
@@ -345,7 +345,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "jdbc_url"
 	 * jdbc_url
 	 */
-	String jdbcurl();
+	String jdbcUrl();
 
 	/**
 	 * Translated "Left".
@@ -410,7 +410,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "MDX Query:"
 	 * mdx_query
 	 */
-	String mdxquery();
+	String mdxQuery();
 
 	/**
 	 * Translated "Member".
@@ -433,7 +433,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Move To Column"
 	 * move_to_column
 	 */
-	String movetocolumn();
+	String moveToColumn();
 
 	/**
 	 * Translated "Move To Filter".
@@ -441,7 +441,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Move To Filter"
 	 * move_to_filter
 	 */
-	String movetofilter();
+	String moveToFilter();
 
 	/**
 	 * Translated "Move To Row".
@@ -449,7 +449,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Move To Row"
 	 * move_to_row
 	 */
-	String movetorow();
+	String moveToRow();
 
 	/**
 	 * Translated "Next".
@@ -465,7 +465,7 @@ public interface PatConstants extends Constants {
 	 * @return translated"Connection could not be established.  Either you did not press the connect button, or there is a problem with your connection string."
 	 * no_connection
 	 */
-	String noconnection();
+	String noConnection();
 
 
 
@@ -475,14 +475,14 @@ public interface PatConstants extends Constants {
 	 * @return translated "No Data Available.  Query may be invalid."
 	 * no_data
 	 */
-	String nodata();
+	String noData();
 
 	/**
 	 * Nojdbcdriverfound.
 	 *
 	 * @return the string
 	 */
-	String nojdbcdriverfound();
+	String noJdbcDriverFound();
 
 	/**
 	 * Translated "null".
@@ -490,7 +490,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "null"
 	 * null_value
 	 */
-	String nullvalue();
+	String nullValue();
 
 	/**
 	 * Translated "OK".
@@ -506,7 +506,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "OLAP Chart"
 	 * olap_chart
 	 */
-	String olapchart();
+	String olapChart();
 
 
 	/**
@@ -522,7 +522,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Pat Homepage"
 	 * pat_homepage
 	 */
-	String pathomepage();
+	String patHomepage();
 
 	/**
 	 * Translated "Pentaho Homepage".
@@ -530,7 +530,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Pentaho Homepage"
 	 * pentaho_homepage
 	 */
-	String pentahohomepage();
+	String pentahoHomepage();
 
 	/**
 	 * Port.
@@ -544,21 +544,21 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String registernewconnection();
+	String registerNewConnection();
 
 	/**
 	 * Registernewmondrianconnection.
 	 *
 	 * @return the string
 	 */
-	String registernewmondrianconnection();
+	String registerNewMondrianConnection();
 
 	/**
 	 * Registernewxmlaconnection.
 	 *
 	 * @return the string
 	 */
-	String registernewxmlaconnection();
+	String registerNewXmlaConnection();
 
 	/**
 	 * Translated "Report".
@@ -584,7 +584,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Row Dimensions"
 	 * row_dimensions
 	 */
-	String rowdimensions();
+	String rowDimensions();
 
 	/**
 	 * Rows.
@@ -598,7 +598,7 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String schemafile();
+	String schemaFile();
 
 	/**
 	 * Translated "Select Cube".
@@ -606,7 +606,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Select Cube"
 	 * select_cube
 	 */
-	String selectcube();
+	String selectCube();
 
 	/**
 	 * Translated "Selections".
@@ -629,7 +629,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Show Parents"
 	 * show_parents
 	 */
-	String showparents();
+	String showParents();
 
 	/**
 	 * Translated "Siblings".
@@ -652,7 +652,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Swap Axis"
 	 * swap_axis
 	 */
-	String swapaxis();
+	String swapAxis();
 
 	/**
 	 * Translated "Top".
@@ -668,7 +668,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Ungroup Headers"
 	 * ungroup_headers
 	 */
-	String ungroupheaders();
+	String unGroupHeaders();
 
 	/**
 	 * Unused.
@@ -690,7 +690,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Use MDX"
 	 * use_mdx
 	 */
-	String usemdx();
+	String useMdx();
 
 	/**
 	 * Username.
@@ -705,7 +705,7 @@ public interface PatConstants extends Constants {
 	 * @return translated "Use Schema Navigator"
 	 * use_schema_nav
 	 */
-	String useschemanav();
+	String useSchemaNav();
 
 	/**
 	 * Translated "Visible:".
@@ -734,7 +734,7 @@ public interface PatConstants extends Constants {
 	 *
 	 * @return the string
 	 */
-	String xmlaurl();
+	String xmlaUrl();
 
 	String theme();
 }
