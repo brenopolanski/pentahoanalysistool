@@ -74,7 +74,7 @@ public class OlapTable2 extends LayoutPanel {
 	 */
 	private static FixedWidthFlexTable headerTable = null;
 	
-
+	private FixedWidthGrid dataTable;
 	/**
 	 * @param messages
 	 */
@@ -121,13 +121,14 @@ public class OlapTable2 extends LayoutPanel {
 
 	public void refresh() {
 
-		FixedWidthGrid dataTable = getDataTable();
+		//
 		
 		if (olapData != null) {
 			createColumnHeaders();
 			createDataTable();
 			createRowHeaders();
 			populateData();
+			
 			scrollTable = new ScrollTable(dataTable, headerTable);
 		    this.setPixelSize(600,400);
 			this.add(scrollTable,new FillLayoutData(true));
@@ -137,8 +138,8 @@ public class OlapTable2 extends LayoutPanel {
 	
 
 	private FixedWidthGrid createDataTable() {
-		    FixedWidthGrid dataTable = new FixedWidthGrid();
-		    dataTable.resize(0, olapData.getRowHeaders().getAcrossCount()+olapData.getCellData().getAcrossCount());
+		     dataTable = new FixedWidthGrid();
+		    dataTable.resize(olapData.getCellData().getDownCount(), olapData.getRowHeaders().getAcrossCount()+olapData.getCellData().getAcrossCount());
 		    dataTable.setSelectionPolicy(SelectionPolicy.MULTI_ROW);
 		    return dataTable;
 	}
@@ -209,7 +210,7 @@ public class OlapTable2 extends LayoutPanel {
 	}
 
 	protected void createRowHeaders() {
-		FixedWidthGrid dataTable = getDataTable();
+	//	FixedWidthGrid dataTable = getDataTable();
 //		CellFormatter cellFormatter = dataTable.getCellFormatter();
 		int columnHeadersHeight = /*
 								 * showParentMembers ?
@@ -262,13 +263,16 @@ public class OlapTable2 extends LayoutPanel {
 					// actualRow ,
 					// newColumn - getSpanInRow(matrix, columnHeadersHeight
 					// +actualRow), OLAP_ROW_HEADER_CELL);
-					
+					int row = columnHeadersHeight + actualRow;
+					int col = newColumn
+					- getSpanInRow(matrix, columnHeadersHeight
+							+ actualRow);
 					dataTable.setWidget(columnHeadersHeight + actualRow,
 							newColumn
 									- getSpanInRow(matrix, columnHeadersHeight
 											+ actualRow), label);
 
-					actualRow += spanInfo.getSpan();
+					//actualRow += spanInfo.getSpan();
 
 					if (showParentMembers == false)
 						actualRow++;
@@ -330,7 +334,7 @@ public class OlapTable2 extends LayoutPanel {
 //		}
 //	}
 	  protected void populateData() {
-		  FixedWidthGrid dataTable = getDataTable();
+	  
 		    for (int row=0; row<olapData.getCellData().getDownCount(); row++) {
 		        for (int column=0; column<olapData.getCellData().getAcrossCount(); column++) {
 		                CellInfo cellInfo = olapData.getCellData().getCell(row, column);
@@ -342,7 +346,6 @@ public class OlapTable2 extends LayoutPanel {
 		                  DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		                }
 		                label.addClickListener(new ClickCellCommand());
-		                MessageBox.alert("Actual Row=", Integer.toString(row));
 		                System.out.println("actual row=" + row);
 		                dataTable.setWidget(showParentMembers ? row: row + 1, 
 		                					showParentMembers ? getFirstUnusedColumnForRow(row): column + 1, 
@@ -387,14 +390,14 @@ public class OlapTable2 extends LayoutPanel {
 	}
 
 	public int getFirstUnusedColumnForRow(int row) {
-		FixedWidthGrid dataTable = getDataTable();
+		
 		int column = 0;
 
 		try {
 			while (true) {
 				Widget widget = dataTable.getWidget(row, column);
 				String text = dataTable.getText(row, column);
-				if ((text == null || text.length() < 1) && widget == null) {
+				if ((text == null || text.trim().length() < 1) && widget == null) {
 					return column;
 	                
 				}
