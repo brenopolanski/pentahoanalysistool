@@ -228,8 +228,6 @@
 		<repository>
 			<id>MagicBeans-releases</id>
 			<url>http://174.143.235.84/artifactory/pat-libs</url>
-			<releases>
-			</releases>
 		</repository>
 	</repositories>
 	<pluginRepositories>
