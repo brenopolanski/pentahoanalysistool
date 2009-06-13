@@ -397,7 +397,8 @@ public class OlapTable2 extends LayoutPanel {
 			while (true) {
 				Widget widget = dataTable.getWidget(row, column);
 				String text = dataTable.getText(row, column);
-				if ((text == null || text.trim().length() < 1) && widget == null) {
+		//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if ((text == null || text.trim().length() < 2) && widget == null) {
 					return column;
 	                
 				}

@@ -12,8 +12,12 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.ImageButton;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
@@ -208,6 +212,64 @@ public class OlapPanel extends DataWidget {
 		final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
+	/*			ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Region", new AsyncCallback(){
+
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						MessageBox.error("Balls", "balls");
+					}
+
+					public void onSuccess(Object arg0) {
+						// TODO Auto-generated method stub
+						List<String> dimSelections = new ArrayList();
+						dimSelections.add("Region");
+						dimSelections.add("All Regions");
+						ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Region", dimSelections, "MEMBER", new AsyncCallback<Object>() {
+
+							public void onFailure(final Throwable arg0) {
+								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+							}
+
+							public void onSuccess(final Object arg0) {
+							//	targetLabel.setSelectionMode(selectionMode);
+								ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.COLUMNS, "Department", new AsyncCallback(){
+									
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										MessageBox.error("Balls", "balls");
+									}
+
+									public void onSuccess(Object arg0) {
+										// TODO Auto-generated method stub
+										List<String> dimSelections2 = new ArrayList();
+										dimSelections2.add("Department");
+										dimSelections2.add("All Departments");
+											
+										ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Department", dimSelections2, "MEMBER", new AsyncCallback<Object>() {
+
+											public void onFailure(final Throwable arg0) {
+												MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+											}
+
+											public void onSuccess(final Object arg0) {
+												//targetLabel.setSelectionMode(selectionMode);
+												doExecuteQueryModel();
+											}
+
+										});
+									}
+									
+								});
+
+							}
+
+						});
+					}
+					
+				});*/
+							
 				doExecuteQueryModel();
 			}
 
