@@ -135,8 +135,9 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	public static void updateStyleSheets() {
 		// Generate the names of the style sheets to include
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/Mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
+		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
 		String scStyleSheet = CUR_THEME + "/Showcase.css"; //$NON-NLS-1$
+		
 		final String widgetStyleSheet = "/widgets.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
 		final String halogenStyleSheet = "/halogen.css"; //$NON-NLS-1$ // NOPMD by bugg on 21/04/09 05:35
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
@@ -180,16 +181,19 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		// Detach the app while we manipulate the styles to avoid rendering
 		// issues
 		RootPanel.get().remove(app);
-
+		//app.removeFromParent();
+		
 		// Remove the old style sheets
 		for (final Element elem : toRemove) {
 			headElem.removeChild(elem);
 		}
-
+		
 		// Load the GWT theme style sheet
 		final String modulePath = GWT.getModuleBaseURL();
 		final Command callback = new Command() {
+			private int numStyleSheetsLoaded = 0;
 			public void execute() {
+			
 				// Different themes use different background colors for the body
 				// element, but IE only changes the background of the visible
 				// content
@@ -203,22 +207,23 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 				RootPanel.getBodyElement().getStyle()
 						.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				RootPanel.get().add(app);
+				//app.attach();
 			}
 		};
 
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
-				getCurrentReferenceStyleName("gwt"), null); //$NON-NLS-1$
+				getCurrentReferenceStyleName("gwt"), callback); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + gwtMosStyleSheet,
-				getCurrentReferenceStyleName("mosaic"), null); //$NON-NLS-1$
+				getCurrentReferenceStyleName("mosaic"), callback); //$NON-NLS-1$
 		// Load the showcase specific style sheet after the GWT & Mosaic theme
 		// style
 		// sheet so that custom styles supercede the theme styles.
 		StyleSheetLoader.loadStyleSheet(modulePath + scStyleSheet,
 				getCurrentReferenceStyleName("Application"), callback); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + widgetStyleSheet,
-				getCurrentReferenceStyleName("widgets"), null); //$NON-NLS-1$
+				getCurrentReferenceStyleName("widgets"), callback); //$NON-NLS-1$
 		StyleSheetLoader.loadStyleSheet(modulePath + halogenStyleSheet,
-				getCurrentReferenceStyleName("halogen"), null); //$NON-NLS-1$
+				getCurrentReferenceStyleName("halogen"), callback); //$NON-NLS-1$
 
 	}
 

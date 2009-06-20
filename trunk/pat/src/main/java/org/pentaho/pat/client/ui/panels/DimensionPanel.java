@@ -12,19 +12,15 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * The Dimension Panel lists the dimensions that are currently in the unused
@@ -32,9 +28,9 @@ import com.google.gwt.user.client.ui.ScrollPanel;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionPanel extends Composite {
+public class DimensionPanel extends LayoutComposite {
 
-	private final ScrollPanel scrollPanel;
+	//private final ScrollPanel scrollPanel;
     /** The Widget that allows you to drag and drop dimensions on it. */
     private final transient DimensionDropWidget dimDrop;
 
@@ -67,24 +63,19 @@ public class DimensionPanel extends Composite {
     public DimensionPanel() {
 
 	super();
-	scrollPanel = new ScrollPanel();
-	initWidget(scrollPanel);
+
+	final LayoutPanel baseLayoutPanel = getLayoutPanel();
 	
-	// Setup the main layout widget
-	LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
-		Orientation.VERTICAL));
-	layoutPanel.setPadding(0);
-	layoutPanel.setWidgetSpacing(0);
-	layoutPanel.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	setTableRowDragController(new FlexTableRowDragController(Application
 		.getBottomPanel()));
+	
 	dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
 		.unused(), Axis.UNUSED);
-	dimDrop.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-	layoutPanel.add(dimDrop, new BoxLayoutData(FillStyle.BOTH));
 	
-	scrollPanel.add(dimDrop);
+	
+	
+	baseLayoutPanel.add(dimDrop);
     }
 
     /**
@@ -94,6 +85,6 @@ public class DimensionPanel extends Composite {
 	// Create the various components that make up the Dimension Flextable
 
 	dimDrop.populateDimensionTable();
-
+	
     }
 }

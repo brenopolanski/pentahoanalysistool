@@ -54,8 +54,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SourcesTabEvents;
-import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -130,16 +128,13 @@ public class Application extends Viewport {
     }
 
     /** The Application Main Panel. */
-    private final transient MainMenu mainPanel;
+    private final MainMenu mainPanel;
 
     /** The panel that contains the title widget and links. */
-    private transient FlexTable topPanel;
+    private FlexTable topPanel;
 
     /** The Application's Toolbar Panel. */
-    private transient ToolBarPanel toolBarPanel;
-
-    /** Application LayoutPanel. */
-    private transient LayoutPanel layoutPanel;
+    private ToolBarPanel toolBarPanel;
 
     /** The bottom Panel for the Application, contains the main panels. */
     private static LayoutPanel bottomPanel;
@@ -161,12 +156,13 @@ public class Application extends Viewport {
 	super();
 	
 	// Setup the main layout widget
-		layoutPanel = getWidget();
+	 	final LayoutPanel layoutPanel = getLayoutPanel();
 		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 		// Setup the top panel with the title and links
 		createTopPanel();
 		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+	
 		bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
@@ -177,14 +173,18 @@ public class Application extends Viewport {
 		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
 		westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
-		collapseBtn.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent click_event) {
-				bottomPanel.setCollapsed(westPanel, !layoutPanel.isCollapsed(westPanel));
-				bottomPanel.layout();
-			}
-		});
 
-		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250));
+		collapseBtn.addClickHandler(new ClickHandler() {
+		      public void onClick(ClickEvent event) {
+		        bottomPanel.setCollapsed(westPanel, true);
+		        bottomPanel.layout();
+		      }
+		    });
+
+		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
+		
+		
+		
 		// Add the content wrapper
 		contentWrapper = new DecoratedTabLayoutPanel();
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
@@ -192,6 +192,7 @@ public class Application extends Viewport {
 			public void onSelection(SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof OlapPanel){
+					mainPanel.showMenu(1);
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((OlapPanel) widget).getCube(), new AsyncCallback(){
 
 						public void onFailure(Throwable arg0) {
@@ -209,8 +210,6 @@ public class Application extends Viewport {
 								}
 
 								public void onSuccess(Object arg0) {
-									
-									MessageBox.info("Rock on", "Query Changed");
 									GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(Application.this);
 								}
 								
@@ -221,6 +220,9 @@ public class Application extends Viewport {
 					});
 			
 				}
+				if (widget instanceof WelcomePanel){
+					//mainPanel.showMenu(0);
+				}
 				
 		
 			}
@@ -230,11 +232,13 @@ public class Application extends Viewport {
 				// TODO do whatever before selection
 			}
 		});
-	
+		
+		
+		
 		bottomPanel.add(contentWrapper);
 		mainPanel = new MainMenu();
 		westPanel.add(mainPanel);
-
+		
     }
 
     
@@ -256,10 +260,12 @@ public class Application extends Viewport {
 	{
 		toolBarPanel = new ToolBarPanel();
 		topPanel.setWidget(0, 0, toolBarPanel);
-	}
-	formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
+		formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 
-	formatter.setColSpan(0, 0, 2);
+		formatter.setColSpan(0, 0, 2);
+//		this.layout();
+	}
+
 
 	// Setup the title cell
 	setTitleWidget(null);
@@ -342,7 +348,6 @@ public class Application extends Viewport {
 	
 	public static void addContent(final DataWidget content, String tabName) {
 		tabName = tabName + "" + counter;
-		 DataWidget returned = null;
 		boolean test = false;
 		if (content != null) {
 			if (content instanceof WelcomePanel){
@@ -354,7 +359,7 @@ public class Application extends Viewport {
 			
 			    if(!test) 
 			    	{
-			    	contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+			    	contentWrapper.add(content, tabName);
 					counter++;
 					contentWrapper.layout();    	
 			    	}
@@ -362,8 +367,10 @@ public class Application extends Viewport {
 			}
 			else{
 				contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+				contentWrapper.selectTab(counter);
 				counter++;
-				contentWrapper.layout();  
+				contentWrapper.layout();
+				
 			}
 			
 		}
@@ -382,7 +389,7 @@ public class Application extends Viewport {
 		final HorizontalPanel hPanel = new HorizontalPanel();
 		final Label label = new Label(string + index);
 		DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap");
-		ImageButton closeBtn = new ImageButton(Pat.IMAGES.chart());
+		ImageButton closeBtn = new ImageButton(Pat.IMAGES.closeButton());
 		closeBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				int widgetIndex = contentWrapper.getWidgetIndex(widget);
@@ -393,6 +400,8 @@ public class Application extends Viewport {
 					contentWrapper.remove(widgetIndex);
 					contentWrapper.layout();
 				}
+				counter--;
+				
 			}
 		});
 		hPanel.add(label);

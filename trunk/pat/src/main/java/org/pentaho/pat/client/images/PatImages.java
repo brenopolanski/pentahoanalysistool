@@ -37,5 +37,11 @@ public interface PatImages extends ImageBundle{
 	 */
 	AbstractImagePrototype cube();
 
-
+	/**
+	 * 
+	 *Close Tab Image
+	 *
+	 * @return the abstract image prototype
+	 */
+	AbstractImagePrototype closeButton();
 }

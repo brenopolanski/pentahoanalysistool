@@ -92,7 +92,7 @@ public class WelcomePanel extends DataWidget {
 			        Orientation.VERTICAL));
 			    layoutPanel.setPadding(0);
 			    layoutPanel.setWidgetSpacing(20);
-		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"), new BoxLayoutData(FillStyle.HORIZONTAL)); //$NON-NLS-1$
+		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"), new BoxLayoutData(FillStyle.BOTH)); //$NON-NLS-1$
 		return layoutPanel;
 	}
 

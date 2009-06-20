@@ -88,8 +88,13 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 	public ToolBarPanel() {
 		super();
 		menuBar= new MenuBar();
+		//LayoutPanel baseLayoutPanel = getLayoutPanel();
 		initWidget(menuBar);
 		init();
+		//baseLayoutPanel.add(menuBar);
+		//this.setHeight("100px");
+		//this.invalidate();
+		//this.layout();
 	}
 
 
