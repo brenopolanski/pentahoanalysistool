@@ -12,18 +12,19 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
@@ -31,7 +32,6 @@ import org.pentaho.pat.client.ui.widgets.OlapTable2;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -40,10 +40,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -63,6 +60,12 @@ public class OlapPanel extends DataWidget {
 	private transient String query;
 
 	private transient String cube;
+	
+	DimensionDropWidget rowDimDrop;
+
+	DimensionDropWidget colDimDrop;
+	
+	DimensionDropWidget filterDimDrop;
 	/**
 	 *TODO JAVADOC
 	 *
@@ -115,6 +118,7 @@ public class OlapPanel extends DataWidget {
 			public void onSuccess(final OlapData result1) {
 				// olapTable.layout(true);
 				olapTable.setData(result1);
+				olapTable.layout();
 				//doCreateChart();
 			}
 
@@ -169,7 +173,7 @@ public class OlapPanel extends DataWidget {
 	 */
 	@Override
 	public Widget onInitialize() {
-		final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
 		// MDX(north) panel
 		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
@@ -177,14 +181,14 @@ public class OlapPanel extends DataWidget {
 		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
 
 		collapseBtn1.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent event) {
-				layoutPanel.setCollapsed(northPanel, !layoutPanel.isCollapsed(northPanel));
-				layoutPanel.layout();
-			}
+			  public void onClick(ClickEvent event) {
+			        basePanel.setCollapsed(northPanel, true);
+			        basePanel.layout();
+			      }
 		});
 
-		layoutPanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
-		layoutPanel.setCollapsed(northPanel, true);
+		basePanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
+		basePanel.setCollapsed(northPanel, true);
 
 		// Drill(south) panel
 		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
@@ -193,119 +197,158 @@ public class OlapPanel extends DataWidget {
 		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
 
 		collapseBtn2.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent event) {
-				layoutPanel.setCollapsed(drillPanel, !layoutPanel.isCollapsed(drillPanel));
-				layoutPanel.layout();
-			}
+			 public void onClick(ClickEvent event) {
+			        basePanel.setCollapsed(drillPanel, true);
+			        basePanel.layout();
+			      }
 		});
 
-		layoutPanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
-		layoutPanel.setCollapsed(drillPanel, true);
+		
+		basePanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
+		basePanel.setCollapsed(drillPanel, true);
 
 		final StackLayoutPanel stackPanel = new StackLayoutPanel();
-		layoutPanel.add(stackPanel);
 
-		// Create the container for the main example
-		final ScrollPanel panel1 = new ScrollPanel();
-		// panel1.setPadding(0);
-		// panel1.setWidgetSpacing(0);
+
 		final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
-	/*			ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Region", new AsyncCallback(){
-
-					public void onFailure(Throwable arg0) {
-						// TODO Auto-generated method stub
-						MessageBox.error("Balls", "balls");
-					}
-
-					public void onSuccess(Object arg0) {
-						// TODO Auto-generated method stub
-						List<String> dimSelections = new ArrayList();
-						dimSelections.add("Region");
-						dimSelections.add("All Regions");
-						ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Region", dimSelections, "MEMBER", new AsyncCallback<Object>() {
-
-							public void onFailure(final Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-							}
-
-							public void onSuccess(final Object arg0) {
-							//	targetLabel.setSelectionMode(selectionMode);
-								ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.COLUMNS, "Department", new AsyncCallback(){
-									
-									public void onFailure(Throwable arg0) {
-										// TODO Auto-generated method stub
-										MessageBox.error("Balls", "balls");
-									}
-
-									public void onSuccess(Object arg0) {
-										// TODO Auto-generated method stub
-										List<String> dimSelections2 = new ArrayList();
-										dimSelections2.add("Department");
-										dimSelections2.add("All Departments");
-											
-										ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Department", dimSelections2, "MEMBER", new AsyncCallback<Object>() {
-
-											public void onFailure(final Throwable arg0) {
-												MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-											}
-
-											public void onSuccess(final Object arg0) {
-												//targetLabel.setSelectionMode(selectionMode);
-												doExecuteQueryModel();
-											}
-
-										});
-									}
-									
-								});
-
-							}
-
-						});
-					}
-					
-				});*/
-							
+								
 				doExecuteQueryModel();
+			
 			}
 
 		});
-		final FlexTable grid = new FlexTable();
-		grid.setWidget(0, 0, executeButton);
-		final DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
-		rowDimDrop.setWidth("100%"); //$NON-NLS-1$
-		grid.setWidget(1, 0, rowDimDrop);
+		
+	
+	
+		
+			  final LayoutPanel layoutPanel = new ScrollLayoutPanel(new BoxLayout());
+			    ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
-		final DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
-		colDimDrop.setWidth("100%"); //$NON-NLS-1$
-		grid.setWidget(2, 0, colDimDrop);
 
-		final DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
-		filterDimDrop.setWidth("100%"); //$NON-NLS-1$
-		grid.setWidget(3, 0, filterDimDrop);
-		//		olapTable.setWidth("100%");
-		//		olapTable.setHeight("100%");
-		grid.setWidget(0, 1, olapTable);
-		grid.getFlexCellFormatter().setRowSpan(0, 1, 4);
-		grid.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
-		panel1.add(grid);
-		stackPanel.add(panel1, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
+			    
+			    layoutPanel.add(executeButton, new BoxLayoutData(-1.0, 0.75));
+			    		    
+			    final LayoutPanel dropLayoutPanel = new ScrollLayoutPanel();
+			    ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+			    
+				dropLayoutPanel.add(rowDimDrop, new BoxLayoutData(1.0, 0.33));
+				dropLayoutPanel.add(colDimDrop, new BoxLayoutData(1.0, 0.33));
+				dropLayoutPanel.add(filterDimDrop, new BoxLayoutData(1.0, 0.33));
+				
+				layoutPanel.add(dropLayoutPanel, new BoxLayoutData(0.20,1));
+				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.VERTICAL));
+			
+		stackPanel.add(layoutPanel, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 				true);
 
+
+
+		    
 		final LayoutPanel panel2 = new LayoutPanel();
-		final HTML sourceWidget = new HTML();
+		final HTML sourceWidget = new HTML("GIVE  ME A FUNCTION"); //$NON-NLS-1$
 		sourceWidget.setStyleName(DEFAULT_STYLE_NAME + "-source"); //$NON-NLS-1$
 		panel2.add(sourceWidget);
 		stackPanel.add(panel2, createTabBarCaption(Pat.IMAGES.chart(), ConstantFactory.getInstance().chart() + " (" + getName() + ")"), true); //$NON-NLS-1$ //$NON-NLS-2$
 
 		stackPanel.showStack(0);
 
-		return layoutPanel;
+		basePanel.add(stackPanel);
+		/**
+		 * 
+		 * Some Test Code to Check the Table in FF on Linux
+		 */
+/*		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Region", new AsyncCallback(){
 
+		public void onFailure(Throwable arg0) {
+			// TODO Auto-generated method stub
+			MessageBox.error("Balls", "balls");
+		}
+
+		public void onSuccess(Object arg0) {
+			// TODO Auto-generated method stub
+			List<String> dimSelections = new ArrayList();
+			dimSelections.add("Region");
+			dimSelections.add("All Regions");
+			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Region", dimSelections, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
+
+				public void onFailure(final Throwable arg0) {
+					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+				}
+
+				public void onSuccess(final Object arg0) {
+
+					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Department", new AsyncCallback(){
+						
+						public void onFailure(Throwable arg0) {
+							// TODO Auto-generated method stub
+							MessageBox.error("Balls", "balls");
+						}
+
+						public void onSuccess(Object arg0) {
+							// TODO Auto-generated method stub
+							List<String> dimSelections2 = new ArrayList();
+							dimSelections2.add("Department");
+							dimSelections2.add("All Departments");
+								
+							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Department", dimSelections2, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
+
+								public void onFailure(final Throwable arg0) {
+									MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+								}
+
+								public void onSuccess(final Object arg0) {
+									ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.COLUMNS, "Positions", new AsyncCallback(){
+										
+										public void onFailure(Throwable arg0) {
+											// TODO Auto-generated method stub
+											MessageBox.error("Balls", "balls");
+										}
+
+										public void onSuccess(Object arg0) {
+											// TODO Auto-generated method stub
+											List<String> dimSelections2 = new ArrayList();
+											dimSelections2.add("Positions");
+											dimSelections2.add("All Positions");
+												
+											ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Positions", dimSelections2, "MEMBER", new AsyncCallback<Object>() {
+
+												public void onFailure(final Throwable arg0) {
+													MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+												}
+
+												public void onSuccess(final Object arg0) {
+													//targetLabel.setSelectionMode(selectionMode);
+													doExecuteQueryModel();
+													//gridLayoutPanel.invalidate();
+													//olapTable.setSize("100%", "100%");
+													//olapTable.setPixelSize(1000, 600);
+												}
+
+											});
+										}
+										
+									});
+
+								}
+
+							});
+						}
+						
+					});
+
+				}
+
+			});
+		}
+		
+	});*/
+
+		return basePanel;
 	}
 
 
@@ -330,5 +373,22 @@ public class OlapPanel extends DataWidget {
 	public void setQuery(final String query) {
 		// TODO Auto-generated method stub
 		this.query = query;
+	}
+	
+	public OlapTable2 getTable(){
+		return olapTable;
+	}
+	
+	public void setTable(OlapTable2 olapTable){
+		this.olapTable = olapTable;
+	}
+	
+	public void setAxisDropper(DimensionDropWidget dimDrop, String axis){
+		if (axis.equals("rows"))
+			rowDimDrop = dimDrop;	
+		if (axis.equals("columns"))
+			colDimDrop = dimDrop;
+		if (axis.equals("filter"))
+			filterDimDrop = dimDrop;
 	}
 }

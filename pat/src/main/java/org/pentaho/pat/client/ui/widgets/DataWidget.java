@@ -17,8 +17,10 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -92,11 +94,17 @@ public abstract class DataWidget extends LayoutPanel {
 			return;
 		}
 		initialized = true;
-
+		 
+		final LayoutPanel vPanel = new LayoutPanel(new BoxLayout(
+			        Orientation.VERTICAL));
+			    vPanel.setPadding(0);
+			    vPanel.setWidgetSpacing(0);
+		
+		add(vPanel);
 		// Initialize the widget and add it to the page
 		final Widget widget = onInitialize();
 		if (widget != null) {
-			add(widget, new BoxLayoutData(FillStyle.BOTH));
+			vPanel.add(widget, new BoxLayoutData(FillStyle.BOTH));
 		}
 		onInitializeComplete();
 	}

@@ -18,11 +18,9 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.FillLayoutData;
-
-
+import org.gwt.mosaic.ui.client.table.ScrollTable2;
 import org.pentaho.pat.client.i18n.PatMessages;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.OlapUtils;
@@ -43,10 +41,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author wseyler
- * 
+ * @hacked tom barber ;)
  */
 @SuppressWarnings("deprecation")
-public class OlapTable2 extends LayoutPanel {
+public class OlapTable2 extends LayoutComposite {
 
 	private static final String OLAP_ROW_HEADER_LABEL = "olap-row-header-label"; //$NON-NLS-1$
 	private static final String OLAP_ROW_HEADER_CELL = "olap-row-header-cell"; //$NON-NLS-1$
@@ -59,44 +57,52 @@ public class OlapTable2 extends LayoutPanel {
 	private OlapData olapData = null;
 	private boolean showParentMembers = true;
 	private boolean groupHeaders = true;
-	@SuppressWarnings("unused")
+	
 	private PatMessages messages = null;
 	private CellFormatPopup cellFormatPopup;
 
-	private AbstractScrollTable scrollTable = null;
-	/**
-	 * The footer portion of the <code>ScrollTable</code>
-	 */
-//	private static FixedWidthFlexTable footerTable = null;
+	private ScrollTable2 scrollTable = null;
+
+	private boolean initialized = false;
 
 	/**
 	 * The header portion of the <code>ScrollTable</code>
 	 */
-	private static FixedWidthFlexTable headerTable = null;
+	private static FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
 	
-	private FixedWidthGrid dataTable;
+	private FixedWidthGrid dataTable = new FixedWidthGrid();
+	
+	private String parentName;
 	/**
 	 * @param messages
 	 */
 	public OlapTable2(PatMessages messages) {
-		// super(dataTable, headerTable);
+		
 		super();
 		this.setMessages(messages);
-		// this.setCellPadding(3);
-		// this.setCellSpacing(0);
-//		this.setSize("100%", "100%");
-		// Add the scroll table to the page
 
-		// this.setFooterTable(footerTable);
-		// this.setContextMenu(createContextMenu());
-		addStyleName("olap-table"); //$NON-NLS-1$
+		this.setSize("100%", "100%");
+		
 	}
 
-	public OlapTable2(PatMessages messages, boolean showParentMembers) {
-		this(messages);
-		this.showParentMembers = showParentMembers;
+	 /**
+	 *TODO JAVADOC
+	 *
+	 */
+	public OlapTable2() {
+		super();
+		this.setSize("100%", "100%");
 	}
 
+	@Override
+	  protected void onLoad() {
+	    super.onLoad();
+		 
+	  }
+	 
+	public final boolean isInitialized() {
+		return initialized;
+	}
 	public void setData(OlapData olapData) {
 		setData(olapData, true);
 	}
@@ -106,6 +112,7 @@ public class OlapTable2 extends LayoutPanel {
 	 * @param refresh
 	 */
 	public void setData(final OlapData olapData, final boolean refresh) {
+		initialized = true;
 		this.olapData = olapData;
 		if (refresh) {
 			refresh();
@@ -119,9 +126,14 @@ public class OlapTable2 extends LayoutPanel {
 		return olapData;
 	}
 
+	public void initScrollTable(){
+		scrollTable = new ScrollTable2(dataTable, headerTable);
+	}
 	public void refresh() {
-
-		//
+		
+	
+			
+		removeAllRows();
 		
 		if (olapData != null) {
 			createColumnHeaders();
@@ -129,31 +141,43 @@ public class OlapTable2 extends LayoutPanel {
 			createRowHeaders();
 			populateData();
 			
-			scrollTable = new ScrollTable(dataTable, headerTable);
-		    this.setPixelSize(600,400);
-			this.add(scrollTable,new FillLayoutData(true));
+			
+			  // Setup the formatting
+		    scrollTable.setCellPadding(3);
+		    scrollTable.setCellSpacing(0);
+		    scrollTable.setResizePolicy(ScrollTable.ResizePolicy.UNCONSTRAINED);
+		    
+		    for(int i=0; i < scrollTable.getHeaderTable().getColumnCount(); i++)
+		    {
+		    	scrollTable.setColumnTruncatable(i, false);
+		    }
+		    final LayoutPanel layoutPanel = getLayoutPanel();
+		    layoutPanel.add(scrollTable);
+		    scrollTable.layout();
+			this.layout();
 		}
 	}
 
-	
+	private void removeAllRows(){
+		headerTable.clear();
+		dataTable.clear();
+	}
 
 	private FixedWidthGrid createDataTable() {
-		     dataTable = new FixedWidthGrid();
+		     
 		    dataTable.resize(olapData.getCellData().getDownCount(), olapData.getRowHeaders().getAcrossCount()+olapData.getCellData().getAcrossCount());
 		    dataTable.setSelectionPolicy(SelectionPolicy.MULTI_ROW);
 		    return dataTable;
 	}
 	  
-	public FixedWidthGrid getDataTable() {
-	    return getScrollTable().getDataTable();
-    }
+	
 	
 	public AbstractScrollTable getScrollTable() {
 	    return scrollTable;
 	  }
 	
 	protected void createColumnHeaders() {
-		headerTable = new FixedWidthFlexTable();
+		
 		FlexCellFormatter headerFormatter = headerTable.getFlexCellFormatter();
 
 		CellInfo[][] headerData;
@@ -177,9 +201,9 @@ public class OlapTable2 extends LayoutPanel {
 					label.addStyleName(OLAP_COL_HEADER_LABEL);
 					headerTable.setWidget(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(), label);
-					headerFormatter.addStyleName(row, currentColumn
+		/*			headerFormatter.addStyleName(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(),
-							OLAP_COL_HEADER_CELL);
+							OLAP_COL_HEADER_CELL);*/
 					headerFormatter.setColSpan(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(),
 							spanInfo.getSpan());
@@ -210,13 +234,7 @@ public class OlapTable2 extends LayoutPanel {
 	}
 
 	protected void createRowHeaders() {
-	//	FixedWidthGrid dataTable = getDataTable();
-//		CellFormatter cellFormatter = dataTable.getCellFormatter();
-		int columnHeadersHeight = /*
-								 * showParentMembers ?
-								 * olapData.getColumnHeaders().getDownCount() :
-								 * 2
-								 */0;
+		int columnHeadersHeight = 0;
 
 		int rowHeadersHeight = olapData.getRowHeaders().getDownCount();
 		int rowHeadersWidth = olapData.getRowHeaders().getAcrossCount();
@@ -254,47 +272,36 @@ public class OlapTable2 extends LayoutPanel {
 					spanMatrixRow(matrix, columnHeadersHeight + actualRow,
 							newColumn, spanInfo.getSpan());
 
-					/*
-					 * cellFormatter.setRowSpan(columnHeadersHeight + actualRow
-					 * , newColumn - getSpanInRow(matrix, columnHeadersHeight
-					 * +actualRow), spanInfo.getSpan());
-					 */
-					// cellFormatter.addStyleName(columnHeadersHeight +
-					// actualRow ,
-					// newColumn - getSpanInRow(matrix, columnHeadersHeight
-					// +actualRow), OLAP_ROW_HEADER_CELL);
-					int row = columnHeadersHeight + actualRow;
-					int col = newColumn
-					- getSpanInRow(matrix, columnHeadersHeight
-							+ actualRow);
-					dataTable.setWidget(columnHeadersHeight + actualRow,
-							newColumn
-									- getSpanInRow(matrix, columnHeadersHeight
-											+ actualRow), label);
-
-					//actualRow += spanInfo.getSpan();
-
+							dataTable.setWidget(columnHeadersHeight + actualRow,
+							newColumn, label);
+						
 					if (showParentMembers == false)
 						actualRow++;
 
 				}
+				
+				for (int i=0; i<dataTable.getRowCount();i++){
+				
+				Widget widget = dataTable.getWidget(i, offset);
+				String text = dataTable.getText(i, offset);
+		//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if ((text == null || text.trim().length() < 2) && widget == null) {
+					dataTable.setText(i, column, "___");
+	                
+				}
+				
+		}
 				offset++;
 			}
 		} else {
 			int rowAddition = showParentMembers ? columnHeadersHeight : 1;
-//			int columnAddition = showParentMembers ? 0 : -1;
+
 			for (int row = 0; row < headerData.length; row++) {
 				for (int column = 0; column < headerData[row].length; column++) {
 					CellInfo cellInfo = headerData[row][column];
 					if (cellInfo != null) {
 						Label label = new Label(cellInfo.getFormattedValue());
 						label.addStyleName(OLAP_ROW_HEADER_CELL);
-						// cellFormatter.addStyleName(row + rowAddition,
-						// showParentMembers ? column : column,
-						// OLAP_ROW_HEADER_CELL);
-						// showParentMembers ? column +
-						// olapData.getRowHeaders().getAcrossCount() : column +
-						// 1, OLAP_COL_HEADER_CELL);
 						dataTable.setWidget(row + rowAddition,
 								showParentMembers ? column : column, label);
 					}
@@ -303,44 +310,14 @@ public class OlapTable2 extends LayoutPanel {
 		}// else
 	}
 
-	/*
-	 * private void printTable() { int j = 0;
-	 * System.out.println("=============="); for (int i = 0; i < getRowCount();
-	 * i++) { for (j = 0; j < getCellCount(i); j++) { if (isCellPresent (i,j))
-	 * System.out.print("P "); else System.out.print("n "); }
-	 * System.out.println((j)); } System.out.println("=============="); }
-	 */
-
-//	protected void populateData() {
-//		for (int row = 0; row < olapData.getCellData().getDownCount(); row++) {
-//			for (int column = 0; column < olapData.getCellData()
-//					.getAcrossCount(); column++) {
-//				CellInfo cellInfo = olapData.getCellData().getCell(row, column);
-//				if (cellInfo != null) {
-//					Label label = new Label(cellInfo.getFormattedValue());
-//					label.addStyleName("olap-cell-label"); //$NON-NLS-1$
-//					String colorValueStr = cellInfo.getColorValue();
-//					if (colorValueStr != null) {
-//						DOM
-//								.setElementAttribute(
-//										label.getElement(),
-//										"style", "background-color: " + cellInfo.getColorValue() + ";"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-//					}
-//					label.addClickListener(new ClickCellCommand());
-//					dataTable
-//							.setWidget(showParentMembers ? row/* +olapData.getColumnHeaders().getDownCount()*/: row + 1,showParentMembers ? getFirstUnusedColumnForRow(row) : column + 1, label);
-//				}
-//			}
-//		}
-//	}
-	  protected void populateData() {
+	protected void populateData() {
 	  
 		    for (int row=0; row<olapData.getCellData().getDownCount(); row++) {
 		        for (int column=0; column<olapData.getCellData().getAcrossCount(); column++) {
 		                CellInfo cellInfo = olapData.getCellData().getCell(row, column);
 		                if (cellInfo != null) {
 		                        Label label = new Label(cellInfo.getFormattedValue());
-		                label.addStyleName("olap-cell-label"); //$NON-NLS-1$
+		                //label.addStyleName("olap-cell-label"); //$NON-NLS-1$
 		                String colorValueStr = cellInfo.getColorValue();
 		                if (colorValueStr != null) {
 		                  DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
@@ -484,5 +461,33 @@ public class OlapTable2 extends LayoutPanel {
 
 	public void setMessages(PatMessages messages) {
 		this.messages = messages;
+	}
+	
+	public void setParentName(String parent){
+		this.parentName = parent;
+	}
+	
+	public String getParentName(){
+		return parentName;
+	}
+	
+	public FixedWidthGrid getDataTable(){
+		return dataTable;
+	}
+	
+	public void setDataTable(FixedWidthGrid table){
+		this.dataTable = table;
+	}
+	
+	public FixedWidthFlexTable getHeaderTable(){
+	 return headerTable;
+	}
+	
+	public void setHeaderTable(FixedWidthFlexTable headerTable){
+		this.headerTable=headerTable;
+	}
+	
+	public PatMessages getMessages(){
+		return messages;
 	}
 }

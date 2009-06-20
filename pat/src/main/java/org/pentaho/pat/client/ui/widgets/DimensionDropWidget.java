@@ -13,10 +13,11 @@
 
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
-import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Axis;
@@ -30,14 +31,15 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class DimensionDropWidget extends Grid  implements ConnectionListener, QueryListener{
+public class DimensionDropWidget extends LayoutComposite  implements ConnectionListener, QueryListener{
 
 	/** The Olap4j Axis. */
 	private final Axis dimAxis;
 
 	/** Creates the DimensionFlexTable. */
-	private DimensionFlexTable table1;
+	private DimensionFlexTable dimensionTable;
 
+	private Grid dimensionGrid = new Grid(2,1);
 	private FlexTableRowDropController flexTableRowDropController1;
 	/**
 	 * Creates the widget structure.
@@ -47,7 +49,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	 */
 	public DimensionDropWidget(final String labelText, final Axis targetAxis) {
 
-		super(2, 1);
+		//super(2, 1);
 		GlobalConnectionFactory.getInstance().addConnectionListener(DimensionDropWidget.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 		this.dimAxis = targetAxis;
@@ -61,21 +63,26 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	 * @param targetAxis the target axis
 	 */
 	public final void init(final String labelText, final Axis targetAxis) {
-		
-		table1 = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
+		LayoutPanel layoutPanel = getLayoutPanel();
+		
+		
+		dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
+
+		layoutPanel.add(dimensionGrid);
+		
 		final Label dropLabel = new Label(labelText);
 		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
-		table1.setStyleName("dropTable"); //$NON-NLS-1$
-		this.setWidget(0, 0, dropLabel);
+		dimensionTable.setStyleName("dropTable"); //$NON-NLS-1$
+		dimensionGrid.setWidget(0, 0, dropLabel);
 
-		this.setWidget(1, 0, table1);
+		dimensionGrid.setWidget(1, 0, dimensionTable);
 	}
 	@Override
 	public void onLoad(){
-		flexTableRowDropController1 = new FlexTableRowDropController(table1, dimAxis);
+		flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
 		DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
-
+		
 	}
 	
 	@Override
@@ -87,7 +94,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	 */
 	public final void populateDimensionTable() {
 
-		table1.populateDimensionTable(dimAxis);
+		dimensionTable.populateDimensionTable(dimAxis);
 
 	}
 
@@ -95,7 +102,7 @@ public class DimensionDropWidget extends Grid  implements ConnectionListener, Qu
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onConnectionBroken(Widget sender) {
-		table1.clearDimensionTable();
+		dimensionTable.clearDimensionTable();
 	}
 
 	/* (non-Javadoc)
