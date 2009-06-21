@@ -16,6 +16,7 @@
 
 package org.pentaho.pat.client.ui.widgets;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -129,6 +130,7 @@ public class OlapTable2 extends LayoutComposite {
 	public void initScrollTable(){
 		scrollTable = new ScrollTable2(dataTable, headerTable);
 	}
+	
 	public void refresh() {
 		
 	
@@ -153,8 +155,7 @@ public class OlapTable2 extends LayoutComposite {
 		    }
 		    final LayoutPanel layoutPanel = getLayoutPanel();
 		    layoutPanel.add(scrollTable);
-		    scrollTable.layout();
-			this.layout();
+		    layoutPanel.layout();
 		}
 	}
 
@@ -253,46 +254,56 @@ public class OlapTable2 extends LayoutComposite {
 		char matrix[][] = createMatrix(headerData.length + columnHeadersHeight,
 				headerData[0].length);
 
+		
 		if (groupHeaders) {
 			for (int column = 0; column < headerData[0].length; column++) { // columns
+				   CellInfo actualColumn[] = OlapUtils.extractColumn(headerData, column);
+	                if (actualColumn == null || actualColumn.length == 0)
+	                                continue;                                       
+	                Iterator iter = OlapUtils.getCellSpans(actualColumn).iterator();
+	                int actualRow = 0; // the current row (considering just the headerData, excluding column headers)
 
-				final List<CellSpanInfo> infos = OlapUtils
-					.getCellSpans(OlapUtils.extractColumn(headerData,column));
-				for (int actualRow = 0, n = infos.size(); actualRow < n; actualRow++) {
-					if (showParentMembers == false)
-						actualRow--;
-					CellSpanInfo spanInfo = (CellSpanInfo) infos.get(actualRow);
-					// Prepares the label
-					Label label = new Label(spanInfo.getInfo()
-							.getFormattedValue());
-					label.addStyleName(OLAP_ROW_HEADER_LABEL);
+	                while (iter.hasNext())
+	                {
+						if (showParentMembers == false)
+							actualRow--;
+						CellSpanInfo spanInfo = (CellSpanInfo) iter.next();
+						// Prepares the label
+						Label label = new Label(spanInfo.getInfo()
+								.getFormattedValue());
+						label.addStyleName(OLAP_ROW_HEADER_LABEL);
 
-					int newColumn = offset;
-					matrix[columnHeadersHeight + actualRow][column] = USED;
-					spanMatrixRow(matrix, columnHeadersHeight + actualRow,
-							newColumn, spanInfo.getSpan());
+						int newColumn = offset;
+						matrix[columnHeadersHeight + actualRow][column] = USED;
+						spanMatrixRow(matrix, columnHeadersHeight + actualRow,
+								newColumn, spanInfo.getSpan());
 
-							dataTable.setWidget(columnHeadersHeight + actualRow,
-							newColumn, label);
-						
-					if (showParentMembers == false)
-						actualRow++;
+								dataTable.setWidget(columnHeadersHeight + actualRow,
+								newColumn, label);
+							
+								actualRow+=spanInfo.getSpan();
 
-				}
+						if (showParentMembers == false)
+							actualRow++;
+
+					}
+					
+					for (int i=0; i<dataTable.getRowCount();i++){
+					
+					Widget widget = dataTable.getWidget(i, offset);
+					String text = dataTable.getText(i, offset);
+			//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					if ((text == null || text.trim().length() < 2) && widget == null) {
+						dataTable.setText(i, column, "___");
+		                
+					}
+					
+
+	                }
 				
-				for (int i=0; i<dataTable.getRowCount();i++){
-				
-				Widget widget = dataTable.getWidget(i, offset);
-				String text = dataTable.getText(i, offset);
-		//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				if ((text == null || text.trim().length() < 2) && widget == null) {
-					dataTable.setText(i, column, "___");
-	                
-				}
-				
-		}
-				offset++;
+					offset++;	
 			}
+			
 		} else {
 			int rowAddition = showParentMembers ? columnHeadersHeight : 1;
 

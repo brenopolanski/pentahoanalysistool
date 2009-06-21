@@ -85,35 +85,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			}
 
 			else if (source instanceof OlapPanel) {
-
-				/*
-				 * destination = new OlapPanel(); ((OlapPanel)
-				 * destination).setName(((OlapPanel)
-				 * source).getName()+Integer.toString(counter)); ((OlapPanel)
-				 * destination).setCube(((OlapPanel) source).getCube());
-				 * ((OlapPanel) destination).setQuery(((OlapPanel)
-				 * source).getQuery()); ((OlapPanel)
-				 * destination).setAxisDropper(new
-				 * DimensionDropWidget(ConstantFactory.getInstance().rows(),
-				 * Axis.ROWS), "rows"); ((OlapPanel)
-				 * destination).setAxisDropper(new
-				 * DimensionDropWidget(ConstantFactory.getInstance().columns(),
-				 * Axis.COLUMNS), "columns"); ((OlapPanel)
-				 * destination).setAxisDropper(new
-				 * DimensionDropWidget(ConstantFactory.getInstance().filter(),
-				 * Axis.FILTER), "filter"); OlapTable2 ot =((OlapPanel)
-				 * source).getTable(); OlapTable2 destinationOT = new
-				 * OlapTable2(); destinationOT.setTitle(((OlapPanel)
-				 * source).getName()+Integer.toString(counter)); //((OlapPanel)
-				 * destination).setTable(destinationOT);
-				 * 
-				 * //destinationOT = ot;
-				 * destinationOT.setDataTable(copyDataTable());
-				 * destinationOT.setHeaderTable(copyHeaderTable());
-				 * destinationOT.initScrollTable(); ((OlapPanel)
-				 * destination).setTable(destinationOT);
-				 */
-
+				
 				destination = getNewOlapPanel();
 				((OlapPanel) destination).setName(((OlapPanel) source).getName() + Integer.toString(counter));
 				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
@@ -123,6 +95,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER), "filter");
 */
 				OlapTable2 destinationOT = new OlapTable2();
+				destinationOT.setTitle(((OlapPanel)source).getName()+Integer.toString(counter));
 				destinationOT.setDataTable(copyDataTable());
 				destinationOT.setHeaderTable(copyHeaderTable());
 				destinationOT.initScrollTable();
