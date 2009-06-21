@@ -118,10 +118,10 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				((OlapPanel) destination).setName(((OlapPanel) source).getName() + Integer.toString(counter));
 				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
 				((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
-				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS), "rows");
+				/*((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS), "rows");
 				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS), "columns");
 				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER), "filter");
-
+*/
 				OlapTable2 destinationOT = new OlapTable2();
 				destinationOT.setDataTable(copyDataTable());
 				destinationOT.setHeaderTable(copyHeaderTable());
