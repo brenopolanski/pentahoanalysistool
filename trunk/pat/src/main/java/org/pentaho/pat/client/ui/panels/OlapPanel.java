@@ -32,6 +32,7 @@ import org.pentaho.pat.client.ui.widgets.OlapTable2;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -61,11 +62,11 @@ public class OlapPanel extends DataWidget {
 
 	private transient String cube;
 	
-	DimensionDropWidget rowDimDrop;
+	DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
 
-	DimensionDropWidget colDimDrop;
+	DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
 	
-	DimensionDropWidget filterDimDrop;
+	DimensionDropWidget filterDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
 	/**
 	 *TODO JAVADOC
 	 *
@@ -383,12 +384,5 @@ public class OlapPanel extends DataWidget {
 		this.olapTable = olapTable;
 	}
 	
-	public void setAxisDropper(DimensionDropWidget dimDrop, String axis){
-		if (axis.equals("rows"))
-			rowDimDrop = dimDrop;	
-		if (axis.equals("columns"))
-			colDimDrop = dimDrop;
-		if (axis.equals("filter"))
-			filterDimDrop = dimDrop;
-	}
+
 }
