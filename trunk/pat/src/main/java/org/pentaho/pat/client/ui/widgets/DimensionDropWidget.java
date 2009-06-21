@@ -14,6 +14,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
@@ -64,12 +65,15 @@ public class DimensionDropWidget extends LayoutComposite  implements ConnectionL
 	 */
 	public final void init(final String labelText, final Axis targetAxis) {
 
-		LayoutPanel layoutPanel = getLayoutPanel();
+		LayoutPanel baseLayoutPanel = getLayoutPanel();
 		
+		LayoutPanel scrollLayoutPanel = new ScrollLayoutPanel();
 		
 		dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
 
-		layoutPanel.add(dimensionGrid);
+		scrollLayoutPanel.add(dimensionGrid);
+		
+		baseLayoutPanel.add(scrollLayoutPanel);
 		
 		final Label dropLabel = new Label(labelText);
 		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$

@@ -41,6 +41,7 @@ import com.google.gwt.gen2.table.client.FixedWidthFlexTable;
 import com.google.gwt.gen2.table.client.FixedWidthGrid;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -87,7 +88,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			else if (source instanceof OlapPanel) {
 				
 				destination = getNewOlapPanel();
-				((OlapPanel) destination).setName(((OlapPanel) source).getName() + Integer.toString(counter));
+				((OlapPanel) destination).setName(((OlapPanel) source).getName());
 				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
 				((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
 				/*((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS), "rows");
@@ -100,12 +101,18 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				destinationOT.setHeaderTable(copyHeaderTable());
 				destinationOT.initScrollTable();
 				((OlapPanel) destination).setTable(destinationOT);
-
+				((OlapPanel) destination).setExecuteButton(newExecuteButton());
+				
 			}
 		}
 		return destination;
 	}
 
+	private static Button newExecuteButton(){
+		Button newButton = new Button(ConstantFactory.getInstance().executeQuery());
+		newButton.setTitle(ConstantFactory.getInstance().executeQuery() + Integer.toString(counter));
+		return newButton;
+	}
 	private static OlapPanel getNewOlapPanel() {
 		return new OlapPanel();
 	}

@@ -66,6 +66,10 @@ public class OlapPanel extends DataWidget {
 
 	private transient String cube;
 	
+	private Button executeButton;
+	
+	final LayoutPanel layoutPanel = new ScrollLayoutPanel(new BoxLayout());
+	
 	DimensionDropWidget rowDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
 
 	DimensionDropWidget colDimDrop = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
@@ -213,7 +217,7 @@ public class OlapPanel extends DataWidget {
 		final StackLayoutPanel stackPanel = new StackLayoutPanel();
 
 
-		final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+		/*executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
 								
@@ -221,17 +225,17 @@ public class OlapPanel extends DataWidget {
 			
 			}
 
-		});
+		});*/
 		
 	
 	
 		
-			  final LayoutPanel layoutPanel = new ScrollLayoutPanel(new BoxLayout());
+			  
 			    ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
 
 			    
-			    layoutPanel.add(executeButton, new BoxLayoutData(-1.0, 0.75));
+			    
 			    		    
 			    final LayoutPanel dropLayoutPanel = new ScrollLayoutPanel();
 			    ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
@@ -385,6 +389,25 @@ public class OlapPanel extends DataWidget {
 	public void setTable(OlapTable2 olapTable){
 		this.olapTable = olapTable;
 	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param newExecuteButton
+	 */
+	public void setExecuteButton(Button newExecuteButton) {
+		this.executeButton = newExecuteButton;
+		executeButton.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
+								
+				doExecuteQueryModel();
+			
+			}
+
+		});
+		layoutPanel.add(executeButton, new BoxLayoutData(-1.0, 0.75));
+	}
+	
 	
 
 }
