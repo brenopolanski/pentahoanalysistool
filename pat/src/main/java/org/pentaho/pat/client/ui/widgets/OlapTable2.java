@@ -81,7 +81,7 @@ public class OlapTable2 extends LayoutComposite {
 		
 		super();
 		this.setMessages(messages);
-
+		
 		this.setSize("100%", "100%");
 		
 	}
@@ -98,7 +98,7 @@ public class OlapTable2 extends LayoutComposite {
 	@Override
 	  protected void onLoad() {
 	    super.onLoad();
-		 
+	    scrollTable = new ScrollTable2(dataTable, headerTable); 
 	  }
 	 
 	public final boolean isInitialized() {
@@ -127,9 +127,6 @@ public class OlapTable2 extends LayoutComposite {
 		return olapData;
 	}
 
-	public void initScrollTable(){
-		scrollTable = new ScrollTable2(dataTable, headerTable);
-	}
 	
 	public void refresh() {
 		
