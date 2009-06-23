@@ -217,15 +217,104 @@ public class OlapPanel extends DataWidget {
 		final StackLayoutPanel stackPanel = new StackLayoutPanel();
 
 
-		/*executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+		executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
+						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Region", new AsyncCallback(){
+
+				public void onFailure(Throwable arg0) {
+					// TODO Auto-generated method stub
+					MessageBox.error("Balls", "balls");
+				}
+
+				public void onSuccess(Object arg0) {
+					// TODO Auto-generated method stub
+					List<String> dimSelections = new ArrayList();
+					dimSelections.add("Region");
+					dimSelections.add("All Regions");
+					ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Region", dimSelections, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
+
+						public void onFailure(final Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+						}
+
+						public void onSuccess(final Object arg0) {
+
+							ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Department", new AsyncCallback(){
 								
-				doExecuteQueryModel();
+								public void onFailure(Throwable arg0) {
+									// TODO Auto-generated method stub
+									MessageBox.error("Balls", "balls");
+								}
+
+								public void onSuccess(Object arg0) {
+									// TODO Auto-generated method stub
+									List<String> dimSelections2 = new ArrayList();
+									dimSelections2.add("Department");
+									dimSelections2.add("All Departments");
+										
+									ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Department", dimSelections2, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
+
+										public void onFailure(final Throwable arg0) {
+											MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+										}
+
+										public void onSuccess(final Object arg0) {
+											ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.COLUMNS, "Positions", new AsyncCallback(){
+												
+												public void onFailure(Throwable arg0) {
+													// TODO Auto-generated method stub
+													MessageBox.error("Balls", "balls");
+												}
+
+												public void onSuccess(Object arg0) {
+													// TODO Auto-generated method stub
+													List<String> dimSelections2 = new ArrayList();
+													dimSelections2.add("Positions");
+													dimSelections2.add("All Positions");
+														
+													ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Positions", dimSelections2, "MEMBER", new AsyncCallback<Object>() {
+
+														public void onFailure(final Throwable arg0) {
+															MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+
+														}
+
+														public void onSuccess(final Object arg0) {
+															//targetLabel.setSelectionMode(selectionMode);
+															doExecuteQueryModel();
+															//gridLayoutPanel.invalidate();
+															//olapTable.setSize("100%", "100%");
+															//olapTable.setPixelSize(1000, 600);
+														}
+
+													});
+												}
+												
+											});
+
+										}
+
+									});
+								}
+								
+							});
+
+						}
+
+					});
+				}
+				
+			});
+								
+//				doExecuteQueryModel();
 			
 			}
 
-		});*/
+		});
+		
 		
 	
 	
@@ -235,7 +324,7 @@ public class OlapPanel extends DataWidget {
 
 
 			    
-			    
+			    layoutPanel.add(executeButton, new BoxLayoutData(-1.0, 0.75));	    
 			    		    
 			    final LayoutPanel dropLayoutPanel = new ScrollLayoutPanel();
 			    ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
@@ -388,6 +477,8 @@ public class OlapPanel extends DataWidget {
 	
 	public void setTable(OlapTable2 olapTable){
 		this.olapTable = olapTable;
+		
+		layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.VERTICAL));
 	}
 
 	/**
@@ -406,6 +497,24 @@ public class OlapPanel extends DataWidget {
 
 		});
 		layoutPanel.add(executeButton, new BoxLayoutData(-1.0, 0.75));
+	}
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @param dimensionDropWidget
+	 * @param string
+	 */
+	public void setAxisDropper(DimensionDropWidget dimensionDropWidget, String string) {
+		// TODO Auto-generated method stub
+		if (string=="rows")
+			this.rowDimDrop = dimensionDropWidget;
+		
+		if (string=="columns")
+			this.colDimDrop = dimensionDropWidget;
+		
+		if (string=="filter")
+			this.filterDimDrop = dimensionDropWidget;
 	}
 	
 	
