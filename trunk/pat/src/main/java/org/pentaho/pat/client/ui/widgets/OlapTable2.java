@@ -59,21 +59,26 @@ public class OlapTable2 extends LayoutComposite {
 	private boolean showParentMembers = true;
 	private boolean groupHeaders = true;
 	
-	private PatMessages messages = null;
 	private CellFormatPopup cellFormatPopup;
 
 	private ScrollTable2 scrollTable = null;
 
 	private boolean initialized = false;
-
+	
+	private PatMessages messages;
+	
 	/**
 	 * The header portion of the <code>ScrollTable</code>
 	 */
-	private static FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
+	
+	/**
+	 * 
+	 * IF I EVER MAKE EIIHER OF THESE 2 STATIC AGAIN... SHOOT ME!
+	 */
+	private FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
 	
 	private FixedWidthGrid dataTable = new FixedWidthGrid();
 	
-	private String parentName;
 	/**
 	 * @param messages
 	 */
@@ -84,15 +89,6 @@ public class OlapTable2 extends LayoutComposite {
 		
 		this.setSize("100%", "100%");
 		
-	}
-
-	 /**
-	 *TODO JAVADOC
-	 *
-	 */
-	public OlapTable2() {
-		super();
-		this.setSize("100%", "100%");
 	}
 
 	@Override
@@ -129,9 +125,7 @@ public class OlapTable2 extends LayoutComposite {
 
 	
 	public void refresh() {
-		
 	
-			
 		removeAllRows();
 		
 		if (olapData != null) {
@@ -471,31 +465,5 @@ public class OlapTable2 extends LayoutComposite {
 		this.messages = messages;
 	}
 	
-	public void setParentName(String parent){
-		this.parentName = parent;
-	}
-	
-	public String getParentName(){
-		return parentName;
-	}
-	
-	public FixedWidthGrid getDataTable(){
-		return dataTable;
-	}
-	
-	public void setDataTable(FixedWidthGrid table){
-		this.dataTable = table;
-	}
-	
-	public FixedWidthFlexTable getHeaderTable(){
-	 return headerTable;
-	}
-	
-	public void setHeaderTable(FixedWidthFlexTable headerTable){
-		this.headerTable=headerTable;
-	}
-	
-	public PatMessages getMessages(){
-		return messages;
-	}
+
 }
