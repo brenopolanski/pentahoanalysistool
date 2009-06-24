@@ -7,7 +7,7 @@
  *
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
  *
- * @created Apr 23, 2009 
+ * @created Apr 23, 2009
  * @author Tom Barber
  */
 package org.pentaho.pat.client.ui.panels;
@@ -26,22 +26,16 @@ import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
-import org.pentaho.pat.client.ui.widgets.OlapTable2;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.gen2.table.client.FixedWidthFlexTable;
-import com.google.gwt.gen2.table.client.FixedWidthGrid;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -63,6 +57,27 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	 */
 	static Integer counter = 0;
 
+	protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination, final Integer counter) {
+
+		if (source != null) {
+
+			if (source instanceof WelcomePanel) {
+				destination = new WelcomePanel();
+				final String name = source.getName() + Integer.toString(counter);
+				((WelcomePanel) destination).setName(name);
+			}
+
+			else if (source instanceof OlapPanel) {
+
+				destination = getNewOlapPanel();
+				((OlapPanel) destination).setName(((OlapPanel) source).getName());
+				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
+				((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
+			}
+		}
+		return destination;
+	}
+
 	public static void displayContentWidget(final DataWidget content) {
 		if (content != null) {
 			if (!content.isInitialized()) {
@@ -74,56 +89,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			Application.addContent(contentdupe, content.getName());
 		}
 	}
-
-	protected static DataWidget copyMatrix(DataWidget source, DataWidget destination, Integer counter) {
-
-		if (source != null) {
-
-			if (source instanceof WelcomePanel) {
-				destination = new WelcomePanel();
-				String name = source.getName() + Integer.toString(counter);
-				((WelcomePanel) destination).setName(name);
-			}
-
-			else if (source instanceof OlapPanel) {
-				
-				destination = getNewOlapPanel();
-				((OlapPanel) destination).setName(((OlapPanel) source).getName());
-				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
-				((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
-				/*((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS), "rows");
-				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS), "columns");
-				((OlapPanel) destination).setAxisDropper(new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER), "filter");
-
-				OlapTable2 destinationOT = new OlapTable2();
-				destinationOT.setTitle(((OlapPanel)source).getName()+Integer.toString(counter));
-				destinationOT.setDataTable(copyDataTable());
-				destinationOT.setHeaderTable(copyHeaderTable());
-				((OlapPanel) destination).setTable(destinationOT);
-				((OlapPanel) destination).setExecuteButton(newExecuteButton());
-				destinationOT.initScrollTable();*/
-			}
-		}
-		return destination;
-	}
-
-	private static Button newExecuteButton(){
-		Button newButton = new Button(ConstantFactory.getInstance().executeQuery());
-		newButton.setTitle(ConstantFactory.getInstance().executeQuery() + Integer.toString(counter));
-		return newButton;
-	}
-	private static OlapPanel getNewOlapPanel() {
-		return new OlapPanel();
-	}
-
-	private static FixedWidthGrid copyDataTable() {
-		return new FixedWidthGrid();
-	}
-
-	private static FixedWidthFlexTable copyHeaderTable() {
-		return new FixedWidthFlexTable();
-	}
-
 	/**
 	 * Get the token for a given content widget.
 	 * 
@@ -136,6 +101,10 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		String className = content.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
 		return className;
+	}
+
+	private static OlapPanel getNewOlapPanel() {
+		return new OlapPanel();
 	}
 
 	/**
@@ -199,15 +168,15 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	 */
 	public MainMenu() {
 		super();
-		
+
 		if (initialized) {
 			return;
 		}
 		initialized = true;
-		
-		
 
-		LayoutPanel baseLayoutPanel = getLayoutPanel();
+
+
+		final LayoutPanel baseLayoutPanel = getLayoutPanel();
 		baseLayoutPanel.add(stackPanel);
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
@@ -216,7 +185,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		stackPanel.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
 
-		
+
 		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
 
 		stackPanel.showStack(0);
@@ -235,15 +204,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		displayContentWidget(ITEMWIDGETS.get(firstItem));
 	}
 	/**
-	 * Checks if is initialized.
-	 *
-	 * @return true, if is initialized
-	 */
-	public final boolean isInitialized() {
-		return initialized;
-	}
-
-	/**
 	 * Create the main menu.
 	 */
 	protected final void createMainMenu() { // NOPMD by bugg on 21/04/09 05:43
@@ -253,10 +213,10 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		mainMenuTree.setAnimationEnabled(true);
 		mainMenuTree.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 		mainMenuTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-			public void onSelection(SelectionEvent<TreeItem> selectionEvent) {
-				TreeItem item = selectionEvent.getSelectedItem();
+			public void onSelection(final SelectionEvent<TreeItem> selectionEvent) {
+				final TreeItem item = selectionEvent.getSelectedItem();
 				if (listener != null) {
-					final DataWidget widget = (DataWidget) ITEMWIDGETS.get(item);
+					final DataWidget widget = ITEMWIDGETS.get(item);
 
 					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availableCubes())) {
 						((OlapPanel) widget).setCube(item.getText().trim());
@@ -327,36 +287,12 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	}
 
 	/**
-	 * Set the {@link ApplicationListener}.
-	 * 
-	 * @param listener
-	 *            the listener
+	 * Checks if is initialized.
+	 *
+	 * @return true, if is initialized
 	 */
-	public final void setListener(final ApplicationListener listener) {
-		this.listener = listener;
-	}
-
-	/**
-	 * Generates a cube list for the Cube Menu.
-	 */
-	private final void setupCubeMenu() {
-		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
-			public void onFailure(final Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
-			}
-
-			public void onSuccess(final String[] o) {
-
-				final Tree mainMenu = getMainMenu();
-				final TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().availableCubes());
-
-				for (final String element2 : o) {
-					setupMainMenuOption(cubeMenu, new OlapPanel(element2), Pat.IMAGES.cube());
-				}
-
-			}
-		});
-
+	public final boolean isInitialized() {
+		return initialized;
 	}
 
 	/*
@@ -399,12 +335,44 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		setupCubeMenu();
 	}
 
-	public void onQueryChange(Widget sender) {
-		// TODO Auto-generated method stub
+	public void onQueryChange(final Widget sender) {
 		dimensionPanel.createDimensionList();
 	}
-	
-	public void showMenu(int number){
+
+	/**
+	 * Set the {@link ApplicationListener}.
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public final void setListener(final ApplicationListener listener) {
+		this.listener = listener;
+	}
+
+	/**
+	 * Generates a cube list for the Cube Menu.
+	 */
+	private final void setupCubeMenu() {
+		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
+			public void onFailure(final Throwable arg0) {
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
+			}
+
+			public void onSuccess(final String[] o) {
+
+				final Tree mainMenu = getMainMenu();
+				final TreeItem cubeMenu = mainMenu.addItem(ConstantFactory.getInstance().availableCubes());
+
+				for (final String element2 : o) {
+					setupMainMenuOption(cubeMenu, new OlapPanel(element2), Pat.IMAGES.cube());
+				}
+
+			}
+		});
+
+	}
+
+	public void showMenu(final int number){
 		stackPanel.showStack(number);
 	}
 }

@@ -12,12 +12,8 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
@@ -104,7 +100,7 @@ public class OlapPanel extends DataWidget {
 	 * @return the string
 	 */
 	private String createTabBarCaption(final AbstractImagePrototype image, final String text) {
-		final StringBuffer sb = new StringBuffer(); // NOPMD by bugg on 21/04/09 05:48
+		final StringBuffer sb = new StringBuffer();
 		sb.append("<table cellspacing='0px' cellpadding='0px' border='0px'><thead><tr>"); //$NON-NLS-1$
 		sb.append("<td valign='middle'>"); //$NON-NLS-1$
 		sb.append(image.getHTML());
@@ -371,7 +367,6 @@ public class OlapPanel extends DataWidget {
 	 * @param arg0
 	 */
 	public void setQuery(final String query) {
-		// TODO Auto-generated method stub
 		this.query = query;
 	}
 	
