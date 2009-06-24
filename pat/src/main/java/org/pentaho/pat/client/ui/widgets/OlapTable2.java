@@ -67,6 +67,7 @@ public class OlapTable2 extends LayoutComposite {
 	
 	private PatMessages messages;
 	
+	final LayoutPanel layoutPanel = getLayoutPanel();
 	/**
 	 * The header portion of the <code>ScrollTable</code>
 	 */
@@ -88,13 +89,16 @@ public class OlapTable2 extends LayoutComposite {
 		this.setMessages(messages);
 		
 		this.setSize("100%", "100%");
-		
+
 	}
 
 	@Override
 	  protected void onLoad() {
 	    super.onLoad();
+	    
 	    scrollTable = new ScrollTable2(dataTable, headerTable); 
+	    layoutPanel.add(scrollTable);
+	    
 	  }
 	 
 	public final boolean isInitialized() {
@@ -144,9 +148,7 @@ public class OlapTable2 extends LayoutComposite {
 		    {
 		    	scrollTable.setColumnTruncatable(i, false);
 		    }
-		    final LayoutPanel layoutPanel = getLayoutPanel();
-		    layoutPanel.add(scrollTable);
-		    layoutPanel.layout();
+		    
 		}
 	}
 

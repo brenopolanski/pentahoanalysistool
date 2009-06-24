@@ -220,7 +220,6 @@ public class OlapPanel extends DataWidget {
 		executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 		executeButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
-									
 				doExecuteQueryModel();
 			
 			}
@@ -239,8 +238,8 @@ public class OlapPanel extends DataWidget {
 				dropLayoutPanel.add(filterDimDrop, new BoxLayoutData(1.0, 0.33));
 				
 				layoutPanel.add(dropLayoutPanel, new BoxLayoutData(0.20,1));
-				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.VERTICAL));
-			
+				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
+				
 		stackPanel.add(layoutPanel, createTabBarCaption(Pat.IMAGES.cube(), ConstantFactory.getInstance().data() + " (" + getName() + ")"), //$NON-NLS-1$ //$NON-NLS-2$
 				true);
 
