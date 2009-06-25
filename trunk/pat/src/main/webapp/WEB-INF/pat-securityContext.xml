@@ -39,7 +39,8 @@
         <!-- Some URLs need to be accessible by anonymous users. Login pages,
         	CSS files, images... just add your public accessible urls here. -->
         <security:intercept-url pattern="/pat/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-    
+        <!--  added to stop favicon redirect when first visiting the site -->
+    	<security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
     	<!--  Everything else that was not defined up there ^^ must be secured.
     		We use a simple wildcard trap. -->    
         <security:intercept-url pattern="/**" access="ROLE_USER" />
