@@ -200,7 +200,7 @@ public class Application extends Viewport {
 	 */
 	private static Widget tabCloseLabel(final Widget widget, final String string, final int index) {
 		final HorizontalPanel hPanel = new HorizontalPanel();
-		final Label label = new Label(string + index);
+		final Label label = new Label(string);
 		DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		final ImageButton closeBtn = new ImageButton(Pat.IMAGES.closeButton());
 		closeBtn.addClickHandler(new ClickHandler() {
