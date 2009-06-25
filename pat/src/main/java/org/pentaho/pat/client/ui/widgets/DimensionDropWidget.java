@@ -40,7 +40,7 @@ public class DimensionDropWidget extends LayoutComposite  implements ConnectionL
 	/** Creates the DimensionFlexTable. */
 	private DimensionFlexTable dimensionTable;
 
-	private Grid dimensionGrid = new Grid(2,1);
+	
 	private FlexTableRowDropController flexTableRowDropController1;
 	/**
 	 * Creates the widget structure.
@@ -49,8 +49,7 @@ public class DimensionDropWidget extends LayoutComposite  implements ConnectionL
 	 * @param targetAxis the target axis
 	 */
 	public DimensionDropWidget(final String labelText, final Axis targetAxis) {
-
-		//super(2, 1);
+		
 		GlobalConnectionFactory.getInstance().addConnectionListener(DimensionDropWidget.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 		this.dimAxis = targetAxis;
@@ -67,21 +66,26 @@ public class DimensionDropWidget extends LayoutComposite  implements ConnectionL
 
 		LayoutPanel baseLayoutPanel = getLayoutPanel();
 		
+		
 		LayoutPanel scrollLayoutPanel = new ScrollLayoutPanel();
 		
 		dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController());
+		dimensionTable.setWidth("100%");
+		final Label dropLabel = new Label(labelText);
+		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
+		dimensionTable.setStyleName("dropTable"); //$NON-NLS-1$
+		
+		Grid dimensionGrid = new Grid(2,1);
+		dimensionGrid.setWidget(0, 0, dropLabel);
 
+		dimensionGrid.setWidget(1, 0, dimensionTable);
+		dimensionGrid.setWidth("100%");
+		
 		scrollLayoutPanel.add(dimensionGrid);
 		
 		baseLayoutPanel.add(scrollLayoutPanel);
 		
-		final Label dropLabel = new Label(labelText);
-		dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
-		dimensionTable.setStyleName("dropTable"); //$NON-NLS-1$
-		dimensionGrid.setWidget(0, 0, dropLabel);
-
-		dimensionGrid.setWidget(1, 0, dimensionTable);
-	}
+		}
 	@Override
 	public void onLoad(){
 		flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
