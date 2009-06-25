@@ -212,6 +212,9 @@ public class Application extends Viewport {
 				} else {
 					contentWrapper.remove(widgetIndex);
 					contentWrapper.layout();
+					// FIXME fix this static/non-static problem
+					// mainPanel.getStackPanel().showStack(0);
+					// mainPanel.getStackPanel().layout();
 				}
 				counter--;
 
