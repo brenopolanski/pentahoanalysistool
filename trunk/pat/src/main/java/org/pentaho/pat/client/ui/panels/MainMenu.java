@@ -108,17 +108,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	}
 
 	/**
-	 * Setup all of the options in the main menu.
-	 */
-	private static void setupMainMenu() {
-		final Tree mainMenu = getMainMenu();
-
-		final TreeItem homeMenu = mainMenu.addItem(ConstantFactory.getInstance().home());
-		setupMainMenuOption(homeMenu, new WelcomePanel(ConstantFactory.getInstance().welcome()), Pat.IMAGES.cube());
-
-	}
-
-	/**
 	 * Add an option to the main menu.
 	 * 
 	 * @param parent
@@ -181,7 +170,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
 		createMainMenu();
-		setupMainMenu();
 		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		stackPanel.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
 
@@ -198,10 +186,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			}
 		});
 
-		final TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
-		getMainMenu().setSelectedItem(firstItem, false);
-		getMainMenu().ensureSelectedItemVisible();
-		displayContentWidget(ITEMWIDGETS.get(firstItem));
+		displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
 	}
 	/**
 	 * Create the main menu.
@@ -253,16 +238,11 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 												stackPanel.showStack(1);
 												stackPanel.layout();
 											}
-
 										});
-
 									}
-
 								});
-
 							}
 						});
-
 					}
 
 					getMainMenu().setSelectedItem(item, false);
@@ -311,7 +291,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	public void onConnectionBroken(final Widget sender) {
 		stackPanel.showStack(0);
 		mainMenuTree.clear();
-		setupMainMenu();
 		final TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
 		getMainMenu().setSelectedItem(firstItem, false);
 		getMainMenu().ensureSelectedItemVisible();
@@ -374,5 +353,9 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 
 	public void showMenu(final int number){
 		stackPanel.showStack(number);
+	}
+
+	public StackLayoutPanel getStackPanel() {
+		return stackPanel;
 	}
 }
