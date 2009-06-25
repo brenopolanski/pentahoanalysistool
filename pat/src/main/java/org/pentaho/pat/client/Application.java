@@ -129,7 +129,7 @@ public class Application extends Viewport {
 	}
 
 	/** The Application Main Panel. */
-	private final MainMenu mainPanel;
+	private static MainMenu mainPanel = null;
 
 	/** The panel that contains the title widget and links. */
 	private FlexTable topPanel;
@@ -212,12 +212,12 @@ public class Application extends Viewport {
 				} else {
 					contentWrapper.remove(widgetIndex);
 					contentWrapper.layout();
-					// FIXME fix this static/non-static problem
-					// mainPanel.getStackPanel().showStack(0);
-					// mainPanel.getStackPanel().layout();
+				}
+				if (widgetIndex == 1) {
+					mainPanel.getStackPanel().showStack(0);
+					mainPanel.getStackPanel().layout();
 				}
 				counter--;
-
 			}
 		});
 		hPanel.add(label);

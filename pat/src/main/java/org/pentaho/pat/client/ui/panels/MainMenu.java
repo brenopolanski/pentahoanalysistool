@@ -345,6 +345,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				for (final String element2 : o) {
 					setupMainMenuOption(cubeMenu, new OlapPanel(element2), Pat.IMAGES.cube());
 				}
+				cubeMenu.setState(true);
 
 			}
 		});
@@ -358,4 +359,5 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	public StackLayoutPanel getStackPanel() {
 		return stackPanel;
 	}
+	
 }
