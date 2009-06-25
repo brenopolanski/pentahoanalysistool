@@ -214,8 +214,11 @@ public class QueryServiceImpl extends AbstractService
         QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
         Selection.Operator selectionMode = Selection.Operator.values()[selectionType
                 .ordinal()];
-        Selection selection = qDim.createSelection(member, selectionMode);
-        qDim.getSelections().add(selection);
+        // TODO is this a fix? 
+        // Selection selection = qDim.createSelection(member, selectionMode);
+        //        qDim.getSelections().add(selection);
+        qDim.select(selectionMode, member);
+        
     }
 
 	public void moveDimension(String userId, String sessionId, Axis.Standard axis, String dimensionName) 
