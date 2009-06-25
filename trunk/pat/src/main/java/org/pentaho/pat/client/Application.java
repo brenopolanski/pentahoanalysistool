@@ -213,7 +213,7 @@ public class Application extends Viewport {
 					contentWrapper.remove(widgetIndex);
 					contentWrapper.layout();
 				}
-				if (widgetIndex == 1) {
+				if (contentWrapper.getWidgetCount() == 1) {
 					mainPanel.getStackPanel().showStack(0);
 					mainPanel.getStackPanel().layout();
 				}
