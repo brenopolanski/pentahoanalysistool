@@ -57,13 +57,13 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	 */
 	static Integer counter = 0;
 
-	protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination, final Integer counter) {
+	protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination) {
 
 		if (source != null) {
 
 			if (source instanceof WelcomePanel) {
 				destination = new WelcomePanel();
-				final String name = source.getName() + Integer.toString(counter);
+				final String name = source.getName();
 				((WelcomePanel) destination).setName(name);
 			}
 
@@ -84,7 +84,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				content.initialize();
 			}
 			DataWidget contentdupe = null;
-			contentdupe = copyMatrix(content, contentdupe, counter);
+			contentdupe = copyMatrix(content, contentdupe);
 			counter++;
 			Application.addContent(contentdupe, content.getName());
 		}
