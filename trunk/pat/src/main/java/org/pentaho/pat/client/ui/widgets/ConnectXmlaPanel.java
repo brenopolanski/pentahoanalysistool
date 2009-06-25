@@ -158,6 +158,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 
 		connectButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
+				connectButton.setEnabled(false);
 				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
 					public void onFailure(final Throwable arg0) {
 						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
@@ -165,6 +166,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 					}
 
 					public void onSuccess(final Object o) {
+						connectButton.setEnabled(true);
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
 						setConnectionEstablished(true);
 						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectXmlaPanel.this);
