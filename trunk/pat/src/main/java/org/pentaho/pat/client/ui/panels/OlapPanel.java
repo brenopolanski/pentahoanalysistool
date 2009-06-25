@@ -91,6 +91,19 @@ public class OlapPanel extends DataWidget {
 		init();
 	}
 
+	@Override
+	protected void onUnload() {
+		ServiceFactory.getQueryInstance().deleteQuery(Pat.getSessionID(),this.query, new AsyncCallback<Object>() {
+			public void onSuccess(Object arg0) {
+			}
+			public void onFailure(Throwable arg0) {
+				// TODO add failure routine
+			}
+		});
+		super.onUnload();
+		
+	}
+
 	/**
 	 * Create the Tab Bar Text.
 	 * 
