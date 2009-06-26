@@ -1,0 +1,33 @@
+body {
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	background-color:#87cefa;
+}
+
+#main {
+	text-align:center;
+	padding-left: 200px;
+	padding-top: 200px;
+}
+
+#formtable {
+	padding-left: 170px;
+	text-align:center;
+	border:0px;
+}
+
+#label {
+	text-align:right;
+}
+
+#datafield {
+	text-align:left;
+}
+
+#content {
+	width: 600px;
+	border:1px solid #BEBEBE;
+	background-color:#f0f8ff;
+	float: left;
+	text-align:center;
+}
