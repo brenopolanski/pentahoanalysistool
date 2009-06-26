@@ -213,7 +213,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	 */
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
-		conButton.setHTML(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().disconnect(),ButtonLabelType.TEXT_ON_BOTTOM));
+		conButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.database(), ConstantFactory.getInstance().disconnect(),ButtonLabelType.TEXT_ON_BOTTOM));
 	}
 
 	/**
