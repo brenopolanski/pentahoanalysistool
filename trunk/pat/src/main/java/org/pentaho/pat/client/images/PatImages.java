@@ -44,4 +44,8 @@ public interface PatImages extends ImageBundle{
 	 * @return the abstract image prototype
 	 */
 	AbstractImagePrototype closeButton();
+	
+	AbstractImagePrototype database();
+	
+	AbstractImagePrototype help_index();
 }

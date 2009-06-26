@@ -737,4 +737,11 @@ public interface PatConstants extends Constants {
 	String xmlaUrl();
 
 	String theme();
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String wiki();
 }

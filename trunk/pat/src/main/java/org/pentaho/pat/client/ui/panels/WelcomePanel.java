@@ -126,8 +126,8 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>";
 	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
 	    buttonBar.setWidgetSpacing(20);
-	    conButton = new ToolButton(ButtonHelper.createButtonLabel(
-	        MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().connect(),
+	    conButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database(),
+	    		ConstantFactory.getInstance().connect(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
 					if (!connectionEstablished) {
@@ -152,7 +152,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 				}   	
 	        });
 	    ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(
-	        MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Wiki Button",
+	        Pat.IMAGES.help_index(), ConstantFactory.getInstance().wiki(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
 					createSizedWindowPanel();
