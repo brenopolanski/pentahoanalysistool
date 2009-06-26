@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Tom Barber
+ * Copyright (C) 2009 Paul Stoellberger
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
  *
@@ -7,20 +7,43 @@
  *
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
  *
- * @created Apr 23, 2009 
- * @author Tom Barber
+ * @created Jun 26, 2009 
+ * @author Paul Stoellberger
  */
 
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
+import org.gwt.mosaic.ui.client.Caption;
+import org.gwt.mosaic.ui.client.ImageButton;
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WidgetWrapper;
+import org.gwt.mosaic.ui.client.WindowPanel;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.ButtonHelper;
+import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -28,11 +51,14 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author tom(at)wamonline.org.uk
  */
-public class WelcomePanel extends DataWidget {
+public class WelcomePanel extends DataWidget  implements ConnectionListener {
 
 	/** Name. */
 	private transient String name;
 
+	/** WindowPanel for WIKI */
+	private WindowPanel sized = null;
+	
 	/**
 	 * Constructor pass panel Name.
 	 *
@@ -42,7 +68,15 @@ public class WelcomePanel extends DataWidget {
 		super();
 		this.name = name;
 	}
+	
+	private ToolButton conButton = null;
 
+	/** The Connection Dialog. */
+	private ConnectionWindow connectWindow = null;
+	
+	/** Connection Established. */
+	private boolean connectionEstablished = false;
+	
 	/**
 	 *TODO JAVADOC
 	 *
@@ -87,13 +121,107 @@ public class WelcomePanel extends DataWidget {
 	 */
 	@Override
 	public final Widget onInitialize() {
-		// Not Permanent, but better than a big white space.
-		 final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
-			        Orientation.VERTICAL));
-			    layoutPanel.setPadding(0);
-			    layoutPanel.setWidgetSpacing(20);
-		layoutPanel.add(new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"), new BoxLayoutData(FillStyle.BOTH)); //$NON-NLS-1$
-		return layoutPanel;
+	    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL, Alignment.CENTER));
+	    
+	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>";
+	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
+	    buttonBar.setWidgetSpacing(20);
+	    conButton = new ToolButton(ButtonHelper.createButtonLabel(
+	        MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().connect(),
+	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
+				public void onClick(ClickEvent arg0) {
+					if (!connectionEstablished) {
+						if (connectWindow == null) {
+							connectWindow = new ConnectionWindow();
+							GlobalConnectionFactory.getInstance().addConnectionListener(WelcomePanel.this);
+						}
+						connectWindow.emptyForms();
+						connectWindow.showModal(true);
+					} else {
+						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
+							public void onFailure(final Throwable arg0) {
+								MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+							}
+
+							public void onSuccess(final Object o) {
+								setConnectionEstablished(false);
+								GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionBroken(WelcomePanel.this);
+							}
+						});
+					}
+				}   	
+	        });
+	    ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(
+	        MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Wiki Button",
+	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
+				public void onClick(ClickEvent arg0) {
+					createSizedWindowPanel();
+					sized.showModal();
+				}
+	    });
+
+	    buttonBar.add(conButton);
+	    buttonBar.add(patwikiBtn);
+
+	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.BOTH));
+	    layoutPanel.add(buttonBar, new BoxLayoutData(FillStyle.VERTICAL));
+	    
+	    return layoutPanel;
 	}
 
+	private void createSizedWindowPanel() {
+	    sized = new WindowPanel("Sized");
+	    sized.setAnimationEnabled(true);
+	    sized.setSize("812px", "484px");
+	    final Frame frame = new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6");
+	    DOM.setStyleAttribute(frame.getElement(), "border", "none");
+	    sized.setWidget(frame);
+
+	    final ImageButton refreshBtn = new ImageButton(Caption.IMAGES.toolRefresh());
+	    refreshBtn.addClickHandler(new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        frame.setUrl(frame.getUrl());
+	      }
+	    });
+	    sized.getHeader().add(refreshBtn, CaptionRegion.RIGHT);
+
+	    sized.addWindowClosingHandler(new Window.ClosingHandler() {
+	     public void onWindowClosing(ClosingEvent arg0) {	
+	    }
+	    });
+	  }
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires when the database connection is broken.
+	 * @param sender the sender
+	 */
+	public void onConnectionBroken(final Widget sender) {
+		setConnectionEstablished(false);
+		// Alter menu
+		conButton.setHTML(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().connect(),ButtonLabelType.TEXT_ON_BOTTOM));
+	}
+
+	/* (non-Javadoc)
+	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionMade(com.google.gwt.user.client.ui.Widget)
+	 */
+	/**
+	 * Fires when a database connection is established.
+	 * @param sender the sender
+	 */
+	public void onConnectionMade(final Widget sender) {
+		setConnectionEstablished(true);
+		conButton.setHTML(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().disconnect(),ButtonLabelType.TEXT_ON_BOTTOM));
+	}
+
+	/**
+	 * Sets the connection status
+	 * 
+	 * @param connectionEstablished the connection established
+	 */
+	private final void setConnectionEstablished(final boolean connectionEstablished) {
+		this.connectionEstablished = connectionEstablished;
+	}
 } 
