@@ -202,8 +202,8 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				final TreeItem item = selectionEvent.getSelectedItem();
 				if (listener != null) {
 					final DataWidget widget = ITEMWIDGETS.get(item);
-
-					if (item.getParentItem().getText().equals(ConstantFactory.getInstance().availableCubes())) {
+						
+						if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
 						((OlapPanel) widget).setCube(item.getText().trim());
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
