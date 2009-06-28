@@ -74,7 +74,7 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 
 
 	/** The Connection Dialog. */
-	private ConnectionWindow connectWindow;
+	public ConnectionWindow connectWindow;
 
 	/** Connection Established. */
 	private boolean connectionEstablished = false;
@@ -114,11 +114,10 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 				if (!connectionEstablished) {
 					if (connectWindow == null) {
 						connectWindow = new ConnectionWindow();
-						GlobalConnectionFactory.getInstance().addConnectionListener(ToolBarPanel.this);
+						
 					}
 					connectWindow.emptyForms();
 					connectWindow.showModal(true);
-					// connectWindow.show();
 				} else {
 					ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 						public void onFailure(final Throwable arg0) {

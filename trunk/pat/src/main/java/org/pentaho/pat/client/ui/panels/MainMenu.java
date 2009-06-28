@@ -291,10 +291,6 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	public void onConnectionBroken(final Widget sender) {
 		stackPanel.showStack(0);
 		mainMenuTree.clear();
-		final TreeItem firstItem = getMainMenu().getItem(0).getChild(0);
-		getMainMenu().setSelectedItem(firstItem, false);
-		getMainMenu().ensureSelectedItemVisible();
-		displayContentWidget(ITEMWIDGETS.get(firstItem));
 	}
 
 	/*

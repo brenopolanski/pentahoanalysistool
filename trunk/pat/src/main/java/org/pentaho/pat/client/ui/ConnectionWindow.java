@@ -95,7 +95,6 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 	 */
 	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
-		//connectionListeners.fireConnectionBroken(ConnectionWindow.this);
 	}
 
 	/* (non-Javadoc)
@@ -107,7 +106,7 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 	 */
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
-		//connectionListeners.fireConnectionMade(ConnectionWindow.this);
+		if(this.isVisible())
 		ConnectionWindow.this.hide();
 	}
 

@@ -20,8 +20,6 @@ import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
-import com.google.gwt.user.client.ui.RootPanel;
-
 /**
  * The Dimension Panel lists the dimensions that are currently in the unused
  * axis.
