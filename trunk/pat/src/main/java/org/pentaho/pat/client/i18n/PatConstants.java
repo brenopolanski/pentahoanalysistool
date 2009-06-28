@@ -744,4 +744,18 @@ public interface PatConstants extends Constants {
 	 * @return
 	 */
 	String wiki();
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String help();
+
+	/**
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String view();
 }
