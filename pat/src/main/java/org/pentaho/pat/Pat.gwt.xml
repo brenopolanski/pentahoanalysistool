@@ -53,4 +53,5 @@
 	<extend-property name="locale" values="es"/>
   	<extend-property name="locale" values="fr"/>
   	<extend-property name="locale" values="de"/>
+  	<extend-property name="locale" values="nl"/>
 </module>

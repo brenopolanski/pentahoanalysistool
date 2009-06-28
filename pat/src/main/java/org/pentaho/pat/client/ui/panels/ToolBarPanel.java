@@ -173,7 +173,7 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 		// Add connect button
 		helpMenu.addItem(homeItem);
 		helpMenu.addItem(pentahoItem);
-		menuBar.addItem(new MenuItem("Help", helpMenu)); //$NON-NLS-1$
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().help(), helpMenu)); //$NON-NLS-1$
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 		}
 		viewMenu.addItem(ConstantFactory.getInstance().theme(), styleSheetMenu);
 
-		menuBar.addItem(new MenuItem("View", viewMenu)); //$NON-NLS-1$
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().view(), viewMenu)); //$NON-NLS-1$
 	}
 
 	/**
