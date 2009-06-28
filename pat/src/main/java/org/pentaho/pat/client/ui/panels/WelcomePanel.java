@@ -57,7 +57,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	private transient String name;
 
 	/** WindowPanel for WIKI */
-	private WindowPanel sized = null;
+	private WindowPanel sized;
 	
 	/**
 	 * Constructor pass panel Name.
@@ -67,15 +67,17 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	public WelcomePanel(final String name) {
 		super();
 		this.name = name;
+		this.connectionEstablished = false;
+		GlobalConnectionFactory.getInstance().addConnectionListener(WelcomePanel.this);
 	}
 	
-	private ToolButton conButton = null;
+	private ToolButton conButton;
 
 	/** The Connection Dialog. */
-	private ConnectionWindow connectWindow = null;
+	private ConnectionWindow connectWindow;
 	
 	/** Connection Established. */
-	private boolean connectionEstablished = false;
+	private boolean connectionEstablished;
 	
 	/**
 	 *TODO JAVADOC
@@ -121,6 +123,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	 */
 	@Override
 	public final Widget onInitialize() {
+		
 	    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL, Alignment.CENTER));
 	    
 	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>";
@@ -130,10 +133,9 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    		ConstantFactory.getInstance().connect(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
-					if (!connectionEstablished) {
+					if (!WelcomePanel.this.connectionEstablished) {
 						if (connectWindow == null) {
 							connectWindow = new ConnectionWindow();
-							GlobalConnectionFactory.getInstance().addConnectionListener(WelcomePanel.this);
 						}
 						connectWindow.emptyForms();
 						connectWindow.showModal(true);
@@ -201,7 +203,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	public void onConnectionBroken(final Widget sender) {
 		setConnectionEstablished(false);
 		// Alter menu
-		conButton.setHTML(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().connect(),ButtonLabelType.TEXT_ON_BOTTOM));
+		conButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.database(), ConstantFactory.getInstance().connect(),ButtonLabelType.TEXT_ON_BOTTOM));
 	}
 
 	/* (non-Javadoc)
@@ -214,6 +216,8 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
 		conButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.database(), ConstantFactory.getInstance().disconnect(),ButtonLabelType.TEXT_ON_BOTTOM));
+		//conButton.setText(ConstantFactory.getInstance().disconnect());
+		conButton.layout();
 	}
 
 	/**
@@ -222,6 +226,6 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	 * @param connectionEstablished the connection established
 	 */
 	private final void setConnectionEstablished(final boolean connectionEstablished) {
-		this.connectionEstablished = connectionEstablished;
+		WelcomePanel.this.connectionEstablished = connectionEstablished;
 	}
 } 
