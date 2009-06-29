@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/security
+                           http://www.springframework.org/schema/security/spring-security-2.0.xsd">
+
+
+	<!-- 
+		Quick development note.
+		
+		Before activating this context extension, one might wish to add a mechanism to catch
+		security violations exceptions. GWT RPC calls do not support security exceptions as
+		of now, so here's a little snippet that can be of much help.
+		
+		If JSP form is the authentication way, you need to add this code.
+		
+			var invalidSession = function(){ window.location = '<%= request.getContextPath() %>/org.pentaho.pat.Pat/login.jsp'; };
+			Ext.lib.Ajax.on('status:403', invalidSession );
+			
+		Just add this to your client side code and it should redirect all HTTP forbidden errors
+		to the login page.
+	 -->
+
+
+	<!-- This allows us to secure method invocations with java annotations.
+		Any bean invocations that have the @Secured annotation added will
+		be validated before executed. -->
+	<security:global-method-security secured-annotations="enabled" />
+
+	
+    
+    <security:http auto-config="true" realm="Pentaho Analysis Tool">
+    
+        <!-- Some URLs need to be accessible by anonymous users. Login pages,
+        	CSS files, images... just add your public accessible urls here. -->
+        <security:intercept-url pattern="/pat/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <!--  added to stop favicon redirect when first visiting the site -->
+    	<security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    	<!--  Everything else that was not defined up there ^^ must be secured.
+    		We use a simple wildcard trap. -->    
+        <security:intercept-url pattern="/**" access="ROLE_USER" />
+        
+        <!-- Use basic authentication for now. -->
+<!--        <http-basic />-->
+
+        <!-- Override default login and logout pages
+        	FIXME : The JSP page to login doesn'T get interpreted as a JSP page, but
+        	rether as a regular text file, probably because of the GWT layer.
+        	Let's only use basic auth. It will do the job for now. -->
+        	
+        <security:form-login login-page="/pat/login.jsp" 
+                             login-processing-url="/pat/loginProcess" 
+                             default-target-url="/pat/Pat.jsp" 
+                             authentication-failure-url="/pat/login.jsp?login_error=1" />
+	                             
+        <security:logout logout-url="/pat/logout" logout-success-url="/pat/login.jsp" />
+        
+    </security:http>
+
+
+
+	<!-- Authentication provider. It's a simple hard-coded value for now.
+		One could easily replace it with whatever mechanism he sees fit. -->
+    <security:authentication-provider>
+        <security:user-service>
+            <security:user name="admin" password="admin" authorities="ROLE_USER,ROLE_ADMIN" />
+        </security:user-service>
+    </security:authentication-provider>
+  
+</beans:beans>
