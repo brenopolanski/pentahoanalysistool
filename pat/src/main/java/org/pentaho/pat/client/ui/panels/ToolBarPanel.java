@@ -74,7 +74,7 @@ public class ToolBarPanel extends Composite implements ClickHandler, ConnectionL
 
 
 	/** The Connection Dialog. */
-	public ConnectionWindow connectWindow;
+	public static ConnectionWindow connectWindow;
 
 	/** Connection Established. */
 	private boolean connectionEstablished = false;

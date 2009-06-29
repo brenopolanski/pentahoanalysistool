@@ -67,17 +67,17 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	public WelcomePanel(final String name) {
 		super();
 		this.name = name;
-		this.connectionEstablished = false;
+		WelcomePanel.connectionEstablished = false;
 		GlobalConnectionFactory.getInstance().addConnectionListener(WelcomePanel.this);
 	}
 	
-	private ToolButton conButton;
+	private static ToolButton conButton;
 
 	/** The Connection Dialog. */
-	private ConnectionWindow connectWindow;
+	//private ConnectionWindow connectWindow;
 	
 	/** Connection Established. */
-	private boolean connectionEstablished;
+	private static boolean connectionEstablished;
 	
 	/**
 	 *TODO JAVADOC
@@ -133,12 +133,12 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    		ConstantFactory.getInstance().connect(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
-					if (!WelcomePanel.this.connectionEstablished) {
-						if (connectWindow == null) {
-							connectWindow = new ConnectionWindow();
+					if (!WelcomePanel.connectionEstablished) {
+						if (ToolBarPanel.connectWindow == null) {
+							ToolBarPanel.connectWindow = new ConnectionWindow();
 						}
-						connectWindow.emptyForms();
-						connectWindow.showModal(true);
+						ToolBarPanel.connectWindow.emptyForms();
+						ToolBarPanel.connectWindow.showModal(true);
 					} else {
 						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 							public void onFailure(final Throwable arg0) {
@@ -216,8 +216,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
 		conButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.database(), ConstantFactory.getInstance().disconnect(),ButtonLabelType.TEXT_ON_BOTTOM));
-		//conButton.setText(ConstantFactory.getInstance().disconnect());
-		conButton.layout();
+
 	}
 
 	/**
@@ -226,6 +225,6 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	 * @param connectionEstablished the connection established
 	 */
 	private final void setConnectionEstablished(final boolean connectionEstablished) {
-		WelcomePanel.this.connectionEstablished = connectionEstablished;
+		WelcomePanel.connectionEstablished = connectionEstablished;
 	}
 } 
