@@ -157,8 +157,9 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	        Pat.IMAGES.help_index(), ConstantFactory.getInstance().wiki(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
-					createSizedWindowPanel();
-					sized.showModal();
+					//createSizedWindowPanel();
+					//sized.showModal();
+					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", "");
 				}
 	    });
 
