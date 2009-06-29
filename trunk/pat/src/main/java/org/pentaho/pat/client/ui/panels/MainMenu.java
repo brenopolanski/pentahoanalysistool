@@ -290,6 +290,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	 */
 	public void onConnectionBroken(final Widget sender) {
 		stackPanel.showStack(0);
+		stackPanel.layout();
 		mainMenuTree.clear();
 	}
 
