@@ -11,7 +11,7 @@ public class State {
 
 	public static enum Mode {
 		BISERVERPUC("BISERVERPUC", false), 
-		STANDALONE("STANDALONE", true);
+		STANDALONE("STANDALONE", false);
 
 		private String param;
 		

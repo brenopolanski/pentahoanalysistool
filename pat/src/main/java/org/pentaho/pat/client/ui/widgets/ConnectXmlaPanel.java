@@ -50,6 +50,9 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	/** Panel Width. */
 	private static final String WIDTH = "620px"; //$NON-NLS-1$
 
+	/** Textbox for connection name. */
+	private final TextBox nameTextBox;
+
 	/** Url Textbox. */
 	private final TextBox urlTextBox;
 	// private final TextBox catalogTextBox;
@@ -72,10 +75,11 @@ public class ConnectXmlaPanel extends LayoutPanel {
 		super();
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
-		connectButton = new Button(ConstantFactory.getInstance().connect());
+		connectButton = new Button(ConstantFactory.getInstance().save());
 		// catalogTextBox = new TextBox();
 		urlTextBox = new TextBox();
 		userTextBox = new TextBox();
+		nameTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
 		this.setLayout(new BorderLayout());
 		onInitialize();
@@ -87,6 +91,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	 * Empty the form.
 	 */
 	public final void emptyForm() {
+		nameTextBox.setText(""); //$NON-NLS-1$
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
@@ -100,6 +105,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	 */
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
+		cc.setName(nameTextBox.getText());
 		cc.setUrl(urlTextBox.getText());
 		if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
 			cc.setUsername(userTextBox.getText());
@@ -145,13 +151,14 @@ public class ConnectXmlaPanel extends LayoutPanel {
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
-
-		builder.addLabel(ConstantFactory.getInstance().xmlaUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
-		builder.add(urlTextBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
-		builder.add(userTextBox, CellConstraints.xy(3, 3));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 3));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 3));
+		builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
+		builder.addLabel(ConstantFactory.getInstance().xmlaUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
+		builder.add(userTextBox, CellConstraints.xy(3, 5));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
 		// builder.addLabel(ConstantFactory.getInstance().catalog() +
 		// LABEL_SUFFIX, CellConstraints.xy(1, 8));
 		// builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));

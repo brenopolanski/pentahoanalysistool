@@ -241,7 +241,13 @@ public interface PatConstants extends Constants {
 	 */
 	String error();
 
-
+	 /**
+	  * Translated "Name".
+	 *
+	 * @return translated "Name"
+	 * name
+	 */
+	String name();
 
 
 	/**
@@ -600,6 +606,13 @@ public interface PatConstants extends Constants {
 	 * @return the string
 	 */
 	String rows();
+	
+	/**
+	 * Save.
+	 *
+	 * @return the string
+	 */
+	String save();
 
 	/**
 	 * Schemafile.

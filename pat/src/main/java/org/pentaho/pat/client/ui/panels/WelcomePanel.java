@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.ConnectionWindow;
@@ -134,11 +135,11 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
 					if (!WelcomePanel.connectionEstablished) {
-						if (ToolBarPanel.connectWindow == null) {
-							ToolBarPanel.connectWindow = new ConnectionWindow();
+						if (Application.getConnectionWindow() == null) {
+							Application.setConnectionWindow(new ConnectionWindow());
 						}
-						ToolBarPanel.connectWindow.emptyForms();
-						ToolBarPanel.connectWindow.showModal(true);
+						Application.getConnectionWindow().emptyForms();
+						Application.getConnectionWindow().showModal(true);
 					} else {
 						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 							public void onFailure(final Throwable arg0) {
