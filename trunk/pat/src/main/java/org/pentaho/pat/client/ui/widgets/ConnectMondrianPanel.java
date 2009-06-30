@@ -18,7 +18,9 @@ import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.ConnectionsPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -73,6 +75,10 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	/** Custom end tag for recognizing the returned filename from the backend. Has to match the one defined in the backend. */
 	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
 
+	/** Textbox for connection name. */
+	private final TextBox nameTextBox;
+
+	
 	/** Listbox for drivers. */
 	private final ListBox driverListBox;
 
@@ -108,7 +114,8 @@ public class ConnectMondrianPanel extends LayoutPanel {
 
 		this.setLayout(new BorderLayout());
 
-		connectButton = new Button(ConstantFactory.getInstance().connect());
+		nameTextBox = new TextBox();
+		connectButton = new Button(ConstantFactory.getInstance().save());
 		uploadButton = new Button(ConstantFactory.getInstance().upload());
 		driverListBox = createDriverListComboBox();
 		urlTextBox = new TextBox();
@@ -152,6 +159,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	 * Empty form contents.
 	 */
 	public final void emptyForm() {
+		nameTextBox.setText(""); //$NON-NLS-1$
 		urlTextBox.setText(""); //$NON-NLS-1$
 		userTextBox.setText(""); //$NON-NLS-1$
 		passwordTextBox.setText(""); //$NON-NLS-1$
@@ -165,6 +173,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	 */
 	private CubeConnection getCubeConnection() {
 		final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
+		cc.setName(nameTextBox.getText());
 		cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
 		cc.setUrl(urlTextBox.getText());
 		if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
@@ -228,17 +237,19 @@ public class ConnectMondrianPanel extends LayoutPanel {
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
 		"p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
 		final PanelBuilder builder = new PanelBuilder(layout);
-		builder.addLabel(ConstantFactory.getInstance().jdbcDriver() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
-		builder.add(driverListBox, CellConstraints.xyw(3, 1, 5));
-		builder.addLabel(ConstantFactory.getInstance().jdbcUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
-		builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
-		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
-		builder.add(userTextBox, CellConstraints.xy(3, 5));
-		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
-		builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-		builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+		builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+		builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
+		builder.addLabel(ConstantFactory.getInstance().jdbcDriver() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+		builder.add(driverListBox, CellConstraints.xyw(3, 3, 5));
+		builder.addLabel(ConstantFactory.getInstance().jdbcUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
+		builder.add(urlTextBox, CellConstraints.xyw(3, 5, 5));
+		builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+		builder.add(userTextBox, CellConstraints.xy(3, 7));
+		builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 7));
+		builder.add(passwordTextBox, CellConstraints.xy(7, 7));
+		builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
 		fileUpload.setName(FORM_NAME_FILE);
-		builder.add(fileUpload, CellConstraints.xyw(3, 7, 5));
+		builder.add(fileUpload, CellConstraints.xyw(3, 9, 5));
 
 		uploadButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
@@ -251,7 +262,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 			}
 		});
 
-		builder.add(uploadButton, CellConstraints.xyw(3, 9, 5));
+		builder.add(uploadButton, CellConstraints.xyw(3, 11, 5));
 		connectButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
 				connectButton.setEnabled(false);
@@ -266,13 +277,14 @@ public class ConnectMondrianPanel extends LayoutPanel {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
 						setConnectionEstablished(true);
 						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
+						ConnectionsPanel.addConnection(getCubeConnection());
 					}
 				});
 			}
 		});
 
 		connectButton.setEnabled(false);
-		builder.add(connectButton, CellConstraints.xyw(3, 11, 5));
+		builder.add(connectButton, CellConstraints.xyw(3, 13, 5));
 
 		final LayoutPanel layoutPanel = builder.getPanel();
 		layoutPanel.setPadding(15);

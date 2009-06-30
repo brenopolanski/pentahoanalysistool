@@ -34,9 +34,9 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
-import org.pentaho.pat.client.ui.panels.ToolBarPanel;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -134,11 +134,11 @@ public class Application extends Viewport {
 	/** The panel that contains the title widget and links. */
 	private FlexTable topPanel;
 
-	/** The Application's Toolbar Panel. */
-	private ToolBarPanel toolBarPanel;
-
 	/** The bottom Panel for the Application, contains the main panels. */
 	private static LayoutPanel bottomPanel;
+	
+	/** The Connection Window for the Application. */
+	private static ConnectionWindow connectionWindow = null;
 
 	/**
 	 * Adds a new Tab to the contentPanel.
@@ -178,6 +178,14 @@ public class Application extends Viewport {
 		}
 	}
 
+	public static ConnectionWindow getConnectionWindow() {
+		return connectionWindow;
+	}
+
+	public static void setConnectionWindow(ConnectionWindow connectionWindow) {
+		Application.connectionWindow = connectionWindow;
+	}
+
 	/**
 	 * Gets the bottom panel.
 	 *
@@ -214,7 +222,7 @@ public class Application extends Viewport {
 					contentWrapper.layout();
 				}
 				if (contentWrapper.getWidgetCount() == 1) {
-					mainPanel.getStackPanel().showStack(0);
+					mainPanel.getStackPanel().showStack(1);
 					mainPanel.getStackPanel().layout();
 				}
 				counter--;
@@ -244,6 +252,8 @@ public class Application extends Viewport {
 		bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
 
+		// Setup the Connection Window
+		 connectionWindow = new ConnectionWindow();
 		// Add the main menu
 
 		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
@@ -333,16 +343,9 @@ public class Application extends Viewport {
 		final FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
 
 		// Setup the toolbar
-		if (Pat.getInitialState().getMode().isShowToolbar())
-		{
-			toolBarPanel = new ToolBarPanel();
-			topPanel.setWidget(0, 0, toolBarPanel);
-			formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
-
-			formatter.setColSpan(0, 0, 2);
-			//		this.layout();
-		}
-
+		formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
+		formatter.setColSpan(0, 0, 2);
+		
 
 		// Setup the title cell
 		setTitleWidget(null);

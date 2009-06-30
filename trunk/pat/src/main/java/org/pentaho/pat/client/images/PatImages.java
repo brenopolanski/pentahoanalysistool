@@ -48,4 +48,13 @@ public interface PatImages extends ImageBundle{
 	AbstractImagePrototype database();
 	
 	AbstractImagePrototype help_index();
+	
+	AbstractImagePrototype add();
+	
+	AbstractImagePrototype cross();
+	
+	AbstractImagePrototype connect();
+	
+	AbstractImagePrototype disconnect();
+	
 }
