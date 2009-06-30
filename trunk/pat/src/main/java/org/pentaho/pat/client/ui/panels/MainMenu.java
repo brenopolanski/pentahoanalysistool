@@ -130,6 +130,9 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	/** The dimension panel, a scroll panel containing a dimension drop widget. */
 	private final transient DimensionPanel dimensionPanel = new DimensionPanel();
 
+	/** The connections panel */
+	private final transient ConnectionsPanel connectionsPanel = new ConnectionsPanel();
+
 	/** A mapping of history tokens to their associated menu items. */
 	public static final Map<String, TreeItem> ITEMTOKENS = new HashMap<String, TreeItem>();
 
@@ -171,11 +174,10 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
 		createMainMenu();
 		mainMenuTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		stackPanel.add(connectionsPanel, ConstantFactory.getInstance().connections());
 		stackPanel.add(new ScrollPanel(mainMenuTree), ConstantFactory.getInstance().cubes());
-
-
 		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
-
 		stackPanel.showStack(0);
 
 		setListener(new ApplicationListener() {

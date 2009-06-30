@@ -153,6 +153,14 @@ public interface PatConstants extends Constants {
 	String connection();
 
 	/**
+	 * Translated "Connection".
+	 *
+	 * @return translated "Connection"
+	 * connection
+	 */
+	String connections();
+
+	/**
 	 * Connectionestablished.
 	 *
 	 * @return the string
