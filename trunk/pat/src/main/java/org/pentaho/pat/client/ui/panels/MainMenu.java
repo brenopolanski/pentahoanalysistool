@@ -131,7 +131,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	private final transient DimensionPanel dimensionPanel = new DimensionPanel();
 
 	/** The connections panel */
-	private final transient ConnectionsPanel connectionsPanel = new ConnectionsPanel();
+	private final transient ConnectionManagerPanel connectionsPanel = new ConnectionManagerPanel();
 
 	/** A mapping of history tokens to their associated menu items. */
 	public static final Map<String, TreeItem> ITEMTOKENS = new HashMap<String, TreeItem>();
@@ -237,7 +237,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 												dimensionPanel.createDimensionList();
 												dimensionPanel.layout();
 												displayContentWidget(widget);
-												stackPanel.showStack(1);
+												stackPanel.showStack(2);
 												stackPanel.layout();
 											}
 										});

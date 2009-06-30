@@ -280,7 +280,7 @@ public class Application extends Viewport {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof OlapPanel){
-					mainPanel.showMenu(1);
+					mainPanel.showMenu(2);
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((OlapPanel) widget).getCube(), new AsyncCallback(){
 
 						public void onFailure(final Throwable arg0) {
