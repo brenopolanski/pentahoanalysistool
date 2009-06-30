@@ -76,6 +76,7 @@ class ConnectionItem {
 
 public class ConnectionManagerPanel extends LayoutComposite  {
 
+	private ListBox<ConnectionItem> listBox = null;
 
 	private static final DefaultListModel<ConnectionItem> model = new DefaultListModel<ConnectionItem>();
 	
@@ -92,8 +93,9 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		    final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 		    vBox.setPadding(0);
 		    vBox.setWidgetSpacing(0);
+		    
+		    listBox = createListBox();
 
-		    final ListBox<ConnectionItem> listBox = createListBox();
 		    model.add(new ConnectionItem("123","debug connection",false));
 
 
@@ -176,7 +178,6 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		    	protected void onClick() {
 				    	// TODO implement dis-/connect routine
 		    			super.onClick();
-		    			model.remove(item);
 		    			if (item.isConnected()) {
 		    				MessageBox.info("Success", "Disconnected!");
 		    				item.setConnected(false);
@@ -185,7 +186,9 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		    				MessageBox.info("Success", "Connected!");
 		    				item.setConnected(true);
 		    			}
-				        model.add(item);
+		                final int index = listBox.getSelectedIndex();
+		                model.set(index, item);
+
 				        
 				      };
 		    	};
