@@ -173,6 +173,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    return layoutPanel;
 	}
 
+	@SuppressWarnings("unused")
 	private void createSizedWindowPanel() {
 	    sized = new WindowPanel("Sized");
 	    sized.setAnimationEnabled(true);
