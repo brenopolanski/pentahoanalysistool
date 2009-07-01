@@ -86,7 +86,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			DataWidget contentdupe = null;
 			contentdupe = copyMatrix(content, contentdupe);
 			counter++;
-			Application.addContent(contentdupe, content.getName());
+			Application.getMainTabPanel().addContent(contentdupe, content.getName());
 		}
 	}
 	/**
@@ -252,21 +252,14 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 
 					// Show the associated ContentWidget
 
-					Application.getContentWrapper().layout();
+					Application.getMainTabPanel().layout();
 
 				}
 			}
 		});
 	}
 
-	/**
-	 * Gets the content.
-	 * 
-	 * @return the {@link Widget} in the content area
-	 */
-	public final Widget getContent() {
-		return Application.getContentWrapper().getWidget(0);
-	}
+	
 
 	/**
 	 * Checks if is initialized.
