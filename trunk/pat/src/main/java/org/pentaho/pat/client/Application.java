@@ -48,16 +48,11 @@ import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TreeImages;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * <p>
@@ -131,9 +126,7 @@ public class Application extends Viewport {
 	/** The Application Main Panel. */
 	private static MainMenu mainPanel = null;
 
-	/** The panel that contains the title widget and links. */
-	private FlexTable topPanel;
-
+	
 	/** The bottom Panel for the Application, contains the main panels. */
 	private static LayoutPanel bottomPanel;
 	
@@ -246,8 +239,6 @@ public class Application extends Viewport {
 		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 		// Setup the top panel with the title and links
-		createTopPanel();
-		layoutPanel.add(topPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
 
 		bottomPanel = new LayoutPanel(new BorderLayout());
 		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
@@ -330,56 +321,8 @@ public class Application extends Viewport {
 
 	}
 
-	/**
-	 * Create the panel at the top of the page that contains the title and
-	 * links.
-	 */
-	private void createTopPanel() {
-		final boolean isRTL = LocaleInfo.getCurrentLocale().isRTL();
-		topPanel = new FlexTable();
-		topPanel.setCellPadding(0);
-		topPanel.setCellSpacing(0);
-		topPanel.setStyleName(DEF_STYLE_NAME + "-top"); //$NON-NLS-1$
-		final FlexCellFormatter formatter = topPanel.getFlexCellFormatter();
-
-		// Setup the toolbar
-		formatter.setStyleName(0, 0, DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
-		formatter.setColSpan(0, 0, 2);
-		
-
-		// Setup the title cell
-		setTitleWidget(null);
-		formatter.setStyleName(1, 0, DEF_STYLE_NAME + "-title"); //$NON-NLS-1$
-
-		// Setup the options cell
-		setOptionsWidget(null);
-		formatter.setStyleName(1, 1, DEF_STYLE_NAME + "-options"); //$NON-NLS-1$
-		if (isRTL) {
-			formatter.setHorizontalAlignment(1, 1,
-					HasHorizontalAlignment.ALIGN_LEFT);
-		} else {
-			formatter.setHorizontalAlignment(1, 1,
-					HasHorizontalAlignment.ALIGN_RIGHT);
-		}
-
-		// Align the content to the top
-		topPanel.getRowFormatter().setVerticalAlign(0,
-				HasVerticalAlignment.ALIGN_TOP);
-		topPanel.getRowFormatter().setVerticalAlign(1,
-				HasVerticalAlignment.ALIGN_TOP);
-	}
-
 	public MainMenu getMainPanel() {
 		return mainPanel;
-	}
-
-	/**
-	 * Gets the title widget.
-	 *
-	 * @return the {@link Widget} used as the title
-	 */
-	public final Widget getTitleWidget() {
-		return topPanel.getWidget(0, 0);
 	}
 
 	/*
@@ -398,24 +341,5 @@ public class Application extends Viewport {
 		return (LayoutPanel)super.getWidget();
 	}
 
-	/**
-	 * Set the {@link Widget} to use as options, which appear to the right of
-	 * the title bar.
-	 *
-	 * @param options
-	 *            the options widget
-	 */
-	public final void setOptionsWidget(final Widget options) {
-		topPanel.setWidget(1, 1, options);
-	}
 
-	/**
-	 * Set the {@link Widget} to use as the title bar.
-	 * 
-	 * @param title
-	 *            the title widget
-	 */
-	public final void setTitleWidget(final Widget title) {
-		topPanel.setWidget(1, 0, title);
-	}
 }
