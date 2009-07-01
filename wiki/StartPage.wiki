@@ -11,4 +11,6 @@ This wiki is source of information for users and developers of PAT.
 
 == Latest News ==
 
+*29/6/2009:* PAT 0.3 released. [http://pentahomusings.blogspot.com/2009/06/pat-03-released.html Release Notes]. [http://code.google.com/p/pentahoanalysistool/downloads/list Download].
+
 *27/4/2009:* PAT 0.2 Released. [http://pentahomusings.blogspot.com/2009/04/pat-02-arrives.html Release notes]. [http://code.google.com/p/pentahoanalysistool/downloads/list Download].
