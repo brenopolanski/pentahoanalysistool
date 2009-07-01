@@ -35,6 +35,8 @@ public class MainTabPanel extends LayoutComposite {
 	
 	public MainTabPanel() {
 		super();
+		final LayoutPanel baseLayoutPanel = getLayoutPanel();
+		
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
@@ -76,8 +78,7 @@ public class MainTabPanel extends LayoutComposite {
 
 			}
 		});
-		final LayoutPanel baseLayoutPanel = getLayoutPanel();
-
+		
 		baseLayoutPanel.add(contentWrapper);
 	}
 
