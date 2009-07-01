@@ -96,6 +96,9 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		vBox.setWidgetSpacing(0);
 
 		model.add(new ConnectionItem("123","debug connection",false));
+		
+		listBox = createListBox();
+		toolBar = createToolBar(listBox);
 
 
 		vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -105,7 +108,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 	}
 
 
-	private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> listBox) {
+	private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
 		final FlexTable table = new FlexTable();
 		final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
@@ -134,7 +137,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 					MessageBox.info("Success", "Connected!");
 					item.setConnected(true);
 				}
-				final int index = listBox.getSelectedIndex();
+				final int index = linkedListBox.getSelectedIndex();
 				model.set(index, item);
 
 
@@ -149,21 +152,21 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 	}
 
 	public ListBox<ConnectionItem> createListBox() {
-		final ListBox<ConnectionItem> listBox = new ListBox<ConnectionItem>();
-		listBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
-			public void renderCell(ListBox<ConnectionItem> listBox, int row, int column,
+		final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
+		cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
+			public void renderCell(ListBox<ConnectionItem> cListBox, int row, int column,
 					ConnectionItem item) {
 				switch (column) {
 				case 0:
-					listBox.setWidget(row, column, createRichListBoxCell(item,listBox));
+					cListBox.setWidget(row, column, createRichListBoxCell(item,cListBox));
 					break;
 				default:
 					throw new RuntimeException("Should not happen");
 				}
 			}
 		});
-		listBox.setModel(model);
-		return listBox;
+		cListBox.setModel(model);
+		return cListBox;
 	}
 
 	public static void addConnection(CubeConnection cc) {

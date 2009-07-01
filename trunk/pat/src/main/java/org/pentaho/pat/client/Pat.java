@@ -23,7 +23,6 @@ import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -36,11 +35,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -191,7 +186,6 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		// Load the GWT theme style sheet
 		final String modulePath = GWT.getModuleBaseURL();
 		final Command callback = new Command() {
-			private int numStyleSheetsLoaded = 0;
 			public void execute() {
 			
 				// Different themes use different background colors for the body
@@ -235,49 +229,23 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	/**
 	 *
 	 */
-	public final void onModuleLoad() {
-
+	public Pat() {
 		// parse possible parameters
 		parseInitialStateFromParameter();
-		// Create a Pat unique session ID
 		
 		app = new Application();
-		// Swap out the style sheets for the RTL versions if needed
-		updateStyleSheets();
-
-		// Create the application
-		setupTitlePanel();
 		
-		if (initialState.isConnected())
-		{
-			GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(new Widget());
-		}
+	}
+	public final void onModuleLoad() {
+
+		// Swap out the style sheets for the RTL versions if needed
 		// hide splash
+		updateStyleSheets();
 		com.google.gwt.user.client.DOM
 				.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
 	}
 
-	/**
-	 * Create the title bar at the top of the Application.
-	 */
-	private void setupTitlePanel() {
-		// Get the title from the internationalized constants
-		final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() //$NON-NLS-1$
-				+ "</h1><h2>" + ConstantFactory.getInstance().mainSubTitle() //$NON-NLS-1$
-				+ "</h2>"; //$NON-NLS-1$
-
-		// Add the title and some images to the title bar
-		final HorizontalPanel titlePanel = new HorizontalPanel();
-		titlePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		// titlePanel.add(IMAGES.gwtLogo().createImage());
-		titlePanel.add(new HTML(pageTitle));
-		
-		if (initialState.getMode().isShowToolbar()) {
-			app.setTitleWidget(titlePanel);
-		}
-		
-	}
+	
 
 	private void parseInitialStateFromParameter() {
 		Location loadURL = WindowUtils.getLocation();
