@@ -13,17 +13,9 @@
 
 package org.pentaho.pat.client;
 
-import java.util.Iterator;
-
-import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
-import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
-import org.gwt.mosaic.ui.client.HTML;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.Label;
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
@@ -36,23 +28,12 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.MainMenu;
-import org.pentaho.pat.client.ui.panels.OlapPanel;
-import org.pentaho.pat.client.ui.panels.WelcomePanel;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TreeImages;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * <p>
@@ -96,32 +77,9 @@ public class Application extends Viewport {
 		 */
 		void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
 	}
-	private static int counter = 0;
+	
 
-	/** The wrapper around the content. */
-	private static DecoratedTabLayoutPanel contentWrapper;
 
-	/** The base style name. */
-	public static final String DEF_STYLE_NAME = "Application"; //$NON-NLS-1$
-
-	/**
-	 * Returns the Applications Content Wrapper.
-	 *
-	 * @return the Content Wrapper
-	 */
-	public static TabLayoutPanel getContentWrapper() {
-		return contentWrapper;
-	}
-
-	/**
-	 * Sets the Applications Content Wrapper.
-	 *
-	 * @param contentWrapper
-	 *            The Application Content Wrapper
-	 */
-	public static void setContentWrapper(final DecoratedTabLayoutPanel contentWrapper) {
-		Application.contentWrapper = contentWrapper;
-	}
 
 	/** The Application Main Panel. */
 	private static MainMenu mainPanel = null;
@@ -133,43 +91,7 @@ public class Application extends Viewport {
 	/** The Connection Window for the Application. */
 	private static ConnectionWindow connectionWindow = null;
 
-	/**
-	 * Adds a new Tab to the contentPanel.
-	 *
-	 * @param content
-	 * @param tabName
-	 */
-
-	public static void addContent(final DataWidget content, final String tabName) {
-
-		boolean test = false;
-		if (content != null) {
-			if (content instanceof WelcomePanel){
-				final Iterator iter = contentWrapper.iterator();
-				while ( iter.hasNext() ){
-					if (iter.next() instanceof WelcomePanel) {
-						test = true;
-					}
-				}
-
-				if(!test)
-				{
-					contentWrapper.add(content, tabName);
-					counter++;
-					contentWrapper.layout();
-				}
-
-			}
-			else{
-				contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
-				contentWrapper.selectTab(counter);
-				counter++;
-				contentWrapper.layout();
-
-			}
-
-		}
-	}
+	private static MainTabPanel mainTabPanel = null;
 
 	public static ConnectionWindow getConnectionWindow() {
 		return connectionWindow;
@@ -190,42 +112,7 @@ public class Application extends Viewport {
 
 
 
-	/**
-	 * 
-	 * Creates a new Closeable tab.
-	 *
-	 * @param widget
-	 * @param string
-	 * @param index
-	 * @return a closeable tab for a tab panel.
-	 */
-	private static Widget tabCloseLabel(final Widget widget, final String string, final int index) {
-		final HorizontalPanel hPanel = new HorizontalPanel();
-		final Label label = new Label(string);
-		DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		final ImageButton closeBtn = new ImageButton(Pat.IMAGES.closeButton());
-		closeBtn.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent event) {
-				final int widgetIndex = contentWrapper.getWidgetIndex(widget);
-				if (widgetIndex == contentWrapper.getSelectedTab()) {
-					contentWrapper.remove(widgetIndex);
-					contentWrapper.selectTab(widgetIndex - 1);
-				} else {
-					contentWrapper.remove(widgetIndex);
-					contentWrapper.layout();
-				}
-				if (contentWrapper.getWidgetCount() == 1) {
-					mainPanel.getStackPanel().showStack(1);
-					mainPanel.getStackPanel().layout();
-				}
-				counter--;
-			}
-		});
-		hPanel.add(label);
-		hPanel.add(new HTML("&nbsp&nbsp&nbsp")); //$NON-NLS-1$
-		hPanel.add(closeBtn);
-		return hPanel;
-	}
+	
 
 	/**
 	 * Constructor.
@@ -264,64 +151,19 @@ public class Application extends Viewport {
 
 
 
-		// Add the content wrapper
-		contentWrapper = new DecoratedTabLayoutPanel();
-		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
-		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
-			public void onSelection(final SelectionEvent<Integer> selectEvent) {
-				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
-				if (widget instanceof OlapPanel){
-					mainPanel.showMenu(2);
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((OlapPanel) widget).getCube(), new AsyncCallback(){
-
-						public void onFailure(final Throwable arg0) {
-							//TODO proper messages
-							MessageBox.error("Balls", "Couldn't set the cube");
-						}
-
-						public void onSuccess(final Object arg0) {
-
-
-							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((OlapPanel) widget).getQuery(), new AsyncCallback(){
-
-								public void onFailure(final Throwable arg0) {
-									//TODO proper messages
-									MessageBox.error("Balls", "Couldn't set the query");
-								}
-
-								public void onSuccess(final Object arg0) {
-									GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(Application.this);
-								}
-
-							});
-
-						}
-
-					});
-
-				}
-				if (widget instanceof WelcomePanel){
-					//mainPanel.showMenu(0);
-				}
-
-
-			}
-		});
-		contentWrapper.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-			public void onBeforeSelection(final BeforeSelectionEvent<Integer> beforeSelection) {
-				// TODO do whatever before selection
-			}
-		});
 
 
 
-		bottomPanel.add(contentWrapper);
+		// TODO add maintab panel
+		mainTabPanel = new MainTabPanel();
+		bottomPanel.add(mainTabPanel);
 		mainPanel = new MainMenu();
 		westPanel.add(mainPanel);
+		
 
 	}
 
-	public MainMenu getMainPanel() {
+	public static MainMenu getMainPanel() {
 		return mainPanel;
 	}
 
@@ -341,5 +183,8 @@ public class Application extends Viewport {
 		return (LayoutPanel)super.getWidget();
 	}
 
+	public static MainTabPanel getMainTabPanel() {
+		return mainTabPanel;
+	}
 
 }
