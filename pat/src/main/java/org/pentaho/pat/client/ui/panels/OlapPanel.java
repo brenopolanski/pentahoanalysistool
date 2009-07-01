@@ -191,38 +191,7 @@ public class OlapPanel extends DataWidget {
 	public Widget onInitialize() {
 		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
-		// MDX(north) panel
-		final NorthPanel northPanel = new NorthPanel("MDX Panel"); //$NON-NLS-1$
-		final ImageButton collapseBtn1 = new ImageButton(Caption.IMAGES.toolCollapseUp());
-		northPanel.getHeader().add(collapseBtn1, CaptionRegion.RIGHT);
-
-		collapseBtn1.addClickHandler(new ClickHandler() {
-			  public void onClick(ClickEvent event) {
-			        basePanel.setCollapsed(northPanel, true);
-			        basePanel.layout();
-			      }
-		});
-
-		basePanel.add(northPanel, new BorderLayoutData(Region.NORTH, 100, 10, 250));
-		basePanel.setCollapsed(northPanel, true);
-
-		// Drill(south) panel
-		final SouthPanel drillPanel = new SouthPanel("Drill Data"); //$NON-NLS-1$
-
-		final ImageButton collapseBtn2 = new ImageButton(Caption.IMAGES.toolCollapseDown());
-		drillPanel.getHeader().add(collapseBtn2, CaptionRegion.RIGHT);
-
-		collapseBtn2.addClickHandler(new ClickHandler() {
-			 public void onClick(ClickEvent event) {
-			        basePanel.setCollapsed(drillPanel, true);
-			        basePanel.layout();
-			      }
-		});
-
 		
-		basePanel.add(drillPanel, new BorderLayoutData(Region.SOUTH, 100, 10, 250));
-		basePanel.setCollapsed(drillPanel, true);
-
 		final StackLayoutPanel stackPanel = new StackLayoutPanel();
 
 
@@ -264,98 +233,7 @@ public class OlapPanel extends DataWidget {
 		stackPanel.showStack(0);
 
 		basePanel.add(stackPanel);
-		/**
-		 * 
-		 * Some Test Code to Check the Table in FF on Linux
-		 */
-/*		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Region", new AsyncCallback(){
-
-		public void onFailure(Throwable arg0) {
-			// TODO Auto-generated method stub
-			MessageBox.error("Balls", "balls");
-		}
-
-		public void onSuccess(Object arg0) {
-			// TODO Auto-generated method stub
-			List<String> dimSelections = new ArrayList();
-			dimSelections.add("Region");
-			dimSelections.add("All Regions");
-			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Region", dimSelections, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
-
-				public void onFailure(final Throwable arg0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-				}
-
-				public void onSuccess(final Object arg0) {
-
-					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.ROWS, "Department", new AsyncCallback(){
-						
-						public void onFailure(Throwable arg0) {
-							// TODO Auto-generated method stub
-							MessageBox.error("Balls", "balls");
-						}
-
-						public void onSuccess(Object arg0) {
-							// TODO Auto-generated method stub
-							List<String> dimSelections2 = new ArrayList();
-							dimSelections2.add("Department");
-							dimSelections2.add("All Departments");
-								
-							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Department", dimSelections2, "INCLUDE_CHILDREN", new AsyncCallback<Object>() {
-
-								public void onFailure(final Throwable arg0) {
-									MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-								}
-
-								public void onSuccess(final Object arg0) {
-									ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Axis.COLUMNS, "Positions", new AsyncCallback(){
-										
-										public void onFailure(Throwable arg0) {
-											// TODO Auto-generated method stub
-											MessageBox.error("Balls", "balls");
-										}
-
-										public void onSuccess(Object arg0) {
-											// TODO Auto-generated method stub
-											List<String> dimSelections2 = new ArrayList();
-											dimSelections2.add("Positions");
-											dimSelections2.add("All Positions");
-												
-											ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), "Positions", dimSelections2, "MEMBER", new AsyncCallback<Object>() {
-
-												public void onFailure(final Throwable arg0) {
-													MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-												}
-
-												public void onSuccess(final Object arg0) {
-													//targetLabel.setSelectionMode(selectionMode);
-													doExecuteQueryModel();
-													//gridLayoutPanel.invalidate();
-													//olapTable.setSize("100%", "100%");
-													//olapTable.setPixelSize(1000, 600);
-												}
-
-											});
-										}
-										
-									});
-
-								}
-
-							});
-						}
-						
-					});
-
-				}
-
-			});
-		}
-		
-	});*/
+	
 
 		return basePanel;
 	}
