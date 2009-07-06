@@ -28,7 +28,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
-import org.pentaho.pat.client.ui.widgets.OlapTable2;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OlapPanel extends DataWidget {
 
 	/** The olap table. */
-	private transient OlapTable2 olapTable;
+	private transient OlapTable olapTable;
 
 	/** Panel Name. */
 	private transient String name;
@@ -178,7 +178,7 @@ public class OlapPanel extends DataWidget {
 	 * Initialization routine.
 	 */
 	private void init() {
-		olapTable = new OlapTable2(MessageFactory.getInstance());
+		olapTable = new OlapTable(MessageFactory.getInstance());
 
 	}
 	/* (non-Javadoc)
@@ -261,7 +261,7 @@ public class OlapPanel extends DataWidget {
 		this.query = query;
 	}
 	
-	public OlapTable2 getTable(){
+	public OlapTable getTable(){
 		return olapTable;
 	}
 }

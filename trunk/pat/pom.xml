@@ -374,7 +374,7 @@
 			<version>1.5-20081912</version>
 		</dependency>
 		<dependency>
-			<groupId>org</groupId>
+			<groupId>gwt-mosaic</groupId>
 			<artifactId>gwt-mosaic</artifactId>
 			<version>0.2.1</version>
 		</dependency>
