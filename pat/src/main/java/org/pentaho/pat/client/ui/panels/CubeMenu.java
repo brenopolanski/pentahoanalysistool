@@ -22,7 +22,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -58,7 +57,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 					final DataWidget widget = ITEMWIDGETS.get(item);
 						
 						if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
-						((OlapPanel) widget).setCube(item.getText().trim());
+						((QueryPanel) widget).setCube(item.getText().trim());
 						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
 
 							public void onFailure(final Throwable arg0) {
@@ -76,7 +75,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 									}
 
 									public void onSuccess(final String arg0) {
-										((OlapPanel) widget).setQuery(arg0);
+										((QueryPanel) widget).setQuery(arg0);
 										ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
 
 											public void onFailure(final Throwable arg0) {
@@ -168,18 +167,19 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	 * Generates a cube list for the Cube Menu.
 	 */
 	private final void setupCubeMenu() {
-		cubeTree.addItem(ConstantFactory.getInstance().availableCubes());
+		// TODO remove when showcase not needed
+		cubeTree.addItem("connection 1");
 		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
 			public void onFailure(final Throwable arg0) {
 				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
 			}
 
 			public void onSuccess(final String[] o) {
-
-				final TreeItem cubesList = cubeTree.addItem(ConstantFactory.getInstance().availableCubes());
+				// TODO implement new treeitem correctly
+				final TreeItem cubesList = cubeTree.addItem("connection 2");
 
 				for (final String element2 : o) {
-					setupMainMenuOption(cubesList, new OlapPanel(element2), Pat.IMAGES.cube());
+					setupMainMenuOption(cubesList, new QueryPanel(element2), Pat.IMAGES.cube());
 				}
 				cubesList.setState(true);
 

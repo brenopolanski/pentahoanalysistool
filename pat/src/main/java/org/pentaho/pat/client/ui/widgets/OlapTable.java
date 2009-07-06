@@ -95,7 +95,7 @@ public class OlapTable extends LayoutComposite {
 
 		super();
 
-
+		scrollTable = new ScrollTable2(dataTable, headerTable);
 		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
 
 	}
@@ -359,7 +359,6 @@ public class OlapTable extends LayoutComposite {
 	protected void onLoad() {
 		super.onLoad();
 
-		scrollTable = new ScrollTable2(dataTable, headerTable);
 		layoutPanel.add(scrollTable);
 
 	}
