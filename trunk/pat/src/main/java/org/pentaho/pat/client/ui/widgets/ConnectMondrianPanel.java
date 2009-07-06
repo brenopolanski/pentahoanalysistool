@@ -18,7 +18,6 @@ import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;

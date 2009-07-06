@@ -22,6 +22,7 @@ import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
@@ -127,5 +128,10 @@ public class DimensionDropWidget extends LayoutComposite  implements ConnectionL
 	public void onQueryChange(Widget sender) {
 	
 		//table1.populateDimensionTable(dimAxis);
+	}
+	
+	public void onQueryExecuted(String queryId, OlapData olapData) {
+		// TODO Auto-generated method stub
+		
 	}
 }

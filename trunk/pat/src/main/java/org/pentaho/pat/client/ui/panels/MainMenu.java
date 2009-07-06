@@ -21,6 +21,7 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -64,12 +65,12 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				((WelcomePanel) destination).setName(name);
 			}
 
-			else if (source instanceof OlapPanel) {
+			else if (source instanceof QueryPanel) {
 
-				destination = new OlapPanel();
-				((OlapPanel) destination).setName(((OlapPanel) source).getName());
-				((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
-				((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
+				destination = new QueryPanel();
+				((QueryPanel) destination).setName(((QueryPanel) source).getName());
+				((QueryPanel) destination).setCube(((QueryPanel) source).getCube());
+				((QueryPanel) destination).setQuery(((QueryPanel) source).getQuery());
 			}
 		}
 		return destination;
@@ -166,7 +167,11 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	public void onQueryChange(final Widget sender) {
 		dimensionPanel.createDimensionList();
 	}
-
+	
+	public void onQueryExecuted(String queryId, OlapData olapData) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 	public void showMenu(final int number){

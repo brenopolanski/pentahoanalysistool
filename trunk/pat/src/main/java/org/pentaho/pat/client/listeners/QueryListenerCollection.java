@@ -15,6 +15,8 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.ArrayList;
 
+import org.pentaho.pat.rpc.dto.OlapData;
+
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -29,6 +31,12 @@ public class QueryListenerCollection extends ArrayList<QueryListener> {
 	public void fireQueryChanged(final Widget sender){
 		for(QueryListener listener:this){
 			listener.onQueryChange(sender);
+		}
+	}
+	
+	public void fireQueryExecuted(final Widget sender,final String queryId, final OlapData olapData) {
+		for(QueryListener listener:this) {
+			listener.onQueryExecuted(queryId, olapData);
 		}
 	}
 
