@@ -16,143 +16,127 @@
 
 package org.pentaho.pat.client.ui.widgets;
 
+import java.util.Iterator;
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.FillLayoutData;
-import org.gwt.mosaic.ui.client.table.ScrollTable;
-import org.gwt.mosaic.ui.client.table.ScrollTable.DataGrid;
+import org.gwt.mosaic.ui.client.table.ScrollTable2;
 import org.pentaho.pat.client.i18n.PatMessages;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.OlapUtils;
 import org.pentaho.pat.rpc.dto.CellInfo;
 import org.pentaho.pat.rpc.dto.OlapData;
 
+import com.google.gwt.gen2.table.client.AbstractScrollTable;
+import com.google.gwt.gen2.table.client.FixedWidthFlexTable;
+import com.google.gwt.gen2.table.client.FixedWidthGrid;
+import com.google.gwt.gen2.table.client.ScrollTable;
+import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
+import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
-import com.google.gwt.widgetideas.table.client.overrides.FlexTable.FlexCellFormatter;
+
 
 /**
  * @author wseyler
- * 
+ * @hacked tom barber ;)
  */
 @SuppressWarnings("deprecation")
-public class OlapTable extends LayoutPanel {
+public class OlapTable extends LayoutComposite {
 
+	public class ClickCellCommand implements ClickListener {
+		public void onClick(final Widget sender) {
+			cellFormatPopup = new CellFormatPopup(sender.getAbsoluteTop(),
+					sender.getAbsoluteLeft(), sender);
+			cellFormatPopup.show();
+			// sender.addStyleName(cellFormatPopup.getReturnStyle());
+
+		};
+	}
 	private static final String OLAP_ROW_HEADER_LABEL = "olap-row-header-label"; //$NON-NLS-1$
 	private static final String OLAP_ROW_HEADER_CELL = "olap-row-header-cell"; //$NON-NLS-1$
 	private static final String OLAP_COL_HEADER_CELL = "olap-col-header-cell"; //$NON-NLS-1$
 	private static final String OLAP_COL_HEADER_LABEL = "olap-col-header-label"; //$NON-NLS-1$
 	private static final char USED = 'u';
 	private static final char SPANNED = 's';
-	private static final char FREE = 'f';
 
+	private static final char FREE = 'f';
 	private OlapData olapData = null;
 	private boolean showParentMembers = true;
+
 	private boolean groupHeaders = true;
-	@SuppressWarnings("unused")
-	private PatMessages messages = null;
+
 	private CellFormatPopup cellFormatPopup;
 
-	/**
-	 * The footer portion of the <code>ScrollTable</code>
-	 */
-//	private static FixedWidthFlexTable footerTable = null;
+	private ScrollTable2 scrollTable = null;
 
+	private boolean initialized = false;
+
+	final LayoutPanel layoutPanel = getLayoutPanel();
 	/**
 	 * The header portion of the <code>ScrollTable</code>
 	 */
-	private static FixedWidthFlexTable headerTable = null;
-	private static DataGrid dataTable = null;
+
+	/**
+	 * 
+	 * IF I EVER MAKE EIIHER OF THESE 2 STATIC AGAIN... SHOOT ME!
+	 */
+	private final FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
+
+	private final FixedWidthGrid dataTable = new FixedWidthGrid();
 
 	/**
 	 * @param messages
 	 */
-	public OlapTable(PatMessages messages) {
-		// super(dataTable, headerTable);
+	public OlapTable(final PatMessages messages) {
+
 		super();
-		this.setMessages(messages);
-		// this.setCellPadding(3);
-		// this.setCellSpacing(0);
-//		this.setSize("100%", "100%");
-		// Add the scroll table to the page
 
-		// this.setFooterTable(footerTable);
-		// this.setContextMenu(createContextMenu());
-		addStyleName("olap-table"); //$NON-NLS-1$
+
+		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
+
 	}
 
-	public OlapTable(PatMessages messages, boolean showParentMembers) {
-		this(messages);
-		this.showParentMembers = showParentMembers;
-	}
-
-	public void setData(OlapData olapData) {
-		setData(olapData, true);
-	}
-
-	/**
-	 * @param olapData
-	 * @param refresh
+	/*
+	 * There's no clone() method in GWT, so it's done by hand.
 	 */
-	public void setData(final OlapData olapData, final boolean refresh) {
-		this.olapData = olapData;
-		if (refresh) {
-			refresh();
+	protected void copyMatrix(final char source[][], final char destination[][]) {
+		if (source.length > destination.length
+				| source[0].length > destination[0].length) {
+			throw new IndexOutOfBoundsException(
+					"The destination[" + destination.length + "][" + destination[0].length + "]" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"is smaller than source[" + source.length //$NON-NLS-1$
+					+ "][" + source[0].length + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-	}
 
-	/**
-	 * @return
-	 */
-	public OlapData getData() {
-		return olapData;
-	}
-
-	public void refresh() {
-		// removeAllRows();
-
-		if (olapData != null) {
-			createColumnHeaders();
-			createRowHeaders();
-			populateData();
-			ScrollTable scrollTable = new ScrollTable(dataTable, headerTable);
-		    this.setPixelSize(600,400);
-			this.add(scrollTable,new FillLayoutData(true));
+		for (int i = 0; i < source.length; i++) {
+			for (int j = 0; j < source[0].length; j++) {
+				destination[i][j] = source[i][j];
+			}
 		}
-	}
 
-	protected void removeAllRows() {
-		while (dataTable.getRowCount() > 0) {
-			dataTable.removeRow(0);
-		}
-		while (headerTable.getRowCount() > 0) {
-			headerTable.removeRow(0);
-		}
 	}
-
 	protected void createColumnHeaders() {
-		headerTable = new FixedWidthFlexTable();
-		FlexCellFormatter headerFormatter = headerTable.getFlexCellFormatter();
+
+		final FlexCellFormatter headerFormatter = headerTable.getFlexCellFormatter();
 
 		CellInfo[][] headerData;
 		if (showParentMembers) {
 			headerData = olapData.getColumnHeaders().getColumnHeaderMembers();
 		} else {
 			headerData = new CellInfo[1][olapData.getColumnHeaders()
-					.getAcrossCount()];
+			                             .getAcrossCount()];
 			headerData[0] = olapData.getColumnHeaders()
-					.getColumnHeaderMembers()[olapData.getColumnHeaders()
-					.getDownCount() - 1];
+			.getColumnHeaderMembers()[olapData.getColumnHeaders()
+			                          .getDownCount() - 1];
 		}
 		if (groupHeaders && showParentMembers) {
 			for (int row = 0; row < headerData.length; row++) {
 				final List<CellSpanInfo> infos = OlapUtils
-						.getCellSpans(OlapUtils.extractRow(headerData, row));
+				.getCellSpans(OlapUtils.extractRow(headerData, row));
 				for (int currentColumn = 0, n = infos.size(); currentColumn < n; currentColumn++) {
 					final CellSpanInfo spanInfo = infos.get(currentColumn);
 					final Label label = new Label(spanInfo.getInfo()
@@ -160,9 +144,9 @@ public class OlapTable extends LayoutPanel {
 					label.addStyleName(OLAP_COL_HEADER_LABEL);
 					headerTable.setWidget(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(), label);
-					headerFormatter.addStyleName(row, currentColumn
+					/*			headerFormatter.addStyleName(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(),
-							OLAP_COL_HEADER_CELL);
+							OLAP_COL_HEADER_CELL);*/
 					headerFormatter.setColSpan(row, currentColumn
 							+ olapData.getRowHeaders().getAcrossCount(),
 							spanInfo.getSpan());
@@ -171,15 +155,15 @@ public class OlapTable extends LayoutPanel {
 		} else {
 			for (int row = 0; row < headerData.length; row++) {
 				for (int column = 0; column < headerData[row].length; column++) {
-					CellInfo cellInfo = headerData[row][column];
+					final CellInfo cellInfo = headerData[row][column];
 					if (cellInfo != null) {
-						Label label = new Label(cellInfo.getFormattedValue());
+						final Label label = new Label(cellInfo.getFormattedValue());
 						label.addStyleName(OLAP_COL_HEADER_LABEL);
 						headerFormatter.addStyleName(row,
 								showParentMembers ? column
 										+ olapData.getRowHeaders()
-												.getAcrossCount() : column + 1,
-								OLAP_COL_HEADER_CELL);
+										.getAcrossCount() : column + 1,
+										OLAP_COL_HEADER_CELL);
 						// aki tinha +1 antes do label (em cima tbm, no
 						// correspondente)
 						headerTable.setWidget(row, showParentMembers ? column
@@ -192,17 +176,31 @@ public class OlapTable extends LayoutPanel {
 
 	}
 
-	protected void createRowHeaders() {
-		dataTable = new DataGrid();
-//		CellFormatter cellFormatter = dataTable.getCellFormatter();
-		int columnHeadersHeight = /*
-								 * showParentMembers ?
-								 * olapData.getColumnHeaders().getDownCount() :
-								 * 2
-								 */0;
+	private FixedWidthGrid createDataTable() {
 
-		int rowHeadersHeight = olapData.getRowHeaders().getDownCount();
-		int rowHeadersWidth = olapData.getRowHeaders().getAcrossCount();
+		dataTable.resize(olapData.getCellData().getDownCount(), olapData.getRowHeaders().getAcrossCount()+olapData.getCellData().getAcrossCount());
+		dataTable.setSelectionPolicy(SelectionPolicy.MULTI_ROW);
+		return dataTable;
+	}
+
+	protected char[][] createMatrix(final int row, final int column) {
+
+		final char m[][] = new char[row][column];
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[0].length; j++) {
+				m[i][j] = FREE;
+			}
+		}
+
+		return m;
+	}
+
+
+	protected void createRowHeaders() {
+		final int columnHeadersHeight = 0;
+
+		final int rowHeadersHeight = olapData.getRowHeaders().getDownCount();
+		final int rowHeadersWidth = olapData.getRowHeaders().getAcrossCount();
 		int offset = 0;
 
 		CellInfo[][] headerData;
@@ -215,65 +213,71 @@ public class OlapTable extends LayoutPanel {
 						rowHeadersWidth - 1);
 			}
 		}
-		char matrix[][] = createMatrix(headerData.length + columnHeadersHeight,
+		final char matrix[][] = createMatrix(headerData.length + columnHeadersHeight,
 				headerData[0].length);
+
 
 		if (groupHeaders) {
 			for (int column = 0; column < headerData[0].length; column++) { // columns
+				final CellInfo actualColumn[] = OlapUtils.extractColumn(headerData, column);
+				if (actualColumn == null || actualColumn.length == 0) {
+					continue;
+				}
+				final Iterator iter = OlapUtils.getCellSpans(actualColumn).iterator();
+				int actualRow = 0; // the current row (considering just the headerData, excluding column headers)
 
-				final List<CellSpanInfo> infos = OlapUtils
-					.getCellSpans(OlapUtils.extractColumn(headerData,column));
-				for (int actualRow = 0, n = infos.size(); actualRow < n; actualRow++) {
-					if (showParentMembers == false)
+				while (iter.hasNext())
+				{
+					if (showParentMembers == false) {
 						actualRow--;
-					CellSpanInfo spanInfo = (CellSpanInfo) infos.get(actualRow);
+					}
+					final CellSpanInfo spanInfo = (CellSpanInfo) iter.next();
 					// Prepares the label
-					Label label = new Label(spanInfo.getInfo()
+					final Label label = new Label(spanInfo.getInfo()
 							.getFormattedValue());
 					label.addStyleName(OLAP_ROW_HEADER_LABEL);
 
-					int newColumn = offset;
+					final int newColumn = offset;
 					matrix[columnHeadersHeight + actualRow][column] = USED;
 					spanMatrixRow(matrix, columnHeadersHeight + actualRow,
 							newColumn, spanInfo.getSpan());
 
-					/*
-					 * cellFormatter.setRowSpan(columnHeadersHeight + actualRow
-					 * , newColumn - getSpanInRow(matrix, columnHeadersHeight
-					 * +actualRow), spanInfo.getSpan());
-					 */
-					// cellFormatter.addStyleName(columnHeadersHeight +
-					// actualRow ,
-					// newColumn - getSpanInRow(matrix, columnHeadersHeight
-					// +actualRow), OLAP_ROW_HEADER_CELL);
 					dataTable.setWidget(columnHeadersHeight + actualRow,
-							newColumn
-									- getSpanInRow(matrix, columnHeadersHeight
-											+ actualRow), label);
+							newColumn, label);
 
-					actualRow += spanInfo.getSpan();
+					actualRow+=spanInfo.getSpan();
 
-					if (showParentMembers == false)
+					if (showParentMembers == false) {
 						actualRow++;
+					}
 
 				}
+
+				for (int i=0; i<dataTable.getRowCount();i++){
+
+					final Widget widget = dataTable.getWidget(i, offset);
+					final String text = dataTable.getText(i, offset);
+					//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					if ((text == null || text.trim().length() < 2) && widget == null) {
+						dataTable.setText(i, column, "___"); //$NON-NLS-1$
+
+					}
+
+
+				}
+
 				offset++;
 			}
+
 		} else {
-			int rowAddition = showParentMembers ? columnHeadersHeight : 1;
-//			int columnAddition = showParentMembers ? 0 : -1;
+			final int rowAddition = showParentMembers ? columnHeadersHeight : 1;
+
 			for (int row = 0; row < headerData.length; row++) {
 				for (int column = 0; column < headerData[row].length; column++) {
-					CellInfo cellInfo = headerData[row][column];
+					final CellInfo cellInfo = headerData[row][column];
 					if (cellInfo != null) {
-						Label label = new Label(cellInfo.getFormattedValue());
+						final Label label = new Label(cellInfo.getFormattedValue());
 						label.addStyleName(OLAP_ROW_HEADER_CELL);
-						// cellFormatter.addStyleName(row + rowAddition,
-						// showParentMembers ? column : column,
-						// OLAP_ROW_HEADER_CELL);
-						// showParentMembers ? column +
-						// olapData.getRowHeaders().getAcrossCount() : column +
-						// 1, OLAP_COL_HEADER_CELL);
 						dataTable.setWidget(row + rowAddition,
 								showParentMembers ? column : column, label);
 					}
@@ -282,78 +286,163 @@ public class OlapTable extends LayoutPanel {
 		}// else
 	}
 
-	/*
-	 * private void printTable() { int j = 0;
-	 * System.out.println("=============="); for (int i = 0; i < getRowCount();
-	 * i++) { for (j = 0; j < getCellCount(i); j++) { if (isCellPresent (i,j))
-	 * System.out.print("P "); else System.out.print("n "); }
-	 * System.out.println((j)); } System.out.println("=============="); }
+	/**
+	 * @return
 	 */
-
-//	protected void populateData() {
-//		for (int row = 0; row < olapData.getCellData().getDownCount(); row++) {
-//			for (int column = 0; column < olapData.getCellData()
-//					.getAcrossCount(); column++) {
-//				CellInfo cellInfo = olapData.getCellData().getCell(row, column);
-//				if (cellInfo != null) {
-//					Label label = new Label(cellInfo.getFormattedValue());
-//					label.addStyleName("olap-cell-label"); //$NON-NLS-1$
-//					String colorValueStr = cellInfo.getColorValue();
-//					if (colorValueStr != null) {
-//						DOM
-//								.setElementAttribute(
-//										label.getElement(),
-//										"style", "background-color: " + cellInfo.getColorValue() + ";"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-//					}
-//					label.addClickListener(new ClickCellCommand());
-//					dataTable
-//							.setWidget(showParentMembers ? row/* +olapData.getColumnHeaders().getDownCount()*/: row + 1,showParentMembers ? getFirstUnusedColumnForRow(row) : column + 1, label);
-//				}
-//			}
-//		}
-//	}
-	  protected void populateData() {
-		    for (int row=0; row<olapData.getCellData().getDownCount(); row++) {
-		        for (int column=0; column<olapData.getCellData().getAcrossCount(); column++) {
-		                CellInfo cellInfo = olapData.getCellData().getCell(row, column);
-		                if (cellInfo != null) {
-		                        Label label = new Label(cellInfo.getFormattedValue());
-		                label.addStyleName("olap-cell-label"); //$NON-NLS-1$
-		                String colorValueStr = cellInfo.getColorValue();
-		                if (colorValueStr != null) {
-		                  DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		                }
-		                label.addClickListener(new ClickCellCommand());
-		                MessageBox.alert("Actual Row=", Integer.toString(row));
-		                System.out.println("actual row=" + row);
-		                dataTable.setWidget(showParentMembers ? row: row + 1, 
-		                					showParentMembers ? getFirstUnusedColumnForRow(row): column + 1, 
-		                							label);
-		                }
-		        }
-		    }   
-		  }
-
-	public boolean isShowParentMembers() {
-		return showParentMembers;
+	public OlapData getData() {
+		return olapData;
 	}
 
-	public void setShowParentMembers(boolean showParentMembers, boolean refresh) {
-		this.showParentMembers = showParentMembers;
-		if (refresh) {
-			refresh();
+	public int getFirstUnusedColumnForRow(final int row) {
+
+		int column = 0;
+
+		try {
+			while (true) {
+				final Widget widget = dataTable.getWidget(row, column);
+				final String text = dataTable.getText(row, column);
+				//Whilst this is here, don't use 1character column descriptors, because it wont see them!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if ((text == null || text.trim().length() < 2) && widget == null) {
+					return column;
+
+				}
+				column++;
+			}
+		} catch (final IndexOutOfBoundsException e) {
+			return column;
 		}
 	}
 
-	public void setShowParentMembers(boolean showParentMembers) {
-		setShowParentMembers(showParentMembers, true);
+
+
+	public AbstractScrollTable getScrollTable() {
+		return scrollTable;
+	}
+
+	protected int getSpanInColumn(final char[][] matrix, final int column) {
+
+		int result = 0;
+		for (final char[] element2 : matrix) {
+			if (element2[column] == SPANNED) {
+				result++;
+			}
+		}
+
+		return result;
+	}
+
+	protected int getSpanInRow(final char[][] matrix, final int row) {
+
+		int result = 0;
+		for (int i = 0; i < matrix[row].length; i++) {
+			if (matrix[row][i] == SPANNED) {
+				result++;
+			}
+		}
+
+		return result;
 	}
 
 	public boolean isGroupHeaders() {
 		return groupHeaders;
 	}
 
-	public void setGroupHeaders(boolean groupHeaders) {
+	public final boolean isInitialized() {
+		return initialized;
+	}
+
+	public boolean isShowParentMembers() {
+		return showParentMembers;
+	}
+
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+
+		scrollTable = new ScrollTable2(dataTable, headerTable);
+		layoutPanel.add(scrollTable);
+
+	}
+
+	protected void populateData() {
+
+		for (int row=0; row<olapData.getCellData().getDownCount(); row++) {
+			for (int column=0; column<olapData.getCellData().getAcrossCount(); column++) {
+				final CellInfo cellInfo = olapData.getCellData().getCell(row, column);
+				if (cellInfo != null) {
+					final Label label = new Label(cellInfo.getFormattedValue());
+					//label.addStyleName("olap-cell-label"); //$NON-NLS-1$
+					final String colorValueStr = cellInfo.getColorValue();
+					if (colorValueStr != null) {
+						DOM.setElementAttribute(label.getElement(), "style", "background-color: "+cellInfo.getColorValue()+";");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					}
+					label.addClickListener(new ClickCellCommand());
+
+					dataTable.setWidget(showParentMembers ? row: row + 1,
+							showParentMembers ? getFirstUnusedColumnForRow(row): column + 1,
+									label);
+				}
+			}
+		}
+	}
+
+	protected void printMatrix(final char m[][]) {
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[0].length; j++) {
+				System.out.print(" [" + i + "][" + j + "]=" + m[i][j]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+
+			System.out.println();
+		}
+
+	}
+
+	public void refresh() {
+
+		removeAllRows();
+
+		if (olapData != null) {
+			createColumnHeaders();
+			createDataTable();
+			createRowHeaders();
+			populateData();
+
+
+			// Setup the formatting
+			scrollTable.setCellPadding(3);
+			scrollTable.setCellSpacing(0);
+			scrollTable.setResizePolicy(ScrollTable.ResizePolicy.UNCONSTRAINED);
+
+			for(int i=0; i < scrollTable.getHeaderTable().getColumnCount(); i++)
+			{
+				scrollTable.setColumnTruncatable(i, false);
+			}
+
+		}
+	}
+
+	private void removeAllRows(){
+		headerTable.clear();
+		dataTable.clear();
+	}
+
+	public void setData(final OlapData olapData) {
+		setData(olapData, true);
+	}
+
+	/**
+	 * @param olapData
+	 * @param refresh
+	 */
+	public void setData(final OlapData olapData, final boolean refresh) {
+		initialized = true;
+		this.olapData = olapData;
+		if (refresh) {
+			refresh();
+		}
+	}
+
+	public void setGroupHeaders(final boolean groupHeaders) {
 		setGroupHeaders(groupHeaders, true);
 	}
 
@@ -361,106 +450,31 @@ public class OlapTable extends LayoutPanel {
 	 * @param groupHeaders
 	 * @param refresh
 	 */
-	public void setGroupHeaders(boolean groupHeaders, boolean refresh) {
+	public void setGroupHeaders(final boolean groupHeaders, final boolean refresh) {
 		this.groupHeaders = groupHeaders;
 		if (refresh) {
 			refresh();
 		}
 	}
 
-	public int getFirstUnusedColumnForRow(int row) {
+	public void setShowParentMembers(final boolean showParentMembers) {
+		setShowParentMembers(showParentMembers, true);
+	}
 
-		int column = 0;
-
-		try {
-			while (true) {
-				Widget widget = dataTable.getWidget(row, column);
-				String text = dataTable.getText(row, column);
-				if ((text == null || text.length() < 1) && widget == null) {
-					return column;
-	                
-				}
-				column++;
-			}
-		} catch (IndexOutOfBoundsException e) {
-			return column;
+	public void setShowParentMembers(final boolean showParentMembers, final boolean refresh) {
+		this.showParentMembers = showParentMembers;
+		if (refresh) {
+			refresh();
 		}
 	}
 
-	protected char[][] createMatrix(int row, int column) {
-
-		char m[][] = new char[row][column];
-		for (int i = 0; i < m.length; i++)
-			for (int j = 0; j < m[0].length; j++)
-				m[i][j] = FREE;
-
-		return m;
-	}
-
-	/*
-	 * There's no clone() method in GWT, so it's done by hand.
-	 */
-	protected void copyMatrix(char source[][], char destination[][]) {
-		if (source.length > destination.length
-				| source[0].length > destination[0].length) {
-			throw new IndexOutOfBoundsException(
-					"The destination[" + destination.length + "][" + destination[0].length + "]" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							"is smaller than source[" + source.length
-							+ "][" + source[0].length + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-
-		for (int i = 0; i < source.length; i++)
-			for (int j = 0; j < source[0].length; j++)
-				destination[i][j] = source[i][j];
-
-	}
-
-	protected void spanMatrixRow(char matrix[][], int row, int column, int span) {
-		for (int i = 1; i < span; i++)
+	protected void spanMatrixRow(final char matrix[][], final int row, final int column, final int span) {
+		for (int i = 1; i < span; i++) {
 			matrix[row + i][column] = SPANNED;
-	}
-
-	protected void printMatrix(char m[][]) {
-		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m[0].length; j++)
-				System.out.print(" [" + i + "][" + j + "]=" + m[i][j]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			System.out.println();
 		}
-
 	}
 
-	protected int getSpanInRow(char[][] matrix, int row) {
 
-		int result = 0;
-		for (int i = 0; i < matrix[row].length; i++)
-			if (matrix[row][i] == SPANNED)
-				result++;
 
-		return result;
-	}
 
-	protected int getSpanInColumn(char[][] matrix, int column) {
-
-		int result = 0;
-		for (int i = 0; i < matrix.length; i++)
-			if (matrix[i][column] == SPANNED)
-				result++;
-
-		return result;
-	}
-
-	public class ClickCellCommand implements ClickListener {
-		public void onClick(Widget sender) {
-			cellFormatPopup = new CellFormatPopup(sender.getAbsoluteTop(),
-					sender.getAbsoluteLeft(), sender);
-			cellFormatPopup.show();
-			// sender.addStyleName(cellFormatPopup.getReturnStyle());
-
-		};
-	}
-
-	public void setMessages(PatMessages messages) {
-		this.messages = messages;
-	}
 }

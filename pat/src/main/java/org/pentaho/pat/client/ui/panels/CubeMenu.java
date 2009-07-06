@@ -50,6 +50,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 		cubeTree = new Tree(treeImages);
 		cubeTree.setAnimationEnabled(true);
 		cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
+		cubeTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			public void onSelection(final SelectionEvent<TreeItem> selectionEvent) {
 				final TreeItem item = selectionEvent.getSelectedItem();
@@ -109,7 +110,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 				}
 			}
 		});
-		cubeTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+
 
 		baseLayoutPanel.add(cubeTree);
 
@@ -121,6 +122,14 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 
 	}
 	
+	@Override
+	protected void onUnload(){
+		
+	}
+	
+	@Override
+	protected void onLoad(){
+		}
 	/**
 	 * Add an option to the main menu.
 	 * 
