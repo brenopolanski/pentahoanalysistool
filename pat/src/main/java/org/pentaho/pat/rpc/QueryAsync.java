@@ -3,6 +3,7 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -38,6 +39,10 @@ public interface QueryAsync {
 	public void executeQuery(
 		String sessionId,
 		AsyncCallback<OlapData> callback);
+	
+	public void executeQuery2(
+		String sessionId,
+		AsyncCallback<Matrix> callback);
 	
 	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
     

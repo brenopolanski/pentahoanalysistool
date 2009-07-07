@@ -18,6 +18,7 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
+import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
@@ -245,5 +246,17 @@ public class QueryServiceImpl extends AbstractService
 		Query mdx = this.getQuery(userId, sessionId, currentQuery);
 		
 		return OlapUtil.cellSet2OlapData(mdx.execute());
+	}
+	
+	public Matrix executeQuery2(String userId, String sessionId) throws OlapException 
+	{
+	    this.sessionService.validateSession(userId, sessionId);
+	    
+		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
+				sessionId, Constants.CURRENT_QUERY_NAME);
+
+		Query mdx = this.getQuery(userId, sessionId, currentQuery);
+		
+		return OlapUtil.cellSet2Matrix(mdx.execute());
 	}
 }

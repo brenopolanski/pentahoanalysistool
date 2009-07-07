@@ -25,15 +25,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author wseyler
  */
-public class CellInfo implements Serializable, IsSerializable {
+public class CellInfo extends BaseCell implements Serializable, IsSerializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	/** The formatted value. */
-	String formattedValue;
-	
-	/** The raw value. */
-	String rawValue;
 	
 	/** The is column header. */
 	boolean isColumnHeader = false;
@@ -44,6 +38,16 @@ public class CellInfo implements Serializable, IsSerializable {
 	/** The color value. */
 	String colorValue = null; // Color held as hex String
 
+	public CellInfo(){
+	    
+	}
+	
+	public CellInfo(boolean b, boolean c) {
+	    this.right=b;
+	    this.sameAsPrev=c;
+	}
+
+
 	/**
 	 * Gets the color value.
 	 * 
@@ -53,23 +57,6 @@ public class CellInfo implements Serializable, IsSerializable {
 		return colorValue;
 	}
 
-	/**
-	 * Gets the formatted value.
-	 * 
-	 * @return the formatted value
-	 */
-	public String getFormattedValue() {
-		return formattedValue;
-	}
-
-	/**
-	 * Gets the raw value.
-	 * 
-	 * @return the raw value
-	 */
-	public String getRawValue() {
-		return rawValue;
-	}
 
 	/**
 	 * Checks if is column header.
@@ -116,23 +103,6 @@ public class CellInfo implements Serializable, IsSerializable {
 		this.isColumnHeader = isColumnHeader;
 	}
 
-	/**
-	 * Sets the formatted value.
-	 * 
-	 * @param formattedValue the new formatted value
-	 */
-	public void setFormattedValue(final String formattedValue) {
-		this.formattedValue = formattedValue;
-	}
-
-	/**
-	 * Sets the raw value.
-	 * 
-	 * @param rawValue the new raw value
-	 */
-	public void setRawValue(final String rawValue) {
-		this.rawValue = rawValue;
-	}
 
 	/**
 	 * Sets the row header.
@@ -141,13 +111,5 @@ public class CellInfo implements Serializable, IsSerializable {
 	 */
 	public void setRowHeader(final boolean isRowHeader) {
 		this.isRowHeader = isRowHeader;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return formattedValue;
 	}
 }

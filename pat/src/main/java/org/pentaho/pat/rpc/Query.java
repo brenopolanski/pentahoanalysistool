@@ -3,6 +3,8 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.Matrix;
+
 import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -127,4 +129,15 @@ public interface Query extends RemoteService {
 	 */
 	@Secured ({"ROLE_USER"})
 	public OlapData executeQuery(String sessionId) throws RpcException;
+	
+	/**
+	 * Executes the current query.
+	 * You must first make sure to call Sesison.setCurrentQuery() to inform
+     * the backend of your current query selection.
+	 * @param sessionId Identifies the window session id that requested the operation.
+	 * @return The result of the query execution.
+	 * @throws RpcException If something goes sour.
+	 */
+	@Secured ({"ROLE_USER"})
+	public Matrix executeQuery2(String sessionId) throws RpcException;
 }
