@@ -13,6 +13,8 @@
 
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.Arrays;
+
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -27,6 +29,8 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.BaseCell;
+import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -83,8 +87,7 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-		ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<OlapData>() {
-
+	    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<OlapData>() {
 			public void onFailure(final Throwable caught) {
 				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
 			}
@@ -94,7 +97,55 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 			}
 
 		});
+		ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<Matrix>() {
 
+			public void onFailure(final Throwable caught) {
+				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
+			}
+
+			public void onSuccess(Matrix arg0) {
+			    char[] spaces = new char[1000];
+			        Arrays.fill(spaces, ' ');
+			        char[] equals = new char[1000];
+			        Arrays.fill(equals, '=');
+			        char[] dashes = new char[3000];
+			        Arrays.fill(dashes, '-');
+			    // TODO Auto-generated method stub
+			    Matrix matrix = arg0;
+			    for (int y = 0; y < matrix.height; y++) {
+		                for (int x = 0; x < matrix.width; x++) {
+		                    final BaseCell cell = matrix.get(x, y);
+		                    final int len;
+		                    if (cell != null) {
+		                        if (cell.sameAsPrev) {
+		                            System.out.print("  ");
+		                            len = 0;
+		                        } else {
+		                            System.out.print("| ");
+		                            if (cell.right) {
+		                                
+		                                System.out.println(spaces);
+		                                System.out.print(cell.formattedValue);
+		                                System.out.print(' ');
+		                                continue;
+		                            }
+		                            
+		                            System.out.print(cell.formattedValue);
+		                            if (cell.formattedValue!=null)
+		                            len = cell.formattedValue.length();
+		                        }
+		                    } else {
+		                        System.out.print("| ");
+		                        len = 0;
+		                    }
+		                    
+		                    System.out.println(spaces);
+		                }
+		                System.out.println('|');
+		        }
+			}
+
+		});
 	}
 
 	public void onQueryChange(Widget sender) {
