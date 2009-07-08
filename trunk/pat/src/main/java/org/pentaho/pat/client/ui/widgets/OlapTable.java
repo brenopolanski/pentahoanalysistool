@@ -25,8 +25,8 @@ import org.gwt.mosaic.ui.client.table.ScrollTable2;
 import org.pentaho.pat.client.i18n.PatMessages;
 import org.pentaho.pat.client.util.CellSpanInfo;
 import org.pentaho.pat.client.util.OlapUtils;
-import org.pentaho.pat.rpc.dto.CellInfo;
 import org.pentaho.pat.rpc.dto.OlapData;
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
 
 import com.google.gwt.gen2.table.client.AbstractScrollTable;
 import com.google.gwt.gen2.table.client.FixedWidthFlexTable;

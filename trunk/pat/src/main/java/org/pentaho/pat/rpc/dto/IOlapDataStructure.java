@@ -16,6 +16,8 @@
 
 package org.pentaho.pat.rpc.dto;
 
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+
 
 /**
  * The Interface IOlapDataStructure.

@@ -21,9 +21,9 @@ import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
-import org.pentaho.pat.rpc.dto.CellInfo;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.MemberInfo;
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
 
 public class PatCellSetFormatter  { 
     private Matrix matrix;

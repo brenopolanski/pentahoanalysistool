@@ -1,4 +1,4 @@
-package org.pentaho.pat.rpc.dto;
+package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
 
