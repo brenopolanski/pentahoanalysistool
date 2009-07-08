@@ -77,42 +77,21 @@ public class Application extends Viewport {
 		 */
 		void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
 	}
-	
+
 
 
 
 	/** The Application Main Panel. */
-	private static MainMenu mainPanel = null;
+	private static MainMenu menuPanel = null;
 
-	
+
 	/** The bottom Panel for the Application, contains the main panels. */
-	private static LayoutPanel bottomPanel;
-	
+	private static LayoutPanel mainPanel;
+
 	/** The Connection Window for the Application. */
 	private static ConnectionWindow connectionWindow = null;
 
 	private static MainTabPanel mainTabPanel = null;
-
-	public static ConnectionWindow getConnectionWindow() {
-		return connectionWindow;
-	}
-
-	public static void setConnectionWindow(ConnectionWindow connectionWindow) {
-		Application.connectionWindow = connectionWindow;
-	}
-
-	/**
-	 * Gets the bottom panel.
-	 *
-	 * @return the bottom panel
-	 */
-	public static LayoutPanel getBottomPanel() {
-		return bottomPanel;
-	}
-
-
-
-	
 
 	/**
 	 * Constructor.
@@ -122,49 +101,42 @@ public class Application extends Viewport {
 		super();
 
 		// Setup the main layout widget
-		final LayoutPanel layoutPanel = getLayoutPanel();
-		layoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+		final LayoutPanel rootPanel = getLayoutPanel();
+		rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+		mainPanel = new LayoutPanel(new BorderLayout());
+		rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 
-		// Setup the top panel with the title and links
+		mainTabPanel = new MainTabPanel();
+		mainPanel.add(mainTabPanel);
 
-		bottomPanel = new LayoutPanel(new BorderLayout());
-		layoutPanel.add(bottomPanel, new BoxLayoutData(FillStyle.BOTH));
-
-		// Setup the Connection Window
-		 connectionWindow = new ConnectionWindow();
 		// Add the main menu
-
-		final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-
 		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-		westPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+		final CaptionLayoutPanel menuWrapperPanel = new CaptionLayoutPanel();
+		menuWrapperPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
+		menuPanel = new MainMenu();
+		menuWrapperPanel.add(menuPanel);
 
 		collapseBtn.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
-				bottomPanel.setCollapsed(westPanel, true);
-				bottomPanel.layout();
+				mainPanel.setCollapsed(menuWrapperPanel, true);
+				mainPanel.layout();
 			}
 		});
 
-		bottomPanel.add(westPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
+		mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
 
-
-
-
-
-
-		// TODO add maintab panel
-		mainTabPanel = new MainTabPanel();
-		bottomPanel.add(mainTabPanel);
-		mainPanel = new MainMenu();
-		westPanel.add(mainPanel);
 		
+
+		// Setup the Connection Window
+		connectionWindow = new ConnectionWindow();
+
+
 
 	}
 
-	public static MainMenu getMainPanel() {
-		return mainPanel;
+	public static MainMenu getMenuPanel() {
+		return menuPanel;
 	}
 
 	/*
@@ -186,5 +158,23 @@ public class Application extends Viewport {
 	public static MainTabPanel getMainTabPanel() {
 		return mainTabPanel;
 	}
+
+	public static ConnectionWindow getConnectionWindow() {
+		return connectionWindow;
+	}
+
+	public static void setConnectionWindow(ConnectionWindow connectionWindow) {
+		Application.connectionWindow = connectionWindow;
+	}
+
+	/**
+	 * Gets the bottom panel.
+	 *
+	 * @return the bottom panel
+	 */
+	public static LayoutPanel getMainPanel() {
+		return mainPanel;
+	}
+
 
 }
