@@ -66,7 +66,7 @@ public class DimensionPanel extends LayoutComposite {
 	
 
 	setTableRowDragController(new FlexTableRowDragController(Application
-		.getBottomPanel()));
+		.getMainPanel()));
 	
 	dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
 		.unused(), Axis.UNUSED);

@@ -42,8 +42,8 @@ public class MainTabPanel extends LayoutComposite {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof QueryPanel){
-					Application.getMainPanel().showMenu(2);
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback(){
+					Application.getMenuPanel().showMenu(2);
+					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
 
 						public void onFailure(final Throwable arg0) {
 							//TODO proper messages
@@ -53,7 +53,7 @@ public class MainTabPanel extends LayoutComposite {
 						public void onSuccess(final Object arg0) {
 
 
-							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((QueryPanel) widget).getQuery(), new AsyncCallback(){
+							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((QueryPanel) widget).getQuery(), new AsyncCallback<Object>(){
 
 								public void onFailure(final Throwable arg0) {
 									//TODO proper messages
@@ -107,8 +107,8 @@ public class MainTabPanel extends LayoutComposite {
 					contentWrapper.layout();
 				}
 				if (contentWrapper.getWidgetCount() == 1) {
-					Application.getMainPanel().getStackPanel().showStack(1);
-					Application.getMainPanel().getStackPanel().layout();
+					Application.getMenuPanel().getStackPanel().showStack(1);
+					Application.getMenuPanel().getStackPanel().layout();
 				}
 				counter--;
 			}
