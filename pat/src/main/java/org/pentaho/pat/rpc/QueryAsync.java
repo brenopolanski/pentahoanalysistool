@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -35,10 +34,6 @@ public interface QueryAsync {
 		String dimensionName, 
 		List<String> memberNames,
 		AsyncCallback callback);
-	
-	public void executeQuery(
-		String sessionId,
-		AsyncCallback<OlapData> callback);
 	
 	public void executeQuery2(
 		String sessionId,

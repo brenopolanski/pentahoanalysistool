@@ -7,7 +7,6 @@ import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -117,19 +116,6 @@ public interface QueryService extends Service {
 		String sessionId,
 		String dimensionName, 
 		List<String> memberNames);
-	
-	/**
-	 * Executes a query.
-	 * You must first specify onto which query to perform the
-     * operation via Session.setCurrentQuery().
-     * @param userId The owner of the query.
-     * @param sessionId The session id into which the query is stored.
-	 * @return The resultset of the query as a OlapData object.
-	 * @throws OlapException If something goes sour.
-	 */
-	@Secured ({"ROLE_USER"})
-	public OlapData executeQuery(String userId, 
-			String sessionId) throws OlapException;
 	
 	/**
 	 * Executes a query.

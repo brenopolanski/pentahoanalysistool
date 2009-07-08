@@ -22,13 +22,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.ui.widgets.OlapTableDev;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
