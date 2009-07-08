@@ -87,23 +87,15 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-	    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<OlapData>() {
-			public void onFailure(final Throwable caught) {
-				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
-			}
-
-			public void onSuccess(final OlapData olapData) {
-				GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, olapData);
-			}
-
-		});
-		ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<Matrix>() {
+	    	ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<Matrix>() {
 
 			public void onFailure(final Throwable caught) {
 				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
 			}
 
 			public void onSuccess(Matrix matrix) {
+			    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
+
 			    char[] spaces = new char[1000];
 			        Arrays.fill(spaces, ' ');
 			        char[] equals = new char[1000];
@@ -149,7 +141,7 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 		
 	}
 
-	public void onQueryExecuted(String queryId, OlapData olapData) {
+	public void onQueryExecuted(String queryId, Matrix olapData) {
 		// TODO Auto-generated method stub
 		
 	}

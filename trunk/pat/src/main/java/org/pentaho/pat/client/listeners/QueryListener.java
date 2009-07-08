@@ -19,6 +19,7 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.EventListener;
 
+import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -33,6 +34,6 @@ public interface QueryListener extends EventListener {
 	
 	public void onQueryChange(Widget sender);
 	
-	public void onQueryExecuted(String queryId, OlapData olapData);
+	public void onQueryExecuted(String queryId, Matrix olapData);
 	
 }

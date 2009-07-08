@@ -23,9 +23,11 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.ui.widgets.OlapTableDev;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -40,8 +42,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class QueryPanel extends DataWidget implements QueryListener {
 
 	/** The olap table. */
-	private transient OlapTable olapTable = new OlapTable(MessageFactory.getInstance());
-
+	//private transient OlapTable olapTable = new OlapTable(MessageFactory.getInstance());
+	private transient OlapTableDev olapTable = new OlapTableDev();
 	/** Panel Name. */
 	private transient String name;
 
@@ -174,7 +176,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		qmSelectionPanel.setQueryId(query);
 	}
 	
-	public OlapTable getTable(){
+	public OlapTableDev getTable(){
 		return olapTable;
 	}
 
@@ -183,10 +185,10 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		
 	}
 
-	public void onQueryExecuted(String queryId, OlapData olapData) {
+	public void onQueryExecuted(String queryId, Matrix olapData) {
 		if (this.query != null && queryId == this.query) {
 			// TODO why is this called twice? why two instances of the same object?
-			olapTable.setData(olapData);
+			olapTable.setData(olapData, true);
 		}
 	}
 }

@@ -4,14 +4,19 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
+import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.util.PatTableModel;
+import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.OlapData;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
@@ -27,6 +32,9 @@ import com.google.gwt.user.client.Window;
  */
 public class OlapTableDev extends LayoutComposite {
 
+	private boolean initialized;
+	private Matrix olapData;
+	List data = null;
 	public OlapTableDev(){
 		super();
 	}
@@ -42,8 +50,8 @@ public class OlapTableDev extends LayoutComposite {
 
 
 	public void initTable(){
-		PatTableModel patTableModel = new PatTableModel();
-		final List data = patTableModel.getRowData();
+		PatTableModel patTableModel = new PatTableModel(olapData);
+		data = Arrays.asList(patTableModel.getRowData());
 		
 	    TableModel tableModel = new IterableTableModel(data) {
 	        @Override
@@ -54,7 +62,12 @@ public class OlapTableDev extends LayoutComposite {
 
 	    @Override
 	      public void requestRows(Request request, Callback callback) {
-	        int numRows = request.getNumRows();
+		 int numRows;
+	        if(olapData.getMatrixHeight()<50)
+	            numRows = olapData.getMatrixHeight();
+	        else 
+	            numRows = request.getNumRows();
+	        
 	        List list = new ArrayList();
 	        for (int i = 0, n = numRows; i < n; i++) {
 	          list.add(data.get(request.getStartRow() + i));
@@ -72,7 +85,9 @@ public class OlapTableDev extends LayoutComposite {
 	        Window.alert(event.getSource().getClass().getName());
 	      }
 	    });
-
+this.getLayoutPanel().add(table);
+this.getLayoutPanel().layout();
+this.layout();
 	}
 
 	/**
@@ -80,9 +95,55 @@ public class OlapTableDev extends LayoutComposite {
 	 *
 	 * @return
 	 */
-	private TableDefinition createTableDefinition() {
-		// TODO Auto-generated method stub
-		return null;
+	private TableDefinition<BaseCell[]> createTableDefinition() {
+	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
+	    // tableDef.setRowRenderer(new DefaultRowRenderer<Person>(new String[] {
+	    // "#f00", "#00f" }));
+
+	   /* DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
+	        "#") {
+	      @Override
+	      public String getCellValue(BaseCell[] rowValue) {
+		  
+	        return rowValue[0].formattedValue;
+	      }
+	    };
+	    tableDef.addColumnDefinition(colDef0);
+
+	    DefaultColumnDefinition<BaseCell[], String> colDef1 = new DefaultColumnDefinition<BaseCell[], String>(
+	        "Col 1") {
+	      @Override
+	      public String getCellValue(BaseCell[] rowValue) {
+	        return rowValue[1].formattedValue;
+	      }
+	    };
+	    tableDef.addColumnDefinition(colDef1);*/
+
+	    for (int i=0; i < olapData.getMatrixWidth(); i++){
+		BaseCell[] headers = (BaseCell[]) data.get(0);
+		 DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
+		        headers[i].formattedValue) {
+		      @Override
+		      public String getCellValue(BaseCell[] rowValue) {
+			return null;
+			  
+		        //return rowValue[].formattedValue;
+		      }
+		    };
+		    tableDef.addColumnDefinition(colDef0);
+	    }
+	    return tableDef;
+	  }
+
+
+	
+	public void setData(final Matrix olapData, final boolean refresh) {
+		initialized = true;
+		this.olapData = olapData;
+		if (refresh) {
+		    initTable();
+		}
 	}
+
 	
 }
