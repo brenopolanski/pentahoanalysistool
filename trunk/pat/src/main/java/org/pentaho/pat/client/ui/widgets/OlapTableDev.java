@@ -11,7 +11,6 @@ import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -121,15 +120,16 @@ this.layout();
 
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
 		BaseCell[] headers = (BaseCell[]) data.get(0);
-		 DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
+		DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
 		        headers[i].formattedValue) {
 		      @Override
 		      public String getCellValue(BaseCell[] rowValue) {
-			return null;
+		    	  return rowValue.toString();
 			  
 		        //return rowValue[].formattedValue;
 		      }
 		    };
+		    
 		    tableDef.addColumnDefinition(colDef0);
 	    }
 	    return tableDef;

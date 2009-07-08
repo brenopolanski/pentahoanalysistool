@@ -12,7 +12,6 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
@@ -105,16 +104,6 @@ public class QueryServlet extends AbstractServlet implements Query {
 			dimensionName);
 	}
 
-	public OlapData executeQuery(String sessionId) throws RpcException 
-	{
-		try {
-			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
-		} catch (OlapException e) {
-		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
-			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
-		}
-	}
-	
 	public Matrix executeQuery2(String sessionId) throws RpcException 
 	{
 		try {

@@ -19,7 +19,6 @@ import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -148,6 +147,7 @@ public class QueryServiceImpl extends AbstractService
         sessionService.getSession(userId, sessionId).getQueries().remove(queryId);
     }
 	
+	@SuppressWarnings("deprecation")
 	public void clearSelection(String userId, String sessionId, 
 			String dimensionName, List<String> memberNames) 
 	{
@@ -163,6 +163,7 @@ public class QueryServiceImpl extends AbstractService
 	    qDim.getSelections().remove(selection);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void createSelection(String userId, String sessionId,
             String dimensionName, List<String> memberNames,
             Operator selectionType) throws OlapException
@@ -188,7 +189,7 @@ public class QueryServiceImpl extends AbstractService
         {
             // Let's try with only the dimension name in front.
             List<String> dimPlusMemberNames = new ArrayList<String>();
-            dimPlusMemberNames.add(dimensionName); //$NON-NLS-1$
+            dimPlusMemberNames.add(dimensionName);
             dimPlusMemberNames.addAll(memberNames);
             member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
@@ -235,18 +236,6 @@ public class QueryServiceImpl extends AbstractService
 	    	.add(query.getDimension(dimensionName));
 	}
 
-
-	public OlapData executeQuery(String userId, String sessionId) throws OlapException 
-	{
-	    this.sessionService.validateSession(userId, sessionId);
-	    
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-
-		Query mdx = this.getQuery(userId, sessionId, currentQuery);
-		
-		return OlapUtil.cellSet2OlapData(mdx.execute());
-	}
 	
 	public Matrix executeQuery2(String userId, String sessionId) throws OlapException 
 	{

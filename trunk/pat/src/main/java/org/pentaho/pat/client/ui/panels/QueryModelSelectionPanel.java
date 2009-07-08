@@ -13,8 +13,6 @@
 
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.Arrays;
-
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -30,8 +28,6 @@ import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -93,46 +89,9 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
 			}
 
-			public void onSuccess(Matrix matrix) {
-			    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
-
-			    char[] spaces = new char[1000];
-			        Arrays.fill(spaces, ' ');
-			        char[] equals = new char[1000];
-			        Arrays.fill(equals, '=');
-			        char[] dashes = new char[3000];
-			        Arrays.fill(dashes, '-');
-			    
-			    
-			    for (int y = 0; y < matrix.getMatrixHeight(); y++) {
-		                for (int x = 0; x < matrix.getMatrixWidth(); x++) {
-		                    final BaseCell cell = matrix.get(x, y);
-		                    if (cell != null) {
-		                        if (cell.sameAsPrev) {
-		                            System.out.print("  ");
-		                        } else {
-		                            System.out.print("| ");
-		                            if (cell.right) {
-		                                
-		                                System.out.print(spaces);
-		                                System.out.print(cell.formattedValue);
-		                                System.out.print(' ');
-		                                continue;
-		                            }
-		                            
-		                            System.out.print(cell.formattedValue);
-		                                                        
-		                        }
-		                    } else {
-		                        System.out.print("| ");
-		                    }
-		                    
-		                    System.out.print(spaces);
-		                }
-		                System.out.println('|');
-		        }
+			public void onSuccess(final Matrix matrix) {
+				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
 			}
-
 		});
 	}
 
