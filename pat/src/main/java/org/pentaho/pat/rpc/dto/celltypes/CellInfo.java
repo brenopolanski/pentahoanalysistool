@@ -14,9 +14,10 @@
  * @author wseyler
  */
 
-package org.pentaho.pat.rpc.dto;
+package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

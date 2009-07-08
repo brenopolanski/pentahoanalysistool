@@ -19,12 +19,12 @@ import org.olap4j.query.RectangularCellSetFormatter;
 import org.olap4j.query.Selection;
 
 import org.pentaho.pat.rpc.dto.CellData;
-import org.pentaho.pat.rpc.dto.CellInfo;
 import org.pentaho.pat.rpc.dto.ColumnHeaders;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 import org.pentaho.pat.rpc.dto.RowHeaders;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
 import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 

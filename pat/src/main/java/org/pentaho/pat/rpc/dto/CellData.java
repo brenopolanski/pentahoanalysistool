@@ -18,6 +18,8 @@ package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

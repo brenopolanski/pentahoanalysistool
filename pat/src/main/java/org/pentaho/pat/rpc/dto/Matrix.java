@@ -6,15 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.pat.rpc.dto.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Matrix implements Serializable, IsSerializable {
     private static final long serialVersionUID = 1L;
     private Map<List<Integer>, BaseCell> map =
         new HashMap<List<Integer>, BaseCell>();
-    public int width=0;
-    public int height=0;
+    private int width=0;
+    private int height=0;
 
     public Matrix(){}
     /**
@@ -81,4 +84,50 @@ public class Matrix implements Serializable, IsSerializable {
     public BaseCell get(int x, int y) {
         return map.get(Arrays.asList(x, y));
     }
+	/**
+	 *TODO JAVADOC
+	 * @return the width
+	 */
+	public int getMatrixWidth() {
+		return width;
+	}
+	/**
+	 *
+	 *TODO JAVADOC
+	 * @param width the width to set
+	 */
+	public void setMatrixWidth(int width) {
+		this.width = width;
+	}
+	/**
+	 *TODO JAVADOC
+	 * @return the height
+	 */
+	public int getMatrixHeight() {
+		return height;
+	}
+	/**
+	 *
+	 *TODO JAVADOC
+	 * @param height the height to set
+	 */
+	public void setMatrixHeight(int height) {
+		this.height = height;
+	}
+	/**
+	 *TODO JAVADOC
+	 * @return the map
+	 */
+	public Map<List<Integer>, BaseCell> getMap() {
+		return map;
+	}
+	/**
+	 *
+	 *TODO JAVADOC
+	 * @param map the map to set
+	 */
+	public void setMap(Map<List<Integer>, BaseCell> map) {
+		this.map = map;
+	}
+	
 }
