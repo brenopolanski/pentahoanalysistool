@@ -3,7 +3,7 @@ package org.pentaho.pat.client.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 /**
  * The Class OlapUtils.
@@ -18,8 +18,8 @@ public class OlapUtils {
 	 * 
 	 * @return the cell info[]
 	 */
-	public static CellInfo[] extractColumn(final CellInfo[][] cellInfoGrid, final int column) {
-		final CellInfo[] values = new CellInfo[cellInfoGrid.length];
+	public static DataCell[] extractColumn(final DataCell[][] cellInfoGrid, final int column) {
+		final DataCell[] values = new DataCell[cellInfoGrid.length];
 		for (int row = 0; row < cellInfoGrid.length; row++) {
 			values[row] = cellInfoGrid[row][column];
 		}
@@ -34,7 +34,7 @@ public class OlapUtils {
 	 * 
 	 * @return the cell info[]
 	 */
-	public static CellInfo[] extractRow(final CellInfo[][] cellInfoGrid, final int row) {
+	public static DataCell[] extractRow(final DataCell[][] cellInfoGrid, final int row) {
 		return cellInfoGrid[row];
 	}
 
@@ -45,9 +45,9 @@ public class OlapUtils {
 	 * 
 	 * @return the cell spans
 	 */
-	public static List<CellSpanInfo> getCellSpans(final CellInfo[] cellInfos) {
+	public static List<CellSpanInfo> getCellSpans(final DataCell[] cellInfos) {
 		final List<CellSpanInfo> spans = new ArrayList<CellSpanInfo>();
-		CellInfo holdValue = cellInfos != null && cellInfos.length > 0 ? cellInfos[0] : null;
+		DataCell holdValue = cellInfos != null && cellInfos.length > 0 ? cellInfos[0] : null;
 		int span = 1;
 
 		for (int i = 1; i < cellInfos.length; i++) {

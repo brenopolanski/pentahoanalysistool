@@ -1,6 +1,6 @@
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 /**
  * The Class CellSpanInfo.
@@ -8,7 +8,7 @@ import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
 public class CellSpanInfo {
 	
 	/** The info. */
-	private final CellInfo info;
+	private final DataCell info;
 	
 	/** The span. */
 	private int span = 1;
@@ -19,7 +19,7 @@ public class CellSpanInfo {
 	 * @param info the info
 	 * @param span the span
 	 */
-	public CellSpanInfo(final CellInfo info, final int span) {
+	public CellSpanInfo(final DataCell info, final int span) {
 		this.info = info;
 		this.span = span;
 	}
@@ -29,7 +29,7 @@ public class CellSpanInfo {
 	 * 
 	 * @return the info
 	 */
-	public CellInfo getInfo() {
+	public DataCell getInfo() {
 		return info;
 	}
 

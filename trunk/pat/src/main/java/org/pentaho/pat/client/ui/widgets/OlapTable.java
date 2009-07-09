@@ -14,7 +14,7 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -34,14 +34,13 @@ import com.google.gwt.user.client.ui.Widget;
  * @author bugg
  *
  */
-public class OlapTableDev extends LayoutComposite implements QueryListener {
-	private List<AbstractColumnDefinition<BaseCell[], ?>> columnDefs;
+public class OlapTable extends LayoutComposite implements QueryListener {
 	private boolean initialized;
 	private Matrix olapData;
 	private int offset;
 	PatTableModel patTableModel;
 	
-	public OlapTableDev(){
+	public OlapTable(){
 		super();
 	}
 	

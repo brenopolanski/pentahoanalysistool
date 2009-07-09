@@ -18,7 +18,7 @@ package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -33,7 +33,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 	private static final long serialVersionUID = 1L;
 	
 	/** The row header members. */
-	CellInfo[][] rowHeaderMembers;
+	DataCell[][] rowHeaderMembers;
 
 	/**
 	 * Instantiates a new row headers.
@@ -47,7 +47,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 	 * 
 	 * @param rowHeaderMembers the row header members
 	 */
-	public RowHeaders(final CellInfo[][] rowHeaderMembers) {
+	public RowHeaders(final DataCell[][] rowHeaderMembers) {
 		this();
 		setRowHeaderMembers(rowHeaderMembers);
 	}
@@ -64,7 +64,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 		if (rowHeaderMembers != null) {
 			for (int r = 0; r < getDownCount(); r++) {
 				for (int c = 0; c < getAcrossCount(); c++) {
-					final CellInfo cell = getCell(r, c);
+					final DataCell cell = getCell(r, c);
 					if (cell == null && c > 0) {
 						rowHeaderMembers[r][c] = getCell(r, c - 1);
 					}
@@ -88,7 +88,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 	 * 
 	 * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
 	 */
-	public CellInfo getCell(final int row, final int column) {
+	public DataCell getCell(final int row, final int column) {
 		return rowHeaderMembers == null ? null : rowHeaderMembers[row][column];
 	}
 
@@ -107,7 +107,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 	 * 
 	 * @return the row header members
 	 */
-	public CellInfo[][] getRowHeaderMembers() {
+	public DataCell[][] getRowHeaderMembers() {
 		return rowHeaderMembers;
 	}
 
@@ -116,7 +116,7 @@ public class RowHeaders implements IOlapDataStructure, IsSerializable, Serializa
 	 * 
 	 * @param rowHeaderMembers the new row header members
 	 */
-	public void setRowHeaderMembers(final CellInfo[][] rowHeaderMembers) {
+	public void setRowHeaderMembers(final DataCell[][] rowHeaderMembers) {
 		this.rowHeaderMembers = rowHeaderMembers;
 		equalize();
 	}

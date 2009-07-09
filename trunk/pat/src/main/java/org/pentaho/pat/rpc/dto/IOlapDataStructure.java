@@ -16,7 +16,7 @@
 
 package org.pentaho.pat.rpc.dto;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 
 /**
@@ -41,7 +41,7 @@ public interface IOlapDataStructure {
 	 * 
 	 * @return the cell
 	 */
-	public CellInfo getCell(int row, int column);
+	public DataCell getCell(int row, int column);
 
 	/**
 	 * Gets the down count.

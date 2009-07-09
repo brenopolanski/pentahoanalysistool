@@ -22,8 +22,8 @@ import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
-import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 public class PatCellSetFormatter  { 
     private Matrix matrix;
@@ -123,7 +123,7 @@ public class PatCellSetFormatter  {
 	// Populate corner
 	for (int x = 0; x < xOffsset; x++) {
 	    for (int y = 0; y < yOffset; y++) {
-		MemberInfo memberInfo = new MemberInfo(false, x > 0);
+		MemberCell memberInfo = new MemberCell(false, x > 0);
 		matrix.set(x, y, memberInfo);
 	    }
 	}
@@ -144,7 +144,7 @@ public class PatCellSetFormatter  {
 	    if (coordList.size() > 1) {
 		y += coordList.get(1);
 	    }
-	    CellInfo cellInfo = new CellInfo(true, false);
+	    DataCell cellInfo = new DataCell(true, false);
 	    cellInfo.setRawValue(cell.getFormattedValue());
 	    String cellValue = cell.getFormattedValue(); // First try to get a
 							 // formatted value
@@ -216,7 +216,7 @@ public class PatCellSetFormatter  {
                     && i > 0
                     && Olap4jUtil.equal(prevMembers[y], member);
                                     
-                MemberInfo memberInfo = new MemberInfo();
+                MemberCell memberInfo = new MemberCell();
                 if(member!=null){
                 	if(x-1==offset){
                 		memberInfo.setLastRow(true);
