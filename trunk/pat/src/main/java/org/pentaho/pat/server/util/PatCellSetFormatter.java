@@ -218,6 +218,11 @@ public class PatCellSetFormatter  {
                                     
                 MemberInfo memberInfo = new MemberInfo();
                 if(member!=null){
+                	if(x-1==offset){
+                		memberInfo.setLastRow(true);
+                	}
+                	
+                matrix.setOffset(offset);
                 memberInfo.setRawValue(member.getCaption(null));
     	        memberInfo.setFormattedValue(member.getCaption(null));  // First try to get a formatted value
                 }

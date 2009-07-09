@@ -9,7 +9,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class MemberInfo extends BaseCell implements Serializable, IsSerializable{
     private static final long serialVersionUID = 1L;
  
-    private boolean lastRow = false; 
+    private boolean lastRow = false;
+
+	private int offset; 
     public MemberInfo(){
 	
     }
@@ -35,5 +37,4 @@ public class MemberInfo extends BaseCell implements Serializable, IsSerializable
 	public void setLastRow(boolean lastRow) {
 		this.lastRow = lastRow;
 	}
-
 }

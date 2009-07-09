@@ -18,6 +18,7 @@ public class Matrix implements Serializable, IsSerializable {
         new HashMap<List<Integer>, BaseCell>();
     private int width=0;
     private int height=0;
+	private int offset;
 
     public Matrix(){}
     /**
@@ -128,6 +129,14 @@ public class Matrix implements Serializable, IsSerializable {
 	 */
 	public void setMap(Map<List<Integer>, BaseCell> map) {
 		this.map = map;
+	}
+	public void setOffset(int offset) {
+		// TODO Auto-generated method stub
+		this.offset = offset;
+	}
+	public int getOffset() {
+		return offset;
+		
 	}
 	
 }

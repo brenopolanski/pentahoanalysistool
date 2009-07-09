@@ -55,5 +55,10 @@ public class PatTableModel {
 		return values;
 	}
 
+	public int getOffset() {
+		
+		return olapMatrix.getOffset();
+	}
+
 
 }
