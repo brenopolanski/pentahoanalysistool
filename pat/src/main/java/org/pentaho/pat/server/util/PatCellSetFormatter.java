@@ -123,8 +123,8 @@ public class PatCellSetFormatter  {
 	// Populate corner
 	for (int x = 0; x < xOffsset; x++) {
 	    for (int y = 0; y < yOffset; y++) {
-		CellInfo cellInfo = new CellInfo(false, x > 0);
-		matrix.set(x, y, cellInfo);
+		MemberInfo memberInfo = new MemberInfo(false, x > 0);
+		matrix.set(x, y, memberInfo);
 	    }
 	}
 

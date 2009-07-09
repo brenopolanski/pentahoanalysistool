@@ -30,12 +30,6 @@ public class CellInfo extends BaseCell implements Serializable, IsSerializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	/** The is column header. */
-	boolean isColumnHeader = false;
-	
-	/** The is row header. */
-	boolean isRowHeader = false;
-	
 	/** The color value. */
 	String colorValue = null; // Color held as hex String
 
@@ -57,35 +51,7 @@ public class CellInfo extends BaseCell implements Serializable, IsSerializable {
 	public String getColorValue() {
 		return colorValue;
 	}
-
-
-	/**
-	 * Checks if is column header.
-	 * 
-	 * @return true, if is column header
-	 */
-	public boolean isColumnHeader() {
-		return isColumnHeader;
-	}
-
-	/**
-	 * Checks if is header.
-	 * 
-	 * @return true, if is header
-	 */
-	public boolean isHeader() {
-		return isRowHeader() || isColumnHeader();
-	}
-
-	/**
-	 * Checks if is row header.
-	 * 
-	 * @return true, if is row header
-	 */
-	public boolean isRowHeader() {
-		return isRowHeader;
-	}
-
+	
 	/**
 	 * Sets the color value.
 	 * 
@@ -95,22 +61,4 @@ public class CellInfo extends BaseCell implements Serializable, IsSerializable {
 		this.colorValue = colorValue;
 	}
 
-	/**
-	 * Sets the column header.
-	 * 
-	 * @param isColumnHeader the new column header
-	 */
-	public void setColumnHeader(final boolean isColumnHeader) {
-		this.isColumnHeader = isColumnHeader;
-	}
-
-
-	/**
-	 * Sets the row header.
-	 * 
-	 * @param isRowHeader the new row header
-	 */
-	public void setRowHeader(final boolean isRowHeader) {
-		this.isRowHeader = isRowHeader;
-	}
 }
