@@ -135,11 +135,8 @@ public class Application extends Viewport {
 		
 				mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
 			}
+			connectionWindow = new ConnectionWindow();
 			
-			if (Pat.getInitialState().getMode().isManageConnections()) {
-				// Setup the Connection Window
-				connectionWindow = new ConnectionWindow();
-			}
 		}
 		else {
 			rootPanel.add(new OlapTableDev());

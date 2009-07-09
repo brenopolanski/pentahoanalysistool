@@ -11,8 +11,9 @@ public class State {
 
 	public static enum Mode {
 		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false,false),  //$NON-NLS-1$
-		STANDALONE("STANDALONE", true,true,true,false,true,true,true); //$NON-NLS-1$
-
+		STANDALONE("STANDALONE", true,true,true,false,true,true,true), //$NON-NLS-1$
+		USER("STANDALONE", true,false,true,false,true,true,true); //$NON-NLS-1$
+		
 		private String param;
 		
 		private boolean showConnections;

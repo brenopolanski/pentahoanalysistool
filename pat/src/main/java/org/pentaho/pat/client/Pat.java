@@ -19,6 +19,7 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
+import org.pentaho.pat.client.demo.DemoSetup;
 import org.pentaho.pat.client.i18n.PatConstants;
 import org.pentaho.pat.client.images.PatImages;
 import org.pentaho.pat.client.util.State;
@@ -116,6 +117,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		
 				    public void onSuccess(final String arg0) {
 					initialState.setSession(arg0);
+					new DemoSetup(State.Mode.USER,arg0);
 				    }
 				});
 		    }
@@ -243,6 +245,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		updateStyleSheets();
 		com.google.gwt.user.client.DOM
 				.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 	}
 
 	
