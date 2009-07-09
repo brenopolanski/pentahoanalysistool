@@ -9,6 +9,8 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
@@ -24,6 +26,7 @@ import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *TODO JAVADOC
@@ -31,7 +34,7 @@ import com.google.gwt.user.client.Window;
  * @author bugg
  *
  */
-public class OlapTableDev extends LayoutComposite {
+public class OlapTableDev extends LayoutComposite implements QueryListener {
 	private List<AbstractColumnDefinition<BaseCell[], ?>> columnDefs;
 	private boolean initialized;
 	private Matrix olapData;
@@ -131,6 +134,18 @@ public class OlapTableDev extends LayoutComposite {
 		    initTable();
 		}
 	}
+	
+	public void onQueryChange(Widget sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onQueryExecuted(String queryId, Matrix olapData) {
+		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
+			setData(olapData, true);
+		}
+	}
+
 
 	
 }

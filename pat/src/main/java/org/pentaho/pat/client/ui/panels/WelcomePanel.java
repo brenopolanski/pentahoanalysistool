@@ -160,11 +160,13 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 				public void onClick(ClickEvent arg0) {
 					//createSizedWindowPanel();
 					//sized.showModal();
-					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", "");
+					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 	    });
 
-	    buttonBar.add(conButton);
+	    if (Pat.getInitialState().getMode().isManageConnections()) {
+	    	buttonBar.add(conButton);
+	    }
 	    buttonBar.add(patwikiBtn);
 
 	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.BOTH));
@@ -178,7 +180,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    sized = new WindowPanel("Sized");
 	    sized.setAnimationEnabled(true);
 	    sized.setSize("812px", "484px");
-	    final Frame frame = new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6");
+	    final Frame frame = new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"); //$NON-NLS-1$
 	    DOM.setStyleAttribute(frame.getElement(), "border", "none");
 	    sized.setWidget(frame);
 

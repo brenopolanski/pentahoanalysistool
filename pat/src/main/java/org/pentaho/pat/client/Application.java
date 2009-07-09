@@ -29,6 +29,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.ui.widgets.OlapTableDev;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -99,23 +102,27 @@ public class Application extends Viewport {
 
 	public Application() {
 		super();
+		final LayoutPanel rootPanel = getLayoutPanel();
+		rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 		// Setup the main layout widget
 		if (Pat.getInitialState().getMode().isShowOnlyTable() == false) {
-			final LayoutPanel rootPanel = getLayoutPanel();
-			rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 			mainPanel = new LayoutPanel(new BorderLayout());
 			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 	
 			mainTabPanel = new MainTabPanel();
 			mainPanel.add(mainTabPanel);
-	
+			
+			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
+				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+			}
+
 			// Add the main menu
-			final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-			final CaptionLayoutPanel menuWrapperPanel = new CaptionLayoutPanel();
-			menuWrapperPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
-	
 			if (Pat.getInitialState().getMode().isShowMenu()) {
+				final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+				final CaptionLayoutPanel menuWrapperPanel = new CaptionLayoutPanel();
+				menuWrapperPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+		
 				menuPanel = new MainMenu();
 				menuWrapperPanel.add(menuPanel);
 		
@@ -133,6 +140,10 @@ public class Application extends Viewport {
 				// Setup the Connection Window
 				connectionWindow = new ConnectionWindow();
 			}
+		}
+		else {
+			rootPanel.add(new OlapTableDev());
+			
 		}
 	}
 

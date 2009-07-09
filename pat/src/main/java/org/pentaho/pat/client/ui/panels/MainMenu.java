@@ -82,18 +82,21 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			baseLayoutPanel.add(stackPanel);
 			GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 			GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
+
 			if (Pat.getInitialState().getMode().isShowConnections()) {
 				addMenuItem(connectionsPanel, ConstantFactory.getInstance().connections());
 			}
+			
 			if (Pat.getInitialState().getMode().isShowCubeMenu()) {
 				addMenuItem(cubeMenu, ConstantFactory.getInstance().cubes());
 			}
-			addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
+			
+			if (Pat.getInitialState().getMode().isShowDimensionMenu()) {
+				addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
+			}
+			
 			showNamedMenu(MenuItem.Connections);
 	
-			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
-				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
-			}
 		}
 	}
 	/**
