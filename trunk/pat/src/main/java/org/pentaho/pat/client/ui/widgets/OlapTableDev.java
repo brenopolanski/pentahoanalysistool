@@ -37,6 +37,8 @@ public class OlapTableDev extends LayoutComposite {
 	private Matrix olapData;
 	List data = null;
 	private int offset;
+	PatTableModel patTableModel;
+	
 	public OlapTableDev(){
 		super();
 	}
@@ -52,7 +54,7 @@ public class OlapTableDev extends LayoutComposite {
 
 
 	public void initTable(){
-		PatTableModel patTableModel = new PatTableModel(olapData);
+		patTableModel = new PatTableModel(olapData);
 		data = Arrays.asList(patTableModel.getRowData());
 		offset = patTableModel.getOffset();
 	    TableModel tableModel = new IterableTableModel(data) {
@@ -99,9 +101,10 @@ public class OlapTableDev extends LayoutComposite {
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
 	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-	    
+
+	    List colData = Arrays.asList(patTableModel.getColumnHeaders());
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
-		BaseCell[] headers = (BaseCell[]) data.get(offset-1);
+		BaseCell[] headers = (BaseCell[]) colData.get(offset-1);
 		
 		final int cell = i;
 		
