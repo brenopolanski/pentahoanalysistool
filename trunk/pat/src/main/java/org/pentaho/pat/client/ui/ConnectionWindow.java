@@ -107,7 +107,8 @@ public class ConnectionWindow extends WindowPanel implements ConnectionListener 
 	public void onConnectionMade(final Widget sender) {
 		setConnectionEstablished(true);
 		if(this.isVisible()) {
-			ConnectionWindow.this.hide();
+			if (ConnectionWindow.this.isAttached())
+				ConnectionWindow.this.hide();
 		}
 	}
 
