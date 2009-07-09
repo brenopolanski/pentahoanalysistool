@@ -185,7 +185,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	public void onQueryExecuted(String queryId, Matrix olapData) {
 		if (this.query != null && queryId == this.query) {
 			// TODO why is this called twice? why two instances of the same object?
-			olapTable.setData(olapData);
+			olapTable.setData(olapData,true);
 		}
 	}
 }
