@@ -18,7 +18,7 @@ package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -33,7 +33,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 	private static final long serialVersionUID = 1L;
 	
 	/** The column header members. */
-	CellInfo[][] columnHeaderMembers;
+	DataCell[][] columnHeaderMembers;
 
 	/**
 	 * Instantiates a new column headers.
@@ -47,7 +47,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 	 * 
 	 * @param columnHeaderMembers the column header members
 	 */
-	public ColumnHeaders(final CellInfo[][] columnHeaderMembers) {
+	public ColumnHeaders(final DataCell[][] columnHeaderMembers) {
 		this();
 		setColumnHeaderMembers(columnHeaderMembers);
 	}
@@ -67,7 +67,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 	 * 
 	 * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
 	 */
-	public CellInfo getCell(final int row, final int column) {
+	public DataCell getCell(final int row, final int column) {
 		return columnHeaderMembers == null ? null : columnHeaderMembers[row][column];
 	}
 
@@ -76,7 +76,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 	 * 
 	 * @return the column header members
 	 */
-	public CellInfo[][] getColumnHeaderMembers() {
+	public DataCell[][] getColumnHeaderMembers() {
 		return columnHeaderMembers;
 	}
 
@@ -97,7 +97,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 		if (columnHeaderMembers != null) {
 			for (int r = 0; r < getDownCount(); r++) {
 				for (int c = 0; c < getAcrossCount(); c++) {
-					final CellInfo cell = getCell(r, c);
+					final DataCell cell = getCell(r, c);
 					if (cell == null && r > 0) {
 						columnHeaderMembers[r][c] = getCell(r - 1, c);
 					}
@@ -111,7 +111,7 @@ public class ColumnHeaders implements IOlapDataStructure, IsSerializable, Serial
 	 * 
 	 * @param columnHeaderMembers the new column header members
 	 */
-	public void setColumnHeaderMembers(final CellInfo[][] columnHeaderMembers) {
+	public void setColumnHeaderMembers(final DataCell[][] columnHeaderMembers) {
 		this.columnHeaderMembers = columnHeaderMembers;
 		normalize();
 	}

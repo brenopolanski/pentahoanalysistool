@@ -22,7 +22,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.OlapTableDev;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
@@ -40,7 +40,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 
 	/** The olap table. */
 	//private transient OlapTable olapTable = new OlapTable(MessageFactory.getInstance());
-	private transient OlapTableDev olapTable = new OlapTableDev();
+	private transient OlapTable olapTable = new OlapTable();
 	/** Panel Name. */
 	private transient String name;
 
@@ -173,7 +173,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		qmSelectionPanel.setQueryId(query);
 	}
 	
-	public OlapTableDev getTable(){
+	public OlapTable getTable(){
 		return olapTable;
 	}
 

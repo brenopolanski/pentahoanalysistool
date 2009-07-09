@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
-import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -45,7 +45,7 @@ public class Matrix implements Serializable, IsSerializable {
     public void set(
         int x,
         int y,
-        CellInfo cell)
+        DataCell cell)
     {
         map.put(
             Arrays.asList(x, y),
@@ -67,7 +67,7 @@ public class Matrix implements Serializable, IsSerializable {
     public void set(
         int x,
         int y,
-        MemberInfo value)
+        MemberCell value)
     {
         map.put(
             Arrays.asList(x, y),

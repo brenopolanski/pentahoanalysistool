@@ -18,7 +18,7 @@ package org.pentaho.pat.rpc.dto;
 
 import java.io.Serializable;
 
-import org.pentaho.pat.rpc.dto.celltypes.CellInfo;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -34,7 +34,7 @@ public class CellData implements IOlapDataStructure, Serializable, IsSerializabl
 	private static final long serialVersionUID = 1L;
 	
 	/** The olap data cells. */
-	CellInfo[][] olapDataCells;
+	DataCell[][] olapDataCells;
 
 	/**
 	 * Instantiates a new cell data.
@@ -48,7 +48,7 @@ public class CellData implements IOlapDataStructure, Serializable, IsSerializabl
 	 * 
 	 * @param olapDataCells the olap data cells
 	 */
-	public CellData(final CellInfo[][] olapDataCells) {
+	public CellData(final DataCell[][] olapDataCells) {
 		this();
 		this.olapDataCells = olapDataCells;
 	}
@@ -68,7 +68,7 @@ public class CellData implements IOlapDataStructure, Serializable, IsSerializabl
 	 * 
 	 * @see org.pentaho.halogen.client.util.IOlapDataStructure#getCell(int, int)
 	 */
-	public CellInfo getCell(final int row, final int column) {
+	public DataCell getCell(final int row, final int column) {
 		return olapDataCells == null ? null : olapDataCells[row][column];
 	}
 
@@ -87,7 +87,7 @@ public class CellData implements IOlapDataStructure, Serializable, IsSerializabl
 	 * 
 	 * @return the olap data cells
 	 */
-	public CellInfo[][] getOlapDataCells() {
+	public DataCell[][] getOlapDataCells() {
 		return olapDataCells;
 	}
 
@@ -96,7 +96,7 @@ public class CellData implements IOlapDataStructure, Serializable, IsSerializabl
 	 * 
 	 * @param olapDataCells the new olap cells
 	 */
-	public void setOlapCells(final CellInfo[][] olapDataCells) {
+	public void setOlapCells(final DataCell[][] olapDataCells) {
 		this.olapDataCells = olapDataCells;
 	}
 

@@ -26,18 +26,18 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @author wseyler
  */
-public class CellInfo extends BaseCell implements Serializable, IsSerializable {
+public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	/** The color value. */
 	String colorValue = null; // Color held as hex String
 
-	public CellInfo(){
+	public DataCell(){
 	    
 	}
 	
-	public CellInfo(boolean b, boolean c) {
+	public DataCell(boolean b, boolean c) {
 	    this.right=b;
 	    this.sameAsPrev=c;
 	}

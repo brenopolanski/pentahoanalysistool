@@ -30,7 +30,7 @@ import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
-import org.pentaho.pat.client.ui.widgets.OlapTableDev;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -139,7 +139,7 @@ public class Application extends Viewport {
 			
 		}
 		else {
-			rootPanel.add(new OlapTableDev());
+			rootPanel.add(new OlapTable());
 			
 		}
 	}
