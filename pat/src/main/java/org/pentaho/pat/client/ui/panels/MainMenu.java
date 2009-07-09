@@ -13,6 +13,7 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
@@ -24,6 +25,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.OlapData;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -34,9 +36,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class MainMenu extends LayoutComposite implements ConnectionListener, QueryListener {
 
 	private final static StackLayoutPanel stackPanel = new StackLayoutPanel();
-	
+
 	private final CubeMenu cubeMenu = new CubeMenu();
-	
+
 	/** The dimension panel, a scroll panel containing a dimension drop widget. */
 	private static final transient DimensionPanel dimensionPanel = new DimensionPanel();
 
@@ -45,48 +47,23 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 
 	private boolean initialized = false;
 
+	private static int menuCounter = 0;
+	
+	public enum MenuItem {
+		Connections,Cubes,Dimensions;
+	}
+
 	/**
 	 * Set the content to the {@link DataWidget}.
 	 * 
 	 * @param content
 	 *            the {@link DataWidget} to display
 	 */
-	static Integer counter = 0;
 
-	
+
+
 	// TODO add welcome panel and other widgets shouldnt be happening here i think
-	protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination) {
 
-		if (source != null) {
-
-			if (source instanceof WelcomePanel) {
-				destination = new WelcomePanel();
-				final String name = source.getName();
-				((WelcomePanel) destination).setName(name);
-			}
-
-			else if (source instanceof QueryPanel) {
-
-				destination = new QueryPanel();
-				((QueryPanel) destination).setName(((QueryPanel) source).getName());
-				((QueryPanel) destination).setCube(((QueryPanel) source).getCube());
-				((QueryPanel) destination).setQuery(((QueryPanel) source).getQuery());
-			}
-		}
-		return destination;
-	}
-
-	public static void displayContentWidget(final DataWidget content) {
-		if (content != null) {
-			if (!content.isInitialized()) {
-				content.initialize();
-			}
-			DataWidget contentdupe = null;
-			contentdupe = copyMatrix(content, contentdupe);
-			counter++;
-			Application.getMainTabPanel().addContent(contentdupe, content.getName());
-		}
-	}
 	/**
 	 * Constructor.
 	 */
@@ -98,26 +75,23 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		}
 		initialized = true;
 
-
-
 		final LayoutPanel baseLayoutPanel = getLayoutPanel();
 		baseLayoutPanel.add(stackPanel);
 		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
 		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
-		
-		stackPanel.add(connectionsPanel, ConstantFactory.getInstance().connections());
-		stackPanel.add(cubeMenu, ConstantFactory.getInstance().cubes());
-		stackPanel.add(dimensionPanel, ConstantFactory.getInstance().dimensions());
-		stackPanel.showStack(0);
 
-		
-		displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+		addMenuItem(connectionsPanel, ConstantFactory.getInstance().connections());
+		addMenuItem(cubeMenu, ConstantFactory.getInstance().cubes());
+		addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
+		showNamedMenu(MenuItem.Connections);
+
+		MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
 	}
 	/**
 	 * Create the main menu.
 	 */
-	
-	
+
+
 
 	/**
 	 * Checks if is initialized.
@@ -161,21 +135,16 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	 */
 	public void onConnectionMade(Widget sender) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onQueryChange(final Widget sender) {
 		dimensionPanel.createDimensionList();
 	}
-	
+
 	public void onQueryExecuted(String queryId, Matrix olapData) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
-	public void showMenu(final int number){
-		stackPanel.showStack(number);
 	}
 
 	public static StackLayoutPanel getStackPanel() {
@@ -185,5 +154,31 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	public static DimensionPanel getDimensionPanel() {
 		return dimensionPanel;
 	}
+
+	public static boolean showNamedMenu(MenuItem menuItem) {
+		if (stackPanel != null) {
+			for (int i=0;i<menuCounter;i++)
+			{
+				String stackname = null;
+				if (menuItem.equals(MenuItem.Connections))
+					stackname = ConstantFactory.getInstance().connections();
+				if (menuItem.equals(MenuItem.Cubes))
+					stackname = ConstantFactory.getInstance().cubes();
+				if (menuItem.equals(MenuItem.Dimensions))
+					stackname = ConstantFactory.getInstance().dimensions();
+				
+				if (stackPanel.getCaption(i).getText().equals(stackname))
+				{
+					stackPanel.showStack(i);
+					return true;
+				}
+			}
+		}
+		return false;	
+	}
 	
+	public static void addMenuItem(Widget widget, String stackText) {
+		stackPanel.add(widget,stackText);
+		menuCounter++;
+	}
 }

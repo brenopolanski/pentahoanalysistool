@@ -12,6 +12,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -42,7 +43,7 @@ public class MainTabPanel extends LayoutComposite {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof QueryPanel){
-					Application.getMenuPanel().showMenu(2);
+					Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
 
 						public void onFailure(final Throwable arg0) {
@@ -107,7 +108,8 @@ public class MainTabPanel extends LayoutComposite {
 					contentWrapper.layout();
 				}
 				if (contentWrapper.getWidgetCount() == 1) {
-					Application.getMenuPanel().getStackPanel().showStack(1);
+					if (Application.getMenuPanel().showNamedMenu(MenuItem.Cubes) == false) 
+						Application.getMenuPanel().getStackPanel().showStack(0);
 					Application.getMenuPanel().getStackPanel().layout();
 				}
 				counter--;
@@ -125,7 +127,7 @@ public class MainTabPanel extends LayoutComposite {
 	 * @param content
 	 * @param tabName
 	 */
-	public void addContent(final DataWidget content, final String tabName) {
+	public static void addContent(final DataWidget content, final String tabName) {
 
 		boolean test = false;
 		if (content != null) {
@@ -153,6 +155,38 @@ public class MainTabPanel extends LayoutComposite {
 
 			}
 
+		}
+	}
+	
+	protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination) {
+
+		if (source != null) {
+
+			if (source instanceof WelcomePanel) {
+				destination = new WelcomePanel();
+				final String name = source.getName();
+				((WelcomePanel) destination).setName(name);
+			}
+
+			else if (source instanceof QueryPanel) {
+
+				destination = new QueryPanel();
+				((QueryPanel) destination).setName(((QueryPanel) source).getName());
+				((QueryPanel) destination).setCube(((QueryPanel) source).getCube());
+				((QueryPanel) destination).setQuery(((QueryPanel) source).getQuery());
+			}
+		}
+		return destination;
+	}
+
+	public static void displayContentWidget(final DataWidget content) {
+		if (content != null) {
+			if (!content.isInitialized()) {
+				content.initialize();
+			}
+			DataWidget contentdupe = null;
+			contentdupe = copyMatrix(content, contentdupe);
+			addContent(contentdupe, content.getName());
 		}
 	}
 }
