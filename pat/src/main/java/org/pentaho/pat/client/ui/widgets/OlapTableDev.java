@@ -12,6 +12,7 @@ import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.MemberInfo;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -35,6 +36,7 @@ public class OlapTableDev extends LayoutComposite {
 	private boolean initialized;
 	private Matrix olapData;
 	List data = null;
+	private int offset;
 	public OlapTableDev(){
 		super();
 	}
@@ -52,7 +54,7 @@ public class OlapTableDev extends LayoutComposite {
 	public void initTable(){
 		PatTableModel patTableModel = new PatTableModel(olapData);
 		data = Arrays.asList(patTableModel.getRowData());
-		
+		offset = patTableModel.getOffset();
 	    TableModel tableModel = new IterableTableModel(data) {
 	        @Override
 	        public int getRowCount() {
@@ -99,7 +101,8 @@ public class OlapTableDev extends LayoutComposite {
 	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
 	    
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
-		BaseCell[] headers = (BaseCell[]) data.get(0);
+		BaseCell[] headers = (BaseCell[]) data.get(offset-1);
+		
 		final int cell = i;
 		
 		DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
