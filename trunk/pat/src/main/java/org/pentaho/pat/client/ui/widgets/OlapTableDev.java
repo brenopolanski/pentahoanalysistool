@@ -97,37 +97,15 @@ public class OlapTableDev extends LayoutComposite {
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
 	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-	    // tableDef.setRowRenderer(new DefaultRowRenderer<Person>(new String[] {
-	    // "#f00", "#00f" }));
-
-	   /* DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
-	        "#") {
-	      @Override
-	      public String getCellValue(BaseCell[] rowValue) {
-		  
-	        return rowValue[0].formattedValue;
-	      }
-	    };
-	    tableDef.addColumnDefinition(colDef0);
-
-	    DefaultColumnDefinition<BaseCell[], String> colDef1 = new DefaultColumnDefinition<BaseCell[], String>(
-	        "Col 1") {
-	      @Override
-	      public String getCellValue(BaseCell[] rowValue) {
-	        return rowValue[1].formattedValue;
-	      }
-	    };
-	    tableDef.addColumnDefinition(colDef1);*/
-
+	    
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
 		BaseCell[] headers = (BaseCell[]) data.get(0);
 		final int cell = i;
-
+		
 		DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
 		        headers[i].formattedValue) {
 			@Override
 		      public String getCellValue(BaseCell[] rowValue) {
-		    	  //return rowValue.toString();
 		        return rowValue[cell].formattedValue;
 		      }
 		    };
