@@ -32,9 +32,6 @@ public class DemoSetup {
 			CubeConnection demoConnection = getDemoConnection();
 			connect(demoConnection);
 			
-			if (demoMode == State.Mode.ONECUBE || demoMode == State.Mode.OLAPTABLE) {
-				setupDimensionMenu();
-			}
 		}
 	}
 
@@ -57,6 +54,10 @@ public class DemoSetup {
 				if (demoMode.isShowConnections()) {
 					ConnectionManagerPanel.addConnection(cc);
 				}
+
+				if (demoMode == State.Mode.ONECUBE || demoMode == State.Mode.OLAPTABLE) {
+					setupDimensionMenu();
+				}
 			}
 		});
 
@@ -64,17 +65,17 @@ public class DemoSetup {
 	}
 	
 	private void setupDimensionMenu() {
-		final QueryPanel widget = new QueryPanel("demo query");
-		 widget.setCube("Quadrant Analysis");
-		ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), "Quadrant Analysis", new AsyncCallback<String[]>() { //$NON-NLS-1$
+		final QueryPanel widget = new QueryPanel("Demo Query Quadrant Analysis"); //$NON-NLS-1$
+		 widget.setCube("Quadrant Analysis"); //$NON-NLS-1$
+		ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), "Quadrant Analysis", new AsyncCallback<Object>() { //$NON-NLS-1$
 			public void onFailure(final Throwable arg0) { }
 
-			public void onSuccess(final String[] arg0) {
+			public void onSuccess(final Object setCurrentCubeResult) {
 				ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
 					public void onFailure(final Throwable arg0) { 	}
-					public void onSuccess(final String arg0) {
-						widget.setQuery(arg0);
-						ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
+					public void onSuccess(final String newQuery) {
+						widget.setQuery(newQuery);
+						ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), newQuery, new AsyncCallback<Object>() {
 							public void onFailure(final Throwable arg0) { }
 							public void onSuccess(final Object arg0) {
 								// TODO change way of accessing other widget elements
