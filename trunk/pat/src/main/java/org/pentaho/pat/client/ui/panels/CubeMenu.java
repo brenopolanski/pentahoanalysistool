@@ -11,6 +11,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
+import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -88,8 +89,8 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 												// TODO change way of accessing other widget elements
 												MainMenu.getDimensionPanel().createDimensionList();
 												MainMenu.getDimensionPanel().layout();
-												MainMenu.displayContentWidget(widget);
-												MainMenu.getStackPanel().showStack(2);
+												MainTabPanel.displayContentWidget(widget);
+												MainMenu.showNamedMenu(MenuItem.Dimensions);
 												MainMenu.getStackPanel().layout();
 											}
 										});
@@ -202,7 +203,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	 *            the sender.
 	 */
 	public void onConnectionBroken(final Widget sender) {
-		MainMenu.getStackPanel().showStack(0);
+		MainMenu.showNamedMenu(MenuItem.Connections);
 		MainMenu.getStackPanel().layout();
 		cubeTree.clear();
 	}
