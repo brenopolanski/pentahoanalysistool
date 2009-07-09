@@ -15,6 +15,7 @@ import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.gen2.table.client.AbstractColumnDefinition;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
@@ -30,7 +31,7 @@ import com.google.gwt.user.client.Window;
  *
  */
 public class OlapTableDev extends LayoutComposite {
-
+	private List<AbstractColumnDefinition<BaseCell[], ?>> columnDefs;
 	private boolean initialized;
 	private Matrix olapData;
 	List data = null;
@@ -57,7 +58,7 @@ public class OlapTableDev extends LayoutComposite {
 	        public int getRowCount() {
 	          return data.size();
 	        }
-	    
+
 
 	    @Override
 	      public void requestRows(Request request, Callback callback) {
@@ -84,9 +85,9 @@ public class OlapTableDev extends LayoutComposite {
 	        Window.alert(event.getSource().getClass().getName());
 	      }
 	    });
-this.getLayoutPanel().add(table);
-this.getLayoutPanel().layout();
-this.layout();
+	    this.getLayoutPanel().add(table);
+	    this.getLayoutPanel().layout();
+	    this.layout();
 	}
 
 	/**
@@ -120,16 +121,18 @@ this.layout();
 
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
 		BaseCell[] headers = (BaseCell[]) data.get(0);
+		final int cell = i;
+
 		DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
 		        headers[i].formattedValue) {
-		      @Override
+			@Override
 		      public String getCellValue(BaseCell[] rowValue) {
-		    	  return rowValue.toString();
-			  
-		        //return rowValue[].formattedValue;
+		    	  //return rowValue.toString();
+		        return rowValue[cell].formattedValue;
 		      }
 		    };
-		    
+		    colDef0.setColumnSortable(false);
+		    colDef0.setColumnTruncatable(false);
 		    tableDef.addColumnDefinition(colDef0);
 	    }
 	    return tableDef;
