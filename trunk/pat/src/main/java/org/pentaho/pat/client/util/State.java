@@ -12,8 +12,10 @@ public class State {
 	public static enum Mode {
 		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false,false),  //$NON-NLS-1$
 		STANDALONE("STANDALONE", true,true,true,false,true,true,true), //$NON-NLS-1$
-		USER("STANDALONE", true,false,true,false,true,true,true); //$NON-NLS-1$
-		
+		USER("USER", true,false,true,false,true,true,true), //$NON-NLS-1$
+		BUSINESSUSER("BUSINESSUSER", false,false,true,false,true,true,true), //$NON-NLS-1$
+		ONECUBE("ONECUBE", false,false,false,false,true,false,true), //$NON-NLS-1$
+		OLAPTABLE("OLAPTABLE", false,false,false,true,false,false,false); //$NON-NLS-1$
 		private String param;
 		
 		private boolean showConnections;
