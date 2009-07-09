@@ -117,7 +117,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		
 				    public void onSuccess(final String arg0) {
 					initialState.setSession(arg0);
-					new DemoSetup(State.Mode.USER,arg0);
+					new DemoSetup(initialState.getMode(),arg0);
 				    }
 				});
 		    }
