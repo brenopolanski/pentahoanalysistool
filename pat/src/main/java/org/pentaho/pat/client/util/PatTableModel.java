@@ -24,13 +24,17 @@ public class PatTableModel {
 		return olapMatrix.getMatrixWidth();
 	}
 
-	public void getColumnHeaders(){
-
-		for (int y = 0; y < olapMatrix.getMatrixHeight(); y++) {
-            for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
-            	
-            }
-		}
+	public BaseCell[][] getColumnHeaders(){
+		BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()];
+	    for (int y = 0; y < getOffset(); y++) {
+                for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
+                    final BaseCell cell = olapMatrix.get(x, y);
+                    values[y][x] = cell;
+                }
+	    }
+		//List myList = new ArrayList(olapMatrix.getMap().values());
+		return values;
+		
 	}
 
 	/**
@@ -44,12 +48,15 @@ public class PatTableModel {
 	}
 
 	public BaseCell[][] getRowData(){
-	    BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()];
-	    for (int y = 0; y < olapMatrix.getMatrixHeight(); y++) {
-                for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
+		int z = 0;
+	    BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()-getOffset()+2][olapMatrix.getMatrixWidth()];
+	    for (int y = getOffset(); y < olapMatrix.getMatrixHeight(); y++) {
+               
+	    	for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
                     final BaseCell cell = olapMatrix.get(x, y);
-                    values[y][x] = cell;
+                    values[z][x] = cell;
                 }
+	    	z++;
 	    }
 		//List myList = new ArrayList(olapMatrix.getMap().values());
 		return values;
