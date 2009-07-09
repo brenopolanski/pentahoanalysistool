@@ -107,7 +107,7 @@ public class MainTabPanel extends LayoutComposite {
 					contentWrapper.remove(widgetIndex);
 					contentWrapper.layout();
 				}
-				if (contentWrapper.getWidgetCount() == 1) {
+				if (contentWrapper.getWidgetCount() == 1 || contentWrapper.getWidgetCount() == 0) {
 					if (Application.getMenuPanel().showNamedMenu(MenuItem.Cubes) == false) 
 						Application.getMenuPanel().getStackPanel().showStack(0);
 					Application.getMenuPanel().getStackPanel().layout();

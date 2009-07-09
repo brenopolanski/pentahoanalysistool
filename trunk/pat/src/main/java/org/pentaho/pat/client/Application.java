@@ -101,38 +101,39 @@ public class Application extends Viewport {
 		super();
 
 		// Setup the main layout widget
-		final LayoutPanel rootPanel = getLayoutPanel();
-		rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-		mainPanel = new LayoutPanel(new BorderLayout());
-		rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
-
-		mainTabPanel = new MainTabPanel();
-		mainPanel.add(mainTabPanel);
-
-		// Add the main menu
-		final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-		final CaptionLayoutPanel menuWrapperPanel = new CaptionLayoutPanel();
-		menuWrapperPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
-
-		menuPanel = new MainMenu();
-		menuWrapperPanel.add(menuPanel);
-
-		collapseBtn.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent event) {
-				mainPanel.setCollapsed(menuWrapperPanel, true);
-				mainPanel.layout();
-			}
-		});
-
-		mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
-
+		if (Pat.getInitialState().getMode().isShowOnlyTable() == false) {
+			final LayoutPanel rootPanel = getLayoutPanel();
+			rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+			mainPanel = new LayoutPanel(new BorderLayout());
+			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+	
+			mainTabPanel = new MainTabPanel();
+			mainPanel.add(mainTabPanel);
+	
+			// Add the main menu
+			final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+			final CaptionLayoutPanel menuWrapperPanel = new CaptionLayoutPanel();
+			menuWrapperPanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+	
+			if (Pat.getInitialState().getMode().isShowMenu()) {
+				menuPanel = new MainMenu();
+				menuWrapperPanel.add(menuPanel);
 		
-
-		// Setup the Connection Window
-		connectionWindow = new ConnectionWindow();
-
-
-
+				collapseBtn.addClickHandler(new ClickHandler() {
+					public void onClick(final ClickEvent event) {
+						mainPanel.setCollapsed(menuWrapperPanel, true);
+						mainPanel.layout();
+					}
+				});
+		
+				mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
+			}
+			
+			if (Pat.getInitialState().getMode().isManageConnections()) {
+				// Setup the Connection Window
+				connectionWindow = new ConnectionWindow();
+			}
+		}
 	}
 
 	public static MainMenu getMenuPanel() {
