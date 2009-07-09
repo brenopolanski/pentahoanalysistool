@@ -17,6 +17,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
@@ -75,17 +76,25 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		}
 		initialized = true;
 
-		final LayoutPanel baseLayoutPanel = getLayoutPanel();
-		baseLayoutPanel.add(stackPanel);
-		GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
-		GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
-
-		addMenuItem(connectionsPanel, ConstantFactory.getInstance().connections());
-		addMenuItem(cubeMenu, ConstantFactory.getInstance().cubes());
-		addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
-		showNamedMenu(MenuItem.Connections);
-
-		MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+		if (Pat.getInitialState().getMode().isShowMenu()) {
+			
+			final LayoutPanel baseLayoutPanel = getLayoutPanel();
+			baseLayoutPanel.add(stackPanel);
+			GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
+			GlobalConnectionFactory.getQueryInstance().addQueryListener(MainMenu.this);
+			if (Pat.getInitialState().getMode().isShowConnections()) {
+				addMenuItem(connectionsPanel, ConstantFactory.getInstance().connections());
+			}
+			if (Pat.getInitialState().getMode().isShowCubeMenu()) {
+				addMenuItem(cubeMenu, ConstantFactory.getInstance().cubes());
+			}
+			addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
+			showNamedMenu(MenuItem.Connections);
+	
+			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
+				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+			}
+		}
 	}
 	/**
 	 * Create the main menu.
@@ -174,6 +183,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				}
 			}
 		}
+		stackPanel.showStack(0);
 		return false;	
 	}
 	

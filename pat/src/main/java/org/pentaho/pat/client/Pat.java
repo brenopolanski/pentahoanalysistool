@@ -249,12 +249,12 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 
 	private void parseInitialStateFromParameter() {
 		Location loadURL = WindowUtils.getLocation();
-		State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE"));
+		State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE")); //$NON-NLS-1$
 		if (mode == null)
 			initialState.setMode(State.Mode.STANDALONE);
 		else
 			initialState.setMode(mode);
-		String _sessionParam = loadURL.getParameter("SESSION");
+		String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
 		assignSessionID(_sessionParam);
 		if (_sessionParam != null)
 			initialState.setConnected(true);

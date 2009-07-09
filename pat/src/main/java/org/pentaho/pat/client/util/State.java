@@ -10,20 +10,47 @@ package org.pentaho.pat.client.util;
 public class State {
 
 	public static enum Mode {
-		BISERVERPUC("BISERVERPUC", false), 
-		STANDALONE("STANDALONE", false);
+		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false),  //$NON-NLS-1$
+		STANDALONE("STANDALONE", true,true,true,false,true,true); //$NON-NLS-1$
 
 		private String param;
 		
-		private boolean showToolbar;
+		private boolean showConnections;
+		private boolean manageConnections;
+		private boolean showCubeMenu;
+		private boolean showOnlyTable;
+		private boolean showMenu;
+		private boolean showWelcomePanel;
 		
-		private Mode(final String param, final boolean showToolbar) {
+		private Mode(final String param, final boolean showConnections, final boolean manageConnections, final boolean showCubeMenu, final boolean showOnlyTable, final boolean showMenu, final boolean showWelcomePanel) {
 			this.param = param;
-			this.showToolbar = showToolbar;
+			this.showConnections = showConnections;
+			this.manageConnections = manageConnections;
+			this.showCubeMenu = showCubeMenu;
+			this.showOnlyTable = showOnlyTable;
+			this.showMenu = showMenu;
+			this.showWelcomePanel = showWelcomePanel;
 		}
 		
-		public boolean isShowToolbar() {
-			return showToolbar;
+		public boolean isShowWelcomePanel() {
+			return showWelcomePanel;
+		}
+		public boolean isShowMenu() {
+			return showMenu;
+		}
+		
+		public boolean isShowOnlyTable() {
+			return showOnlyTable;
+		}
+		public boolean isShowCubeMenu() {
+			return showCubeMenu;
+		}
+		public boolean isManageConnections() {
+			return manageConnections;
+		}
+		
+		public boolean isShowConnections() {
+			return showConnections;
 		}
 
 	
