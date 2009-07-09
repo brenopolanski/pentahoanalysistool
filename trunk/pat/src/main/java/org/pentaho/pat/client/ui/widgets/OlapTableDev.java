@@ -38,7 +38,6 @@ public class OlapTableDev extends LayoutComposite implements QueryListener {
 	private List<AbstractColumnDefinition<BaseCell[], ?>> columnDefs;
 	private boolean initialized;
 	private Matrix olapData;
-	List data = null;
 	private int offset;
 	PatTableModel patTableModel;
 	
@@ -58,7 +57,7 @@ public class OlapTableDev extends LayoutComposite implements QueryListener {
 
 	public void initTable(){
 		patTableModel = new PatTableModel(olapData);
-		data = Arrays.asList(patTableModel.getRowData());
+		final List data = Arrays.asList(patTableModel.getRowData());
 		offset = patTableModel.getOffset();
 	    TableModel tableModel = new IterableTableModel(data) {
 	        @Override
@@ -127,12 +126,10 @@ public class OlapTableDev extends LayoutComposite implements QueryListener {
 
 
 	
-	public void setData(final Matrix olapData, final boolean refresh) {
-		initialized = true;
+	public void setData(final Matrix olapData) {
 		this.olapData = olapData;
-		if (refresh) {
 		    initTable();
-		}
+		
 	}
 	
 	public void onQueryChange(Widget sender) {
@@ -142,7 +139,7 @@ public class OlapTableDev extends LayoutComposite implements QueryListener {
 
 	public void onQueryExecuted(String queryId, Matrix olapData) {
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
-			setData(olapData, true);
+			setData(olapData);
 		}
 	}
 
