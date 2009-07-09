@@ -14,6 +14,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -148,7 +149,12 @@ public class MainTabPanel extends LayoutComposite {
 
 			}
 			else{
-				contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+				if (Pat.getInitialState().getMode().equals(State.Mode.ONECUBE)) {
+					contentWrapper.add(content, tabName);
+				}
+				else {
+					contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
+				}
 				contentWrapper.selectTab(counter);
 				counter++;
 				contentWrapper.layout();
