@@ -129,17 +129,17 @@ public class MainTabPanel extends LayoutComposite {
 	 */
 	public static void addContent(final DataWidget content, final String tabName) {
 
-		boolean test = false;
+		boolean isWelcomePanel = false;
 		if (content != null) {
 			if (content instanceof WelcomePanel){
-				final Iterator iter = contentWrapper.iterator();
+				final Iterator<Widget> iter = contentWrapper.iterator();
 				while ( iter.hasNext() ){
 					if (iter.next() instanceof WelcomePanel) {
-						test = true;
+						isWelcomePanel = true;
 					}
 				}
 
-				if(!test)
+				if(!isWelcomePanel)
 				{
 					contentWrapper.add(content, tabName);
 					counter++;

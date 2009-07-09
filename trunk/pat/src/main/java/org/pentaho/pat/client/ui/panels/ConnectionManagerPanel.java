@@ -98,10 +98,12 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		model.add(new ConnectionItem("123","debug connection",false));
 		
 		listBox = createListBox();
-		toolBar = createToolBar(listBox);
 
-
-		vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+		if (Pat.getInitialState().getMode().isManageConnections()) {
+			toolBar = createToolBar(listBox);
+			vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+		}
+		
 		vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
 
 		return vBox;
