@@ -35,7 +35,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	public static final Map<TreeItem, DataWidget> ITEMWIDGETS = new HashMap<TreeItem, DataWidget>();
 
 	/** The main menu. */
-	private static Tree cubeTree;
+	private Tree cubeTree;
 
 	/** The {@link ApplicationListener}. */
 	private transient ApplicationListener listener = null;

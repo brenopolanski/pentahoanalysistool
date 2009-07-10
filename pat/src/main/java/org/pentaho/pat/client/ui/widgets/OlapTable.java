@@ -39,6 +39,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	private int offset;
 	PatTableModel patTableModel;
 	TableModel tableModel;
+	boolean initialized = false;
 	
 	final LayoutPanel layoutPanel = getLayoutPanel();
 
@@ -85,9 +86,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
     	      }
     	    });
     	layoutPanel.invalidate();
+    	if(this.isAttached())
 	    layoutPanel.add(table);
 	    layoutPanel.layout();
 	    this.layout();
+	    initialized = true;
 	}
 
 	/**
@@ -107,7 +110,10 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		        headers[i].formattedValue) {
 			@Override
 		      public String getCellValue(BaseCell[] rowValue) {
-		        return rowValue[cell].formattedValue;
+		        if (rowValue[cell]==null)
+		        	return "";
+		        else
+				return rowValue[cell].formattedValue;
 		      }
 		    };
 		    colDef0.setColumnSortable(false);

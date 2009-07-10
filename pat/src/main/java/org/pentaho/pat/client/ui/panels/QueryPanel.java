@@ -40,7 +40,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 
 	/** The olap table. */
 	//private transient OlapTable olapTable = new OlapTable(MessageFactory.getInstance());
-	private transient OlapTable olapTable = new OlapTable();
+	private OlapTable olapTable = new OlapTable();
 	/** Panel Name. */
 	private transient String name;
 
@@ -183,7 +183,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	}
 
 	public void onQueryExecuted(String queryId, Matrix olapData) {
-		if (this.query != null && queryId == this.query) {
+		if (this.query != null && queryId == this.query && this.isAttached()) {
 			// TODO why is this called twice? why two instances of the same object?
 			olapTable.setData(olapData);
 		}
