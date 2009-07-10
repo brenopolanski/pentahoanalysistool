@@ -78,8 +78,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	        Window.alert(event.getSource().getClass().getName());
 	      }
 	    });
-	    table.setSize("100%", "100%");
-	    this.getLayoutPanel().setSize("100%", "100%");
+
 	    this.getLayoutPanel().add(table);
 	    this.getLayoutPanel().layout();
 	    this.layout();
