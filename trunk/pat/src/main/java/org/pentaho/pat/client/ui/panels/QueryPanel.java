@@ -186,6 +186,8 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		if (this.query != null && queryId == this.query && this.isAttached()) {
 			// TODO why is this called twice? why two instances of the same object?
 			olapTable.setData(olapData);
+			this.layout();
+			this.layoutChildren();
 		}
 	}
 }
