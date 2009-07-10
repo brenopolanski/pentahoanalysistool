@@ -1,11 +1,12 @@
 /**
- * TODO JAVADOC
+ * TODO JAVADOC	
  */
 package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
@@ -14,11 +15,9 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.rpc.dto.Matrix;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.gen2.table.client.AbstractColumnDefinition;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
@@ -35,7 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
-	private boolean initialized;
 	private Matrix olapData;
 	private int offset;
 	PatTableModel patTableModel;
@@ -44,16 +42,6 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		super();
 	}
 	
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-
-/*		scrollTable = new ScrollTable2(dataTable, headerTable);
-		layoutPanel.add(scrollTable);
-*/
-	}
-
-
 	public void initTable(){
 		patTableModel = new PatTableModel(olapData);
 		final List data = Arrays.asList(patTableModel.getRowData());
@@ -90,6 +78,8 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	        Window.alert(event.getSource().getClass().getName());
 	      }
 	    });
+	    table.setSize("100%", "100%");
+	    this.getLayoutPanel().setSize("100%", "100%");
 	    this.getLayoutPanel().add(table);
 	    this.getLayoutPanel().layout();
 	    this.layout();
@@ -137,6 +127,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	}
 
 	public void onQueryExecuted(String queryId, Matrix olapData) {
+		
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
 			setData(olapData);
 		}
