@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
@@ -37,16 +38,20 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	private Matrix olapData;
 	private int offset;
 	PatTableModel patTableModel;
+	TableModel tableModel;
 	
+	final LayoutPanel layoutPanel = getLayoutPanel();
+
 	public OlapTable(){
 		super();
+		this.setSize("100%", "100%");
 	}
-	
+
 	public void initTable(){
 		patTableModel = new PatTableModel(olapData);
 		final List data = Arrays.asList(patTableModel.getRowData());
 		offset = patTableModel.getOffset();
-	    TableModel tableModel = new IterableTableModel(data) {
+	    tableModel = new IterableTableModel(data) {
 	        @Override
 	        public int getRowCount() {
 	          return data.size();
@@ -70,17 +75,18 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	      }
 	    };
 
+	    
 	    final LiveTable table = new LiveTable(tableModel,
-	        createTableDefinition());
-	    // table.setContextMenu(createContextMenu());
-	    table.addDoubleClickHandler(new DoubleClickHandler() {
-	      public void onDoubleClick(DoubleClickEvent event) {
-	        Window.alert(event.getSource().getClass().getName());
-	      }
-	    });
-
-	    this.getLayoutPanel().add(table);
-	    this.getLayoutPanel().layout();
+	    		createTableDefinition());
+    	    // table.setContextMenu(createContextMenu());
+    	    table.addDoubleClickHandler(new DoubleClickHandler() {
+    	      public void onDoubleClick(DoubleClickEvent event) {
+    	        Window.alert(event.getSource().getClass().getName());
+    	      }
+    	    });
+    	layoutPanel.invalidate();
+	    layoutPanel.add(table);
+	    layoutPanel.layout();
 	    this.layout();
 	}
 
@@ -91,7 +97,6 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
 	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-
 	    List colData = Arrays.asList(patTableModel.getColumnHeaders());
 	    for (int i=0; i < olapData.getMatrixWidth(); i++){
 		BaseCell[] headers = (BaseCell[]) colData.get(offset-1);
@@ -116,7 +121,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	
 	public void setData(final Matrix olapData) {
 		this.olapData = olapData;
-		    initTable();
+		initTable();
 		
 	}
 	
