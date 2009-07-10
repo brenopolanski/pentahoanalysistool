@@ -1,5 +1,5 @@
 /**
- * TODO JAVADOC	
+ * TODO JAVADOC
  */
 package org.pentaho.pat.client.ui.widgets;
 
@@ -29,120 +29,123 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *TODO JAVADOC
+ * Creates the data table, using a hashmap matrix converted to an array and
+ * inserted into a GWT Mosaic Live Table, which is a lazy loading scrolltable.
  *
- * @author bugg
+ * @author tom (at) wamonline.org.uk
  *
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
 	private Matrix olapData;
 	private int offset;
 	PatTableModel patTableModel;
-	TableModel tableModel;
-	boolean initialized = false;
-	
+	TableModel<BaseCell[]> tableModel;
+
 	final LayoutPanel layoutPanel = getLayoutPanel();
 
 	public OlapTable(){
 		super();
-		this.setSize("100%", "100%");
-	}
-
-	public void initTable(){
-		patTableModel = new PatTableModel(olapData);
-		final List data = Arrays.asList(patTableModel.getRowData());
-		offset = patTableModel.getOffset();
-	    tableModel = new IterableTableModel(data) {
-	        @Override
-	        public int getRowCount() {
-	          return data.size();
-	        }
-
-
-	    @Override
-	      public void requestRows(Request request, Callback callback) {
-		 int numRows;
-	        if(olapData.getMatrixHeight()<50)
-	            numRows = olapData.getMatrixHeight();
-	        else 
-	            numRows = request.getNumRows();
-	        
-	        List list = new ArrayList();
-	        for (int i = 0, n = numRows; i < n; i++) {
-	          list.add(data.get(request.getStartRow() + i));
-	        }
-	        SerializableResponse response = new SerializableResponse(list);
-	        callback.onRowsReady(request, response);
-	      }
-	    };
-
-	    
-	    final LiveTable table = new LiveTable(tableModel,
-	    		createTableDefinition());
-    	    // table.setContextMenu(createContextMenu());
-    	    table.addDoubleClickHandler(new DoubleClickHandler() {
-    	      public void onDoubleClick(DoubleClickEvent event) {
-    	        Window.alert(event.getSource().getClass().getName());
-    	      }
-    	    });
-    	layoutPanel.invalidate();
-    	if(this.isAttached())
-	    layoutPanel.add(table);
-	    layoutPanel.layout();
-	    this.layout();
-	    initialized = true;
+		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	/**
-	 *TODO JAVADOC
+	 * Create the Live Table Column Definitions.
 	 *
-	 * @return
+	 * @return tableDef
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
-	    DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-	    List colData = Arrays.asList(patTableModel.getColumnHeaders());
-	    for (int i=0; i < olapData.getMatrixWidth(); i++){
-		BaseCell[] headers = (BaseCell[]) colData.get(offset-1);
-		
-		final int cell = i;
-		
-		DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
-		        headers[i].formattedValue) {
+		final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
+		final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
+		for (int i=0; i < olapData.getMatrixWidth(); i++){
+			final BaseCell[] headers = colData.get(offset-1);
+
+			final int cell = i;
+
+			final DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
+					headers[i].formattedValue) {
+				@Override
+				public String getCellValue(final BaseCell[] rowValue) {
+					if (rowValue[cell]==null) {
+						return "";
+					} else {
+						return rowValue[cell].formattedValue;
+					}
+				}
+			};
+			colDef0.setColumnSortable(false);
+			colDef0.setColumnTruncatable(false);
+			tableDef.addColumnDefinition(colDef0);
+		}
+		return tableDef;
+	}
+
+	/**
+	 * 
+	 * Initialize the Live Table.
+	 *
+	 */
+	public void initTable(){
+		patTableModel = new PatTableModel(olapData);
+		final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+		offset = patTableModel.getOffset();
+		tableModel = new IterableTableModel<BaseCell[]>(data) {
 			@Override
-		      public String getCellValue(BaseCell[] rowValue) {
-		        if (rowValue[cell]==null)
-		        	return "";
-		        else
-				return rowValue[cell].formattedValue;
-		      }
-		    };
-		    colDef0.setColumnSortable(false);
-		    colDef0.setColumnTruncatable(false);
-		    tableDef.addColumnDefinition(colDef0);
-	    }
-	    return tableDef;
-	  }
+			public int getRowCount() {
+				return data.size();
+			}
 
 
-	
-	public void setData(final Matrix olapData) {
-		this.olapData = olapData;
-		initTable();
-		
+			@Override
+			public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
+				int numRows;
+				if(olapData.getMatrixHeight()<50) {
+					numRows = olapData.getMatrixHeight();
+				} else {
+					numRows = request.getNumRows();
+				}
+
+				final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
+				for (int i = 0, n = numRows; i < n; i++) {
+					list.add(data.get(request.getStartRow() + i));
+				}
+				final SerializableResponse response = new SerializableResponse(list);
+				callback.onRowsReady(request, response);
+			}
+		};
+
+
+		final LiveTable<BaseCell[]> table = new LiveTable<BaseCell[]>(tableModel,
+				createTableDefinition());
+		// table.setContextMenu(createContextMenu());
+		table.addDoubleClickHandler(new DoubleClickHandler() {
+			public void onDoubleClick(final DoubleClickEvent event) {
+				Window.alert(event.getSource().getClass().getName());
+			}
+		});
+		layoutPanel.add(table);
+		layoutPanel.layout();
 	}
-	
-	public void onQueryChange(Widget sender) {
+
+
+
+	public void onQueryChange(final Widget sender) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public void onQueryExecuted(String queryId, Matrix olapData) {
-		
+	public void onQueryExecuted(final String queryId, final Matrix olapData) {
+
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
 			setData(olapData);
 		}
 	}
 
+	public void setData(final Matrix olapData) {
+		this.olapData = olapData;
+		initTable();
 
-	
+	}
+
+
+
 }
