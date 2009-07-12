@@ -70,11 +70,18 @@ public class QueryModePopup extends PopupPanel {
 	protected final void init() {
 		menuBar = new MenuBar(true);
 		menuBar.setAutoOpen(true);
-		menuBar.addItem(new MenuItem("Query Wizard", new QueryModeCommand(QUERY_MODEL)));
+		if (Pat.getInitialState().getMode().isAllowQmQuery()) {
+			menuBar.addItem(new MenuItem("Query Wizard", new QueryModeCommand(QUERY_MODEL)));
+		}
+		if(Pat.getInitialState().getMode().isAllowMdxQuery()) {
 		menuBar.addItem(new MenuItem("MDX Query", new QueryModeCommand(MDX)));
+		}
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new QueryModeCancelCommand()));
 
-		this.setWidget(menuBar);
+		if (Pat.getInitialState().getMode().isAllowQmQuery() || Pat.getInitialState().getMode().isAllowMdxQuery() ) {
+			this.setWidget(menuBar);
+		}
+		
 	}
 	
 	public class QueryModeCancelCommand implements Command {
@@ -205,7 +212,7 @@ public class QueryModePopup extends PopupPanel {
 		if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
 			init();
 		}
-		if (DOM.eventGetType(event) == Event.ONCLICK) {
+		if (DOM.eventGetType(event) == Event.ONCLICK && Pat.getInitialState().getMode().isAllowQmQuery()) {
 			new QueryModeCommand(QUERY_MODEL).execute();
 		}
 

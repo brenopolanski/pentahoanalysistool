@@ -150,22 +150,22 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		  if (selectedQueryMode == QueryMode.QUERY_MODEL) {
-		    	Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
-		    }
-		    if (selectedQueryMode == QueryMode.MDX) {
-		    	Application.getMenuPanel().showNamedMenu(MenuItem.Cubes);
-		    }
+		if (Pat.getInitialState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
+			Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
+		}
+		if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
+			Application.getMenuPanel().showNamedMenu(MenuItem.Cubes);
+		}
 	}
 	@Override
 	public Widget onInitialize() {
 		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
-		((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
-			    if (selectedQueryMode == QueryMode.QUERY_MODEL) {
+		((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+			    if (Pat.getInitialState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
 			    	layoutPanel.add(qmSelectionPanel, new BoxLayoutData(0.30,1));
 			    }
-			    if (selectedQueryMode == QueryMode.MDX) {
+			    if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
 			    	// TODO this is just for demonstration at the moment.
 			    	ToolButton editMDX = new ToolButton("Edit MDX Query");
 			    	editMDX.addClickHandler(new ClickHandler() {
