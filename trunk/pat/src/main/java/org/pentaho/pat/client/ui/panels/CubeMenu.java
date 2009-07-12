@@ -13,6 +13,8 @@ import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.QueryModePopup;
+import org.pentaho.pat.client.ui.widgets.SelectionModePopup;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -21,11 +23,14 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	/** A mapping of history tokens to their associated menu items. */
@@ -42,6 +47,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 
 	public CubeMenu() {
 		super();
+		this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
 		GlobalConnectionFactory.getInstance().addConnectionListener(CubeMenu.this);
 		final LayoutPanel baseLayoutPanel = getLayoutPanel();
 		
@@ -51,66 +57,6 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 		cubeTree.setAnimationEnabled(true);
 		cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
 		cubeTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-			public void onSelection(final SelectionEvent<TreeItem> selectionEvent) {
-				final TreeItem item = selectionEvent.getSelectedItem();
-				if (listener != null) {
-					final DataWidget widget = ITEMWIDGETS.get(item);
-						
-						if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
-						((QueryPanel) widget).setCube(item.getText().trim());
-						ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
-
-							public void onFailure(final Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(
-										arg0.getLocalizedMessage()));
-							}
-
-							public void onSuccess(final String[] arg0) {
-
-								ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
-
-									public void onFailure(final Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(
-												arg0.getLocalizedMessage()));
-									}
-
-									public void onSuccess(final String arg0) {
-										((QueryPanel) widget).setQuery(arg0);
-										ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
-
-											public void onFailure(final Throwable arg0) {
-
-												MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noQuerySet(
-														arg0.getLocalizedMessage()));
-											}
-
-											public void onSuccess(final Object arg0) {
-												// TODO change way of accessing other widget elements
-												MainMenu.getDimensionPanel().createDimensionList();
-												MainMenu.getDimensionPanel().layout();
-												MainTabPanel.displayContentWidget(widget);
-												MainMenu.showNamedMenu(MenuItem.Dimensions);
-												MainMenu.getStackPanel().layout();
-											}
-										});
-									}
-								});
-							}
-						});
-					}
-
-					cubeTree.setSelectedItem(item, false);
-					cubeTree.ensureSelectedItemVisible();
-
-					// Show the associated ContentWidget
-
-					Application.getMainTabPanel().layout();
-
-				}
-			}
-		});
-
 
 		baseLayoutPanel.add(cubeTree);
 
@@ -224,5 +170,40 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	public void onConnectionMade(final Widget sender) {
 		setupCubeMenu();
 	}
+	
+	/**
+	 * Fires on browser clicks.
+	 * @param event the event
+	 */
+	@Override
+	public void onBrowserEvent(final Event event) {
+		super.onBrowserEvent(event);
+		final TreeItem item = cubeTree.getSelectedItem();
+		if (listener != null && item != null && !item.getText().equals("connection 1") && !item.getText().equals("connection 2")) {
+			final DataWidget widget = ITEMWIDGETS.get(item);
+			final QueryModePopup qModePopup = new QueryModePopup();
+			qModePopup.setPopupPositionAndShow(new PositionCallback() {
+				public void setPosition(final int offsetWidth, final int offsetHeight) {
+					qModePopup.setPopupPosition(event.getClientX(), event.getClientY());
+				}
+			});
+
+			qModePopup.showContextMenu(event,item, widget);
+
+		}
+
+		cubeTree.setSelectedItem(item, false);
+		cubeTree.ensureSelectedItemVisible();
+
+		// Show the associated ContentWidget
+
+		Application.getMainTabPanel().layout();
+
+
+	}
+
+
+
+
 
 }
