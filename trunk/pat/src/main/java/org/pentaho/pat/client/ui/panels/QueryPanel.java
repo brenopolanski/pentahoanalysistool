@@ -14,21 +14,28 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -53,7 +60,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		MDX, QUERY_MODEL;
 	}
 
-	private QueryMode selectedQueryMode;
+	private static QueryMode selectedQueryMode;
 	
     private final LayoutPanel layoutPanel = new ScrollLayoutPanel(new BoxLayout());
     
@@ -141,15 +148,51 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	 * Run when constructed.
 	 */
 	@Override
+	protected void onLoad() {
+		super.onLoad();
+		  if (selectedQueryMode == QueryMode.QUERY_MODEL) {
+		    	Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
+		    }
+		    if (selectedQueryMode == QueryMode.MDX) {
+		    	Application.getMenuPanel().showNamedMenu(MenuItem.Cubes);
+		    }
+	}
+	@Override
 	public Widget onInitialize() {
 		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
-		((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+		((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
 			    if (selectedQueryMode == QueryMode.QUERY_MODEL) {
 			    	layoutPanel.add(qmSelectionPanel, new BoxLayoutData(0.30,1));
 			    }
 			    if (selectedQueryMode == QueryMode.MDX) {
-			    	layoutPanel.add(new ToolButton("MDX"));
+			    	// TODO this is just for demonstration at the moment.
+			    	ToolButton editMDX = new ToolButton("Edit MDX Query");
+			    	editMDX.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent arg0) {
+							final WindowPanel wp = new WindowPanel("Edit MDX");
+							LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+							wpLayoutPanel.setSize("300px", "200px");
+							wpLayoutPanel.add(new TextArea(), new BoxLayoutData(1,0.9));
+							ToolButton closeBtn = new ToolButton("Save and Execute MDX");
+							closeBtn.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent arg0) {
+									wp.hide();
+									
+								}
+							});
+							wpLayoutPanel.add(closeBtn);
+							wpLayoutPanel.layout();
+							wp.add(wpLayoutPanel);
+							wp.layout();
+							wp.pack();
+							wp.setSize("400px", "320px");
+							wp.center();
+							
+						}
+					});
+			    	layoutPanel.add(editMDX);
+			    	layoutPanel.add(new ToolButton("Execute MDX Query"));
 			    }
 				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
 				

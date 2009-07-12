@@ -182,10 +182,12 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 				if (stackPanel.getCaption(i).getText().equals(stackname))
 				{
 					stackPanel.showStack(i);
+					stackPanel.layout();
 					return true;
 				}
 			}
 		}
+		stackPanel.layout();
 		stackPanel.showStack(0);
 		return false;	
 	}

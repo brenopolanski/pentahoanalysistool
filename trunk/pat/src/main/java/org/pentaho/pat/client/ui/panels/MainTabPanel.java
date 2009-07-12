@@ -44,7 +44,6 @@ public class MainTabPanel extends LayoutComposite {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				if (widget instanceof QueryPanel){
-					Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
 
 						public void onFailure(final Throwable arg0) {
