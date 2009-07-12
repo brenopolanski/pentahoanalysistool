@@ -13,6 +13,7 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -47,6 +48,12 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	private transient String query;
 
 	private transient String cube;
+	
+	public enum QueryMode {
+		MDX, QUERY_MODEL;
+	}
+
+	private QueryMode selectedQueryMode;
 	
     private final LayoutPanel layoutPanel = new ScrollLayoutPanel(new BoxLayout());
     
@@ -138,8 +145,12 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
 		((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
-			    
-				layoutPanel.add(qmSelectionPanel, new BoxLayoutData(0.30,1));
+			    if (selectedQueryMode == QueryMode.QUERY_MODEL) {
+			    	layoutPanel.add(qmSelectionPanel, new BoxLayoutData(0.30,1));
+			    }
+			    if (selectedQueryMode == QueryMode.MDX) {
+			    	layoutPanel.add(new ToolButton("MDX"));
+			    }
 				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
 				
 
@@ -175,6 +186,14 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	
 	public OlapTable getTable(){
 		return olapTable;
+	}
+
+	public void setSelectedQueryMode(QueryMode selectedQueryMode) {
+		this.selectedQueryMode = selectedQueryMode;
+	}
+
+	public QueryMode getSelectedQueryMode() {
+		return selectedQueryMode;
 	}
 
 	public void onQueryChange(Widget sender) {

@@ -13,10 +13,19 @@
 
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.MainMenu;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.QueryPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -40,6 +49,9 @@ public class QueryModePopup extends PopupPanel {
 
 	/** The source. */
 	private static Widget source;
+
+	/** The source. */
+	private static TreeItem item;
 
 	/** The menu bar. */
 	private transient MenuBar menuBar;
@@ -78,19 +90,16 @@ public class QueryModePopup extends PopupPanel {
 	
 	public class QueryModeCommand implements Command {
 
-		/** The selection mode. */
+		/** The query mode. */
 		private transient int queryMode = -1;
 
 		/**
 		 * The Constructor.
 		 *
-		 * @param selectionMode the selection mode
+		 * @param queryMode the selection mode
 		 */
 		public QueryModeCommand(final int queryMode) {
 			this.queryMode = queryMode;
-			if ( queryMode == QUERY_MODEL) {
-				
-			}
 		}
 
 		/*
@@ -102,17 +111,71 @@ public class QueryModePopup extends PopupPanel {
 		 * The Command executed on click.
 		 */
 		public final void execute() {
-			
-			QueryModePopup.this.hide();
-		}
-	}
 
+			
+				final DataWidget widget = (DataWidget)source;
+				if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
+					((QueryPanel) widget).setCube(item.getText().trim());
+					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
+
+						public void onFailure(final Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(
+									arg0.getLocalizedMessage()));
+						}
+
+						public void onSuccess(final String[] arg0) {
+
+							ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
+
+								public void onFailure(final Throwable arg0) {
+									MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(
+											arg0.getLocalizedMessage()));
+								}
+
+								public void onSuccess(final String arg0) {
+									((QueryPanel) widget).setQuery(arg0);
+									ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
+
+										public void onFailure(final Throwable arg0) {
+
+											MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noQuerySet(
+													arg0.getLocalizedMessage()));
+										}
+
+										public void onSuccess(final Object arg0) {
+											if (queryMode == QUERY_MODEL) {
+												MainMenu.getDimensionPanel().createDimensionList();
+												MainMenu.getDimensionPanel().layout();
+												MainMenu.showNamedMenu(MainMenu.MenuItem.Dimensions);
+												MainMenu.getStackPanel().layout();
+												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.QUERY_MODEL);
+											}
+											if (queryMode == MDX) {
+												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.MDX);	
+											}
+											
+											MainTabPanel.displayContentWidget(widget);
+											
+											
+										}
+									});
+								}
+							});
+						}
+
+					});
+				}
+				QueryModePopup.this.hide();
+			}
+		
+	}
+	
 	/**
 	 * Gets the source.
 	 *
 	 * @return the source
 	 */
-	public static Widget getSource() {
+	public Widget getSource() {
 		return source;
 	}
 
@@ -121,8 +184,12 @@ public class QueryModePopup extends PopupPanel {
 	 *
 	 * @param source2 the new source
 	 */
-	public static void setSource(final Widget source2) {
+	public void setSource(final Widget source2) {
 		source = source2;
+	}
+
+	public static void setItem(TreeItem item) {
+		QueryModePopup.item = item;
 	}
 
 	/**
@@ -131,9 +198,16 @@ public class QueryModePopup extends PopupPanel {
 	 * @param event the event
 	 * @param selectedItem the selected item
 	 */
-	public final void showContextMenu(final Event event, final TreeItem selectedItem) {
-		init();
-		setSource(selectedItem.getWidget());
+	public final void showContextMenu(final Event event, final TreeItem selectedItem, final DataWidget sourceWidget) {
+		setSource(sourceWidget);
+		setItem(selectedItem);
+		if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
+			init();
+		}
+		if (DOM.eventGetType(event) == Event.ONCLICK) {
+			new QueryModeCommand(QUERY_MODEL).execute();
+		}
+
 
 	}
 }
