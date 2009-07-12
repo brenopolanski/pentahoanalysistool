@@ -112,7 +112,7 @@ public class QueryModePopup extends PopupPanel {
 		 */
 		public final void execute() {
 
-			
+				final Integer qmode = this.queryMode;
 				final DataWidget widget = (DataWidget)source;
 				if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
 					((QueryPanel) widget).setCube(item.getText().trim());
@@ -143,17 +143,20 @@ public class QueryModePopup extends PopupPanel {
 										}
 
 										public void onSuccess(final Object arg0) {
-											if (queryMode == QUERY_MODEL) {
+											if (qmode != null) {
+											
+											if (qmode.equals(QUERY_MODEL)) {
 												MainMenu.getDimensionPanel().createDimensionList();
 												MainMenu.getDimensionPanel().layout();
 												MainMenu.showNamedMenu(MainMenu.MenuItem.Dimensions);
 												MainMenu.getStackPanel().layout();
 												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.QUERY_MODEL);
 											}
-											if (queryMode == MDX) {
+											if (qmode.equals(MDX)) {
 												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.MDX);	
 											}
 											
+											}
 											MainTabPanel.displayContentWidget(widget);
 											
 											
