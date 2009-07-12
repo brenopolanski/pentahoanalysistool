@@ -10,12 +10,12 @@ package org.pentaho.pat.client.util;
 public class State {
 
 	public static enum Mode {
-		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false,false),  //$NON-NLS-1$
-		STANDALONE("STANDALONE", true,true,true,false,true,true,true), //$NON-NLS-1$
-		USER("USER", true,false,true,false,true,true,true), //$NON-NLS-1$
-		BUSINESSUSER("BUSINESSUSER", false,false,true,false,true,true,true), //$NON-NLS-1$
-		ONECUBE("ONECUBE", false,false,false,false,true,false,true), //$NON-NLS-1$
-		OLAPTABLE("OLAPTABLE", false,false,false,true,false,false,false); //$NON-NLS-1$
+		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false,false,false,false),  //$NON-NLS-1$
+		STANDALONE("STANDALONE", true,true,true,false,true,true,true,true,true), //$NON-NLS-1$
+		USER("USER", true,false,true,false,true,true,true,true,true), //$NON-NLS-1$
+		BUSINESSUSER("BUSINESSUSER", false,false,true,false,true,true,true,false,true), //$NON-NLS-1$
+		ONECUBE("ONECUBE", false,false,false,false,true,false,true,false,true), //$NON-NLS-1$
+		OLAPTABLE("OLAPTABLE", false,false,false,true,false,false,false,false,false); //$NON-NLS-1$
 		private String param;
 		
 		private boolean showConnections;
@@ -25,8 +25,10 @@ public class State {
 		private boolean showOnlyTable;
 		private boolean showMenu;
 		private boolean showWelcomePanel;
+		private boolean allowMdxQuery;
+		private boolean allowQmQuery;
 		
-		private Mode(final String param, final boolean showConnections, final boolean manageConnections, final boolean showCubeMenu, final boolean showOnlyTable, final boolean showMenu, final boolean showWelcomePanel, final boolean showDimensionMenu) {
+		private Mode(final String param, final boolean showConnections, final boolean manageConnections, final boolean showCubeMenu, final boolean showOnlyTable, final boolean showMenu, final boolean showWelcomePanel, final boolean showDimensionMenu, final boolean allowMdxQuery, final boolean allowQmQuery) {
 			this.param = param;
 			this.showConnections = showConnections;
 			this.manageConnections = manageConnections;
@@ -35,14 +37,25 @@ public class State {
 			this.showMenu = showMenu;
 			this.showWelcomePanel = showWelcomePanel;
 			this.showDimensionMenu = showDimensionMenu;
+			this.allowMdxQuery = allowMdxQuery;
+			this.allowQmQuery = allowQmQuery;
+		}
+		public boolean isAllowQmQuery() {
+			return allowQmQuery;
+		}
+		
+		public boolean isAllowMdxQuery() {
+			return allowMdxQuery;
 		}
 		
 		public boolean isShowDimensionMenu() {
 			return showDimensionMenu;
 		}
+		
 		public boolean isShowWelcomePanel() {
 			return showWelcomePanel;
 		}
+		
 		public boolean isShowMenu() {
 			return showMenu;
 		}

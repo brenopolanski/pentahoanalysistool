@@ -8,6 +8,7 @@ import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.QueryPanel;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
+import org.pentaho.pat.client.ui.panels.QueryPanel.QueryMode;
 import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -79,6 +80,7 @@ public class DemoSetup {
 							public void onFailure(final Throwable arg0) { }
 							public void onSuccess(final Object arg0) {
 								// TODO change way of accessing other widget elements
+								widget.setSelectedQueryMode(QueryMode.QUERY_MODEL);
 								MainMenu.getDimensionPanel().createDimensionList();
 								MainMenu.getDimensionPanel().layout();
 								MainTabPanel.displayContentWidget(widget);
