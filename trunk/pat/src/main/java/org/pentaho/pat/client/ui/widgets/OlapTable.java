@@ -40,7 +40,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	private int offset;
 	PatTableModel patTableModel;
 	TableModel<BaseCell[]> tableModel;
-
+	LiveTable<BaseCell[]> table;
 	final LayoutPanel layoutPanel = getLayoutPanel();
 
 	public OlapTable(){
@@ -54,14 +54,17 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 * @return tableDef
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
-	    	createGroups();
+	    BaseCell[] group = null;
 		final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
 		final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
 		for (int i=0; i < olapData.getMatrixWidth(); i++){
 		    
 		    
 			final BaseCell[] headers = colData.get(offset-1);
-			BaseCell[] group = colData.get(offset-2); 
+			
+			if(offset>1)
+			group = colData.get(offset-2); 
+			
 			final int cell = i;
 
 			final DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
@@ -75,7 +78,10 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 					}
 				}
 			};
+			
+			if (group!=null)
 			colDef0.setHeader(1, group[i].formattedValue);
+			
 			colDef0.setColumnSortable(false);
 			colDef0.setColumnTruncatable(false);
 			tableDef.addColumnDefinition(colDef0);
@@ -83,13 +89,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		return tableDef;
 	}
 
-	private void createGroups() {
-	    // TODO Auto-generated method stub
-	    final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
-	    List tom = colData;
-	    
-	    
-	}
+	
 
 	/**
 	 * 
@@ -121,7 +121,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		};
 
 
-		final LiveTable<BaseCell[]> table = new LiveTable<BaseCell[]>(tableModel,
+		table = new LiveTable<BaseCell[]>(tableModel,
 				createTableDefinition());
 		// table.setContextMenu(createContextMenu());
 		table.addDoubleClickHandler(new DoubleClickHandler() {
@@ -133,9 +133,8 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		
 		layoutPanel.add(table);
 		layoutPanel.layout();
-		table.redraw();
+		
 	}
-
 
 
 	public void onQueryChange(final Widget sender) {
@@ -153,7 +152,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	public void setData(final Matrix olapData) {
 		this.olapData = olapData;
 		initTable();
-
+		table.reload();
 	}
 
 
