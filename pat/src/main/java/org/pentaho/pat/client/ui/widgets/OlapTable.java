@@ -70,7 +70,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		    
 		    
 			final BaseCell[] headers = colData.get(offset-1);
-			
+			//work in progress
 			if(offset>1)
 			group = colData.get(offset-2); 
 			
