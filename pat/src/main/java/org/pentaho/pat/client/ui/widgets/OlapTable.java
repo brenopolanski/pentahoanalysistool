@@ -54,11 +54,14 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 * @return tableDef
 	 */
 	private TableDefinition<BaseCell[]> createTableDefinition() {
+	    	createGroups();
 		final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
 		final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
 		for (int i=0; i < olapData.getMatrixWidth(); i++){
+		    
+		    
 			final BaseCell[] headers = colData.get(offset-1);
-
+			BaseCell[] group = colData.get(offset-2); 
 			final int cell = i;
 
 			final DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
@@ -72,11 +75,20 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 					}
 				}
 			};
+			colDef0.setHeader(1, group[i].formattedValue);
 			colDef0.setColumnSortable(false);
 			colDef0.setColumnTruncatable(false);
 			tableDef.addColumnDefinition(colDef0);
 		}
 		return tableDef;
+	}
+
+	private void createGroups() {
+	    // TODO Auto-generated method stub
+	    final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
+	    List tom = colData;
+	    
+	    
 	}
 
 	/**
@@ -117,8 +129,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 				Window.alert(event.getSource().getClass().getName());
 			}
 		});
+		
+		
 		layoutPanel.add(table);
 		layoutPanel.layout();
+		table.redraw();
 	}
 
 
