@@ -97,12 +97,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
 			@Override
 			public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
-				int numRows;
-				if(olapData.getMatrixHeight()<50) {
-					numRows = olapData.getMatrixHeight();
-				} else {
-					numRows = request.getNumRows();
-				}
+			    	int numRows = Math.min(request.getNumRows(), data.size()-request.getStartRow());
 
 				final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
 				for (int i = 0, n = numRows; i < n; i++) {
