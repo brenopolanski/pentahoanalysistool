@@ -45,6 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
+	
 	private Matrix olapData;
 	private int offset;
 	PatTableModel patTableModel;
@@ -146,11 +147,17 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	}
 
 
+	/**
+	 * Fire on query changing.
+	 */
 	public void onQueryChange(final Widget sender) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Fire when the query is executed.
+	 */
 	public void onQueryExecuted(final String queryId, final Matrix olapData) {
 
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
@@ -158,6 +165,12 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Setup the current table.
+	 *
+	 * @param olapData
+	 */
 	public void setData(final Matrix olapData) {
 		this.olapData = olapData;
 		initTable();
