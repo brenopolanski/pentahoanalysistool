@@ -4,11 +4,11 @@ import java.util.Iterator;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
-import org.gwt.mosaic.ui.client.HTML;
+import org.gwt.mosaic.ui.client.HTMLLabel;
 import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.Label;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.TextLabel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
@@ -94,7 +94,7 @@ public class MainTabPanel extends LayoutComposite {
 	 */
 	private static Widget tabCloseLabel(final Widget widget, final String string, final int index) {
 		final HorizontalPanel hPanel = new HorizontalPanel();
-		final Label label = new Label(string);
+		final TextLabel label = new TextLabel(string);
 		DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		final ImageButton closeBtn = new ImageButton(Pat.IMAGES.closeButton());
 		closeBtn.addClickHandler(new ClickHandler() {
@@ -116,7 +116,7 @@ public class MainTabPanel extends LayoutComposite {
 			}
 		});
 		hPanel.add(label);
-		hPanel.add(new HTML("&nbsp&nbsp&nbsp")); //$NON-NLS-1$
+		hPanel.add(new HTMLLabel("&nbsp&nbsp&nbsp")); //$NON-NLS-1$
 		hPanel.add(closeBtn);
 		return hPanel;
 	}
