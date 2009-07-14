@@ -15,6 +15,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -40,7 +41,7 @@ import com.google.gwt.user.client.ui.TextBox;
  * @author pstoellberger
  */
 
-public class ConnectXmlaPanel extends LayoutPanel {
+public class ConnectXmlaPanel extends LayoutComposite {
 
 	/** Label Suffix. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
@@ -73,7 +74,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	 * ConnectXmlaPanel Constructor.
 	 */
 	public ConnectXmlaPanel() {
-		super();
+		super(new BorderLayout());
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
 		connectButton = new Button(ConstantFactory.getInstance().save());
@@ -82,21 +83,9 @@ public class ConnectXmlaPanel extends LayoutPanel {
 		userTextBox = new TextBox();
 		nameTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
-		this.setLayout(new BorderLayout());
+		// this.setLayout(new BorderLayout());
 		onInitialize();
 		// this.add(onInitialize());
-	}
-
-
-	/**
-	 * Empty the form.
-	 */
-	public final void emptyForm() {
-		nameTextBox.setText(""); //$NON-NLS-1$
-		urlTextBox.setText(""); //$NON-NLS-1$
-		userTextBox.setText(""); //$NON-NLS-1$
-		passwordTextBox.setText(""); //$NON-NLS-1$
-		// catalogTextbox.setText("");
 	}
 
 	/**
@@ -142,11 +131,6 @@ public class ConnectXmlaPanel extends LayoutPanel {
 	 * Initialize the panel.
 	 */
 	private void onInitialize() {
-
-		// final FormPanel formPanel = new FormPanel();
-		// formPanel.setWidth(WIDTH);
-		// formPanel.setHeight(HEIGHT);
-
 		final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
 				+ "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
 				// "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
@@ -188,7 +172,7 @@ public class ConnectXmlaPanel extends LayoutPanel {
 
 		final LayoutPanel layoutPanel = builder.getPanel();
 		layoutPanel.setPadding(15);
-		this.add(layoutPanel);
+		this.getLayoutPanel().add(layoutPanel);
 	}
 
 
