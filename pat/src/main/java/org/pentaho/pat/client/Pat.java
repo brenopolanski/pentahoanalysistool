@@ -16,6 +16,8 @@ package org.pentaho.pat.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwt.mosaic.core.client.DOM;
+import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
@@ -67,7 +69,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	/**
 	 * The {@link Application}.
 	 */
-	private static Application app;
+	private Application app;
 
 	/**
 	 * Global Session ID.
@@ -129,7 +131,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	/**
 	 * Update the style sheets to reflect the current theme and direction.
 	 */
-	public static void updateStyleSheets() {
+	public void updateStyleSheets() {
 		// Generate the names of the style sheets to include
 		String gwtStyleSheet = "gwt/" + CUR_THEME + "/" + CUR_THEME + ".css"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String gwtMosStyleSheet = "gwt/" + CUR_THEME + "/mosaic.css"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -177,8 +179,8 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 
 		// Detach the app while we manipulate the styles to avoid rendering
 		// issues
-		RootPanel.get().remove(app);
-		//app.removeFromParent();
+		//RootPanel.get().remove(app);
+		app.removeFromParent();
 		
 		// Remove the old style sheets
 		for (final Element elem : toRemove) {
@@ -198,12 +200,9 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 				// page. By changing the display style on the body element, we
 				// force
 				// IE to redraw the background correctly.
-				RootPanel.getBodyElement().getStyle().setProperty("display", //$NON-NLS-1$
-						"none"); //$NON-NLS-1$
-				RootPanel.getBodyElement().getStyle()
-						.setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
-				RootPanel.get().add(app);
-				//app.attach();
+				  RootPanel.getBodyElement().getStyle().setProperty("display", "none");
+			        RootPanel.getBodyElement().getStyle().setProperty("display", "");
+			        app.attach();
 			}
 		};
 
@@ -240,12 +239,13 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 	}
 	public final void onModuleLoad() {
 
-		// Swap out the style sheets for the RTL versions if needed
-		// hide splash
 		updateStyleSheets();
-		com.google.gwt.user.client.DOM
-				.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		 new DelayedRunnable() {
+		      @Override
+		      public void run() {
+		        DOM.getElementById("splash").getStyle().setProperty("display", "none");
+		      }
+		    };
 	}
 
 	
