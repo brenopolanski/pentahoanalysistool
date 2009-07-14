@@ -95,7 +95,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		vBox.setPadding(0);
 		vBox.setWidgetSpacing(0);
 
-		model.add(new ConnectionItem("123","debug connection",false));
+		model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
 		
 		listBox = createListBox();
 
@@ -114,7 +114,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		final FlexTable table = new FlexTable();
 		final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
-		table.setWidth("100%");
+		table.setWidth("100%"); //$NON-NLS-1$
 		table.setBorderWidth(0);
 		table.setCellPadding(3);
 		table.setCellSpacing(0);
@@ -129,14 +129,14 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		CustomButton cButton = new CustomButton(cImage) {
 			@Override
 			protected void onClick() {
-				// TODO implement dis-/connect routine
+				// TODO implement dis-/connect routine(externalize strings)
 				super.onClick();
 				if (item.isConnected()) {
-					MessageBox.info("Success", "Disconnected!");
+					MessageBox.info("Success", "Disconnected!"); //$NON-NLS-1$ //$NON-NLS-2$
 					item.setConnected(false);
 				}
 				else {
-					MessageBox.info("Success", "Connected!");
+					MessageBox.info("Success", "Connected!");  //$NON-NLS-1$//$NON-NLS-2$
 					item.setConnected(true);
 				}
 				final int index = linkedListBox.getSelectedIndex();
@@ -147,9 +147,9 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		};
 
 		table.setWidget(0,0,cButton);
-		cellFormatter.setWidth(0, 0, "25px");
+		cellFormatter.setWidth(0, 0, "25px"); //$NON-NLS-1$
 		//cellFormatter.setHeight(0, 0, "25px");
-		table.setHTML(0, 1, "<b>" + item.getName() + "</b>");
+		table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
 		return table;
 	}
 
@@ -163,7 +163,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 					cListBox.setWidget(row, column, createRichListBoxCell(item,cListBox));
 					break;
 				default:
-					throw new RuntimeException("Should not happen");
+					throw new RuntimeException("Should not happen"); //$NON-NLS-1$
 				}
 			}
 		});
@@ -172,7 +172,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 	}
 
 	public static void addConnection(CubeConnection cc) {
-		model.add(new ConnectionItem("123",cc.getName(),false));
+		model.add(new ConnectionItem("123",cc.getName(),false)); //$NON-NLS-1$
 	}
 
 
@@ -194,13 +194,13 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), null,ButtonLabelType.NO_TEXT), new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (linkedListBox.getSelectedIndex() == -1) {
-					MessageBox.alert("ListBox Edit", "No item selected");
+					MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 				String item = linkedListBox.getItem(linkedListBox.getSelectedIndex()).getName();
-				MessageBox.confirm("ListBox Remove",
-						"Are you sure you want to permanently delete '" + item
-						+ "' from the list?", new ConfirmationCallback() {
+				MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
+						"Are you sure you want to permanently delete '" + item //$NON-NLS-1$
+						+ "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
 					public void onResult(boolean result) {
 						if (result) {
 							model.remove(linkedListBox.getSelectedIndex());
@@ -211,10 +211,10 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		}));
 
 		// EDIT will be disabled for some more time
-		ToolButton editButton = new ToolButton("Edit", new ClickHandler() {
+		ToolButton editButton = new ToolButton("Edit", new ClickHandler() { //$NON-NLS-1$
 			public void onClick(ClickEvent event) {
 				if (linkedListBox.getSelectedIndex() == -1) {
-					MessageBox.alert("ListBox Edit", "No item selected");
+					MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 				// String item = listBox.getItem(listBox.getSelectedIndex()).getName();

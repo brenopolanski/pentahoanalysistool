@@ -13,20 +13,15 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -49,21 +44,10 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 	private boolean initialized = false;
 
 	private static int menuCounter = 0;
-	
+
 	public enum MenuItem {
-		Connections,Cubes,Dimensions;
+		Connections, Cubes, Dimensions;
 	}
-
-	/**
-	 * Set the content to the {@link DataWidget}.
-	 * 
-	 * @param content
-	 *            the {@link DataWidget} to display
-	 */
-
-
-
-	// TODO add welcome panel and other widgets shouldnt be happening here i think
 
 	/**
 	 * Constructor.
@@ -77,7 +61,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		initialized = true;
 
 		if (Pat.getInitialState().getMode().isShowMenu()) {
-			
+
 			final LayoutPanel baseLayoutPanel = getLayoutPanel();
 			baseLayoutPanel.add(stackPanel);
 			GlobalConnectionFactory.getInstance().addConnectionListener(MainMenu.this);
@@ -86,28 +70,27 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 			if (Pat.getInitialState().getMode().isShowConnections()) {
 				addMenuItem(connectionsPanel, ConstantFactory.getInstance().connections());
 			}
-			
+
 			if (Pat.getInitialState().getMode().isShowCubeMenu()) {
 				addMenuItem(cubeMenu, ConstantFactory.getInstance().cubes());
 			}
-			
+
 			if (Pat.getInitialState().getMode().isShowDimensionMenu()) {
 				addMenuItem(dimensionPanel, ConstantFactory.getInstance().dimensions());
 			}
-			
+
 			showNamedMenu(MenuItem.Connections);
-	
+
 		}
 	}
+
 	/**
 	 * Create the main menu.
 	 */
 
-
-
 	/**
 	 * Checks if is initialized.
-	 *
+	 * 
 	 * @return true, if is initialized
 	 */
 	public final boolean isInitialized() {
@@ -169,8 +152,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 
 	public static boolean showNamedMenu(MenuItem menuItem) {
 		if (stackPanel != null) {
-			for (int i=0;i<menuCounter;i++)
-			{
+			for (int i = 0; i < menuCounter; i++) {
 				String stackname = null;
 				if (menuItem.equals(MenuItem.Connections))
 					stackname = ConstantFactory.getInstance().connections();
@@ -178,9 +160,8 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 					stackname = ConstantFactory.getInstance().cubes();
 				if (menuItem.equals(MenuItem.Dimensions))
 					stackname = ConstantFactory.getInstance().dimensions();
-				
-				if (stackPanel.getCaption(i).getText().equals(stackname))
-				{
+
+				if (stackPanel.getCaption(i).getText().equals(stackname)) {
 					stackPanel.showStack(i);
 					stackPanel.layout();
 					return true;
@@ -189,11 +170,11 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		}
 		stackPanel.layout();
 		stackPanel.showStack(0);
-		return false;	
+		return false;
 	}
-	
+
 	public static void addMenuItem(Widget widget, String stackText) {
-		stackPanel.add(widget,stackText);
+		stackPanel.add(widget, stackText);
 		menuCounter++;
 	}
 }

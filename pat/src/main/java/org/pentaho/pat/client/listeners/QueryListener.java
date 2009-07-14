@@ -20,7 +20,6 @@ package org.pentaho.pat.client.listeners;
 import java.util.EventListener;
 
 import org.pentaho.pat.rpc.dto.Matrix;
-import org.pentaho.pat.rpc.dto.OlapData;
 
 import com.google.gwt.user.client.ui.Widget;
 

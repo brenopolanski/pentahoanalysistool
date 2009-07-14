@@ -82,7 +82,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 				@Override
 				public String getCellValue(final BaseCell[] rowValue) {
 					if (rowValue[cell]==null) {
-						return "";
+						return ""; //$NON-NLS-1$
 					} else {
 						return rowValue[cell].formattedValue;
 					}
@@ -117,6 +117,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 			}
 
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
 			    	int numRows = Math.min(request.getNumRows(), data.size()-request.getStartRow());

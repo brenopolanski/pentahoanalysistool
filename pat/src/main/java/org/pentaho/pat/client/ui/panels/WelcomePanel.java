@@ -81,11 +81,12 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	private static boolean connectionEstablished;
 	
 	/**
-	 *TODO JAVADOC
+	 * The PAT Welcome Panel. Currently allows connection editing and
+	 * opening of the PAT Wiki.
 	 *
 	 */
 	public WelcomePanel() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	/* (non-Javadoc)
@@ -127,7 +128,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 		
 	    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL, Alignment.CENTER));
 	    
-	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>";
+	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
 	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
 	    buttonBar.setWidgetSpacing(20);
 	    conButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database(),
@@ -177,11 +178,11 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 
 	@SuppressWarnings("unused")
 	private void createSizedWindowPanel() {
-	    sized = new WindowPanel("Sized");
+	    sized = new WindowPanel("Sized"); //$NON-NLS-1$
 	    sized.setAnimationEnabled(true);
-	    sized.setSize("812px", "484px");
+	    sized.setSize("812px", "484px"); //$NON-NLS-1$ //$NON-NLS-2$
 	    final Frame frame = new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"); //$NON-NLS-1$
-	    DOM.setStyleAttribute(frame.getElement(), "border", "none");
+	    DOM.setStyleAttribute(frame.getElement(), "border", "none"); //$NON-NLS-1$ //$NON-NLS-2$
 	    sized.setWidget(frame);
 
 	    final ImageButton refreshBtn = new ImageButton(Caption.IMAGES.toolRefresh());

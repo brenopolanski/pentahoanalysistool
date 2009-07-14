@@ -71,10 +71,10 @@ public class QueryModePopup extends PopupPanel {
 		menuBar = new MenuBar(true);
 		menuBar.setAutoOpen(true);
 		if (Pat.getInitialState().getMode().isAllowQmQuery()) {
-			menuBar.addItem(new MenuItem("Query Wizard", new QueryModeCommand(QUERY_MODEL)));
+			menuBar.addItem(new MenuItem(ConstantFactory.getInstance().queryWizard(), new QueryModeCommand(QUERY_MODEL)));
 		}
 		if(Pat.getInitialState().getMode().isAllowMdxQuery()) {
-		menuBar.addItem(new MenuItem("MDX Query", new QueryModeCommand(MDX)));
+		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().mdxQuery(), new QueryModeCommand(MDX)));
 		}
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new QueryModeCancelCommand()));
 
