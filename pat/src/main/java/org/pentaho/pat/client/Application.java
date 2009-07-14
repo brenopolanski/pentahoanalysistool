@@ -105,15 +105,10 @@ public class Application extends Viewport {
 		// Setup the main layout widget
 		if (Pat.getInitialState().getMode().isShowOnlyTable() == false) {
 			mainPanel = new LayoutPanel(new BorderLayout());
-			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 	
 			mainTabPanel = new MainTabPanel();
 			mainPanel.add(mainTabPanel);
 			
-			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
-				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
-			}
-
 			// Add the main menu
 			if (Pat.getInitialState().getMode().isShowMenu()) {
 				final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseLeft());
@@ -132,6 +127,13 @@ public class Application extends Viewport {
 		
 				mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
 			}
+			
+			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+			
+			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
+				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+			}
+			
 			
 		}
 		else {
