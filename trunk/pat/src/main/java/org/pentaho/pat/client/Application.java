@@ -26,7 +26,6 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
@@ -126,6 +125,7 @@ public class Application extends Viewport {
 				});
 		
 				mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
+				rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 			}
 			
 			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
