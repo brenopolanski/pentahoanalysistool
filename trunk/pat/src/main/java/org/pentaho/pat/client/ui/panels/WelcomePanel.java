@@ -136,11 +136,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
 					if (!WelcomePanel.connectionEstablished) {
-						if (Application.getConnectionWindow() == null) {
-							Application.setConnectionWindow(new ConnectionWindow());
-						}
-						Application.getConnectionWindow().emptyForms();
-						Application.getConnectionWindow().showModal(true);
+						ConnectionWindow.display();
 					} else {
 						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 							public void onFailure(final Throwable arg0) {

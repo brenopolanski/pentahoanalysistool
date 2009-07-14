@@ -183,11 +183,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 				Pat.IMAGES.add(), null,
 				ButtonLabelType.NO_TEXT), new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if (Application.getConnectionWindow() == null) {
-					Application.setConnectionWindow(new ConnectionWindow());
-				}
-				Application.getConnectionWindow().emptyForms();
-				Application.getConnectionWindow().showModal(true);
+				ConnectionWindow.display();
 			}
 		}));
 
@@ -218,12 +214,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 					return;
 				}
 				// String item = listBox.getItem(listBox.getSelectedIndex()).getName();
-				if (Application.getConnectionWindow() == null) {
-					Application.setConnectionWindow(new ConnectionWindow());
-				}
-				Application.getConnectionWindow().emptyForms();
-				Application.getConnectionWindow().showModal(true);
-
+				ConnectionWindow.display();
 			}
 		});
 		editButton.setEnabled(false);

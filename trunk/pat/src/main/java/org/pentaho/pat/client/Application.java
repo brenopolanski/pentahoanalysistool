@@ -91,9 +91,6 @@ public class Application extends Viewport {
 	/** The bottom Panel for the Application, contains the main panels. */
 	private static LayoutPanel mainPanel;
 
-	/** The Connection Window for the Application. */
-	private static ConnectionWindow connectionWindow = null;
-
 	private static MainTabPanel mainTabPanel = null;
 
 	/**
@@ -135,7 +132,6 @@ public class Application extends Viewport {
 		
 				mainPanel.add(menuWrapperPanel, new BorderLayoutData(Region.WEST, 200, 10, 250, true));
 			}
-			connectionWindow = new ConnectionWindow();
 			
 		}
 		else {
@@ -168,13 +164,6 @@ public class Application extends Viewport {
 		return mainTabPanel;
 	}
 
-	public static ConnectionWindow getConnectionWindow() {
-		return connectionWindow;
-	}
-
-	public static void setConnectionWindow(ConnectionWindow connectionWindow) {
-		Application.connectionWindow = connectionWindow;
-	}
 
 	/**
 	 * Gets the bottom panel.

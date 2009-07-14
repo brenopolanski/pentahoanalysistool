@@ -15,6 +15,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -45,7 +46,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
  * @author Paul Stoellberger
  */
 
-public class ConnectMondrianPanel extends LayoutPanel {
+public class ConnectMondrianPanel extends LayoutComposite {
 
 	/** Form element name of the file component. */
 	private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
@@ -109,9 +110,8 @@ public class ConnectMondrianPanel extends LayoutPanel {
 	 * ConnectMondrianPanel Constructor.
 	 */
 	public ConnectMondrianPanel() {
-		super();
+		super(new BorderLayout());
 
-		this.setLayout(new BorderLayout());
 
 		nameTextBox = new TextBox();
 		connectButton = new Button(ConstantFactory.getInstance().save());
@@ -152,17 +152,6 @@ public class ConnectMondrianPanel extends LayoutPanel {
 			}
 		});
 		return listBox;
-	}
-
-	/**
-	 * Empty form contents.
-	 */
-	public final void emptyForm() {
-		nameTextBox.setText(""); //$NON-NLS-1$
-		urlTextBox.setText(""); //$NON-NLS-1$
-		userTextBox.setText(""); //$NON-NLS-1$
-		passwordTextBox.setText(""); //$NON-NLS-1$
-		schemaPath = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -288,7 +277,7 @@ public class ConnectMondrianPanel extends LayoutPanel {
 		final LayoutPanel layoutPanel = builder.getPanel();
 		layoutPanel.setPadding(15);
 		formPanel.add(layoutPanel);
-		this.add(formPanel);
+		this.getLayoutPanel().add(formPanel);
 	}
 
 	/**
