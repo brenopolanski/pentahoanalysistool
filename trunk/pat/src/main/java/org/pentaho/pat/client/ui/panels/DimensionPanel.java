@@ -23,66 +23,59 @@ import org.pentaho.pat.rpc.dto.Axis;
 /**
  * The Dimension Panel lists the dimensions that are currently in the unused
  * axis.
- *
+ * 
  * @author tom(at)wamonline.org.uk
  */
 public class DimensionPanel extends LayoutComposite {
 
-	//private final ScrollPanel scrollPanel;
-    /** The Widget that allows you to drag and drop dimensions on it. */
-    private final transient DimensionDropWidget dimDrop;
+	/** The Widget that allows you to drag and drop dimensions on it. */
+	private final transient DimensionDropWidget dimDrop;
 
-    /** The Drag Controller. */
-    private static FlexTableRowDragController tableRowDragController;
+	/** The Drag Controller. */
+	private static FlexTableRowDragController tableRowDragController;
 
-    /**
-     * Returns the drag controller.
-     *
-     * @return tableRowDragController
-     */
-    public static FlexTableRowDragController getTableRowDragController() {
-	return tableRowDragController;
-    }
+	/**
+	 * Returns the drag controller.
+	 * 
+	 * @return tableRowDragController
+	 */
+	public static FlexTableRowDragController getTableRowDragController() {
+		return tableRowDragController;
+	}
 
-    /**
-     * Set the drag controller.
-     *
-     * @param tableRowDragController
-     *            Accepts a FlexTableRowDragController
-     */
-    private static void setTableRowDragController(
-	    final FlexTableRowDragController tableRowDragController) {
-	DimensionPanel.tableRowDragController = tableRowDragController;
-    }
+	/**
+	 * Set the drag controller.
+	 * 
+	 * @param tableRowDragController
+	 *            Accepts a FlexTableRowDragController
+	 */
+	private static void setTableRowDragController(final FlexTableRowDragController tableRowDragController) {
+		DimensionPanel.tableRowDragController = tableRowDragController;
+	}
 
-    /**
-     * Constructor.
-     */
-    public DimensionPanel() {
+	/**
+	 * Constructor.
+	 */
+	public DimensionPanel() {
 
-	super();
+		super();
 
-	final LayoutPanel baseLayoutPanel = getLayoutPanel();
-	
+		final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-	setTableRowDragController(new FlexTableRowDragController(Application
-		.getMainPanel()));
-	
-	dimDrop = new DimensionDropWidget(ConstantFactory.getInstance()
-		.unused(), Axis.UNUSED);
-	
-	
-	
-	baseLayoutPanel.add(dimDrop);
-    }
+		setTableRowDragController(new FlexTableRowDragController(Application.getMainPanel()));
 
-    /**
-     * Creates a list of dimensions for the axis specified for the widget.
-     */
-    public final void createDimensionList() {
-	// Create the various components that make up the Dimension Flextable
+		dimDrop = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
 
-	dimDrop.populateDimensionTable();
-	
-    }
+		baseLayoutPanel.add(dimDrop);
+	}
+
+	/**
+	 * Creates a list of dimensions for the axis specified for the widget.
+	 */
+	public final void createDimensionList() {
+		// Create the various components that make up the Dimension Flextable
+
+		dimDrop.populateDimensionTable();
+
+	}
 }

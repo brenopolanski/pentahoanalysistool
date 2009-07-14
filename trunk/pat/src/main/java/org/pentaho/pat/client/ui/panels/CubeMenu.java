@@ -14,16 +14,12 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.QueryModePopup;
-import org.pentaho.pat.client.ui.widgets.SelectionModePopup;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -115,7 +111,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	 */
 	private final void setupCubeMenu() {
 		// TODO remove when showcase not needed
-		cubeTree.addItem("connection 1");
+		cubeTree.addItem("connection 1"); //$NON-NLS-1$
 		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
 			public void onFailure(final Throwable arg0) {
 				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
@@ -123,7 +119,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 
 			public void onSuccess(final String[] o) {
 				// TODO implement new treeitem correctly
-				final TreeItem cubesList = cubeTree.addItem("connection 2");
+				final TreeItem cubesList = cubeTree.addItem("connection 2"); //$NON-NLS-1$
 
 				for (final String element2 : o) {
 					setupMainMenuOption(cubesList, new QueryPanel(element2), Pat.IMAGES.cube());
@@ -179,7 +175,7 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	public void onBrowserEvent(final Event event) {
 		super.onBrowserEvent(event);
 		final TreeItem item = cubeTree.getSelectedItem();
-		if (listener != null && item != null && !item.getText().equals("connection 1") && !item.getText().equals("connection 2")) {
+		if (listener != null && item != null && !item.getText().equals("connection 1") && !item.getText().equals("connection 2")) { //$NON-NLS-1$ //$NON-NLS-2$
 			final DataWidget widget = ITEMWIDGETS.get(item);
 			final QueryModePopup qModePopup = new QueryModePopup();
 			qModePopup.setPopupPositionAndShow(new PositionCallback() {

@@ -28,6 +28,7 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Matrix;
@@ -47,7 +48,6 @@ import com.google.gwt.user.client.ui.Widget;
 public class QueryPanel extends DataWidget implements QueryListener {
 
 	/** The olap table. */
-	//private transient OlapTable olapTable = new OlapTable(MessageFactory.getInstance());
 	private OlapTable olapTable = new OlapTable();
 	/** Panel Name. */
 	private transient String name;
@@ -151,10 +151,12 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	protected void onLoad() {
 		super.onLoad();
 		if (Pat.getInitialState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
-			Application.getMenuPanel().showNamedMenu(MenuItem.Dimensions);
+			Application.getMenuPanel();
+			MainMenu.showNamedMenu(MenuItem.Dimensions);
 		}
 		if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
-			Application.getMenuPanel().showNamedMenu(MenuItem.Cubes);
+			Application.getMenuPanel();
+			MainMenu.showNamedMenu(MenuItem.Cubes);
 		}
 	}
 	@Override
@@ -167,14 +169,14 @@ public class QueryPanel extends DataWidget implements QueryListener {
 			    }
 			    if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
 			    	// TODO this is just for demonstration at the moment.
-			    	ToolButton editMDX = new ToolButton("Edit MDX Query");
+			    	ToolButton editMDX = new ToolButton(ConstantFactory.getInstance().executeMdx());
 			    	editMDX.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent arg0) {
-							final WindowPanel wp = new WindowPanel("Edit MDX");
+							final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().editMdx());
 							LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-							wpLayoutPanel.setSize("300px", "200px");
+							wpLayoutPanel.setSize("300px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
 							wpLayoutPanel.add(new TextArea(), new BoxLayoutData(1,0.9));
-							ToolButton closeBtn = new ToolButton("Save and Execute MDX");
+							ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().saveExecuteMdx());
 							closeBtn.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent arg0) {
 									wp.hide();
@@ -186,13 +188,13 @@ public class QueryPanel extends DataWidget implements QueryListener {
 							wp.add(wpLayoutPanel);
 							wp.layout();
 							wp.pack();
-							wp.setSize("400px", "320px");
+							wp.setSize("400px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
 							wp.center();
 							
 						}
 					});
 			    	layoutPanel.add(editMDX);
-			    	layoutPanel.add(new ToolButton("Execute MDX Query"));
+			    	layoutPanel.add(new ToolButton(ConstantFactory.getInstance().executeQuery()));
 			    }
 				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
 				
@@ -232,7 +234,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	}
 
 	public void setSelectedQueryMode(QueryMode selectedQueryMode) {
-		this.selectedQueryMode = selectedQueryMode;
+		QueryPanel.selectedQueryMode = selectedQueryMode;
 	}
 
 	public QueryMode getSelectedQueryMode() {
@@ -248,8 +250,6 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		if (this.query != null && queryId == this.query && this.isAttached()) {
 			// TODO why is this called twice? why two instances of the same object?
 			olapTable.setData(olapData);
-			this.layout();
-			this.layoutChildren();
 		}
 	}
 }

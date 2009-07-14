@@ -28,7 +28,7 @@ public interface PatConstants extends Constants {
 	String CURRENT_CUBE_NAME = "current-cube-name"; //$NON-NLS-1$
 
 	/** The STYLE_THEMES. */
-	String[] STYLE_THEMES = {"aegean" ,"standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	String[] STYLE_THEMES = {"aegean" ,"standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	/**
 	 * Availablecubes.
 	 *
@@ -779,4 +779,36 @@ public interface PatConstants extends Constants {
 	 * @return
 	 */
 	String view();
+	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String editMdx();
+	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String saveExecuteMdx();
+	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String fileUpload();
+	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 * @return
+	 */
+	String queryWizard();
 }

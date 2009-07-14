@@ -1,7 +1,9 @@
 package org.pentaho.pat.client.ui.panels;
 
+
 import java.util.Iterator;
 
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.HTMLLabel;
@@ -43,12 +45,14 @@ public class MainTabPanel extends LayoutComposite {
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
+				
 				if (widget instanceof QueryPanel){
 					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
 
 						public void onFailure(final Throwable arg0) {
-							//TODO proper messages
-							MessageBox.error("Balls", "Couldn't set the cube");
+							//TODO proper messages 
+							
+							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().cube());
 						}
 
 						public void onSuccess(final Object arg0) {
@@ -58,7 +62,7 @@ public class MainTabPanel extends LayoutComposite {
 
 								public void onFailure(final Throwable arg0) {
 									//TODO proper messages
-									MessageBox.error("Balls", "Couldn't set the query");
+									MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().noConnection());
 								}
 
 								public void onSuccess(final Object arg0) {
@@ -72,11 +76,6 @@ public class MainTabPanel extends LayoutComposite {
 					});
 
 				}
-				if (widget instanceof WelcomePanel){
-					//mainPanel.showMenu(0);
-				}
-
-
 			}
 		});
 		

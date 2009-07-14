@@ -1,12 +1,3 @@
-/*
-// $Id: RectangularCellSetFormatter.java 243 2009-05-22 07:21:37Z jhyde $
-// This software is subject to the terms of the Eclipse Public License v1.0
-// Agreement, available at the following URL:
-// http://www.eclipse.org/legal/epl-v10.html.
-// Copyright (C) 2009-2009 Julian Hyde
-// All Rights Reserved.
-// You must accept the terms of that agreement to use this software.
-*/
 package org.pentaho.pat.server.util;
 
 import java.util.AbstractList;
@@ -39,7 +30,6 @@ public class PatCellSetFormatter  {
 
     public Matrix format(CellSet cellSet) {
         // Compute how many rows are required to display the columns axis.
-        // In the example, this is 4 (1997, Q1, space, Unit Sales)
         final CellSetAxis columnsAxis;
         if (cellSet.getAxes().size() > 0) {
             columnsAxis = cellSet.getAxes().get(0);
@@ -49,7 +39,6 @@ public class PatCellSetFormatter  {
         AxisInfo columnsAxisInfo = computeAxisInfo(columnsAxis);
 
         // Compute how many columns are required to display the rows axis.
-        // In the example, this is 3 (the width of USA, CA, Los Angeles)
         final CellSetAxis rowsAxis;
         if (cellSet.getAxes().size() > 1) {
             rowsAxis = cellSet.getAxes().get(1);
@@ -228,8 +217,8 @@ public class PatCellSetFormatter  {
                 }
                 else
                 {
-                    memberInfo.setRawValue("");
-                    memberInfo.setFormattedValue("");
+                    memberInfo.setRawValue(""); //$NON-NLS-1$
+                    memberInfo.setFormattedValue(""); //$NON-NLS-1$
                 }
     	
                 if (isColumns) {
@@ -238,8 +227,8 @@ public class PatCellSetFormatter  {
                     matrix.set(x, y, memberInfo);
                 } else {
                     if (same) {
-                       memberInfo.setFormattedValue("");
-                       memberInfo.setRawValue("");
+                       memberInfo.setFormattedValue(""); //$NON-NLS-1$
+                       memberInfo.setRawValue(""); //$NON-NLS-1$
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);
