@@ -3,10 +3,7 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.client.events.SourcesConnectionEvents;
 import org.pentaho.pat.client.events.SourcesQueryEvents;
-import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.listeners.ConnectionListenerCollection;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.listeners.QueryListenerCollection;
 
