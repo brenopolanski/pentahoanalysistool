@@ -27,7 +27,8 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -83,13 +84,13 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-	    	ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<Matrix>() {
+	    	ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<CellDataSet>() {
 
 			public void onFailure(final Throwable caught) {
 				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
 			}
 
-			public void onSuccess(final Matrix matrix) {
+			public void onSuccess(final CellDataSet matrix) {
 				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
 			}
 		});
@@ -100,7 +101,7 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 		
 	}
 
-	public void onQueryExecuted(String queryId, Matrix olapData) {
+	public void onQueryExecuted(String queryId, CellDataSet olapData) {
 		// TODO Auto-generated method stub
 		
 	}

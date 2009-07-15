@@ -10,8 +10,10 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 
@@ -103,14 +105,37 @@ public class OlapUtil {
 		return findSelection(path, dim.getSelections());
 	  }
 	  
-	  public static Matrix cellSet2Matrix(CellSet cellSet){
+	  public static CellDataSet cellSet2Matrix(CellSet cellSet){
 	      if (cellSet == null) {
 		      return null;
 		    }
 	      PatCellSetFormatter pcsf = new PatCellSetFormatter();
 		    
 	      Matrix matrix = pcsf.format(cellSet);
-	      return matrix;
+	      CellDataSet cds = new CellDataSet(matrix.getMatrixWidth(), matrix.getMatrixHeight());
+	      
+	      int z = 0;
+		final BaseCell[][] bodyvalues = new BaseCell[matrix.getMatrixHeight() - matrix.getOffset() + 2][matrix.getMatrixWidth()];
+		for (int y = matrix.getOffset(); y < matrix.getMatrixHeight(); y++) {
+
+			for (int x = 0; x < matrix.getMatrixWidth(); x++) {
+				bodyvalues[z][x] = matrix.get(x, y);
+			}
+			z++;
+		}	
+	      
+	      cds.setCellSetBody(bodyvalues);
+	      
+	      final BaseCell[][] headervalues = new BaseCell[matrix.getMatrixHeight()][matrix.getMatrixWidth()];
+		for (int y = 0; y < matrix.getOffset(); y++) {
+			for (int x = 0; x < matrix.getMatrixWidth(); x++) {
+				headervalues[y][x] = matrix.get(x, y);
+			}
+		}
+		
+		cds.setCellSetHeaders(headervalues);
+	      cds.setOffset(matrix.getOffset());
+	      return cds;
 	      
 	  }
 	  

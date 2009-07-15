@@ -6,7 +6,9 @@ import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -127,6 +129,6 @@ public interface QueryService extends Service {
 	 * @throws OlapException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Matrix executeQuery2(String userId, 
+	public CellDataSet executeQuery2(String userId, 
 			String sessionId) throws OlapException;
 }

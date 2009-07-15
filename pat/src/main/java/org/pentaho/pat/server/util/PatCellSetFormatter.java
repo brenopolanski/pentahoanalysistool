@@ -12,7 +12,7 @@ import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -71,6 +71,9 @@ public class PatCellSetFormatter  {
                 rowsAxis,
                 rowsAxisInfo);
         }
+        
+       
+	
         return matrix;
     }
 

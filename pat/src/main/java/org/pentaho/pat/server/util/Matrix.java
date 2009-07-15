@@ -1,4 +1,4 @@
-package org.pentaho.pat.rpc.dto;
+package org.pentaho.pat.server.util;
 
 import java.io.Serializable;
 import java.util.Arrays;
