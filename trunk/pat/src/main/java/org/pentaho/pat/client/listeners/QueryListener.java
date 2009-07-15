@@ -19,7 +19,9 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.EventListener;
 
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,6 +35,6 @@ public interface QueryListener extends EventListener {
 	
 	public void onQueryChange(Widget sender);
 	
-	public void onQueryExecuted(String queryId, Matrix olapData);
+	public void onQueryExecuted(String queryId, CellDataSet matrix);
 	
 }

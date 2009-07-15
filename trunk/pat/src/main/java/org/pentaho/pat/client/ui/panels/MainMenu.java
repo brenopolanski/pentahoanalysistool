@@ -20,7 +20,8 @@ import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -137,7 +138,7 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		dimensionPanel.createDimensionList();
 	}
 
-	public void onQueryExecuted(String queryId, Matrix olapData) {
+	public void onQueryExecuted(String queryId, CellDataSet olapData) {
 		// TODO Auto-generated method stub
 
 	}

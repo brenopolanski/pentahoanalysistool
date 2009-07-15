@@ -31,7 +31,9 @@ import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -246,7 +248,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		
 	}
 
-	public void onQueryExecuted(String queryId, Matrix olapData) {
+	public void onQueryExecuted(String queryId, CellDataSet olapData) {
 		if (this.query != null && queryId == this.query && this.isAttached()) {
 			// TODO why is this called twice? why two instances of the same object?
 			olapTable.setData(olapData);

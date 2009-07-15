@@ -11,12 +11,14 @@ import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.util.Matrix;
 
 
 /**
@@ -104,7 +106,7 @@ public class QueryServlet extends AbstractServlet implements Query {
 			dimensionName);
 	}
 
-	public Matrix executeQuery2(String sessionId) throws RpcException 
+	public CellDataSet executeQuery2(String sessionId) throws RpcException 
 	{
 		try {
 			return this.queryService.executeQuery2(getCurrentUserId(), sessionId);

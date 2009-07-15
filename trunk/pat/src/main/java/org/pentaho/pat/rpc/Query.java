@@ -3,9 +3,11 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.util.Matrix;
 import org.springframework.security.annotation.Secured;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -127,5 +129,5 @@ public interface Query extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public Matrix executeQuery2(String sessionId) throws RpcException;
+	public CellDataSet executeQuery2(String sessionId) throws RpcException;
 }

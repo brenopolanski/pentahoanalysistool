@@ -23,8 +23,9 @@ import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -46,7 +47,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
 	
-	private Matrix olapData;
+	private CellDataSet olapData;
 	private int offset;
 	PatTableModel patTableModel;
 	TableModel<BaseCell[]> tableModel;
@@ -67,7 +68,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	    BaseCell[] group = null;
 		final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
 		final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
-		for (int i=0; i < olapData.getMatrixWidth(); i++){
+		for (int i=0; i < olapData.getWidth(); i++){
 		    
 		    
 			final BaseCell[] headers = colData.get(offset-1);
@@ -159,7 +160,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	/**
 	 * Fire when the query is executed.
 	 */
-	public void onQueryExecuted(final String queryId, final Matrix olapData) {
+	public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
 
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
 			setData(olapData);
@@ -172,7 +173,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 *
 	 * @param olapData
 	 */
-	public void setData(final Matrix olapData) {
+	public void setData(final CellDataSet olapData) {
 		this.olapData = olapData;
 		initTable();
 		table.reload();

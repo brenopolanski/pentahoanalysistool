@@ -12,7 +12,7 @@
  */
 package org.pentaho.pat.client.util;
 
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 /**
@@ -25,7 +25,7 @@ import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
  */
 public class PatTableModel {
 
-	Matrix olapMatrix = null;
+	CellDataSet olapMatrix = null;
 
 	/**
 	 * 
@@ -33,7 +33,7 @@ public class PatTableModel {
 	 *
 	 * @param olapMatrix
 	 */
-	public PatTableModel(final Matrix olapMatrix) {
+	public PatTableModel(final CellDataSet olapMatrix) {
 		this.olapMatrix = olapMatrix;
 
 	}
@@ -45,7 +45,7 @@ public class PatTableModel {
 	 * @return olapData.getCellData().getAcrossCount();
 	 */
 	public int getColumnCount() {
-		return olapMatrix.getMatrixWidth();
+		return olapMatrix.getWidth();
 	}
 
 	/**
@@ -55,13 +55,13 @@ public class PatTableModel {
 	 * @return values
 	 */
 	public BaseCell[][] getColumnHeaders() {
-		final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()];
+		/*final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()];
 		for (int y = 0; y < getOffset(); y++) {
 			for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
 				values[y][x] = olapMatrix.get(x, y);
 			}
-		}
-		return values;
+		}*/
+		return olapMatrix.getCellSetHeaders();
 
 	}
 
@@ -82,7 +82,7 @@ public class PatTableModel {
 	 * @return olapData.getCellData().getDownCount();
 	 */
 	public int getRowCount() {
-		return olapMatrix.getMatrixHeight();
+		return olapMatrix.getHeight();
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class PatTableModel {
 	 * @return values
 	 */
 	public BaseCell[][] getRowData() {
-		int z = 0;
+		/*int z = 0;
 		final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight() - getOffset() + 2][olapMatrix.getMatrixWidth()];
 		for (int y = getOffset(); y < olapMatrix.getMatrixHeight(); y++) {
 
@@ -100,8 +100,10 @@ public class PatTableModel {
 				values[z][x] = olapMatrix.get(x, y);
 			}
 			z++;
-		}
-		return values;
+		}*/
+	    
+	    
+		return olapMatrix.getCellSetBody();
 	}
 
 }

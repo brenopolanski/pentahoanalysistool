@@ -15,7 +15,9 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.ArrayList;
 
-import org.pentaho.pat.rpc.dto.Matrix;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -34,9 +36,9 @@ public class QueryListenerCollection extends ArrayList<QueryListener> {
 		}
 	}
 	
-	public void fireQueryExecuted(final Widget sender,final String queryId, final Matrix olapData) {
+	public void fireQueryExecuted(final Widget sender,final String queryId, final CellDataSet matrix) {
 		for(QueryListener listener:this) {
-			listener.onQueryExecuted(queryId, olapData);
+			listener.onQueryExecuted(queryId, matrix);
 		}
 	}
 
