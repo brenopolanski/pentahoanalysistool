@@ -200,8 +200,8 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 				// page. By changing the display style on the body element, we
 				// force
 				// IE to redraw the background correctly.
-				  RootPanel.getBodyElement().getStyle().setProperty("display", "none");
-			        RootPanel.getBodyElement().getStyle().setProperty("display", "");
+				  RootPanel.getBodyElement().getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$
+			        RootPanel.getBodyElement().getStyle().setProperty("display", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			        app.attach();
 			}
 		};
@@ -243,7 +243,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		 new DelayedRunnable() {
 		      @Override
 		      public void run() {
-		        DOM.getElementById("splash").getStyle().setProperty("display", "none");
+		        DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		      }
 		    };
 	}
