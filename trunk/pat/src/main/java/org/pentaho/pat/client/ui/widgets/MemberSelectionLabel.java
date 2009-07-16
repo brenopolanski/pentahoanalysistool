@@ -126,13 +126,9 @@ public class MemberSelectionLabel extends HorizontalPanel  {
     public void onBrowserEvent(final Event event) {
 	super.onBrowserEvent(event);
 	switch (DOM.eventGetType(event)) { // NOPMD by bugg on 20/04/09 20:16
-	case Event.ONCLICK:
-	    //if (clickListeners != null) {
-		//clickListeners.fireClick(this);
-//		fireEvent(this);
-	    //}
-	    break;
 	case Event.ONCONTEXTMENU:
+	    break;
+	case Event.ONCLICK:
 	    final SelectionModePopup test = new SelectionModePopup();
 		//test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
 		test.showContextMenu(event, getTreeItem());

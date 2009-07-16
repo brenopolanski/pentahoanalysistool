@@ -18,11 +18,13 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.server.util.Matrix;
@@ -57,6 +59,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	public OlapTable(){
 		super();
 		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
+		GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapTable.this);
 	}
 
 	/**
@@ -161,7 +164,6 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 * Fire when the query is executed.
 	 */
 	public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
-
 		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
 			setData(olapData);
 		}
@@ -177,6 +179,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		this.olapData = olapData;
 		initTable();
 		table.reload();
+		this.layout();
 	}
 
 
