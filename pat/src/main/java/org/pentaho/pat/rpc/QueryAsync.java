@@ -41,6 +41,12 @@ public interface QueryAsync {
 		String sessionId,
 		AsyncCallback<CellDataSet> callback);
 	
+	// TODO is this the way we want mdx to work?
+	public void executeMdxQuery(
+			String sessionId,
+			String mdx,
+			AsyncCallback<CellDataSet> callback);
+	
 	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
     
     public void setCurrentQuery(String sessionId, String queryId, AsyncCallback callback);

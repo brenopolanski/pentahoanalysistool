@@ -130,4 +130,9 @@ public interface Query extends RemoteService {
 	 */
 	@Secured ({"ROLE_USER"})
 	public CellDataSet executeQuery2(String sessionId) throws RpcException;
+	
+	// TODO is this the way we want mdx to work?
+	@Secured ({"ROLE_USER"})
+	public CellDataSet executeMdxQuery(String sessionId, String mdx) throws RpcException;
+
 }

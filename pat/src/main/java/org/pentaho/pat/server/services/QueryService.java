@@ -131,4 +131,20 @@ public interface QueryService extends Service {
 	@Secured ({"ROLE_USER"})
 	public CellDataSet executeQuery2(String userId, 
 			String sessionId) throws OlapException;
+	
+	// TODO is this the way we want mdx to work?
+	/**
+	 * Executes a mdx query.
+	 * You must first create a connection via Session.createConnection()
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param mdx The mdx query.
+	 * @return The resultset of the query as a OlapData object.
+	 * @throws OlapException If something goes sour.
+	 */
+	@Secured ({"ROLE_USER"})
+	public CellDataSet executeMdxQuery(
+			String userId, 
+			String sessionId,
+			String mdx) throws OlapException;
 }
