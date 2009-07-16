@@ -29,10 +29,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.ConnectionWindow;
-import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.client.util.ConnectionItem;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,38 +40,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
-
-class ConnectionItem {
-	private String name;
-	private String id;
-	private Boolean isConnected = false;
-
-	public ConnectionItem(String id, String name, boolean isConnected) {
-		this.name = name;
-		this.id = id;
-		this.isConnected = isConnected;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public boolean isConnected() {
-		return isConnected;
-	}
-
-	public void setConnected(Boolean isConnected) {
-		this.isConnected = isConnected;
-	}
-}
 
 public class ConnectionManagerPanel extends LayoutComposite  {
 
@@ -95,7 +62,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		vBox.setPadding(0);
 		vBox.setWidgetSpacing(0);
 
-		model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
+		// model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
 		
 		listBox = createListBox();
 
@@ -171,8 +138,8 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		return cListBox;
 	}
 
-	public static void addConnection(CubeConnection cc) {
-		model.add(new ConnectionItem("123",cc.getName(),false)); //$NON-NLS-1$
+	public static void addConnection(ConnectionItem ci) {
+		model.add(ci);
 	}
 
 

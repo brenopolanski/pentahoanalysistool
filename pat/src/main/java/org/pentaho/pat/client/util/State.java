@@ -21,6 +21,7 @@ public class State {
 
 	public static enum Mode {
 		BISERVERPUC("BISERVERPUC", false,false,false,false,false,false,false,false,false),  //$NON-NLS-1$
+		DEFAULT("DEFAULT", false,true,true,false,true,true,true,true,true), //$NON-NLS-1$
 		STANDALONE("STANDALONE", true,true,true,false,true,true,true,true,true), //$NON-NLS-1$
 		USER("USER", true,false,true,false,true,true,true,true,true), //$NON-NLS-1$
 		BUSINESSUSER("BUSINESSUSER", false,false,true,false,true,true,true,false,true), //$NON-NLS-1$

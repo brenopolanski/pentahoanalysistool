@@ -21,6 +21,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
+import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -162,7 +163,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
 						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
 						setConnectionEstablished(true);
 						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectXmlaPanel.this);
-						ConnectionManagerPanel.addConnection(getCubeConnection());
+						// TODO change this once saving connections is possible
+						ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
 					}
 				});
 			}

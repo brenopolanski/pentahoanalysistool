@@ -31,6 +31,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.demo.DemoPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
 import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
@@ -167,6 +168,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    buttonBar.add(patwikiBtn);
 
 	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.BOTH));
+	    layoutPanel.add(new DemoPanel());
 	    layoutPanel.add(buttonBar, new BoxLayoutData(FillStyle.VERTICAL));
 	    
 	    return layoutPanel;
