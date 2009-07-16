@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
+import org.olap4j.OlapStatement;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -250,4 +251,16 @@ public class QueryServiceImpl extends AbstractService
 		
 		return OlapUtil.cellSet2Matrix(mdx.execute());
 	}
+
+	// TODO is this the way we want mdx to work?
+	public CellDataSet executeMdxQuery(String userId, String sessionId,
+			String mdx) throws OlapException {
+		this.sessionService.validateSession(userId, sessionId);
+		
+		OlapConnection con = this.sessionService.getConnection(userId, sessionId);
+		OlapStatement stmt = con.createStatement();
+		return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx));
+	}
+	
+	
 }

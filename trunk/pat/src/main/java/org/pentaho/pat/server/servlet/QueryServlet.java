@@ -115,4 +115,16 @@ public class QueryServlet extends AbstractServlet implements Query {
 			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
 		}
 	}
+	
+	// TODO is this the way we want mdx to work?
+	public CellDataSet executeMdxQuery(String sessionId, String mdx) throws RpcException 
+	{
+		try {
+			return this.queryService.executeMdxQuery(getCurrentUserId(), sessionId, mdx);
+		} catch (OlapException e) {
+		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
+			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
+		}
+	}
+
 }

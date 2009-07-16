@@ -32,8 +32,6 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -171,16 +169,36 @@ public class QueryPanel extends DataWidget implements QueryListener {
 			    }
 			    if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
 			    	// TODO this is just for demonstration at the moment.
-			    	ToolButton editMDX = new ToolButton(ConstantFactory.getInstance().executeMdx());
+			    	final String fQuery = this.query;
+			    	ToolButton editMDX = new ToolButton("MDX Query Editor");
 			    	editMDX.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent arg0) {
 							final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().editMdx());
 							LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 							wpLayoutPanel.setSize("300px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-							wpLayoutPanel.add(new TextArea(), new BoxLayoutData(1,0.9));
-							ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().saveExecuteMdx());
+							final TextArea mdxArea = new TextArea();
+							
+							mdxArea.setText("select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," +
+												" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " +
+												" from [Quadrant Analysis] ");
+
+							wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
+							ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().executeMdx());
 							closeBtn.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent arg0) {
+									ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+
+										public void onFailure(Throwable arg0) {
+											
+										}
+
+										public void onSuccess(CellDataSet matrix) {
+											GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
+											
+										}
+										
+									});
+											
 									wp.hide();
 									
 								}
@@ -196,7 +214,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 						}
 					});
 			    	layoutPanel.add(editMDX);
-			    	layoutPanel.add(new ToolButton(ConstantFactory.getInstance().executeQuery()));
+			    	
 			    }
 				layoutPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
 				
