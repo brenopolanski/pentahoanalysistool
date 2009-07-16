@@ -24,7 +24,7 @@
         <!-- we leave the body empty because we want   -->
         <!-- to create a completely dynamic ui         -->
         <!--                                           -->
-        <body oncontextmenu="return false">
+        <body>
 
                 <!--                                            -->
                 <!-- This script is required bootstrap stuff.   -->
