@@ -209,12 +209,12 @@ public class QueryModePopup extends PopupPanel {
 	public final void showContextMenu(final Event event, final TreeItem selectedItem, final DataWidget sourceWidget) {
 		setSource(sourceWidget);
 		setItem(selectedItem);
-		if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
+		if (DOM.eventGetType(event) == Event.ONCLICK) {
 			init();
 		}
-		if (DOM.eventGetType(event) == Event.ONCLICK && Pat.getInitialState().getMode().isAllowQmQuery()) {
-			new QueryModeCommand(QUERY_MODEL).execute();
-		}
+//		if (DOM.eventGetType(event) == Event.ONCLICK && Pat.getInitialState().getMode().isAllowQmQuery()) {
+//			new QueryModeCommand(QUERY_MODEL).execute();
+//		}
 
 
 	}
