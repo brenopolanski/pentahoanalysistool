@@ -254,7 +254,7 @@ public class Pat implements EntryPoint { // NOPMD by bugg on
 		Location loadURL = WindowUtils.getLocation();
 		State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE")); //$NON-NLS-1$
 		if (mode == null)
-			initialState.setMode(State.Mode.STANDALONE);
+			initialState.setMode(State.Mode.DEFAULT);
 		else
 			initialState.setMode(mode);
 		String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$

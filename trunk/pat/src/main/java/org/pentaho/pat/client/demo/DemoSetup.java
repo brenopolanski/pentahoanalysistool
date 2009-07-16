@@ -1,31 +1,22 @@
 package org.pentaho.pat.client.demo;
 
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ToolButton;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.QueryPanel;
-import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.panels.QueryPanel.QueryMode;
-import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
-import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.State.Mode;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -37,7 +28,7 @@ public class DemoSetup {
 	public DemoSetup(State.Mode demoMode, String session) {
 		this.demoMode = demoMode;
 		this.session = session;
-		if (demoMode != State.Mode.STANDALONE) {
+		if (demoMode != State.Mode.DEFAULT) {
 			CubeConnection demoConnection = getDemoConnection();
 			connect(demoConnection);
 			
@@ -61,7 +52,7 @@ public class DemoSetup {
 			public void onSuccess(final Object o) {
 				GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(new Widget());
 				if (demoMode.isShowConnections()) {
-					ConnectionManagerPanel.addConnection(cc);
+					ConnectionManagerPanel.addConnection(new ConnectionItem("123",getDemoConnection().getName(),true));
 				}
 
 				if (demoMode == State.Mode.ONECUBE) {

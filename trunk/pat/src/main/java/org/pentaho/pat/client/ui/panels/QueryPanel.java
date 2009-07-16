@@ -12,6 +12,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
@@ -24,12 +25,15 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.i18n.PatConstants;
+import org.pentaho.pat.client.i18n.PatMessages;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -178,9 +182,9 @@ public class QueryPanel extends DataWidget implements QueryListener {
 							wpLayoutPanel.setSize("300px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
 							final TextArea mdxArea = new TextArea();
 							
-							mdxArea.setText("select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," +
-												" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " +
-												" from [Quadrant Analysis] ");
+							mdxArea.setText("select NON EMPTY { } ON COLUMNS," +
+												" NON EMPTY { } ON ROWS " +
+												" from [] ");
 
 							wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
 							ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().executeMdx());
@@ -189,7 +193,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 									ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
 
 										public void onFailure(Throwable arg0) {
-											
+											MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
 										}
 
 										public void onSuccess(CellDataSet matrix) {
