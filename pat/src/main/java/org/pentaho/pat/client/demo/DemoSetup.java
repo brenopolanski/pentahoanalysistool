@@ -37,10 +37,10 @@ public class DemoSetup {
 
 	private CubeConnection getDemoConnection() {
 		CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
-		cc.setName("demo Connection 1");
-		cc.setUrl("http://localhost:8080/pentaho/Xmla");
-		cc.setUsername("joe");
-		cc.setPassword("password");
+		cc.setName("demo Connection 1"); //$NON-NLS-1$
+		cc.setUrl("http://localhost:8080/pentaho/Xmla"); //$NON-NLS-1$
+		cc.setUsername("joe"); //$NON-NLS-1$
+		cc.setPassword("password"); //$NON-NLS-1$
 		return cc;	
 	}
 
@@ -59,9 +59,9 @@ public class DemoSetup {
 					setupDimensionMenu();
 				}
 				if (demoMode == Mode.OLAPTABLE) {
-					String mdx = "select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," +
-							" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " +
-							" from [Quadrant Analysis] ";
+					String mdx = "select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," + //$NON-NLS-1$
+							" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " + //$NON-NLS-1$
+							" from [Quadrant Analysis] "; //$NON-NLS-1$
 					ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdx, new AsyncCallback<CellDataSet>() {
 
 					public void onFailure(Throwable arg0) {
@@ -69,7 +69,7 @@ public class DemoSetup {
 					}
 
 					public void onSuccess(CellDataSet matrix) {
-						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionWindow(), "demoQuery", matrix);
+						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionWindow(), "demoQuery", matrix); //$NON-NLS-1$
 						
 					}
 					

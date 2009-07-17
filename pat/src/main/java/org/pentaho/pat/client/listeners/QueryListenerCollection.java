@@ -16,8 +16,6 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.user.client.ui.Widget;
 

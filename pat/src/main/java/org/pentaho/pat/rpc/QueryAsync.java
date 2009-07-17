@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

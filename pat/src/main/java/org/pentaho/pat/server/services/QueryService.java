@@ -7,8 +7,6 @@ import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.server.util.Matrix;
 import org.springframework.security.annotation.Secured;
 
 /**

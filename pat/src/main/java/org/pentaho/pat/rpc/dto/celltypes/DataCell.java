@@ -18,7 +18,6 @@ package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
 
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -27,21 +26,31 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author wseyler
  */
 public class DataCell extends BaseCell implements Serializable, IsSerializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The color value. */
 	String colorValue = null; // Color held as hex String
 
-	public DataCell(){
-	    
-	}
-	
-	public DataCell(boolean b, boolean c) {
-	    this.right=b;
-	    this.sameAsPrev=c;
+	/**
+	 * 
+	 * Blank constructor for serialization purposes, don't use it.
+	 * 
+	 */
+	public DataCell() {
 	}
 
+	/**
+	 * 
+	 * Construct a Data Cell containing olap data.
+	 * 
+	 * @param b
+	 * @param c
+	 */
+	public DataCell(final boolean b, final boolean c) {
+		this.right = b;
+		this.sameAsPrev = c;
+	}
 
 	/**
 	 * Gets the color value.
@@ -51,11 +60,12 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	public String getColorValue() {
 		return colorValue;
 	}
-	
+
 	/**
 	 * Sets the color value.
 	 * 
-	 * @param colorValue the new color value
+	 * @param colorValue
+	 *            the new color value
 	 */
 	public void setColorValue(final String colorValue) {
 		this.colorValue = colorValue;
