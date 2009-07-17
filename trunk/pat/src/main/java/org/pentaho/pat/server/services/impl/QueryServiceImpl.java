@@ -20,14 +20,12 @@ import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
-import org.pentaho.pat.server.util.Matrix;
 import org.springframework.util.Assert;
 
 /**

@@ -29,10 +29,10 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
     protected QueryService queryService = null;
     protected DiscoveryService discoveryService = null;
     
-    protected String redirectTarget =         "/pat/Pat.jsp";
-    protected String xmlaUrlParameter =       "XMLA_URL";
-    protected String xmlaUsernameParameter =  "XMLA_USERNAME";
-    protected String xmlaPasswordParameter =  "XMLA_PASSWORD";
+    protected String redirectTarget =         "/pat/Pat.jsp"; //$NON-NLS-1$
+    protected String xmlaUrlParameter =       "XMLA_URL"; //$NON-NLS-1$
+    protected String xmlaUsernameParameter =  "XMLA_USERNAME"; //$NON-NLS-1$
+    protected String xmlaPasswordParameter =  "XMLA_PASSWORD"; //$NON-NLS-1$
 //    protected String mdxQueryParameter =      "MDX";
     private ServletContext servletContext;
     
@@ -45,7 +45,7 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         String xmlaUrl = request.getParameter(xmlaUrlParameter);
         if (!this.verifyXmlaUrl(xmlaUrl))
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, 
-                "A valid XMLA service URL is required.");
+                "A valid XMLA service URL is required."); //$NON-NLS-1$
         
         // Validate MDX
 //        String mdxQuery = request.getParameter(mdxQueryParameter);
@@ -64,11 +64,11 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         String sessionId = this.sessionService.createNewSession(userId);
         
         // Build the URL
-        String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl);
+        String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl); //$NON-NLS-1$
         
         // Establish the connection
         this.sessionService.createConnection(userId, sessionId, 
-            "org.olap4j.driver.xmla.XmlaOlap4jDriver", olap4jUrl, xmlaUsername, xmlaPassword);
+            "org.olap4j.driver.xmla.XmlaOlap4jDriver", olap4jUrl, xmlaUsername, xmlaPassword); //$NON-NLS-1$
         
         // Try to parse the query.
         //String queryId = this.queryService.createNewQuery(userId, sessionId, mdxQuery);
@@ -84,8 +84,8 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         //    Constants.CURRENT_CUBE_NAME, cubeName);
         
         // Build the redirect URL
-        redirect.append("?MODE=BISERVERPUC");
-        redirect.append("&SESSION=").append(sessionId);
+        redirect.append("?MODE=BISERVERPUC"); //$NON-NLS-1$
+        redirect.append("&SESSION=").append(sessionId); //$NON-NLS-1$
         
         // Send the redirect HTTP message
         response.sendRedirect(request.getContextPath().concat(redirect.toString()));

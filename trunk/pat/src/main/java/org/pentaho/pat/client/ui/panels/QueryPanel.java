@@ -174,7 +174,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
 			    if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
 			    	// TODO this is just for demonstration at the moment.
 			    	final String fQuery = this.query;
-			    	ToolButton editMDX = new ToolButton("MDX Query Editor");
+			    	ToolButton editMDX = new ToolButton("MDX Query Editor"); //$NON-NLS-1$
 			    	editMDX.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent arg0) {
 							final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().editMdx());

@@ -1,6 +1,5 @@
 package org.pentaho.pat.server.util;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +9,8 @@ import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class Matrix implements Serializable, IsSerializable {
-    private static final long serialVersionUID = 1L;
+public class Matrix {
+    
     private Map<List<Integer>, BaseCell> map =
         new HashMap<List<Integer>, BaseCell>();
     private int width=0;
@@ -85,55 +82,48 @@ public class Matrix implements Serializable, IsSerializable {
     public BaseCell get(int x, int y) {
         return map.get(Arrays.asList(x, y));
     }
-	/**
-	 *TODO JAVADOC
+	
+    /**
+	 * Return the width of the created matrix.
 	 * @return the width
 	 */
 	public int getMatrixWidth() {
 		return width;
 	}
+	
 	/**
-	 *
-	 *TODO JAVADOC
-	 * @param width the width to set
-	 */
-	public void setMatrixWidth(int width) {
-		this.width = width;
-	}
-	/**
-	 *TODO JAVADOC
+	 * Return the height of the matrix.
 	 * @return the height
 	 */
 	public int getMatrixHeight() {
 		return height;
 	}
+	
 	/**
-	 *
-	 *TODO JAVADOC
-	 * @param height the height to set
-	 */
-	public void setMatrixHeight(int height) {
-		this.height = height;
-	}
-	/**
-	 *TODO JAVADOC
+	 * Return the generated hashmap.
 	 * @return the map
 	 */
 	public Map<List<Integer>, BaseCell> getMap() {
 		return map;
 	}
+	
 	/**
+	 * 
+	 * Set the header/row data offset.
 	 *
-	 *TODO JAVADOC
-	 * @param map the map to set
+	 * @param offset
 	 */
-	public void setMap(Map<List<Integer>, BaseCell> map) {
-		this.map = map;
-	}
 	public void setOffset(int offset) {
 		// TODO Auto-generated method stub
 		this.offset = offset;
 	}
+	
+	/**
+	 * 
+	 * Return the header/row data offset.
+	 *
+	 * @return offset
+	 */
 	public int getOffset() {
 		return offset;
 		

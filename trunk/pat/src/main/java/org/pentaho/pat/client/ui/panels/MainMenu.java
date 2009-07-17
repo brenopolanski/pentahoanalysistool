@@ -21,7 +21,6 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.user.client.ui.Widget;
 
