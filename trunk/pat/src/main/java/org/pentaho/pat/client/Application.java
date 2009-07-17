@@ -100,10 +100,10 @@ public class Application extends Viewport {
 		super();
 		final LayoutPanel rootPanel = getLayoutPanel();
 		rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-
+		mainPanel = new LayoutPanel(new BorderLayout());
 		// Setup the main layout widget
 		if (Pat.getInitialState().getMode().isShowOnlyTable() == false) {
-			mainPanel = new LayoutPanel(new BorderLayout());
+			
 	
 			mainTabPanel = new MainTabPanel();
 			mainPanel.add(mainTabPanel);
@@ -128,7 +128,7 @@ public class Application extends Viewport {
 				rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 			}
 			
-			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+			
 			
 			if (Pat.getInitialState().getMode().isShowWelcomePanel()) {
 				MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
@@ -137,7 +137,9 @@ public class Application extends Viewport {
 			
 		}
 		else {
-			rootPanel.add(new OlapTable());
+			mainPanel.add(new OlapTable());
+			
+			rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
 			
 		}
 	}
