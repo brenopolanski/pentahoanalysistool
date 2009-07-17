@@ -111,9 +111,12 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 *
 	 */
 	public void initTable(){
+		// Not sure what the effect of this is, but at least something is happening now. Not just frozen
+		layoutPanel.clear();
 		patTableModel = new PatTableModel(olapData);
 		final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
 		offset = patTableModel.getOffset();
+		tableModel = null;
 		tableModel = new IterableTableModel<BaseCell[]>(data) {
 			@Override
 			public int getRowCount() {
@@ -136,6 +139,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		};
 
 
+		table = null;
 		table = new LiveTable<BaseCell[]>(tableModel,
 				createTableDefinition());
 		// table.setContextMenu(createContextMenu());
@@ -178,7 +182,8 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	public void setData(final CellDataSet olapData) {
 		this.olapData = olapData;
 		initTable();
-		table.reload();
+		// can't see any effect with that
+//		table.reload();
 		this.layout();
 	}
 
