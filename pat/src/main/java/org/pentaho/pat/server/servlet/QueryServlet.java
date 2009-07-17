@@ -107,7 +107,7 @@ public class QueryServlet extends AbstractServlet implements Query {
 	public CellDataSet executeQuery(String sessionId) throws RpcException 
 	{
 		try {
-			return this.queryService.executeQuery2(getCurrentUserId(), sessionId);
+			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
 		} catch (OlapException e) {
 		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$

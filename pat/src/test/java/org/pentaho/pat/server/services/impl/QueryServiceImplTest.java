@@ -103,7 +103,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		assertEquals(expectedMDX, writer.toString());
 		
 		// Launch query to make sure it's valid
-		this.queryService.executeQuery2(userId, sessionId);
+		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
 		this.sessionService.releaseSession(userId, sessionId); 
@@ -153,7 +153,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		assertEquals(expectedMDX, writer.toString());
 		
 		// Launch query to make sure it's valid
-		this.queryService.executeQuery2(userId, sessionId);
+		this.queryService.executeQuery(userId, sessionId);
 		
 		// Release the session.
 		this.sessionService.releaseSession(userId, sessionId); 

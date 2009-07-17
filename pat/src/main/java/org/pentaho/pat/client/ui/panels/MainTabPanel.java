@@ -12,7 +12,6 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.TextLabel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
@@ -107,9 +106,10 @@ public class MainTabPanel extends LayoutComposite {
 					contentWrapper.layout();
 				}
 				if (contentWrapper.getWidgetCount() == 1 || contentWrapper.getWidgetCount() == 0) {
-					if (Application.getMenuPanel().showNamedMenu(MenuItem.Cubes) == false) 
-						Application.getMenuPanel().getStackPanel().showStack(0);
-					Application.getMenuPanel().getStackPanel().layout();
+					if (MainMenu.showNamedMenu(MenuItem.Cubes) == false) {
+						MainMenu.getStackPanel().showStack(0);
+					}
+					MainMenu.getStackPanel().layout();
 				}
 				counter--;
 			}

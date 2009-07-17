@@ -83,7 +83,7 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-	    	ServiceFactory.getQueryInstance().executeQuery2(Pat.getSessionID(), new AsyncCallback<CellDataSet>() {
+	    	ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<CellDataSet>() {
 
 			public void onFailure(final Throwable caught) {
 				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));

@@ -10,7 +10,7 @@
  * @created Apr 23, 2009 
  * @author Paul Stoellberger
  */
-package org.pentaho.pat.client.ui.widgets;
+package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;

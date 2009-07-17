@@ -1,10 +1,11 @@
-package org.pentaho.pat.client.ui.widgets;
+package org.pentaho.pat.client.ui.popups;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;

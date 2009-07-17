@@ -127,7 +127,7 @@ public interface QueryService extends Service {
 	 * @throws OlapException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public CellDataSet executeQuery2(String userId, 
+	public CellDataSet executeQuery(String userId, 
 			String sessionId) throws OlapException;
 	
 	// TODO is this the way we want mdx to work?

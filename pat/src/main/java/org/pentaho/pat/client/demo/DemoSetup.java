@@ -1,7 +1,6 @@
 package org.pentaho.pat.client.demo;
 
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
@@ -9,6 +8,7 @@ import org.pentaho.pat.client.ui.panels.QueryPanel;
 import org.pentaho.pat.client.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.ui.panels.QueryPanel.QueryMode;
 import org.pentaho.pat.client.util.ConnectionItem;
+import org.pentaho.pat.client.ui.windows.ConnectionWindow;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.State.Mode;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;

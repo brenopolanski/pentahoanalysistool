@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.pat.client.images.SelectionModeImageBundle;
+import org.pentaho.pat.client.ui.popups.SelectionModePopup;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;

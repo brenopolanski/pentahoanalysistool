@@ -238,7 +238,7 @@ public class QueryServiceImpl extends AbstractService
 	}
 
 	
-	public CellDataSet executeQuery2(String userId, String sessionId) throws OlapException 
+	public CellDataSet executeQuery(String userId, String sessionId) throws OlapException 
 	{
 	    this.sessionService.validateSession(userId, sessionId);
 	    

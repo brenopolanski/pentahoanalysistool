@@ -35,7 +35,7 @@ public interface QueryAsync {
 		List<String> memberNames,
 		AsyncCallback callback);
 	
-	public void executeQuery2(
+	public void executeQuery(
 		String sessionId,
 		AsyncCallback<CellDataSet> callback);
 	
