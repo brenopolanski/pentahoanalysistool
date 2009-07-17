@@ -30,8 +30,9 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.util.ConnectionItem;
+import org.pentaho.pat.client.ui.windows.ConnectionWindow;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -1,5 +1,7 @@
-package org.pentaho.pat.client.ui.widgets;
+package org.pentaho.pat.client.ui.popups;
 
+
+import org.pentaho.pat.client.ui.widgets.CellFormatType;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;

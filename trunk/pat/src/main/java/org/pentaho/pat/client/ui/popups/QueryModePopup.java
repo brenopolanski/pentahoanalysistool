@@ -11,13 +11,14 @@
  * @author Paul Stoellberger
  */
 
-package org.pentaho.pat.client.ui.widgets;
+package org.pentaho.pat.client.ui.popups;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.QueryPanel;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;

@@ -23,7 +23,6 @@ import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;

@@ -27,7 +27,6 @@ import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.server.util.Matrix;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;

@@ -10,13 +10,13 @@
  * @created Apr 23, 2009 
  * @author Paul Stoellberger
  */
-package org.pentaho.pat.client.ui;
+package org.pentaho.pat.client.ui.windows;
 
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.ui.widgets.ConnectMondrianPanel;
-import org.pentaho.pat.client.ui.widgets.ConnectXmlaPanel;
+import org.pentaho.pat.client.ui.panels.ConnectMondrianPanel;
+import org.pentaho.pat.client.ui.panels.ConnectXmlaPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 

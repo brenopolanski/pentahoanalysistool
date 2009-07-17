@@ -13,14 +13,9 @@
 
 package org.pentaho.pat.client.ui.panels;
 
-import org.gwt.mosaic.core.client.DOM;
-import org.gwt.mosaic.ui.client.Caption;
-import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
-import org.gwt.mosaic.ui.client.WindowPanel;
-import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -32,8 +27,8 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.demo.DemoPanel;
 import org.pentaho.pat.client.listeners.ConnectionListener;
-import org.pentaho.pat.client.ui.ConnectionWindow;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.windows.ConnectionWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -41,9 +36,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -57,9 +50,6 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	/** Name. */
 	private transient String name;
 
-	/** WindowPanel for WIKI */
-	private WindowPanel sized;
-	
 	/**
 	 * Constructor pass panel Name.
 	 *
@@ -155,8 +145,6 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	        Pat.IMAGES.help_index(), ConstantFactory.getInstance().wiki(),
 	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 				public void onClick(ClickEvent arg0) {
-					//createSizedWindowPanel();
-					//sized.showModal();
 					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 	    });
@@ -172,29 +160,6 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    
 	    return layoutPanel;
 	}
-
-	@SuppressWarnings("unused")
-	private void createSizedWindowPanel() {
-	    sized = new WindowPanel("Sized"); //$NON-NLS-1$
-	    sized.setAnimationEnabled(true);
-	    sized.setSize("812px", "484px"); //$NON-NLS-1$ //$NON-NLS-2$
-	    final Frame frame = new Frame("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6"); //$NON-NLS-1$
-	    DOM.setStyleAttribute(frame.getElement(), "border", "none"); //$NON-NLS-1$ //$NON-NLS-2$
-	    sized.setWidget(frame);
-
-	    final ImageButton refreshBtn = new ImageButton(Caption.IMAGES.toolRefresh());
-	    refreshBtn.addClickHandler(new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        frame.setUrl(frame.getUrl());
-	      }
-	    });
-	    sized.getHeader().add(refreshBtn, CaptionRegion.RIGHT);
-
-	    sized.addWindowClosingHandler(new Window.ClosingHandler() {
-	     public void onWindowClosing(ClosingEvent arg0) {	
-	    }
-	    });
-	  }
 
 	/* (non-Javadoc)
 	 * @see org.pentaho.pat.client.listeners.ConnectionListener#onConnectionBroken(com.google.gwt.user.client.ui.Widget)
