@@ -115,7 +115,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		patTableModel = new PatTableModel(olapData);
 		final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
 		offset = patTableModel.getOffset();
-		tableModel = null;
+		//tableModel = null;
 		tableModel = new IterableTableModel<BaseCell[]>(data) {
 			@Override
 			public int getRowCount() {
@@ -138,7 +138,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		};
 
 
-		table = null;
+		//table = null;
 		table = new LiveTable<BaseCell[]>(tableModel,
 				createTableDefinition());
 		// table.setContextMenu(createContextMenu());
@@ -182,7 +182,8 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 		this.olapData = olapData;
 		initTable();
 		// can't see any effect with that
-//		table.reload();
+		table.reload();
+		table.redraw();
 		this.layout();
 	}
 
