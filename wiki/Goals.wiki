@@ -20,8 +20,7 @@ A detailed list of tasks can be found [http://jira.pentaho.com/browse/PAT?report
 
 ==PAT 0.4==
   * Support of plain MDX Queries
-  * Improve support for different integration MODE's
-  * Demonstration of possible different integration modes
+  * Improve support for different integration modes
   * Connection Manager (only in integration demo mode STANDALONE / USER) 
   * Refactoring / pruning of GUI classes
   * Removal of Toolbar + Title Widget to gain more space
