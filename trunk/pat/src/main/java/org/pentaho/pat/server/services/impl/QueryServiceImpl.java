@@ -218,9 +218,10 @@ public class QueryServiceImpl extends AbstractService
         Selection.Operator selectionMode = Selection.Operator.values()[selectionType
                 .ordinal()];
         // TODO is this a fix? 
-        // Selection selection = qDim.createSelection(member, selectionMode);
+         //Selection selection = qDim.createSelection(member, selectionMode);
         //        qDim.getSelections().add(selection);
-        qDim.select(selectionMode, member);
+        qDim.clearSelection();
+        qDim.include(selectionMode, member);
         
     }
 
