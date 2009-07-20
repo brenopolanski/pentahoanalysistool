@@ -38,6 +38,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -155,8 +156,8 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	    buttonBar.add(patwikiBtn);
 
 	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.BOTH));
+	    layoutPanel.add(buttonBar);
 	    layoutPanel.add(new DemoPanel());
-	    layoutPanel.add(buttonBar, new BoxLayoutData(FillStyle.VERTICAL));
 	    
 	    return layoutPanel;
 	}
