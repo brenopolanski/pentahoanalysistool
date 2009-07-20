@@ -44,15 +44,19 @@ public class DemoPanel extends LayoutComposite {
 		final String patLocation = "http://" + WindowUtils.getLocation().getHost()+ WindowUtils.getLocation().getPath();
 		rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL,Alignment.CENTER));
 		rootPanel.add(new WidgetWrapper(new HTML("<h2>PAT modes demonstration</h2>")), new BoxLayoutData(FillStyle.BOTH));
+		rootPanel.add(new WidgetWrapper(new HTML("")), new BoxLayoutData(FillStyle.BOTH));
+		rootPanel.add(new WidgetWrapper(new HTML("It is possible to introduce modes in which only specific elements of PAT are shown to the user. The one listed below demonstrate how PAT could look like when accessed by users with different permissions (STANDALONE, USER, BUSINESSUSER) or a lightweight version (ONECUBE, OLAPTABLE) for integration into other applications (e.g biserver)")), new BoxLayoutData(FillStyle.BOTH));
+		rootPanel.add(new WidgetWrapper(new HTML("")), new BoxLayoutData(FillStyle.BOTH));
+		
 		if (Pat.getInitialState().getMode() != Mode.DEFAULT) {
 			rootPanel.add(new WidgetWrapper(new HTML("<h4>CURRENT MODE: " + Pat.getInitialState().getMode().name()+"</h4>")), new BoxLayoutData(FillStyle.BOTH));
 		}
-		String subText = "<b>IMPORTANT</b> : The modes (except "+Mode.STANDALONE.name()+") need a running Pentaho BI-Server with standard configuration.<br>They will try to access the XMLA Service at http://localhost:8080/pentaho/Xmla";
-		rootPanel.add(new WidgetWrapper(new HTML(subText)), new BoxLayoutData(FillStyle.BOTH));
-		rootPanel.add(new WidgetWrapper(new HTML("")), new BoxLayoutData(FillStyle.BOTH));
-			 String subText2 = "You can always leave the demo mode by going to: <a href='"+patLocation+"'>"+patLocation+"</a><br>";
-		rootPanel.add(new WidgetWrapper(new HTML(subText2)), new BoxLayoutData(FillStyle.BOTH));
+		String subText = "<b>IMPORTANT</b> : The modes (except "+Mode.STANDALONE.name()+") need a running Pentaho BI-Server with standard configuration.They will try to access the XMLA Service at http://localhost:8080/pentaho/Xmla.";
+		//rootPanel.add(new WidgetWrapper(new HTML(subText)), new BoxLayoutData(FillStyle.BOTH));
 		
+			 String subText2 = "You can always leave the mode demonstration by going to: <a href='"+patLocation+"'>"+patLocation+"</a><br>";
+		rootPanel.add(new WidgetWrapper(new HTML(subText + subText2)), new BoxLayoutData(FillStyle.BOTH));
+		rootPanel.add(new WidgetWrapper(new HTML("")), new BoxLayoutData(FillStyle.BOTH));
 		LayoutPanel buttonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL,Alignment.CENTER));
 		ToolButton standaloneButton = new ToolButton(Mode.STANDALONE.name());
 		standaloneButton.addClickHandler(new ClickHandler() {

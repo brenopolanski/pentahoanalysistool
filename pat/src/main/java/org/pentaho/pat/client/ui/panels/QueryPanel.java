@@ -70,6 +70,7 @@ public class QueryPanel extends DataWidget implements QueryListener {
     
     private QueryModelSelectionPanel qmSelectionPanel = new QueryModelSelectionPanel(); 
 
+    private static WindowPanel wp = null;
 	
 	/**
 	 *TODO JAVADOC
@@ -177,42 +178,9 @@ public class QueryPanel extends DataWidget implements QueryListener {
 			    	ToolButton editMDX = new ToolButton("MDX Query Editor"); //$NON-NLS-1$
 			    	editMDX.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent arg0) {
-							final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().editMdx());
-							LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-							wpLayoutPanel.setSize("300px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-							final TextArea mdxArea = new TextArea();
-							
-							mdxArea.setText("select NON EMPTY { } ON COLUMNS," +
-												" NON EMPTY { } ON ROWS " +
-												" from [] ");
-
-							wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
-							ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().executeMdx());
-							closeBtn.addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent arg0) {
-									ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
-
-										public void onFailure(Throwable arg0) {
-											MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-										}
-
-										public void onSuccess(CellDataSet matrix) {
-											GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
-											
-										}
-										
-									});
-											
-									wp.hide();
-									
-								}
-							});
-							wpLayoutPanel.add(closeBtn);
-							wpLayoutPanel.layout();
-							wp.add(wpLayoutPanel);
-							wp.layout();
-							wp.pack();
-							wp.setSize("400px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+							if (wp == null) {
+								wp = CreateMdxWindowPanel(fQuery);
+							}
 							wp.center();
 							
 						}
@@ -275,5 +243,45 @@ public class QueryPanel extends DataWidget implements QueryListener {
 			// TODO why is this called twice? why two instances of the same object?
 			olapTable.setData(olapData);
 		}
+	}
+	
+	private WindowPanel CreateMdxWindowPanel(final String fQuery) {
+		final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().editMdx());
+		LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+		wpLayoutPanel.setSize("300px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+		final TextArea mdxArea = new TextArea();
+		
+		mdxArea.setText("select NON EMPTY { } ON COLUMNS," +
+							" NON EMPTY { } ON ROWS " +
+							" from [] ");
+
+		wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
+		ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().executeMdx());
+		closeBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+
+					public void onFailure(Throwable arg0) {
+						MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+					}
+
+					public void onSuccess(CellDataSet matrix) {
+						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
+						
+					}
+					
+				});
+						
+				wp.hide();
+				
+			}
+		});
+		wpLayoutPanel.add(closeBtn);
+		wpLayoutPanel.layout();
+		wp.add(wpLayoutPanel);
+		wp.layout();
+		wp.pack();
+		wp.setSize("400px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+		return wp;
 	}
 }
