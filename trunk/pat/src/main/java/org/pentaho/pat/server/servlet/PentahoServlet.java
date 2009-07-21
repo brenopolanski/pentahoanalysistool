@@ -33,9 +33,8 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
     protected String xmlaUrlParameter =       "XMLA_URL"; //$NON-NLS-1$
     protected String xmlaUsernameParameter =  "XMLA_USERNAME"; //$NON-NLS-1$
     protected String xmlaPasswordParameter =  "XMLA_PASSWORD"; //$NON-NLS-1$
-//    protected String mdxQueryParameter =      "MDX";
     private ServletContext servletContext;
-    
+
     public void simpleXmla(HttpServletRequest request, HttpServletResponse response, 
         HttpSession session) throws Exception 
     {

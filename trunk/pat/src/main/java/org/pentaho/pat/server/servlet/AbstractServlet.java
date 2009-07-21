@@ -90,7 +90,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	 * Helper method to gain access to the current user's security object.
 	 * @return The current user name.
 	 */
-	protected String getCurrentUserId() 
+	public static String getCurrentUserId() 
 	{
 		if (standaloneMode)
 			SecurityContextHolder.getContext().setAuthentication(standaloneAuth);
@@ -115,5 +115,9 @@ public abstract class AbstractServlet extends RemoteServiceServlet
     protected void doUnexpectedFailure(Throwable e) {
         log.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"),e); //$NON-NLS-1$
         super.doUnexpectedFailure((e instanceof RpcException)?e:new RpcException(e.getMessage(),e));
+    }
+
+    public boolean isStandalone() {
+        return standaloneMode;
     }
 }

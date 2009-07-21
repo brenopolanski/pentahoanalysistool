@@ -1,7 +1,6 @@
 package org.pentaho.pat.server.servlet;
 
 import java.io.File;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.pentaho.pat.server.beans.FileUploadBean;
 import org.pentaho.pat.server.messages.Messages;
+import org.pentaho.pat.server.util.Base64Coder;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
@@ -21,10 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 public class FileUploadController extends AbstractCommandController implements
-		ResourceLoaderAware, InitializingBean {
+		ResourceLoaderAware, InitializingBean, ApplicationContextAware {
 	
-	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
-	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
+	private static final String DATA_START = "<PRE>"; //$NON-NLS-1$
+	private static final String DATA_END = "</PRE>"; //$NON-NLS-1$
 	
 	Logger log = Logger.getLogger(this.getClass());
 
@@ -71,22 +72,19 @@ public class FileUploadController extends AbstractCommandController implements
 
 	protected ModelAndView handle(HttpServletRequest request,
 			HttpServletResponse response, Object command, BindException errors)
-			throws Exception {
+			throws Exception 
+	{
+	    FileUploadBean fileUploadBean = (FileUploadBean) command;
 
-		try {
+		try 
+		{
+		    MultipartFile files = fileUploadBean.getFile();
+//		    String schemaData = new String(files.getBytes());
 
-			FileUploadBean fileUploadBean = (FileUploadBean) command;
-			MultipartFile files = fileUploadBean.getFile();
-			String tmpFileName = String.valueOf(UUID.randomUUID());
-			File mvt = new File(this.schemaDirectory, tmpFileName);
-			files.transferTo(mvt);
-
-			// TODO find a better way to return filename to client
+		    // Send a confirmation message to the client
 			response.setContentType("text/plain"); //$NON-NLS-1$
-			response.getWriter().print(
-					FILENAME_TAG_START + mvt.toString() + FILENAME_TAG_END);
+			response.getWriter().print(DATA_START + (new String(Base64Coder.encode(files.getBytes()))) + DATA_END);
 			response.setStatus(HttpServletResponse.SC_OK);
-
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

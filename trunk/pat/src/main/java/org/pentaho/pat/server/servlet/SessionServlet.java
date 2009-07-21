@@ -1,15 +1,6 @@
 package org.pentaho.pat.server.servlet;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 
@@ -43,40 +34,10 @@ public class SessionServlet extends AbstractServlet implements Session {
 	{
 		try 
 		{
-		    String olap4jUrl=null;
-		    String olap4jDriver=null;
-		    
-		    switch (connection.getConnectionType())
-		    {
-		    case XMLA:
-		        olap4jUrl = "jdbc:xmla:Server=".concat(connection.getUrl()); //$NON-NLS-1$
-		        olap4jDriver = "org.olap4j.driver.xmla.XmlaOlap4jDriver"; //$NON-NLS-1$
-		        sessionService.createConnection(getCurrentUserId(),sessionId, 
-		                olap4jDriver, 
-		                olap4jUrl, 
-		                connection.getUsername(), 
-		                connection.getPassword());
-		        break;
-		    case Mondrian:
-		        olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
-		            .concat("Jdbc=").concat(connection.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
-		            .concat("JdbcDrivers=").concat(connection.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
-		            .concat("Catalog=").concat(connection.getSchemaPath()); //$NON-NLS-1$
-		        if (connection.getUsername()!=null)
-		        {
-		            olap4jUrl = olap4jUrl
-		                .concat(";").concat("JdbcUser=").concat(connection.getUsername()).concat(";"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		        }
-		        if (connection.getPassword()!= null)
-		        {
-		        	olap4jUrl = olap4jUrl
-		        		.concat("JdbcPassword=").concat(connection.getPassword()); //$NON-NLS-1$
-		        }
-		        olap4jDriver="mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
-		        
-		        sessionService.createConnection(getCurrentUserId(),sessionId, 
-		                olap4jDriver, olap4jUrl,null,null);
-		    }
+		    this.sessionService.createConnection(
+		        getCurrentUserId(),
+		        sessionId,
+		        this.convert(connection));
 		} 
 		catch (OlapException e) 
 		{
@@ -88,12 +49,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	public CubeConnection getConnection(String sessionId, String connectionName) throws RpcException
 	{
 	    SavedConnection savedConn = this.sessionService.getSavedConnection(getCurrentUserId(), connectionName);
-	    try {
-            return savedConn==null?null:this.convert(savedConn);
-        } catch (IOException e) {
-            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-        }
+	    return savedConn==null?null:this.convert(savedConn);
 	}
 	
 	public void saveConnection(String sessionId, CubeConnection connection) throws RpcException
@@ -109,16 +65,11 @@ public class SessionServlet extends AbstractServlet implements Session {
 	
 	public CubeConnection[] getSavedConnections(String sessionId) throws RpcException
 	{
-	    try {
-	        List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
-	        CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
-	        for (int cpt=0;cpt<savedConnections.size();cpt++)
-	            cubeConnections[cpt]=convert(savedConnections.get(cpt));
-	        return cubeConnections;
-        } catch (IOException e) {
-            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError")); //$NON-NLS-1$
-        }
+        List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
+        CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
+        for (int cpt=0;cpt<savedConnections.size();cpt++)
+            cubeConnections[cpt]=convert(savedConnections.get(cpt));
+        return cubeConnections;
 	}
 	
 	public void deleteSavedConnection(String sessionId, String connectionName) throws RpcException
@@ -153,7 +104,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 		return sessionService.createNewSession(getCurrentUserId());
 	}
 	
-	private CubeConnection convert(SavedConnection sc) throws IOException {
+	private CubeConnection convert(SavedConnection sc) {
 	    
 	    CubeConnection cc = new CubeConnection();
 	    cc.setName(sc.getName());
@@ -162,21 +113,12 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    cc.setUrl(sc.getUrl());
 	    cc.setUsername(sc.getUsername());
 	    cc.setPassword(sc.getPassword());
+	    cc.setSchemaData(sc.getSchema());
 
-	    File schema = File.createTempFile(String.valueOf(UUID.randomUUID()),""); //$NON-NLS-1$
-	    schema.deleteOnExit();
-	    FileWriter fw = new FileWriter(schema);
-	    BufferedWriter bw = new BufferedWriter(fw);
-	    bw.write(sc.getSchema());
-	    bw.close();
-	    fw.close();
-	    
-	    cc.setSchemaPath(schema.getAbsolutePath());
-	    
 	    return cc;
 	}
 	
-	private SavedConnection convert(CubeConnection cc) throws Exception {
+	private SavedConnection convert(CubeConnection cc) {
 	    
 	    SavedConnection sc = new SavedConnection();
 	    
@@ -186,24 +128,8 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    sc.setUsername(cc.getUsername());
 	    sc.setPassword(cc.getPassword());
 	    sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));
-	    
-	    FileInputStream fis = new FileInputStream(cc.getSchemaPath());
-	    DataInputStream in = new DataInputStream(fis);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String strLine;
-        StringBuilder schema = new StringBuilder("");//$NON-NLS-1$
-        //Read File Line By Line
-        while ((strLine = br.readLine()) != null)   {
-          // Print the content on the console
-          schema.append(strLine);
-        }
-        
-        sc.setSchema(schema.toString());
-        
-        br.close();
-        in.close();
-        fis.close();
-	    
+	    sc.setSchema(cc.getSchemaData());
+
 	    return sc;
 	}
 
