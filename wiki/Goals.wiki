@@ -5,7 +5,7 @@ A detailed list of tasks can be found [http://jira.pentaho.com/browse/PAT?report
 
 = Future Releases = 
 
-== Current Development Sprint 0.5.0 ==
+== [DevelopmentSprint050 Current Development Sprint 0.5.0] ==
   * Heavy UI redesign
   * Save connections in the persistance layer
   * Add new default user with different permissions
