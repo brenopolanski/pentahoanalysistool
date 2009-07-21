@@ -11,7 +11,7 @@ The first time you do this it will download a lot of dependencies so will take a
 *RUN*
 
 {{{
-com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
+gwt:run
 }}}
 Runs the application in GWT Hosted Mode.
 
@@ -19,20 +19,11 @@ Runs the application in GWT Hosted Mode.
 *DEBUG*
 
 {{{
-com.totsp.gwt:maven-googlewebtoolkit2-plugin:debug
+gwt:debug
 }}}
 
 Runs the application in GWT Hosted debug mode, you can then connect with a new
 debugging runtime configuration (New Remote Java Application)
-
-
-*COMPILE*
-
-{{{
-compile
-}}}
-
-I think thats clear ;-)
 
 
 *PACKAGE*
@@ -63,7 +54,7 @@ Runs the PAT Test Suite
 *RUN JETTY*
 
 {{{
-jetty:run-exploded
+jetty:run-exploded [-Djetty.port=9999]
 }}}
 
 Runs PAT in a hosted jetty webserver
