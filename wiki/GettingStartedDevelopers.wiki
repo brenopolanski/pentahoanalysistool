@@ -1,3 +1,8 @@
-#summary Getting Started For Developers
+#summary Getting Started With PAT For Developers
 
-Add your content here.
+= Getting Started - Developers =
+
+Here are guides for new users who wish to deploy PAT:
+
+  * [PATHostedDemo Deploying the Hosted Demo (Windows & Linux)]
+  * [DeployWithTomcat Deploying with Tomcat 6.x (Windows & Linux)]
