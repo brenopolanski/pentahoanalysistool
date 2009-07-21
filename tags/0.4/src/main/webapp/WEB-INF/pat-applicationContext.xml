@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+       default-autowire="byName">
+
+
+  <bean id="propertiesConfigurator" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreResourceNotFound" value="true"/>
+    <property name="locations"> 
+      <list>
+        <value>/WEB-INF/application.properties</value>
+        <value>/src/main/webapp/WEB-INF/application.properties</value>
+      </list>
+    </property>
+  </bean>
+	
+	<!-- ############################################################################# -->
+	<!-- ########  SERVLET LAYER ##################################################### -->
+	<!-- ############################################################################# -->
+
+  <!-- The application servlet are either instanciated by GWT itself, as defined
+      in Pat.gwt.xml, or from the web context loader, in web.xml. 
+      Extra servlet mappings can also be found there. -->
+	
+	<bean id="fileUploadController"
+    class="org.pentaho.pat.server.servlet.FileUploadController">
+       <property name="commandClass" value="org.pentaho.pat.server.beans.FileUploadBean"/>
+       <property name="basedir" value="schema_temp/" />  
+  </bean>
+  
+  <bean id="multipartResolver" 
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+    <property name="maxUploadSize" value="100000" /> 
+  </bean>
+	
+
+  <bean id="pentahoIntegrationController"
+      class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+    <property name="methodNameResolver">
+        <bean class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver">
+        </bean>
+    </property>
+    <property name="delegate">
+        <bean class="org.pentaho.pat.server.servlet.PentahoServlet">
+          <property name="sessionService" ref="sessionService" />
+          <property name="discoveryService" ref="discoveryService" />
+          <property name="queryService" ref="queryService" />
+          <property name="redirectTarget" value="/pat/Pat.jsp" />
+        </bean>
+    </property>
+  </bean>
+
+  
+	
+	
+	<!-- ############################################################################# -->
+	<!-- ########  SERVICE LAYER ##################################################### -->
+	<!-- ############################################################################# -->
+	
+	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+    <property name="queryService" ref="queryService" />
+    <property name="driverFinder">
+      <bean class="org.pentaho.pat.server.util.JdbcDriverFinder">
+        <property name="jdbcDriverPath">
+          <list>
+            <value>/WEB-INF/lib</value>
+            <value>/src/main/jdbc</value>
+            <value>../../../../src/main/jdbc</value>
+          </list>
+        </property>
+        <property name="cacheTimeout" value="600000"/>
+      </bean>
+    </property>
+	</bean>
+	
+	<bean id="queryService" class="org.pentaho.pat.server.services.impl.QueryServiceImpl">
+		<property name="sessionService" ref="sessionService" />
+		<property name="discoveryService" ref="discoveryService" />
+	</bean>
+	
+	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
+	</bean>
+	
+  
+  
+  
+	<!-- ############################################################################# -->
+  <!-- ########  PERSISTENCE LAYER ################################################# -->
+  <!-- ############################################################################# -->
+
+  <tx:annotation-driven transaction-manager="txManager"/>
+  
+  <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driver}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+  
+  <bean id="userManager" class="org.pentaho.pat.server.data.impl.UserManagerImpl">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+	
+</beans>
