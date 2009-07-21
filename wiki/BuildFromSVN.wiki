@@ -16,7 +16,7 @@ Run Maven or Maven Eclipse Plugin (check HOWTO at http://smartgwt.rorschach.de/i
 *RUN*
 
 {{{
-com.totsp.gwt:maven-googlewebtoolkit2-plugin:gwt
+gwt:run
 }}}
 Runs the application
 
@@ -33,7 +33,7 @@ can deploy easily by dropping it into tomcat/webapps e.g
 *JETTY RUN*
 
 {{{
-jetty:run-exploded
+jetty:run-exploded [-Djetty.port=9999]
 }}}
 
 Runs PAT and runs it in a Jetty web server
