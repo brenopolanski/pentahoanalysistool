@@ -16,4 +16,5 @@
   * [Lifecycle Usage/Lifecycle]
   * [PentahoIntegration Simple BI-Server Integration]
     * [ServerIntegrationPluginForPAT PAT Plugin for Pentaho BI Server Integration]
+  * [Contribute Contribute]
   * [ContactUs Contact Us]
