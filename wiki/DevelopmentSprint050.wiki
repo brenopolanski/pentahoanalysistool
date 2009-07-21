@@ -1,0 +1,104 @@
+= Development Sprint 0.5 =
+
+The following describes the action plan and planned new features for this development sprint.
+
+== Action Plan ==
+  * consistent pat license
+  * make mockups of everything we need 
+  * make list of needed widgets 
+  * updated lifecycle (including needed backend methods)
+  * check if we can/should use xul
+  * follow rules for cleaning / re-using existing widgets 
+  * follow coding guidelines
+
+== Rules for GUI Code ==
+  * move pat.client > pat.client.deprecated
+  * create new i18n classes / properties [getResourceByKey("pat.client.mdx")]
+  * choose widget/panels we still need
+    * check for coding guideline
+    * check if code looks clean
+    * check comments
+    * check if widget css tagged properly
+    * check for warnings and remove them
+    * switch to new i18n method
+    * XUL'ify if thats the decision
+
+== Details for 0.5.0 ==
+
+=== GUI Design ===
+  * like jakes mockup until page 10
+  * no menubar
+  * button bar: new connection, manage connections, new QM query, new mdx query, quick new query, help
+  * filter drop target
+  * member selection like on slide 18
+  * execute query button for execution
+  * dimension stack panel right/left as user preference
+  * new mdx editor
+
+=== Lifecycle ===
+*create new connection*
+  * wizard pops up
+  * choose jdbc mondrian / xmla
+  * enter details (paste schema or upload)
+  * save & close / next
+  * if next:
+    * choose QM / mdx query
+    * if QM query:
+      * get cubes all connected connections (expand the one from the new connection)
+    * create new query tab
+
+*manage connections*
+  * opens up connection list popup
+    * delete connection
+    * add connection > create new connection workflow > back to connection list
+    * modify connection > opens up connection details (show schema / change and save it or upload new schema)
+    * save connection
+    * back to connection list popup
+
+
+*new QM query*
+  * opens up cubemenu (treelist with connections as parent nodes)
+  * select cube
+  * new query tab opens
+
+*new mdx query*
+  * opens up connection list
+  * select connection
+  * new mdx query tab opens
+	
+*quick new query*
+  * dropdownlist with connections/cubes
+  * if connection selected > button new mdx query is enabled
+  * if cube selected > new QM query / new mdx query is enabled
+  * on button click > new query tab
+
+
+*new querying workflow*
+	new QM query:
+	QM query tab opens up
+	its possible to move dimensions in the dimensionpanel from UNUSED to COLUMNS / ROWS / FILTER axis
+			COLUMNS
+				+ Dim1
+			ROWS
+			FILTER
+			UNUSED
+				+ Dim2
+				+ Dim3
+				+ Measures
+	
+	other way to change selection is to drag the dimensions to the canvas to the COLUMNS / ROWS / FILTER drop targets
+	when dropped its possible to include members with the dimension browser
+	execute query
+	
+	change QM query:
+	in the dim panel click on dimension and select "browse dimension for selection" / click on "Edit" mode > canvas transforms back to the state before the first query execution, click on dimension and choose "browse dimension for selection"
+	opens up dimension browser 
+	change selection
+	close dimension browser
+	execute query
+	
+	new / change MDX query:
+	mdx query tab opens up
+	on the top of the query panel mdx editor area
+	below table
+	
