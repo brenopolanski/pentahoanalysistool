@@ -1,0 +1,20 @@
+#summary PAT needs you!
+
+= PAT needs you!! =
+
+We are always looking for people who are willing to help us. We do need every helping hand!
+Now this contribution could be anything like:
+
+  * Coding
+  * CSS Layouting
+  * Designing a nice Icon Set
+  * Designing a PAT logo
+  * Documenting
+  * Testing
+  * Maintaining the translations
+  * ......
+
+If you want to do anything that is or is not listed above just [ContactUs contact us]
+
+
+If you want to get some hacking done, checkout the [GettingStartedDevelopers Getting Started Developers] section in the wiki.
