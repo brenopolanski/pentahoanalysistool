@@ -7,6 +7,7 @@
       * [BuildFromSVN Build from SVN]
       * [MavenGoals Maven Goals]
   * [Goals PAT Roadmap]
+  * [DevelopmentSprints Development Sprints]
   * [Architecture PAT Architecture]
     * [QueryObjectStructure Query Object]
     * [FrontendBackendInterface Communication Layer]
