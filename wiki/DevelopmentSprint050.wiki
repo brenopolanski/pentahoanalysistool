@@ -74,31 +74,34 @@ The following describes the action plan and planned new features for this develo
 
 
 *new querying workflow*
-	new QM query:
-	QM query tab opens up
-	its possible to move dimensions in the dimensionpanel from UNUSED to COLUMNS / ROWS / FILTER axis
-			COLUMNS
-				+ Dim1
-			ROWS
-			FILTER
-			UNUSED
-				+ Dim2
-				+ Dim3
-				+ Measures
+  * new QM query:
+    * QM query tab opens up
+    * its possible to move dimensions in the dimensionpanel from UNUSED to COLUMNS / ROWS / FILTER axis
+
+  COLUMNS
+    + Dim1
+  ROWS
+  FILTER
+  UNUSED
+    + Dim2
+    + Dim3
+    + Measures
 	
-	other way to change selection is to drag the dimensions to the canvas to the COLUMNS / ROWS / FILTER drop targets
-	when dropped its possible to include members with the dimension browser
-	execute query
+    * other way to change selection is to drag the dimensions to the canvas to the COLUMNS / ROWS / FILTER drop targets
+    * when dropped its possible to include members with the dimension browser
+    * execute query
 	
-	change QM query:
-	in the dim panel click on dimension and select "browse dimension for selection" / click on "Edit" mode > canvas transforms back to the state before the first query execution, click on dimension and choose "browse dimension for selection"
-	opens up dimension browser 
-	change selection
-	close dimension browser
-	execute query
+  * change QM query:
+    * in the dim panel click on dimension and select "browse dimension for selection"
+    * click on "Edit" mode > canvas transforms back to the state before the first query execution, click on dimension and choose "browse dimension for selection"
+
+      * opens up dimension browser 
+      * change selection
+      * close dimension browser
+    * execute query
 	
-	new / change MDX query:
-	mdx query tab opens up
-	on the top of the query panel mdx editor area
-	below table
-	
+  * new / change MDX query:
+    * mdx query tab opens up
+    * on the top of the query panel mdx editor area
+    * below table
+    * execute
