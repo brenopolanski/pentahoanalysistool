@@ -4,9 +4,9 @@
   * Getting Started
     * [GettingStartedUsers For Users]
     * [GettingStartedDevelopers For Developers]
+      * [BuildFromSVN Build from SVN]
+      * [MavenGoals Maven Build Goals]
   * [Goals PAT Roadmap]
-  * [BuildFromSVN Build from SVN]
-  * [MavenGoals Maven Build Goals]
   * [Architecture PAT Architecture]
     * [QueryObjectStructure Query Object]
     * [FrontendBackendInterface Communication Layer]
