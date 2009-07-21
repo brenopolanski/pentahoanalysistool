@@ -2,7 +2,7 @@
 
 = Getting Started - Developers =
 
-Here are guides for new users who wish to deploy PAT:
+Here are guides for new developers who want to code PAT/build from SVN:
 
-  * [PATHostedDemo Deploying the Hosted Demo (Windows & Linux)]
-  * [DeployWithTomcat Deploying with Tomcat 6.x (Windows & Linux)]
+  * [BuildFromSVN Build from SVN]
+  * [MavenGoals Detailed List of Maven Goals]
