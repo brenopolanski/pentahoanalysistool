@@ -5,7 +5,7 @@
     * [GettingStartedUsers For Users]
     * [GettingStartedDevelopers For Developers]
       * [BuildFromSVN Build from SVN]
-      * [MavenGoals Maven Build Goals]
+      * [MavenGoals Maven Goals]
   * [Goals PAT Roadmap]
   * [Architecture PAT Architecture]
     * [QueryObjectStructure Query Object]
