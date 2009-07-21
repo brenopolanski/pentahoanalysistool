@@ -74,34 +74,35 @@ The following describes the action plan and planned new features for this develo
 
 
 *new querying workflow*
-  * new QM query:
+  * *QM query:*
     * QM query tab opens up
     * its possible to move dimensions in the dimensionpanel from UNUSED to COLUMNS / ROWS / FILTER axis
-
-  COLUMNS
-    + Dim1
-  ROWS
-  FILTER
-  UNUSED
-    + Dim2
-    + Dim3
-    + Measures
-	
     * other way to change selection is to drag the dimensions to the canvas to the COLUMNS / ROWS / FILTER drop targets
     * when dropped its possible to include members with the dimension browser
     * execute query
 	
-  * change QM query:
+  * *change QM query:*
     * in the dim panel click on dimension and select "browse dimension for selection"
     * click on "Edit" mode > canvas transforms back to the state before the first query execution, click on dimension and choose "browse dimension for selection"
-
       * opens up dimension browser 
       * change selection
       * close dimension browser
     * execute query
 	
-  * new / change MDX query:
+  * *new / change MDX query:*
     * mdx query tab opens up
     * on the top of the query panel mdx editor area
     * below table
     * execute
+
+== Post 0.5.0 ==
+*0.5.1*
+  * nice fancy css UI
+  * allow formula for measures on the filter axis ([Measures].[Actual] > 10)
+  * convert QM query to MDX query
+  * swap axis
+
+*0.5.x*
+  * drop targets in the table
+  * drill support
+  * advanced dim browser / member selection like slide 23
