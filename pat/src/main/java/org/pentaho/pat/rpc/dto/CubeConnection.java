@@ -23,13 +23,13 @@ public class CubeConnection implements Serializable,IsSerializable {
 	
 	private String catalog = null;
 	
-	private String schemaPath = null;
-	
 	private String username = null;
 	
 	private String password = null;
 	
 	private ConnectionType connectionType = null;
+
+	private String schemaData = null;
 
 	public enum ConnectionType implements IsSerializable {
 		XMLA, Mondrian
@@ -98,13 +98,11 @@ public class CubeConnection implements Serializable,IsSerializable {
 		this.catalog = catalog;
 	}
 
-    public String getSchemaPath() {
-        return schemaPath;
+    public String getSchemaData() {
+        return schemaData;
     }
 
-    public void setSchemaPath(String schemaPath) {
-        this.schemaPath = schemaPath;
+    public void setSchemaData(String schemaData) {
+        this.schemaData = schemaData;
     }
-	
-	
 }

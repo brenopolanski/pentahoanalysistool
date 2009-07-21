@@ -20,7 +20,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -70,11 +69,11 @@ public class ConnectMondrianPanel extends LayoutComposite {
 	/** Suffix for label constants. */
 	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 
-	/** Custom start tag for recognizing the returned filename from the backend. Has to match the one defined in the backend */
-	private static final String FILENAME_TAG_START = "pat_schema_filename_start"; //$NON-NLS-1$
+	/** Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the backend */
+	private static final String SCHEMA_START = "<PRE>"; //$NON-NLS-1$
 
-	/** Custom end tag for recognizing the returned filename from the backend. Has to match the one defined in the backend. */
-	private static final String FILENAME_TAG_END = "pat_schema_filename_end"; //$NON-NLS-1$
+	/** Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the backend. */
+	private static final String SCHEMA_END = "</PRE>"; //$NON-NLS-1$
 
 	/** Textbox for connection name. */
 	private final TextBox nameTextBox;
@@ -101,8 +100,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
 	/** Connect button. */
 	private final Button connectButton;
 
-	/** Schema path string. */
-	private String schemaPath;
+	/** Schema uploaded data. **/
+	private String schemaData;
 
 	/** Connect status. */
 	private boolean connectionEstablished = false;
@@ -122,7 +121,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 		userTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
 		fileUpload = new FileUpload();
-		schemaPath = ""; //$NON-NLS-1$
+		schemaData = ""; //$NON-NLS-1$
 
 		onInitialize();
 
@@ -175,7 +174,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 		} else {
 			cc.setPassword(null);
 		}
-		cc.setSchemaPath(schemaPath);
+		cc.setSchemaData(schemaData);
 		return cc;
 	}
 
@@ -206,10 +205,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
 				// TODO Replace filename handling with stored schema handling
 				// when implemented
 				if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
-					if (arg0.getResults().contains(FILENAME_TAG_START)) {
-						final String tmp = arg0.getResults().substring(arg0.getResults().indexOf(FILENAME_TAG_START) + FILENAME_TAG_START.length(),
-								arg0.getResults().indexOf(FILENAME_TAG_END));
-						schemaPath = tmp;
+				    if (arg0.getResults().contains(SCHEMA_START)) {
+				        String tmp = arg0.getResults().substring(arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),
+				                arg0.getResults().indexOf(SCHEMA_END));
+						schemaData = decode(tmp);
 						connectButton.setEnabled(true);
 						// TODO remove this later
 						MessageBox.info(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success());
@@ -290,5 +289,32 @@ public class ConnectMondrianPanel extends LayoutComposite {
 	public final void setConnectionEstablished(final boolean connectionEstablished) {
 		this.connectionEstablished = connectionEstablished;
 	}
+	
+	// Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
+	public static native String decode(final String data) /*-{
+	
+    	var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    	var out = "", c1, c2, c3, e1, e2, e3, e4;
+    	
+    	for (var i = 0; i < data.length; ) {
+        	e1 = tab.indexOf(data.charAt(i++));
+        	e2 = tab.indexOf(data.charAt(i++));
+        	e3 = tab.indexOf(data.charAt(i++));
+        	e4 = tab.indexOf(data.charAt(i++));
+        	c1 = (e1 << 2) + (e2 >> 4);
+        	c2 = ((e2 & 15) << 4) + (e3 >> 2);
+        	c3 = ((e3 & 3) << 6) + e4;
+        	out += String.fromCharCode(c1);
+        	
+        	if (e3 != 64)
+        	    out += String.fromCharCode(c2);
+        	    
+        	if (e4 != 64)
+        	    out += String.fromCharCode(c3);
+    	}
+    	
+    	return out;
+    	
+	}-*/;
 
 }

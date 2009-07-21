@@ -98,16 +98,28 @@ public interface SessionService extends Service {
 	 * Establishes a connection according to the supplied parameters.
 	 * @param userId The owner of the connection to establish.
 	 * @param sessionId The session id under which the connection will be stored.
-	 * @param driverName The Olap4j driver to use.
-	 * @param connectStr The URL to send to the Olap4j driver.
-	 * @param username The connection username to connect.
-	 * @param password The username's password.
+	 * @param sc The SavedConnection object to use as a connection template
 	 * @throws OlapException If the connection fails.
 	 */
 	@Secured ({"ROLE_USER"})
 	public void createConnection(String userId, String sessionId, 
-			String driverName, String connectStr, 
-			String username, String password) throws OlapException;
+			SavedConnection sc) throws OlapException;
+	
+	/**
+     * Establishes a connection according to the supplied parameters.
+     * @param userId The owner of the connection to establish.
+     * @param sessionId The session id under which the connection will be stored.
+     * @param driverName The Olap4j driver to use.
+     * @param connectStr The URL to send to the olap4j driver.
+     * @param username The connection username to connect.
+     * @param password The username's password.
+     * @throws OlapException If the connection fails.
+     */
+    @Secured ({"ROLE_USER"})
+    public void createConnection(String userId, String sessionId, 
+            String driverName, String connectStr, 
+            String username, String password) throws OlapException;
+
 	
 	@Secured ({"ROLE_USER"})
 	OlapConnection getConnection(String userId, String sessionId);
