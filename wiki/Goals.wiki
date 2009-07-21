@@ -5,6 +5,17 @@ A detailed list of tasks can be found [http://jira.pentaho.com/browse/PAT?report
 
 = Future Releases = 
 
+== Current Development Sprint 0.5.0 ==
+  * Heavy UI redesign
+  * Save connections in the persistance layer
+  * Add new default user with different permissions
+  * New query workflow
+  * New connection workflow
+  * New MDX Editor
+  * New dimension browser
+
+Details about this development sprint can be found [DevelopmentSprint050 here]
+
 ==PAT 1.0 Backlog==
   * Save View as xaction
   * Enable mixed DnD and MDX querying
