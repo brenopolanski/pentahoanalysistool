@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 	<name>Pentaho Analysis Tool</name>
 	<version>0.5.0-SNAPSHOT</version>
-	<url>http://code.google.com/p/pentahoanalysistool/a</url>
+	<url>http://code.google.com/p/pentahoanalysistool/</url>
 	<properties>
 		<gwt.module.alias>pat</gwt.module.alias>
 		<maven.compiler.source>1.5</maven.compiler.source>
@@ -22,13 +22,70 @@
 		<hibernate.version>3.3.1.GA</hibernate.version>
 		<maven.test.output>${gwt.output.directory}/WEB-INF/test-classes</maven.test.output>
 	</properties>
+	<developers>
+		<developer>
+			<id>pat01</id>
+			<name>Paul Stoellberger</name>
+			<email>paul.stoellberger@gmail.com</email>
+			<timezone>1</timezone>
+		</developer>
+		<developer>
+			<id>pat02</id>
+			<name>Tom Barber</name>
+			<email>tom@wamonline.org.uk</email>
+			<timezone>0</timezone>
+			<roles>
+				<role>Manager</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>pat03</id>
+			<name>Luc Boudreau</name>
+			<email>lucboudreau@gmail.com</email>
+			<timezone>-8</timezone>
+			<roles>
+				<role>Manager</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:http://pentahoanalysistool.googlecode.com/svn/trunk/pat/</connection>
+		<developerConnection>scm:svn:https://pentahoanalysistool.googlecode.com/svn/trunk/pat/</developerConnection>
+		<url>http://pentahoanalysistool.googlecode.com/</url>
+	</scm>
 	<build>
-		<!-- Compile classes into the war transient directory for hosted mode live editing -->
+		<finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+		<!--
+			Compile classes into the war transient directory for hosted mode live
+			editing
+		-->
 		<outputDirectory>${gwt.output.directory}/WEB-INF/classes</outputDirectory>
 		<testOutputDirectory>${gwt.output.directory}/WEB-INF/test-classes</testOutputDirectory>
-		
-		
+
+
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-3</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>true</doUpdate>
+					<providerImplementations>
+						<svn>javasvn</svn>
+					</providerImplementations>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -46,24 +103,25 @@
 					</execution>
 				</executions>
 				<configuration>
-                            <compileTargets>
-	                            <value>org.pentaho.pat.Pat</value>
-                            </compileTargets>
-                            <runTarget>pat/Pat.jsp</runTarget>
-                            <output>${gwt.output.directory}</output>
-                            <logLevel>WARN</logLevel>
-                            <style>OBF</style>
-                            <extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m -XX:MaxPermSize=512m</extraJvmArgs>
-                            <gwtVersion>${gwtVersion}</gwtVersion>
-                            <debugSuspend>false</debugSuspend>
-                            <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
-                            <webResources>
-								<resource>
-									<directory>${gwt.output.directory}/${gwt.module.alias}</directory>
-									<targetPath>${gwt.module.alias}</targetPath>
-								</resource>
-							</webResources>
-          					<hostedWebapp>${basedir}/target/gwt</hostedWebapp> 
+					<compileTargets>
+						<value>org.pentaho.pat.Pat</value>
+					</compileTargets>
+					<runTarget>pat/Pat.jsp</runTarget>
+					<output>${gwt.output.directory}</output>
+					<logLevel>WARN</logLevel>
+					<style>OBF</style>
+					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m
+						-XX:MaxPermSize=512m</extraJvmArgs>
+					<gwtVersion>${gwtVersion}</gwtVersion>
+					<debugSuspend>false</debugSuspend>
+					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+					<webResources>
+						<resource>
+							<directory>${gwt.output.directory}/${gwt.module.alias}</directory>
+							<targetPath>${gwt.module.alias}</targetPath>
+						</resource>
+					</webResources>
+					<hostedWebapp>${basedir}/target/gwt</hostedWebapp>
 				</configuration>
 			</plugin>
 
@@ -74,9 +132,9 @@
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
-					
+
 					<encoding>UTF-8</encoding>
-		            <!-- Fix for GWT issue #3439 -->
+					<!-- Fix for GWT issue #3439 -->
 					<excludes>
 						<exclude>javax/servlet/**</exclude>
 					</excludes>
@@ -98,7 +156,10 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.2</version>
 				<executions>
-					<!-- This execution copies the war folder to the gwt transient output directory -->
+					<!--
+						This execution copies the war folder to the gwt transient output
+						directory
+					-->
 					<execution>
 						<id>war-folder-creation</id>
 						<phase>process-resources</phase>
@@ -123,7 +184,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-				    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 					<webResources>
 						<resource>
 							<directory>${gwt.output.directory}/${gwt.module.alias}</directory>
@@ -241,12 +302,12 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<dependencies>
-		<!--<dependency>
-			<groupId>com.google.gwt</groupId>
+		<!--
+			<dependency> <groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev-oophm</artifactId>
-                        <version>2.0.0-SNAPSHOT</version>
-                        <scope>provided</scope>
-		</dependency>-->
+			<version>2.0.0-SNAPSHOT</version> <scope>provided</scope>
+			</dependency>
+		-->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -329,24 +390,24 @@
 			<groupId>org.olap4j</groupId>
 			<artifactId>olap4j</artifactId>
 			<version>0.9.8-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>asm</groupId>
-          <artifactId>asm</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>asm</groupId>
-          <artifactId>asm-commons</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>retroweaver</groupId>
-          <artifactId>retroweaver</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>retroweaver</groupId>
-          <artifactId>retroweaver-rt</artifactId>
-        </exclusion>
-      </exclusions>
+			<exclusions>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm-commons</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>retroweaver</groupId>
+					<artifactId>retroweaver</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>retroweaver</groupId>
+					<artifactId>retroweaver-rt</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>xerces</groupId>
@@ -356,7 +417,7 @@
 		<dependency>
 			<groupId>pentaho</groupId>
 			<artifactId>mondrian</artifactId>
-			<version>3.1.0-RC1</version>
+			<version>3.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>javacup</groupId>
@@ -373,7 +434,7 @@
 			<artifactId>gwt-beans-binding</artifactId>
 			<version>0.2.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.code.gwtx</groupId>
 			<artifactId>gwtx</artifactId>
@@ -473,11 +534,11 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
 
 
