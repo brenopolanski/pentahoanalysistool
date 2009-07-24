@@ -56,7 +56,6 @@
 		<url>http://pentahoanalysistool.googlecode.com/</url>
 	</scm>
 	<build>
-		<finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
 		<!--
 			Compile classes into the war transient directory for hosted mode live
 			editing
@@ -66,23 +65,6 @@
 
 
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.0-beta-3</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>true</doCheck>
-					<doUpdate>true</doUpdate>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -107,8 +89,7 @@
 					<output>${gwt.output.directory}</output>
 					<logLevel>WARN</logLevel>
 					<style>OBF</style>
-					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m
-						-XX:MaxPermSize=512m</extraJvmArgs>
+					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m -XX:MaxPermSize=512m</extraJvmArgs>
 					<gwtVersion>${gwtVersion}</gwtVersion>
 					<debugSuspend>false</debugSuspend>
 					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
