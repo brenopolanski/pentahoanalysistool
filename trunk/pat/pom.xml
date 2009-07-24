@@ -81,9 +81,6 @@
 				<configuration>
 					<doCheck>true</doCheck>
 					<doUpdate>true</doUpdate>
-					<providerImplementations>
-						<svn>javasvn</svn>
-					</providerImplementations>
 				</configuration>
 			</plugin>
 			<plugin>
