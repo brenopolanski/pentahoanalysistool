@@ -23,6 +23,7 @@ The following describes the action plan and planned new features for this develo
     * check for warnings and remove them
     * switch to new i18n method
     * XUL'ify if thats the decision
+    * make sure the correct exception message is shown
 
 == Details for 0.5.0 ==
 
@@ -95,6 +96,9 @@ The following describes the action plan and planned new features for this develo
     * on the top of the query panel mdx editor area
     * below table
     * execute
+
+* *new integration lifecycle
+  * TBD
 
 == Post 0.5.0 ==
 *0.5.1*
