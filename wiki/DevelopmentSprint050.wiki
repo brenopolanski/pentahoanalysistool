@@ -36,6 +36,7 @@ The following describes the action plan and planned new features for this develo
   * execute query button for execution
   * dimension stack panel right/left as user preference
   * new mdx editor
+  * improved olaptable
 
 === Lifecycle ===
 *create new connection*
@@ -106,6 +107,10 @@ The following describes the action plan and planned new features for this develo
   * allow formula for measures on the filter axis ([Measures].[Actual] > 10)
   * convert QM query to MDX query
   * swap axis
+
+*0.5.2*
+  * biserver integration
+  * save queries in the biserver
 
 *0.5.x*
   * drop targets in the table
