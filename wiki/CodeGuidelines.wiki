@@ -132,15 +132,17 @@ private void init() {
 }}}
 
   * Always extend your new widgets from LayoutComposite not LayoutPanel or any other existing panel
+    * *CORRECT:*
   {{{
 public class ConnectMondrianPanel extends LayoutComposite {
 public ConnectMondrianPanel() {
   init();
 }
-}}} *CORRECT*
+}}} 
+    * *WRONG:*
   {{{
 public class ConnectMondrianPanel extends LayoutPanel {
 public ConnectMondrianPanel() {
   init();
 }
-}}} *WRONG*
+}}} 
