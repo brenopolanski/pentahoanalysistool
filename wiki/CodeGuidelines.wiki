@@ -6,6 +6,73 @@ We need to keep our code clean. To do so we have defined some coding guidelines,
 
 = Guidelines =
 
+Our coding guidelines are based on [http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html the Java standard conventions], [http://code.google.com/intl/de-DE/webtoolkit/makinggwtbetter.html#codestyle GWT codestyle] and [http://mondrian.pentaho.org/documentation/developers_guide.php#Coding_guide Mondrian coding guide]
+
+== Comments and Javadoc ==
+Every file should have an GPLv2 license header at the top, prefaced with a copyright notice. A package statement and import statements should follow, each block separated by a blank line. Next is the class or interface declaration. In the Javadoc comments, describe what the class or interface does.
+
+{{{
+/*
+ * Copyright (C) 2009 Tom Barber
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
+ * @created Apr 23, 2009 
+ * @author Tom Barber
+ */
+
+package com.google.foo;
+
+import com.google.bar.Blah;
+import com.google.bar.Yada;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * Does X and Y and provides an abstraction for Z.
+ */
+public class Foo {
+  ...
+} 
+}}}
+
+== Class Structure and Member Sort Order ==
+
+Java types should have the following member order:
+
+  # Nested Types (mixing inner and static classes is okay)
+  # Static Fields
+  # Static Initializers
+  # Static Methods
+  # Instance Fields
+  # Instance Initializers
+  # Constructors
+  # Instance Methods
+
+Members that fall into the same category (e.g. static methods) should also be sorted in this order based on visibility:
+
+  # public
+  # protected
+  # default
+  # private
+
+All methods should be sorted alphabetically. Sorting is optional but recommended for fields.
+
+
 something like:
 http://mondrian.pentaho.org/documentation/developers_guide.php#Coding_guide
 http://code.google.com/intl/de-DE/webtoolkit/makinggwtbetter.html#codestyle
