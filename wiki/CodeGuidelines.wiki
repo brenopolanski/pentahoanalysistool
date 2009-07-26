@@ -110,7 +110,7 @@ log.warn(Messages.getString("Util.JdbcDriverFinder.NoDriversInPath")); //$NON-NL
 
 == New Widgets/Panels ==
 
-  * Set up the widget's elements within the constructor (1..n class functions possible)
+  * Set up the widget's elements within the constructor (1..n class functions possible if it makes sense). This is necessary for a consistent code design and avoids rendering issues that could be caused if the widgets' are set up in the onLoad() method etc.
   {{{
 public class ConnectMondrianPanel extends LayoutComposite {
 public ConnectMondrianPanel() {
@@ -131,11 +131,16 @@ private void init() {
 }
 }}}
 
-something like:
-http://mondrian.pentaho.org/documentation/developers_guide.php#Coding_guide
-http://code.google.com/intl/de-DE/webtoolkit/makinggwtbetter.html#codestyle
-
-  * set up the elements of the widgets within the constructor.. and within the constructor call void methods that set up member variables
-  * no strings in the code... width/height/whatever need to be defined as constants.. which are listed on the top of the class
-  * extend from layoutcomposite instead of layoutpanel
-  * clear widget / panel separation.. so you create your thing as widget (extend layoutcomposite) and if you want to use it.. you create a new panel(scrollpanel/popup/ whatever) and add the widget there
+  * Always extend your new widgets from LayoutComposite not LayoutPanel or any other existing panel
+  {{{
+public class ConnectMondrianPanel extends LayoutComposite {
+public ConnectMondrianPanel() {
+  init();
+}
+}}} *CORRECT*
+  {{{
+public class ConnectMondrianPanel extends LayoutPanel {
+public ConnectMondrianPanel() {
+  init();
+}
+}}} *WRONG*
