@@ -21,6 +21,8 @@ import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
+import org.pentaho.pat.client.deprecated.Application;
+import org.pentaho.pat.client.deprecated.StyleSheetLoader;
 import org.pentaho.pat.client.deprecated.demo.DemoSetup;
 import org.pentaho.pat.client.deprecated.i18n.PatConstants;
 import org.pentaho.pat.client.deprecated.images.PatImages;

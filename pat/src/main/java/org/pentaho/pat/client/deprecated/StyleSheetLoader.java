@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pentaho.pat.client;
+package org.pentaho.pat.client.deprecated;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.HeadElement;

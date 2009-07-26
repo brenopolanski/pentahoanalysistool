@@ -11,7 +11,7 @@
  * @author Tom Barber
  */
 
-package org.pentaho.pat.client;
+package org.pentaho.pat.client.deprecated;
 
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.ui.panels.MainMenu;
 import org.pentaho.pat.client.deprecated.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.deprecated.ui.panels.WelcomePanel;
