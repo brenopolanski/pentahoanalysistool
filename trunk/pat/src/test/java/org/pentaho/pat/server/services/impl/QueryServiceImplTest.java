@@ -11,7 +11,7 @@ import org.olap4j.OlapException;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
-import org.pentaho.pat.client.i18n.PatConstants;
+import org.pentaho.pat.client.deprecated.i18n.PatConstants;
 import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
