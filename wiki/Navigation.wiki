@@ -7,6 +7,7 @@
       * [BuildFromSVN Build from SVN]
       * [MavenGoals Maven Goals]
       * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
+      * [CodeGuidelines Code Guidelines]
   * [Goals PAT Roadmap]
   * [DevelopmentSprints Development Sprints]
     * [DevelopmentSprint050 0.5.0]
