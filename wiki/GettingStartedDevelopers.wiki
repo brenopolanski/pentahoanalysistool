@@ -6,3 +6,8 @@ Here are guides for new developers who want to code PAT/build from SVN:
 
   * [BuildFromSVN Build from SVN]
   * [MavenGoals Detailed List of Maven Goals]
+  * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
+
+= Contributions =
+
+We will always appreciate code contributions. However, we have defined some [CodeGuidelines Code Guidelines], which you should follow.
