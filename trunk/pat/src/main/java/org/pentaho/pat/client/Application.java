@@ -26,11 +26,11 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.ui.panels.MainMenu;
-import org.pentaho.pat.client.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.ui.panels.WelcomePanel;
-import org.pentaho.pat.client.ui.widgets.OlapTable;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.deprecated.ui.panels.MainMenu;
+import org.pentaho.pat.client.deprecated.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.deprecated.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.deprecated.ui.widgets.OlapTable;
+import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
