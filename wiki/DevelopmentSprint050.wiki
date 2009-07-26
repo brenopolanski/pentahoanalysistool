@@ -9,14 +9,14 @@ The following describes the action plan and planned new features for this develo
   * updated lifecycle (including needed backend methods)
   * check if we can/should use xul
   * follow rules for cleaning / re-using existing widgets 
-  * follow coding guidelines
   * create JIRA cases for planned tasks
+  * *follow [CodeGuidelines code guideline]*
 
 == Rules for GUI Code ==
   * move pat.client > pat.client.deprecated
   * create new i18n classes / properties [getResourceByKey("pat.client.mdx")]
   * choose widget/panels we still need
-    * check for coding guideline
+    * check for [CodeGuidelines code guideline]
     * check if code looks clean
     * check comments
     * check if widget css tagged properly
