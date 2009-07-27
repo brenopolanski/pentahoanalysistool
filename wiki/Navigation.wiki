@@ -15,6 +15,7 @@
     * [QueryObjectStructure Query Object]
     * [FrontendBackendInterface Communication Layer]
   * [Lifecycle Usage/Lifecycle]
+    * [DimensionDropWidgetLifecycle Dimension Drop Widget Lifecycle]
   * [PentahoIntegration Simple BI-Server Integration]
     * [ServerIntegrationPluginForPAT PAT Plugin for Pentaho BI Server Integration]
   * [Contribute Contribute]
