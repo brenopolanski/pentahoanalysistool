@@ -74,7 +74,7 @@ All methods should be sorted alphabetically. Sorting is optional but recommended
 
 == Spacing and Indentation ==
   *  Use spaces, not tabs.
-  * Indentation 4.
+  * Indentation 2. (at line breaks in a declaration indentation 4)
   * Open braces on the same line as the preceding 'if', 'else', 'while' statement, or method or 'class' declaration.
   * Use braces even for single-line blocks.
   * Try to keep lines shorter than 80 characters.
