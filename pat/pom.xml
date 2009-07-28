@@ -395,7 +395,7 @@
 		<dependency>
 			<groupId>pentaho</groupId>
 			<artifactId>mondrian</artifactId>
-			<version>3.1.1</version>
+			<version>3.1.1.12929</version>
 		</dependency>
 		<dependency>
 			<groupId>javacup</groupId>
