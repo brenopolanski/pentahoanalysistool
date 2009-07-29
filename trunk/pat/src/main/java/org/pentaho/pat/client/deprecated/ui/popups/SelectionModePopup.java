@@ -46,17 +46,17 @@ public class SelectionModePopup extends PopupPanel {
 			final String dimName = getDimensionName(targetLabel);
 			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
-			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback<Object>() {
-				public void onFailure(final Throwable caught) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionCleared(caught.getLocalizedMessage()));
-
-				}
-
-				public void onSuccess(final Object result) {
-					targetLabel.setSelectionMode(CLEAR);
-
-				}
-			});
+//			ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), dimName, dimSelections, new AsyncCallback<Object>() {
+//				public void onFailure(final Throwable caught) {
+//					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionCleared(caught.getLocalizedMessage()));
+//
+//				}
+//
+//				public void onSuccess(final Object result) {
+//					targetLabel.setSelectionMode(CLEAR);
+//
+//				}
+//			});
 			SelectionModePopup.this.hide();
 		}
 	}
@@ -95,19 +95,19 @@ public class SelectionModePopup extends PopupPanel {
 			final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
 			final String selection = setSelectionMode(selectionMode);
-			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback<Object>() {
-
-				public void onFailure(final Throwable arg0) {
-					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
-
-				}
-
-				public void onSuccess(final Object arg0) {
-					targetLabel.setSelectionMode(selectionMode);
-
-				}
-
-			});
+//			ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), dimName, dimSelections, selection, new AsyncCallback<Object>() {
+//
+//				public void onFailure(final Throwable arg0) {
+//					MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noSelectionSet(arg0.getLocalizedMessage()));
+//
+//				}
+//
+//				public void onSuccess(final Object arg0) {
+//					targetLabel.setSelectionMode(selectionMode);
+//
+//				}
+//
+//			});
 
 			SelectionModePopup.this.hide();
 		}

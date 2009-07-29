@@ -46,33 +46,33 @@ public class MainTabPanel extends LayoutComposite {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
 				
 				if (widget instanceof QueryPanel){
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
-
-						public void onFailure(final Throwable arg0) {
-							//TODO proper messages 
-							
-							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().cube());
-						}
-
-						public void onSuccess(final Object arg0) {
-
-
-							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((QueryPanel) widget).getQuery(), new AsyncCallback<Object>(){
-
-								public void onFailure(final Throwable arg0) {
-									//TODO proper messages
-									MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().noConnection());
-								}
-
-								public void onSuccess(final Object arg0) {
-									GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(MainTabPanel.this);
-								}
-
-							});
-
-						}
-
-					});
+//					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), ((QueryPanel) widget).getCube(), new AsyncCallback<Object>(){
+//
+//						public void onFailure(final Throwable arg0) {
+//							//TODO proper messages 
+//							
+//							MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().cube());
+//						}
+//
+//						public void onSuccess(final Object arg0) {
+//
+//
+//							ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), ((QueryPanel) widget).getQuery(), new AsyncCallback<Object>(){
+//
+//								public void onFailure(final Throwable arg0) {
+//									//TODO proper messages
+//									MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().noConnection());
+//								}
+//
+//								public void onSuccess(final Object arg0) {
+//									GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(MainTabPanel.this);
+//								}
+//
+//							});
+//
+//						}
+//
+//					});
 
 				}
 			}
@@ -147,7 +147,7 @@ public class MainTabPanel extends LayoutComposite {
 
 			}
 			else{
-				if (Pat.getInitialState().getMode().equals(State.Mode.ONECUBE)) {
+				if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE)) {
 					contentWrapper.add(content, tabName);
 				}
 				else {

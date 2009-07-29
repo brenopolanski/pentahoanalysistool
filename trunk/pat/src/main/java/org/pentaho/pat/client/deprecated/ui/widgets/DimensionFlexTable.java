@@ -60,23 +60,23 @@ public final class DimensionFlexTable extends FlexTable {
 	public void populateDimensionTable(final Axis targetAxis) {
 		this.clear();
 
-		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
-
-			public void onFailure(final Throwable arg0) {
-				// TODO use standardized message dialog when implemented
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
-			}
-
-			public void onSuccess(final String[] arg0) {
-				for (int row = 0; row < arg0.length; row++) {
-					final Label handle = new Label(arg0[row]);
-					handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
-					setWidget(row, 0, handle);
-					trdc.makeDraggable(handle);
-				}
-
-			}
-		});
+//		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), targetAxis, new AsyncCallback<String[]>() {
+//
+//			public void onFailure(final Throwable arg0) {
+//				// TODO use standardized message dialog when implemented
+//				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
+//			}
+//
+//			public void onSuccess(final String[] arg0) {
+//				for (int row = 0; row < arg0.length; row++) {
+//					final Label handle = new Label(arg0[row]);
+//					handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
+//					setWidget(row, 0, handle);
+//					trdc.makeDraggable(handle);
+//				}
+//
+//			}
+//		});
 
 	}
 

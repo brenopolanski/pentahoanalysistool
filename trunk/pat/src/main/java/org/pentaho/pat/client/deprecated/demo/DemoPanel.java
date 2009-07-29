@@ -48,8 +48,8 @@ public class DemoPanel extends LayoutComposite {
 		rootPanel.add(new WidgetWrapper(new HTML("It is possible to introduce modes in which only specific elements of PAT are shown to the user. The one listed below demonstrate how PAT could look like when accessed by users with different permissions (STANDALONE, USER, BUSINESSUSER) or a lightweight version (ONECUBE, OLAPTABLE) for integration into other applications (e.g biserver)")), new BoxLayoutData(FillStyle.BOTH));
 		rootPanel.add(new WidgetWrapper(new HTML("")), new BoxLayoutData(FillStyle.BOTH));
 		
-		if (Pat.getInitialState().getMode() != Mode.DEFAULT) {
-			rootPanel.add(new WidgetWrapper(new HTML("<h4>CURRENT MODE: " + Pat.getInitialState().getMode().name()+"</h4>")), new BoxLayoutData(FillStyle.BOTH));
+		if (Pat.getApplicationState().getMode() != Mode.DEFAULT) {
+			rootPanel.add(new WidgetWrapper(new HTML("<h4>CURRENT MODE: " + Pat.getApplicationState().getMode().name()+"</h4>")), new BoxLayoutData(FillStyle.BOTH));
 		}
 		String subText = "<b>IMPORTANT</b> : The modes (except "+Mode.STANDALONE.name()+") need a running Pentaho BI-Server with standard configuration.They will try to access the XMLA Service at http://localhost:8080/pentaho/Xmla.";
 		//rootPanel.add(new WidgetWrapper(new HTML(subText)), new BoxLayoutData(FillStyle.BOTH));

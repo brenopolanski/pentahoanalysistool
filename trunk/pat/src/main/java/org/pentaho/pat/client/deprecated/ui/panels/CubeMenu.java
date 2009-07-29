@@ -6,10 +6,10 @@ import java.util.Map;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.Application;
-import org.pentaho.pat.client.deprecated.Application.ApplicationImages;
-import org.pentaho.pat.client.deprecated.Application.ApplicationListener;
+import org.pentaho.pat.client.Application.ApplicationImages;
+import org.pentaho.pat.client.Application.ApplicationListener;
 import org.pentaho.pat.client.deprecated.listeners.ConnectionListener;
 import org.pentaho.pat.client.deprecated.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.deprecated.ui.popups.QueryModePopup;
@@ -112,22 +112,22 @@ public class CubeMenu extends LayoutComposite implements ConnectionListener {
 	private final void setupCubeMenu() {
 		// TODO remove when showcase not needed
 		cubeTree.addItem("connection 1"); //$NON-NLS-1$
-		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
-			public void onFailure(final Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
-			}
-
-			public void onSuccess(final String[] o) {
-				// TODO implement new treeitem correctly
-				final TreeItem cubesList = cubeTree.addItem("connection 2"); //$NON-NLS-1$
-
-				for (final String element2 : o) {
-					setupMainMenuOption(cubesList, new QueryPanel(element2), Pat.IMAGES.cube());
-				}
-				cubesList.setState(true);
-
-			}
-		});
+//		ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), new AsyncCallback<String[]>() {
+//			public void onFailure(final Throwable arg0) {
+//				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
+//			}
+//
+//			public void onSuccess(final String[] o) {
+//				// TODO implement new treeitem correctly
+//				final TreeItem cubesList = cubeTree.addItem("connection 2"); //$NON-NLS-1$
+//
+//				for (final String element2 : o) {
+//					setupMainMenuOption(cubesList, new QueryPanel(element2), Pat.IMAGES.cube());
+//				}
+//				cubesList.setState(true);
+//
+//			}
+//		});
 
 	}
 

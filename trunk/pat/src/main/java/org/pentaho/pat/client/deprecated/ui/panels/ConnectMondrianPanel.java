@@ -254,21 +254,22 @@ public class ConnectMondrianPanel extends LayoutComposite {
 		connectButton.addClickHandler(new ClickHandler() {
 			public void onClick(final ClickEvent event) {
 				connectButton.setEnabled(false);
-				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
-					public void onFailure(final Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
-						connectButton.setEnabled(true);
-					}
-
-					public void onSuccess(final Object o) {
-						connectButton.setEnabled(true);
-						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
-						setConnectionEstablished(true);
-						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
-						// TODO change this once saving connections is possible
-						ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
-					}
-				});
+				// TODO replace with new RPC functions
+//				ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
+//					public void onFailure(final Throwable arg0) {
+//						MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
+//						connectButton.setEnabled(true);
+//					}
+//
+//					public void onSuccess(final Object o) {
+//						connectButton.setEnabled(true);
+//						MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
+//						setConnectionEstablished(true);
+//						GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
+//						// TODO change this once saving connections is possible
+//						ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
+//					}
+//				});
 			}
 		});
 

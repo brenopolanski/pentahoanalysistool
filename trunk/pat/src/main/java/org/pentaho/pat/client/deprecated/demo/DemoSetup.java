@@ -45,70 +45,70 @@ public class DemoSetup {
 	}
 
 	private boolean connect(final CubeConnection cc) {
-		ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), cc, new AsyncCallback<Object>() {
-			public void onFailure(final Throwable arg0) {
-			}
-
-			public void onSuccess(final Object o) {
-				GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(new Widget());
-				if (demoMode.isShowConnections()) {
-					ConnectionManagerPanel.addConnection(new ConnectionItem("123",getDemoConnection().getName(),true));
-				}
-
-				if (demoMode == State.Mode.ONECUBE) {
-					setupDimensionMenu();
-				}
-				if (demoMode == Mode.OLAPTABLE) {
-					String mdx = "select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," + //$NON-NLS-1$
-							" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " + //$NON-NLS-1$
-							" from [Quadrant Analysis] "; //$NON-NLS-1$
-					ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdx, new AsyncCallback<CellDataSet>() {
-
-					public void onFailure(Throwable arg0) {
-						
-					}
-
-					public void onSuccess(CellDataSet matrix) {
-						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionWindow(), "demoQuery", matrix); //$NON-NLS-1$
-						
-					}
-					
-				});
-
-				}
-			}
-		});
+//		ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), cc, new AsyncCallback<Object>() {
+//			public void onFailure(final Throwable arg0) {
+//			}
+//
+//			public void onSuccess(final Object o) {
+//				GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(new Widget());
+//				if (demoMode.isShowConnections()) {
+//					ConnectionManagerPanel.addConnection(new ConnectionItem("123",getDemoConnection().getName(),true));
+//				}
+//
+//				if (demoMode == State.Mode.ONECUBE) {
+//					setupDimensionMenu();
+//				}
+//				if (demoMode == Mode.OLAPTABLE) {
+//					String mdx = "select NON EMPTY Crossjoin(Hierarchize(Union({[Region].[All Regions]}, [Region].[All Regions].Children)), {[Measures].[Actual]}) ON COLUMNS," + //$NON-NLS-1$
+//							" NON EMPTY Hierarchize(Union({[Department].[All Departments]}, [Department].[All Departments].Children)) ON ROWS " + //$NON-NLS-1$
+//							" from [Quadrant Analysis] "; //$NON-NLS-1$
+//					ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdx, new AsyncCallback<CellDataSet>() {
+//
+//					public void onFailure(Throwable arg0) {
+//						
+//					}
+//
+//					public void onSuccess(CellDataSet matrix) {
+//						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionWindow(), "demoQuery", matrix); //$NON-NLS-1$
+//						
+//					}
+//					
+//				});
+//
+//				}
+//			}
+//		});
 
 		return true;
 	}
 	
 	private void setupDimensionMenu() {
-		final QueryPanel widget = new QueryPanel("Demo Query Quadrant Analysis"); //$NON-NLS-1$
-		 widget.setCube("Quadrant Analysis"); //$NON-NLS-1$
-		ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), "Quadrant Analysis", new AsyncCallback<Object>() { //$NON-NLS-1$
-			public void onFailure(final Throwable arg0) { }
-
-			public void onSuccess(final Object setCurrentCubeResult) {
-				ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
-					public void onFailure(final Throwable arg0) { 	}
-					public void onSuccess(final String newQuery) {
-						widget.setQuery(newQuery);
-						ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), newQuery, new AsyncCallback<Object>() {
-							public void onFailure(final Throwable arg0) { }
-							public void onSuccess(final Object arg0) {
-								// TODO change way of accessing other widget elements
-								widget.setSelectedQueryMode(QueryMode.QUERY_MODEL);
-								MainMenu.getDimensionPanel().createDimensionList();
-								MainMenu.getDimensionPanel().layout();
-								MainTabPanel.displayContentWidget(widget);
-								MainMenu.showNamedMenu(MenuItem.Dimensions);
-								MainMenu.getStackPanel().layout();
-							}
-						});
-					}
-				});
-			}
-		});
+//		final QueryPanel widget = new QueryPanel("Demo Query Quadrant Analysis"); //$NON-NLS-1$
+//		 widget.setCube("Quadrant Analysis"); //$NON-NLS-1$
+//		ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), "Quadrant Analysis", new AsyncCallback<Object>() { //$NON-NLS-1$
+//			public void onFailure(final Throwable arg0) { }
+//
+//			public void onSuccess(final Object setCurrentCubeResult) {
+//				ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
+//					public void onFailure(final Throwable arg0) { 	}
+//					public void onSuccess(final String newQuery) {
+//						widget.setQuery(newQuery);
+//						ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), newQuery, new AsyncCallback<Object>() {
+//							public void onFailure(final Throwable arg0) { }
+//							public void onSuccess(final Object arg0) {
+//								// TODO change way of accessing other widget elements
+//								widget.setSelectedQueryMode(QueryMode.QUERY_MODEL);
+//								MainMenu.getDimensionPanel().createDimensionList();
+//								MainMenu.getDimensionPanel().layout();
+//								MainTabPanel.displayContentWidget(widget);
+//								MainMenu.showNamedMenu(MenuItem.Dimensions);
+//								MainMenu.getStackPanel().layout();
+//							}
+//						});
+//					}
+//				});
+//			}
+//		});
 	}
 
 

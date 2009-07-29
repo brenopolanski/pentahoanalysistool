@@ -129,16 +129,16 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 					if (!WelcomePanel.connectionEstablished) {
 						ConnectionWindow.display();
 					} else {
-						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
-							public void onFailure(final Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-							}
-
-							public void onSuccess(final Object o) {
-								setConnectionEstablished(false);
-								GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionBroken(WelcomePanel.this);
-							}
-						});
+//						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
+//							public void onFailure(final Throwable arg0) {
+//								MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+//							}
+//
+//							public void onSuccess(final Object o) {
+//								setConnectionEstablished(false);
+//								GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionBroken(WelcomePanel.this);
+//							}
+//						});
 					}
 				}   	
 	        });
@@ -150,7 +150,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 				}
 	    });
 
-	    if (Pat.getInitialState().getMode().isManageConnections()) {
+	    if (Pat.getApplicationState().getMode().isManageConnections()) {
 	    	buttonBar.add(conButton);
 	    }
 	    buttonBar.add(patwikiBtn);
