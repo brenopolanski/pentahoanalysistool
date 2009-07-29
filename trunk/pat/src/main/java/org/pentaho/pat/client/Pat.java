@@ -34,6 +34,7 @@ import org.pentaho.pat.client.deprecated.util.State;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
 import org.pentaho.pat.client.deprecated.util.factory.MessageFactory;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.util.StyleSheetLoader;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
