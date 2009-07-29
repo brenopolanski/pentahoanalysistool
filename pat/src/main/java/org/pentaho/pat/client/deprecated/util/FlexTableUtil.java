@@ -135,38 +135,38 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 				final Widget w = sourceTable.getWidget(sRow, col);
 				if (w != null) {
 					if (w instanceof Label) {
-						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),
-								new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:53
-
-							public void onFailure(final Throwable arg0) {
-								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
-							}
-
-							public void onSuccess(final Object arg0) {
-								ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), w.getElement().getInnerText().trim(),
-										new AsyncCallback<StringTree>() {
-
-									public void onFailure(final Throwable arg0) {
-										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
-									}
-
-									public void onSuccess(final StringTree arg0) {
-										final Tree dimTree = new Tree();
-										final StringTree memberTree = arg0;
-										final Label rootLabel = new Label(memberTree.getValue());
-										TreeItem root = new TreeItem(rootLabel);
-										for (int i = 0; i < memberTree.getChildren().size(); i++) {
-											root = createPathForMember(root, memberTree.getChildren().get(i));
-										}
-										dimTree.addItem(root);
-										targetTable.setWidget(targetRow, col2, dimTree);
-
-									}
-
-								});
-							}
-
-						});
+//						ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, w.getElement().getInnerText().trim(),
+//								new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:53
+//
+//							public void onFailure(final Throwable arg0) {
+//								MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+//							}
+//
+//							public void onSuccess(final Object arg0) {
+//								ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), w.getElement().getInnerText().trim(),
+//										new AsyncCallback<StringTree>() {
+//
+//									public void onFailure(final Throwable arg0) {
+//										MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+//									}
+//
+//									public void onSuccess(final StringTree arg0) {
+//										final Tree dimTree = new Tree();
+//										final StringTree memberTree = arg0;
+//										final Label rootLabel = new Label(memberTree.getValue());
+//										TreeItem root = new TreeItem(rootLabel);
+//										for (int i = 0; i < memberTree.getChildren().size(); i++) {
+//											root = createPathForMember(root, memberTree.getChildren().get(i));
+//										}
+//										dimTree.addItem(root);
+//										targetTable.setWidget(targetRow, col2, dimTree);
+//
+//									}
+//
+//								});
+//							}
+//
+//						});
 					} else {
 						targetTable.setWidget(targetRow, col, w);
 					}
@@ -174,17 +174,17 @@ public class FlexTableUtil { // NOPMD by bugg on 21/04/09 05:51
 				} else {
 					final HTML html = new HTML(sourceTable.getHTML(sourceRow, col)); // NOPMD by bugg on 21/04/09 05:54
 					targetTable.setWidget(targetRow, col, html);
-					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:54
-
-						public void onFailure(final Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
-						}
-
-						public void onSuccess(final Object arg0) {
-
-						}
-
-					});
+//					ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis, html.getText().trim(), new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:54
+//
+//						public void onFailure(final Throwable arg0) {
+//							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
+//						}
+//
+//						public void onSuccess(final Object arg0) {
+//
+//						}
+//
+//					});
 				}
 			}
 			copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);

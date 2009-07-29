@@ -23,8 +23,8 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.Application;
 import org.pentaho.pat.client.deprecated.i18n.PatConstants;
 import org.pentaho.pat.client.deprecated.i18n.PatMessages;
 import org.pentaho.pat.client.deprecated.listeners.QueryListener;
@@ -155,12 +155,12 @@ public class QueryPanel extends DataWidget implements QueryListener {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if (Pat.getInitialState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
-			Application.getMenuPanel();
+		if (Pat.getApplicationState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
+//			Application.getMenuPanel();
 			MainMenu.showNamedMenu(MenuItem.Dimensions);
 		}
-		if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
-			Application.getMenuPanel();
+		if (Pat.getApplicationState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
+//			Application.getMenuPanel();
 			MainMenu.showNamedMenu(MenuItem.Cubes);
 		}
 	}
@@ -169,10 +169,10 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		final LayoutPanel basePanel = new LayoutPanel(new BorderLayout());
 
 		((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
-			    if (Pat.getInitialState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
+			    if (Pat.getApplicationState().getMode().isAllowQmQuery() && selectedQueryMode == QueryMode.QUERY_MODEL) {
 			    	layoutPanel.add(qmSelectionPanel, new BoxLayoutData(0.30,1));
 			    }
-			    if (Pat.getInitialState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
+			    if (Pat.getApplicationState().getMode().isAllowMdxQuery() && selectedQueryMode == QueryMode.MDX) {
 			    	// TODO this is just for demonstration at the moment.
 			    	final String fQuery = this.query;
 			    	ToolButton editMDX = new ToolButton("MDX Query Editor"); //$NON-NLS-1$
@@ -259,19 +259,19 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().executeMdx());
 		closeBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
-				ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
-
-					public void onFailure(Throwable arg0) {
-						MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-					}
-
-					public void onSuccess(CellDataSet matrix) {
-						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
-						
-					}
-					
-				});
-						
+//				ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+//
+//					public void onFailure(Throwable arg0) {
+//						MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+//					}
+//
+//					public void onSuccess(CellDataSet matrix) {
+//						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
+//						
+//					}
+//					
+//				});
+//						
 				wp.hide();
 				
 			}

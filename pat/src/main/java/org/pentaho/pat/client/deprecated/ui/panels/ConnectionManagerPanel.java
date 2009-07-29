@@ -67,7 +67,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		
 		listBox = createListBox();
 
-		if (Pat.getInitialState().getMode().isManageConnections()) {
+		if (Pat.getApplicationState().getMode().isManageConnections()) {
 			toolBar = createToolBar(listBox);
 			vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
 		}

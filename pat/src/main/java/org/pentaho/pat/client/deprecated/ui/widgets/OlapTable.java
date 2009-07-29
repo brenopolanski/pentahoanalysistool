@@ -167,7 +167,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 	 * Fire when the query is executed.
 	 */
 	public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
-		if (Pat.getInitialState().getMode().isShowOnlyTable()) {
+		if (Pat.getApplicationState().getMode().isShowOnlyTable()) {
 			setData(olapData);
 		}
 	}

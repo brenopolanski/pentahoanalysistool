@@ -71,15 +71,15 @@ public class QueryModePopup extends PopupPanel {
 	protected final void init() {
 		menuBar = new MenuBar(true);
 		menuBar.setAutoOpen(true);
-		if (Pat.getInitialState().getMode().isAllowQmQuery()) {
+		if (Pat.getApplicationState().getMode().isAllowQmQuery()) {
 			menuBar.addItem(new MenuItem(ConstantFactory.getInstance().queryWizard(), new QueryModeCommand(QUERY_MODEL)));
 		}
-		if(Pat.getInitialState().getMode().isAllowMdxQuery()) {
+		if(Pat.getApplicationState().getMode().isAllowMdxQuery()) {
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().mdxQuery(), new QueryModeCommand(MDX)));
 		}
 		menuBar.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new QueryModeCancelCommand()));
 
-		if (Pat.getInitialState().getMode().isAllowQmQuery() || Pat.getInitialState().getMode().isAllowMdxQuery() ) {
+		if (Pat.getApplicationState().getMode().isAllowQmQuery() || Pat.getApplicationState().getMode().isAllowMdxQuery() ) {
 			this.setWidget(menuBar);
 		}
 		
@@ -120,61 +120,61 @@ public class QueryModePopup extends PopupPanel {
 		 */
 		public final void execute() {
 
-				final int qmode = this.queryMode;
-				final DataWidget widget = (DataWidget)source;
-				if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
-					((QueryPanel) widget).setCube(item.getText().trim());
-					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
-
-						public void onFailure(final Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(
-									arg0.getLocalizedMessage()));
-						}
-
-						public void onSuccess(final String[] arg0) {
-
-							ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
-
-								public void onFailure(final Throwable arg0) {
-									MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(
-											arg0.getLocalizedMessage()));
-								}
-
-								public void onSuccess(final String arg0) {
-									((QueryPanel) widget).setQuery(arg0);
-									ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
-
-										public void onFailure(final Throwable arg0) {
-
-											MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noQuerySet(
-													arg0.getLocalizedMessage()));
-										}
-
-										public void onSuccess(final Object arg0) {
-											if (qmode  == QUERY_MODEL) {
-												MainMenu.getDimensionPanel().createDimensionList();
-												MainMenu.getDimensionPanel().layout();
-												MainMenu.showNamedMenu(MainMenu.MenuItem.Dimensions);
-												MainMenu.getStackPanel().layout();
-												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.QUERY_MODEL);
-											}
-											if (qmode == MDX) {
-												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.MDX);	
-											}
-											
-											
-											MainTabPanel.displayContentWidget(widget);
-											
-											
-										}
-									});
-								}
-							});
-						}
-
-					});
-				}
-				QueryModePopup.this.hide();
+//				final int qmode = this.queryMode;
+//				final DataWidget widget = (DataWidget)source;
+//				if (!item.getText().equals(ConstantFactory.getInstance().availableCubes())) {
+//					((QueryPanel) widget).setCube(item.getText().trim());
+//					ServiceFactory.getSessionInstance().setCurrentCube(Pat.getSessionID(), item.getText().trim(), new AsyncCallback<String[]>() {
+//
+//						public void onFailure(final Throwable arg0) {
+//							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionList(
+//									arg0.getLocalizedMessage()));
+//						}
+//
+//						public void onSuccess(final String[] arg0) {
+//
+//							ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), new AsyncCallback<String>() {
+//
+//								public void onFailure(final Throwable arg0) {
+//									MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQueryCreate(
+//											arg0.getLocalizedMessage()));
+//								}
+//
+//								public void onSuccess(final String arg0) {
+//									((QueryPanel) widget).setQuery(arg0);
+//									ServiceFactory.getQueryInstance().setCurrentQuery(Pat.getSessionID(), arg0, new AsyncCallback<Object>() {
+//
+//										public void onFailure(final Throwable arg0) {
+//
+//											MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noQuerySet(
+//													arg0.getLocalizedMessage()));
+//										}
+//
+//										public void onSuccess(final Object arg0) {
+//											if (qmode  == QUERY_MODEL) {
+//												MainMenu.getDimensionPanel().createDimensionList();
+//												MainMenu.getDimensionPanel().layout();
+//												MainMenu.showNamedMenu(MainMenu.MenuItem.Dimensions);
+//												MainMenu.getStackPanel().layout();
+//												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.QUERY_MODEL);
+//											}
+//											if (qmode == MDX) {
+//												((QueryPanel) widget).setSelectedQueryMode(QueryPanel.QueryMode.MDX);	
+//											}
+//											
+//											
+//											MainTabPanel.displayContentWidget(widget);
+//											
+//											
+//										}
+//									});
+//								}
+//							});
+//						}
+//
+//					});
+//				}
+//				QueryModePopup.this.hide();
 			}
 		
 	}

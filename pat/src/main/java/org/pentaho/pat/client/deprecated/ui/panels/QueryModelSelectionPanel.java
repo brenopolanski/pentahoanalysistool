@@ -83,16 +83,16 @@ public class QueryModelSelectionPanel extends LayoutComposite implements QueryLi
 	 * Do execute query model.
 	 */
 	public void doExecuteQueryModel() {
-	    	ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<CellDataSet>() {
-
-			public void onFailure(final Throwable caught) {
-				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
-			}
-
-			public void onSuccess(final CellDataSet matrix) {
-				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
-			}
-		});
+//	    	ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), new AsyncCallback<CellDataSet>() {
+//
+//			public void onFailure(final Throwable caught) {
+//				Window.alert(MessageFactory.getInstance().noServerData(caught.toString()));
+//			}
+//
+//			public void onSuccess(final CellDataSet matrix) {
+//				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryModelSelectionPanel.this, queryId, matrix);
+//			}
+//		});
 	}
 
 	public void onQueryChange(Widget sender) {
