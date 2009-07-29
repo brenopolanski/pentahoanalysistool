@@ -1,5 +1,6 @@
 package org.pentaho.pat.server.servlet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,6 @@ import org.pentaho.pat.rpc.Session;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.SessionService;
@@ -30,14 +30,14 @@ public class SessionServlet extends AbstractServlet implements Session {
 		    throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
 	}
 
-	public void connect(String sessionId, CubeConnection connection) throws RpcException 
+	public void connect(String sessionId, String connectionId) throws RpcException 
 	{
 		try 
 		{
-		    this.sessionService.createConnection(
+		    this.sessionService.connect(
 		        getCurrentUserId(),
 		        sessionId,
-		        this.convert(connection));
+		        connectionId);
 		} 
 		catch (OlapException e) 
 		{
@@ -48,50 +48,48 @@ public class SessionServlet extends AbstractServlet implements Session {
 	
 	public CubeConnection getConnection(String sessionId, String connectionName) throws RpcException
 	{
-	    SavedConnection savedConn = this.sessionService.getSavedConnection(getCurrentUserId(), connectionName);
+	    SavedConnection savedConn = this.sessionService.getConnection(getCurrentUserId(), connectionName);
 	    return savedConn==null?null:this.convert(savedConn);
 	}
 	
-	public void saveConnection(String sessionId, CubeConnection connection) throws RpcException
+	public String saveConnection(String sessionId, CubeConnection connection) throws RpcException
 	{
         try {
-            this.sessionService.saveConnection(getCurrentUserId(),
-                    this.convert(connection));
+            SavedConnection sc = this.convert(connection);
+            this.sessionService.saveConnection(getCurrentUserId(), sc);
+            return sc.getId();
         } catch (Exception e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
         }
 	}
 	
-	public CubeConnection[] getSavedConnections(String sessionId) throws RpcException
+	public CubeConnection[] getConnections(String sessionId) throws RpcException
 	{
-        List<SavedConnection> savedConnections = this.sessionService.getSavedConnections(getCurrentUserId());
+        List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
         CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
         for (int cpt=0;cpt<savedConnections.size();cpt++)
             cubeConnections[cpt]=convert(savedConnections.get(cpt));
         return cubeConnections;
 	}
 	
-	public void deleteSavedConnection(String sessionId, String connectionName) throws RpcException
+	public CubeConnection[] getActiveConnections(String sessionId) throws RpcException
+    {
+        List<CubeConnection> connections = new ArrayList<CubeConnection>();
+        for (SavedConnection connection : this.sessionService.getActiveConnections(getCurrentUserId(), sessionId)) {
+            connections.add(convert(connection));
+        }
+        return connections.toArray(new CubeConnection[connections.size()]);
+    }
+	
+	public void deleteConnection(String sessionId, String connectionName) throws RpcException
 	{
-	    this.sessionService.deleteSavedConnection(getCurrentUserId(),connectionName);
+	    this.sessionService.deleteConnection(getCurrentUserId(),connectionName);
 	}
 
-	public void disconnect(String sessionId) throws RpcException
+	public void disconnect(String sessionId, String connectionId) throws RpcException
 	{
-		sessionService.releaseConnection(getCurrentUserId(),sessionId);
-	}
-
-	public String getCurrentCube(String sessionId) throws RpcException
-	{
-		return (String)sessionService.getUserSessionVariable(
-				getCurrentUserId(), sessionId, Constants.CURRENT_CUBE_NAME);
-	}
-
-	public void setCurrentCube(String sessionId, String cubeId) throws RpcException
-	{
-		sessionService.saveUserSessionVariable(getCurrentUserId(), 
-			sessionId, Constants.CURRENT_CUBE_NAME, cubeId);
+		sessionService.disconnect(getCurrentUserId(),sessionId,connectionId);
 	}
 
 	public void closeSession(String sessionId) throws RpcException
@@ -114,13 +112,14 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    cc.setUsername(sc.getUsername());
 	    cc.setPassword(sc.getPassword());
 	    cc.setSchemaData(sc.getSchema());
+	    cc.setId(sc.getId());
 
 	    return cc;
 	}
 	
 	private SavedConnection convert(CubeConnection cc) {
 	    
-	    SavedConnection sc = new SavedConnection();
+	    SavedConnection sc = new SavedConnection(cc.getId());
 	    
 	    sc.setName(cc.getName());
 	    sc.setDriverClassName(cc.getDriverClassName());

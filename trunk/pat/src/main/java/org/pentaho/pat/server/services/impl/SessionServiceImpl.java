@@ -75,7 +75,7 @@ public class SessionServiceImpl extends AbstractService
 	public void releaseSession(String userId, String sessionId) 
 	{
 	    this.validateSession(userId, sessionId);
-		this.releaseConnection(userId, sessionId);
+		this.disconnect(userId, sessionId);
 		sessions.get(userId).get(sessionId).destroy();
 		sessions.get(userId).remove(sessionId);
 		
@@ -122,14 +122,26 @@ public class SessionServiceImpl extends AbstractService
 	}
 
 
-	public void createConnection(String userId, String sessionId,
-	        SavedConnection sc) throws OlapException
+	public void connect(String userId, String sessionId,
+	        String connectionId) throws OlapException
 	{
 	    this.validateSession(userId, sessionId);
-		OlapConnection connection;
-
+        SavedConnection sc = getConnection(userId, connectionId);
+        if (sc == null) {
+            throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
+        }
+        this.connect(userId, sessionId, sc);
+	}
 	
-		String olap4jUrl=null;
+	
+	
+	public void connect(String userId, String sessionId,
+            SavedConnection sc) throws OlapException 
+    {
+	    this.validateSession(userId, sessionId);
+	    
+	    OlapConnection connection;
+        String olap4jUrl=null;
         String olap4jDriver=null;
         
         if (sc.getType() == ConnectionType.Mondrian) 
@@ -173,73 +185,19 @@ public class SessionServiceImpl extends AbstractService
         }
 
         try {
-		
-            // Init the olap4j driver, in case JVM < 6
-			Class.forName(olap4jDriver);
-
-			
-			if (sc.getType().equals(ConnectionType.Mondrian) ||
-			    (sc.getUsername() == null && sc.getPassword() == null))
-			{
-			    connection = (OlapConnection) DriverManager.getConnection(olap4jUrl);
-			} else {
-			    connection = (OlapConnection) DriverManager
-					.getConnection(olap4jUrl,sc.getUsername(),sc.getPassword());
-			}
-			OlapWrapper wrapper = connection;
-			
-			OlapConnection olapConnection = wrapper
-					.unwrap(OlapConnection.class);
-
-			if (olapConnection != null) {
-				
-				sessions.get(userId).get(sessionId)
-					.setConnection(connection);
-				
-				// Obtaining a connection object doesn't mean that the
-				// credentials are ok or whatever. We'll test it.
-				this.discoveryService.getCubes(userId, sessionId);
-				
-			} else {
-				throw new OlapException(
-					Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
-			}
-
-		} catch (ClassNotFoundException e) {
-		    log.error(e);
-			throw new OlapException(e.getMessage(), e);
-		} catch (SQLException e) {
-		    log.error(e);
-			throw new OlapException(e.getMessage(), e);
-		} catch (RuntimeException e) {
-		    // The XMLA driver wraps some exceptions in Runtime stuff.
-		    // That's on the FIX ME list but not fixed yet... c(T-T)b
-		    if (e.getCause() instanceof OlapException)
-		        throw (OlapException)e.getCause();
-		    else
-		        throw e;
-		}
-	}
-	
-	
-	
-	public void createConnection(String userId, String sessionId,
-            String driverName, String connectStr, String username,
-            String password) throws OlapException 
-    {
-        this.validateSession(userId, sessionId);
         
-        OlapConnection connection;
+            // Init the olap4j driver, in case JVM < 6
+            Class.forName(olap4jDriver);
 
-        try {
-            Class.forName(driverName);
             
-            if (username==null&&password==null)
-                connection = (OlapConnection) DriverManager.getConnection(connectStr);
-            else
+            if (sc.getType().equals(ConnectionType.Mondrian) ||
+                (sc.getUsername() == null && sc.getPassword() == null))
+            {
+                connection = (OlapConnection) DriverManager.getConnection(olap4jUrl);
+            } else {
                 connection = (OlapConnection) DriverManager
-                    .getConnection(connectStr,username,password);
-            
+                    .getConnection(olap4jUrl,sc.getUsername(),sc.getPassword());
+            }
             OlapWrapper wrapper = connection;
             
             OlapConnection olapConnection = wrapper
@@ -247,12 +205,11 @@ public class SessionServiceImpl extends AbstractService
 
             if (olapConnection != null) {
                 
-                sessions.get(userId).get(sessionId)
-                    .setConnection(connection);
+                sessions.get(userId).get(sessionId).putConnection(sc.getId(), olapConnection);
                 
                 // Obtaining a connection object doesn't mean that the
                 // credentials are ok or whatever. We'll test it.
-                this.discoveryService.getCubes(userId, sessionId);
+                this.discoveryService.getCubes(userId, sessionId, sc.getId());
                 
             } else {
                 throw new OlapException(
@@ -277,31 +234,89 @@ public class SessionServiceImpl extends AbstractService
 	
 	
 	
-	public OlapConnection getConnection(String userId, String sessionId) 
+	public String createConnection(String userId, String sessionId,
+            String driverName, String connectStr, String username,
+            String password) throws OlapException 
+    {
+        this.validateSession(userId, sessionId);
+        
+        OlapConnection connection;
+        String connectionId = UUID.randomUUID().toString();
+
+        try {
+            Class.forName(driverName);
+            
+            if (username==null&&password==null)
+                connection = (OlapConnection) DriverManager.getConnection(connectStr);
+            else
+                connection = (OlapConnection) DriverManager
+                    .getConnection(connectStr,username,password);
+            
+            OlapWrapper wrapper = connection;
+            
+            OlapConnection olapConnection = wrapper
+                    .unwrap(OlapConnection.class);
+
+            if (olapConnection != null) {
+                
+                sessions.get(userId).get(sessionId).putConnection(connectionId, olapConnection);
+                
+                // Obtaining a connection object doesn't mean that the
+                // credentials are ok or whatever. We'll test it.
+                this.discoveryService.getCubes(userId, sessionId, connectionId);
+                
+                return connectionId;
+            } else {
+                throw new OlapException(
+                    Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
+            }
+
+        } catch (ClassNotFoundException e) {
+            log.error(e);
+            throw new OlapException(e.getMessage(), e);
+        } catch (SQLException e) {
+            log.error(e);
+            throw new OlapException(e.getMessage(), e);
+        } catch (RuntimeException e) {
+            // The XMLA driver wraps some exceptions in Runtime stuff.
+            // That's on the FIX ME list but not fixed yet... c(T-T)b
+            if (e.getCause() instanceof OlapException)
+                throw (OlapException)e.getCause();
+            else
+                throw e;
+        }
+    }
+	
+	
+	public OlapConnection getNativeConnection(String userId, String sessionId,
+	        String connectionId) 
 	{
 	    this.validateSession(userId, sessionId);
-		return sessions.get(userId).get(sessionId).getConnection();
+		return sessions.get(userId).get(sessionId).getConnection(connectionId);
 	}
 	
 
-	public void releaseConnection(String userId, String sessionId) 
+	private void disconnect(String userId, String sessionId)
+	{
+	    List<SavedConnection> connections = this.getConnections(userId);
+	    // To prevent concurrency issues, we must iterate
+	    // in inverse order.
+	    for (int i = connections.size() ; i >= 0 ; i--) {
+	        this.disconnect(userId, sessionId, connections.get(i).getId());
+	    }
+	}
+	
+	public void disconnect(String userId, String sessionId, String connectionId) 
 	{
 	    this.validateSession(userId, sessionId);
-		try {
-			OlapConnection conn = sessions.get(userId).get(sessionId).getConnection();
-			if (conn!=null)
-				conn.close();
-		} catch (SQLException e) {
-			log.warn(Messages.getString("Services.Session.ConnectionCloseException"), e); //$NON-NLS-1$
-		}
-		sessions.get(userId).get(sessionId).setConnection(null);
+		sessions.get(userId).get(sessionId).closeConnection(connectionId);
 	}
 
-	public SavedConnection getSavedConnection(String userId,
-	        String connectionName) 
+	public SavedConnection getConnection(String userId,
+	        String connectionId) 
 	{
 	    this.validateUser(userId);
-	    return this.userManager.getSavedConnection(userId, connectionName);
+	    return this.userManager.getSavedConnection(userId, connectionId);
 	}
 	
 	public void saveConnection(String userId, SavedConnection connection) 
@@ -312,7 +327,7 @@ public class SessionServiceImpl extends AbstractService
         this.userManager.updateUser(user);
     }
 	
-	public List<SavedConnection> getSavedConnections(String userId) 
+	public List<SavedConnection> getConnections(String userId) 
 	{
 	    this.validateUser(userId);
 	    List<SavedConnection> connections = new ArrayList<SavedConnection>();
@@ -321,11 +336,20 @@ public class SessionServiceImpl extends AbstractService
 	    return connections;
 	}
 	
-	public void deleteSavedConnection(String userId, String connectionName) 
+	public List<SavedConnection> getActiveConnections(String userId, String sessionId) {
+	    this.validateSession(userId, sessionId);
+        List<SavedConnection> conns = new ArrayList<SavedConnection>();
+        for (String connectionId : this.getSession(userId, sessionId).getActiveConnectionsId()) {
+            conns.add(this.getConnection(userId, connectionId));
+        }
+        return conns;
+    }
+	
+	public void deleteConnection(String userId, String connectionName) 
 	{
 	    this.validateUser(userId);
 	    User user = this.userManager.getUser(userId);
-	    SavedConnection conn = getSavedConnection(userId, connectionName);
+	    SavedConnection conn = getConnection(userId, connectionName);
 	    user.getSavedConnections().remove(conn);
 	    this.userManager.updateUser(user);
 	}

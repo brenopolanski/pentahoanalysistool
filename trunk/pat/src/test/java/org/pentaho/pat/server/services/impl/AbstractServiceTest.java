@@ -28,6 +28,8 @@ public abstract class AbstractServiceTest extends TestCase {
 
     private static boolean IS_INIT_DONE = false;
     
+    private static String connectionId;
+    
     private static DataSource datasource = null;
 
     private final String[] contextFiles = new String[] { 
@@ -133,16 +135,18 @@ public abstract class AbstractServiceTest extends TestCase {
         return testProps.getProperty(key);
     }
 
-    protected void createConnection(SessionService service, String userId,
+    protected String createConnection(SessionService service, String userId,
             String sessionId) {
         if (!IS_INIT_DONE)
             throw new RuntimeException(
                     "You can't use the context properties unless you initialize a test context first."); //$NON-NLS-1$
 
         try {
-            service.createConnection(userId, sessionId,
+            SessionServiceImpl sessionService = (SessionServiceImpl)service;
+            connectionId = sessionService.createConnection(userId, sessionId,
                     getTestProperty("olap4j.driver"), //$NON-NLS-1$
                     getTestProperty("mondrian.url"), null, null); //$NON-NLS-1$
+            return connectionId;
         } catch (OlapException e) {
             throw new RuntimeException(e);
         }

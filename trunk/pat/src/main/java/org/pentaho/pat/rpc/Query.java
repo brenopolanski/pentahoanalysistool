@@ -19,33 +19,15 @@ public interface Query extends RemoteService {
     /**
      * Tells the server that we want to create a new query. 
      * It will create a new query against the currently selected cube.
-     * You can set the currently selected cube with Session.setCurrentCube.
      * It returns a unique identification string to identify the query created.
      * @param sessionId The window session id.
+     * @param connectionId
+     * @param cubeName
      * @return The unique ame of the created query.
      * @throws RpcException If something goes sour.
      */
     @Secured ({"ROLE_USER"})
-    public String createNewQuery(String sessionId) throws RpcException;
-    
-    /**
-     * Tells the backend that from now on, operations will be performed on
-     * the specified query.
-     * @param sessionId The window session id.
-     * @param queryId The name of the query we'll be performing operations from now on.
-     * @throws RpcException If something goes sour.
-     */
-    @Secured ({"ROLE_USER"})
-    public void setCurrentQuery(String sessionId, String queryId) throws RpcException;
-    
-    /**
-     * Tells which is the currently selected query.
-     * @param sessionId The window session id.
-     * @return The unique id of the currently selected query.
-     * @throws RpcException If something goes sour.
-     */
-    @Secured ({"ROLE_USER"})
-    public String getCurrentQuery(String sessionId) throws RpcException;
+    public String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException;
     
     
     /**
@@ -68,23 +50,24 @@ public interface Query extends RemoteService {
 
 	/**
 	 * Moves a dimension to a different axis.
-	 * You must first make sure to call Sesison.setCurrentQuery() to inform
-	 * the backend of your current query selection.
+	 * 
 	 * @param sessionId Identifies the window session id that requested the operation.
+	 * @param queryId Identifies on which query to perform the operation.
 	 * @param axis The destination axis.
 	 * @param dimensionName The name of the dimension to move.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
 	public void moveDimension(
-		String sessionId, 
+		String sessionId,
+		String queryId,
 		Axis axis, 
 		String dimensionName) throws RpcException;
 	/**
 	 * Performs a selection of certain members in a dimension.
-	 * You must first make sure to call Sesison.setCurrentQuery() to inform
-     * the backend of your current query selection.
+	 * 
 	 * @param sessionId Identifies the window session id that requested the operation.
+	 * @param queryId Identifies on which query to perform the operation.
 	 * @param dimensionName The name of the dimension on which we want to 
 	 * select members.
 	 * @param memberNames The actual names of the members to perform a 
@@ -94,16 +77,17 @@ public interface Query extends RemoteService {
 	 */
 	@Secured ({"ROLE_USER"})
 	public void createSelection(
-		String sessionId, 
+		String sessionId,
+		String queryId,
 		String dimensionName, 
 		List<String> memberNames, 
 		String selectionType) throws RpcException;	
 	
 	/**
 	 * Removes the selection status of members inside a given dimension.
-	 * You must first make sure to call Sesison.setCurrentQuery() to inform
-     * the backend of your current query selection.
+	 * 
 	 * @param sessionId Identifies the window session id that requested the operation.
+	 * @param queryId Identifies on which query to perform the operation.
 	 * @param dimensionName Name of the dimension that includes the 
 	 * members to remove selection status.
 	 * @param memberNames The actual member names of which we want to 
@@ -113,23 +97,28 @@ public interface Query extends RemoteService {
 	 */
 	@Secured ({"ROLE_USER"})
 	public void clearSelection(
-		String sessionId, 
+		String sessionId,
+		String queryId,
 		String dimensionName, 
 		List<String> memberNames) throws RpcException;
 	
 	/**
 	 * Executes the current query.
-	 * You must first make sure to call Sesison.setCurrentQuery() to inform
-     * the backend of your current query selection.
+	 * 
 	 * @param sessionId Identifies the window session id that requested the operation.
+	 * @param queryId Identifies on which query to perform the operation.
 	 * @return The result of the query execution.
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public CellDataSet executeQuery(String sessionId) throws RpcException;
+	public CellDataSet executeQuery(
+	        String sessionId, 
+	        String queryId) throws RpcException;
 	
 	// TODO is this the way we want mdx to work?
 	@Secured ({"ROLE_USER"})
-	public CellDataSet executeMdxQuery(String sessionId, String mdx) throws RpcException;
-
+	public CellDataSet executeMdxQuery(
+	        String sessionId, 
+	        String connectionId, 
+	        String mdx) throws RpcException;
 }

@@ -24,22 +24,12 @@ public interface QueryService extends Service {
      * @throws OlapException If creating the query fails.
      */
     @Secured ({"ROLE_USER"})
-    public String createNewQuery(String userId, String sessionId) throws OlapException;
+    public String createNewQuery(String userId, String sessionId,
+        String connectionId, String cubeName) throws OlapException;
     
-    /**
-     * Creates a new query for a given session using a supplied MDX query.
-     * @param userId The owner of the query to create.
-     * @param sessionId The session id into which we want to create a new query.
-     * @param mdx The initial MDX to initialize the query object with.
-     * @return A unique query identification number.
-     * @throws OlapException If creating the query fails or the supplied MDX cannot
-     * be parsed as a Query object.
-     */
-    @Secured ({"ROLE_USER"})
-    public String createNewQuery(String userId, String sessionId, String mdx) throws OlapException;
     
     @Secured ({"ROLE_USER"})
-    Query getQuery(String userId, String sessionId, String queryId);
+    public Query getQuery(String userId, String sessionId, String queryId);
     
     /**
      * Returns a list of the currently created queries inside a
@@ -74,6 +64,7 @@ public interface QueryService extends Service {
 	public void moveDimension(
 		String userId, 
 		String sessionId,
+		String queryId,
 		Axis.Standard axis, 
 		String dimensionName);
 		
@@ -94,6 +85,7 @@ public interface QueryService extends Service {
 	public void createSelection(
 		String userId, 
 		String sessionId,
+		String queryId,
 		String dimensionName, 
 		List<String> memberNames, 
 		Selection.Operator selectionType)
@@ -114,6 +106,7 @@ public interface QueryService extends Service {
 	public void clearSelection(
 		String userId, 
 		String sessionId,
+		String queryId,
 		String dimensionName, 
 		List<String> memberNames);
 	
@@ -127,8 +120,10 @@ public interface QueryService extends Service {
 	 * @throws OlapException If something goes sour.
 	 */
 	@Secured ({"ROLE_USER"})
-	public CellDataSet executeQuery(String userId, 
-			String sessionId) throws OlapException;
+	public CellDataSet executeQuery(
+	        String userId, 
+			String sessionId,
+			String queryId) throws OlapException;
 	
 	// TODO is this the way we want mdx to work?
 	/**
@@ -136,6 +131,8 @@ public interface QueryService extends Service {
 	 * You must first create a connection via Session.createConnection()
      * @param userId The owner of the query.
      * @param sessionId The session id into which the query is stored.
+     * @param connectionId The connction ID onto which to execute the
+     * ad-hoc query
      * @param mdx The mdx query.
 	 * @return The resultset of the query as a OlapData object.
 	 * @throws OlapException If something goes sour.
@@ -144,5 +141,6 @@ public interface QueryService extends Service {
 	public CellDataSet executeMdxQuery(
 			String userId, 
 			String sessionId,
+			String connectionId,
 			String mdx) throws OlapException;
 }

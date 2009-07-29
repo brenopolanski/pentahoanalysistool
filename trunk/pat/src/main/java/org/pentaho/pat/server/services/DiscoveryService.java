@@ -23,29 +23,31 @@ public interface DiscoveryService extends Service {
      * @param userId The id of the user who requests this operation.
      * @param sessionId The id of the current session into which
      * to perform this operation.
+     * @param the query UUID where to lookup the dimensions
      * @param axis The axis for which we want the current dimensions.
      * @return A list of dimension names.
      * @throws OlapException If something goes sour.
      */
 	@Secured ({"ROLE_USER"})
 	public List<String> getDimensions(String userId, String sessionId, 
-			Axis.Standard axis) throws OlapException;
+			String queryId, Axis.Standard axis) throws OlapException;
 	
 	/**
 	 * Retreives a list of available cubes for the current connection.
 	 * One must first create a connection via the Session service.
 	 * @param userId The id of the user who requests this operation.
      * @param sessionId The id of the current session into which
+     * @param connectionId The connection UUID to use
      * to perform this operation.
 	 * @return A list of cubes.
 	 */
 	@Secured ({"ROLE_USER"})
-	public List<String> getCubes(String userId, String sessionId)
-	    throws OlapException;
+	public List<String> getCubes(String userId, String sessionId,
+	    String connectionId) throws OlapException;
 	
 	@Secured ({"ROLE_USER"})
-	Cube getCube(String userId, String sessionId, String cubeName) 
-	    throws OlapException;
+	public Cube getCube(String userId, String sessionId,
+	    String connectionId, String cubeName) throws OlapException;
 	
 	/**
 	 * Returns a tree representation of the members included in a 
@@ -53,6 +55,7 @@ public interface DiscoveryService extends Service {
 	 * @param userId The id of the user who requests this operation.
      * @param sessionId The id of the current session into which
      * to perform this operation.
+     * @param queryId The id of the query to seek into.
 	 * @param dimensionName The name of which we want the tree of members.
 	 * @return A {@link StringTree} representation of the members included
 	 * in a dimension.
@@ -60,7 +63,7 @@ public interface DiscoveryService extends Service {
 	 */
 	@Secured ({"ROLE_USER"})
 	public StringTree getMembers(String userId, String sessionId,
-		String dimensionName) throws OlapException;
+		String queryId, String dimensionName) throws OlapException;
 	
 	/**
 	 * Scans and updates if necessary the current Java classloader 

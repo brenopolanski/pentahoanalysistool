@@ -15,6 +15,8 @@ public class CubeConnection implements Serializable,IsSerializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	private String id = null;
+	
 	private String name = null;
 	
 	private String driverClassName = null;
@@ -104,5 +106,13 @@ public class CubeConnection implements Serializable,IsSerializable {
 
     public void setSchemaData(String schemaData) {
         this.schemaData = schemaData;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
     }
 }

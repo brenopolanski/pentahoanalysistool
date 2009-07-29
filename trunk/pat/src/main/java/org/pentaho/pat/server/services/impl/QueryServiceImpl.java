@@ -18,9 +18,7 @@ import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
-import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -55,21 +53,17 @@ public class QueryServiceImpl extends AbstractService
 		Assert.notNull(this.sessionService);
 	}
 	
-	public String createNewQuery(String userId, String sessionId)
-        throws OlapException 
+	public String createNewQuery(String userId, String sessionId,
+	        String connectionId, String cubeName) throws OlapException 
     {
     
 	    sessionService.validateUser(userId);
-	    
-        // We need to verify if the user has selected a cube.
-        String cubeName = (String) sessionService.getUserSessionVariable(
-            userId, sessionId, Constants.CURRENT_CUBE_NAME);
 
         if (cubeName == null)
             throw new OlapException(Messages
                     .getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
 
-        Cube cube = this.getCube4Guid(userId, sessionId, cubeName);
+        Cube cube = this.getCube4Guid(userId, sessionId, connectionId, cubeName);
         String generatedId = String.valueOf(UUID.randomUUID());
         Query newQuery;
         try {
@@ -84,32 +78,11 @@ public class QueryServiceImpl extends AbstractService
 
         return generatedId;
     }
-
-	public String createNewQuery(String userId, String sessionId, String mdx) 
-	    throws OlapException 
-	{
-	    // Validate the user.
-	    sessionService.validateUser(userId);
-	    
-	    // Generate a unique query name.
-	    String generatedId = String.valueOf(UUID.randomUUID());
-	    
-	    
-	    Query query = null;
-	    
-	    //query = Query.parse(mdx);
-	    // FIXME Not implemented yet.
-	    if (true)
-	        throw new UnsupportedOperationException();
-	    
-	    sessionService.getSession(userId, sessionId).getQueries().put(generatedId,query);
-	    
-	    return generatedId;
-	}
 	
-    private Cube getCube4Guid(String userId, String sessionId, String cubeName)
-            throws OlapException {
-        OlapConnection connection = sessionService.getConnection(userId, sessionId);
+    private Cube getCube4Guid(String userId, String sessionId, String connectionId, String cubeName)
+            throws OlapException 
+    {
+        OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
         NamedList<Cube> cubes = connection.getSchema().getCubes();
         Cube cube = null;
         Iterator<Cube> iter = cubes.iterator();
@@ -148,40 +121,33 @@ public class QueryServiceImpl extends AbstractService
         sessionService.getSession(userId, sessionId).getQueries().remove(queryId);
     }
 	
-	@SuppressWarnings("deprecation")
-	public void clearSelection(String userId, String sessionId, 
-			String dimensionName, List<String> memberNames) 
+    public void clearSelection(
+            String userId, 
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List<String> memberNames) 
 	{
 	    this.sessionService.validateSession(userId, sessionId);
-	    
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-		Query query = this.getQuery(userId, sessionId, currentQuery);
-		
+		Query query = this.getQuery(userId, sessionId, queryId);
 	    QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
 	    String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
 	    Selection selection = OlapUtil.findSelection(path, qDim);
-	    qDim.getSelections().remove(selection);
+	    qDim.getInclusions().remove(selection);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void createSelection(String userId, String sessionId,
-            String dimensionName, List<String> memberNames,
-            Operator selectionType) throws OlapException
+    public void createSelection(
+            String userId, 
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List<String> memberNames, 
+            Selection.Operator selectionType) throws OlapException
     {
 	    this.sessionService.validateSession(userId, sessionId);
 
-        String currentQuery = (String) this.sessionService
-                .getUserSessionVariable(userId, sessionId,
-                        Constants.CURRENT_QUERY_NAME);
-        String currentCube = (String) this.sessionService
-                .getUserSessionVariable(userId, sessionId,
-                        Constants.CURRENT_CUBE_NAME);
-
-        Query query = this.getQuery(userId, sessionId,
-                currentQuery);
-        Cube cube = this.discoveryService.getCube(userId, sessionId,
-                currentCube);
+        Query query = this.getQuery(userId, sessionId, queryId);
+        Cube cube = query.getCube();
 
         // First try to resolve the member quick and dirty.
         Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
@@ -214,49 +180,39 @@ public class QueryServiceImpl extends AbstractService
             }
         }
 
-        QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        Selection.Operator selectionMode = Selection.Operator.values()[selectionType
-                .ordinal()];
-        // TODO is this a fix? 
-         //Selection selection = qDim.createSelection(member, selectionMode);
-        //        qDim.getSelections().add(selection);
-        qDim.clearSelection();
+        QueryDimension qDim = 
+            OlapUtil.getQueryDimension(query, dimensionName);
+        Selection.Operator selectionMode = 
+            Selection.Operator.values()[selectionType.ordinal()];
         qDim.include(selectionMode, member);
-        
     }
 
-	public void moveDimension(String userId, String sessionId, Axis.Standard axis, String dimensionName) 
+    public void moveDimension(
+            String userId, 
+            String sessionId,
+            String queryId,
+            Axis.Standard axis, 
+            String dimensionName) 
 	{
 	    this.sessionService.validateSession(userId, sessionId);
-
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-		
-		Query query = this.getQuery(userId, sessionId, currentQuery);
-		
+		Query query = this.getQuery(userId, sessionId, queryId);
 	    query.getAxes().get(axis).getDimensions()
 	    	.add(query.getDimension(dimensionName));
 	}
 
 	
-	public CellDataSet executeQuery(String userId, String sessionId) throws OlapException 
+	public CellDataSet executeQuery(String userId, String sessionId, String queryId) throws OlapException 
 	{
 	    this.sessionService.validateSession(userId, sessionId);
-	    
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-
-		Query mdx = this.getQuery(userId, sessionId, currentQuery);
-		
+		Query mdx = this.getQuery(userId, sessionId, queryId);
 		return OlapUtil.cellSet2Matrix(mdx.execute());
 	}
 
 	// TODO is this the way we want mdx to work?
 	public CellDataSet executeMdxQuery(String userId, String sessionId,
-			String mdx) throws OlapException {
+			String connectionId, String mdx) throws OlapException {
 		this.sessionService.validateSession(userId, sessionId);
-		
-		OlapConnection con = this.sessionService.getConnection(userId, sessionId);
+		OlapConnection con = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
 		OlapStatement stmt = con.createStatement();
 		return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx));
 	}

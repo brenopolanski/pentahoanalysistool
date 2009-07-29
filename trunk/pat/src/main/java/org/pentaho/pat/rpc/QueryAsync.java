@@ -16,40 +16,41 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface QueryAsync {
 	
     public void moveDimension(
-		String sessionId, 
-		Axis axis, 
-		String dimensionName,
-		AsyncCallback callback);
+            String sessionId,
+            String queryId,
+            Axis axis, 
+            String dimensionName,
+            AsyncCallback callback);
 	
 	public void createSelection(
-		String sessionId, 
-		String dimensionName, 
-		List<String> memberNames, 
-		String selectionType,
-		AsyncCallback callback);	
+	        String sessionId,
+	        String queryId,
+	        String dimensionName, 
+	        List<String> memberNames, 
+	        String selectionType,
+	        AsyncCallback callback);	
 	
 	
 	public void clearSelection(
-		String sessionId, 
-		String dimensionName, 
-		List<String> memberNames,
-		AsyncCallback callback);
+	        String sessionId,
+	        String queryId,
+	        String dimensionName, 
+	        List<String> memberNames,
+	        AsyncCallback callback);
 	
 	public void executeQuery(
-		String sessionId,
-		AsyncCallback<CellDataSet> callback);
+	        String sessionId, 
+            String queryId,
+            AsyncCallback<CellDataSet> callback);
 	
 	// TODO is this the way we want mdx to work?
 	public void executeMdxQuery(
-			String sessionId,
-			String mdx,
+	        String sessionId, 
+            String connectionId, 
+            String mdx,
 			AsyncCallback<CellDataSet> callback);
 	
-	public void createNewQuery(String sessionId, AsyncCallback<String> callback);
-    
-    public void setCurrentQuery(String sessionId, String queryId, AsyncCallback callback);
-    
-    public void getCurrentQuery(String sessionId, AsyncCallback<String> callback);
+	public void createNewQuery(String sessionId, String connectionId, String cubeName, AsyncCallback<String> callback);
     
     public void getQueries(String sessionId, AsyncCallback<String[]> callback);
 

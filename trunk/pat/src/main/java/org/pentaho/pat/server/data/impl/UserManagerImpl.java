@@ -52,13 +52,13 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
     }
 
     @SuppressWarnings("unchecked")
-    public SavedConnection getSavedConnection(String userId, String connectionName) {
+    public SavedConnection getSavedConnection(String userId, String connectionId) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         if (users.size()==1)
         {
             Set<SavedConnection> sc = users.get(0).getSavedConnections();
             for (SavedConnection conn : sc)
-                if (conn.getName().equals(connectionName))
+                if (conn.getId().equals(connectionId))
                     return conn;
         }
         return null;
