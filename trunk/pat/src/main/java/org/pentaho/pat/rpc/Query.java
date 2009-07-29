@@ -115,6 +115,18 @@ public interface Query extends RemoteService {
 	        String sessionId, 
 	        String queryId) throws RpcException;
 	
+	/**
+	 * Returns the MDX coresponding to a query.
+	 * @param sessionId The window session id
+	 * @param queryId The query id for which we want the MDX code.
+	 * @return An MDX String.
+	 * @throws RpcException If something turns sour.
+	 */
+	@Secured ({"ROLE_USER"})
+	public String getMdxForQuery(
+	        String sessionId, 
+            String queryId) throws RpcException;
+	
 	// TODO is this the way we want mdx to work?
 	@Secured ({"ROLE_USER"})
 	public CellDataSet executeMdxQuery(

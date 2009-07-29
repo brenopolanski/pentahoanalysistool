@@ -216,6 +216,17 @@ public class QueryServiceImpl extends AbstractService
 		OlapStatement stmt = con.createStatement();
 		return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx));
 	}
+
+
+    public String getMdxForQuery(String userId, String sessionId, String queryId)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        Query q = this.getQuery(userId, sessionId, queryId);
+        if (q == null) {
+            throw new OlapException(Messages.getString("Services.Query.NoSuchQuery")); //$NON-NLS-1$
+        }
+        return q.getSelect().toString();
+    }
 	
 	
 }

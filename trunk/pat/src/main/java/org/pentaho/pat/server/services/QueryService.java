@@ -7,6 +7,7 @@ import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -124,6 +125,20 @@ public interface QueryService extends Service {
 	        String userId, 
 			String sessionId,
 			String queryId) throws OlapException;
+	
+	/**
+     * Returns the MDX coresponding to a query.
+     * @param userId The owner of the query
+     * @param sessionId The window session id
+     * @param queryId The query id for which we want the MDX code.
+     * @return An MDX String.
+     * @throws RpcException If something turns sour.
+     */
+	@Secured ({"ROLE_USER"})
+    public String getMdxForQuery(
+            String userId, 
+            String sessionId,
+            String queryId) throws OlapException;
 	
 	// TODO is this the way we want mdx to work?
 	/**

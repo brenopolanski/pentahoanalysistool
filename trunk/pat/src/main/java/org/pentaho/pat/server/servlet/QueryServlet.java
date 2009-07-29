@@ -124,4 +124,14 @@ public class QueryServlet extends AbstractServlet implements Query {
 		}
 	}
 
+    public String getMdxForQuery(String sessionId, String queryId)
+            throws RpcException {
+        try {
+            return this.queryService.getMdxForQuery(getCurrentUserId(), sessionId, queryId);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantFetchMdx"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantFetchMdx")); //$NON-NLS-1$
+        }
+    }
+
 }

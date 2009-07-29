@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -55,4 +56,9 @@ public interface QueryAsync {
     public void getQueries(String sessionId, AsyncCallback<String[]> callback);
 
     public void deleteQuery(String sessionId, String queryId, AsyncCallback callback);
+    
+    public void getMdxForQuery(
+            String sessionId, 
+            String queryId,
+            AsyncCallback<String> callback) throws RpcException;
 }
