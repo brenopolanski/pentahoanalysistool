@@ -31,6 +31,7 @@ import org.pentaho.pat.client.deprecated.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.deprecated.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.deprecated.ui.widgets.OlapTable;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
+import org.pentaho.pat.client.ui.panels.MenuBar;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.TreeImages;
@@ -85,6 +86,8 @@ public class Application extends Viewport {
     private static LayoutPanel mainPanel;
 
     private static MainTabPanel mainTabPanel = null;
+    
+    private MenuBar menuBar = null;
 
     /**
      * Constructor.
@@ -93,25 +96,26 @@ public class Application extends Viewport {
     public Application() {
         super();
         final LayoutPanel rootPanel = getLayoutPanel();
-        rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        mainPanel = new LayoutPanel(new BorderLayout());
+        rootPanel.setLayout(new BorderLayout());
+        mainPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
-            mainTabPanel = new MainTabPanel();
-            mainPanel.add(mainTabPanel);
 
             // Add the main menu
             if (Pat.getApplicationState().getMode().isShowMenu()) {
-                // TODO replace menuPanel with new dimPanel
-//                menuPanel = new MainMenu();
-//                mainPanel.add(menuPanel, new BorderLayoutData(Region.EAST, 200, 10, 250, true));
 
-                rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+                menuBar = new MenuBar();
+                mainPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
             }
+
+            mainTabPanel = new MainTabPanel();
+            mainPanel.add(mainTabPanel);
 
             if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
                 MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
             }
+            
+            rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
         }
         else {
             mainPanel.add(new OlapTable());

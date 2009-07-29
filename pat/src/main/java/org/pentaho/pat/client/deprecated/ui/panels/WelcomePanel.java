@@ -16,6 +16,7 @@ package org.pentaho.pat.client.deprecated.ui.panels;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -117,18 +118,17 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	@Override
 	public final Widget onInitialize() {
 		
-	    final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL, Alignment.CENTER));
-	    
+	    final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
 	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
-	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
-	    buttonBar.setWidgetSpacing(20);
-	    conButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database(),
-	    		ConstantFactory.getInstance().connect(),
-	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
-				public void onClick(ClickEvent arg0) {
-					if (!WelcomePanel.connectionEstablished) {
-						ConnectionWindow.display();
-					} else {
+//	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
+//	    buttonBar.setWidgetSpacing(20);
+//	    conButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database(),
+//	    		ConstantFactory.getInstance().connect(),
+//	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
+//				public void onClick(ClickEvent arg0) {
+//					if (!WelcomePanel.connectionEstablished) {
+//						ConnectionWindow.display();
+//					} else {
 //						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 //							public void onFailure(final Throwable arg0) {
 //								MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
@@ -139,25 +139,25 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 //								GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionBroken(WelcomePanel.this);
 //							}
 //						});
-					}
-				}   	
-	        });
-	    ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(
-	        Pat.IMAGES.help_index(), ConstantFactory.getInstance().wiki(),
-	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
-				public void onClick(ClickEvent arg0) {
-					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				}
-	    });
+//					}
+//				}   	
+//	        });
+//	    ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(
+//	        Pat.IMAGES.help_index(), ConstantFactory.getInstance().wiki(),
+//	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
+//				public void onClick(ClickEvent arg0) {
+//					Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//				}
+//	    });
+//
+//	    if (Pat.getApplicationState().getMode().isManageConnections()) {
+//	    	buttonBar.add(conButton);
+//	    }
+//	    buttonBar.add(patwikiBtn);
 
-	    if (Pat.getApplicationState().getMode().isManageConnections()) {
-	    	buttonBar.add(conButton);
-	    }
-	    buttonBar.add(patwikiBtn);
-
-	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.BOTH));
-	    layoutPanel.add(buttonBar);
-	    layoutPanel.add(new DemoPanel());
+	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)));
+//	    layoutPanel.add(buttonBar);
+//	    layoutPanel.add(new DemoPanel());
 	    
 	    return layoutPanel;
 	}
