@@ -21,6 +21,7 @@ import org.hsqldb.jdbc.jdbcDataSource;
 import org.junit.Assert;
 import org.olap4j.OlapException;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.services.impl.SessionServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -140,7 +141,7 @@ public abstract class AbstractServletTest extends TestCase {
                     "You can't use the context properties unless you initialize a test context first."); //$NON-NLS-1$
 
         try {
-            service.createConnection(userId, sessionId,
+            ((SessionServiceImpl)service).createConnection(userId, sessionId,
                     getTestProperty("olap4j.driver"), //$NON-NLS-1$
                     getTestProperty("mondrian.url"), null, null); //$NON-NLS-1$
         } catch (OlapException e) {

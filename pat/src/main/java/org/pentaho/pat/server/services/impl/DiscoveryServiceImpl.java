@@ -16,7 +16,6 @@ import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.rpc.dto.StringTree;
-import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
@@ -61,7 +60,6 @@ public class DiscoveryServiceImpl extends AbstractService
 	
 	public List<String> getDrivers() 
 	{
-		
 		this.driverFinder.registerDrivers();
 		
 		// An enumeration is a very unpractical thing, so let's convert it to a List.
@@ -75,7 +73,7 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 	
 	
-	public List<String> getCubes(String userId, String sessionId) 
+	public List<String> getCubes(String userId, String sessionId, String connectionId) 
 	    throws OlapException
 	{
 
@@ -83,8 +81,8 @@ public class DiscoveryServiceImpl extends AbstractService
 	    
         List<String> list = new ArrayList<String>();
 
-        OlapConnection conn = this.sessionService.getConnection(userId,
-                sessionId);
+        OlapConnection conn = 
+            this.sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         if (conn == null)
             return list;
@@ -99,22 +97,24 @@ public class DiscoveryServiceImpl extends AbstractService
     }
 
 	
-	public Cube getCube(String userId, String sessionId, String name) throws OlapException 
+	public Cube getCube(
+	        String userId, 
+	        String sessionId,
+	        String connectionId,
+	        String cubeName) throws OlapException 
 	{
 	    this.sessionService.validateSession(userId, sessionId);
-	    OlapConnection conn = this.sessionService.getConnection(userId,sessionId);
-		return conn.getSchema().getCubes().get(name);
+	    OlapConnection conn = this.sessionService.getNativeConnection(userId,sessionId,connectionId);
+		return conn.getSchema().getCubes().get(cubeName);
 	}
 	
 	
 	public List<String> getDimensions(String userId, String sessionId, 
-		Axis.Standard axis) throws OlapException
+            String queryId, Axis.Standard axis) throws OlapException
 	{
 	    this.sessionService.validateSession(userId, sessionId);
 	    
-		String currentQuery = (String)this.sessionService.getUserSessionVariable(userId, 
-				sessionId, Constants.CURRENT_QUERY_NAME);
-		Query query = this.queryService.getQuery(userId, sessionId, currentQuery);
+		Query query = this.queryService.getQuery(userId, sessionId, queryId);
 		
 		Axis targetAxis = null;
 		if (axis!=null)
@@ -129,15 +129,12 @@ public class DiscoveryServiceImpl extends AbstractService
 	}
 
 	public StringTree getMembers(String userId, String sessionId,
-            String dimensionName) throws OlapException 
+            String queryId, String dimensionName) throws OlapException 
     {
 	    this.sessionService.validateSession(userId, sessionId);
 
-        String currentQuery = (String) this.sessionService
-                .getUserSessionVariable(userId, sessionId,
-                        Constants.CURRENT_QUERY_NAME);
-        Query query = this.queryService.getQuery(userId, sessionId,
-                currentQuery);
+        Query query = 
+            this.queryService.getQuery(userId, sessionId, queryId);
 
         List<String> uniqueNameList = new ArrayList<String>();
 

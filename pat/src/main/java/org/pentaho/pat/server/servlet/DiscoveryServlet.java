@@ -38,11 +38,11 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
             throw new ServletException(Messages.getString("Servlet.DiscoveryServiceNotFound")); //$NON-NLS-1$
 	}
 	
-	public String[] getCubes(String sessionId) throws RpcException
+	public String[] getCubes(String sessionId, String connectionId) throws RpcException
 	{
 		List<String> list;
         try {
-            list = this.discoveryService.getCubes(getCurrentUserId(), sessionId);
+            list = this.discoveryService.getCubes(getCurrentUserId(), sessionId, connectionId);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Discovery.CantGenerateCubesList"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateCubesList")); //$NON-NLS-1$
@@ -50,13 +50,17 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		return list.toArray(new String[list.size()]);
 	}
 
-	public String [] getDimensions(String sessionId, Axis axis) throws RpcException
+	public String [] getDimensions(
+            String sessionId, 
+            String queryId, 
+            Axis axis) throws RpcException
 	{
 		List<String> dimensionsList;
 		try {
 			dimensionsList = this.discoveryService.getDimensions(
 			    getCurrentUserId(), 
-			    sessionId, 
+			    sessionId,
+			    queryId,
 			    (axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
@@ -67,10 +71,10 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 		
 	}
 
-	public StringTree getMembers(String sessionId, String dimensionName) throws RpcException
+	public StringTree getMembers(String sessionId, String queryId, String dimensionName) throws RpcException
 	{
 		try {
-			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, dimensionName);
+			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, queryId, dimensionName);
 		} catch (OlapException e) {
 		    log.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"),e); //$NON-NLS-1$
 		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$

@@ -5,7 +5,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
-import org.pentaho.pat.client.deprecated.i18n.PatConstants;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
@@ -25,10 +24,10 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		
 		// Create a session.
 		String sessionId = this.sessionService.createNewSession(userId); 
-		super.createConnection(this.sessionService, userId, sessionId); 
+		String connectionId = createConnection(this.sessionService, userId, sessionId); 
 		
 		// Test returned cubes.
-		List<String> cubes = this.discoveryService.getCubes(userId, sessionId); 
+		List<String> cubes = this.discoveryService.getCubes(userId, sessionId, connectionId); 
 		assertNotNull(cubes);
 		assertEquals(1, cubes.size());
 		assertEquals("Quadrant Analysis", cubes.get(0)); //$NON-NLS-1$
@@ -48,10 +47,10 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		
 		// Create a session.
 		String sessionId = this.sessionService.createNewSession(userId); 
-		super.createConnection(this.sessionService, userId, sessionId); 
+		String connectionId = createConnection(this.sessionService, userId, sessionId); 
 		
 		// Test returned cubes.
-		Cube cube = this.discoveryService.getCube(userId, sessionId, "Quadrant Analysis"); //$NON-NLS-1$ 
+		Cube cube = this.discoveryService.getCube(userId, sessionId, connectionId, "Quadrant Analysis"); //$NON-NLS-1$ 
 		assertNotNull(cube);
 		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$
 		
@@ -78,19 +77,17 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		
 		// Create a session.
 		String sessionId = this.sessionService.createNewSession(userId); 
-		super.createConnection(this.sessionService, userId, sessionId); 
+		String connectionId = createConnection(this.sessionService, userId, sessionId); 
 		
 		// Create and select a cube
-		Cube cube = this.discoveryService.getCube(userId, sessionId, "Quadrant Analysis"); //$NON-NLS-1$ 
+		Cube cube = this.discoveryService.getCube(userId, sessionId, connectionId, "Quadrant Analysis"); //$NON-NLS-1$ 
 		assertNotNull(cube);
-		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); 
+		assertEquals("Quadrant Analysis", cube.getName()); //$NON-NLS-1$ 
 		
 		// Create and select a query
-		String queryId = this.queryService.createNewQuery(userId, sessionId); 
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
+		String queryId = this.queryService.createNewQuery(userId, sessionId, connectionId, cube.getName());
 		
-		List<String> dims = this.discoveryService.getDimensions(userId, sessionId, Axis.UNUSED); 
+		List<String> dims = this.discoveryService.getDimensions(userId, sessionId, queryId, Axis.UNUSED);
 		assertNotNull(dims);
 		assertEquals(4, dims.size());
 		String[] currentList = new String[4];
@@ -114,17 +111,15 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		
 		// Create a session.
 		String sessionId = this.sessionService.createNewSession(userId); 
-		super.createConnection(this.sessionService, userId, sessionId); 
+		String connectionId = createConnection(this.sessionService, userId, sessionId); 
 		
 		// Create and select a cube
-		Cube cube = this.discoveryService.getCube(userId, sessionId, "Quadrant Analysis"); //$NON-NLS-1$ 
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_CUBE_NAME, cube.getName()); 
+		Cube cube = this.discoveryService.getCube(userId, sessionId, connectionId, "Quadrant Analysis"); //$NON-NLS-1$  
 		
 		// Create and select a query
-		String queryId = this.queryService.createNewQuery(userId, sessionId); 
-		this.sessionService.saveUserSessionVariable(userId, sessionId, PatConstants.CURRENT_QUERY_NAME, queryId); 
+		String queryId = this.queryService.createNewQuery(userId, sessionId, connectionId, cube.getName());  
 		
-		StringTree members = this.discoveryService.getMembers(userId, sessionId, "Region"); //$NON-NLS-1$ 
+		StringTree members = this.discoveryService.getMembers(userId, sessionId, queryId, "Region"); //$NON-NLS-1$ 
 		assertNotNull(members);
 		assertEquals("Region", members.getValue()); //$NON-NLS-1$
 		assertEquals(1, members.getChildren().size());

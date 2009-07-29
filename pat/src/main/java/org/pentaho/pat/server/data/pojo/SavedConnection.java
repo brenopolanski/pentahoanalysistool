@@ -1,5 +1,7 @@
 package org.pentaho.pat.server.data.pojo;
 
+import java.util.UUID;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,12 @@ import org.hibernate.annotations.Type;
 @Table(name="connections")
 public class SavedConnection implements Comparable<SavedConnection> {
 
+    /**
+     * The UUID of this connection.
+     */
+    @Basic
+    private String id;
+    
     /**
      * The name of this connection.
      */
@@ -47,7 +55,22 @@ public class SavedConnection implements Comparable<SavedConnection> {
     @Type(type="text")
     private String schema=null;
 
+    public SavedConnection(String uuid) {
+        super();
+        if (uuid == null) {
+            this.id = UUID.randomUUID().toString();
+        }
+    }
+    
     @Id
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+    
 	public String getName() {
 		return name;
 	}
@@ -106,5 +129,11 @@ public class SavedConnection implements Comparable<SavedConnection> {
 
     public int compareTo(SavedConnection o) {
         return this.getName().compareTo(o.getName());
+    }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SavedConnection))
+            return false;
+        return this.getId().equals(((SavedConnection)obj).getId());
     }
 }

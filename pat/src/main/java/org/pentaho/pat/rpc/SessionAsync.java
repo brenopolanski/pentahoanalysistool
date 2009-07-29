@@ -1,6 +1,7 @@
 package org.pentaho.pat.rpc;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -12,34 +13,23 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 @SuppressWarnings("unchecked")
 public interface SessionAsync {
-
 	
 	public void createSession(AsyncCallback<String> callback);
 	
 	public void closeSession(String sessionId, AsyncCallback callback);
 	
-
+	public void connect(String sessionId, String connectionId, AsyncCallback callback);
 	
+	public void disconnect(String sessionId, String connectionId, AsyncCallback callback);	
 	
+	public void getConnection(String sessionId, String connectionId, AsyncCallback<CubeConnection> callback);
 	
+	public void getConnections(String sessionId, AsyncCallback<CubeConnection[]> callback);
 	
-	public void connect(String sessionId, CubeConnection connection, AsyncCallback callback);
+	public void getActiveConnections(String sessionId, AsyncCallback<CubeConnection[]> callback) throws RpcException;
 	
-	public void disconnect(String sessionId, AsyncCallback callback);	
+	public void saveConnection(String sessionId, CubeConnection connection, AsyncCallback<String> callback);
 	
-	public void getConnection(String sessionId, String connectionName, AsyncCallback<CubeConnection> callback);
+	public void deleteConnection(String sessionId, String connectionId, AsyncCallback callback);
 	
-	public void saveConnection(String sessionId, CubeConnection connection, AsyncCallback callback);
-	
-	public void getSavedConnections(String sessionId, AsyncCallback<String[]> callback);
-	
-	public void deleteSavedConnection(String sessionId, String connectionName, AsyncCallback callback);
-	
-	
-	
-	
-	
-	public void getCurrentCube(String sessionId, AsyncCallback<String> callback);
-	
-	public void setCurrentCube(String sessionId, String cubeId, AsyncCallback callback);
 }

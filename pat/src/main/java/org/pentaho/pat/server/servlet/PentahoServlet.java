@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.services.impl.SessionServiceImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.util.Assert;
@@ -66,21 +67,8 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl); //$NON-NLS-1$
         
         // Establish the connection
-        this.sessionService.createConnection(userId, sessionId, 
+        ((SessionServiceImpl)this.sessionService).createConnection(userId, sessionId, 
             "org.olap4j.driver.xmla.XmlaOlap4jDriver", olap4jUrl, xmlaUsername, xmlaPassword); //$NON-NLS-1$
-        
-        // Try to parse the query.
-        //String queryId = this.queryService.createNewQuery(userId, sessionId, mdxQuery);
-        
-        // Set it as the current query in the session.
-        //this.sessionService.saveUserSessionVariable(userId, sessionId, 
-        //    Constants.CURRENT_QUERY_NAME, queryId);
-        
-        // Set the current cube name
-        //String cubeName = this.queryService.getQuery(
-        //    userId, sessionId, queryId).getCube().getName();
-        //this.sessionService.saveUserSessionVariable(userId, sessionId, 
-        //    Constants.CURRENT_CUBE_NAME, cubeName);
         
         // Build the redirect URL
         redirect.append("?MODE=BISERVERPUC"); //$NON-NLS-1$

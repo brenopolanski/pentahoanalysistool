@@ -57,7 +57,7 @@ public interface SessionService extends Service {
 	 * @return The session object, null if none found.
 	 */
 	@Secured ({"ROLE_ADMIN"})
-    Session getSession(String userId, String sessionId);
+    public Session getSession(String userId, String sessionId);
 
 	
 	/**
@@ -98,49 +98,58 @@ public interface SessionService extends Service {
 	 * Establishes a connection according to the supplied parameters.
 	 * @param userId The owner of the connection to establish.
 	 * @param sessionId The session id under which the connection will be stored.
-	 * @param sc The SavedConnection object to use as a connection template
+	 * @param connectionId The connection UUID to activate
 	 * @throws OlapException If the connection fails.
 	 */
 	@Secured ({"ROLE_USER"})
-	public void createConnection(String userId, String sessionId, 
-			SavedConnection sc) throws OlapException;
+	public void connect(String userId, String sessionId, 
+			String connectionId) throws OlapException;
 	
 	/**
      * Establishes a connection according to the supplied parameters.
      * @param userId The owner of the connection to establish.
      * @param sessionId The session id under which the connection will be stored.
-     * @param driverName The Olap4j driver to use.
-     * @param connectStr The URL to send to the olap4j driver.
-     * @param username The connection username to connect.
-     * @param password The username's password.
+     * @param sc A SavedConnection object describing the connection to establish.
      * @throws OlapException If the connection fails.
      */
     @Secured ({"ROLE_USER"})
-    public void createConnection(String userId, String sessionId, 
-            String driverName, String connectStr, 
-            String username, String password) throws OlapException;
+    public void connect(String userId, String sessionId, 
+            SavedConnection sc) throws OlapException;
 
 	
+    /**
+     * Returns the underlying OlapConnection for a given
+     * connection UUID. The connection needs to be activated
+     * prior to this call.
+     * @param userId The owner of the connection
+     * @param sessionId The session id under which the connection is
+     * @param connectionId The sasved connection UUID for which we want the
+     * underlying native connection.
+     * @return The olapConnection object. Null if none are found.
+     */
 	@Secured ({"ROLE_USER"})
-	OlapConnection getConnection(String userId, String sessionId);
+	public OlapConnection getNativeConnection(
+	        String userId, String sessionId, String connectionId);
 	
 	/**
 	 * Closes a connection.
 	 * @param userId The owner of the connection.
 	 * @param sessionId The session id that contains the connection
+	 * @param connectionId The connection UUID
 	 */
 	@Secured ({"ROLE_USER"})
-	public void releaseConnection(String userId, String sessionId);
+	public void disconnect(String userId, String sessionId,
+	        String connectionId);
 	
 	/**
 	 * Retreives a saved connection.
 	 * @param userId The owner of the connection.
-	 * @param connectionName The name of the connection.
+	 * @param connectionId The UUID of the connection.
 	 * @return The SavedConnection object, null if not found.
 	 */
 	@Secured ({"ROLE_USER"})
 	@Transactional(readOnly=true)
-    public SavedConnection getSavedConnection(String userId, String connectionName);
+    public SavedConnection getConnection(String userId, String connectionId);
 	
 	/**
 	 * Returns a list of saved connections associated to a user.
@@ -149,7 +158,17 @@ public interface SessionService extends Service {
 	 */
 	@Secured ({"ROLE_USER"})
 	@Transactional(readOnly=true)
-    public List<SavedConnection> getSavedConnections(String userId);
+    public List<SavedConnection> getConnections(String userId);
+    
+	/**
+     * Returns a list of currently active connections associated to a user.
+     * @param userId The owner of the connections we want the names of.
+     * @param sessionId The session in which to seek for active connections
+     * @return A list of connection names, null if the user doesn't exist.
+     */
+    @Secured ({"ROLE_USER"})
+    @Transactional(readOnly=true)
+    public List<SavedConnection> getActiveConnections(String userId, String sessionId);
     
 	/**
 	 * Saves a connection in a user account.
@@ -168,5 +187,5 @@ public interface SessionService extends Service {
 	 */
 	@Secured ({"ROLE_USER"})
 	@Transactional(readOnly=false)
-    public void deleteSavedConnection(String userId, String connectionName);
+    public void deleteConnection(String userId, String connectionId);
 }

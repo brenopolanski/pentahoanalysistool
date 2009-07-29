@@ -13,7 +13,6 @@ import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.Constants;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
@@ -43,10 +42,10 @@ public class QueryServlet extends AbstractServlet implements Query {
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
 	}
 
-	public String createNewQuery(String sessionId)  throws RpcException
+	public String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException
     {
         try {
-            return queryService.createNewQuery(getCurrentUserId(), sessionId);
+            return queryService.createNewQuery(getCurrentUserId(), sessionId, connectionId, cubeName);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
@@ -58,56 +57,56 @@ public class QueryServlet extends AbstractServlet implements Query {
         queryService.releaseQuery(getCurrentUserId(), sessionId, queryId);
     }
 
-    public String getCurrentQuery(String sessionId) throws RpcException
-    {
-        return (String)sessionService.getUserSessionVariable(
-                getCurrentUserId(), sessionId, Constants.CURRENT_QUERY_NAME);
-    }
-
     public String[] getQueries(String sessionId) throws RpcException
     {
         List<String> list = queryService.getQueries(getCurrentUserId(), sessionId);
         return list.toArray(new String[list.size()]);
     }
 
-    public void setCurrentQuery(String sessionId, String queryId) throws RpcException
-    {
-        sessionService.saveUserSessionVariable(getCurrentUserId(), 
-                sessionId, Constants.CURRENT_QUERY_NAME, queryId);
-    }
-
-	public void clearSelection(String sessionId, String dimensionName, 
-			List<String> memberNames) throws RpcException
+    public void clearSelection(
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List<String> memberNames) throws RpcException
 	{
 		this.queryService.clearSelection(getCurrentUserId(), 
-				sessionId, dimensionName, memberNames);
+				sessionId, queryId, dimensionName, memberNames);
 	}
 
-	public void createSelection(String sessionId, String dimensionName,
-			List<String> memberNames, String selectionType) throws RpcException {
+    public void createSelection(
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List<String> memberNames, 
+            String selectionType) throws RpcException
+    {
 		try {
             this.queryService.createSelection(getCurrentUserId(), sessionId, 
-            		dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
+            		queryId, dimensionName, memberNames, org.olap4j.query.Selection.Operator.valueOf(selectionType));
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Query.CantSelectMembers"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
 	}
 
-	public void moveDimension(String sessionId, Axis axis, 
-			String dimensionName) throws RpcException
+    public void moveDimension(
+            String sessionId,
+            String queryId,
+            Axis axis, 
+            String dimensionName) throws RpcException
 	{
 		this.queryService.moveDimension(
 			getCurrentUserId(), 
 			sessionId, 
+			queryId,
 			(axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
 			dimensionName);
 	}
 
-	public CellDataSet executeQuery(String sessionId) throws RpcException 
+    public CellDataSet executeQuery(String sessionId, String queryId) throws RpcException
 	{
 		try {
-			return this.queryService.executeQuery(getCurrentUserId(), sessionId);
+			return this.queryService.executeQuery(getCurrentUserId(), sessionId, queryId);
 		} catch (OlapException e) {
 		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
@@ -115,10 +114,10 @@ public class QueryServlet extends AbstractServlet implements Query {
 	}
 	
 	// TODO is this the way we want mdx to work?
-	public CellDataSet executeMdxQuery(String sessionId, String mdx) throws RpcException 
+    public CellDataSet executeMdxQuery(String sessionId, String connectionId, String mdx) throws RpcException
 	{
 		try {
-			return this.queryService.executeMdxQuery(getCurrentUserId(), sessionId, mdx);
+			return this.queryService.executeMdxQuery(getCurrentUserId(), sessionId, connectionId, mdx);
 		} catch (OlapException e) {
 		    log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
 			throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
