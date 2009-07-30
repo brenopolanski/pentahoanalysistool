@@ -296,13 +296,13 @@ public class SessionServiceImpl extends AbstractService
 	}
 	
 
+	/*
+	 * Closes all active connections.
+	 */
 	private void disconnect(String userId, String sessionId)
 	{
-	    List<SavedConnection> connections = this.getConnections(userId);
-	    // To prevent concurrency issues, we must iterate
-	    // in inverse order.
-	    for (int i = connections.size() ; i >= 0 ; i--) {
-	        this.disconnect(userId, sessionId, connections.get(i).getId());
+	    for (String connId : this.getSession(userId, sessionId).getActiveConnectionsId()) {
+	        this.disconnect(userId, sessionId, connId);
 	    }
 	}
 	

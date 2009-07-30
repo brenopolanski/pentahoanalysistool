@@ -55,16 +55,21 @@ public class SavedConnection implements Comparable<SavedConnection> {
     @Type(type="text")
     private String schema=null;
 
+    public SavedConnection() {
+        this(null);
+    }
+
     public SavedConnection(String uuid) {
-        super();
         if (uuid == null) {
             this.id = UUID.randomUUID().toString();
+        } else {
+            this.id = uuid;
         }
     }
     
     @Id
     public String getId() {
-        return id;
+        return this.id;
     }
     
     public void setId(String id) {
