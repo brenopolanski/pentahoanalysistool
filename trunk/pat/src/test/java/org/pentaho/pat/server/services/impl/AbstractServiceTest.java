@@ -142,8 +142,7 @@ public abstract class AbstractServiceTest extends TestCase {
                     "You can't use the context properties unless you initialize a test context first."); //$NON-NLS-1$
 
         try {
-            SessionServiceImpl sessionService = (SessionServiceImpl)service;
-            connectionId = sessionService.createConnection(userId, sessionId,
+            connectionId = service.createConnection(userId, sessionId,
                     getTestProperty("olap4j.driver"), //$NON-NLS-1$
                     getTestProperty("mondrian.url"), null, null); //$NON-NLS-1$
             return connectionId;

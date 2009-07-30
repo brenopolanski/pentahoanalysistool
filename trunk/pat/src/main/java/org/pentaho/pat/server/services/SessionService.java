@@ -105,6 +105,11 @@ public interface SessionService extends Service {
 	public void connect(String userId, String sessionId, 
 			String connectionId) throws OlapException;
 	
+	@Secured ({"ROLE_USER"})
+	public String createConnection(String userId, String sessionId,
+            String driverName, String connectStr, String username,
+            String password) throws OlapException;
+	
 	/**
      * Establishes a connection according to the supplied parameters.
      * @param userId The owner of the connection to establish.
