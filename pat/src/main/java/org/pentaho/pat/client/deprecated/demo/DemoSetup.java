@@ -1,18 +1,18 @@
 package org.pentaho.pat.client.deprecated.demo;
 
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.deprecated.ui.panels.MainMenu;
 import org.pentaho.pat.client.deprecated.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.deprecated.ui.panels.QueryPanel;
 import org.pentaho.pat.client.deprecated.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.deprecated.ui.panels.QueryPanel.QueryMode;
-import org.pentaho.pat.client.deprecated.ui.windows.ConnectionWindow;
 import org.pentaho.pat.client.deprecated.util.ConnectionItem;
 import org.pentaho.pat.client.deprecated.util.State;
 import org.pentaho.pat.client.deprecated.util.State.Mode;
 import org.pentaho.pat.client.deprecated.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
@@ -69,7 +69,7 @@ public class DemoSetup {
 //					}
 //
 //					public void onSuccess(CellDataSet matrix) {
-//						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionWindow(), "demoQuery", matrix); //$NON-NLS-1$
+//						GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new ConnectionManagerWindow(), "demoQuery", matrix); //$NON-NLS-1$
 //						
 //					}
 //					

@@ -1,17 +1,24 @@
 /*
  * Copyright (C) 2009 Paul Stoellberger
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
- *
- * @created Jun 30, 2009 
- * @author Paul Stoellberger
  */
 
-package org.pentaho.pat.client.deprecated.ui.panels;
+package org.pentaho.pat.client.ui.panels;
 
 
 
@@ -30,9 +37,8 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.ui.windows.ConnectionWindow;
 import org.pentaho.pat.client.deprecated.util.ConnectionItem;
-import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,6 +48,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
+/**
+ * Connection Manager Panel for adding/modifying/deleting Connections
+ * @created Jun 30, 2009 
+ * @since 0.4.0
+ * @author Paul Stoellberger
+ * 
+ */
 public class ConnectionManagerPanel extends LayoutComposite  {
 
 	private ListBox<ConnectionItem> listBox;
@@ -151,7 +164,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 				Pat.IMAGES.add(), null,
 				ButtonLabelType.NO_TEXT), new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				ConnectionWindow.display();
+				ConnectionManagerWindow.display();
 			}
 		}));
 
@@ -182,7 +195,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 					return;
 				}
 				// String item = listBox.getItem(listBox.getSelectedIndex()).getName();
-				ConnectionWindow.display();
+				ConnectionManagerWindow.display();
 			}
 		});
 		editButton.setEnabled(false);

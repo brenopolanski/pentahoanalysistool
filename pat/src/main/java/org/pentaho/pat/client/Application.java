@@ -96,7 +96,7 @@ public class Application extends Viewport {
     public Application() {
         super();
         final LayoutPanel rootPanel = getLayoutPanel();
-        rootPanel.setLayout(new BorderLayout());
+        rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {

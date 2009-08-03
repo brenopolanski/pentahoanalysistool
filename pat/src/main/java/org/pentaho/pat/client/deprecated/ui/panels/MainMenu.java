@@ -20,6 +20,7 @@ import org.pentaho.pat.client.deprecated.listeners.ConnectionListener;
 import org.pentaho.pat.client.deprecated.listeners.QueryListener;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
 import org.pentaho.pat.client.deprecated.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.user.client.ui.Widget;

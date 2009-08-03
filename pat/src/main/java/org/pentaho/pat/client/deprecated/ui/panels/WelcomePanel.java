@@ -29,10 +29,10 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.demo.DemoPanel;
 import org.pentaho.pat.client.deprecated.listeners.ConnectionListener;
 import org.pentaho.pat.client.deprecated.ui.widgets.DataWidget;
-import org.pentaho.pat.client.deprecated.ui.windows.ConnectionWindow;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
 import org.pentaho.pat.client.deprecated.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -67,7 +67,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	private static ToolButton conButton;
 
 	/** The Connection Dialog. */
-	//private ConnectionWindow connectWindow;
+	//private ConnectionManagerWindow connectWindow;
 	
 	/** Connection Established. */
 	private static boolean connectionEstablished;
@@ -127,7 +127,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 //	        ButtonLabelType.TEXT_ON_BOTTOM),new ClickHandler() {
 //				public void onClick(ClickEvent arg0) {
 //					if (!WelcomePanel.connectionEstablished) {
-//						ConnectionWindow.display();
+//						ConnectionManagerWindow.display();
 //					} else {
 //						ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), new AsyncCallback<Object>() {
 //							public void onFailure(final Throwable arg0) {

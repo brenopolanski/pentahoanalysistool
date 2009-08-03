@@ -17,8 +17,10 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.TextLabel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Pat;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -41,7 +43,7 @@ public class MainTabPanel extends LayoutComposite {
 	public MainTabPanel() {
 		super();
 		final LayoutPanel baseLayoutPanel = getLayoutPanel();
-		baseLayoutPanel.setLayout(new FillLayout());
+		baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
