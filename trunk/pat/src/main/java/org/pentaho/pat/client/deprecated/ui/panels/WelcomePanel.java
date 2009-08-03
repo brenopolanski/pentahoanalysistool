@@ -19,6 +19,7 @@ import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
@@ -118,7 +119,7 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 	@Override
 	public final Widget onInitialize() {
 		
-	    final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+	    final LayoutPanel layoutPanel = new LayoutPanel(new FillLayout());
 	    final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
 //	    final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
 //	    buttonBar.setWidgetSpacing(20);
@@ -154,8 +155,9 @@ public class WelcomePanel extends DataWidget  implements ConnectionListener {
 //	    	buttonBar.add(conButton);
 //	    }
 //	    buttonBar.add(patwikiBtn);
-
+	    
 	    layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)));
+	    
 //	    layoutPanel.add(buttonBar);
 //	    layoutPanel.add(new DemoPanel());
 	    

@@ -43,7 +43,7 @@ public class MainTabPanel extends LayoutComposite {
 	public MainTabPanel() {
 		super();
 		final LayoutPanel baseLayoutPanel = getLayoutPanel();
-		baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
+		//baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
