@@ -97,7 +97,9 @@ public class Application extends Viewport {
         super();
         final LayoutPanel rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        mainPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        
+        mainPanel = new LayoutPanel(new BorderLayout());
+        
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
 
@@ -105,7 +107,7 @@ public class Application extends Viewport {
             if (Pat.getApplicationState().getMode().isShowMenu()) {
 
                 menuBar = new MenuBar();
-                mainPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
+                rootPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
             }
 
             mainTabPanel = new MainTabPanel();
