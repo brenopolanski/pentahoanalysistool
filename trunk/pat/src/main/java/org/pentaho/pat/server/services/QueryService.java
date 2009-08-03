@@ -24,12 +24,12 @@ public interface QueryService extends Service {
      * @return A unique query identification number.
      * @throws OlapException If creating the query fails.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public String createNewQuery(String userId, String sessionId,
         String connectionId, String cubeName) throws OlapException;
     
     
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public Query getQuery(String userId, String sessionId, String queryId);
     
     /**
@@ -39,7 +39,7 @@ public interface QueryService extends Service {
      * @param sessionId The unique id of the session for which we want the current opened queries.
      * @return A list of query names.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public List<String> getQueries(String userId, String sessionId);
     
     /**
@@ -48,7 +48,7 @@ public interface QueryService extends Service {
      * @param sessionId The unique session id for which we want to close and delete a query.
      * @param queryId The unique id of the query to close and release.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public void releaseQuery(String userId, String sessionId, String queryId);
 
     /**
@@ -61,7 +61,7 @@ public interface QueryService extends Service {
      * Null to remove it from the current query.
      * @param dimensionName The name of the dimension to move.
      */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void moveDimension(
 		String userId, 
 		String sessionId,
@@ -82,7 +82,7 @@ public interface QueryService extends Service {
 	 * @param selectionType The type of selection to perform.
 	 * @throws OlapException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void createSelection(
 		String userId, 
 		String sessionId,
@@ -103,7 +103,7 @@ public interface QueryService extends Service {
 	 * members to deselect.
 	 * @param memberNames A list of member names to deselect.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void clearSelection(
 		String userId, 
 		String sessionId,
@@ -120,7 +120,7 @@ public interface QueryService extends Service {
 	 * @return The resultset of the query as a OlapData object.
 	 * @throws OlapException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CellDataSet executeQuery(
 	        String userId, 
 			String sessionId,
@@ -134,7 +134,7 @@ public interface QueryService extends Service {
      * @return An MDX String.
      * @throws RpcException If something turns sour.
      */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
     public String getMdxForQuery(
             String userId, 
             String sessionId,
@@ -152,7 +152,7 @@ public interface QueryService extends Service {
 	 * @return The resultset of the query as a OlapData object.
 	 * @throws OlapException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CellDataSet executeMdxQuery(
 			String userId, 
 			String sessionId,

@@ -30,11 +30,11 @@
 	<!-- This allows us to secure method invocations with java annotations.
 		Any bean invocations that have the @Secured annotation added will
 		be validated before executed. -->
-	<security:global-method-security secured-annotations="enabled" />
+	<security:global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager" />
 
 	
     
-    <security:http auto-config="true" realm="Pentaho Analysis Tool">
+    <security:http auto-config="true" realm="Pentaho Analysis Tool" access-decision-manager-ref="accessDecisionManager">
     
         <!-- Some URLs need to be accessible by anonymous users. Login pages,
         	CSS files, images... just add your public accessible urls here. -->
@@ -43,7 +43,7 @@
     	<security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
     	<!--  Everything else that was not defined up there ^^ must be secured.
     		We use a simple wildcard trap. -->    
-        <security:intercept-url pattern="/**" access="ROLE_USER" />
+        <security:intercept-url pattern="/**" access="Users" />
         
         <!-- Use basic authentication for now. -->
 <!--        <http-basic />-->
@@ -62,14 +62,23 @@
         
     </security:http>
 
+  <beans:bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+    <beans:property name="decisionVoters">
+      <beans:list>
+        <beans:bean class="org.springframework.security.vote.RoleVoter">
+          <beans:property name="rolePrefix" value="" />
+        </beans:bean>
+        <beans:bean class="org.springframework.security.vote.AuthenticatedVoter"/>
+      </beans:list>
+    </beans:property>
+  </beans:bean>
 
-
-	<!-- Authentication provider. It's a simple hard-coded value for now.
-		One could easily replace it with whatever mechanism he sees fit. -->
     <security:authentication-provider>
-        <security:user-service>
-            <security:user name="admin" password="admin" authorities="ROLE_USER,ROLE_ADMIN" />
-        </security:user-service>
+      <security:jdbc-user-service
+        data-source-ref="dataSource"
+        users-by-username-query="SELECT U.username, U.password, U.enabled FROM users U where U.username=?"
+        authorities-by-username-query="SELECT U.username, G.name as authority FROM users U JOIN groups_users GU ON U.username = GU.user_id JOIN groups G ON G.name = GU.group_id WHERE U.username=?" />
     </security:authentication-provider>
-  
+
+    
 </beans:beans>

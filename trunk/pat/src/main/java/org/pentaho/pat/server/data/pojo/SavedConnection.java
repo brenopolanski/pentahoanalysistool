@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
  * @author Luc Boudreau
  */
 @Entity
-@Table(name="connections")
+@Table(name="CONNECTIONS")
 public class SavedConnection implements Comparable<SavedConnection> {
 
     /**
@@ -53,7 +53,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
     
     @Column(nullable=true)
     @Type(type="text")
-    private String schema=null;
+    private String schemaData=null;
 
     public SavedConnection() {
         this(null);
@@ -124,12 +124,12 @@ public class SavedConnection implements Comparable<SavedConnection> {
         this.type = type;
     }
 
-    public String getSchema() {
-        return schema==null?"":schema; //$NON-NLS-1$
+    public String getSchemaData() {
+        return schemaData==null?"":schemaData; //$NON-NLS-1$
     }
 
-    public void setSchema(String schema) {
-        this.schema = schema;
+    public void setSchemaData(String schemaData) {
+        this.schemaData = schemaData;
     }
 
     public int compareTo(SavedConnection o) {

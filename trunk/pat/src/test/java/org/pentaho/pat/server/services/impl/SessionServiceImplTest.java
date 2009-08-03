@@ -204,7 +204,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         assertEquals(conn.getDriverClassName(), savedConn.getDriverClassName());
         assertEquals(conn.getName(), savedConn.getName());
         assertEquals(conn.getPassword(), savedConn.getPassword());
-        assertEquals(conn.getSchema(), savedConn.getSchema());
+        assertEquals(conn.getSchemaData(), savedConn.getSchemaData());
         assertEquals(conn.getUrl(), savedConn.getUrl());
         assertEquals(conn.getUsername(), savedConn.getUsername());
         assertEquals(conn.getType(), savedConn.getType());

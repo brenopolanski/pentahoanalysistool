@@ -111,7 +111,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    cc.setUrl(sc.getUrl());
 	    cc.setUsername(sc.getUsername());
 	    cc.setPassword(sc.getPassword());
-	    cc.setSchemaData(sc.getSchema());
+	    cc.setSchemaData(sc.getSchemaData());
 	    cc.setId(sc.getId());
 
 	    return cc;
@@ -127,7 +127,7 @@ public class SessionServlet extends AbstractServlet implements Session {
 	    sc.setUsername(cc.getUsername());
 	    sc.setPassword(cc.getPassword());
 	    sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));
-	    sc.setSchema(cc.getSchemaData());
+	    sc.setSchemaData(cc.getSchemaData());
 
 	    return sc;
 	}
