@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -28,10 +27,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Image;
 
 /**
  * Menu Bar
@@ -55,12 +54,12 @@ public class MenuBar extends LayoutComposite {
     
     private void addConnectionsButton() {
         // TODO replace with proper icon set; connections icon
-        ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),"Connections",ButtonLabelType.TEXT_ON_BOTTOM));
+        ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),"Connections",ButtonLabelType.TEXT_ON_BOTTOM));
 
         connectionButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
-                MessageBox.info("success", "success");
+                ConnectionManagerWindow.display();
                 
             }
         });
