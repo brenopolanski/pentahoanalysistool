@@ -102,6 +102,28 @@ public class ConnectionManagerWindow extends WindowPanel {
 	    }
 	    display();
 	}
+	
+	public static void closeTabs() {
+	    tabPanel.invalidate();
+        tabPanel.remove(connectMondrian);
+        tabPanel.remove(connectXmla);
+        tabPanel.layout();
+	}
+	
+	public static void showNewConnection() {
+	    // TODO add when implemented
+	    // ConnectionManagerPanel.refresh();
+
+	    tabPanel.invalidate();
+	    tabPanel.remove(connectMondrian);
+	    tabPanel.remove(connectXmla);
+	    connectMondrian = new ConnectMondrianPanel();
+	    connectXmla = new ConnectXmlaPanel();
+	    tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+        tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
+	    tabPanel.selectTab(0);
+	    tabPanel.layout();
+	}
 
 	
 	/* (non-Javadoc)

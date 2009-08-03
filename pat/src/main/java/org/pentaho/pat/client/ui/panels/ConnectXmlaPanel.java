@@ -23,14 +23,20 @@ import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
+import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -81,9 +87,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
 		userTextBox = new TextBox();
 		nameTextBox = new TextBox();
 		passwordTextBox = new PasswordTextBox();
-		// this.setLayout(new BorderLayout());
 		init();
-		// this.add(onInitialize());
 	}
 
 	/**
@@ -110,23 +114,21 @@ public class ConnectXmlaPanel extends LayoutComposite {
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
-                getCubeConnection();
                 // TODO replace with new RPC functions
-//              ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<Object>() {
-//                  public void onFailure(final Throwable arg0) {
-//                      MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
-//                      connectButton.setEnabled(true);
-//                  }
-//
-//                  public void onSuccess(final Object o) {
-//                      connectButton.setEnabled(true);
-//                      MessageBox.info(ConstantFactory.getInstance().success(), ConstantFactory.getInstance().connectionEstablished());
-//                      setConnectionEstablished(true);
-//                      GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectXmlaPanel.this);
-//                      // TODO change this once saving connections is possible
-//                      ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
-//                  }
-//              });
+              ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<String>() {
+                  public void onFailure(final Throwable arg0) {
+                      MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
+                      connectButton.setEnabled(true);
+                  }
+
+                  public void onSuccess(final String o) {
+                      connectButton.setEnabled(true);
+                      // TODO refresh or close?
+                      ConnectionManagerWindow.closeTabs();
+                      
+                      //ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
+                  }
+              });
             }
         });
 

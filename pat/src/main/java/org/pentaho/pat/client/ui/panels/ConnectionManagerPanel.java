@@ -59,6 +59,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 
 	private ListBox<ConnectionItem> listBox;
 	private ToolBar toolBar;
+	private LayoutPanel connectionsList;
 
 	private static final DefaultListModel<ConnectionItem> model = new DefaultListModel<ConnectionItem>();
 
@@ -66,12 +67,13 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		super();
 		final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-		baseLayoutPanel.add(setupConnectionList());
+		setupConnectionList();
+		baseLayoutPanel.add(connectionsList);
 
 
 	}
 
-	public Widget setupConnectionList() {
+	public void setupConnectionList() {
 		final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 		vBox.setPadding(0);
 		vBox.setWidgetSpacing(0);
@@ -87,7 +89,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 		
 		vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
 
-		return vBox;
+		connectionsList = vBox;
 	}
 
 
@@ -164,7 +166,7 @@ public class ConnectionManagerPanel extends LayoutComposite  {
 				Pat.IMAGES.add(), null,
 				ButtonLabelType.NO_TEXT), new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				ConnectionManagerWindow.display();
+				ConnectionManagerWindow.showNewConnection();
 			}
 		}));
 

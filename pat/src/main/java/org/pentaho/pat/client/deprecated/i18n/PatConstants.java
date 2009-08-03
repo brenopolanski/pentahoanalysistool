@@ -18,7 +18,7 @@ import com.google.gwt.i18n.client.Constants;
 /**
  * Constants for Pat.
  */
-
+@Deprecated
 public interface PatConstants extends Constants {
 
 	/** The Constant CURRENT_QUERY_NAME. */

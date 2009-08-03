@@ -22,6 +22,7 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Tom Barber
  */
+@Deprecated
 public class MessageFactory {
 	
 	/** PatMessages object. */
