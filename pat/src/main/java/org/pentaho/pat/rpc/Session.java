@@ -21,7 +21,7 @@ public interface Session extends RemoteService {
 	 * @return A unique session identification string.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String createSession() throws RpcException;
 	
 	/**
@@ -30,7 +30,7 @@ public interface Session extends RemoteService {
 	 * @param sessionId The session id to close and destroy.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void closeSession(String sessionId) throws RpcException;
 	
 
@@ -44,7 +44,7 @@ public interface Session extends RemoteService {
 	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
     public void connect(String sessionId, String connectionId) throws RpcException;
 	
 	/**
@@ -54,7 +54,7 @@ public interface Session extends RemoteService {
 	 * @return True if all is good.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void disconnect(String sessionId, String connectionId) throws RpcException;
 	
 	/**
@@ -66,7 +66,7 @@ public interface Session extends RemoteService {
 	 * as a parameter. Null if no connection of that name exist.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CubeConnection getConnection(String sessionId, String connectionId) throws RpcException;
 	
 	/**
@@ -75,7 +75,7 @@ public interface Session extends RemoteService {
 	 * @return  An array of connections
 	 * @throws RpcException
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CubeConnection[] getActiveConnections(String sessionId) throws RpcException;
 	
 	/**
@@ -85,7 +85,7 @@ public interface Session extends RemoteService {
 	 * @return The new connection UUID
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String saveConnection(String sessionId, CubeConnection connection) throws RpcException;
 	
 	/**
@@ -94,7 +94,7 @@ public interface Session extends RemoteService {
 	 * @return An array of connection names.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
     public CubeConnection[] getConnections(String sessionId) throws RpcException;
 
 	/**

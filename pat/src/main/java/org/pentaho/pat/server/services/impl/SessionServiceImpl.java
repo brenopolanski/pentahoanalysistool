@@ -153,7 +153,7 @@ public class SessionServiceImpl extends AbstractService
                 schema.deleteOnExit();
                 FileWriter fw = new FileWriter(schema);
                 BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(sc.getSchema());
+                bw.write(sc.getSchemaData());
                 bw.close();
                 fw.close();
             } catch (IOException ioe) {
@@ -384,10 +384,9 @@ public class SessionServiceImpl extends AbstractService
 
     public void validateUser(String userId) throws SecurityException 
     {
-        // TODO continue from here.
-//        User user = this.userManager.getUser(userId);
-//        if (user==null)
-//            throw new SecurityException(
-//                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+        User user = this.userManager.getUser(userId);
+        if (user==null)
+            throw new SecurityException(
+                Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
     }
 }

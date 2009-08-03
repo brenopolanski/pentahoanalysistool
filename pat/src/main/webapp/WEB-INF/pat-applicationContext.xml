@@ -88,8 +88,11 @@
 	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
 	</bean>
 	
-  
-  
+  <bean id="defaultDataLoader" class="org.pentaho.pat.server.services.impl.DefaultDataLoader">
+    <property name="userManager" ref="userManager"/>
+    <property name="groupManager" ref="groupManager"/>
+    <property name="loadDefaultData" value="true"/>
+  </bean>
   
 	<!-- ############################################################################# -->
   <!-- ########  PERSISTENCE LAYER ################################################# -->
@@ -115,6 +118,10 @@
   </bean>
   
   <bean id="userManager" class="org.pentaho.pat.server.data.impl.UserManagerImpl">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="groupManager" class="org.pentaho.pat.server.data.impl.GroupManagerImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 	

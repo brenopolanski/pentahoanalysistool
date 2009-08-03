@@ -150,7 +150,7 @@ public class ResolverUtil<T> {
     try {
       urls = loader.getResources(packageName);
     } catch (IOException ioe) {
-      log.debug("Could not read package: " + packageName, ioe); //$NON-NLS-1$
+      log.trace("Could not read package: " + packageName, ioe); //$NON-NLS-1$
       return;
     }
     while (urls.hasMoreElements()) {
@@ -164,7 +164,7 @@ public class ResolverUtil<T> {
             urlPath = urlPath.substring(4);
           eurl = new URL(urlPath);
         }
-        log.info("Scanning for classes in [" + urlPath //$NON-NLS-1$
+        log.trace("Scanning for classes in [" + urlPath //$NON-NLS-1$
             + "] matching criteria: " + tests); //$NON-NLS-1$
 
         // is it a file?
@@ -176,9 +176,9 @@ public class ResolverUtil<T> {
           loadImplementationsInJar(packageName, eurl, tests);
         }
       } catch (IOException e) {
-        log.debug("could not read entries", e); //$NON-NLS-1$
+        log.trace("could not read entries", e); //$NON-NLS-1$
       } catch (URISyntaxException se) {
-        log.debug("could not read entries", se); //$NON-NLS-1$
+        log.trace("could not read entries", se); //$NON-NLS-1$
       }
     }
   }
@@ -215,7 +215,7 @@ public class ResolverUtil<T> {
         }
       }
     } catch (IOException ioe) {
-      log.debug("Could not search jar file \\\'" + jarfile //$NON-NLS-1$
+      log.trace("Could not search jar file \\\'" + jarfile //$NON-NLS-1$
           + "\\\' for classes matching criteria: " + tests //$NON-NLS-1$
           + " due to an IOException", ioe); //$NON-NLS-1$
     }
@@ -239,18 +239,17 @@ public class ResolverUtil<T> {
       Class<?> type = loader.loadClass(externalName);
 
       for (Test test : tests) {
-        if (log.isDebugEnabled()) {
-          log.debug("Checking to see if class " + externalName //$NON-NLS-1$
-              + " matches criteria [" + test + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
         if (test.matches(type)) {
           matches.add((Class<T>) type);
+          if (log.isDebugEnabled()) {
+              log.info("Found JDBC driver :" + type.getName()); //$NON-NLS-1$
+          }
         }
       }
     } catch (Throwable t) {
-      log.debug("Could not examine class \\\'" + fqn + "\\\' due to a " //$NON-NLS-1$ //$NON-NLS-2$
-          + t.getClass().getName() + " with message: " //$NON-NLS-1$
-          + t.getMessage());
+//      log.trace("Could not examine class \\\'" + fqn + "\\\' due to a " //$NON-NLS-1$ //$NON-NLS-2$
+//          + t.getClass().getName() + " with message: " //$NON-NLS-1$
+//          + t.getMessage());
     }
   }
 }

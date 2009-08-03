@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author Luc Boudreau
  */
 @Entity
-@Table(name="groups")
+@Table(name="GROUPS")
 public class Group {
 
     /**
@@ -56,9 +56,9 @@ public class Group {
 	    targetEntity=User.class,
         fetch=FetchType.EAGER)
     @JoinTable(
-        name="groups_users",
-        joinColumns=@JoinColumn(name="group_id",table="groups",referencedColumnName="name"),
-        inverseJoinColumns=@JoinColumn(name="user_id",table="users",referencedColumnName="username"))
+        name="GROUPS_USERS",
+        joinColumns=@JoinColumn(name="group_id",table="GROUPS",referencedColumnName="name"),
+        inverseJoinColumns=@JoinColumn(name="user_id",table="USERS",referencedColumnName="username"))
 	public Collection<User> getMembers() {
 		return members;
 	}

@@ -28,7 +28,7 @@ public interface DiscoveryService extends Service {
      * @return A list of dimension names.
      * @throws OlapException If something goes sour.
      */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public List<String> getDimensions(String userId, String sessionId, 
 			String queryId, Axis.Standard axis) throws OlapException;
 	
@@ -41,11 +41,11 @@ public interface DiscoveryService extends Service {
      * to perform this operation.
 	 * @return A list of cubes.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public List<String> getCubes(String userId, String sessionId,
 	    String connectionId) throws OlapException;
 	
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public Cube getCube(String userId, String sessionId,
 	    String connectionId, String cubeName) throws OlapException;
 	
@@ -61,7 +61,7 @@ public interface DiscoveryService extends Service {
 	 * in a dimension.
 	 * @throws OlapException If anything goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public StringTree getMembers(String userId, String sessionId,
 		String queryId, String dimensionName) throws OlapException;
 	
@@ -70,6 +70,6 @@ public interface DiscoveryService extends Service {
 	 * for registered JDBC drivers.
 	 * @return A list of JDBC driver class names.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public List<String> getDrivers();
 }

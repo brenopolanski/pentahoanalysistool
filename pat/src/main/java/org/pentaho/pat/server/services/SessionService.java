@@ -39,7 +39,7 @@ public interface SessionService extends Service {
 	 * @param userId The owner of the session to create.
 	 * @return The session unique ID.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String createNewSession(String userId);
 	
 	/**
@@ -47,7 +47,7 @@ public interface SessionService extends Service {
 	 * @param userId The owner of the session to close.
 	 * @param sessionId The session id we want to close.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void releaseSession(String userId, String sessionId);
 	
 	/**
@@ -56,7 +56,7 @@ public interface SessionService extends Service {
 	 * @param sessionId The id of the session we want.
 	 * @return The session object, null if none found.
 	 */
-	@Secured ({"ROLE_ADMIN"})
+	@Secured ({"Administrators"})
     public Session getSession(String userId, String sessionId);
 
 	
@@ -67,7 +67,7 @@ public interface SessionService extends Service {
 	 * @param key The key under which to store the variable.
 	 * @param value The object to store into the session space.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void saveUserSessionVariable(String userId, String sessionId, 
 		String key, Object value);
 	
@@ -78,7 +78,7 @@ public interface SessionService extends Service {
 	 * @param key The key under which the variable is stored.
 	 * @return The stored object, null if none found.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public Object getUserSessionVariable(String userId, String sessionId, 
 			String key);
 	
@@ -88,7 +88,7 @@ public interface SessionService extends Service {
 	 * @param sessionId The id of the session that contains the variable.
 	 * @param key The key under which the variable is stored.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void deleteUserSessionVariable(String userId, String sessionId, 
 		String key);
 	
@@ -101,11 +101,11 @@ public interface SessionService extends Service {
 	 * @param connectionId The connection UUID to activate
 	 * @throws OlapException If the connection fails.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void connect(String userId, String sessionId, 
 			String connectionId) throws OlapException;
 	
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String createConnection(String userId, String sessionId,
             String driverName, String connectStr, String username,
             String password) throws OlapException;
@@ -117,7 +117,7 @@ public interface SessionService extends Service {
      * @param sc A SavedConnection object describing the connection to establish.
      * @throws OlapException If the connection fails.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public void connect(String userId, String sessionId, 
             SavedConnection sc) throws OlapException;
 
@@ -132,7 +132,7 @@ public interface SessionService extends Service {
      * underlying native connection.
      * @return The olapConnection object. Null if none are found.
      */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public OlapConnection getNativeConnection(
 	        String userId, String sessionId, String connectionId);
 	
@@ -142,7 +142,7 @@ public interface SessionService extends Service {
 	 * @param sessionId The session id that contains the connection
 	 * @param connectionId The connection UUID
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void disconnect(String userId, String sessionId,
 	        String connectionId);
 	
@@ -152,7 +152,7 @@ public interface SessionService extends Service {
 	 * @param connectionId The UUID of the connection.
 	 * @return The SavedConnection object, null if not found.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	@Transactional(readOnly=true)
     public SavedConnection getConnection(String userId, String connectionId);
 	
@@ -161,7 +161,7 @@ public interface SessionService extends Service {
 	 * @param userId The owner of the connections we want the names of.
 	 * @return A list of connection names, null if the user doesn't exist.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	@Transactional(readOnly=true)
     public List<SavedConnection> getConnections(String userId);
     
@@ -171,7 +171,7 @@ public interface SessionService extends Service {
      * @param sessionId The session in which to seek for active connections
      * @return A list of connection names, null if the user doesn't exist.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     @Transactional(readOnly=true)
     public List<SavedConnection> getActiveConnections(String userId, String sessionId);
     
@@ -181,7 +181,7 @@ public interface SessionService extends Service {
 	 * will be associated to his account.
 	 * @param connection The connection to save.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	@Transactional(readOnly=false)
     public void saveConnection(String userId, SavedConnection connection);
 	
@@ -190,7 +190,7 @@ public interface SessionService extends Service {
 	 * @param userId The owner of the connection to delete.
 	 * @param connectionName The name of the connection to delete.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	@Transactional(readOnly=false)
     public void deleteConnection(String userId, String connectionId);
 }

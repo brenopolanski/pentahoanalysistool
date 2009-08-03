@@ -13,35 +13,49 @@ public interface UserManager {
      * @param userId The id of the user we want.
      * @return The corresponding user object, null if none found by that name.
      */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public User getUser(String userId);
 	
 	/**
 	 * Loads a list of all users from the database.
 	 * @return A List object of all users. Could be an empty list.
 	 */
-	@Secured ({"ROLE_ADMIN"})
+	@Secured ({"Administrators"})
 	public List<User> getUsers();
+	
+	/**
+	 * Internal unsecured hook for default data loading.
+	 * @return The list of current users.
+	 */
+	public List<User> getDefaultUsers();
 	
 	/**
 	 * Adds a user object to the database.
 	 * @param user The user to create.
 	 */
-	@Secured ({"ROLE_ADMIN"})
+	@Secured ({"Administrators"})
 	public void createUser(User user);
+	
+	/**
+	 * Internal unsecured call to create default users in the system.
+	 * @param user The user to save.
+	 */
+	public void createDefaultUser(User user);
 	
 	/**
 	 * Updates a user object in the database.
 	 * @param user The user that contains the modifications to save.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
     public void updateUser(User user);
+
+    public void updateDefaultUser(User user);
 	
 	/**
 	 * Deletes a user from the database.
 	 * @param userId The user id to delete.
 	 */
-	@Secured ({"ROLE_ADMIN"})
+	@Secured ({"Administrators"})
 	public void deleteUser(String userId);
 	
 	/**
@@ -50,7 +64,6 @@ public interface UserManager {
 	 * @param connectionName The connection unique name.
 	 * @return The connection object, null if none found for those criteria.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
     public SavedConnection getSavedConnection(String userId, String connectionName);
-	
 }

@@ -29,7 +29,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         User user = userManager.getUser("admin"); //$NON-NLS-1$
         assertNotNull(user);
         assertEquals("admin", user.getUsername()); //$NON-NLS-1$
-        assertEquals(1, user.getGroups().size());
+        assertEquals(2, user.getGroups().size());
         Group group = user.getGroups().iterator().next();
         assertEquals("Administrators", group.getName()); //$NON-NLS-1$
         User user2 = group.getMembers().iterator().next();
@@ -53,7 +53,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         String[][] expectedUsers = new String[][] {};
         String[][] expectedMemberships = new String[][] {};
         String[][] expectedGroups = new String[][] {
-                {"Administrators"} //$NON-NLS-1$
+                {"Administrators"},{"Users"} //$NON-NLS-1$ //$NON-NLS-2$
         };
         String[][] expectedConnections = new String[][] {};
         String[][] expectedConnectionsAssociations = new String[][] {};
@@ -66,11 +66,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         User user = userManager.getUser("admin"); //$NON-NLS-1$
         assertNotNull(user);
         assertEquals("admin", user.getUsername()); //$NON-NLS-1$
-        assertEquals(1, user.getGroups().size());
-        Group group = user.getGroups().iterator().next();
-        assertEquals("Administrators", group.getName()); //$NON-NLS-1$
-        User user2 = group.getMembers().iterator().next();
-        assertEquals("admin", user2.getUsername()); //$NON-NLS-1$
+        assertEquals(2, user.getGroups().size());
         
         this.userManager.deleteUser("admin"); //$NON-NLS-1$
         
@@ -98,13 +94,15 @@ public class UserManagerImplTest extends AbstractManagerTest {
     public void testCreateUser() throws Exception 
     {
         String[][] expectedUsers = new String[][] {
-                {"admin"}, //$NON-NLS-1$
-                {"new_user"} //$NON-NLS-1$
+                {"admin", "true", "admin"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                {"new_user", "true", "password"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         };
         initTest();
 
         User user = new User();
         user.setUsername("new_user"); //$NON-NLS-1$
+        user.setPassword("password"); //$NON-NLS-1$
+        user.setEnabled(true);
         
         this.userManager.createUser(user);
         
@@ -244,7 +242,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         currentMemberships = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
-        runOnDatasource("select top 50 this_.username as username1_2_, groups2_.user_id as user2_4_, group3_.name as group1_4_, group3_.name as name2_0_, savedconne4_.user_id as user1_5_, savedconne5_.name as connection2_5_, savedconne5_.name as name0_1_, savedconne5_.driverClassName as driverCl2_0_1_, savedconne5_.password as password0_1_, savedconne5_.schema as schema0_1_, savedconne5_.type as type0_1_, savedconne5_.url as url0_1_, savedconne5_.username as username0_1_ from users this_ left outer join groups_users groups2_ on this_.username=groups2_.user_id left outer join groups group3_ on groups2_.group_id=group3_.name left outer join users_connections savedconne4_ on this_.username=savedconne4_.user_id left outer join connections savedconne5_ on savedconne4_.connection_id=savedconne5_.name where this_.username = 'admin'"); //$NON-NLS-1$
+        runOnDatasource("select top 50 this_.username as username1_2_, groups2_.user_id as user2_4_, group3_.name as group1_4_, group3_.name as name2_0_, savedconne4_.user_id as user1_5_, savedconne5_.name as connection2_5_, savedconne5_.name as name0_1_, savedconne5_.driverClassName as driverCl2_0_1_, savedconne5_.password as password0_1_, savedconne5_.schemadata as schema0_1_, savedconne5_.type as type0_1_, savedconne5_.url as url0_1_, savedconne5_.username as username0_1_ from users this_ left outer join groups_users groups2_ on this_.username=groups2_.user_id left outer join groups group3_ on groups2_.group_id=group3_.name left outer join users_connections savedconne4_ on this_.username=savedconne4_.user_id left outer join connections savedconne5_ on savedconne4_.connection_id=savedconne5_.name where this_.username = 'admin'"); //$NON-NLS-1$
         
         user = this.userManager.getUser(userId);
         assertEquals(2,user.getSavedConnections().size());

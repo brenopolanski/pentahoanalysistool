@@ -103,7 +103,7 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
                     resolver.loadImplementationsInJar("", lib.toURI().toURL(), //$NON-NLS-1$
                             new ResolverUtil.IsA(Driver.class));
                 } catch (MalformedURLException e) {
-                    log.warn(e);
+                    log.trace(e);
                     continue;
                 }
             }

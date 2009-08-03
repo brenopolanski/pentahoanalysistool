@@ -38,6 +38,10 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
         return getHibernateTemplate().find("from User"); //$NON-NLS-1$
     }
 
+    public List<User> getDefaultUsers() {
+        return this.getUsers();
+    }
+    
 	@SuppressWarnings("unchecked")
     public User getUser(final String userId)
 	{
@@ -47,8 +51,17 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
 	public void createUser(User user) {
 		getHibernateTemplate().save(user);
 	}
+	
+	public void createDefaultUser(User user) {
+        this.createUser(user);
+    }
+	
     public void updateUser(User user) {
         getHibernateTemplate().update(user);
+    }
+    
+    public void updateDefaultUser(User user) {
+        this.updateUser(user);
     }
 
     @SuppressWarnings("unchecked")

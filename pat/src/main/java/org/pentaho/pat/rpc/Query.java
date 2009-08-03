@@ -26,7 +26,7 @@ public interface Query extends RemoteService {
      * @return The unique ame of the created query.
      * @throws RpcException If something goes sour.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException;
     
     
@@ -36,7 +36,7 @@ public interface Query extends RemoteService {
      * @return An array of query unique names.
      * @throws RpcException If something goes sour.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public String[] getQueries(String sessionId) throws RpcException;
 
     /**
@@ -45,7 +45,7 @@ public interface Query extends RemoteService {
      * @param queryId The query we want to close and release.
      * @return True if all is good.
      */
-    @Secured ({"ROLE_USER"})
+    @Secured ({"Users"})
     public void deleteQuery(String sessionId, String queryId) throws RpcException;
 
 	/**
@@ -57,7 +57,7 @@ public interface Query extends RemoteService {
 	 * @param dimensionName The name of the dimension to move.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void moveDimension(
 		String sessionId,
 		String queryId,
@@ -75,7 +75,7 @@ public interface Query extends RemoteService {
 	 * @param selectionType The type of selection to perform.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void createSelection(
 		String sessionId,
 		String queryId,
@@ -95,7 +95,7 @@ public interface Query extends RemoteService {
 	 * @return True if all is well.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public void clearSelection(
 		String sessionId,
 		String queryId,
@@ -110,7 +110,7 @@ public interface Query extends RemoteService {
 	 * @return The result of the query execution.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CellDataSet executeQuery(
 	        String sessionId, 
 	        String queryId) throws RpcException;
@@ -122,13 +122,13 @@ public interface Query extends RemoteService {
 	 * @return An MDX String.
 	 * @throws RpcException If something turns sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String getMdxForQuery(
 	        String sessionId, 
             String queryId) throws RpcException;
 	
 	// TODO is this the way we want mdx to work?
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public CellDataSet executeMdxQuery(
 	        String sessionId, 
 	        String connectionId, 

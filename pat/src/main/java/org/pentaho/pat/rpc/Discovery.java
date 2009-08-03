@@ -19,7 +19,7 @@ public interface Discovery extends RemoteService {
 	 * @return A list of java JDBC driver names.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String[] getDrivers() throws RpcException;
 	
 	/**
@@ -35,7 +35,7 @@ public interface Discovery extends RemoteService {
 	 * if the given axis is not present in the cube.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String [] getDimensions(
 	        String sessionId, 
 	        String queryId, 
@@ -49,7 +49,7 @@ public interface Discovery extends RemoteService {
 	 * list if none are found.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public String [] getCubes(
 	        String sessionId, 
 	        String connectionId) throws RpcException;
@@ -66,7 +66,7 @@ public interface Discovery extends RemoteService {
 	 * @return A StringTree of all present members.
 	 * @throws RpcException If something goes sour.
 	 */
-	@Secured ({"ROLE_USER"})
+	@Secured ({"Users"})
 	public StringTree getMembers(
 	        String sessionId, 
 	        String queryId,

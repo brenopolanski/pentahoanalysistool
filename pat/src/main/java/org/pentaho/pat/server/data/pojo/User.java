@@ -19,11 +19,17 @@ import org.hibernate.annotations.Cascade;
 
 
 @Entity
-@Table(name="users")
+@Table(name="USERS")
 public class User {
 	
     @Basic
     private String username = null;
+    
+    @Basic
+    private String password = null;
+    
+    @Basic
+    private boolean enabled = true;
 	
     private Collection<Group> groups = new HashSet<Group>();
 	
@@ -52,9 +58,9 @@ public class User {
 
 	@OneToMany(fetch=FetchType.EAGER,targetEntity=SavedConnection.class,cascade=CascadeType.ALL)
 	@JoinTable(
-	    name="users_connections",
-	    joinColumns=@JoinColumn(name="user_id",table="users",referencedColumnName="username"),
-	    inverseJoinColumns=@JoinColumn(name="connection_id",table="connections",referencedColumnName="id"))
+	    name="USERS_CONNECTIONS",
+	    joinColumns=@JoinColumn(name="user_id",table="USERS",referencedColumnName="username"),
+	    inverseJoinColumns=@JoinColumn(name="connection_id",table="CONNECTIONS",referencedColumnName="id"))
 	@Cascade({org.hibernate.annotations.CascadeType.ALL,org.hibernate.annotations.CascadeType.DELETE_ORPHAN,org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	public Set<SavedConnection> getSavedConnections() {
 		return savedConnections;
@@ -63,4 +69,22 @@ public class User {
 	public void setSavedConnections(Set<SavedConnection> savedConnections) {
 		this.savedConnections = savedConnections;
 	}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+	
+	
 }

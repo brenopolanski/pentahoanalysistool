@@ -73,8 +73,8 @@ public abstract class AbstractServlet extends RemoteServiceServlet
 	        User user = userManager.getUser("admin"); //$NON-NLS-1$
 	        
 	        GrantedAuthority userAuths[] = {
-                    new GrantedAuthorityImpl("ROLE_USER"), //$NON-NLS-1$
-                    new GrantedAuthorityImpl("ROLE_ADMIN") //$NON-NLS-1$
+                    new GrantedAuthorityImpl("Users"), //$NON-NLS-1$
+                    new GrantedAuthorityImpl("Administrators") //$NON-NLS-1$
                 };
             
             standaloneAuth = new PrincipalSpringSecurityUserToken(

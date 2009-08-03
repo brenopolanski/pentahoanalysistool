@@ -101,10 +101,11 @@ public abstract class AbstractServiceTest extends TestCase {
     
     protected void initDatabase()
     {
-        try {
-        /*
-         * Step 1. Clear data.
-         */
+        try 
+        {
+            /*
+             * Step 1. Clear data.
+             */
             Connection c = datasource.getConnection();
             Statement stm = c.createStatement();
             slurp(stm, AbstractServiceTest.class.getResourceAsStream("pat-delete.sql")); //$NON-NLS-1$
@@ -113,8 +114,7 @@ public abstract class AbstractServiceTest extends TestCase {
             stm.close();
             c.commit();
             c.close();
-            
-//            ((SessionFactory)applicationContext.getBean("sessionFactory")).isClosed()
+
             /*
              * Step 2. Insert data
              */
