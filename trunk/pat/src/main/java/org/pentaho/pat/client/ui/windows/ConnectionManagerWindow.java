@@ -32,8 +32,6 @@ import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * Connection Manager Window
  * 
@@ -77,12 +75,9 @@ public class ConnectionManagerWindow extends WindowPanel {
 //        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
         // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
         this.setWidget(windowContentpanel);
+        
     }
     
-
-  
-
- 
     public static void closeTabs() {
         for(int i = 0; i < tabPanel.getWidgetCount();) {
             tabPanel.remove(i);
@@ -96,15 +91,16 @@ public class ConnectionManagerWindow extends WindowPanel {
             }
 
     private static void refreshWindow() {
-        
-        int preferredWidth = Window.getClientWidth();
-        preferredWidth = Math.max(preferredWidth / 3, 256);
-
-        connectionManagerWindow.setPixelSize(connectionManagerWindow.getPreferredSize().width, 356);
-
-        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
-            connectionManagerWindow.setPixelSize(connectionManagerWindow.getPreferredSize().width, 356);
-        connectionManagerWindow.showModal(false);
+//        
+//        int preferredWidth = Window.getClientWidth();
+//        preferredWidth = Math.max(preferredWidth / 3, 256);
+//
+//        connectionManagerWindow.setPixelSize(preferredWidth, 356);
+//
+//        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
+//            connectionManagerWindow.setPixelSize(preferredWidth, 356);
+        ConnectionManagerPanel.refreshConnectionList();
+        connectionManagerWindow.showModal();
         connectionManagerWindow.layout();
 
     }
@@ -135,20 +131,6 @@ public class ConnectionManagerWindow extends WindowPanel {
             tabPanel.layout();
             refreshWindow();
         }
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gwt.mosaic.ui.client.WindowPanel#onLoad()
-     */
-    /**
-     * Fire on window load.
-     */
-    @Override
-    protected void onLoad() {
-        super.onLoad();
     }
 
 }

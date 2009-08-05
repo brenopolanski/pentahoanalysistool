@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.Dimension;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
@@ -54,11 +55,11 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Label Suffix. */
     private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 
-    /** Panel Height. */
-    private static final String HEIGHT = "280px"; //$NON-NLS-1$
+    /** Height of the panel. */
+    private static final Integer HEIGHT = 280; //$NON-NLS-1$
 
-    /** Panel Width. */
-    private static final String WIDTH = "620px"; //$NON-NLS-1$
+    /** Width of the Panel. */
+    private static final Integer WIDTH = 620; //$NON-NLS-1$
 
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
@@ -81,8 +82,6 @@ public class ConnectXmlaPanel extends LayoutComposite {
      */
     public ConnectXmlaPanel() {
         super(new BorderLayout());
-        this.setWidth(WIDTH);
-        this.setHeight(HEIGHT);
         connectButton = new Button(ConstantFactory.getInstance().save());
         // catalogTextBox = new TextBox();
         urlTextBox = new TextBox();
@@ -90,6 +89,11 @@ public class ConnectXmlaPanel extends LayoutComposite {
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
         init();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+      return new Dimension(WIDTH, HEIGHT);
     }
 
     /**
@@ -149,7 +153,6 @@ public class ConnectXmlaPanel extends LayoutComposite {
                             public void onSuccess(final String o) {
                                 connectButton.setEnabled(true);
                                 // TODO refresh or close?
-                                ConnectionManagerPanel.refreshConnectionList();
                                 ConnectionManagerWindow.closeTabs();
 
                                 // ConnectionManagerPanel.addConnection(new

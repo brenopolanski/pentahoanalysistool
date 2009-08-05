@@ -1,9 +1,9 @@
-#Thu Jul 16 08:52:18 BST 2009
+#Wed Aug 05 22:05:55 CEST 2009
 activeProfiles=
 eclipse.preferences.version=1
 fullBuildGoals=
 includeModules=false
-resolveWorkspaceProjects=false
+resolveWorkspaceProjects=true
 resourceFilterGoals=
 skipCompilerPlugin=true
 version=1
