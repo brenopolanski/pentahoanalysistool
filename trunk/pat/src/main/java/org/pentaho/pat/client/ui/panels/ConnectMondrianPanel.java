@@ -27,7 +27,10 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
@@ -80,13 +83,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend
      */
-    private static final String SCHEMA_START = "<PRE>"; //$NON-NLS-1$
+    private final String SCHEMA_START = "<SCHEMA_START>"; //$NON-NLS-1$
 
     /**
      * Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend.
      */
-    private static final String SCHEMA_END = "</PRE>"; //$NON-NLS-1$
+    private final String SCHEMA_END = "</SCHEMA_END>"; //$NON-NLS-1$
 
     // Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
     public static native String decode(final String data) /*-{
@@ -225,13 +228,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
         formPanel.setAction(FORM_ACTION);
         formPanel.setMethod(FORM_METHOD);
         formPanel.setEncoding(FORM_ENCODING);
-
+        final String START = "<SCHEMA_START>";
         formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
             public void onSubmitComplete(final SubmitCompleteEvent arg0) {
-                // TODO Replace filename handling with stored schema handling
-                // when implemented
+                // FIXME why is SCHEMA_START "". its like its never been defined. why? 
                 if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
+                    MessageBox.info("asdf!", arg0.getResults().substring(1,10)); 
+                    MessageBox.info("asdf!", START + " vs. " + SCHEMA_START);
                     if (arg0.getResults().contains(SCHEMA_START)) {
                         final String tmp = arg0.getResults().substring(
                                 arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),
@@ -283,26 +287,20 @@ public class ConnectMondrianPanel extends LayoutComposite {
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
-                getCubeConnection();
-                // TODO replace with new RPC functions
-                // ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), getCubeConnection(), new
-                // AsyncCallback<Object>() {
-                // public void onFailure(final Throwable arg0) {
-                // MessageBox.error(ConstantFactory.getInstance().error(),
-                // MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
-                // connectButton.setEnabled(true);
-                // }
-                //
-                // public void onSuccess(final Object o) {
-                // connectButton.setEnabled(true);
-                // MessageBox.info(ConstantFactory.getInstance().success(),
-                // ConstantFactory.getInstance().connectionEstablished());
-                // setConnectionEstablished(true);
-                // GlobalConnectionFactory.getInstance().getConnectionListeners().fireConnectionMade(ConnectMondrianPanel.this);
-                // // TODO change this once saving connections is possible
-                // ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
-                // }
-                // });
+                ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                        new AsyncCallback<String>() {
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .noConnectionParam(arg0.getLocalizedMessage()));
+                        connectButton.setEnabled(true);
+                    }
+
+                    public void onSuccess(final String o) {
+                        connectButton.setEnabled(true);
+                        // TODO refresh or close?
+                        ConnectionManagerWindow.closeTabs();
+                    }
+                });
             }
         });
 
