@@ -27,10 +27,10 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
@@ -43,61 +43,84 @@ import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * XMLA connections panel
- * @created Apr 10, 2009 
+ * 
+ * @created Apr 10, 2009
  * @since 0.2.0
  * @author Paul Stoellberger
  * 
  */
 public class ConnectXmlaPanel extends LayoutComposite {
 
-	/** Label Suffix. */
-	private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
+    /** Label Suffix. */
+    private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 
-	/** Panel Height. */
-	private static final String HEIGHT = "280px"; //$NON-NLS-1$
+    /** Panel Height. */
+    private static final String HEIGHT = "280px"; //$NON-NLS-1$
 
-	/** Panel Width. */
-	private static final String WIDTH = "620px"; //$NON-NLS-1$
+    /** Panel Width. */
+    private static final String WIDTH = "620px"; //$NON-NLS-1$
 
-	/** Textbox for connection name. */
-	private final TextBox nameTextBox;
+    /** Textbox for connection name. */
+    private final TextBox nameTextBox;
 
-	/** Url Textbox. */
-	private final TextBox urlTextBox;
-	// private final TextBox catalogTextBox;
-	/** User Textbox. */
-	private final TextBox userTextBox;
+    /** Url Textbox. */
+    private final TextBox urlTextBox;
 
-	/** Password Textbox. */
-	private final PasswordTextBox passwordTextBox;
+    // private final TextBox catalogTextBox;
+    /** User Textbox. */
+    private final TextBox userTextBox;
 
-	/** Connect button. */
-	private final Button connectButton;
+    /** Password Textbox. */
+    private final PasswordTextBox passwordTextBox;
 
-	/**
-	 * ConnectXmlaPanel Constructor.
-	 */
-	public ConnectXmlaPanel() {
-		super(new BorderLayout());
-		this.setWidth(WIDTH);
-		this.setHeight(HEIGHT);
-		connectButton = new Button(ConstantFactory.getInstance().save());
-		// catalogTextBox = new TextBox();
-		urlTextBox = new TextBox();
-		userTextBox = new TextBox();
-		nameTextBox = new TextBox();
-		passwordTextBox = new PasswordTextBox();
-		init();
-	}
+    /** Connect button. */
+    private final Button connectButton;
 
-	/**
+    /**
+     * ConnectXmlaPanel Constructor.
+     */
+    public ConnectXmlaPanel() {
+        super(new BorderLayout());
+        this.setWidth(WIDTH);
+        this.setHeight(HEIGHT);
+        connectButton = new Button(ConstantFactory.getInstance().save());
+        // catalogTextBox = new TextBox();
+        urlTextBox = new TextBox();
+        userTextBox = new TextBox();
+        nameTextBox = new TextBox();
+        passwordTextBox = new PasswordTextBox();
+        init();
+    }
+
+    /**
+     * Setup Cube Connection.
+     * 
+     * @return the cube connection
+     */
+    private CubeConnection getCubeConnection() {
+        final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
+        cc.setName(nameTextBox.getText());
+        cc.setUrl(urlTextBox.getText());
+        if (userTextBox.getText() != null && userTextBox.getText().length() > 0)
+            cc.setUsername(userTextBox.getText());
+        else
+            cc.setUsername(null);
+        if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0)
+            cc.setPassword(passwordTextBox.getText());
+        else
+            cc.setPassword(null);
+
+        return cc;
+    }
+
+    /**
      * Initialize the panel.
      */
     private void init() {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -115,20 +138,23 @@ public class ConnectXmlaPanel extends LayoutComposite {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
                 // TODO replace with new RPC functions
-              ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(), new AsyncCallback<String>() {
-                  public void onFailure(final Throwable arg0) {
-                      MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
-                      connectButton.setEnabled(true);
-                  }
+                ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                        new AsyncCallback<String>() {
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .noConnectionParam(arg0.getLocalizedMessage()));
+                                connectButton.setEnabled(true);
+                            }
 
-                  public void onSuccess(final String o) {
-                      connectButton.setEnabled(true);
-                      // TODO refresh or close?
-                      ConnectionManagerWindow.closeTabs();
-                      
-                      //ConnectionManagerPanel.addConnection(new ConnectionItem("1234",getCubeConnection().getName(),false));
-                  }
-              });
+                            public void onSuccess(final String o) {
+                                connectButton.setEnabled(true);
+                                // TODO refresh or close?
+                                ConnectionManagerWindow.closeTabs();
+
+                                // ConnectionManagerPanel.addConnection(new
+                                // ConnectionItem("1234",getCubeConnection().getName(),false));
+                            }
+                        });
             }
         });
 
@@ -138,38 +164,5 @@ public class ConnectXmlaPanel extends LayoutComposite {
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);
     }
-    
-	/**
-	 * Setup Cube Connection.
-	 *
-	 * @return the cube connection
-	 */
-	private CubeConnection getCubeConnection() {
-		final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
-		cc.setName(nameTextBox.getText());
-		cc.setUrl(urlTextBox.getText());
-		if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
-			cc.setUsername(userTextBox.getText());
-		} else {
-			cc.setUsername(null);
-		}
-		if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
-			cc.setPassword(passwordTextBox.getText());
-		} else {
-			cc.setPassword(null);
-		}
-		// if(catalogTextBox.getText() != null &&
-		// catalogTextBox.getText().length() > 0) {
-		// cc.setCatalog(catalogTextBox.getText());
-		// }
-		// else {
-		// cc.setCatalog(null);
-		// }
-
-		return cc;
-	}
-
-	
-
 
 }

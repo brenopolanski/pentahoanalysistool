@@ -17,32 +17,37 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
  */
+
 package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.client.i18n.GuiConstants;
+import org.pentaho.pat.client.util.GlobalConnectionListeners;
+import org.pentaho.pat.client.util.QueryChangeListeners;
 
 import com.google.gwt.core.client.GWT;
 
 /**
- * The Class ConstantFactory.
+ * Create Global Connection Factory to store connection listeners
  * 
- * @create Apr 23 2009
- * @since 0.2.0
+ * @created Apr 23 2009
+ * @since 0.3.0
  * @author tom(at)wamonline.org.uk
+ * 
  */
-public class ConstantFactory {
+public class GlobalConnectionFactory {
 
-    /** Pat Constansts Object. */
-    private static GuiConstants constants = null;
+    private static GlobalConnectionListeners gcl;
 
-    /**
-     * Create the PatConstants instance.
-     * 
-     * @return the instance
-     */
-    public static GuiConstants getInstance() {
-        if (constants == null)
-            constants = (GuiConstants) GWT.create(GuiConstants.class);
-        return constants;
+    public static QueryChangeListeners qcl;
+
+    public static GlobalConnectionListeners getInstance() {
+        if (gcl == null)
+            gcl = (GlobalConnectionListeners) GWT.create(GlobalConnectionListeners.class);
+        return gcl;
+    }
+
+    public static QueryChangeListeners getQueryInstance() {
+        if (qcl == null)
+            qcl = (QueryChangeListeners) GWT.create(QueryChangeListeners.class);
+        return qcl;
     }
 }

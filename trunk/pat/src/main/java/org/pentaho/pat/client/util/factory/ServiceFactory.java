@@ -25,62 +25,64 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 /**
  * The Class ServiceFactory.
  * 
+ * @created Aug 3, 2009
+ * @since 0.4.0
  * @author Tom Barber
  */
 public class ServiceFactory {
 
-	/** The discovery service. */
-	private static DiscoveryAsync dService = null;
+    /** The discovery service. */
+    private static DiscoveryAsync dService = null;
 
-	/** The session service. */
-	private static SessionAsync sService = null;
+    /** The session service. */
+    private static SessionAsync sService = null;
 
-	/** The query service. */
-	private static QueryAsync qService = null;
+    /** The query service. */
+    private static QueryAsync qService = null;
 
-	/**
-	 * Gets the discovery instance.
-	 * 
-	 * @return the discovery instance
-	 */
-	public static DiscoveryAsync getDiscoveryInstance() {
-		if (dService == null) {
-			dService = (DiscoveryAsync) GWT.create(Discovery.class);
-			final ServiceDefTarget endpoint = (ServiceDefTarget) dService;
-			final String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
-			endpoint.setServiceEntryPoint(moduleRelativeURL);
-		}
-		return dService;
-	}
+    /**
+     * Gets the discovery instance.
+     * 
+     * @return the discovery instance
+     */
+    public static DiscoveryAsync getDiscoveryInstance() {
+        if (dService == null) {
+            dService = (DiscoveryAsync) GWT.create(Discovery.class);
+            final ServiceDefTarget endpoint = (ServiceDefTarget) dService;
+            final String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
+            endpoint.setServiceEntryPoint(moduleRelativeURL);
+        }
+        return dService;
+    }
 
-	/**
-	 * Gets the query instance.
-	 * 
-	 * @return the query instance
-	 */
-	public static QueryAsync getQueryInstance() {
-		if (qService == null) {
-			qService = (QueryAsync) GWT.create(Query.class);
-			final ServiceDefTarget endpoint = (ServiceDefTarget) qService;
-			final String moduleRelativeURL = GWT.getModuleBaseURL() + "query.rpc"; //$NON-NLS-1$
-			endpoint.setServiceEntryPoint(moduleRelativeURL);
-		}
-		return qService;
-	}
+    /**
+     * Gets the query instance.
+     * 
+     * @return the query instance
+     */
+    public static QueryAsync getQueryInstance() {
+        if (qService == null) {
+            qService = (QueryAsync) GWT.create(Query.class);
+            final ServiceDefTarget endpoint = (ServiceDefTarget) qService;
+            final String moduleRelativeURL = GWT.getModuleBaseURL() + "query.rpc"; //$NON-NLS-1$
+            endpoint.setServiceEntryPoint(moduleRelativeURL);
+        }
+        return qService;
+    }
 
-	/**
-	 * Gets the session instance.
-	 * 
-	 * @return the session instance
-	 */
-	public static SessionAsync getSessionInstance() {
-		if (sService == null) {
-			sService = (SessionAsync) GWT.create(Session.class);
-			final ServiceDefTarget endpoint = (ServiceDefTarget) sService;
-			final String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
-			endpoint.setServiceEntryPoint(moduleRelativeURL);
-		}
-		return sService;
-	}
+    /**
+     * Gets the session instance.
+     * 
+     * @return the session instance
+     */
+    public static SessionAsync getSessionInstance() {
+        if (sService == null) {
+            sService = (SessionAsync) GWT.create(Session.class);
+            final ServiceDefTarget endpoint = (ServiceDefTarget) sService;
+            final String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
+            endpoint.setServiceEntryPoint(moduleRelativeURL);
+        }
+        return sService;
+    }
 
 }
