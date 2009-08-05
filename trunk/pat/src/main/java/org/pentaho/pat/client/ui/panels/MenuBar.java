@@ -34,16 +34,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
  * Menu Bar
- * @created Jul 29, 2009 
+ * 
+ * @created Jul 29, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
  */
 public class MenuBar extends LayoutComposite {
 
-    private LayoutPanel rootPanel = getLayoutPanel();
+    private final LayoutPanel rootPanel = getLayoutPanel();
+
     /**
-     * Initializes the Menu Bar contents  
+     * Initializes the Menu Bar contents
      */
     public MenuBar() {
         super();
@@ -51,17 +53,19 @@ public class MenuBar extends LayoutComposite {
         addConnectionsButton();
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
-    
+
     private void addConnectionsButton() {
-        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all cases)
-        ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),"Connections",ButtonLabelType.TEXT_ON_BOTTOM));
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+        // cases)
+        final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
+                "Connections", ButtonLabelType.TEXT_ON_BOTTOM));
         connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
-        
+
         connectionButton.addClickHandler(new ClickHandler() {
-            
-            public void onClick(ClickEvent arg0) {
+
+            public void onClick(final ClickEvent arg0) {
                 ConnectionManagerWindow.display();
-                
+
             }
         });
         rootPanel.add(connectionButton);
