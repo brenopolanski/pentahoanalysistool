@@ -37,7 +37,7 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.util.ConnectionItem;
+import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;

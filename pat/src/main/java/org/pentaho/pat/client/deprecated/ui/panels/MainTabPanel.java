@@ -42,9 +42,9 @@ public class MainTabPanel extends LayoutComposite {
 	
 	public MainTabPanel() {
 		super();
-		final LayoutPanel baseLayoutPanel = getLayoutPanel();
-		//baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
-		contentWrapper.addStyleName(DEF_STYLE_NAME + "-content-wrapper"); //$NON-NLS-1$
+		final LayoutPanel rootLayoutPanel = getLayoutPanel();
+		//rootLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
+		contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
 		contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(final SelectionEvent<Integer> selectEvent) {
 				final Widget widget =contentWrapper.getWidget(selectEvent.getSelectedItem());
@@ -82,7 +82,7 @@ public class MainTabPanel extends LayoutComposite {
 			}
 		});
 		
-		baseLayoutPanel.add(contentWrapper);
+		rootLayoutPanel.add(contentWrapper);
 	}
 
 	/**

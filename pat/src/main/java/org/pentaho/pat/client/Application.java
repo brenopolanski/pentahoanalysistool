@@ -21,16 +21,12 @@
 package org.pentaho.pat.client;
 
 import org.gwt.mosaic.ui.client.Viewport;
-import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.deprecated.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.deprecated.ui.panels.WelcomePanel;
-import org.pentaho.pat.client.deprecated.ui.widgets.OlapTable;
-import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -82,23 +78,21 @@ public class Application extends Viewport {
         void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
     }
 
-    /** The bottom Panel for the Application, contains the main panels. */
-    private static LayoutPanel parentPanel;
-
     private static MainTabPanel mainTabPanel = null;
     
     private MenuBar menuBar = null;
-
+    
+    private static LayoutPanel rootPanel;
     /**
      * Constructor.
      */
 
     public Application() {
         super();
-        final LayoutPanel rootPanel = getLayoutPanel();
+        rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         
-        parentPanel = new LayoutPanel(new BorderLayout());
+        
         
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
@@ -110,18 +104,18 @@ public class Application extends Viewport {
                 rootPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
             }
 
-            mainTabPanel = new MainTabPanel();
-            parentPanel.add(mainTabPanel);
-
+            
             if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
-                MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+                //MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
             }
             
-            rootPanel.add(parentPanel, new BoxLayoutData(FillStyle.BOTH));
+            mainTabPanel = new MainTabPanel();
+            rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
         }
+        
         else {
-            parentPanel.add(new OlapTable());
-            rootPanel.add(parentPanel, new BoxLayoutData(FillStyle.BOTH));
+            //TODO Disabled until new OlapTable implemented
+            //rootPanel.add(new OlapTable(), new BoxLayoutData(FillStyle.BOTH));
         }
     }
 
@@ -146,14 +140,13 @@ public class Application extends Viewport {
     }
 
 
-    // TODO remove if not needed
     /**
      * Gets the main panel.
      *
      * @return the bottom panel
      */
     public static LayoutPanel getMainPanel() {
-        return parentPanel;
+        return rootPanel;
     }
 
 
