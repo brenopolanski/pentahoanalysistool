@@ -22,7 +22,8 @@ package org.pentaho.pat.client.i18n;
 
 /**
  * The Message Interface
- * @created Mar 10, 2009 
+ * 
+ * @created Mar 10, 2009
  * @since 0.2.0
  * @author Tom Barber
  * 
@@ -30,128 +31,124 @@ package org.pentaho.pat.client.i18n;
 
 public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
 
-	/**
-	 * Failed to get a list of cubes.
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String failedCubeList(String localizedMessage);
+    /**
+     * Failed to get a list of cubes.
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String failedCubeList(String localizedMessage);
 
+    /**
+     * Failed to get a list of dimensions.
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String failedDimensionList(String localizedMessage);
 
-	/**
-	 * Failed to get a list of dimensions.
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String failedDimensionList(String localizedMessage);
+    /**
+     * Failed to set the dimension.
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String failedDimensionSet(String localizedMessage);
 
+    /**
+     * Translated "Failed to Fetch Members: {0}.".
+     * 
+     * @param arg
+     *            - the arg0
+     * 
+     * @return translated "Failed to Fetch Members: {0}."
+     */
+    String failedMemberFetch(String arg0);
 
-	/**
-	 * Failed to set the dimension.
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String failedDimensionSet(String localizedMessage);
+    /**
+     * Failed to create a query.
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String failedQueryCreate(String localizedMessage);
 
+    /**
+     * Failed to set sessionID.
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String failedSessionID(String localizedMessage);
 
-	/**
-	 * Failed to create a query.
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String failedQueryCreate(String localizedMessage);
+    /**
+     * Translated "Connection could not be established: {0}".
+     * 
+     * @param arg0
+     *            the arg0
+     * 
+     * @return translated "Connection could not be established: {0}" no_connection_param
+     */
+    String noConnectionParam(String arg0);
 
-	/**
-	 * Failed to set sessionID.
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String failedSessionID(String localizedMessage);
+    /**
+     * No Query Set
+     * 
+     * @param localizedMessage
+     *            the localized message
+     * 
+     * @return the string
+     */
+    String noQuerySet(String localizedMessage);
 
+    /**
+     * Translated "Selection could not be cleared: {0}".
+     * 
+     * @param arg0
+     *            the arg0
+     * 
+     * @return translated "Selection could not be cleared: {0}" no_selection_cleared
+     */
+    String noSelectionCleared(String arg0);
 
-	/**
-	 * Translated "Connection could not be established: {0}".
-	 *
-	 * @param arg0 the arg0
-	 *
-	 * @return translated "Connection could not be established: {0}"
-	 * no_connection_param
-	 */
-	String noConnectionParam(String arg0);
+    /**
+     * Translated "Selection mode could not be set: {0}".
+     * 
+     * @param arg0
+     *            the arg0
+     * 
+     * @return translated "Selection mode could not be set: {0}" no_selection_set
+     */
+    String noSelectionSet(String arg0);
 
+    /**
+     * Translated "Unable to get data from server: {0}".
+     * 
+     * @param arg0
+     *            the arg0
+     * 
+     * @return translated "Unable to get data from server: {0}" no_server_data
+     */
+    String noServerData(String arg0);
 
-	/**
-	 * No Query Set
-	 *
-	 * @param localizedMessage the localized message
-	 *
-	 * @return the string
-	 */
-	String noQuerySet(String localizedMessage);
-
-
-	/**
-	 * Translated "Selection could not be cleared: {0}".
-	 *
-	 * @param arg0 the arg0
-	 *
-	 * @return translated "Selection could not be cleared: {0}"
-	 * no_selection_cleared
-	 */
-	String noSelectionCleared(String arg0);
-
-
-	/**
-	 * Translated "Selection mode could not be set: {0}".
-	 *
-	 * @param arg0 the arg0
-	 *
-	 * @return translated "Selection mode could not be set: {0}"
-	 * no_selection_set
-	 */
-	String noSelectionSet(String arg0);
-
-
-	/**
-	 * Translated "Unable to get data from server: {0}".
-	 *
-	 * @param arg0 the arg0
-	 *
-	 * @return translated "Unable to get data from server: {0}"
-	 * no_server_data
-	 */
-	String noServerData(String arg0);
-
-
-	/**
-	 * Translated "Welcome.  The current time is {0}.".
-	 *
-	 * @param arg0 the arg0
-	 *
-	 * @return translated "Welcome.  The current time is {0}."
-	 * welcome
-	 */
-	String welcome(String arg0);
-
-
-	/**
-	 * Translated "Failed to Fetch Members: {0}.".
-	 *
-	 * @param arg- the arg0
-	 *
-	 * @return translated "Failed to Fetch Members: {0}."
-	 */
-	String failedMemberFetch(String arg0);
-
+    /**
+     * Translated "Welcome.  The current time is {0}.".
+     * 
+     * @param arg0
+     *            the arg0
+     * 
+     * @return translated "Welcome.  The current time is {0}." welcome
+     */
+    String welcome(String arg0);
 
 }

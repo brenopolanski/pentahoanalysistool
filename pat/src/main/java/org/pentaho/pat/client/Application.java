@@ -28,6 +28,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
+import org.pentaho.pat.client.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.TreeImages;
@@ -106,7 +108,7 @@ public class Application extends Viewport {
 
             
             if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
-                //MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+                MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
             }
             
             mainTabPanel = new MainTabPanel();

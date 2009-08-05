@@ -23,29 +23,28 @@ import org.pentaho.pat.client.i18n.GuiMessages;
 
 import com.google.gwt.core.client.GWT;
 
-
 /**
  * Factory for i18n GuiMessages
- * @created Aug 3, 2009 
+ * 
+ * @created Aug 3, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
  */
 
 public class MessageFactory {
-	
-	/** PatMessages object. */
-	private static GuiMessages guiMessages = null;
-	
-	/**
-	 * Create a message instance.
-	 * 
-	 * @return the instance
-	 */
-	public static GuiMessages getInstance() {
-		if (guiMessages == null) {
-			guiMessages = (GuiMessages) GWT.create(GuiMessages.class);
-		}
-		return guiMessages;
-	}
+
+    /** PatMessages object. */
+    private static GuiMessages guiMessages = null;
+
+    /**
+     * Create a message instance.
+     * 
+     * @return the instance
+     */
+    public static GuiMessages getInstance() {
+        if (guiMessages == null)
+            guiMessages = (GuiMessages) GWT.create(GuiMessages.class);
+        return guiMessages;
+    }
 }

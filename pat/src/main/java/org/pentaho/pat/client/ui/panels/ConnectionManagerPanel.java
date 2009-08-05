@@ -20,8 +20,6 @@
 
 package org.pentaho.pat.client.ui.panels;
 
-
-
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -37,8 +35,8 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
+import org.pentaho.pat.client.util.ConnectionItem;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -50,159 +48,156 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * Connection Manager Panel for adding/modifying/deleting Connections
- * @created Jun 30, 2009 
+ * 
+ * @created Jun 30, 2009
  * @since 0.4.0
  * @author Paul Stoellberger
  * 
  */
-public class ConnectionManagerPanel extends LayoutComposite  {
+public class ConnectionManagerPanel extends LayoutComposite {
 
-	private ListBox<ConnectionItem> listBox;
-	private ToolBar toolBar;
-	private LayoutPanel connectionsList;
+    public static void addConnection(final ConnectionItem ci) {
+        model.add(ci);
+    }
 
-	private static final DefaultListModel<ConnectionItem> model = new DefaultListModel<ConnectionItem>();
+    private ListBox<ConnectionItem> listBox;
 
-	public ConnectionManagerPanel() {
-		super();
-		final LayoutPanel baseLayoutPanel = getLayoutPanel();
+    private ToolBar toolBar;
 
-		setupConnectionList();
-		baseLayoutPanel.add(connectionsList);
+    private LayoutPanel connectionsList;
 
+    private static final DefaultListModel<ConnectionItem> model = new DefaultListModel<ConnectionItem>();
 
-	}
+    public ConnectionManagerPanel() {
+        super();
+        final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-	public void setupConnectionList() {
-		final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-		vBox.setPadding(0);
-		vBox.setWidgetSpacing(0);
+        setupConnectionList();
+        baseLayoutPanel.add(connectionsList);
 
-		// model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
-		
-		listBox = createListBox();
+    }
 
-		if (Pat.getApplicationState().getMode().isManageConnections()) {
-			toolBar = createToolBar(listBox);
-			vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
-		}
-		
-		vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+    public ListBox<ConnectionItem> createListBox() {
+        final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
+        cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
+            public void renderCell(final ListBox<ConnectionItem> cListBox, final int row, final int column,
+                    final ConnectionItem item) {
+                switch (column) {
+                case 0:
+                    cListBox.setWidget(row, column, createRichListBoxCell(item, cListBox));
+                    break;
+                default:
+                    throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                }
+            }
+        });
+        cListBox.setModel(model);
+        return cListBox;
+    }
 
-		connectionsList = vBox;
-	}
+    public ToolBar createToolBar(final ListBox<ConnectionItem> linkedListBox) {
 
+        final ToolBar toolBar = new ToolBar();
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.add(), null, ButtonLabelType.NO_TEXT),
+                new ClickHandler() {
+                    public void onClick(final ClickEvent event) {
+                        ConnectionManagerWindow.showNewConnection();
+                    }
+                }));
 
-	private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
-		final FlexTable table = new FlexTable();
-		final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), null, ButtonLabelType.NO_TEXT),
+                new ClickHandler() {
+                    public void onClick(final ClickEvent event) {
+                        if (linkedListBox.getSelectedIndex() == -1) {
+                            MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
+                            return;
+                        }
+                        final String item = linkedListBox.getItem(linkedListBox.getSelectedIndex()).getName();
+                        MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
+                                "Are you sure you want to permanently delete '" + item //$NON-NLS-1$
+                                        + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
+                                    public void onResult(final boolean result) {
+                                        if (result)
+                                            model.remove(linkedListBox.getSelectedIndex());
+                                    }
+                                });
+                    };
+                }));
 
-		table.setWidth("100%"); //$NON-NLS-1$
-		table.setBorderWidth(0);
-		table.setCellPadding(3);
-		table.setCellSpacing(0);
+        // EDIT will be disabled for some more time
+        final ToolButton editButton = new ToolButton("Edit", new ClickHandler() { //$NON-NLS-1$
+                    public void onClick(final ClickEvent event) {
+                        if (linkedListBox.getSelectedIndex() == -1) {
+                            MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
+                            return;
+                        }
+                        // String item = listBox.getItem(listBox.getSelectedIndex()).getName();
+                        ConnectionManagerWindow.display();
+                    }
+                });
+        editButton.setEnabled(false);
+        toolBar.add(editButton);
 
-		// table.setStyleName("RichListBoxCell");
-		Image cImage;
-		if (item.isConnected())
-			cImage = Pat.IMAGES.connect().createImage();
-		else
-			cImage = Pat.IMAGES.disconnect().createImage();
+        return toolBar;
+    }
 
-		CustomButton cButton = new CustomButton(cImage) {
-			@Override
-			protected void onClick() {
-				// TODO implement dis-/connect routine(externalize strings)
-				super.onClick();
-				if (item.isConnected()) {
-					MessageBox.info("Success", "Disconnected!"); //$NON-NLS-1$ //$NON-NLS-2$
-					item.setConnected(false);
-				}
-				else {
-					MessageBox.info("Success", "Connected!");  //$NON-NLS-1$//$NON-NLS-2$
-					item.setConnected(true);
-				}
-				final int index = linkedListBox.getSelectedIndex();
-				model.set(index, item);
+    public void setupConnectionList() {
+        final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        vBox.setPadding(0);
+        vBox.setWidgetSpacing(0);
 
+        // model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
 
-			};
-		};
+        listBox = createListBox();
 
-		table.setWidget(0,0,cButton);
-		cellFormatter.setWidth(0, 0, "25px"); //$NON-NLS-1$
-		//cellFormatter.setHeight(0, 0, "25px");
-		table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
-		return table;
-	}
+        if (Pat.getApplicationState().getMode().isManageConnections()) {
+            toolBar = createToolBar(listBox);
+            vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+        }
 
-	public ListBox<ConnectionItem> createListBox() {
-		final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
-		cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
-			public void renderCell(ListBox<ConnectionItem> cListBox, int row, int column,
-					ConnectionItem item) {
-				switch (column) {
-				case 0:
-					cListBox.setWidget(row, column, createRichListBoxCell(item,cListBox));
-					break;
-				default:
-					throw new RuntimeException("Should not happen"); //$NON-NLS-1$
-				}
-			}
-		});
-		cListBox.setModel(model);
-		return cListBox;
-	}
+        vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
 
-	public static void addConnection(ConnectionItem ci) {
-		model.add(ci);
-	}
+        connectionsList = vBox;
+    }
 
+    private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
+        final FlexTable table = new FlexTable();
+        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
-	public ToolBar createToolBar(final ListBox<ConnectionItem> linkedListBox) {
+        table.setWidth("100%"); //$NON-NLS-1$
+        table.setBorderWidth(0);
+        table.setCellPadding(3);
+        table.setCellSpacing(0);
 
-		final ToolBar toolBar = new ToolBar();
-		toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(
-				Pat.IMAGES.add(), null,
-				ButtonLabelType.NO_TEXT), new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				ConnectionManagerWindow.showNewConnection();
-			}
-		}));
+        // table.setStyleName("RichListBoxCell");
+        Image cImage;
+        if (item.isConnected())
+            cImage = Pat.IMAGES.connect().createImage();
+        else
+            cImage = Pat.IMAGES.disconnect().createImage();
 
-		toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), null,ButtonLabelType.NO_TEXT), new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				if (linkedListBox.getSelectedIndex() == -1) {
-					MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
-					return;
-				}
-				String item = linkedListBox.getItem(linkedListBox.getSelectedIndex()).getName();
-				MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
-						"Are you sure you want to permanently delete '" + item //$NON-NLS-1$
-						+ "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
-					public void onResult(boolean result) {
-						if (result) {
-							model.remove(linkedListBox.getSelectedIndex());
-						}
-					}
-				});
-			};
-		}));
+        final CustomButton cButton = new CustomButton(cImage) {
+            @Override
+            protected void onClick() {
+                // TODO implement dis-/connect routine(externalize strings)
+                super.onClick();
+                if (item.isConnected()) {
+                    MessageBox.info("Success", "Disconnected!"); //$NON-NLS-1$ //$NON-NLS-2$
+                    item.setConnected(false);
+                } else {
+                    MessageBox.info("Success", "Connected!"); //$NON-NLS-1$//$NON-NLS-2$
+                    item.setConnected(true);
+                }
+                final int index = linkedListBox.getSelectedIndex();
+                model.set(index, item);
 
-		// EDIT will be disabled for some more time
-		ToolButton editButton = new ToolButton("Edit", new ClickHandler() { //$NON-NLS-1$
-			public void onClick(ClickEvent event) {
-				if (linkedListBox.getSelectedIndex() == -1) {
-					MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
-					return;
-				}
-				// String item = listBox.getItem(listBox.getSelectedIndex()).getName();
-				ConnectionManagerWindow.display();
-			}
-		});
-		editButton.setEnabled(false);
-		toolBar.add(editButton);
+            };
+        };
 
-		return toolBar;
-	}
+        table.setWidget(0, 0, cButton);
+        cellFormatter.setWidth(0, 0, "25px"); //$NON-NLS-1$
+        // cellFormatter.setHeight(0, 0, "25px");
+        table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
+        return table;
+    }
 }
