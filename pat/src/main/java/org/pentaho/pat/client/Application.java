@@ -83,7 +83,7 @@ public class Application extends Viewport {
     }
 
     /** The bottom Panel for the Application, contains the main panels. */
-    private static LayoutPanel mainPanel;
+    private static LayoutPanel parentPanel;
 
     private static MainTabPanel mainTabPanel = null;
     
@@ -98,7 +98,7 @@ public class Application extends Viewport {
         final LayoutPanel rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         
-        mainPanel = new LayoutPanel(new BorderLayout());
+        parentPanel = new LayoutPanel(new BorderLayout());
         
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
@@ -111,17 +111,17 @@ public class Application extends Viewport {
             }
 
             mainTabPanel = new MainTabPanel();
-            mainPanel.add(mainTabPanel);
+            parentPanel.add(mainTabPanel);
 
             if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
                 MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
             }
             
-            rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+            rootPanel.add(parentPanel, new BoxLayoutData(FillStyle.BOTH));
         }
         else {
-            mainPanel.add(new OlapTable());
-            rootPanel.add(mainPanel, new BoxLayoutData(FillStyle.BOTH));
+            parentPanel.add(new OlapTable());
+            rootPanel.add(parentPanel, new BoxLayoutData(FillStyle.BOTH));
         }
     }
 
@@ -153,7 +153,7 @@ public class Application extends Viewport {
      * @return the bottom panel
      */
     public static LayoutPanel getMainPanel() {
-        return mainPanel;
+        return parentPanel;
     }
 
 
