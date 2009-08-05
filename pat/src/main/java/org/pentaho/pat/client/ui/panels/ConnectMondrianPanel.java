@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.Dimension;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
@@ -67,10 +68,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
 
     /** Height of the panel. */
-    private static final String HEIGHT = "280px"; //$NON-NLS-1$
+    private static final Integer HEIGHT = 280; //$NON-NLS-1$
 
     /** Width of the Panel. */
-    private static final String WIDTH = "620px"; //$NON-NLS-1$
+    private static final Integer WIDTH = 620; //$NON-NLS-1$
 
     /** Suffix for label constants. */
     private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
@@ -160,6 +161,12 @@ public class ConnectMondrianPanel extends LayoutComposite {
         init();
 
     }
+    
+    @Override
+    public Dimension getPreferredSize() {
+      return new Dimension(WIDTH, HEIGHT);
+    }
+
 
     /**
      * Driver Listbox setup.
@@ -215,8 +222,6 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private void init() {
 
         final FormPanel formPanel = new FormPanel();
-        formPanel.setWidth(WIDTH);
-        formPanel.setHeight(HEIGHT);
         formPanel.setAction(FORM_ACTION);
         formPanel.setMethod(FORM_METHOD);
         formPanel.setEncoding(FORM_ENCODING);
