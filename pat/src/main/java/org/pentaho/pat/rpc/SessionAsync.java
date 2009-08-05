@@ -26,7 +26,7 @@ public interface SessionAsync {
 	
 	public void getConnections(String sessionId, AsyncCallback<CubeConnection[]> callback);
 	
-	public void getActiveConnections(String sessionId, AsyncCallback<CubeConnection[]> callback) throws RpcException;
+	public void getActiveConnections(String sessionId, AsyncCallback<CubeConnection[]> callback);
 	
 	public void saveConnection(String sessionId, CubeConnection connection, AsyncCallback<String> callback);
 	

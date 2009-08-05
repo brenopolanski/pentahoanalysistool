@@ -20,6 +20,9 @@
 
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.ArrayList;
+
+import org.gwt.mosaic.core.client.Dimension;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -37,9 +40,12 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.ConnectionItem;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CustomButton;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
@@ -71,10 +77,16 @@ public class ConnectionManagerPanel extends LayoutComposite {
     public ConnectionManagerPanel() {
         super();
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
-
+        
         setupConnectionList();
+        refreshConnectionList();
         baseLayoutPanel.add(connectionsList);
-
+        baseLayoutPanel.layout();
+    }
+    
+    @Override
+    public Dimension getPreferredSize() {
+      return new Dimension(256, 384);
     }
 
     public ListBox<ConnectionItem> createListBox() {
@@ -100,41 +112,41 @@ public class ConnectionManagerPanel extends LayoutComposite {
         final ToolBar toolBar = new ToolBar();
         toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.add(), null, ButtonLabelType.NO_TEXT),
                 new ClickHandler() {
-                    public void onClick(final ClickEvent event) {
-                        ConnectionManagerWindow.showNewConnection();
-                    }
-                }));
+            public void onClick(final ClickEvent event) {
+                ConnectionManagerWindow.showNewConnection();
+            }
+        }));
 
         toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), null, ButtonLabelType.NO_TEXT),
                 new ClickHandler() {
-                    public void onClick(final ClickEvent event) {
-                        if (linkedListBox.getSelectedIndex() == -1) {
-                            MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
-                            return;
-                        }
-                        final String item = linkedListBox.getItem(linkedListBox.getSelectedIndex()).getName();
-                        MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
-                                "Are you sure you want to permanently delete '" + item //$NON-NLS-1$
-                                        + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
-                                    public void onResult(final boolean result) {
-                                        if (result)
-                                            model.remove(linkedListBox.getSelectedIndex());
-                                    }
-                                });
-                    };
-                }));
+            public void onClick(final ClickEvent event) {
+                if (linkedListBox.getSelectedIndex() == -1) {
+                    MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
+                final String item = linkedListBox.getItem(linkedListBox.getSelectedIndex()).getName();
+                MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
+                        "Are you sure you want to permanently delete '" + item //$NON-NLS-1$
+                        + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
+                    public void onResult(final boolean result) {
+                        if (result)
+                            model.remove(linkedListBox.getSelectedIndex());
+                    }
+                });
+            };
+        }));
 
         // EDIT will be disabled for some more time
         final ToolButton editButton = new ToolButton("Edit", new ClickHandler() { //$NON-NLS-1$
-                    public void onClick(final ClickEvent event) {
-                        if (linkedListBox.getSelectedIndex() == -1) {
-                            MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
-                            return;
-                        }
-                        // String item = listBox.getItem(listBox.getSelectedIndex()).getName();
-                        ConnectionManagerWindow.display();
-                    }
-                });
+            public void onClick(final ClickEvent event) {
+                if (linkedListBox.getSelectedIndex() == -1) {
+                    MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
+                // String item = listBox.getItem(listBox.getSelectedIndex()).getName();
+                ConnectionManagerWindow.display();
+            }
+        });
         editButton.setEnabled(false);
         toolBar.add(editButton);
 
@@ -146,8 +158,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
         vBox.setPadding(0);
         vBox.setWidgetSpacing(0);
 
-        // model.add(new ConnectionItem("123","debug connection",false));  //$NON-NLS-1$//$NON-NLS-2$
-
         listBox = createListBox();
 
         if (Pat.getApplicationState().getMode().isManageConnections()) {
@@ -158,6 +168,60 @@ public class ConnectionManagerPanel extends LayoutComposite {
         vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
 
         connectionsList = vBox;
+    }
+
+    public static void refreshConnectionList() {
+
+        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
+
+        ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(),new AsyncCallback<CubeConnection[]>() {
+            public void onFailure(Throwable arg0) {
+                MessageBox.alert("error", "errorSaved");
+
+            }
+
+            public void onSuccess(CubeConnection[] ccArray) {
+                for (int i = 0; i < ccArray.length;i++) {
+                    final ConnectionItem newCi = new ConnectionItem(ccArray[i].getId(),ccArray[i].getName(),false);
+                    cList.add(newCi);
+                }
+
+                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),new AsyncCallback<CubeConnection[]>() {
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.alert("error", "errorActive");
+
+                    }
+
+                    public void onSuccess(CubeConnection[] ccArray2) {
+                        for (int i = 0; i < ccArray2.length;i++) {
+                            final ConnectionItem newCi = new ConnectionItem(ccArray2[i].getId(),ccArray2[i].getName(),false);
+                            MessageBox.info("active", newCi.getName());
+                            if(cList.contains(newCi)) {
+                                cList.get(cList.indexOf(newCi)).setConnected(true);
+                            }
+                            else {
+                                newCi.setConnected(true);
+                                cList.add(newCi);    
+                            }
+
+                        }
+
+                        model.clear();
+                        for (ConnectionItem cItem : cList) {
+                            model.add(cItem);
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+
+
+
+
     }
 
     private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
@@ -193,11 +257,11 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
             };
         };
-
         table.setWidget(0, 0, cButton);
         cellFormatter.setWidth(0, 0, "25px"); //$NON-NLS-1$
         // cellFormatter.setHeight(0, 0, "25px");
         table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
+        cellFormatter.setWidth(0, 1, "100%"); //$NON-NLS-1$
         return table;
     }
 }

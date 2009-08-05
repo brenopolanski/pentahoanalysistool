@@ -67,7 +67,7 @@ public class ConnectionManagerWindow extends WindowPanel {
         super(TITLE);
         
         
-        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.VERTICAL));
+        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
 //        connectMondrian = new ConnectMondrianPanel();
 //        connectXmla = new ConnectXmlaPanel();
 //        tabPanel.setPadding(5);
@@ -79,6 +79,10 @@ public class ConnectionManagerWindow extends WindowPanel {
         this.setWidget(windowContentpanel);
     }
     
+
+  
+
+ 
     public static void closeTabs() {
         for(int i = 0; i < tabPanel.getWidgetCount();) {
             tabPanel.remove(i);
@@ -88,32 +92,21 @@ public class ConnectionManagerWindow extends WindowPanel {
     }
 
     public static void display() {
-        
-        int preferredWidth = Window.getClientWidth();
-        preferredWidth = Math.max(preferredWidth / 3, 256);
-
-        connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
-
-        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
-            connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
-        
-        connectionManagerWindow.setHeight("800px");
-        connectionManagerWindow.showModal();
-    }
+                refreshWindow();
+            }
 
     private static void refreshWindow() {
         
         int preferredWidth = Window.getClientWidth();
         preferredWidth = Math.max(preferredWidth / 3, 256);
 
-        connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
+        connectionManagerWindow.setPixelSize(connectionManagerWindow.getPreferredSize().width, 356);
 
         if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
-            connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
-
-        connectionManagerWindow.setHeight("800px");
+            connectionManagerWindow.setPixelSize(connectionManagerWindow.getPreferredSize().width, 356);
+        connectionManagerWindow.showModal(false);
         connectionManagerWindow.layout();
-        connectionManagerWindow.showModal();
+
     }
     
     public static void display(final CubeConnection cc) {
@@ -138,8 +131,8 @@ public class ConnectionManagerWindow extends WindowPanel {
             tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
             tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
             tabPanel.selectTab(0);
-            tabPanel.layout();
             windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
+            tabPanel.layout();
             refreshWindow();
         }
     }
