@@ -149,6 +149,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
                             public void onSuccess(final String o) {
                                 connectButton.setEnabled(true);
                                 // TODO refresh or close?
+                                ConnectionManagerPanel.refreshConnectionList();
                                 ConnectionManagerWindow.closeTabs();
 
                                 // ConnectionManagerPanel.addConnection(new
