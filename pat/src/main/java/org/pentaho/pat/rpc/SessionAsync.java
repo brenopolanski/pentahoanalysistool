@@ -1,7 +1,6 @@
 package org.pentaho.pat.rpc;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
-import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

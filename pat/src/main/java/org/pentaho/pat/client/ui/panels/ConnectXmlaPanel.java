@@ -141,7 +141,6 @@ public class ConnectXmlaPanel extends LayoutComposite {
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
-                // TODO replace with new RPC functions
                 ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
                         new AsyncCallback<String>() {
                             public void onFailure(final Throwable arg0) {
