@@ -49,13 +49,14 @@ public class MenuBar extends LayoutComposite {
         super();
         rootPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
         addConnectionsButton();
-       
+        rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
     
     private void addConnectionsButton() {
-        // TODO replace with proper icon set; connections icon
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all cases)
         ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),"Connections",ButtonLabelType.TEXT_ON_BOTTOM));
-
+        connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        
         connectionButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
