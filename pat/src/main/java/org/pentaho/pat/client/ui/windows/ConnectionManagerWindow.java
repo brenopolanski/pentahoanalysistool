@@ -53,20 +53,42 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** Xmla Panel. */
     private transient static ConnectXmlaPanel connectXmla;
 
-    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final static LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    
+    private final static ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
 
     /** A Tab Layout Panel. */
     private transient final static TabLayoutPanel tabPanel = new TabLayoutPanel();
 
+    /**
+     * Connection Window Constructor.
+     */
+    public ConnectionManagerWindow() {
+        super(TITLE);
+        
+        
+        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.VERTICAL));
+//        connectMondrian = new ConnectMondrianPanel();
+//        connectXmla = new ConnectXmlaPanel();
+//        tabPanel.setPadding(5);
+//        tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+//        tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
+//        tabPanel.selectTab(0);
+//        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
+        // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
+        this.setWidget(windowContentpanel);
+    }
+    
     public static void closeTabs() {
-        tabPanel.invalidate();
-        tabPanel.remove(connectMondrian);
-        tabPanel.remove(connectXmla);
-        tabPanel.layout();
+        for(int i = 0; i < tabPanel.getWidgetCount();) {
+            tabPanel.remove(i);
+        }
+        windowContentpanel.remove(tabPanel);
+        refreshWindow();
     }
 
     public static void display() {
-        final ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
+        
         int preferredWidth = Window.getClientWidth();
         preferredWidth = Math.max(preferredWidth / 3, 256);
 
@@ -74,9 +96,26 @@ public class ConnectionManagerWindow extends WindowPanel {
 
         if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
             connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
+        
+        connectionManagerWindow.setHeight("800px");
         connectionManagerWindow.showModal();
     }
 
+    private static void refreshWindow() {
+        
+        int preferredWidth = Window.getClientWidth();
+        preferredWidth = Math.max(preferredWidth / 3, 256);
+
+        connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
+
+        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
+            connectionManagerWindow.setWidth(preferredWidth + "px"); //$NON-NLS-1$
+
+        connectionManagerWindow.setHeight("800px");
+        connectionManagerWindow.layout();
+        connectionManagerWindow.showModal();
+    }
+    
     public static void display(final CubeConnection cc) {
         if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian)
             // TODO uncomment when implemented
@@ -93,34 +132,18 @@ public class ConnectionManagerWindow extends WindowPanel {
     public static void showNewConnection() {
         // TODO add when implemented
         // ConnectionManagerPanel.refresh();
-
-        tabPanel.invalidate();
-        tabPanel.remove(connectMondrian);
-        tabPanel.remove(connectXmla);
-        connectMondrian = new ConnectMondrianPanel();
-        connectXmla = new ConnectXmlaPanel();
-        tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-        tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-        tabPanel.selectTab(0);
-        tabPanel.layout();
+        if (tabPanel.getWidgetCount() == 0) {
+            connectMondrian = new ConnectMondrianPanel();
+            connectXmla = new ConnectXmlaPanel();
+            tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+            tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
+            tabPanel.selectTab(0);
+            tabPanel.layout();
+            windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
+            refreshWindow();
+        }
     }
 
-    /**
-     * Connection Window Constructor.
-     */
-    public ConnectionManagerWindow() {
-        super(TITLE);
-        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.VERTICAL));
-        connectMondrian = new ConnectMondrianPanel();
-        connectXmla = new ConnectXmlaPanel();
-        tabPanel.setPadding(5);
-        tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-        tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-        tabPanel.selectTab(0);
-        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
-        // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
-        this.setWidget(windowContentpanel);
-    }
 
     /*
      * (non-Javadoc)
