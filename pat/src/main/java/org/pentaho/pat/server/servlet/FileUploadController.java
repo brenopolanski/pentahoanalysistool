@@ -24,8 +24,8 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 public class FileUploadController extends AbstractCommandController implements
 		ResourceLoaderAware, InitializingBean, ApplicationContextAware {
 	
-	private static final String DATA_START = "<SCHEMA_START>"; //$NON-NLS-1$
-	private static final String DATA_END = "</SCHEMA_END>"; //$NON-NLS-1$
+	private static final String DATA_START = "[SCHEMA_START]"; //$NON-NLS-1$
+	private static final String DATA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
 	
 	Logger log = Logger.getLogger(this.getClass());
 

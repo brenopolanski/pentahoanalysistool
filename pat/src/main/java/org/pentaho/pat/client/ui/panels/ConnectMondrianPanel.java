@@ -83,13 +83,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend
      */
-    private final String SCHEMA_START = "<SCHEMA_START>"; //$NON-NLS-1$
+    private final String SCHEMA_START = "<PRE>[SCHEMA_START]"; //$NON-NLS-1$
 
     /**
      * Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend.
      */
-    private final String SCHEMA_END = "</SCHEMA_END>"; //$NON-NLS-1$
+    private final String SCHEMA_END = "[/SCHEMA_END]</PRE>"; //$NON-NLS-1$
 
     // Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
     public static native String decode(final String data) /*-{
@@ -228,14 +228,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
         formPanel.setAction(FORM_ACTION);
         formPanel.setMethod(FORM_METHOD);
         formPanel.setEncoding(FORM_ENCODING);
-        final String START = "<SCHEMA_START>";
         formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
             public void onSubmitComplete(final SubmitCompleteEvent arg0) {
-                // FIXME why is SCHEMA_START "". its like its never been defined. why? 
                 if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
-                    MessageBox.info("asdf!", arg0.getResults().substring(1,10)); 
-                    MessageBox.info("asdf!", START + " vs. " + SCHEMA_START);
                     if (arg0.getResults().contains(SCHEMA_START)) {
                         final String tmp = arg0.getResults().substring(
                                 arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),
