@@ -68,11 +68,11 @@ public class ConnectionManagerPanel extends LayoutComposite {
         model.add(ci);
     }
 
-    private ListBox<ConnectionItem> listBox;
+    private static ListBox<ConnectionItem> listBox;
 
     private ToolBar toolBar;
 
-    private LayoutPanel connectionsList;
+    private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
     private static final DefaultListModel<ConnectionItem> model = new DefaultListModel<ConnectionItem>();
 
@@ -83,14 +83,23 @@ public class ConnectionManagerPanel extends LayoutComposite {
         setupConnectionList();
         refreshConnectionList();
         baseLayoutPanel.add(connectionsList);
-        baseLayoutPanel.layout();
     }
     
+    @Override
+    public void onLoad(){
+//        listBox.invalidate();
+    }
     @Override
     public Dimension getPreferredSize() {
       return new Dimension(256, 384);
     }
 
+    public static void refreshMe(){
+        connectionsList.invalidate();
+        listBox.invalidate();
+        connectionsList.layout();
+        listBox.layout();
+    }
     public ListBox<ConnectionItem> createListBox() {
         final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
         cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
@@ -169,20 +178,21 @@ public class ConnectionManagerPanel extends LayoutComposite {
     }
 
     public void setupConnectionList() {
-        final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        vBox.setPadding(0);
-        vBox.setWidgetSpacing(0);
+        //final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        //connectionsList.setPadding(0);
+        //connectionsList.setWidgetSpacing(0);
 
         listBox = createListBox();
 
         if (Pat.getApplicationState().getMode().isManageConnections()) {
             toolBar = createToolBar(listBox);
-            vBox.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+            connectionsList.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
 
-        vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
-
-        connectionsList = vBox;
+        connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+        //Eh? Surely either return vBox, or just use connectionsList
+        //connectionsList = vBox;
+        
     }
 
     public static void refreshConnectionList() {
@@ -227,7 +237,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         for (ConnectionItem cItem : cList) {
                             model.add(cItem);
                         }
-
+                        refreshMe();
                     }
                 });
 

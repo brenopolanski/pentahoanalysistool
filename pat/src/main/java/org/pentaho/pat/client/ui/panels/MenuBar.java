@@ -65,7 +65,6 @@ public class MenuBar extends LayoutComposite {
 
             public void onClick(final ClickEvent arg0) {
                 ConnectionManagerWindow.display();
-
             }
         });
         rootPanel.add(connectionButton);

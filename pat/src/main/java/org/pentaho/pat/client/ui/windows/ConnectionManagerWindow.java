@@ -64,7 +64,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     public ConnectionManagerWindow() {
         super(TITLE);
         
-        
+      
         windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
 //        connectMondrian = new ConnectMondrianPanel();
 //        connectXmla = new ConnectXmlaPanel();
@@ -75,6 +75,7 @@ public class ConnectionManagerWindow extends WindowPanel {
 //        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
         // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
         this.setWidget(windowContentpanel);
+        this.layout();
         
     }
     
@@ -99,10 +100,10 @@ public class ConnectionManagerWindow extends WindowPanel {
 //
 //        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
 //            connectionManagerWindow.setPixelSize(preferredWidth, 356);
+        connectionManagerWindow.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
         connectionManagerWindow.showModal();
         connectionManagerWindow.layout();
-
     }
     
     public static void display(final CubeConnection cc) {
