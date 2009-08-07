@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
+import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -51,6 +52,7 @@ public class MenuBar extends LayoutComposite {
         super();
         rootPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
         addConnectionsButton();
+        addCubesButton();
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
 
@@ -68,6 +70,23 @@ public class MenuBar extends LayoutComposite {
             }
         });
         rootPanel.add(connectionButton);
+    }
+    
+    private void addCubesButton() {
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+        // cases)
+        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
+                "Cubes", ButtonLabelType.TEXT_ON_BOTTOM));
+        cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+
+        cubeButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                CubeBrowserWindow cw = new CubeBrowserWindow();
+                cw.display();
+            }
+        });
+        rootPanel.add(cubeButton);
     }
 
 }
