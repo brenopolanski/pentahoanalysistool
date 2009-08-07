@@ -2,15 +2,25 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
+import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Tree;
@@ -21,21 +31,57 @@ public class CubeMenu extends LayoutComposite {
     /** The main menu. */
     private Tree cubeTree;
 
+    private final ToolButton qmQueryButton = new ToolButton("New Query");
+    
     public CubeMenu() {
         super();
         this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
-
+        baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         cubeTree = new Tree(treeImages);
         cubeTree.setAnimationEnabled(true);
-        cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-menu"); //$NON-NLS-1$
-        cubeTree.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+        cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
 
-        baseLayoutPanel.add(cubeTree);
+        baseLayoutPanel.add(cubeTree,new BoxLayoutData(FillStyle.BOTH));
         loadCubes();
 
+        cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+
+            public void onSelection(SelectionEvent<TreeItem> arg0) {
+                cubeTree.ensureSelectedItemVisible();
+                qmQueryButton.setEnabled(true);
+//                CubeTreeItem selected = (CubeTreeItem)cubeTree.getSelectedItem().getWidget();
+//                if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
+//                    MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
+//                }
+//                if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+//                    MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: " + selected.getCube());
+//                }
+                
+            }
+            
+        });
+        
+        LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+
+        qmQueryButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent arg0) {
+                if (cubeTree.getSelectedItem() != null) {
+                    CubeTreeItem selected = (CubeTreeItem)cubeTree.getSelectedItem().getWidget();
+                    if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
+                        MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
+                    }
+                    if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+                        MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: " + selected.getCube());
+                    }
+                }
+            }
+        });
+        qmQueryButton.setEnabled(false);
+        newQueryButtonPanel.add(qmQueryButton);
+        baseLayoutPanel.add(newQueryButtonPanel,new BoxLayoutData(FillStyle.VERTICAL));
 
     }
 
@@ -44,10 +90,12 @@ public class CubeMenu extends LayoutComposite {
     /**
      * Generates a cube list for the Cube Menu.
      */
-    private final void refreshCubeMenu(CubeConnection[] connections) {
+    private final void refreshCubeMenu(final CubeConnection[] connections) {
         cubeTree.clear();
         for(int i =0; i< connections.length;i++) {
-            final TreeItem cubesList = cubeTree.addItem(connections[i].getName());
+            final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connections[i],null));
+            final CubeConnection connection = connections[i];
+
             ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connections[i].getId(), new AsyncCallback<String[]>() {
                 public void onFailure(final Throwable arg0) {
                     MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
@@ -56,8 +104,7 @@ public class CubeMenu extends LayoutComposite {
                 public void onSuccess(final String[] o) {
 
                     for (final String element2 : o) {
-                        cubesList.addItem(element2);
-                        //setupMainMenuOption(cubesList, new QueryPanel(element2), Pat.IMAGES.cube());
+                        cubesList.addItem(new CubeTreeItem(connection,element2));
                     }
                     cubesList.setState(true);
                 }
@@ -94,23 +141,6 @@ public class CubeMenu extends LayoutComposite {
     }
 
 
-//    /**
-//     * Fires on browser clicks.
-//     * @param event the event
-//     */
-//    @Override
-//    public void onBrowserEvent(final Event event) {
-//        super.onBrowserEvent(event);
-//        final TreeItem item = cubeTree.getSelectedItem();
-//        if (listener != null && item != null && !item.getText().equals("connection 1") && !item.getText().equals("connection 2")) { //$NON-NLS-1$ //$NON-NLS-2$
-//
-//        }
-//
-//        cubeTree.setSelectedItem(item, false);
-//        cubeTree.ensureSelectedItemVisible();
-//
-//
-//    }
 
 
 
