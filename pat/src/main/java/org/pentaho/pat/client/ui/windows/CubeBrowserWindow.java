@@ -71,7 +71,7 @@ public class CubeBrowserWindow extends WindowPanel {
     }
     
     private void display(boolean refreshCubes) {
-        this.setSize("300px", "300px");
+        this.setSize("450px", "300px");
         if (refreshCubes) {
             cubeMenuPanel.loadCubes();
         }
