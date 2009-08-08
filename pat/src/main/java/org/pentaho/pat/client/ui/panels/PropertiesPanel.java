@@ -40,9 +40,9 @@ public class PropertiesPanel extends LayoutComposite {
     public PropertiesPanel() {
         final LayoutPanel rootPanel = getLayoutPanel();
         
-        final CaptionLayoutPanel mainPanel = new CaptionLayoutPanel("Properties");
-        
-        rootPanel.add(mainPanel);
+        //final CaptionLayoutPanel mainPanel = new CaptionLayoutPanel("Properties");
+        //mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
+        //rootPanel.add(mainPanel);
     }
 
 }

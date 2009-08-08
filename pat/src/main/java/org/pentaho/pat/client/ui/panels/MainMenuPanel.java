@@ -19,11 +19,21 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.ui.client.Caption;
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
  *TODO JAVADOC
@@ -39,14 +49,35 @@ public class MainMenuPanel extends LayoutComposite {
 
     public MainMenuPanel() {
         super();
-        rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-
+        rootPanel.setLayout(new BorderLayout());
+        rootPanel.addStyleName("pat-MainMenu"); //$NON-NLS-1$
         final DimensionPanel dimPanel = new DimensionPanel();
 
         final PropertiesPanel propertiesPanel = new PropertiesPanel();
 
-        rootPanel.add(dimPanel, new BoxLayoutData(1, 0.5));
-        rootPanel.add(propertiesPanel, new BoxLayoutData(1, 0.5));
+        final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel("Dimensions");
+        centerPanel.add(dimPanel);
+        rootPanel.add(centerPanel);
+        //rootPanel.add(propertiesPanel, new BoxLayoutData(1, 0.5));
+
+        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel("Properties");
+        
+        
+        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
+        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+        
+        
+
+        collapseBtn3.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                rootPanel.setCollapsed(westPanel, !rootPanel.isCollapsed(westPanel));
+                rootPanel.layout();
+            }
+        });
+        westPanel.add(propertiesPanel);
+        rootPanel.add(westPanel, new BorderLayoutData(Region.SOUTH, 0.5, true));
+        rootPanel.setCollapsed(westPanel, true);
+
     }
 
 }
