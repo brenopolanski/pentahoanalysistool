@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2009 Thomas Barber
- * 
+ * Copyright (C) 2009 Tom Barber
+ *
  * This program is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
  * Software Foundation; either version 2 of the License, or (at your option) 
@@ -17,36 +17,32 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
  */
+
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 
 /**
  *TODO JAVADOC
- * 
- * @created Aug 5, 2009
+ * @created Aug 8, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
- * 
+ *
  */
-public class MainMenuPanel extends LayoutComposite {
+public class PropertiesPanel extends LayoutComposite {
 
-    private final LayoutPanel rootPanel = getLayoutPanel();
-
-    public MainMenuPanel() {
-        super();
-        rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-
-        final DimensionPanel dimPanel = new DimensionPanel();
-
-        final PropertiesPanel propertiesPanel = new PropertiesPanel();
-
-        rootPanel.add(dimPanel, new BoxLayoutData(1, 0.5));
-        rootPanel.add(propertiesPanel, new BoxLayoutData(1, 0.5));
+    /**
+     *TODO JAVADOC
+     *
+     */
+    public PropertiesPanel() {
+        final LayoutPanel rootPanel = getLayoutPanel();
+        
+        final CaptionLayoutPanel mainPanel = new CaptionLayoutPanel("Properties");
+        
+        rootPanel.add(mainPanel);
     }
 
 }
