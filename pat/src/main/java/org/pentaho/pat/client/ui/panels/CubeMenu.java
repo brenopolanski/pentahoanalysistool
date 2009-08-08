@@ -78,7 +78,7 @@ public class CubeMenu extends LayoutComposite {
                         MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: "
                                 + selected.getCube());
                         OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
-                        MainTabPanel.displayContentWidget(olappanel);
+                        MainTabPanel.displayContentWidget(olappanel);   
                     }
                 }
             }
