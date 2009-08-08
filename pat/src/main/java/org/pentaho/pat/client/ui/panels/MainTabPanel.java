@@ -61,8 +61,8 @@ public class MainTabPanel extends LayoutComposite {
     public static void addContent(final DataWidget content, final String tabName) {
 
         boolean isWelcomePanel = false;
-        if (content != null)
-            if (content instanceof WelcomePanel) {
+        if (content != null){
+            
                 final Iterator<Widget> iter = contentWrapper.iterator();
                 while (iter.hasNext())
                     if (iter.next() instanceof WelcomePanel)
@@ -74,7 +74,7 @@ public class MainTabPanel extends LayoutComposite {
                     contentWrapper.layout();
                 }
 
-            } else {
+             else {
                 if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE))
                     contentWrapper.add(content, tabName);
                 else
@@ -83,16 +83,17 @@ public class MainTabPanel extends LayoutComposite {
                 counter++;
                 contentWrapper.layout();
 
-            }
+             }
+                }
     }
 
     public static void displayContentWidget(final DataWidget content) {
         if (content != null) {
             if (!content.isInitialized())
                 content.initialize();
-            DataWidget contentdupe = null;
-            contentdupe = copyMatrix(content, contentdupe);
-            addContent(contentdupe, content.getName());
+           // DataWidget contentdupe = null;
+           // contentdupe = copyMatrix(content, contentdupe);
+            addContent(content, content.getName());
         }
     }
 
