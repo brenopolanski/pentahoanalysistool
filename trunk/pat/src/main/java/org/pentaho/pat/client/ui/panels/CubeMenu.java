@@ -77,21 +77,8 @@ public class CubeMenu extends LayoutComposite {
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
                         MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: "
                                 + selected.getCube());
-                        ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(),
-                                selected.getConnectionId(), selected.getCube(), new AsyncCallback<String>() {
-
-                                    public void onFailure(Throwable arg0) {
-                                        // TODO Warn
-                                        MessageBox.alert("Warning", "Query Not Created");
-                                    }
-
-                                    public void onSuccess(String arg0) {
-                                        // TODO Open Query Tab
-                                        OlapPanel olappanel = new OlapPanel(selected.getCube());
-                                        MainTabPanel.displayContentWidget(olappanel);
-                                    }
-
-                                });
+                        OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
+                        MainTabPanel.displayContentWidget(olappanel);
                     }
                 }
             }

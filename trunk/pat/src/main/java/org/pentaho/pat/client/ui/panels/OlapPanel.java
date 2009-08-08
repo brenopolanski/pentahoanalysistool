@@ -16,13 +16,14 @@ import com.google.gwt.user.client.ui.Widget;
 public class OlapPanel extends DataWidget {
 
     private String panelName;
-
+    private String connectionId;
     /**
      *TODO JAVADOC
      *
      */
-    public OlapPanel(String name) {
-        panelName = name;
+    public OlapPanel(String cube, String connection) {
+        panelName = cube;
+        connectionId = connection;
     }
 
     /* (non-Javadoc)
