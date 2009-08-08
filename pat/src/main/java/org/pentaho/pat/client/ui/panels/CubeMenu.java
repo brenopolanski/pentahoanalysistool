@@ -78,14 +78,14 @@ public class CubeMenu extends LayoutComposite {
                         MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: "
                                 + selected.getCube());
                         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(),
-                                selected.getConnectionId(), selected.getCube(), new AsyncCallback() {
+                                selected.getConnectionId(), selected.getCube(), new AsyncCallback<String>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Warn
                                         MessageBox.alert("Warning", "Query Not Created");
                                     }
 
-                                    public void onSuccess(Object arg0) {
+                                    public void onSuccess(String arg0) {
                                         // TODO Open Query Tab
                                         OlapPanel olappanel = new OlapPanel(selected.getCube());
                                         MainTabPanel.displayContentWidget(olappanel);
