@@ -22,7 +22,11 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.rpc.dto.Axis;
 
 /**
@@ -47,15 +51,18 @@ public class DimensionPanel extends LayoutComposite {
     public DimensionPanel() {
         final LayoutPanel rootPanel = getLayoutPanel();
         
-        final CaptionLayoutPanel mainPanel = new CaptionLayoutPanel("Dimensions");
+        final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
+        
+        mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        mainPanel.addStyleName("pat-DimensionPanel"); //$NON-NLS-1$
         dimDropUnused = new DimensionDropWidget("Unused", Axis.UNUSED);
         dimDropRow = new DimensionDropWidget("Rows", Axis.ROWS);
         dimDropCol = new DimensionDropWidget("Columns", Axis.COLUMNS);
         dimDropFilter = new DimensionDropWidget("Filter", Axis.FILTER);
-        mainPanel.add(dimDropUnused);
-        mainPanel.add(dimDropRow);
-        mainPanel.add(dimDropCol);
-        mainPanel.add(dimDropFilter);
+        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
+        mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
+        mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
+        mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));
         
         rootPanel.add(mainPanel);
     }

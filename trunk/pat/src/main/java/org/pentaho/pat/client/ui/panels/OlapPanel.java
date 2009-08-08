@@ -53,7 +53,7 @@ public class OlapPanel extends DataWidget {
 
     private final String connectionId;
 
-    private String queryId;
+    private static String queryId;
 
     /**
      *TODO JAVADOC
@@ -65,7 +65,6 @@ public class OlapPanel extends DataWidget {
 
         cubeName = cube;
         connectionId = connection;
-
     }
 
     /*
@@ -91,19 +90,7 @@ public class OlapPanel extends DataWidget {
 
     @Override
     public void onLoad() {
-        ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
-                new AsyncCallback<String>() {
-
-                    public void onFailure(final Throwable arg0) {
-
-                        MessageBox.alert("Warning", "Failed to create Query");
-                    }
-
-                    public void onSuccess(final String query) {
-                        queryId = query;
-                    }
-
-                });
+       
     }
 
     @Override
@@ -133,8 +120,8 @@ public class OlapPanel extends DataWidget {
         final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-        final MainMenuPanel mainMenuPanel = new MainMenuPanel();
-        westPanel.add(mainMenuPanel);
+        
+        
 
         collapseBtn3.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -145,11 +132,37 @@ public class OlapPanel extends DataWidget {
 
         layoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, true));
         layoutPanel.setCollapsed(westPanel, true);
+        
+        ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
+                new AsyncCallback<String>() {
 
+                    public void onFailure(final Throwable arg0) {
+
+                        MessageBox.alert("Warning", "Failed to create Query");
+                    }
+
+                    public void onSuccess(final String query) {
+                        queryId = query;
+                        final MainMenuPanel mainMenuPanel = new MainMenuPanel();
+                        westPanel.add(mainMenuPanel);
+                    }
+
+                });
+
+        
+      
         final LayoutPanel centerPanel = new LayoutPanel();
 
         layoutPanel.add(centerPanel, new BorderLayoutData(true));
 
         return layoutPanel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the queryId
+     */
+    public static String getQueryId() {
+        return queryId;
     }
 }
