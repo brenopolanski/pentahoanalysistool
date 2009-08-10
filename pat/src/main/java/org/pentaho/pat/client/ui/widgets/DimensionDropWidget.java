@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
  */
-package org.pentaho.pat.client.ui.panels;
+package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;

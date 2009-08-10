@@ -21,7 +21,6 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -30,14 +29,13 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
+import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
@@ -58,8 +56,6 @@ public class CubeMenu extends LayoutComposite {
     /** The main menu. */
     private Tree cubeTree;
 
-    private final ToolButton qmQueryButton = new ToolButton("New Query");
-
     public CubeMenu() {
         super();
         this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
@@ -78,7 +74,7 @@ public class CubeMenu extends LayoutComposite {
 
             public void onSelection(SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
-                qmQueryButton.setEnabled(true);
+                CubeBrowserWindow.enableQmQuery(true);
                 // CubeTreeItem selected = (CubeTreeItem)cubeTree.getSelectedItem().getWidget();
                 // if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
                 // MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
@@ -91,28 +87,6 @@ public class CubeMenu extends LayoutComposite {
             }
 
         });
-
-        LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-
-        qmQueryButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent arg0) {
-                if (cubeTree.getSelectedItem() != null) {
-                    final CubeTreeItem selected = (CubeTreeItem) cubeTree.getSelectedItem().getWidget();
-                    if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
-                        MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
-                    }
-                    if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
-                        MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: "
-                                + selected.getCube());
-                        OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
-                        MainTabPanel.displayContentWidget(olappanel);   
-                    }
-                }
-            }
-        });
-        qmQueryButton.setEnabled(false);
-        newQueryButtonPanel.add(qmQueryButton);
-        baseLayoutPanel.add(newQueryButtonPanel, new BoxLayoutData(FillStyle.VERTICAL));
 
     }
 
@@ -173,6 +147,10 @@ public class CubeMenu extends LayoutComposite {
                         refreshCubeMenu(connections);
                     }
                 });
+    }
+
+    public Tree getCubeTree() {
+        return cubeTree;
     }
 
 }

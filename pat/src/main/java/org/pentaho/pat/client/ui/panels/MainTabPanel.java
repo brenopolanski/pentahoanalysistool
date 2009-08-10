@@ -121,7 +121,7 @@ public class MainTabPanel extends LayoutComposite {
         final HorizontalPanel hPanel = new HorizontalPanel();
         final TextLabel label = new TextLabel(string);
         DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap"); //$NON-NLS-1$ //$NON-NLS-2$
-        final ImageButton closeBtn = new ImageButton(Pat.IMAGES.closeButton());
+        final ImageButton closeBtn = new ImageButton(Pat.IMAGES.windowButtonClose());
         closeBtn.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final int widgetIndex = contentWrapper.getWidgetIndex(widget);
