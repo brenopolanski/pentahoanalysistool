@@ -1,10 +1,11 @@
 /**
  * TODO JAVADOC
  */
-package org.pentaho.pat.client.ui.panels;
+package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 

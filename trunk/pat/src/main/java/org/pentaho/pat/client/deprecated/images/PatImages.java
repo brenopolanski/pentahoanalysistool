@@ -59,4 +59,6 @@ public interface PatImages extends ImageBundle{
 	
 	AbstractImagePrototype disconnect();
 	
+	AbstractImagePrototype windowButtonClose();
+	
 }

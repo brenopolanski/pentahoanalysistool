@@ -79,18 +79,18 @@ public class ConnectionManagerPanel extends LayoutComposite {
     public ConnectionManagerPanel() {
         super();
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
-        
+
         setupConnectionList();
         baseLayoutPanel.add(connectionsList);
     }
-    
+
     @Override
     public void onLoad(){
-//        listBox.invalidate();
+        //        listBox.invalidate();
     }
     @Override
     public Dimension getPreferredSize() {
-      return new Dimension(256, 384);
+        return new Dimension(256, 384);
     }
 
     public static void refreshMe(){
@@ -140,20 +140,32 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
                     public void onResult(final boolean result) {
                         if (result) {
-                            ServiceFactory.getSessionInstance().deleteConnection(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+                            ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
 
                                 public void onFailure(Throwable arg0) {
-                                    MessageBox.alert("Error", "Error during deletion of Connection");
+                                    MessageBox.alert("Error", "Error during disconnection of Connection");
                                     
                                 }
 
                                 public void onSuccess(Object arg0) {
-                                    refreshConnectionList();
+                                    ServiceFactory.getSessionInstance().deleteConnection(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+
+                                        public void onFailure(Throwable arg0) {
+                                            MessageBox.alert("Error", "Error during deletion of Connection");
+
+                                        }
+
+                                        public void onSuccess(Object arg0) {
+                                            refreshConnectionList();
+                                        }
+
+                                    });
                                 }
                                 
                             });
+                           
                         }
-                            model.remove(linkedListBox.getSelectedIndex());
+                        model.remove(linkedListBox.getSelectedIndex());
                     }
                 });
             };
@@ -167,7 +179,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     return;
                 }
                 // String item = listBox.getItem(listBox.getSelectedIndex()).getName();
-                ConnectionManagerWindow.display();
+                // ConnectionManagerWindow.display();
             }
         });
         editButton.setEnabled(false);
@@ -177,21 +189,13 @@ public class ConnectionManagerPanel extends LayoutComposite {
     }
 
     public void setupConnectionList() {
-        //final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        //connectionsList.setPadding(0);
-        //connectionsList.setWidgetSpacing(0);
-
         listBox = createListBox();
 
         if (Pat.getApplicationState().getMode().isManageConnections()) {
             toolBar = createToolBar(listBox);
             connectionsList.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
-
         connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
-        //Eh? Surely either return vBox, or just use connectionsList
-        //connectionsList = vBox;
-        
     }
 
     public static void refreshConnectionList() {
@@ -223,7 +227,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                             final ConnectionItem newCi = new ConnectionItem(ccArray2[i].getId(),ccArray2[i].getName(),false);
 
                             // FIXME why is this not working, but the cIdList does work. cList should contain this element!!
-//                            if(cList2.contains(newCi)) {
+                            //                            if(cList2.contains(newCi)) {
                             if(cIdList.contains(newCi.getId())) {
                                 cList.get(cIdList.indexOf(newCi.getId())).setConnected(true);
                             }
@@ -232,7 +236,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                 cList.add(newCi);
                             }    
                         }
-                        
+
                         for (ConnectionItem cItem : cList) {
                             model.add(cItem);
                         }
@@ -280,7 +284,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         public void onSuccess(Object arg0) {
                             refreshConnectionList();                            
                         }
-                        
+
                     });
                 } else {
                     ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
@@ -292,7 +296,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         public void onSuccess(Object arg0) {
                             refreshConnectionList();                            
                         }
-                        
+
                     });
                 }
                 final int index = linkedListBox.getSelectedIndex();

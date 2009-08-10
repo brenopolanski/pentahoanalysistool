@@ -46,10 +46,10 @@ public class ConnectionManagerWindow extends WindowPanel {
     private static final String TITLE = ConstantFactory.getInstance().registerNewConnection();
 
     /** Mondrian Panel. */
-    private transient static ConnectMondrianPanel connectMondrian;
+    private static ConnectMondrianPanel connectMondrian;
 
     /** Xmla Panel. */
-    private transient static ConnectXmlaPanel connectXmla;
+    private static ConnectXmlaPanel connectXmla;
 
     private final static LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     

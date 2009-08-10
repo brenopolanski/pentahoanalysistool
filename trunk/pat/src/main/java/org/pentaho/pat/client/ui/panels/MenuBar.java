@@ -82,8 +82,7 @@ public class MenuBar extends LayoutComposite {
         cubeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                CubeBrowserWindow cw = new CubeBrowserWindow();
-                cw.display();
+                CubeBrowserWindow.display();
             }
         });
         rootPanel.add(cubeButton);

@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.rpc.dto.Axis;
 
 /**
