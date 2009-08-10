@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2009 Paul Stoellberger
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
+ */
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -26,6 +45,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
+/**
+ * Tree list of connections and cubes
+ * 
+ * @created Jul 2, 2009
+ * @since 0.4.0
+ * @author Paul Stoellberger
+ * 
+ */
 public class CubeMenu extends LayoutComposite {
 
     /** The main menu. */
@@ -93,7 +120,6 @@ public class CubeMenu extends LayoutComposite {
      * Generates a cube list for the Cube Menu.
      */
     private final void refreshCubeMenu(final CubeConnection[] connections) {
-        cubeTree.clear();
         for (int i = 0; i < connections.length; i++) {
             final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connections[i], null));
             final CubeConnection connection = connections[i];
@@ -118,6 +144,7 @@ public class CubeMenu extends LayoutComposite {
     }
 
     public final void loadCubes() {
+        cubeTree.clear();
         ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
                 new AsyncCallback<CubeConnection[]>() {
 
@@ -132,6 +159,7 @@ public class CubeMenu extends LayoutComposite {
     }
 
     public final void loadCubes(String connectionId) {
+        cubeTree.clear();
         ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
                 new AsyncCallback<CubeConnection>() {
 

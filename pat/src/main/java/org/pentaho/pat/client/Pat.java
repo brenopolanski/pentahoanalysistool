@@ -28,11 +28,11 @@ import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
-import org.pentaho.pat.client.deprecated.i18n.PatConstants;
+import org.pentaho.pat.client.i18n.GuiConstants;
 import org.pentaho.pat.client.deprecated.images.PatImages;
 import org.pentaho.pat.client.deprecated.util.State;
-import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
-import org.pentaho.pat.client.deprecated.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 
@@ -64,7 +64,7 @@ public class Pat implements EntryPoint {
     /**
      * The current style theme.
      */
-    public static String CUR_THEME = PatConstants.STYLE_THEMES[0];
+    public static String CUR_THEME = GuiConstants.STYLE_THEMES[0];
 
     /**
      * The base style name.

@@ -95,7 +95,7 @@ public class OlapPanel extends DataWidget {
 
     @Override
     public void onUnload() {
-        ServiceFactory.getQueryInstance().deleteQuery(Pat.getSessionID(), queryId, new AsyncCallback() {
+        ServiceFactory.getQueryInstance().deleteQuery(Pat.getSessionID(), queryId, new AsyncCallback<Object>() {
 
             public void onFailure(final Throwable arg0) {
 
