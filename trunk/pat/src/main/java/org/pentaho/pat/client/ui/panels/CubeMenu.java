@@ -120,6 +120,7 @@ public class CubeMenu extends LayoutComposite {
      * Generates a cube list for the Cube Menu.
      */
     private final void refreshCubeMenu(final CubeConnection[] connections) {
+        cubeTree.clear();
         for (int i = 0; i < connections.length; i++) {
             final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connections[i], null));
             final CubeConnection connection = connections[i];
@@ -144,11 +145,11 @@ public class CubeMenu extends LayoutComposite {
     }
 
     public final void loadCubes() {
-        cubeTree.clear();
         ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
                 new AsyncCallback<CubeConnection[]>() {
 
                     public void onFailure(Throwable arg0) {
+                        cubeTree.clear();
                         MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
                     }
 
@@ -159,11 +160,11 @@ public class CubeMenu extends LayoutComposite {
     }
 
     public final void loadCubes(String connectionId) {
-        cubeTree.clear();
         ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
                 new AsyncCallback<CubeConnection>() {
 
                     public void onFailure(Throwable arg0) {
+                        cubeTree.clear();
                         MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
                     }
 

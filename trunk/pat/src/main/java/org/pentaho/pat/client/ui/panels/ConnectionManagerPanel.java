@@ -81,7 +81,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         
         setupConnectionList();
-        refreshConnectionList();
         baseLayoutPanel.add(connectionsList);
     }
     
