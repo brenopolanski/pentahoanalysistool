@@ -199,7 +199,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
         final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
         final ArrayList<String> cIdList = new ArrayList<String>();
-
+        model.clear();
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(),new AsyncCallback<CubeConnection[]>() {
             public void onFailure(Throwable arg0) {
                 MessageBox.alert("error", "errorSaved");
@@ -233,7 +233,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                 cList.add(newCi);
                             }    
                         }
-                        model.clear();
+                        
                         for (ConnectionItem cItem : cList) {
                             model.add(cItem);
                         }
