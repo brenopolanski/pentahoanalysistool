@@ -22,6 +22,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.Axis.Standard;
