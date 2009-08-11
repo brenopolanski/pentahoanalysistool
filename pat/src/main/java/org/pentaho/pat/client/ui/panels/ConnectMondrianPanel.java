@@ -142,6 +142,9 @@ public class ConnectMondrianPanel extends LayoutComposite {
     /** Connect button. */
     private final Button connectButton;
 
+    /** Cancel button. */
+    private final Button cancelButton;
+
     /** Schema uploaded data. **/
     private String schemaData;
 
@@ -154,6 +157,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         nameTextBox = new TextBox();
         connectButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
+        cancelButton = new Button("Cancel");
         driverListBox = createDriverListComboBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
@@ -252,7 +256,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -303,6 +307,12 @@ public class ConnectMondrianPanel extends LayoutComposite {
         connectButton.setEnabled(false);
         builder.add(connectButton, CellConstraints.xyw(3, 13, 5));
 
+        cancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                ConnectionManagerWindow.closeTabs();
+            }
+        });
+        builder.add(cancelButton,CellConstraints.xyw(3, 15, 5));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);
