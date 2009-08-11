@@ -19,14 +19,12 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.util.FlexTableRowDropController;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.Axis.Standard;
-
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
 
 /**
  *TODO JAVADOC
@@ -39,48 +37,67 @@ import com.google.gwt.user.client.ui.Label;
 public class DimensionDropWidget extends LayoutComposite {
 
     private Standard dimAxis;
+
     private LayoutPanel baseLayoutPanel;
+
     private DimensionFlexTable dimensionTable;
+
+    private CaptionLayoutPanel captionLayoutPanel;
+
+    private Boolean horizontal = false;
+
+    private FlexTableRowDropController flexTableRowDropController1;
+
     /**
      *TODO JAVADOC
-     * @param unused 
-     * @param string 
-     *
+     * 
+     * @param unused
+     * @param string
+     * 
      */
-    public DimensionDropWidget(String labelText, Standard targetAxis) {
+    public DimensionDropWidget(final String labelText, final Standard targetAxis) {
         this.dimAxis = targetAxis;
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
+        baseLayoutPanel.add(captionLayoutPanel);
+    }
+
+    public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation) {
+        super();
+        horizontal = orientation;
 
     }
-   
+
+    @Override
+    public void onLoad(){
+            flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
+            DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
+            
+    }
+    
+    @Override
+    public void onUnload(){
+        DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
+    }
+
     /**
      * Initialization.
-     *
-     * @param labelText the label text
-     * @param targetAxis the target axis
+     * 
+     * @param labelText
+     *            the label text
+     * @param targetAxis
+     *            the target axis
      */
     public final void init(final String labelText, final Axis targetAxis) {
-           
-            LayoutPanel scrollLayoutPanel = new ScrollLayoutPanel();
-            
-            dimensionTable = new DimensionFlexTable(/*DimensionPanel.getTableRowDragController()*/);
-            dimensionTable.setWidth("100%"); //$NON-NLS-1$
-            final Label dropLabel = new Label(labelText);
-            dropLabel.setStyleName("dropLabel"); //$NON-NLS-1$
-            dimensionTable.setStyleName("dropTable"); //$NON-NLS-1$
-            
-            Grid dimensionGrid = new Grid(2,1);
-            dimensionGrid.setWidget(0, 0, dropLabel);
 
-            dimensionGrid.setWidget(1, 0, dimensionTable);
-            dimensionGrid.setWidth("100%"); //$NON-NLS-1$
-            
-            scrollLayoutPanel.add(dimensionGrid);
-            
-            baseLayoutPanel.add(scrollLayoutPanel);
-            
-            dimensionTable.populateDimensionTable(dimAxis);
-            }
+        captionLayoutPanel = new CaptionLayoutPanel(labelText);
+
+        dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController(), horizontal);
+        dimensionTable.addStyleName("pat-dropTable"); //$NON-NLS-1$
+
+        captionLayoutPanel.add(dimensionTable);
+
+        dimensionTable.populateDimensionTable(dimAxis);
+    }
 
 }
