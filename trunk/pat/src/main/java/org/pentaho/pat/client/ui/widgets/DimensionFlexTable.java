@@ -33,59 +33,61 @@ import com.google.gwt.user.client.ui.Label;
 
 /**
  *TODO JAVADOC
- *
- * @author bugg
- *
+ * 
+ * @created Aug 8, 2009
+ * @since 0.5.0
+ * @author tom(at)wamonline.org.uk
+ * 
  */
 public class DimensionFlexTable extends FlexTable {
 
     private Boolean horizontal = false;
-    private FlexTableRowDragController trdc;
-    
-    public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, Boolean orientation) {
+
+    private final FlexTableRowDragController trdc;
+
+    public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
         addStyleName("demo-flextable"); //$NON-NLS-1$
         horizontal = orientation;
-        
+
         this.trdc = tableRowDragController;
-        final Label spacerLabel = new Label("empty"); //$NON-NLS-1$
+        final Label spacerLabel = new Label(""); //$NON-NLS-1$
         spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
 
-
         setWidget(0, 0, spacerLabel);
-}
-
-    public void populateDimensionTable(final Axis targetAxis) {
-        //this.clear();
-        
-        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis, new AsyncCallback<String[]>() {
-
-                public void onFailure(final Throwable arg0) {
-                        // TODO use standardized message dialog when implemented
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Failed to get Dim List");
-                }
-
-                public void onSuccess(final String[] arg0) {
-
-                    for (int row = 0; row < arg0.length; row++) {
-                                final Label handle = new Label(arg0[row]);
-                                handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
-                                trdc.makeDraggable(handle);
-                                if (!horizontal)
-                                setWidget(row, 0, handle);
-                                else
-                                setWidget(0, row, handle);
-                                
-                        }
-
-                }
-        });
-
-}
+    }
 
     public void clearDimensionTable() {
         this.clear();
         final Label spacerLabel = new Label(""); //$NON-NLS-1$
         spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
-}
+    }
+
+    public void populateDimensionTable(final Axis targetAxis) {
+        // this.clear();
+
+        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis,
+                new AsyncCallback<String[]>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), "Failed to get Dim List");
+                    }
+
+                    public void onSuccess(final String[] arg0) {
+
+                        for (int row = 0; row < arg0.length; row++) {
+                            final Label handle = new Label(arg0[row]);
+                            handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
+                            trdc.makeDraggable(handle);
+                            if (!horizontal)
+                                setWidget(row, 0, handle);
+                            else
+                                setWidget(0, row, handle);
+
+                        }
+
+                    }
+                });
+
+    }
 
 }

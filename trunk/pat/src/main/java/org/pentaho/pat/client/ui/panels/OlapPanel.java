@@ -41,11 +41,20 @@ import com.google.gwt.user.client.ui.Widget;
  *Creates a query tab panel for the selected cube and connection.
  * 
  * @created Aug 8, 2009
- * @since 0.5.0 
+ * @since 0.5.0
  * @author tom(at)wamonline.org.uk
  * 
  */
 public class OlapPanel extends DataWidget {
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the queryId
+     */
+    public static String getQueryId() {
+        return queryId;
+    }
 
     private final String panelName;
 
@@ -90,7 +99,7 @@ public class OlapPanel extends DataWidget {
 
     @Override
     public void onLoad() {
-       
+
     }
 
     @Override
@@ -120,8 +129,6 @@ public class OlapPanel extends DataWidget {
         final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-        
-        
 
         collapseBtn3.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -132,7 +139,7 @@ public class OlapPanel extends DataWidget {
 
         layoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, true));
         layoutPanel.setCollapsed(westPanel, true);
-        
+
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 
@@ -149,20 +156,10 @@ public class OlapPanel extends DataWidget {
 
                 });
 
-        
-      
         final LayoutPanel centerPanel = new LayoutPanel();
 
         layoutPanel.add(centerPanel, new BorderLayoutData(true));
 
         return layoutPanel;
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the queryId
-     */
-    public static String getQueryId() {
-        return queryId;
     }
 }

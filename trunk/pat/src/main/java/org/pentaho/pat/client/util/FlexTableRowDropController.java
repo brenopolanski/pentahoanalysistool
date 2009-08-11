@@ -40,135 +40,161 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FlexTableRowDropController extends AbstractPositioningDropController {
 
-	/** CSS Tag. */
-	private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
+    /** CSS Tag. */
+    private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 
-	/** Flextable object. */
-	private final FlexTable flexTable;
+    /** Flextable object. */
+    private final FlexTable flexTable;
 
-	/** Indexed Panel Object. */
-	private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
+    /** Indexed Panel Object. */
+    private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
 
-		public Widget getWidget(final int index) {
-			return flexTable.getWidget(index, 0);
-		}
+        public Widget getWidget(final int index) {
+            return flexTable.getWidget(index, 0);
+        }
 
-		public int getWidgetCount() {
-			return flexTable.getRowCount();
-		}
+        public int getWidgetCount() {
+            return flexTable.getRowCount();
+        }
 
-		public int getWidgetIndex(final Widget child) {
-			throw new UnsupportedOperationException();
-		}
+        public int getWidgetIndex(final Widget child) {
+            throw new UnsupportedOperationException();
+        }
 
-		public boolean remove(final int index) {
-			throw new UnsupportedOperationException();
-		}
-	};
+        public boolean remove(final int index) {
+            throw new UnsupportedOperationException();
+        }
+    };
 
-	/** Positioner Widget. */
-	private Widget positioner = null;
+    /** Positioner Widget. */
+    private Widget positioner = null;
 
-	/** Target Row. */
-	private int targetRow;
+    /** Target Row. */
+    private int targetRow;
 
-	/** The Drop Axis. */
-	private org.pentaho.pat.rpc.dto.Axis targetAxis;
+    /** The Drop Axis. */
+    private org.pentaho.pat.rpc.dto.Axis targetAxis;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param flexTable the flex table
-	 */
-	public FlexTableRowDropController(final FlexTable flexTable) {
-		super(flexTable);
-		this.flexTable = flexTable;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param flexTable
+     *            the flex table
+     */
+    public FlexTableRowDropController(final FlexTable flexTable) {
+        super(flexTable);
+        this.flexTable = flexTable;
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param flexTable the flex table
-	 * @param rows the rows
-	 */
-	public FlexTableRowDropController(final FlexTable flexTable, final Axis rows) {
-		super(flexTable);
-		this.flexTable = flexTable;
-		targetAxis = rows;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param flexTable
+     *            the flex table
+     * @param rows
+     *            the rows
+     */
+    public FlexTableRowDropController(final FlexTable flexTable, final Axis rows) {
+        super(flexTable);
+        this.flexTable = flexTable;
+        targetAxis = rows;
+    }
 
-	/**
-	 * Positioner.
-	 * 
-	 * @param context the context
-	 * 
-	 * @return the widget
-	 */
-	Widget newPositioner(final DragContext context) {
-		final Widget p = new SimplePanel();
-		p.addStyleName(CSS_DEMO_TABLE_POSITIONER);
-		p.setPixelSize(flexTable.getOffsetWidth(), 1);
-		return p;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
+     */
+    /**
+     * Fires on drop.
+     * 
+     * @param context
+     *            the context
+     */
+    @Override
+    public void onDrop(final DragContext context) {
+        final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
+        FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(),
+                targetRow + 1, targetAxis);
+        super.onDrop(context);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
-	/**
-	 * Fires on drop.
-	 * @param context the context
-	 */
-	@Override
-	public void onDrop(final DragContext context) {
-		final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
-		FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(), targetRow + 1, targetAxis);
-		super.onDrop(context);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
+     */
+    /**
+     * Fires when the widget enters the drop zone.
+     * 
+     * @param context
+     *            the context
+     */
+    @Override
+    public void onEnter(final DragContext context) {
+        super.onEnter(context);
+        positioner = newPositioner(context);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
-	/**
-	 * Fires when the widget enters the drop zone.
-	 * @param context the context
-	 */
-	@Override
-	public void onEnter(final DragContext context) {
-		super.onEnter(context);
-		positioner = newPositioner(context);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
+     */
+    /**
+     * Fires on leaving the drop zone.
+     * 
+     * @param context
+     *            the context
+     */
+    @Override
+    public void onLeave(final DragContext context) {
+        positioner.removeFromParent();
+        positioner = null;
+        super.onLeave(context);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
-	/**
-	 * Fires on leaving the drop zone.
-	 * @param context the context
-	 */
-	@Override
-	public void onLeave(final DragContext context) {
-		positioner.removeFromParent();
-		positioner = null;
-		super.onLeave(context);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
+     */
+    /**
+     * Fires when the widget is moved.
+     * 
+     * @param context
+     *            the context
+     */
+    @Override
+    public void onMove(final DragContext context) {
+        super.onMove(context);
+        targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
+                context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
-	/**
-	 * Fires when the widget is moved.
-	 * @param context the context
-	 */
-	@Override
-	public void onMove(final DragContext context) {
-		super.onMove(context);
-		targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX, context.mouseY),
-				LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
+        final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
+        final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
+        final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
+        context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
+                + (targetRow == -1 ? 0 : w.getOffsetHeight()));
+    }
 
-		final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
-		final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
-		final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
-		context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (targetRow == -1 ? 0 : w.getOffsetHeight()));
-	}
+    /**
+     * Positioner.
+     * 
+     * @param context
+     *            the context
+     * 
+     * @return the widget
+     */
+    Widget newPositioner(final DragContext context) {
+        final Widget p = new SimplePanel();
+        p.addStyleName(CSS_DEMO_TABLE_POSITIONER);
+        p.setPixelSize(flexTable.getOffsetWidth(), 1);
+        return p;
+    }
 
 }
