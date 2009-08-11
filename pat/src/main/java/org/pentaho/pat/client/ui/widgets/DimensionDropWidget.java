@@ -69,18 +69,6 @@ public class DimensionDropWidget extends LayoutComposite {
 
     }
 
-    @Override
-    public void onLoad(){
-            flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
-            DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
-            
-    }
-    
-    @Override
-    public void onUnload(){
-        DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
-    }
-
     /**
      * Initialization.
      * 
@@ -99,6 +87,18 @@ public class DimensionDropWidget extends LayoutComposite {
         captionLayoutPanel.add(dimensionTable);
 
         dimensionTable.populateDimensionTable(dimAxis);
+    }
+
+    @Override
+    public void onLoad() {
+        flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
+        DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
+
+    }
+
+    @Override
+    public void onUnload() {
+        DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
     }
 
 }

@@ -53,16 +53,16 @@ public class FlexTableUtil {
      * @param targetRow
      *            the index before which to insert the copied row
      */
-     public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow, final
-     int targetRow) {
-     targetTable.insertRow(targetRow);
-     final HTML html = new HTML();
-     for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
-     html.setHTML(sourceTable.getHTML(sourceRow, col));
-     targetTable.setWidget(targetRow, col, html);
-     }
-     copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
-     }
+    public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,
+            final int targetRow) {
+        targetTable.insertRow(targetRow);
+        final HTML html = new HTML();
+        for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
+            html.setHTML(sourceTable.getHTML(sourceRow, col));
+            targetTable.setWidget(targetRow, col, html);
+        }
+        copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
+    }
 
     /**
      * Move an entire FlexTable from one FlexTable to another. Elements are moved by attempting to call
@@ -82,7 +82,7 @@ public class FlexTableUtil {
      *            the target axis
      */
     public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,
-            final int targetRow, final Axis targetAxis) { // NOPMD by bugg on 21/04/09 05:52
+            final int targetRow, final Axis targetAxis) {
         // targetRow = targetTable.getRowCount();
         int sRow = sourceRow;
         if (sourceTable != targetTable) {
@@ -94,43 +94,37 @@ public class FlexTableUtil {
                 final int col2 = col;
                 final Widget w = sourceTable.getWidget(sRow, col);
                 if (w != null) {
-                    if (w instanceof Label) {
-                         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
-                        
-                         public void onFailure(final Throwable arg0) {
-                         MessageBox.error(ConstantFactory.getInstance().error(),
-                         MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
-                         }
-                        //
-                         public void onSuccess(final Object arg0) {
-                        // ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
-                        // w.getElement().getInnerText().trim(),
-                        // new AsyncCallback<StringTree>() {
-                        //
-                        // public void onFailure(final Throwable arg0) {
-                        // MessageBox.error(ConstantFactory.getInstance().error(),
-                        // MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
-                         //}
-                        //
-                         //public void onSuccess(final StringTree arg0) {
-                        // final Tree dimTree = new Tree();
-                        // final StringTree memberTree = arg0;
-                        // final Label rootLabel = new Label(memberTree.getValue());
-                        // TreeItem root = new TreeItem(rootLabel);
-                        // for (int i = 0; i < memberTree.getChildren().size(); i++) {
-                        // root = createPathForMember(root, memberTree.getChildren().get(i));
-                         //}
-                         //dimTree.addItem(root);
-                           
-                         targetTable.setWidget(targetRow, col2, w);
-                        //
-                         }
-                        //
-                         });
-                         //}
-                        //
-                    //});
-                    } else
+                    if (w instanceof Label)
+                        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), OlapPanel.getQueryId(),
+                                targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
+
+                                    public void onFailure(final Throwable arg0) {
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                .getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                                    }
+
+                                    //
+                                    public void onSuccess(final Object arg0) {
+                                        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
+                                                OlapPanel.getQueryId(), w.getElement().getInnerText().trim(),
+                                                new AsyncCallback() {
+
+                                                    public void onFailure(final Throwable arg0) {
+                                                        MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                MessageFactory.getInstance().failedMemberFetch(
+                                                                        arg0.getLocalizedMessage()));
+                                                    }
+
+                                                    public void onSuccess(final Object arg0) {
+                                                        // TODO Auto-generated method stub
+                                                        targetTable.setWidget(targetRow, col2, w);
+                                                    }
+
+                                                });
+                                    }
+
+                                });
+                    else
                         targetTable.setWidget(targetRow, col, w);
 
                 } else {
