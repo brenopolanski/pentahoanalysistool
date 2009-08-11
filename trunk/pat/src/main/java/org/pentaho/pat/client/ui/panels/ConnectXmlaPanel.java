@@ -77,12 +77,16 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Connect button. */
     private final Button connectButton;
 
+    /** Cancel button. */
+    private final Button cancelButton;
+    
     /**
      * ConnectXmlaPanel Constructor.
      */
     public ConnectXmlaPanel() {
         super(new BorderLayout());
         connectButton = new Button(ConstantFactory.getInstance().save());
+        cancelButton = new Button("Cancel");
         // catalogTextBox = new TextBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
@@ -124,7 +128,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -163,6 +167,12 @@ public class ConnectXmlaPanel extends LayoutComposite {
 
         builder.add(connectButton, CellConstraints.xyw(3, 9, 5));
 
+        cancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                ConnectionManagerWindow.closeTabs();
+            }
+        });
+        builder.add(cancelButton,CellConstraints.xyw(3, 11, 5));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);
