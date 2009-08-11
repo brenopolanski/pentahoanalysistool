@@ -17,7 +17,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.deprecated.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.deprecated.util.FlexTableRowDragController;
-import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
 /**

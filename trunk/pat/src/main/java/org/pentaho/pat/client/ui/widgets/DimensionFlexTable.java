@@ -1,11 +1,29 @@
-/**
- * TODO JAVADOC
+/*
+ * Copyright (C) 2009 Tom Barber
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
  */
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
+import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
@@ -21,11 +39,15 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class DimensionFlexTable extends FlexTable {
 
-    public DimensionFlexTable(/*final FlexTableRowDragController tableRowDragController*/) {
+    private Boolean horizontal = false;
+    private FlexTableRowDragController trdc;
+    
+    public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, Boolean orientation) {
         addStyleName("demo-flextable"); //$NON-NLS-1$
-
-        //this.trdc = tableRowDragController;
-        final Label spacerLabel = new Label(""); //$NON-NLS-1$
+        horizontal = orientation;
+        
+        this.trdc = tableRowDragController;
+        final Label spacerLabel = new Label("empty"); //$NON-NLS-1$
         spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
 
 
@@ -33,21 +55,26 @@ public class DimensionFlexTable extends FlexTable {
 }
 
     public void populateDimensionTable(final Axis targetAxis) {
-        this.clear();
+        //this.clear();
         
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis, new AsyncCallback<String[]>() {
 
                 public void onFailure(final Throwable arg0) {
                         // TODO use standardized message dialog when implemented
-                        MessageBox.error("Error", "Failed to get Dim List");
+                        MessageBox.error(ConstantFactory.getInstance().error(), "Failed to get Dim List");
                 }
 
                 public void onSuccess(final String[] arg0) {
-                        for (int row = 0; row < arg0.length; row++) {
+
+                    for (int row = 0; row < arg0.length; row++) {
                                 final Label handle = new Label(arg0[row]);
                                 handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
+                                trdc.makeDraggable(handle);
+                                if (!horizontal)
                                 setWidget(row, 0, handle);
-                                //trdc.makeDraggable(handle);
+                                else
+                                setWidget(0, row, handle);
+                                
                         }
 
                 }

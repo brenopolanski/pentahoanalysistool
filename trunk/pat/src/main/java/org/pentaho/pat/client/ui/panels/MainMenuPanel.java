@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -52,28 +53,24 @@ public class MainMenuPanel extends LayoutComposite {
 
         final PropertiesPanel propertiesPanel = new PropertiesPanel();
 
-        final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel("Dimensions");
+        final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().dimensions());
         centerPanel.add(dimPanel);
         rootPanel.add(centerPanel);
-        //rootPanel.add(propertiesPanel, new BoxLayoutData(1, 0.5));
 
-        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel("Properties");
-        
-        
+        final CaptionLayoutPanel southPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().properties());
+
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
-        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-        
-        
+        southPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
 
         collapseBtn3.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                rootPanel.setCollapsed(westPanel, !rootPanel.isCollapsed(westPanel));
+                rootPanel.setCollapsed(southPanel, !rootPanel.isCollapsed(southPanel));
                 rootPanel.layout();
             }
         });
-        westPanel.add(propertiesPanel);
-        rootPanel.add(westPanel, new BorderLayoutData(Region.SOUTH, 0.5, true));
-        rootPanel.setCollapsed(westPanel, true);
+        southPanel.add(propertiesPanel);
+        rootPanel.add(southPanel, new BorderLayoutData(Region.SOUTH, 0.5, true));
+        rootPanel.setCollapsed(southPanel, true);
 
     }
 
