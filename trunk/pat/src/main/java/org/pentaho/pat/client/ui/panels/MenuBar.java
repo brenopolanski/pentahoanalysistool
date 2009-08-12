@@ -22,11 +22,14 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.widgets.LogoPanel;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 
@@ -50,9 +53,11 @@ public class MenuBar extends LayoutComposite {
      */
     public MenuBar() {
         super();
+        
         rootPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
         addConnectionsButton();
         addCubesButton();
+        rootPanel.add(LogoPanel.getPanel(),new BoxLayoutData(FillStyle.VERTICAL));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
 
