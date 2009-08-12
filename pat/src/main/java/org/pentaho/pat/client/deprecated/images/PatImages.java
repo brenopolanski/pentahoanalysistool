@@ -61,4 +61,10 @@ public interface PatImages extends ImageBundle{
 	
 	AbstractImagePrototype windowButtonClose();
 	
+	AbstractImagePrototype database_add();
+	
+	AbstractImagePrototype database_delete();
+	
+	AbstractImagePrototype database_edit();
+	
 }

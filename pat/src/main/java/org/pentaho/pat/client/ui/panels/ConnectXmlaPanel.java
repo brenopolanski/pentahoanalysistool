@@ -165,14 +165,14 @@ public class ConnectXmlaPanel extends LayoutComposite {
             }
         });
 
-        builder.add(connectButton, CellConstraints.xyw(3, 9, 5));
+        builder.add(connectButton, CellConstraints.xy(3, 11));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton,CellConstraints.xyw(3, 11, 5));
+        builder.add(cancelButton,CellConstraints.xy(7, 11));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);

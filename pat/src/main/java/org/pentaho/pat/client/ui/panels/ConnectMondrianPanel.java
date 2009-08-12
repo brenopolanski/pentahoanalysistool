@@ -305,14 +305,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
 
         connectButton.setEnabled(false);
-        builder.add(connectButton, CellConstraints.xyw(3, 13, 5));
+        builder.add(connectButton, CellConstraints.xy(3, 15));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton,CellConstraints.xyw(3, 15, 5));
+        builder.add(cancelButton,CellConstraints.xy(7, 15));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);

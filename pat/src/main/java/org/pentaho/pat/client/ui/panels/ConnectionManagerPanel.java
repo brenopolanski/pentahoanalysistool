@@ -39,6 +39,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.ui.widgets.LogoPanel;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -120,14 +121,14 @@ public class ConnectionManagerPanel extends LayoutComposite {
     public ToolBar createToolBar(final ListBox<ConnectionItem> linkedListBox) {
 
         final ToolBar toolBar = new ToolBar();
-        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.add(), null, ButtonLabelType.NO_TEXT),
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_add(), null, ButtonLabelType.NO_TEXT),
                 new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.showNewConnection();
             }
         }));
 
-        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), null, ButtonLabelType.NO_TEXT),
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_delete(), null, ButtonLabelType.NO_TEXT),
                 new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 if (linkedListBox.getSelectedIndex() == -1) {
@@ -172,7 +173,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         }));
 
         // EDIT will be disabled for some more time
-        final ToolButton editButton = new ToolButton("Edit", new ClickHandler() { //$NON-NLS-1$
+        final ToolButton editButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_edit(), null, ButtonLabelType.NO_TEXT), new ClickHandler() { //$NON-NLS-1$
             public void onClick(final ClickEvent event) {
                 if (linkedListBox.getSelectedIndex() == -1) {
                     MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -274,15 +275,18 @@ public class ConnectionManagerPanel extends LayoutComposite {
             protected void onClick() {
                 // TODO implement dis-/connect routine(externalize strings)
                 super.onClick();
+                LogoPanel.spinWheel(true);
                 if (item.isConnected()) {
                     ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
 
                         public void onFailure(Throwable arg0) {
                             MessageBox.alert(ConstantFactory.getInstance().error(), "Error during disconnecting");
+                            LogoPanel.spinWheel(false);
                         }
 
                         public void onSuccess(Object arg0) {
-                            refreshConnectionList();                            
+                            refreshConnectionList();
+                            LogoPanel.spinWheel(false);
                         }
 
                     });
@@ -290,10 +294,12 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
 
                         public void onFailure(Throwable arg0) {
+                            LogoPanel.spinWheel(false);
                             MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
                         }
 
                         public void onSuccess(Object arg0) {
+                            LogoPanel.spinWheel(false);
                             refreshConnectionList();                            
                         }
 
