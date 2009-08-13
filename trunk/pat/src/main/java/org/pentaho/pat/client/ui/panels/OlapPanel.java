@@ -31,6 +31,9 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,6 +67,7 @@ public class OlapPanel extends DataWidget {
 
     private static String queryId;
 
+    static DimensionDropWidget dimDropCol;
     /**
      *TODO JAVADOC
      * 
@@ -74,8 +78,12 @@ public class OlapPanel extends DataWidget {
 
         cubeName = cube;
         connectionId = connection;
+         
     }
 
+    public static DimensionDropWidget getDropWidget(){
+        return dimDropCol;
+    }
     /*
      * (non-Javadoc)
      * 
@@ -126,6 +134,7 @@ public class OlapPanel extends DataWidget {
     @Override
     protected Widget onInitialize() {
         final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
+        final LayoutPanel centerPanel = new LayoutPanel();
         final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
@@ -140,6 +149,8 @@ public class OlapPanel extends DataWidget {
         layoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, true));
         layoutPanel.setCollapsed(westPanel, true);
 
+        layoutPanel.add(centerPanel, new BorderLayoutData(true));
+        
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 
@@ -150,15 +161,19 @@ public class OlapPanel extends DataWidget {
 
                     public void onSuccess(final String query) {
                         queryId = query;
+                        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
                         final MainMenuPanel mainMenuPanel = new MainMenuPanel();
                         westPanel.add(mainMenuPanel);
+                        
+                        final DataPanel dPanel = new DataPanel();
+                        centerPanel.add(dPanel);
                     }
 
                 });
 
-        final LayoutPanel centerPanel = new LayoutPanel();
+        
 
-        layoutPanel.add(centerPanel, new BorderLayoutData(true));
+
 
         return layoutPanel;
     }
