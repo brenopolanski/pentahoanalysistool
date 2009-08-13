@@ -81,9 +81,6 @@ public class OlapPanel extends DataWidget {
          
     }
 
-    public static DimensionDropWidget getDropWidget(){
-        return dimDropCol;
-    }
     /*
      * (non-Javadoc)
      * 
