@@ -91,13 +91,13 @@ public class DimensionMenu extends LayoutComposite {
     }
 
     /**
-     * Generates a cube list for the Cube Menu.
+     * Generates the Member Tree of a Dimension.
      */
-    private final void refreshDimensionMenu(final StringTree childStringTree, final TreeItem parent) {
+    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent) {
         List<StringTree> child = childStringTree.getChildren();
         for(int i=0;i<child.size();i++) {
-            TreeItem newParent = dimensionTree.addItem(child.get(i).getValue());
-            refreshDimensionMenu(child.get(i), newParent);
+            TreeItem newParent = parent.addItem(child.get(i).getValue());
+            addDimensionTreeItem(child.get(i), newParent);
         }
     }
 
@@ -114,7 +114,7 @@ public class DimensionMenu extends LayoutComposite {
                     public void onSuccess(StringTree arg0) {
                         dimensionTree.clear();
                         TreeItem parent = dimensionTree.addItem(arg0.getValue());
-                        refreshDimensionMenu(arg0, parent);
+                        addDimensionTreeItem(arg0, parent);
                        
                         
                     }
