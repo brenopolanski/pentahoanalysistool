@@ -32,12 +32,14 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -164,6 +166,18 @@ public class OlapPanel extends DataWidget {
                         
                         final DataPanel dPanel = new DataPanel();
                         centerPanel.add(dPanel);
+                        
+                        Button bt = new Button("Test Dim Browser");
+                        bt.addClickHandler(new ClickHandler() {
+
+                            public void onClick(ClickEvent arg0) {
+                                // TODO Test Code!
+                                DimensionBrowserWindow.displayDimension(queryId, "Time");
+                                
+                            }
+                            
+                        });
+                        centerPanel.add(bt);
                     }
 
                 });
