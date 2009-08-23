@@ -266,7 +266,7 @@
 		</repository>
 		<repository>
 			<id>MagicBeans-releases</id>
-			<url>http://174.143.235.84/artifactory/pat-libs</url>
+			<url>http://repo.logical-analytics.co.uk/artifactory/libs-releases-local/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
