@@ -103,7 +103,7 @@ public class FlexTableUtil {
             final Widget w = sourceTable.getWidget(sRow, sCol);
             if (w != null) {
                 if (w instanceof Label)
-                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), OlapPanel.getQueryId(),
+                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                             targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
 
                                 public void onFailure(final Throwable arg0) {
@@ -114,7 +114,7 @@ public class FlexTableUtil {
                                 //
                                 public void onSuccess(final Object arg0) {
                                     ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
-                                            OlapPanel.getQueryId(), w.getElement().getInnerText().trim(),
+                                            Pat.getCurrQuery(), w.getElement().getInnerText().trim(),
                                             new AsyncCallback<StringTree>() {
 
                                                 public void onFailure(final Throwable arg0) {

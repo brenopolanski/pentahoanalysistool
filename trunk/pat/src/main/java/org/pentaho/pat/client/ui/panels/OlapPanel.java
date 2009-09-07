@@ -49,23 +49,19 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapPanel extends DataWidget {
 
-    /**
-     *TODO JAVADOC
-     * 
-     * @return the queryId
-     */
-    public static String getQueryId() {
-        return queryId;
-    }
-
     private String panelName = null;
 
     private String cubeName = null;
 
     private String connectionId = null;
 
-    private static String queryId = null;
-    
+    private String queryId = null;
+
+    public OlapPanel() {
+        // Needs working out so it accounts for multiple cubes of the same name.
+        super();
+    }
+
     /**
      *TODO JAVADOC
      * 
@@ -77,12 +73,11 @@ public class OlapPanel extends DataWidget {
 
         cubeName = cube;
         connectionId = connection;
-         
+
     }
 
-    public OlapPanel() {
-        // Needs working out so it accounts for multiple cubes of the same name.
-        super();         
+    public String getCube() {
+        return cubeName;
     }
 
     /*
@@ -106,34 +101,21 @@ public class OlapPanel extends DataWidget {
         return panelName;
     }
 
-    
-    public void setName(String name) {
-        panelName = name;
-    }
-
-
-    public String getCube() {
-        return cubeName;
-    }
-
-    
-    public void setCube(String name) {
-        cubeName = name;
-    }
-
-    
     public String getQuery() {
         return queryId;
     }
 
-    
-    public void setQuery(String name) {
-        queryId = name;
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the queryId
+     */
+    public String getQueryId() {
+        return queryId;
     }
 
     @Override
     public void onLoad() {
-
     }
 
     @Override
@@ -150,8 +132,19 @@ public class OlapPanel extends DataWidget {
             }
 
         });
-        
-        
+
+    }
+
+    public void setCube(final String name) {
+        cubeName = name;
+    }
+
+    public void setName(final String name) {
+        panelName = name;
+    }
+
+    public void setQuery(final String name) {
+        queryId = name;
     }
 
     /*
@@ -162,23 +155,6 @@ public class OlapPanel extends DataWidget {
     @Override
     protected Widget onInitialize() {
         final LayoutPanel layoutPanel = new LayoutPanel(new BorderLayout());
-        final LayoutPanel centerPanel = new LayoutPanel();
-        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-
-        collapseBtn3.addClickHandler(new ClickHandler() {
-            public void onClick(final ClickEvent event) {
-                layoutPanel.setCollapsed(westPanel, !layoutPanel.isCollapsed(westPanel));
-                layoutPanel.layout();
-            }
-        });
-
-        layoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, true));
-        layoutPanel.setCollapsed(westPanel, true);
-
-        layoutPanel.add(centerPanel, new BorderLayoutData(true));
-        
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 
@@ -189,32 +165,47 @@ public class OlapPanel extends DataWidget {
 
                     public void onSuccess(final String query) {
                         queryId = query;
-                        
+                        Pat.setCurrQuery(query);
+
+                        final LayoutPanel centerPanel = new LayoutPanel();
+                        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+                        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+                        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+
+                        collapseBtn3.addClickHandler(new ClickHandler() {
+                            public void onClick(final ClickEvent event) {
+                                layoutPanel.setCollapsed(westPanel, !layoutPanel.isCollapsed(westPanel));
+                                layoutPanel.layout();
+                            }
+                        });
+
+                        layoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, true));
+                        layoutPanel.setCollapsed(westPanel, true);
+
+                        layoutPanel.add(centerPanel, new BorderLayoutData(true));
+
                         final MainMenuPanel mainMenuPanel = new MainMenuPanel();
                         westPanel.add(mainMenuPanel);
-                        
+
                         final DataPanel dPanel = new DataPanel();
                         centerPanel.add(dPanel);
-                        
-                        Button bt = new Button("Test Dim Browser");
+
+                        final Button bt = new Button("Test Dim Browser");
                         bt.addClickHandler(new ClickHandler() {
 
-                            public void onClick(ClickEvent arg0) {
+                            public void onClick(final ClickEvent arg0) {
                                 // TODO Test Code!
                                 DimensionBrowserWindow.displayDimension(queryId, "Time");
-                                
-                            }
-                            
-                        });
-                        centerPanel.add(bt);
-                    }
 
+                            }
+                        });
+
+                        centerPanel.add(bt);
+
+                    }
                 });
 
-        
-
-
-
         return layoutPanel;
+
     }
 }

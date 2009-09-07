@@ -91,33 +91,12 @@ public class MainTabPanel extends LayoutComposite {
         if (content != null) {
             if (!content.isInitialized())
                 content.initialize();
-            DataWidget contentdupe = null;
-            contentdupe = copyMatrix(content, contentdupe);
             addContent(content, content.getName());
         }
     }
     
     
 
-    protected static DataWidget copyMatrix(final DataWidget source, DataWidget destination) {
-
-        if (source != null)
-            if (source instanceof WelcomePanel) {
-                destination = new WelcomePanel();
-                final String name = source.getName();
-                ((WelcomePanel) destination).setName(name);
-            }
-        
-            else if (source instanceof OlapPanel) {
-
-                destination = new OlapPanel();
-          //      ((OlapPanel) destination).setName(((OlapPanel) source).getName());
-          //      ((OlapPanel) destination).setCube(((OlapPanel) source).getCube());
-          //      ((OlapPanel) destination).setQuery(((OlapPanel) source).getQuery());
-        }
-
-        return destination;
-    }
 
     /**
      * 
@@ -173,7 +152,7 @@ public class MainTabPanel extends LayoutComposite {
 
                 
                   if (widget instanceof OlapPanel) {
-                      Pat.currQuery=OlapPanel.getQueryId();
+                      Pat.setCurrQuery(((OlapPanel)widget).getQueryId());
                   }
                  
 
