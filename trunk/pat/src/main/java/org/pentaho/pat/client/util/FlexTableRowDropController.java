@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.util;
 
+import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.rpc.dto.Axis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -28,7 +29,6 @@ import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.LocationWidgetComparator;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -44,7 +44,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner"; //$NON-NLS-1$
 
     /** Flextable object. */
-    private final FlexTable flexTable;
+    private final DimensionFlexTable flexTable;
 
     /** Indexed Panel Object. */
     private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
@@ -72,6 +72,9 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     /** Target Row. */
     private int targetRow;
 
+    /** Target Row. */
+    private int targetCol;
+
     /** The Drop Axis. */
     private org.pentaho.pat.rpc.dto.Axis targetAxis;
 
@@ -81,7 +84,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
      * @param flexTable
      *            the flex table
      */
-    public FlexTableRowDropController(final FlexTable flexTable) {
+    public FlexTableRowDropController(final DimensionFlexTable flexTable) {
         super(flexTable);
         this.flexTable = flexTable;
     }
@@ -94,7 +97,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
      * @param rows
      *            the rows
      */
-    public FlexTableRowDropController(final FlexTable flexTable, final Axis rows) {
+    public FlexTableRowDropController(final DimensionFlexTable flexTable, final Axis rows) {
         super(flexTable);
         this.flexTable = flexTable;
         targetAxis = rows;
@@ -116,7 +119,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(),
-                targetRow + 1, targetAxis);
+                targetRow + 1, trDragController.getDragCol(), targetCol+1, targetAxis);
         super.onDrop(context);
     }
 
@@ -174,6 +177,8 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
         super.onMove(context);
         targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
                 context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
+        targetCol = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
+                context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
 
         final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);

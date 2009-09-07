@@ -31,3 +31,11 @@ width: 100%;
 border : 1px;
 border-color: white;
 }
+
+.demo-cell {
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  color: white;
+  border-color: white;
+  padding: 5px;
+}

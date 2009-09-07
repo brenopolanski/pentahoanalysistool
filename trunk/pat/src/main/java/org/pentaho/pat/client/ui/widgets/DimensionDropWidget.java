@@ -74,6 +74,12 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation) {
         super();
         horizontal = orientation;
+        this.dimAxis = targetAxis;
+        
+        baseLayoutPanel = getLayoutPanel();
+        init(labelText, dimAxis);
+        baseLayoutPanel.add(captionLayoutPanel);
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 
     }
 
@@ -134,6 +140,14 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         // TODO Auto-generated method stub
         
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the horizontal
+     */
+    public Boolean getHorizontal() {
+        return horizontal;
     }
 
 }
