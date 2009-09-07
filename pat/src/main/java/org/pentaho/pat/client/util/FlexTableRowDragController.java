@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.client.util;
 
+import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
@@ -37,10 +39,13 @@ public class FlexTableRowDragController extends PickupDragController {
 	private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
 
 	/** The flextable. */
-	private FlexTable draggableTable;
+	private DimensionFlexTable draggableTable;
 
 	/** The source row. */
 	private int dragRow;
+
+	/** The source row. */
+    private int dragCol;
 
 	/**
 	 * Constructor.
@@ -72,7 +77,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	 * 
 	 * @return the draggable table
 	 */
-	FlexTable getDraggableTable() {
+	DimensionFlexTable getDraggableTable() {
 		return draggableTable;
 	}
 
@@ -86,6 +91,15 @@ public class FlexTableRowDragController extends PickupDragController {
 	}
 
 	/**
+     * Get the source column.
+     * 
+     * @return the drag row
+     */
+    int getDragCol() {
+        return dragCol;
+    }
+    
+	/**
 	 * Get the Widget Row.
 	 * 
 	 * @param widget the widget
@@ -93,7 +107,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	 * 
 	 * @return the widget row
 	 */
-	private int getWidgetRow(final Widget widget, final FlexTable table) {
+	private int getWidgetRow(final Widget widget, final DimensionFlexTable table) {
 		for (int row = 0; row < table.getRowCount(); row++) {
 			for (int col = 0; col < table.getCellCount(row); col++) {
 				final Widget w = table.getWidget(row, col);
@@ -105,6 +119,27 @@ public class FlexTableRowDragController extends PickupDragController {
 		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
 	}
 
+    /**
+     * Get the Widget Row.
+     * 
+     * @param widget the widget
+     * @param table the table
+     * 
+     * @return the widget row
+     */
+    private int getWidgetCol(final Widget widget, final DimensionFlexTable table) {
+        for (int row = 0; row < table.getRowCount(); row++) {
+            for (int col = 0; col < table.getCellCount(row); col++) {
+                final Widget w = table.getWidget(row, col);
+                if (w == widget) {
+                    return col;
+                }
+            }
+        }
+        throw new RuntimeException("Unable to determine widget col"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
+    }
+
+	
 	/* (non-Javadoc)
 	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.AbsolutePanel, boolean)
 	 */
@@ -134,11 +169,12 @@ public class FlexTableRowDragController extends PickupDragController {
 	 */
 	@Override
 	protected Widget newDragProxy(final DragContext context) {
-		FlexTable proxy;
-		proxy = new FlexTable();
+		DimensionFlexTable proxy;
+		proxy = new DimensionFlexTable();
 		proxy.addStyleName(CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY);
-		draggableTable = (FlexTable) context.draggable.getParent();
+		draggableTable = (DimensionFlexTable) context.draggable.getParent();
 		dragRow = getWidgetRow(context.draggable, draggableTable);
+		dragCol = getWidgetCol(context.draggable, draggableTable);
 		FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
 		return proxy;
 	}

@@ -22,6 +22,8 @@ package org.pentaho.pat.client.util;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -29,8 +31,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -54,7 +56,7 @@ public class FlexTableUtil {
      * @param targetRow
      *            the index before which to insert the copied row
      */
-    public static void copyRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,
+    public static void copyRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
             final int targetRow) {
         targetTable.insertRow(targetRow);
         final HTML html = new HTML();
@@ -82,15 +84,22 @@ public class FlexTableUtil {
      * @param targetAxis
      *            the target axis
      */
-    public static void moveRow(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,
-            final int targetRow, final Axis targetAxis) {
+    public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
+            final int targetRow, final int sourceCol, final int targetCol, final Axis targetAxis) {
         // targetRow = targetTable.getRowCount();
         int sRow = sourceRow;
+        int sCol = sourceCol;
         if (sourceTable != targetTable) {
+            if(!sourceTable.getHorizontal()){
             if (sourceTable.equals(targetTable) && sRow >= targetRow)
                 sRow++;
             targetTable.insertRow(targetRow);
-
+            }
+            else{
+                if (sourceTable.equals(targetTable) && sCol >= targetCol)
+                    sCol++;
+                targetTable.insertCell(0, targetCol);
+            }
             for (int col = 0; col < sourceTable.getCellCount(sRow); col++) {
                 final int col2 = col;
                 final Widget w = sourceTable.getWidget(sRow, col);
@@ -117,7 +126,19 @@ public class FlexTableUtil {
                                                     }
 
                                                     public void onSuccess(final Object arg0) {
-                                                        targetTable.setWidget(targetRow, col2, w);
+                                                        if (!sourceTable.getHorizontal()){
+                                                        //targetTable.setWidget(targetRow, col2, w);
+                                                        //targetTable.getCellFormatter().addStyleName(targetRow, col2,"demo-cell");
+                                                            final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                            spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
+                                                            targetTable.getCellFormatter().setVerticalAlignment(targetRow, col2, HasVerticalAlignment.ALIGN_TOP);
+                                                            targetTable.setWidget(targetRow, col2, spacerLabel);
+                                                              
+                                                        }
+                                                        else{
+                                                        //    targetTable.setWidget(targetRow, targetCol, w);
+                                                        //    targetTable.getCellFormatter().addStyleName(targetRow, targetCol,"demo-cell");
+                                                        }
                                                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w);
                                                     }
 
@@ -127,10 +148,12 @@ public class FlexTableUtil {
                                 });
                     else
                         targetTable.setWidget(targetRow, col, w);
+                    targetTable.getCellFormatter().addStyleName(0, 0,"demo-cell"); 
 
                 } else {
                     final HTML html = new HTML(sourceTable.getHTML(sourceRow, col)); // NOPMD by bugg on 21/04/09 05:54
                     targetTable.setWidget(targetRow, col, html);
+                    targetTable.getCellFormatter().addStyleName(0, 0,"demo-cell"); 
                     // ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis,
                     // html.getText().trim(), new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:54
                     //
@@ -164,7 +187,7 @@ public class FlexTableUtil {
      * @param targetRow
      *            the target row
      */
-    private static void copyRowStyle(final FlexTable sourceTable, final FlexTable targetTable, final int sourceRow,
+    private static void copyRowStyle(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
             final int targetRow) {
         final String rowStyle = sourceTable.getRowFormatter().getStyleName(sourceRow);
         targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);

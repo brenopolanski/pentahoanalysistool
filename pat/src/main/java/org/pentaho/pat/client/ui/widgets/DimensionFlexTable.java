@@ -44,7 +44,7 @@ public class DimensionFlexTable extends FlexTable {
 
     private Boolean horizontal = false;
 
-    private final FlexTableRowDragController trdc;
+    private FlexTableRowDragController trdc=null;
 
     public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
         addStyleName("demo-flextable"); //$NON-NLS-1$
@@ -55,14 +55,24 @@ public class DimensionFlexTable extends FlexTable {
         spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
         this.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
         setWidget(0, 0, spacerLabel);
+        getCellFormatter().addStyleName(0, 0,"demo-cell"); 
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     */
+    public DimensionFlexTable() {
+        // TODO Auto-generated constructor stub
     }
 
     public void clearDimensionTable() {
         this.clear();
         final Label spacerLabel = new Label(""); //$NON-NLS-1$
         spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
-        DimensionFlexTable.this.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-        DimensionFlexTable.this.setWidget(0, 0, spacerLabel);
+        getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+        setWidget(0, 0, spacerLabel);
+        getCellFormatter().addStyleName(0, 0,"demo-cell"); 
     }
 
     public void populateDimensionTable(final Axis targetAxis) {
@@ -88,17 +98,27 @@ public class DimensionFlexTable extends FlexTable {
                             trdc.makeDraggable(handle);
                             if (!horizontal){
                                 setWidget(row, 0, handle);
-                                DimensionFlexTable.this.getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
+                                getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
+                                getCellFormatter().addStyleName(row, 0,"demo-cell");
                             }
                             else{
                                 setWidget(0, row, handle);
-                                DimensionFlexTable.this.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+                                getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
+                                getCellFormatter().addStyleName(0, row,"demo-cell"); 
                             }
                         }
 
                     }
                 });
 
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the horizontal
+     */
+    public Boolean getHorizontal() {
+        return horizontal;
     }
 
 }
