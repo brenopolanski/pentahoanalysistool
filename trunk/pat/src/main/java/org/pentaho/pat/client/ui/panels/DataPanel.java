@@ -19,24 +19,44 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.rpc.dto.Axis;
+
+import com.google.gwt.user.client.ui.Button;
 
 /**
  *TODO JAVADOC
- * 
- * @created Aug 13, 2009
+ * @created Aug 12, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
- * 
+ *
  */
-public class DataPanel extends LayoutComposite {
+public class DataPanel extends LayoutComposite{
 
-    public DataPanel(){
-	final LayoutPanel rootLayoutPanel = getLayoutPanel();
-	rootLayoutPanel.setLayout(new GridLayout(2,3));
-	
+    /**
+     *TODO JAVADOC
+     *
+     */
+    public DataPanel() {
+
+        final LayoutPanel baseLayoutPanel = getLayoutPanel();
+        final LayoutPanel mainLayoutPanel = new LayoutPanel(new GridLayout(2, 3));
+        mainLayoutPanel.setPadding(0);
+        
+        final Button executeButton = new Button("Execute Query");
+//        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+        //DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+//        DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+        
+        mainLayoutPanel.add(executeButton);
+        //mainLayoutPanel.add(OlapPanel.getDropWidget());
+
+        baseLayoutPanel.add(mainLayoutPanel);
+        //baseLayoutPanel.add(executeButton);
     }
+
 }
