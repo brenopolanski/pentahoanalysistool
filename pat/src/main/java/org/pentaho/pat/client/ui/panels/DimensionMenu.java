@@ -21,7 +21,6 @@ package org.pentaho.pat.client.ui.panels;
 
 import java.util.List;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -29,20 +28,14 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.olap4j.metadata.Level;
-import org.olap4j.metadata.Member;
-import org.olap4j.metadata.NamedList;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
-import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
-import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
@@ -61,11 +54,11 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class DimensionMenu extends LayoutComposite {
 
     /** The main menu. */
-    private Tree dimensionTree;
+    private final Tree dimensionTree;
 
     public DimensionMenu() {
         super();
-        this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+        this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 
@@ -78,7 +71,7 @@ public class DimensionMenu extends LayoutComposite {
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
-            public void onSelection(SelectionEvent<TreeItem> arg0) {
+            public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 dimensionTree.ensureSelectedItemVisible();
                 // TODO uncomment when implemented
                 // DimensionTreeItem selected = (DimensionTreeItem)dimensionTree.getSelectedItem().getWidget();
@@ -90,41 +83,38 @@ public class DimensionMenu extends LayoutComposite {
 
     }
 
-    /**
-     * Generates the Member Tree of a Dimension.
-     */
-    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent) {
-        List<StringTree> child = childStringTree.getChildren();
-        for(int i=0;i<child.size();i++) {
-            TreeItem newParent = parent.addItem(child.get(i).getValue());
-            addDimensionTreeItem(child.get(i), newParent);
-        }
+    public Tree getDimensionTree() {
+        return dimensionTree;
     }
 
-
-    public final void loadMembers(String queryId, String dimensionId) {
+    public final void loadMembers(final String queryId, final String dimensionId) {
         ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
                 new AsyncCallback<StringTree>() {
 
-                    public void onFailure(Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
                         dimensionTree.clear();
                         MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
                     }
 
-                    public void onSuccess(StringTree arg0) {
+                    public void onSuccess(final StringTree arg0) {
                         dimensionTree.clear();
-                        TreeItem parent = dimensionTree.addItem(arg0.getValue());
+                        final TreeItem parent = dimensionTree.addItem(arg0.getValue());
                         addDimensionTreeItem(arg0, parent);
-                       
-                        
+
                     }
 
-                    
                 });
     }
 
-    public Tree getDimensionTree() {
-        return dimensionTree;
+    /**
+     * Generates the Member Tree of a Dimension.
+     */
+    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent) {
+        final List<StringTree> child = childStringTree.getChildren();
+        for (int i = 0; i < child.size(); i++) {
+            final TreeItem newParent = parent.addItem(child.get(i).getValue());
+            addDimensionTreeItem(child.get(i), newParent);
+        }
     }
 
 }

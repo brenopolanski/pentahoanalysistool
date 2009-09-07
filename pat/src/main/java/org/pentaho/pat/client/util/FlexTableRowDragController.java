@@ -25,7 +25,6 @@ import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -36,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class FlexTableRowDragController extends PickupDragController {
 
 	/** CSS tag. */
-	private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy"; //$NON-NLS-1$
+	private static final String DRAG_CSS_PROXY = "dragProxy"; //$NON-NLS-1$
 
 	/** The flextable. */
 	private DimensionFlexTable draggableTable;
@@ -171,7 +170,7 @@ public class FlexTableRowDragController extends PickupDragController {
 	protected Widget newDragProxy(final DragContext context) {
 		DimensionFlexTable proxy;
 		proxy = new DimensionFlexTable();
-		proxy.addStyleName(CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY);
+		proxy.addStyleName(DRAG_CSS_PROXY);
 		draggableTable = (DimensionFlexTable) context.draggable.getParent();
 		dragRow = getWidgetRow(context.draggable, draggableTable);
 		dragCol = getWidgetCol(context.draggable, draggableTable);

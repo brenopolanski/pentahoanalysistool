@@ -1,49 +1,22 @@
-.dropGrid{
-padding-bottom : 0px;
-padding-top : 0px;
-height : 100%;
-border : 0px;
-border-collapse: collapse; 
-height : 60px;
-width:100%;
-}
-.dropLabel{
-padding-bottom : 0px;
-padding-top : 0px;
-background-color : #54a654;
-color: white;
-vertical-align : middle;
-border-collapse: collapse;
-}
-
-.dropTable{
-height : 60px;
-border-bottom-color : #54a654;
-border-bottom-style : solid;
-border-left-color : #54a654;
-border-right-color : #54a654;
-border-top-color : #54a654;
-border-top-style : solid;
-width: 100%;
-}	
-
-.demo-flextable{
+.dropFlextable{
 border : 1px;
 border-color: white;
-}
-
-.demo-cell {
-  border-collapse:collapse;
-  border-width: 1px 1px 1px 1px;
-  border-style: solid;
-  color: white;
-  border-color: white;
-  padding: 5px;
+background-color:#99bbe8;
 }
 
 .spacer-label {
   width: 100%;
 }
-.demo-endCell {
+.dropEndCell {
   width: 100%;
+}
+.dragDimension{
+  border-collapse:collapse;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: #dfe8f6;
+  padding: 5px;
+}
+.dragProxy{
+	background-color:#a6c5f4;
 }

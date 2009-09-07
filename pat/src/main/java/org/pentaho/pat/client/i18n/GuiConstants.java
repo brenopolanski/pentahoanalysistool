@@ -48,6 +48,13 @@ public interface GuiConstants extends Constants {
     String checkErrorLog();
 
     /**
+     * TODO JAVADOC
+     * 
+     * @return
+     */
+    String dimensionFetchFail();
+    
+    /**
      *TODO JAVADOC
      * 
      * @return

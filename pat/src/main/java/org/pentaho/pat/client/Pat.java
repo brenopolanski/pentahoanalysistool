@@ -23,18 +23,17 @@ package org.pentaho.pat.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
-import org.pentaho.pat.client.i18n.GuiConstants;
 import org.pentaho.pat.client.deprecated.images.PatImages;
 import org.pentaho.pat.client.deprecated.util.State;
+import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.i18n.GuiConstants;
+import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
-import org.pentaho.pat.client.util.StyleSheetLoader;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +48,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * The entry point for the whole application
- * @created Jan 1, 2009 
+ * 
+ * @created Jan 1, 2009
  * @since 0.1
  * @author Tom Barber
  * 
@@ -72,9 +72,36 @@ public class Pat implements EntryPoint {
     public static final String DEF_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
     /**
+     * @return State
+     */
+    public static State getApplicationState() {
+        return applicationState;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the currQuery
+     */
+    public static String getCurrQuery() {
+        return currQuery;
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param currQuery
+     *            the currQuery to set
+     */
+    public static void setCurrQuery(final String currQuery) {
+        Pat.currQuery = currQuery;
+    }
+
+    /**
      * The {@link Application}.
      */
-    private Application app;
+    private final Application app;
 
     /**
      * Global State.
@@ -82,21 +109,6 @@ public class Pat implements EntryPoint {
     private static State applicationState = new State();
 
     private static String currQuery = null;
-    /**
-     * Get the style name of the reference element defined in the current GWT
-     * theme style sheet.
-     * 
-     * @param prefix
-     *            the prefix of the reference style name
-     * @return the style name
-     */
-    private static String getCurrentReferenceStyleName(final String prefix) {
-        String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
-        if (LocaleInfo.getCurrentLocale().isRTL()) {
-            gwtRef += "-rtl"; //$NON-NLS-1$
-        }
-        return gwtRef;
-    }
 
     /**
      * Returns the SESSION_ID.
@@ -108,24 +120,41 @@ public class Pat implements EntryPoint {
     }
 
     /**
-     * Sets the SESSION_ID.
+     * Get the style name of the reference element defined in the current GWT theme style sheet.
+     * 
+     * @param prefix
+     *            the prefix of the reference style name
+     * @return the style name
      */
-    private void assignSessionID(String session) {
-        if (session == null)
-        {
-            ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
-                public void onSuccess(final String sessionId) {
-                    applicationState.setSession(sessionId);
-                }
-                public void onFailure(final Throwable exception) {
-                    MessageBox.error(ConstantFactory.getInstance().error(),
-                            MessageFactory.getInstance().failedSessionID(exception.getLocalizedMessage()));
-                }
-            });
-        }
-        else {
-            applicationState.setSession(session);
-        }
+    private static String getCurrentReferenceStyleName(final String prefix) {
+        String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
+        if (LocaleInfo.getCurrentLocale().isRTL())
+            gwtRef += "-rtl"; //$NON-NLS-1$
+        return gwtRef;
+    }
+
+    public Pat() {
+        // parse possible parameters
+        parseInitialStateFromParameter();
+
+        app = new Application();
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+     */
+    public final void onModuleLoad() {
+
+        updateStyleSheets();
+        new DelayedRunnable() {
+            @Override
+            public void run() {
+                com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+        };
     }
 
     /**
@@ -143,7 +172,7 @@ public class Pat implements EntryPoint {
         if (LocaleInfo.getCurrentLocale().isRTL()) {
             gwtStyleSheet = gwtStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
             gwtMosStyleSheet = gwtMosStyleSheet.replace(".css", //$NON-NLS-1$
-            "_rtl.css"); //$NON-NLS-1$
+                    "_rtl.css"); //$NON-NLS-1$
             scStyleSheet = scStyleSheet.replace(".css", "_rtl.css"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
@@ -158,35 +187,31 @@ public class Pat implements EntryPoint {
                 final Element elem = Element.as(node);
                 if (elem.getTagName().equalsIgnoreCase("link") //$NON-NLS-1$
                         && elem.getPropertyString("rel").equalsIgnoreCase(//$NON-NLS-1$
-                        "stylesheet")) { //$NON-NLS-1$
+                                "stylesheet")) { //$NON-NLS-1$
                     styleSheetsFound = true;
                     final String href = elem.getPropertyString("href"); //$NON-NLS-1$
                     // If the correct style sheets are already loaded, then we
                     // should have
                     // nothing to remove.
-                    if (!href.contains(gwtStyleSheet)
-                            && !href.contains(gwtMosStyleSheet)
-                            && !href.contains(scStyleSheet)) {
+                    if (!href.contains(gwtStyleSheet) && !href.contains(gwtMosStyleSheet)
+                            && !href.contains(scStyleSheet))
                         toRemove.add(elem);
-                    }
                 }
             }
         }
 
         // Return if we already have the correct style sheets
-        if (styleSheetsFound && toRemove.isEmpty()) {
+        if (styleSheetsFound && toRemove.isEmpty())
             return;
-        }
 
         // Detach the app while we manipulate the styles to avoid rendering
         // issues
-        //RootPanel.get().remove(app);
+        // RootPanel.get().remove(app);
         app.removeFromParent();
 
         // Remove the old style sheets
-        for (final Element elem : toRemove) {
+        for (final Element elem : toRemove)
             headElem.removeChild(elem);
-        }
 
         // Load the GWT theme style sheet
         final String modulePath = GWT.getModuleBaseURL();
@@ -207,10 +232,9 @@ public class Pat implements EntryPoint {
             }
         };
 
-        StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet,
-                getCurrentReferenceStyleName("gwt"), callback); //$NON-NLS-1$
-        StyleSheetLoader.loadStyleSheet(modulePath + gwtMosStyleSheet,
-                getCurrentReferenceStyleName("mosaic"), callback); //$NON-NLS-1$
+        StyleSheetLoader.loadStyleSheet(modulePath + gwtStyleSheet, getCurrentReferenceStyleName("gwt"), callback); //$NON-NLS-1$
+        StyleSheetLoader
+                .loadStyleSheet(modulePath + gwtMosStyleSheet, getCurrentReferenceStyleName("mosaic"), callback); //$NON-NLS-1$
         // Load the showcase specific style sheet after the GWT & Mosaic theme
         // style
         // sheet so that custom styles supercede the theme styles.
@@ -223,67 +247,37 @@ public class Pat implements EntryPoint {
 
     }
 
-    public Pat() {
-        // parse possible parameters
-        parseInitialStateFromParameter();
-
-        app = new Application();
-
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+    /**
+     * Sets the SESSION_ID.
      */
-    public final void onModuleLoad() {
+    private void assignSessionID(final String session) {
+        if (session == null)
+            ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
+                public void onFailure(final Throwable exception) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .failedSessionID(exception.getLocalizedMessage()));
+                }
 
-        updateStyleSheets();
-        new DelayedRunnable() {
-            @Override
-            public void run() {
-                DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-        };
+                public void onSuccess(final String sessionId) {
+                    applicationState.setSession(sessionId);
+                }
+            });
+        else
+            applicationState.setSession(session);
     }
-
 
     /**
      * Parses possible Parameters and sets initial State.
      */
     private void parseInitialStateFromParameter() {
-        Location loadURL = WindowUtils.getLocation();
-        State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE")); //$NON-NLS-1$
+        final Location loadURL = WindowUtils.getLocation();
+        final State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE")); //$NON-NLS-1$
         if (mode == null)
             applicationState.setMode(State.Mode.DEFAULT);
         else
             applicationState.setMode(mode);
-        String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
+        final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
         assignSessionID(_sessionParam);
-    }
-
-    /**
-     * @return State
-     */
-    public static State getApplicationState() {
-        return applicationState;
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the currQuery
-     */
-    public static String getCurrQuery() {
-        return currQuery;
-    }
-
-    /**
-     *
-     *TODO JAVADOC
-     * @param currQuery the currQuery to set
-     */
-    public static void setCurrQuery(String currQuery) {
-        Pat.currQuery = currQuery;
     }
 
 }
