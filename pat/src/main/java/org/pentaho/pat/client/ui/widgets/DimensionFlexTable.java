@@ -29,6 +29,7 @@ import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 
@@ -87,7 +88,7 @@ public class DimensionFlexTable extends FlexTable {
 
                     public void onSuccess(final String[] arg0) {
                         
-                        if(arg0.length==0)
+                        //if(arg0.length==0)
                             {
                                 clearDimensionTable();
                             }
@@ -103,11 +104,12 @@ public class DimensionFlexTable extends FlexTable {
                             }
                             else{
                                 setWidget(0, row, handle);
+                                getCellFormatter().setHorizontalAlignment(0, row, HasHorizontalAlignment.ALIGN_LEFT);
                                 getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
                                 getCellFormatter().addStyleName(0, row,"demo-cell"); 
                             }
                         }
-
+                        
                     }
                 });
 

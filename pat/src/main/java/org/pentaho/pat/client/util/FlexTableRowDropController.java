@@ -50,7 +50,9 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
 
         public Widget getWidget(final int index) {
-            return flexTable.getWidget(index, 0);
+            int rows= flexTable.getRowCount();
+            int cols = flexTable.getCellCount(0);
+            return flexTable.getWidget(index, cols-1);
         }
 
         public int getWidgetCount() {
@@ -70,10 +72,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private Widget positioner = null;
 
     /** Target Row. */
-    private int targetRow;
+    private int targetRow=0;
 
     /** Target Row. */
-    private int targetCol;
+    private int targetCol=0;
 
     /** The Drop Axis. */
     private org.pentaho.pat.rpc.dto.Axis targetAxis;
@@ -175,11 +177,11 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
+        /*targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
                 context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
         targetCol = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
                 context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
-
+*/
         final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
