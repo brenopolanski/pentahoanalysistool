@@ -28,6 +28,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.DimensionMenu;
 
+import com.google.gwt.user.client.ui.Label;
+
 /**
  * Lists all Dimensions and Members and allows their including/excluding in a Query.
  * @created Aug 18, 2009 
@@ -54,8 +56,11 @@ public class DimensionBrowserWindow extends WindowPanel {
      */
     public DimensionBrowserWindow() {
         super(TITLE);
+        Label test = new Label("argh!");
+        windowContentpanel.add(test, new BoxLayoutData(FillStyle.BOTH));
         windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
+        
         this.layout();
         
     }
@@ -65,7 +70,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     //    display(true);
     //}
 
-    public static void displayDimension(final String queryId, final String dimension) {
+    public void displayDimension(final String queryId, final String dimension) {
         query = queryId;
         DimensionBrowserWindow.dimension = dimension;
         dimensionMenuPanel.loadMembers(queryId, dimension);
@@ -75,6 +80,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     private static void display() {
         dbw.setSize("450px", "300px");
         dbw.showModal(false);
+        //dbw.show();
         dbw.layout();
     }
     

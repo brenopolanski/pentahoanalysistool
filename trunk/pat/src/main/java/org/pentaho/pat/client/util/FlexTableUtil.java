@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.ui.widgets.LogoPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -91,6 +92,7 @@ public class FlexTableUtil {
     public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
             final int sourceRow, final int targetRow, final int sourceCol, final int targetCol, final Axis targetAxis) {
         // targetRow = targetTable.getRowCount();
+        LogoPanel.spinWheel(true);
         final int sRow = sourceRow;
         final int sCol = sourceCol;
         if (sourceTable != targetTable) {
@@ -168,7 +170,8 @@ public class FlexTableUtil {
                                                                         .fireQueryChanged(w);
                                                                 
                                                                     copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
-                                                                    sourceTable.removeRow(sourceRow);                                                          
+                                                                    sourceTable.removeRow(sourceRow);
+                                                                    LogoPanel.spinWheel(false);
                                                                 }
                                                         
                                                     });
@@ -189,6 +192,7 @@ public class FlexTableUtil {
 
           
         }
+        
     }
 
     /**

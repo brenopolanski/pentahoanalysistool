@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * This panel contains the spinning wheel, application name and logo
@@ -46,9 +47,9 @@ public class LogoPanel extends LayoutComposite {
     
     private  static LayoutPanel mainPanel;
     
-    private static Image staticloader = Pat.IMAGES.loadinfostatic().createImage();
+    static Label test = new Label("");
     
-    private static Image loader = Pat.IMAGES.loadinfo().createImage();
+    
     /**
      * 
      */
@@ -60,22 +61,28 @@ public class LogoPanel extends LayoutComposite {
         mainLayout.setLeftToRight(false);
         mainPanel.setLayout(mainLayout);
         this.setStylePrimaryName(LOGOPANEL_CSS_STYLE);
-        mainPanel.add(staticloader, new BoxLayoutData(FillStyle.VERTICAL));
-        mainPanel.add(loader, new BoxLayoutData(FillStyle.VERTICAL));
-        mainPanel.add(new HTML("<h3>PAT</h3>"), new BoxLayoutData(FillStyle.VERTICAL));
+    
+        test.setStylePrimaryName("Throbber-loading");
+        test.addStyleName("throbber");
+        
+        
+
+        Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
+        mainPanel.add(patlogo);
+        mainPanel.add(test, new BoxLayoutData(FillStyle.VERTICAL));
         rootPanel.add(mainPanel);
-        loader.setVisible(false);
+        
         
     }
     
     public static void spinWheel(boolean spin) {
         if (spin) {
-            loader.setVisible(true);
-            staticloader.setVisible(false);
+            test.setVisible(true);
+            
         }
         else {
-            loader.setVisible(false);
-            staticloader.setVisible(true);
+            test.setVisible(false);
+            
         }
     }
     

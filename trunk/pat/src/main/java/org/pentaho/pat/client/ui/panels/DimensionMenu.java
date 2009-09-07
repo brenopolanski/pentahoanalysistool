@@ -28,8 +28,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -40,6 +42,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
@@ -65,7 +68,7 @@ public class DimensionMenu extends LayoutComposite {
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
-        dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
+        //dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
 
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
 
@@ -98,9 +101,12 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onSuccess(final StringTree arg0) {
                         dimensionTree.clear();
-                        final TreeItem parent = dimensionTree.addItem(arg0.getValue());
-                        addDimensionTreeItem(arg0, parent);
+                        dimensionTree.addItem(arg0.getValue());
+                        final Label rootLabel = new Label(arg0.getValue());
 
+                        final TreeItem root = new TreeItem(rootLabel);
+                        addDimensionTreeItem(arg0, root);
+                        dimensionTree.addItem(root);
                     }
 
                 });

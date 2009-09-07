@@ -195,7 +195,7 @@ public class OlapPanel extends DataWidget {
 
                             public void onClick(final ClickEvent arg0) {
                                 // TODO Test Code!
-                                DimensionBrowserWindow.displayDimension(queryId, "Time");
+                                //DimensionBrowserWindow.displayDimension(queryId, "Time");
 
                             }
                         });
