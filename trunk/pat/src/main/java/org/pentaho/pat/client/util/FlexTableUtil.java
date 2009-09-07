@@ -21,7 +21,6 @@ package org.pentaho.pat.client.util;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -43,6 +42,8 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  */
 public class FlexTableUtil {
+
+    private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 
     /**
      * Copy an entire FlexTable from one FlexTable to another. Each element is copied by creating a new {@link HTML}
@@ -101,71 +102,53 @@ public class FlexTableUtil {
                 targetTable.insertCell(0, targetTable.getCellCount(0));
 
             final Widget w = sourceTable.getWidget(sRow, sCol);
-            if (w != null) {
-                if (w instanceof Label)
-                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
-                            targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
+            ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                    w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
 
-                                public void onFailure(final Throwable arg0) {
-                                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                            .getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
-                                }
+                        public void onFailure(final Throwable arg0) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedDimensionSet(arg0.getLocalizedMessage()));
+                        }
 
-                                //
-                                public void onSuccess(final Object arg0) {
-                                    ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
-                                            Pat.getCurrQuery(), w.getElement().getInnerText().trim(),
-                                            new AsyncCallback<StringTree>() {
+                        public void onSuccess(final Object arg0) {
+                            ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    w.getElement().getInnerText().trim(), new AsyncCallback<StringTree>() {
 
-                                                public void onFailure(final Throwable arg0) {
-                                                    MessageBox.error(ConstantFactory.getInstance().error(),
-                                                            MessageFactory.getInstance().failedMemberFetch(
-                                                                    arg0.getLocalizedMessage()));
-                                                }
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+                                        }
 
-                                                public void onSuccess(final StringTree arg0) {
-                                                    if (!targetTable.getHorizontal()) {
-                                                        final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                        //spacerLabel.setStylePrimaryName("spacer-label"); //$NON-NLS-1$
-                                                        targetTable.getCellFormatter().setVerticalAlignment(
-                                                                targetTable.getRowCount(), 0,
-                                                                HasVerticalAlignment.ALIGN_TOP);
-                                                        targetTable
-                                                                .setWidget(targetTable.getRowCount(), 0, spacerLabel);
+                                        public void onSuccess(final StringTree arg0) {
+                                            if (!targetTable.getHorizontal()) {
+                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
+                                                targetTable.getCellFormatter().setVerticalAlignment(
+                                                        targetTable.getRowCount(), 0, HasVerticalAlignment.ALIGN_TOP);
+                                                targetTable.setWidget(targetTable.getRowCount(), 0, spacerLabel);
 
-                                                    } else {
-                                                        final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                        //spacerLabel.setStylePrimaryName("spacer-label"); //$NON-NLS-1$
-                                                        targetTable.getCellFormatter().setHorizontalAlignment(0,
-                                                                targetTable.getCellCount(0),
-                                                                HasHorizontalAlignment.ALIGN_LEFT);
-                                                        targetTable.getCellFormatter().setVerticalAlignment(0,
-                                                                targetTable.getCellCount(0),
-                                                                HasVerticalAlignment.ALIGN_TOP);
-                                                        targetTable.setWidget(0, targetTable.getCellCount(0),
-                                                                spacerLabel);
+                                            } else {
+                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
+                                                targetTable.getCellFormatter().setHorizontalAlignment(0,
+                                                        targetTable.getCellCount(0), HasHorizontalAlignment.ALIGN_LEFT);
+                                                targetTable.getCellFormatter().setVerticalAlignment(0,
+                                                        targetTable.getCellCount(0), HasVerticalAlignment.ALIGN_TOP);
+                                                targetTable.setWidget(0, targetTable.getCellCount(0), spacerLabel);
 
-                                                    }
-                                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                            .fireQueryChanged(w);
-                                                }
+                                            }
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                    .fireQueryChanged(w);
+                                        }
 
-                                            });
-                                }
+                                    });
+                        }
 
-                            });
-                else {
-                    //targetTable.setWidget(targetRow, sCol, w);
-                    //targetTable.getCellFormatter().addStyleName(0, 0, "demo-cell");
-                }
-            } else {
-                final HTML html = new HTML(sourceTable.getHTML(sourceRow, sCol)); // NOPMD by bugg on 21/04/09 05:54
-                //targetTable.setWidget(targetRow, sCol, html);
-                //targetTable.getCellFormatter().addStyleName(0, 0, "demo-cell");
-            }
+                    });
+
+            copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
+            sourceTable.removeRow(sourceRow);
         }
-        copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
-        sourceTable.removeRow(sourceRow);
     }
 
     /**

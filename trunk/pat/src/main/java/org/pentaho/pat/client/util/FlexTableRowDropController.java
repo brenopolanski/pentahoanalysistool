@@ -25,12 +25,8 @@ import org.pentaho.pat.rpc.dto.Axis;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
-import com.allen_sauer.gwt.dnd.client.util.CoordinateLocation;
-import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.Location;
-import com.allen_sauer.gwt.dnd.client.util.LocationWidgetComparator;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
-import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,36 +43,14 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     /** Flextable object. */
     private final DimensionFlexTable flexTable;
 
-    /** Indexed Panel Object. */
-    private final IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
-
-        public Widget getWidget(final int index) {
-            int rows= flexTable.getRowCount();
-            int cols = flexTable.getCellCount(0);
-            return flexTable.getWidget(index, cols-1);
-        }
-
-        public int getWidgetCount() {
-            return flexTable.getRowCount();
-        }
-
-        public int getWidgetIndex(final Widget child) {
-            throw new UnsupportedOperationException();
-        }
-
-        public boolean remove(final int index) {
-            throw new UnsupportedOperationException();
-        }
-    };
-
     /** Positioner Widget. */
     private Widget positioner = null;
 
     /** Target Row. */
-    private int targetRow=0;
+    private final int targetRow = 0;
 
     /** Target Row. */
-    private int targetCol=0;
+    private final int targetCol = 0;
 
     /** The Drop Axis. */
     private org.pentaho.pat.rpc.dto.Axis targetAxis;
@@ -122,7 +96,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(),
-                targetRow + 1, trDragController.getDragCol(), targetCol+1, targetAxis);
+                targetRow + 1, trDragController.getDragCol(), targetCol + 1, targetAxis);
         super.onDrop(context);
     }
 
@@ -178,11 +152,19 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
+        final Widget w = flexTable.getWidget(targetRow, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
         context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
-                + (targetRow == -1 ? 0 : w.getOffsetHeight()));
+                + (w.getOffsetHeight()));
+    }
+
+    @Override
+    public void onPreviewDrop(final DragContext context) throws VetoDragException {
+        final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
+        super.onPreviewDrop(context);
+        if (trDragController.getDraggableTable() == flexTable)
+            throw new VetoDragException();
     }
 
     /**
@@ -200,13 +182,4 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
         return p;
     }
 
-    @Override
-    public void onPreviewDrop(DragContext context) throws VetoDragException {
-        final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
-      super.onPreviewDrop(context);
-      if (trDragController.getDraggableTable() == flexTable) {
-        throw new VetoDragException();
-      }
-    }
- 
 }
