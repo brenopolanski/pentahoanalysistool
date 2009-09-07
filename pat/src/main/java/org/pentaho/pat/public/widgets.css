@@ -30,3 +30,20 @@ background-color:#99bbe8;
   width: 100%;
   align: right;
 }
+
+#throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.Throbber-loading {
+	background: url(loadinfo.gif);
+}
+.Throbber-static {
+	background: url(loadinfostatic.gif);
+}

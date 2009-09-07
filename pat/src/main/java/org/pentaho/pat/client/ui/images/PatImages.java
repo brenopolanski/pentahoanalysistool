@@ -70,4 +70,6 @@ public interface PatImages extends ImageBundle{
 	AbstractImagePrototype loadinfo();
 	
 	AbstractImagePrototype loadinfostatic();
+	
+	AbstractImagePrototype pat_orange_banner();
 }

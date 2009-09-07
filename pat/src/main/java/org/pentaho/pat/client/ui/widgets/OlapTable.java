@@ -19,15 +19,22 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
+import org.pentaho.pat.client.util.PatColDef;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
@@ -37,6 +44,8 @@ import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -47,14 +56,15 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
-	
+    LayoutPanel colPanel = new LayoutPanel();
+    Image cross = Pat.IMAGES.cross().createImage();
 	private CellDataSet olapData;
 	private int offset;
 	PatTableModel patTableModel;
 	TableModel<BaseCell[]> tableModel;
 	LiveTable<BaseCell[]> table;
 	final LayoutPanel layoutPanel = getLayoutPanel();
-
+	DimensionBrowserWindow dimBrowser = new DimensionBrowserWindow();
 	public OlapTable(){
 		super();
 		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
@@ -79,15 +89,46 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 			group = colData.get(offset-2); 
 			
 			final int cell = i;
+			Label colLabel = new Label(headers[i].formattedValue);
+			
+            if(headers[i].formattedValue!=null || headers[i].formattedValue!="")
+            cross.addClickHandler(new ClickHandler(){
 
-			final DefaultColumnDefinition<BaseCell[], String> colDef0 = new DefaultColumnDefinition<BaseCell[], String>(
-					headers[i].formattedValue) {
+                public void onClick(ClickEvent arg0) {
+                    dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+                }
+                
+            });
+            colPanel.setLayout(new BoxLayout(Alignment.CENTER));
+            
+            
+            colPanel.add(colLabel);
+            colPanel.add(cross, new BoxLayoutData(-1, -1));
+
+
+			final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(
+					colPanel) {
 				@Override
-				public String getCellValue(final BaseCell[] rowValue) {
+				public Widget getCellValue(final BaseCell[] rowValue) {
 					if (rowValue[cell]==null) {
-						return ""; //$NON-NLS-1$
+					    Label testLabel = new Label(""); //$NON-NLS-1$
+						return testLabel;
 					} else {
-						return rowValue[cell].formattedValue;
+					    LayoutPanel cellPanel = new LayoutPanel();
+					    Image cross = Pat.IMAGES.cross().createImage();
+					    cross.addClickHandler(new ClickHandler(){
+
+                            public void onClick(ClickEvent arg0) {
+                                dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+                            }
+					        
+					    });
+					    cellPanel.setLayout(new BoxLayout(Alignment.CENTER));
+					    
+					    Label testLabel = new Label(rowValue[cell].formattedValue);
+					    cellPanel.add(testLabel);
+					    cellPanel.add(cross, new BoxLayoutData(-1, -1));
+						return cellPanel;
 					}
 				}
 			};
