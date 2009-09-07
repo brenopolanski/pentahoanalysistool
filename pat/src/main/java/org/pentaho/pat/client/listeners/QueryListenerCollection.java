@@ -40,10 +40,4 @@ public class QueryListenerCollection extends ArrayList<QueryListener> {
 			listener.onQueryExecuted(queryId, matrix);
 		}
 	}
-	
-    public void fireMemberMoved(final Widget sender){
-        for(QueryListener listener:this){
-            listener.onQueryChange(sender);
-        }
-    }
 }

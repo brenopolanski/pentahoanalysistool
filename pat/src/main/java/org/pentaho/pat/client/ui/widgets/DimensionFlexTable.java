@@ -54,6 +54,8 @@ public class DimensionFlexTable extends FlexTable {
     
     private final static String TABLE_DRAG_WIDGET = "dragDimension";  //$NON-NLS-1$
     
+    private final static String TABLE_DRAG_CELL = "dragDimensionCell";  //$NON-NLS-1$
+    
     private final static String TABLE_DROP_ENDCELL = "dropEndCell";  //$NON-NLS-1$
     
     /**
@@ -102,20 +104,20 @@ public class DimensionFlexTable extends FlexTable {
                         clearDimensionTable();
                         for (int row = 0; row < arg0.length; row++) {
                             final Label handle = new Label(arg0[row]);
-                            handle.addStyleName(TABLE_DRAG_WIDGET);
+                            handle.setStylePrimaryName(TABLE_DRAG_WIDGET);
                             trdc.makeDraggable(handle);
                             if (!horizontal) {
                                 setWidget(row, 0, handle);
                                 getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
-                                getCellFormatter().addStyleName(row, 0, TABLE_DRAG_WIDGET);
+                                getCellFormatter().setStylePrimaryName(row, 0, TABLE_DRAG_CELL);
                             } else {
                                 setWidget(0, row, handle);
                                 getCellFormatter().setHorizontalAlignment(0, row, HasHorizontalAlignment.ALIGN_LEFT);
                                 getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
                                 getCellFormatter().removeStyleName(0, row, TABLE_DROP_ENDCELL);
-                                getCellFormatter().addStyleName(0, row, TABLE_DRAG_WIDGET);
+                                getCellFormatter().setStylePrimaryName(0, row, TABLE_DRAG_CELL);
                                 if (row == arg0.length - 1 && arg0.length - 1 > 0)
-                                    getCellFormatter().setStyleName(0, row, TABLE_DROP_ENDCELL);
+                                    getCellFormatter().addStyleName(0, row, TABLE_DROP_ENDCELL);
                             }
                         }
 

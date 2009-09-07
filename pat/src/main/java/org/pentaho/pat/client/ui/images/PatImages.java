@@ -11,7 +11,7 @@
  * @author Tom Barber
  */
 
-package org.pentaho.pat.client.deprecated.images;
+package org.pentaho.pat.client.ui.images;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;

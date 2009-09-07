@@ -35,6 +35,7 @@ import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 /**
  * Menu Bar
@@ -53,11 +54,12 @@ public class MenuBar extends LayoutComposite {
      */
     public MenuBar() {
         super();
-        
+        LogoPanel logoPanel = new LogoPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
+        rootPanel.setWidth("100%");
         addConnectionsButton();
         addCubesButton();
-        rootPanel.add(LogoPanel.getPanel(),new BoxLayoutData(FillStyle.VERTICAL));
+        rootPanel.add(logoPanel,new BoxLayoutData(FillStyle.BOTH));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
 
@@ -74,7 +76,7 @@ public class MenuBar extends LayoutComposite {
                 ConnectionManagerWindow.display();
             }
         });
-        rootPanel.add(connectionButton);
+        rootPanel.add(connectionButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
     
     private void addCubesButton() {
@@ -90,7 +92,7 @@ public class MenuBar extends LayoutComposite {
                 CubeBrowserWindow.display();
             }
         });
-        rootPanel.add(cubeButton);
+        rootPanel.add(cubeButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
 }
