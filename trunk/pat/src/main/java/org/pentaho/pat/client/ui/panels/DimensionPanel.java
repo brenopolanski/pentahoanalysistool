@@ -70,8 +70,9 @@ public class DimensionPanel extends LayoutComposite {
         dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
         dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
         mainPanel.add(dimDropUnused, new BoxLayoutData(1, 0.25));
-        mainPanel.add(dimDropRow, new BoxLayoutData(1, 0.25));
-        mainPanel.add(dimDropCol, new BoxLayoutData(1, 0.25));
+        
+        mainPanel.add(dimDropRow, new BoxLayoutData(1,0.25));
+        mainPanel.add(dimDropCol, new BoxLayoutData(1,0.25));
         mainPanel.add(dimDropFilter, new BoxLayoutData(1, 0.25));
 
         rootPanel.add(mainPanel);

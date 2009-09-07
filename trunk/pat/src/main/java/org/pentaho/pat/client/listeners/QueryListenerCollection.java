@@ -15,6 +15,7 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.ArrayList;
 
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -39,5 +40,10 @@ public class QueryListenerCollection extends ArrayList<QueryListener> {
 			listener.onQueryExecuted(queryId, matrix);
 		}
 	}
-
+	
+    public void fireMemberMoved(final Widget sender){
+        for(QueryListener listener:this){
+            listener.onQueryChange(sender);
+        }
+    }
 }

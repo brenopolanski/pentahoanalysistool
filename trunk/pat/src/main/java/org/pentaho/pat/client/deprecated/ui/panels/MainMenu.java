@@ -179,4 +179,12 @@ public class MainMenu extends LayoutComposite implements ConnectionListener, Que
 		stackPanel.add(widget, stackText);
 		menuCounter++;
 	}
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.deprecated.listeners.QueryListener#onMemberMove(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onMemberMove(Widget sender) {
+        // TODO Auto-generated method stub
+        
+    }
 }
