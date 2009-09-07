@@ -40,77 +40,88 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  *TODO JAVADOC
+ * 
  * @created Aug 12, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
- *
+ * 
  */
-public class DataPanel extends LayoutComposite implements QueryListener{
+public class DataPanel extends LayoutComposite implements QueryListener {
 
     OlapTable olapTable;
-    
+
     LayoutPanel fillLayoutPanel = new LayoutPanel();
-    
+
     final LayoutPanel baseLayoutPanel = getLayoutPanel();
+
     final LayoutPanel mainLayoutPanel = new LayoutPanel(new GridLayout(2, 3));
+
     /**
      *TODO JAVADOC
-     *
+     * 
      */
     public DataPanel() {
 
-        
         mainLayoutPanel.setPadding(0);
-        
+
         final Button executeButton = new Button("Execute Query");
-        executeButton.addClickHandler(new ClickHandler(){
+        executeButton.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
-               ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                        new AsyncCallback<CellDataSet>() {
 
-                public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
-                    MessageBox.error("Error", "Query Execution Failed");
-                }
+                            public void onFailure(final Throwable arg0) {
+                                // TODO Auto-generated method stub
+                                MessageBox.error("Error", "Query Execution Failed");
+                            }
 
-                public void onSuccess(CellDataSet result1) {
-                    // TODO Auto-generated method stub
-                    onQueryExecuted(Pat.getCurrQuery(), result1);
-                    olapTable.setData(result1);
-                }
-                   
-               });
-                
+                            public void onSuccess(final CellDataSet result1) {
+                                // TODO Auto-generated method stub
+                                onQueryExecuted(Pat.getCurrQuery(), result1);
+                                olapTable.setData(result1);
+                            }
+
+                        });
+
             }
-            
+
         });
 
-        DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS, true);
-        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS, false);
-        //        DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+        final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
+                Axis.COLUMNS, true);
+        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS,
+                false);
+        // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
+        // Axis.FILTER);
         olapTable = new OlapTable();
         fillLayoutPanel.add(olapTable);
-        
+
         mainLayoutPanel.add(executeButton);
         mainLayoutPanel.add(dimDropCol);
         mainLayoutPanel.add(dimDropRow);
-        
+
         baseLayoutPanel.add(mainLayoutPanel);
-        
+
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
-    public void onQueryChange(Widget sender) {
+    public void onQueryChange(final Widget sender) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String,
+     * org.pentaho.pat.rpc.dto.CellDataSet)
      */
-    public void onQueryExecuted(String queryId, CellDataSet matrix) {        
+    public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
     }

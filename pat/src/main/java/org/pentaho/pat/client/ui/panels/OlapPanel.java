@@ -29,9 +29,8 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -195,7 +194,7 @@ public class OlapPanel extends DataWidget {
 
                             public void onClick(final ClickEvent arg0) {
                                 // TODO Test Code!
-                                //DimensionBrowserWindow.displayDimension(queryId, "Time");
+                                // DimensionBrowserWindow.displayDimension(queryId, "Time");
 
                             }
                         });

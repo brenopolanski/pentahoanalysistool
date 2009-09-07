@@ -30,35 +30,37 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 /**
  * TreeItems for Cube Menu
- * @created Aug 7, 2009 
+ * 
+ * @created Aug 7, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
  */
 public class CubeTreeItem extends HorizontalPanel {
 
+    public enum ItemType {
+        CONNECTION, CUBE
+    }
 
     private CubeConnection connection;
-    private String cube;
-    private AbstractImagePrototype itemImage;
-    private String itemName;
 
-    public enum ItemType {
-        CONNECTION,CUBE
-    }
+    private String cube;
+
+    private AbstractImagePrototype itemImage;
+
+    private String itemName;
 
     private ItemType type;
 
-    public CubeTreeItem(CubeConnection connection,String cube) {
+    public CubeTreeItem(final CubeConnection connection, final String cube) {
         if (connection != null) {
             this.connection = connection;
             this.cube = cube;
             if (cube != null) {
                 this.itemImage = Pat.IMAGES.cube();
-                this.itemName = "<b>" + this.cube + "</b>";
+                this.itemName = "<b>" + this.cube + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
                 this.type = ItemType.CUBE;
-            }
-            else {
+            } else {
                 this.itemImage = Pat.IMAGES.database();
                 this.itemName = this.connection.getName();
                 this.type = ItemType.CONNECTION;
@@ -67,24 +69,22 @@ public class CubeTreeItem extends HorizontalPanel {
             this.setSpacing(5);
             this.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));
             this.add(new HTML(this.itemName));
-            
-            DOM.setStyleAttribute(this.getElement(), "background", "transparent");
+
+            DOM.setStyleAttribute(this.getElement(), "background", "transparent"); //$NON-NLS-1$ //$NON-NLS-2$
 
         }
 
+    }
 
+    public String getConnectionId() {
+        return this.connection.getId();
+    }
 
+    public String getCube() {
+        return this.cube;
     }
 
     public ItemType getType() {
         return this.type;
-    }
-    
-    public String getConnectionId() {
-        return this.connection.getId();
-    }
-    
-    public String getCube() {
-        return this.cube;
     }
 }

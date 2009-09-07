@@ -35,7 +35,6 @@ import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 /**
  * Menu Bar
@@ -54,12 +53,12 @@ public class MenuBar extends LayoutComposite {
      */
     public MenuBar() {
         super();
-        LogoPanel logoPanel = new LogoPanel();
+        final LogoPanel logoPanel = new LogoPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
-        rootPanel.setWidth("100%");
+        rootPanel.setWidth("100%"); //$NON-NLS-1$
         addConnectionsButton();
         addCubesButton();
-        rootPanel.add(logoPanel,new BoxLayoutData(FillStyle.BOTH));
+        rootPanel.add(logoPanel, new BoxLayoutData(FillStyle.BOTH));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
 
@@ -78,12 +77,12 @@ public class MenuBar extends LayoutComposite {
         });
         rootPanel.add(connectionButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
-    
+
     private void addCubesButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
-        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
-                "Cubes", ButtonLabelType.TEXT_ON_BOTTOM));
+        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), "Cubes",
+                ButtonLabelType.TEXT_ON_BOTTOM));
         cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
 
         cubeButton.addClickHandler(new ClickHandler() {

@@ -19,20 +19,9 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Label;
 
 /**
  *TODO JAVADOC
@@ -46,29 +35,23 @@ public class DimensionFlexTable extends FlexTable {
 
     private Boolean horizontal = false;
 
-    
     private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
-    
-   
-    
+
     /**
      *TODO JAVADOC
      * 
      */
     public DimensionFlexTable() {
         // TODO Auto-generated constructor stub
-        
+
     }
 
     public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
         addStyleName(TABLE_CSS_NAME);
         horizontal = orientation;
 
-       
-
-        //clearDimensionTable();
+        // clearDimensionTable();
     }
-
 
     /**
      *TODO JAVADOC
@@ -79,6 +62,4 @@ public class DimensionFlexTable extends FlexTable {
         return horizontal;
     }
 
-    
-    
 }
