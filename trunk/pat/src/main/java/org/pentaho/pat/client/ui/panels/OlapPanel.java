@@ -29,7 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 

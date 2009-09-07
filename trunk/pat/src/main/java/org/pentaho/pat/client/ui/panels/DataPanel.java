@@ -20,14 +20,22 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -40,28 +48,56 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements QueryListener{
 
+    OlapTable olapTable;
+    
+    LayoutPanel fillLayoutPanel = new LayoutPanel();
+    
+    final LayoutPanel baseLayoutPanel = getLayoutPanel();
+    final LayoutPanel mainLayoutPanel = new LayoutPanel(new GridLayout(2, 3));
     /**
      *TODO JAVADOC
      *
      */
     public DataPanel() {
 
-        final LayoutPanel baseLayoutPanel = getLayoutPanel();
-        final LayoutPanel mainLayoutPanel = new LayoutPanel(new GridLayout(2, 3));
+        
         mainLayoutPanel.setPadding(0);
         
         final Button executeButton = new Button("Execute Query");
+        executeButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+               ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                public void onFailure(Throwable arg0) {
+                    // TODO Auto-generated method stub
+                    MessageBox.error("Error", "Query Execution Failed");
+                }
+
+                public void onSuccess(CellDataSet result1) {
+                    // TODO Auto-generated method stub
+                    onQueryExecuted(Pat.getCurrQuery(), result1);
+                    olapTable.setData(result1);
+                }
+                   
+               });
+                
+            }
+            
+        });
 
         DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS, true);
-        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS, false);
         //        DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+        olapTable = new OlapTable();
+        fillLayoutPanel.add(olapTable);
         
         mainLayoutPanel.add(executeButton);
-        //mainLayoutPanel.add(OlapPanel.getDropWidget());
         mainLayoutPanel.add(dimDropCol);
         mainLayoutPanel.add(dimDropRow);
+        
         baseLayoutPanel.add(mainLayoutPanel);
-        //baseLayoutPanel.add(executeButton);
+        
     }
 
     /* (non-Javadoc)
@@ -75,17 +111,8 @@ public class DataPanel extends LayoutComposite implements QueryListener{
     /* (non-Javadoc)
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
      */
-    public void onQueryExecuted(String queryId, CellDataSet matrix) {
-        // TODO Auto-generated method stub
-        
+    public void onQueryExecuted(String queryId, CellDataSet matrix) {        
+        baseLayoutPanel.remove(mainLayoutPanel);
+        baseLayoutPanel.add(fillLayoutPanel);
     }
-
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.client.listeners.QueryListener#onMemberMoved(com.google.gwt.user.client.ui.Widget)
-     */
-    public void onMemberMoved(Widget sender) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

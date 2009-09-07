@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.client.util;
 
+import java.util.ArrayList;
+
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
@@ -120,25 +122,64 @@ public class FlexTableUtil {
                                         }
 
                                         public void onSuccess(final StringTree arg0) {
-                                            if (!targetTable.getHorizontal()) {
-                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
-                                                targetTable.getCellFormatter().setVerticalAlignment(
-                                                        targetTable.getRowCount(), 0, HasVerticalAlignment.ALIGN_TOP);
-                                                targetTable.setWidget(targetTable.getRowCount(), 0, spacerLabel);
+                                                                                    ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(), w.getElement().getInnerText().trim(), new AsyncCallback<StringTree>(){
 
-                                            } else {
-                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
-                                                targetTable.getCellFormatter().setHorizontalAlignment(0,
-                                                        targetTable.getCellCount(0), HasHorizontalAlignment.ALIGN_LEFT);
-                                                targetTable.getCellFormatter().setVerticalAlignment(0,
-                                                        targetTable.getCellCount(0), HasVerticalAlignment.ALIGN_TOP);
-                                                targetTable.setWidget(0, targetTable.getCellCount(0), spacerLabel);
+                                                public void onFailure(Throwable arg0) {
+                                                   MessageBox.error("Error", "Couldn't get members");
+                                                    
+                                                }
 
-                                            }
-                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                    .fireQueryChanged(w);
+                                                public void onSuccess(StringTree memberTree) {
+                                                   
+                                         
+                                                    
+                                                    final String rootLabel = new String(memberTree.getValue());
+                                                    ArrayList names = new ArrayList(); 
+                                                    names.add(memberTree.getChildren().get(0).getValue());
+                                                    ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), 
+                                                            w.getElement().getInnerText().trim(), names, "MEMBER", new AsyncCallback(){
+
+                                                                public void onFailure(Throwable arg0) {
+                                                                    // TODO Auto-generated method stub
+                                                                    MessageBox.error("Error", "Selection Failed");
+                                                                }
+
+                                                                public void onSuccess(Object arg0) {
+                                                                   
+                                                                
+                                                                    if (!targetTable.getHorizontal()) {
+                                                                    final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                                    spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
+                                                                    targetTable.getCellFormatter().setVerticalAlignment(
+                                                                            targetTable.getRowCount(), 0, HasVerticalAlignment.ALIGN_TOP);
+                                                                    targetTable.setWidget(targetTable.getRowCount(), 0, spacerLabel);
+
+                                                                } else {
+                                                                    final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                                    spacerLabel.setStylePrimaryName(TABLE_CSS_SPACER);
+                                                                    targetTable.getCellFormatter().setHorizontalAlignment(0,
+                                                                            targetTable.getCellCount(0), HasHorizontalAlignment.ALIGN_LEFT);
+                                                                    targetTable.getCellFormatter().setVerticalAlignment(0,
+                                                                            targetTable.getCellCount(0), HasVerticalAlignment.ALIGN_TOP);
+                                                                    targetTable.setWidget(0, targetTable.getCellCount(0), spacerLabel);
+
+                                                                }
+                                                                GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                                        .fireQueryChanged(w);
+                                                                
+                                                                    copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
+                                                                    sourceTable.removeRow(sourceRow);                                                          
+                                                                }
+                                                        
+                                                    });
+                                                            
+
+                                                    
+                                                }
+                                                
+                                            });
+
+                                     
                                         }
 
                                     });
@@ -146,8 +187,7 @@ public class FlexTableUtil {
 
                     });
 
-            copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
-            sourceTable.removeRow(sourceRow);
+          
         }
     }
 

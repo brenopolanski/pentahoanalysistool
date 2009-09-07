@@ -21,16 +21,25 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
+import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.Axis.Standard;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -57,6 +66,17 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     
     private String query = Pat.getCurrQuery();
 
+    private FlexTableRowDragController trdc = null;
+
+    private final Label spacerLabel = new Label(""); //$NON-NLS-1$
+
+    private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
+    
+    private final static String TABLE_DRAG_WIDGET = "dragDimension";  //$NON-NLS-1$
+    
+    private final static String TABLE_DRAG_CELL = "dragDimensionCell";  //$NON-NLS-1$
+    
+    private final static String TABLE_DROP_ENDCELL = "dropEndCell";  //$NON-NLS-1$
     /**
      *TODO JAVADOC
      * 
@@ -66,7 +86,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      */
     public DimensionDropWidget(final String labelText, final Standard targetAxis) {
         this.dimAxis = targetAxis;
-        
+        this.trdc = DimensionPanel.getTableRowDragController();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captionLayoutPanel);
@@ -78,7 +98,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
         super();
         horizontal = orientation;
         this.dimAxis = targetAxis;
-        
+        this.trdc = DimensionPanel.getTableRowDragController();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captionLayoutPanel);
@@ -103,7 +123,10 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
 
         captionLayoutPanel.add(dimensionTable);
 
-        dimensionTable.populateDimensionTable(dimAxis);
+        clearDimensionTable();
+        populateDimensionTable(dimAxis);
+        
+        
     }
 
     @Override
@@ -122,7 +145,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      * @see org.pentaho.pat.client.listeners.QueryListener#onMemberMoved(com.google.gwt.user.client.ui.Widget)
      */
     public void onMemberMoved(Widget sender) {
-        dimensionTable.populateDimensionTable(dimAxis);
+        populateDimensionTable(dimAxis);
     }
 
     /* (non-Javadoc)
@@ -131,9 +154,8 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     public void onQueryChange(Widget sender) {
         // TODO Auto-generated method stub
         if(isAttached() && isVisible() && Pat.getCurrQuery().equals(query))
-        dimensionTable.populateDimensionTable(dimAxis);
-        this.layout();
-    }
+        populateDimensionTable(dimAxis);
+   }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
@@ -149,6 +171,57 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      */
     public Boolean getHorizontal() {
         return horizontal;
+    }
+
+    public void populateDimensionTable(final Axis targetAxis) {
+
+        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                new AsyncCallback<String[]>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().dimensionFetchFail());
+                    }
+
+                    public void onSuccess(final String[] arg0) {
+                        clearDimensionTable();
+                        for (int row = 0; row < arg0.length; row++) {
+                            final Label handle = new Label(arg0[row]);
+                            handle.setStylePrimaryName(TABLE_DRAG_WIDGET);
+                            trdc.makeDraggable(handle);
+                            
+                            if (!horizontal) {
+                                dimensionTable.setWidget(row, 0, handle);
+                                dimensionTable.getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
+                                dimensionTable.getCellFormatter().setStylePrimaryName(row, 0, TABLE_DRAG_CELL);
+                            } else {
+                                dimensionTable.setWidget(0, row, handle);
+                                dimensionTable.getCellFormatter().setHorizontalAlignment(0, row, HasHorizontalAlignment.ALIGN_LEFT);
+                                dimensionTable.getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
+                                dimensionTable.getCellFormatter().removeStyleName(0, row, TABLE_DROP_ENDCELL);
+                                dimensionTable.getCellFormatter().setStylePrimaryName(0, row, TABLE_DRAG_CELL);
+                                if (row == arg0.length - 1 && arg0.length - 1 > 0)
+                                    dimensionTable.getCellFormatter().addStyleName(0, row, TABLE_DROP_ENDCELL);
+                            }
+                            
+                            refreshTable();    
+                        }
+                                   
+                    }
+                });
+    }
+    
+    private void refreshTable(){
+        
+
+        WidgetHelper.revalidate(dimensionTable);
+        
+        }
+
+    public void clearDimensionTable() {
+        dimensionTable.clear();
+        dimensionTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+        dimensionTable.setWidget(0, 0, spacerLabel);
+        dimensionTable.getCellFormatter().addStyleName(0, 0,TABLE_CSS_SPACER);
     }
 
 }
