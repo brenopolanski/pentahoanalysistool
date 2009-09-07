@@ -66,10 +66,6 @@ public interface PatImages extends ImageBundle{
 	AbstractImagePrototype database_delete();
 	
 	AbstractImagePrototype database_edit();
-
-	AbstractImagePrototype loadinfo();
-	
-	AbstractImagePrototype loadinfostatic();
 	
 	AbstractImagePrototype pat_orange_banner();
 }
