@@ -33,9 +33,17 @@ border-color: white;
 }
 
 .demo-cell {
+  border-collapse:collapse;
   border-width: 1px 1px 1px 1px;
   border-style: solid;
   color: white;
   border-color: white;
   padding: 5px;
+}
+
+.spacer-label {
+  width: 100%;
+}
+.demo-endCell {
+  width: 100%;
 }

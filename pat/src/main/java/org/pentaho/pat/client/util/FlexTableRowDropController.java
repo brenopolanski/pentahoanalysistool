@@ -23,6 +23,7 @@ import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.rpc.dto.Axis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
 import com.allen_sauer.gwt.dnd.client.util.CoordinateLocation;
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
@@ -177,11 +178,6 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        /*targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
-                context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
-        targetCol = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(context.mouseX,
-                context.mouseY), LocationWidgetComparator.RIGHT_HALF_COMPARATOR) - 1;
-*/
         final Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
@@ -204,4 +200,13 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
         return p;
     }
 
+    @Override
+    public void onPreviewDrop(DragContext context) throws VetoDragException {
+        final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
+      super.onPreviewDrop(context);
+      if (trDragController.getDraggableTable() == flexTable) {
+        throw new VetoDragException();
+      }
+    }
+ 
 }

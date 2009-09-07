@@ -31,10 +31,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.rpc.dto.Axis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -61,25 +58,31 @@ public class OlapPanel extends DataWidget {
         return queryId;
     }
 
-    private final String panelName;
+    private String panelName = null;
 
-    private final String cubeName;
+    private String cubeName = null;
 
-    private final String connectionId;
+    private String connectionId = null;
 
-    private static String queryId;
+    private static String queryId = null;
     
     /**
      *TODO JAVADOC
      * 
      */
     public OlapPanel(final String cube, final String connection) {
+        super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = cube;
 
         cubeName = cube;
         connectionId = connection;
          
+    }
+
+    public OlapPanel() {
+        // Needs working out so it accounts for multiple cubes of the same name.
+        super();         
     }
 
     /*
@@ -103,6 +106,31 @@ public class OlapPanel extends DataWidget {
         return panelName;
     }
 
+    
+    public void setName(String name) {
+        panelName = name;
+    }
+
+
+    public String getCube() {
+        return cubeName;
+    }
+
+    
+    public void setCube(String name) {
+        cubeName = name;
+    }
+
+    
+    public String getQuery() {
+        return queryId;
+    }
+
+    
+    public void setQuery(String name) {
+        queryId = name;
+    }
+
     @Override
     public void onLoad() {
 
@@ -122,6 +150,8 @@ public class OlapPanel extends DataWidget {
             }
 
         });
+        
+        
     }
 
     /*

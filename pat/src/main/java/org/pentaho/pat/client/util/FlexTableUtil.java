@@ -22,7 +22,6 @@ package org.pentaho.pat.client.util;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -58,8 +57,8 @@ public class FlexTableUtil {
      * @param targetRow
      *            the index before which to insert the copied row
      */
-    public static void copyRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
-            final int targetRow) {
+    public static void copyRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
+            final int sourceRow, final int targetRow) {
         targetTable.insertRow(targetRow);
         final HTML html = new HTML();
         for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
@@ -86,99 +85,88 @@ public class FlexTableUtil {
      * @param targetAxis
      *            the target axis
      */
-    public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
-            final int targetRow, final int sourceCol, final int targetCol, final Axis targetAxis) {
+    public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
+            final int sourceRow, final int targetRow, final int sourceCol, final int targetCol, final Axis targetAxis) {
         // targetRow = targetTable.getRowCount();
-        int sRow = sourceRow;
+        final int sRow = sourceRow;
         final int sCol = sourceCol;
         if (sourceTable != targetTable) {
-            if(!sourceTable.getHorizontal()){
-            //if (sourceTable.equals(targetTable) && sRow >= targetRow)
-            //    sRow++;
-            targetTable.insertRow(targetTable.getRowCount());
-            }
-            else{
-                //if (sourceTable.equals(targetTable) && sCol >= targetCol)
-                   // sCol++;
+            if (!sourceTable.getHorizontal())
+                // if (sourceTable.equals(targetTable) && sRow >= targetRow)
+                // sRow++;
+                targetTable.insertRow(targetTable.getRowCount());
+            else
+                // if (sourceTable.equals(targetTable) && sCol >= targetCol)
+                // sCol++;
                 targetTable.insertCell(0, targetTable.getCellCount(0));
-            }
-          
-          
-          
-                final Widget w = sourceTable.getWidget(sRow, sCol);
-                if (w != null) {
-                    if (w instanceof Label)
-                        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), OlapPanel.getQueryId(),
-                                targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
 
-                                    public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                                .getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
-                                    }
+            final Widget w = sourceTable.getWidget(sRow, sCol);
+            if (w != null) {
+                if (w instanceof Label)
+                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), OlapPanel.getQueryId(),
+                            targetAxis, w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
 
-                                    //
-                                    public void onSuccess(final Object arg0) {
-                                        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
-                                                OlapPanel.getQueryId(), w.getElement().getInnerText().trim(),
-                                                new AsyncCallback<StringTree>() {
+                                public void onFailure(final Throwable arg0) {
+                                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                            .getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                                }
 
-                                                    public void onFailure(final Throwable arg0) {
-                                                        MessageBox.error(ConstantFactory.getInstance().error(),
-                                                                MessageFactory.getInstance().failedMemberFetch(
-                                                                        arg0.getLocalizedMessage()));
+                                //
+                                public void onSuccess(final Object arg0) {
+                                    ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
+                                            OlapPanel.getQueryId(), w.getElement().getInnerText().trim(),
+                                            new AsyncCallback<StringTree>() {
+
+                                                public void onFailure(final Throwable arg0) {
+                                                    MessageBox.error(ConstantFactory.getInstance().error(),
+                                                            MessageFactory.getInstance().failedMemberFetch(
+                                                                    arg0.getLocalizedMessage()));
+                                                }
+
+                                                public void onSuccess(final StringTree arg0) {
+                                                    if (!targetTable.getHorizontal()) {
+                                                        final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                        //spacerLabel.setStylePrimaryName("spacer-label"); //$NON-NLS-1$
+                                                        targetTable.getCellFormatter().setVerticalAlignment(
+                                                                targetTable.getRowCount(), 0,
+                                                                HasVerticalAlignment.ALIGN_TOP);
+                                                        targetTable
+                                                                .setWidget(targetTable.getRowCount(), 0, spacerLabel);
+
+                                                    } else {
+                                                        final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                        //spacerLabel.setStylePrimaryName("spacer-label"); //$NON-NLS-1$
+                                                        targetTable.getCellFormatter().setHorizontalAlignment(0,
+                                                                targetTable.getCellCount(0),
+                                                                HasHorizontalAlignment.ALIGN_LEFT);
+                                                        targetTable.getCellFormatter().setVerticalAlignment(0,
+                                                                targetTable.getCellCount(0),
+                                                                HasVerticalAlignment.ALIGN_TOP);
+                                                        targetTable.setWidget(0, targetTable.getCellCount(0),
+                                                                spacerLabel);
+
                                                     }
+                                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                            .fireQueryChanged(w);
+                                                }
 
-                                                    public void onSuccess(final StringTree arg0) {
-                                                        if (!targetTable.getHorizontal()){
-                                                            final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                            spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
-                                                            targetTable.getCellFormatter().setVerticalAlignment(targetTable.getRowCount(), 0, HasVerticalAlignment.ALIGN_TOP);
-                                                            targetTable.setWidget(targetTable.getRowCount(), 0, spacerLabel);
-                                                              
-                                                        }
-                                                        else{
-                                                            final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                            spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
-                                                            targetTable.getCellFormatter().setHorizontalAlignment(0, targetTable.getCellCount(0), HasHorizontalAlignment.ALIGN_LEFT);
-                                                            targetTable.getCellFormatter().setVerticalAlignment(0, targetTable.getCellCount(0), HasVerticalAlignment.ALIGN_TOP);
-                                                            targetTable.setWidget(0, targetTable.getCellCount(0), spacerLabel);
+                                            });
+                                }
 
-                                                        }
-                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w);
-                                                    }
-
-                                                });
-                                    }
-
-                                });
-                    else{
-                        targetTable.setWidget(targetRow, sCol, w);
-                    targetTable.getCellFormatter().addStyleName(0, 0,"demo-cell"); 
-                    }
-                } else {
-                    final HTML html = new HTML(sourceTable.getHTML(sourceRow, sCol)); // NOPMD by bugg on 21/04/09 05:54
-                    targetTable.setWidget(targetRow, sCol, html);
-                    targetTable.getCellFormatter().addStyleName(0, 0,"demo-cell"); 
-                    // ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), targetAxis,
-                    // html.getText().trim(), new AsyncCallback<Object>() { // NOPMD by bugg on 21/04/09 05:54
-                    //
-                    // public void onFailure(final Throwable arg0) {
-                    // MessageBox.error(ConstantFactory.getInstance().error(),
-                    // MessageFactory.getInstance().failedDimensionList(arg0.getLocalizedMessage()));
-                    // }
-                    //
-                    // public void onSuccess(final Object arg0) {
-                    //
-                    // }
-                    //
-                    // });
+                            });
+                else {
+                    //targetTable.setWidget(targetRow, sCol, w);
+                    //targetTable.getCellFormatter().addStyleName(0, 0, "demo-cell");
                 }
+            } else {
+                final HTML html = new HTML(sourceTable.getHTML(sourceRow, sCol)); // NOPMD by bugg on 21/04/09 05:54
+                //targetTable.setWidget(targetRow, sCol, html);
+                //targetTable.getCellFormatter().addStyleName(0, 0, "demo-cell");
             }
-            copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
-            sourceTable.removeRow(sourceRow);
         }
-
-    
+        copyRowStyle(sourceTable, targetTable, sourceRow, targetTable.getRowCount());
+        sourceTable.removeRow(sourceRow);
+    }
 
     /**
      * Copies the CSS style of a source row to a target row.
@@ -192,8 +180,8 @@ public class FlexTableUtil {
      * @param targetRow
      *            the target row
      */
-    private static void copyRowStyle(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable, final int sourceRow,
-            final int targetRow) {
+    private static void copyRowStyle(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
+            final int sourceRow, final int targetRow) {
         final String rowStyle = sourceTable.getRowFormatter().getStyleName(sourceRow);
         targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
     }

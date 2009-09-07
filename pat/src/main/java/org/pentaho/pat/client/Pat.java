@@ -81,6 +81,7 @@ public class Pat implements EntryPoint {
      */
     private static State applicationState = new State();
 
+    public static String currQuery = null;
     /**
      * Get the style name of the reference element defined in the current GWT
      * theme style sheet.

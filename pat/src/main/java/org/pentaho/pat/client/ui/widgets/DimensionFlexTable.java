@@ -47,16 +47,18 @@ public class DimensionFlexTable extends FlexTable {
 
     private FlexTableRowDragController trdc=null;
 
+    private final Label spacerLabel = new Label(""); //$NON-NLS-1$
+    
     public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
         addStyleName("demo-flextable"); //$NON-NLS-1$
         horizontal = orientation;
 
         this.trdc = tableRowDragController;
-        final Label spacerLabel = new Label(""); //$NON-NLS-1$
-        spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
+        
+        spacerLabel.setStylePrimaryName("spacer-label"); //$NON-NLS-1$
         this.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
         setWidget(0, 0, spacerLabel);
-        getCellFormatter().addStyleName(0, 0,"demo-cell"); 
+        //getCellFormatter().addStyleName(0, 0,"demo-cell"); 
     }
 
     /**
@@ -69,15 +71,13 @@ public class DimensionFlexTable extends FlexTable {
 
     public void clearDimensionTable() {
         this.clear();
-        final Label spacerLabel = new Label(""); //$NON-NLS-1$
-        spacerLabel.setStylePrimaryName("CSS_DEMO_INDEXED_PANEL_EXAMPLE_SPACER"); //$NON-NLS-1$
         getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
         setWidget(0, 0, spacerLabel);
-        getCellFormatter().addStyleName(0, 0,"demo-cell"); 
+        //getCellFormatter().addStyleName(0, 0,"demo-cell");
     }
 
     public void populateDimensionTable(final Axis targetAxis) {
-         //
+         
 
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis,
                 new AsyncCallback<String[]>() {
@@ -87,12 +87,7 @@ public class DimensionFlexTable extends FlexTable {
                     }
 
                     public void onSuccess(final String[] arg0) {
-                        
-                        //if(arg0.length==0)
-                            {
-                                clearDimensionTable();
-                            }
-                        
+                        clearDimensionTable();  
                         for (int row = 0; row < arg0.length; row++) {
                             final Label handle = new Label(arg0[row]);
                             handle.addStyleName("drag-Dimension"); //$NON-NLS-1$
@@ -106,13 +101,15 @@ public class DimensionFlexTable extends FlexTable {
                                 setWidget(0, row, handle);
                                 getCellFormatter().setHorizontalAlignment(0, row, HasHorizontalAlignment.ALIGN_LEFT);
                                 getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
-                                getCellFormatter().addStyleName(0, row,"demo-cell"); 
+                                getCellFormatter().removeStyleName(0, row, "demo-endCell");
+                                getCellFormatter().addStyleName(0, row,"demo-cell");
+                                if (row==arg0.length-1 && arg0.length-1 >0)
+                                    getCellFormatter().setStyleName(0, row, "demo-endCell");
                             }
                         }
-                        
+                    
                     }
                 });
-
     }
 
     /**
