@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -100,11 +101,9 @@ public class DimensionMenu extends LayoutComposite {
                     public void onSuccess(final StringTree arg0) {
                         dimensionTree.clear();
                         dimensionTree.addItem(arg0.getValue());
-                        final Label rootLabel = new Label(arg0.getValue());
-
-                        final TreeItem root = new TreeItem(rootLabel);
-                        addDimensionTreeItem(arg0, root);
-                        dimensionTree.addItem(root);
+                        final TreeItem parent = dimensionTree.addItem(arg0.getValue());
+                        addDimensionTreeItem(arg0, parent);
+                        WidgetHelper.invalidate(dimensionTree);
                     }
 
                 });

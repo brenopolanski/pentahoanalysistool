@@ -40,24 +40,19 @@ import com.google.gwt.user.client.ui.Label;
 public class DimensionBrowserWindow extends WindowPanel {
 
     /** The Window Title. */
-    private static final String TITLE = "Dimension Browser";
+    private final static String TITLE = "Dimension Browser";
 
-    private static final DimensionMenu dimensionMenuPanel = new DimensionMenu();
+    private DimensionMenu dimensionMenuPanel = new DimensionMenu();
 
-    private static final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
-    private static final DimensionBrowserWindow dbw = new DimensionBrowserWindow();
-    
-    private static String query;
-    
-    private static String dimension;
+    private final static DimensionBrowserWindow dbw = new DimensionBrowserWindow();
+  
     /**
      * Cube Browser Window Constructor.
      */
     public DimensionBrowserWindow() {
         super(TITLE);
-        Label test = new Label("argh!");
-        windowContentpanel.add(test, new BoxLayoutData(FillStyle.BOTH));
         windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
         
@@ -71,8 +66,6 @@ public class DimensionBrowserWindow extends WindowPanel {
     //}
 
     public void displayDimension(final String queryId, final String dimension) {
-        query = queryId;
-        DimensionBrowserWindow.dimension = dimension;
         dimensionMenuPanel.loadMembers(queryId, dimension);
         display();
     }
