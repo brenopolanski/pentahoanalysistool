@@ -5,7 +5,7 @@ background-color:#99bbe8;
 }
 
 .spacer-label {
-  width: 100%;
+ 
 }
 .dropEndCell {
   width: 100%;
@@ -17,6 +17,16 @@ background-color:#99bbe8;
   border-color: #dfe8f6;
   padding: 5px;
 }
+
+.dragDimensionCell{
+	
+}
+
 .dragProxy{
 	background-color:#a6c5f4;
+}
+
+.logoPanel{
+  width: 100%;
+  align: right;
 }

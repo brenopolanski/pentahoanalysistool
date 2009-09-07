@@ -201,8 +201,9 @@ public class OlapPanel extends DataWidget {
                         });
 
                         centerPanel.add(bt);
-
+                        layoutPanel.layout();
                     }
+
                 });
 
         return layoutPanel;

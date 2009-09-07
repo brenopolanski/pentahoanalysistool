@@ -132,7 +132,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
         // TODO Auto-generated method stub
         if(isAttached() && isVisible() && Pat.getCurrQuery().equals(query))
         dimensionTable.populateDimensionTable(dimAxis);
- 
+        this.layout();
     }
 
     /* (non-Javadoc)

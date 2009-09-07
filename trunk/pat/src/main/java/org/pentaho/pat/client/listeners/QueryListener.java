@@ -34,7 +34,6 @@ public interface QueryListener extends EventListener {
 	public void onQueryChange(Widget sender);
 	
 	public void onQueryExecuted(String queryId, CellDataSet matrix);
-	
-	public void onMemberMoved(Widget sender);
+
 	
 }
