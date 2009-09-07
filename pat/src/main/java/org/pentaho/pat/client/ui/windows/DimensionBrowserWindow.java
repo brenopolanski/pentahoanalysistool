@@ -42,7 +42,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     /** The Window Title. */
     private final static String TITLE = "Dimension Browser";
 
-    private DimensionMenu dimensionMenuPanel = new DimensionMenu();
+    private static DimensionMenu dimensionMenuPanel = new DimensionMenu();
 
     private LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
@@ -65,7 +65,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     //    display(true);
     //}
 
-    public void displayDimension(final String queryId, final String dimension) {
+    public static void displayDimension(final String queryId, final String dimension) {
         dimensionMenuPanel.loadMembers(queryId, dimension);
         display();
     }

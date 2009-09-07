@@ -75,8 +75,6 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
     final LayoutPanel layoutPanel = getLayoutPanel();
 
-    DimensionBrowserWindow dimBrowser = new DimensionBrowserWindow();
-
     public OlapTable() {
         super();
         this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
@@ -180,7 +178,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             cellButton.addClickHandler(new ClickHandler(){
 
 		public void onClick(ClickEvent arg0) {
-		    dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+		    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), "Region");
 		}
         	
             });
@@ -206,7 +204,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                         cross.addClickHandler(new ClickHandler() {
 
                             public void onClick(final ClickEvent arg0) {
-                                dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+                                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), "Region");
                             }
 
                         });
