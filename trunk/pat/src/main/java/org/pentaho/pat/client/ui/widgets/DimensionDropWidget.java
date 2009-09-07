@@ -120,10 +120,6 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      */
     public void onMemberMoved(Widget sender) {
         dimensionTable.populateDimensionTable(dimAxis);
-        this.invalidate();
-        this.layout();
-        captionLayoutPanel.invalidate();
-        captionLayoutPanel.layout();
     }
 
     /* (non-Javadoc)
@@ -132,10 +128,6 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     public void onQueryChange(Widget sender) {
         // TODO Auto-generated method stub
         dimensionTable.populateDimensionTable(dimAxis);
-        this.invalidate();
-        this.layout();
-        captionLayoutPanel.invalidate();
-        captionLayoutPanel.layout();
  
     }
 
