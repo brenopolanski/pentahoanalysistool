@@ -53,6 +53,8 @@ public class CubeBrowserWindow extends WindowPanel {
     private static final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
     private static final ToolButton qmQueryButton = new ToolButton("New Query");
+    
+    private static final ToolButton qmCancelButton = new ToolButton("Cancel");
 
     private static final CubeBrowserWindow cbw = new CubeBrowserWindow();
     /**
@@ -64,6 +66,7 @@ public class CubeBrowserWindow extends WindowPanel {
         LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         setupQueryButtons();
         newQueryButtonPanel.add(qmQueryButton);
+        newQueryButtonPanel.add(qmCancelButton);
         windowContentpanel.add(newQueryButtonPanel, new BoxLayoutData(FillStyle.VERTICAL));
         this.setWidget(windowContentpanel);
         this.layout();
@@ -71,6 +74,14 @@ public class CubeBrowserWindow extends WindowPanel {
     }
     
     private void setupQueryButtons() {
+	qmCancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent arg0) {
+               
+                    cbw.hide();
+                
+            }
+        });
+	
         qmQueryButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent arg0) {
                 if (cubeMenuPanel.getCubeTree().getSelectedItem() != null) {

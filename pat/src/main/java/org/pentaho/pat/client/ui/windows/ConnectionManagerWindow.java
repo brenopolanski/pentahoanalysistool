@@ -32,6 +32,10 @@ import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
+
 /**
  * Connection Manager Window
  * 
@@ -50,7 +54,11 @@ public class ConnectionManagerWindow extends WindowPanel {
 
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
+    
+    private Button cmCancelButton = new Button("Close"); 
 
+    private final static LayoutPanel mainContentpanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+    
     private final static LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
     private final static ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
@@ -64,8 +72,17 @@ public class ConnectionManagerWindow extends WindowPanel {
     public ConnectionManagerWindow() {
         super(TITLE);
         
-      
+        
+        cmCancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent arg0) {
+               
+                    ConnectionManagerWindow.this.hide();
+                
+            }
+        });
         windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
+        mainContentpanel.add(windowContentpanel, new BoxLayoutData(FillStyle.BOTH));
+        mainContentpanel.add(cmCancelButton);
 //        connectMondrian = new ConnectMondrianPanel();
 //        connectXmla = new ConnectXmlaPanel();
 //        tabPanel.setPadding(5);
@@ -74,7 +91,7 @@ public class ConnectionManagerWindow extends WindowPanel {
 //        tabPanel.selectTab(0);
 //        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
         // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
-        this.setWidget(windowContentpanel);
+        this.setWidget(mainContentpanel);
         this.layout();
         
     }
@@ -129,7 +146,6 @@ public class ConnectionManagerWindow extends WindowPanel {
             tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
             tabPanel.selectTab(0);
             windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
-            tabPanel.layout();
             refreshWindow();
         }
     }

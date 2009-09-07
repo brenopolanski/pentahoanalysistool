@@ -22,6 +22,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
+import org.gwt.mosaic.ui.client.util.ButtonHelper;
+import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
@@ -42,8 +45,10 @@ import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -54,7 +59,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
-    LayoutPanel colPanel = new LayoutPanel();
+    
 
     Image cross = Pat.IMAGES.cross().createImage();
 
@@ -109,9 +114,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             }
         };
 
-        // table = null;
         table = new LiveTable<BaseCell[]>(tableModel, createTableDefinition());
-        // table.setContextMenu(createContextMenu());
         table.addDoubleClickHandler(new DoubleClickHandler() {
             public void onDoubleClick(final DoubleClickEvent event) {
                 Window.alert(event.getSource().getClass().getName());
@@ -171,20 +174,24 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 group = colData.get(offset - 2);
 
             final int cell = i;
-            final Label colLabel = new Label(headers[i].formattedValue);
+            SimplePanel colPanel = new SimplePanel();
+           if(headers[i].getRawValue()!=null){
+            Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), headers[i].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
+            cellButton.addClickHandler(new ClickHandler(){
 
-            if (headers[i].formattedValue != null || headers[i].formattedValue != "") //$NON-NLS-1$
-                cross.addClickHandler(new ClickHandler() {
-
-                    public void onClick(final ClickEvent arg0) {
-                        dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
-                    }
-
-                });
-            colPanel.setLayout(new BoxLayout(Alignment.CENTER));
-
-            colPanel.add(colLabel);
-            colPanel.add(cross, new BoxLayoutData(-1, -1));
+		public void onClick(ClickEvent arg0) {
+		    dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+		}
+        	
+            });
+            colPanel.add(cellButton);
+           }else{
+               Label test = new Label("");
+               colPanel.add(test);
+           }
+               
+            
+            
 
             final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(colPanel) {
                 @Override
@@ -195,6 +202,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                     } else {
                         final LayoutPanel cellPanel = new LayoutPanel();
                         final Image cross = Pat.IMAGES.cross().createImage();
+                        
                         cross.addClickHandler(new ClickHandler() {
 
                             public void onClick(final ClickEvent arg0) {
@@ -204,10 +212,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                         });
                         cellPanel.setLayout(new BoxLayout(Alignment.CENTER));
 
-                        final Label testLabel = new Label(rowValue[cell].formattedValue);
-                        cellPanel.add(testLabel);
-                        cellPanel.add(cross, new BoxLayoutData(-1, -1));
-                        return cellPanel;
+                        Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), rowValue[cell].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
+                        SimplePanel panel = new SimplePanel();
+                        panel.add(cellButton);
+                        cellPanel.add(panel);
+                        return panel;
                     }
                 }
             };

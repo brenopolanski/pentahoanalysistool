@@ -21,8 +21,13 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.layout.GridLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
@@ -54,7 +59,8 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
     final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-    final LayoutPanel mainLayoutPanel = new LayoutPanel(new GridLayout(2, 3));
+    final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+    
 
     /**
      *TODO JAVADOC
@@ -95,12 +101,15 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
         olapTable = new OlapTable();
+        LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
+        buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
+        buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
         fillLayoutPanel.add(olapTable);
 
-        mainLayoutPanel.add(executeButton);
-        mainLayoutPanel.add(dimDropCol);
-        mainLayoutPanel.add(dimDropRow);
-
+        mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
+        mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
+        //mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
+        
         baseLayoutPanel.add(mainLayoutPanel);
 
     }
@@ -124,5 +133,6 @@ public class DataPanel extends LayoutComposite implements QueryListener {
     public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
+        baseLayoutPanel.layout();
     }
 }
