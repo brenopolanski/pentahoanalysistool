@@ -18,12 +18,10 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
-
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
-import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
@@ -49,185 +47,179 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Creates the data table, using a hashmap matrix converted to an array and
- * inserted into a GWT Mosaic Live Table, which is a lazy loading scrolltable.
- *
+ * Creates the data table, using a hashmap matrix converted to an array and inserted into a GWT Mosaic Live Table, which
+ * is a lazy loading scrolltable.
+ * 
  * @author tom (at) wamonline.org.uk
- *
+ * 
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
     LayoutPanel colPanel = new LayoutPanel();
+
     Image cross = Pat.IMAGES.cross().createImage();
-	private CellDataSet olapData;
-	private int offset;
-	PatTableModel patTableModel;
-	TableModel<BaseCell[]> tableModel;
-	LiveTable<BaseCell[]> table;
-	final LayoutPanel layoutPanel = getLayoutPanel();
-	DimensionBrowserWindow dimBrowser = new DimensionBrowserWindow();
-	public OlapTable(){
-		super();
-		this.setSize("100%", "100%");  //$NON-NLS-1$//$NON-NLS-2$
-		GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapTable.this);
-	}
 
-	/**
-	 * Create the Live Table Column Definitions.
-	 *
-	 * @return tableDef
-	 */
-	private TableDefinition<BaseCell[]> createTableDefinition() {
-	    BaseCell[] group = null;
-		final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-		final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
-		for (int i=0; i < olapData.getWidth(); i++){
-		    
-		    
-			final BaseCell[] headers = colData.get(offset-1);
-			//work in progress
-			if(offset>1)
-			group = colData.get(offset-2); 
-			
-			final int cell = i;
-			Label colLabel = new Label(headers[i].formattedValue);
-			
-            if(headers[i].formattedValue!=null || headers[i].formattedValue!="")
-            cross.addClickHandler(new ClickHandler(){
+    private CellDataSet olapData;
 
-                public void onClick(ClickEvent arg0) {
-                    dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
-                }
-                
-            });
+    private int offset;
+
+    PatTableModel patTableModel;
+
+    TableModel<BaseCell[]> tableModel;
+
+    LiveTable<BaseCell[]> table;
+
+    final LayoutPanel layoutPanel = getLayoutPanel();
+
+    DimensionBrowserWindow dimBrowser = new DimensionBrowserWindow();
+
+    public OlapTable() {
+        super();
+        this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapTable.this);
+    }
+
+    /**
+     * 
+     * Initialize the Live Table.
+     * 
+     */
+    public void initTable() {
+        // Not sure what the effect of this is, but at least something is happening now. Not just frozen
+        layoutPanel.clear();
+        patTableModel = new PatTableModel(olapData);
+        final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+        offset = patTableModel.getOffset();
+        // tableModel = null;
+        tableModel = new IterableTableModel<BaseCell[]>(data) {
+            @Override
+            public int getRowCount() {
+                return data.size();
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
+                final int numRows = Math.min(request.getNumRows(), data.size() - request.getStartRow());
+
+                final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
+                for (int i = 0, n = numRows; i < n; i++)
+                    list.add(data.get(request.getStartRow() + i));
+                final SerializableResponse response = new SerializableResponse(list);
+                callback.onRowsReady(request, response);
+            }
+        };
+
+        // table = null;
+        table = new LiveTable<BaseCell[]>(tableModel, createTableDefinition());
+        // table.setContextMenu(createContextMenu());
+        table.addDoubleClickHandler(new DoubleClickHandler() {
+            public void onDoubleClick(final DoubleClickEvent event) {
+                Window.alert(event.getSource().getClass().getName());
+            }
+        });
+
+        layoutPanel.add(table);
+        layoutPanel.layout();
+
+    }
+
+    /**
+     * Fire on query changing.
+     */
+    public void onQueryChange(final Widget sender) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * Fire when the query is executed.
+     */
+    public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
+        if (Pat.getApplicationState().getMode().isShowOnlyTable())
+            setData(olapData);
+    }
+
+    /**
+     * 
+     * Setup the current table.
+     * 
+     * @param olapData
+     */
+    public void setData(final CellDataSet olapData) {
+        this.olapData = olapData;
+        initTable();
+        // can't see any effect with that
+        table.reload();
+        table.redraw();
+        this.layout();
+    }
+
+    /**
+     * Create the Live Table Column Definitions.
+     * 
+     * @return tableDef
+     */
+    private TableDefinition<BaseCell[]> createTableDefinition() {
+        BaseCell[] group = null;
+        final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
+        final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
+        for (int i = 0; i < olapData.getWidth(); i++) {
+
+            final BaseCell[] headers = colData.get(offset - 1);
+            // work in progress
+            if (offset > 1)
+                group = colData.get(offset - 2);
+
+            final int cell = i;
+            final Label colLabel = new Label(headers[i].formattedValue);
+
+            if (headers[i].formattedValue != null || headers[i].formattedValue != "") //$NON-NLS-1$
+                cross.addClickHandler(new ClickHandler() {
+
+                    public void onClick(final ClickEvent arg0) {
+                        dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
+                    }
+
+                });
             colPanel.setLayout(new BoxLayout(Alignment.CENTER));
-            
-            
+
             colPanel.add(colLabel);
             colPanel.add(cross, new BoxLayoutData(-1, -1));
 
+            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(colPanel) {
+                @Override
+                public Widget getCellValue(final BaseCell[] rowValue) {
+                    if (rowValue[cell] == null) {
+                        final Label testLabel = new Label(""); //$NON-NLS-1$
+                        return testLabel;
+                    } else {
+                        final LayoutPanel cellPanel = new LayoutPanel();
+                        final Image cross = Pat.IMAGES.cross().createImage();
+                        cross.addClickHandler(new ClickHandler() {
 
-			final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(
-					colPanel) {
-				@Override
-				public Widget getCellValue(final BaseCell[] rowValue) {
-					if (rowValue[cell]==null) {
-					    Label testLabel = new Label(""); //$NON-NLS-1$
-						return testLabel;
-					} else {
-					    LayoutPanel cellPanel = new LayoutPanel();
-					    Image cross = Pat.IMAGES.cross().createImage();
-					    cross.addClickHandler(new ClickHandler(){
-
-                            public void onClick(ClickEvent arg0) {
+                            public void onClick(final ClickEvent arg0) {
                                 dimBrowser.displayDimension(Pat.getCurrQuery(), "Region");
                             }
-					        
-					    });
-					    cellPanel.setLayout(new BoxLayout(Alignment.CENTER));
-					    
-					    Label testLabel = new Label(rowValue[cell].formattedValue);
-					    cellPanel.add(testLabel);
-					    cellPanel.add(cross, new BoxLayoutData(-1, -1));
-						return cellPanel;
-					}
-				}
-			};
-			
-			if (group!=null)
-			colDef0.setHeader(1, group[i].formattedValue);
-			
-			colDef0.setColumnSortable(false);
-			colDef0.setColumnTruncatable(false);
-			tableDef.addColumnDefinition(colDef0);
-		}
-		return tableDef;
-	}
 
-	
+                        });
+                        cellPanel.setLayout(new BoxLayout(Alignment.CENTER));
 
-	/**
-	 * 
-	 * Initialize the Live Table.
-	 *
-	 */
-	public void initTable(){
-		// Not sure what the effect of this is, but at least something is happening now. Not just frozen
-		layoutPanel.clear();
-		patTableModel = new PatTableModel(olapData);
-		final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
-		offset = patTableModel.getOffset();
-		//tableModel = null;
-		tableModel = new IterableTableModel<BaseCell[]>(data) {
-			@Override
-			public int getRowCount() {
-				return data.size();
-			}
+                        final Label testLabel = new Label(rowValue[cell].formattedValue);
+                        cellPanel.add(testLabel);
+                        cellPanel.add(cross, new BoxLayoutData(-1, -1));
+                        return cellPanel;
+                    }
+                }
+            };
 
+            if (group != null)
+                colDef0.setHeader(1, group[i].formattedValue);
 
-			@SuppressWarnings("unchecked")
-			@Override
-			public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
-			    	int numRows = Math.min(request.getNumRows(), data.size()-request.getStartRow());
-
-				final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
-				for (int i = 0, n = numRows; i < n; i++) {
-					list.add(data.get(request.getStartRow() + i));
-				}
-				final SerializableResponse response = new SerializableResponse(list);
-				callback.onRowsReady(request, response);
-			}
-		};
-
-
-		//table = null;
-		table = new LiveTable<BaseCell[]>(tableModel,
-				createTableDefinition());
-		// table.setContextMenu(createContextMenu());
-		table.addDoubleClickHandler(new DoubleClickHandler() {
-			public void onDoubleClick(final DoubleClickEvent event) {
-				Window.alert(event.getSource().getClass().getName());
-			}
-		});
-		
-		
-		layoutPanel.add(table);
-		layoutPanel.layout();
-		
-	}
-
-
-	/**
-	 * Fire on query changing.
-	 */
-	public void onQueryChange(final Widget sender) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Fire when the query is executed.
-	 */
-	public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
-		if (Pat.getApplicationState().getMode().isShowOnlyTable()) {
-			setData(olapData);
-		}
-	}
-
-	/**
-	 * 
-	 * Setup the current table.
-	 *
-	 * @param olapData
-	 */
-	public void setData(final CellDataSet olapData) {
-		this.olapData = olapData;
-		initTable();
-		// can't see any effect with that
-		table.reload();
-		table.redraw();
-		this.layout();
-	}
-
-
+            colDef0.setColumnSortable(false);
+            colDef0.setColumnTruncatable(false);
+            tableDef.addColumnDefinition(colDef0);
+        }
+        return tableDef;
+    }
 
 }

@@ -36,6 +36,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
@@ -54,11 +55,11 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class CubeMenu extends LayoutComposite {
 
     /** The main menu. */
-    private Tree cubeTree;
+    private final Tree cubeTree;
 
     public CubeMenu() {
         super();
-        this.sinkEvents(Event.BUTTON_LEFT | Event.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+        this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 
@@ -72,7 +73,7 @@ public class CubeMenu extends LayoutComposite {
 
         cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
-            public void onSelection(SelectionEvent<TreeItem> arg0) {
+            public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
                 CubeBrowserWindow.enableQmQuery(true);
                 // CubeTreeItem selected = (CubeTreeItem)cubeTree.getSelectedItem().getWidget();
@@ -90,16 +91,49 @@ public class CubeMenu extends LayoutComposite {
 
     }
 
+    public Tree getCubeTree() {
+        return cubeTree;
+    }
+
+    public final void loadCubes() {
+        ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
+                new AsyncCallback<CubeConnection[]>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        cubeTree.clear();
+                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
+                    }
+
+                    public void onSuccess(final CubeConnection[] connections) {
+                        refreshCubeMenu(connections);
+                    }
+                });
+    }
+
+    public final void loadCubes(final String connectionId) {
+        ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
+                new AsyncCallback<CubeConnection>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        cubeTree.clear();
+                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
+                    }
+
+                    public void onSuccess(final CubeConnection connection) {
+                        final CubeConnection[] connections = new CubeConnection[] {connection};
+                        refreshCubeMenu(connections);
+                    }
+                });
+    }
+
     /**
      * Generates a cube list for the Cube Menu.
      */
     private final void refreshCubeMenu(final CubeConnection[] connections) {
         cubeTree.clear();
-        for (int i = 0; i < connections.length; i++) {
-            final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connections[i], null));
-            final CubeConnection connection = connections[i];
-
-            ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connections[i].getId(),
+        for (final CubeConnection connection : connections) {
+            final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connection, null));
+            ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
                     new AsyncCallback<String[]>() {
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -108,49 +142,13 @@ public class CubeMenu extends LayoutComposite {
 
                         public void onSuccess(final String[] o) {
 
-                            for (final String element2 : o) {
+                            for (final String element2 : o)
                                 cubesList.addItem(new CubeTreeItem(connection, element2));
-                            }
                             cubesList.setState(true);
                         }
                     });
         }
 
-    }
-
-    public final void loadCubes() {
-        ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
-                new AsyncCallback<CubeConnection[]>() {
-
-                    public void onFailure(Throwable arg0) {
-                        cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
-                    }
-
-                    public void onSuccess(CubeConnection[] connections) {
-                        refreshCubeMenu(connections);
-                    }
-                });
-    }
-
-    public final void loadCubes(String connectionId) {
-        ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
-                new AsyncCallback<CubeConnection>() {
-
-                    public void onFailure(Throwable arg0) {
-                        cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
-                    }
-
-                    public void onSuccess(CubeConnection connection) {
-                        CubeConnection[] connections = new CubeConnection[] {connection};
-                        refreshCubeMenu(connections);
-                    }
-                });
-    }
-
-    public Tree getCubeTree() {
-        return cubeTree;
     }
 
 }

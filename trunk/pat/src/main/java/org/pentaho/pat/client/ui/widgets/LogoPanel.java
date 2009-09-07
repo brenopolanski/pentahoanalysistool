@@ -26,66 +26,54 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 /**
  * This panel contains the spinning wheel, application name and logo
- * @created Aug 12, 2009 
+ * 
+ * @created Aug 12, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
  */
 public class LogoPanel extends LayoutComposite {
-    
-    private final static String LOGOPANEL_CSS_STYLE = "logoPanel";
-    
+
+    private final static String LOGOPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
+
     private final LayoutPanel rootPanel = getLayoutPanel();
-    
-    private  static LayoutPanel mainPanel;
-    
-    static Label test = new Label("");
-    
-    
+
+    private static LayoutPanel mainPanel;
+
+    static Label test = new Label(""); //$NON-NLS-1$
+
+    public static void spinWheel(final boolean spin) {
+        if (spin)
+            test.setVisible(true);
+        else
+            test.setVisible(false);
+    }
+
     /**
      * 
      */
     public LogoPanel() {
-        
+
         mainPanel = new LayoutPanel();
-        
+
         final BoxLayout mainLayout = new BoxLayout();
         mainLayout.setLeftToRight(false);
         mainPanel.setLayout(mainLayout);
         this.setStylePrimaryName(LOGOPANEL_CSS_STYLE);
-    
-        test.setStylePrimaryName("Throbber-loading");
-        test.addStyleName("throbber");
-        
-        
 
-        Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
+        test.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
+        test.addStyleName("throbber"); //$NON-NLS-1$
+
+        final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
         mainPanel.add(patlogo);
         mainPanel.add(test, new BoxLayoutData(FillStyle.VERTICAL));
         rootPanel.add(mainPanel);
-        
-        
-    }
-    
-    public static void spinWheel(boolean spin) {
-        if (spin) {
-            test.setVisible(true);
-            
-        }
-        else {
-            test.setVisible(false);
-            
-        }
-    }
-    
 
+    }
 
 }
