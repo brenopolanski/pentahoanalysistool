@@ -79,7 +79,7 @@ public class DimensionFlexTable extends FlexTable {
     public void populateDimensionTable(final Axis targetAxis) {
          
 
-        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), OlapPanel.getQueryId(), targetAxis,
+        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                 new AsyncCallback<String[]>() {
 
                     public void onFailure(final Throwable arg0) {

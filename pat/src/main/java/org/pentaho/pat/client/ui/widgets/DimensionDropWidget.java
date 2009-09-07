@@ -22,6 +22,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
@@ -53,6 +54,8 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     private Boolean horizontal = false;
 
     private FlexTableRowDropController flexTableRowDropController1;
+    
+    private String query = Pat.getCurrQuery();
 
     /**
      *TODO JAVADOC
@@ -127,6 +130,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      */
     public void onQueryChange(Widget sender) {
         // TODO Auto-generated method stub
+        if(isAttached() && isVisible() && Pat.getCurrQuery().equals(query))
         dimensionTable.populateDimensionTable(dimAxis);
  
     }

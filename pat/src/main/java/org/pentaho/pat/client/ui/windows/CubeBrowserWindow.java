@@ -69,11 +69,6 @@ public class CubeBrowserWindow extends WindowPanel {
         this.layout();
         
     }
-//    
-//    @Override
-//    public Dimension getPreferredSize() {
-//      return new Dimension(384, 384);
-//    }
     
     private void setupQueryButtons() {
         qmQueryButton.addClickHandler(new ClickHandler() {
@@ -84,7 +79,6 @@ public class CubeBrowserWindow extends WindowPanel {
                         MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
                     }
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
-                        // MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: " + selected.getCube());
                         OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
                         MainTabPanel.displayContentWidget(olappanel);   
                     }
