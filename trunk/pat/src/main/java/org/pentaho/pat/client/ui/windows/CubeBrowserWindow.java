@@ -48,15 +48,15 @@ public class CubeBrowserWindow extends WindowPanel {
     /** The Window Title. */
     private static final String TITLE = "Cube Browser";
 
-    private static final CubeMenu cubeMenuPanel = new CubeMenu();
+    private  final static CubeMenu cubeMenuPanel = new CubeMenu();
 
-    private static final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private  final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
-    private static final ToolButton qmQueryButton = new ToolButton("New Query");
+    private  final static ToolButton qmQueryButton = new ToolButton("New Query");
     
-    private static final ToolButton qmCancelButton = new ToolButton("Cancel");
+    private  final ToolButton qmCancelButton = new ToolButton("Cancel");
 
-    private static final CubeBrowserWindow cbw = new CubeBrowserWindow();
+    private  final static CubeBrowserWindow cbw = new CubeBrowserWindow();
     /**
      * Cube Browser Window Constructor.
      */
