@@ -23,6 +23,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
@@ -116,8 +117,8 @@ public class FlexTableUtil {
                                                     }
 
                                                     public void onSuccess(final Object arg0) {
-                                                        // TODO Auto-generated method stub
                                                         targetTable.setWidget(targetRow, col2, w);
+                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w);
                                                     }
 
                                                 });

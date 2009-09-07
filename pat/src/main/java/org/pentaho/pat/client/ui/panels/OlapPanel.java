@@ -68,8 +68,7 @@ public class OlapPanel extends DataWidget {
     private final String connectionId;
 
     private static String queryId;
-
-    static DimensionDropWidget dimDropCol;
+    
     /**
      *TODO JAVADOC
      * 
@@ -160,7 +159,7 @@ public class OlapPanel extends DataWidget {
 
                     public void onSuccess(final String query) {
                         queryId = query;
-                        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+                        
                         final MainMenuPanel mainMenuPanel = new MainMenuPanel();
                         westPanel.add(mainMenuPanel);
                         

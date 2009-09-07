@@ -22,10 +22,15 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.FlexTableRowDropController;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.Axis.Standard;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *TODO JAVADOC
@@ -35,7 +40,7 @@ import org.pentaho.pat.rpc.dto.Axis.Standard;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class DimensionDropWidget extends LayoutComposite {
+public class DimensionDropWidget extends LayoutComposite implements QueryListener{
 
     private Standard dimAxis;
 
@@ -54,13 +59,16 @@ public class DimensionDropWidget extends LayoutComposite {
      * 
      * @param unused
      * @param string
-     * 
+     *  
      */
     public DimensionDropWidget(final String labelText, final Standard targetAxis) {
         this.dimAxis = targetAxis;
+        
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captionLayoutPanel);
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
+
     }
 
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation) {
@@ -99,6 +107,33 @@ public class DimensionDropWidget extends LayoutComposite {
     @Override
     public void onUnload() {
         DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onMemberMoved(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onMemberMoved(Widget sender) {
+        dimensionTable.populateDimensionTable(dimAxis);
+        this.invalidate();
+        this.layout();
+        captionLayoutPanel.invalidate();
+        captionLayoutPanel.layout();
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onQueryChange(Widget sender) {
+        // TODO Auto-generated method stub
+        dimensionTable.populateDimensionTable(dimAxis);
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
+     */
+    public void onQueryExecuted(String queryId, CellDataSet matrix) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -12,7 +12,6 @@
  */
 package org.pentaho.pat.client.deprecated.ui.panels;
 
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
@@ -23,17 +22,13 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.deprecated.i18n.PatConstants;
-import org.pentaho.pat.client.deprecated.i18n.PatMessages;
 import org.pentaho.pat.client.deprecated.listeners.QueryListener;
 import org.pentaho.pat.client.deprecated.ui.panels.MainMenu.MenuItem;
 import org.pentaho.pat.client.deprecated.ui.widgets.DataWidget;
 import org.pentaho.pat.client.deprecated.ui.widgets.OlapTable;
 import org.pentaho.pat.client.deprecated.util.factory.ConstantFactory;
 import org.pentaho.pat.client.deprecated.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.deprecated.util.factory.MessageFactory;
 import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -284,4 +279,12 @@ public class QueryPanel extends DataWidget implements QueryListener {
 		wp.setSize("400px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
 		return wp;
 	}
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.deprecated.listeners.QueryListener#onMemberMove(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onMemberMove(Widget sender) {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -22,11 +22,14 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.GridLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *TODO JAVADOC
@@ -35,7 +38,7 @@ import com.google.gwt.user.client.ui.Button;
  * @author tom(at)wamonline.org.uk
  *
  */
-public class DataPanel extends LayoutComposite{
+public class DataPanel extends LayoutComposite implements QueryListener{
 
     /**
      *TODO JAVADOC
@@ -48,15 +51,41 @@ public class DataPanel extends LayoutComposite{
         mainLayoutPanel.setPadding(0);
         
         final Button executeButton = new Button("Execute Query");
-//        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
-        //DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
-//        DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+
+        DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+        DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+        //        DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
         
         mainLayoutPanel.add(executeButton);
         //mainLayoutPanel.add(OlapPanel.getDropWidget());
-
+        mainLayoutPanel.add(dimDropCol);
+        mainLayoutPanel.add(dimDropRow);
         baseLayoutPanel.add(mainLayoutPanel);
         //baseLayoutPanel.add(executeButton);
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onQueryChange(Widget sender) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
+     */
+    public void onQueryExecuted(String queryId, CellDataSet matrix) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.client.listeners.QueryListener#onMemberMoved(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onMemberMoved(Widget sender) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
