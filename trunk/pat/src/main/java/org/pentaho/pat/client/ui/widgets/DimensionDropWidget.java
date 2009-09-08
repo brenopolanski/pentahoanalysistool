@@ -115,7 +115,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      *            the target axis
      */
     public final void init(final String labelText, final Axis targetAxis) {
-
+	
         captionLayoutPanel = new CaptionLayoutPanel(labelText);
 
         dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController(), horizontal);
