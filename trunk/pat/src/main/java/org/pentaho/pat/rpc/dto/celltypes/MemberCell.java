@@ -9,6 +9,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 
 	private boolean lastRow = false;
 
+	private String parentDimension = null;
 	/**
 	 * 
 	 * Blank Constructor for Serializable niceness, don't use it.
@@ -47,5 +48,13 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 	 */
 	public void setLastRow(final boolean lastRow) {
 		this.lastRow = lastRow;
+	}
+	
+	public void setParentDimension(String parDim){
+	    parentDimension = parDim;
+	}
+	
+	public String getParentDimension(){
+	    return parentDimension;
 	}
 }

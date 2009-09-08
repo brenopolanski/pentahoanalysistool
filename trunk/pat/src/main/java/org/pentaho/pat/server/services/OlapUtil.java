@@ -130,6 +130,7 @@ public class OlapUtil {
 		for (int y = 0; y < matrix.getOffset(); y++) {
 			for (int x = 0; x < matrix.getMatrixWidth(); x++) {
 				headervalues[y][x] = matrix.get(x, y);
+				//headervalues[y][x].setParentDimension(matrix.get(x, y));
 			}
 		}
 		
