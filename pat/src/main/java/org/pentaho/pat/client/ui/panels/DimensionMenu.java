@@ -118,7 +118,9 @@ public class DimensionMenu extends LayoutComposite {
     private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent) {
         final List<StringTree> child = childStringTree.getChildren();
         for (int i = 0; i < child.size(); i++) {
-            final TreeItem newParent = parent.addItem(child.get(i).getValue());
+            MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
+            final TreeItem newParent = parent.addItem(memberLabel);
+            memberLabel.setTreeItem(newParent);
             addDimensionTreeItem(child.get(i), newParent);
         }
     }

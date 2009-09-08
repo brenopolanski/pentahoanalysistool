@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.pat.client.ui.images.SelectionModeImageBundle;
-import org.pentaho.pat.client.ui.popups.SelectionModePopup;
+import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -130,14 +130,14 @@ public class MemberSelectionLabel extends HorizontalPanel  {
 	case Event.ONCONTEXTMENU:
 	    break;
 	case Event.ONCLICK:
-	    final SelectionModePopup test = new SelectionModePopup();
+	    final SelectionModeMenu test = new SelectionModeMenu();
 		//test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
-		//test.showContextMenu(event, getTreeItem());
-//		test.setPopupPositionAndShow(new PositionCallback() {
-//			public void setPosition(final int offsetWidth, final int offsetHeight) {
-//				test.setPopupPosition(event.getClientX(), event.getClientY());
-//			}
-//		});
+		test.showContextMenu(event, getTreeItem());
+		test.setPopupPositionAndShow(new PositionCallback() {
+			public void setPosition(final int offsetWidth, final int offsetHeight) {
+				test.setPopupPosition(event.getClientX(), event.getClientY());
+			}
+		});
 	default:
 	    break;
 	}
@@ -168,19 +168,19 @@ public class MemberSelectionLabel extends HorizontalPanel  {
     public final void setSelectionMode(final int mode) {
 	Image selectionImage = null;
 	switch (mode) {
-	case SelectionModePopup.MEMBER:
+	case SelectionModeMenu.MEMBER:
 	    selectionImage = selectionImageBundle.memberSelectIcon()
 		    .createImage();
 	    break;
-	case SelectionModePopup.CHILDREN:
+	case SelectionModeMenu.CHILDREN:
 	    selectionImage = selectionImageBundle.childrenSelectIcon()
 		    .createImage();
 	    break;
-	case SelectionModePopup.INCLUDE_CHILDREN:
+	case SelectionModeMenu.INCLUDE_CHILDREN:
 	    selectionImage = selectionImageBundle.includeChildrenSelectIcon()
 		    .createImage();
 	    break;
-	case SelectionModePopup.SIBLINGS:
+	case SelectionModeMenu.SIBLINGS:
 	    selectionImage = selectionImageBundle.siblingsSelectIcon()
 		    .createImage();
 	default:
