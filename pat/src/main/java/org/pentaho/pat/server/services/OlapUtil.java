@@ -126,7 +126,8 @@ public class OlapUtil {
 	      
 	      cds.setCellSetBody(bodyvalues);
 	      
-	      final BaseCell[][] headervalues = new BaseCell[matrix.getMatrixHeight()][matrix.getMatrixWidth()];
+	      //final BaseCell[][] headervalues = new BaseCell[matrix.getMatrixHeight()][matrix.getMatrixWidth()];
+	      final BaseCell[][] headervalues = new BaseCell[matrix.getOffset()][matrix.getMatrixWidth()];
 		for (int y = 0; y < matrix.getOffset(); y++) {
 			for (int x = 0; x < matrix.getMatrixWidth(); x++) {
 				headervalues[y][x] = matrix.get(x, y);

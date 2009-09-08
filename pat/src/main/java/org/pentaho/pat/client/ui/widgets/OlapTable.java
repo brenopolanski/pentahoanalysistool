@@ -18,9 +18,7 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
@@ -160,16 +158,18 @@ public class OlapTable extends LayoutComposite implements QueryListener {
      * @return tableDef
      */
     private TableDefinition<BaseCell[]> createTableDefinition() {
-        BaseCell[] group = null;
+	BaseCell[] group = null;
         final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
         final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
         for (int i = 0; i < olapData.getWidth(); i++) {
             final int num = i;
+            
             final BaseCell[] headers = colData.get(offset - 1);
             // work in progress
-            if (offset > 1)
-                group = colData.get(offset - 2);
-            
+            if (offset > 1){
+        	group = colData.get(offset - 2);
+            }
+
             final int cell = i;
             SimplePanel colPanel = new SimplePanel();
            if(headers[i].getRawValue()!=null){
@@ -224,9 +224,26 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 }
             };
 
-            if (group != null)
-                colDef0.setHeader(1, group[i].formattedValue);
+            if (group != null){
+        	SimplePanel groupPanel = new SimplePanel();
+        	if(group[i].formattedValue != null){
+        	    final BaseCell groupButton = group[i];
+        	Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), group[i].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
+        	 cellButton.addClickHandler(new ClickHandler() {
 
+                     public void onClick(final ClickEvent arg0) {
+                         if (groupButton instanceof MemberCell) 
+                         DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), groupButton.getParentDimension());
+                     }
+
+                 });
+                groupPanel.add(cellButton);
+                colDef0.setHeader(1, groupPanel);
+        	}
+        	else
+        	    colDef0.setHeader(1, groupPanel);
+            }
+            
             colDef0.setColumnSortable(false);
             colDef0.setColumnTruncatable(false);
             tableDef.addColumnDefinition(colDef0);
