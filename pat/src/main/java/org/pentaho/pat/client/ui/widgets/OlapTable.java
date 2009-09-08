@@ -19,8 +19,6 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.util.ButtonHelper;
-import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
@@ -42,10 +40,9 @@ import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -56,7 +53,6 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class OlapTable extends LayoutComposite implements QueryListener {
-    
 
     Image cross = Pat.IMAGES.cross().createImage();
 
@@ -152,104 +148,76 @@ public class OlapTable extends LayoutComposite implements QueryListener {
         this.layout();
     }
 
+    private HorizontalPanel createCell(final BaseCell headers) {
+        final HorizontalPanel cellPanel = new HorizontalPanel();
+
+        if (headers.getRawValue() != null && headers instanceof MemberCell) {
+            final Image cellButton = Pat.IMAGES.cross().createImage();
+            cellButton.addClickHandler(new ClickHandler() {
+
+                public void onClick(final ClickEvent arg0) {
+                    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), headers.getParentDimension());
+                }
+
+            });
+            final Label cellLabel = new Label(headers.formattedValue);
+            cellPanel.add(cellLabel);
+            cellPanel.add(cellButton);
+
+        }
+
+        else {
+            final Label blanklabel = new Label(headers.getFormattedValue());
+            cellPanel.add(blanklabel);
+        }
+        return cellPanel;
+    }
+
     /**
      * Create the Live Table Column Definitions.
      * 
      * @return tableDef
      */
     private TableDefinition<BaseCell[]> createTableDefinition() {
-	BaseCell[] group = null;
+        BaseCell[] group = null;
         final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
         final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
         for (int i = 0; i < olapData.getWidth(); i++) {
-            final int num = i;
-            
             final BaseCell[] headers = colData.get(offset - 1);
             // work in progress
-            if (offset > 1){
-        	group = colData.get(offset - 2);
-            }
+            if (offset > 1)
+                group = colData.get(offset - 2);
 
             final int cell = i;
-            SimplePanel colPanel = new SimplePanel();
-           if(headers[i].getRawValue()!=null){
-               
-            Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), headers[i].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
-            cellButton.addClickHandler(new ClickHandler(){
 
-		public void onClick(ClickEvent arg0) {
-		    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), headers[num].getParentDimension());
-		}
-        	
-            });
-            colPanel.add(cellButton);
-           }else{
-               Label blanklabel = new Label("");
-               colPanel.add(blanklabel);
-           }
-               
-            
-            
+            final HorizontalPanel cellPanel = createCell(headers[i]);
 
-            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(colPanel) {
+            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(cellPanel) {
                 @Override
                 public Widget getCellValue(final BaseCell[] rowValue) {
-                    SimplePanel panel = new SimplePanel();
-                    
                     if (rowValue[cell] == null) {
                         final Label testLabel = new Label(""); //$NON-NLS-1$
                         return testLabel;
                     } else {
-                        if (rowValue[cell] instanceof MemberCell) {
-                        Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), rowValue[cell].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
-                        cellButton.addClickHandler(new ClickHandler() {
-
-                            public void onClick(final ClickEvent arg0) {
-                                if (rowValue[cell] instanceof MemberCell) 
-                                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), rowValue[cell].getParentDimension());
-                            }
-
-                        });
-                        
-                        panel.add(cellButton);
-                        }
-                        else{
-                            Label cellLabel = new Label(rowValue[cell].formattedValue);
-                            panel.add(cellLabel);                            
-                        }
-
-                        
-                        return panel;
+                        final HorizontalPanel cellPanel = createCell(rowValue[cell]);
+                        return cellPanel;
                     }
                 }
             };
 
-            if (group != null){
-        	SimplePanel groupPanel = new SimplePanel();
-        	if(group[i].formattedValue != null){
-        	    final BaseCell groupButton = group[i];
-        	Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), group[i].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
-        	 cellButton.addClickHandler(new ClickHandler() {
-
-                     public void onClick(final ClickEvent arg0) {
-                         if (groupButton instanceof MemberCell) 
-                         DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), groupButton.getParentDimension());
-                     }
-
-                 });
-                groupPanel.add(cellButton);
-                
-                colDef0.setHeader(1, groupPanel);
-        	}
-        	else
-        	    colDef0.setHeader(1, groupPanel);
+            if (group != null) {
+                HorizontalPanel groupPanel = null;
+                if (group[i].formattedValue != null) {
+                    groupPanel = createCell(group[i]);
+                    colDef0.setHeader(1, groupPanel);
+                } else
+                    colDef0.setHeader(1, groupPanel);
             }
-            
+            colDef0.setHeaderTruncatable(false);
             colDef0.setColumnSortable(false);
             colDef0.setColumnTruncatable(false);
             tableDef.addColumnDefinition(colDef0);
         }
         return tableDef;
     }
-
 }
