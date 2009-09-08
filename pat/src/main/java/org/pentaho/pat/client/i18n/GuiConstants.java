@@ -238,4 +238,13 @@ public interface GuiConstants extends Constants {
      */
     String properties();
 
+    String member();
+    
+    String children();
+    
+    String includeChildren();
+    
+    String siblings();
+    
+    String clearSelections();
 }
