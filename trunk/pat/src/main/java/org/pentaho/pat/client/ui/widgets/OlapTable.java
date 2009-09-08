@@ -238,6 +238,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
                  });
                 groupPanel.add(cellButton);
+                
                 colDef0.setHeader(1, groupPanel);
         	}
         	else

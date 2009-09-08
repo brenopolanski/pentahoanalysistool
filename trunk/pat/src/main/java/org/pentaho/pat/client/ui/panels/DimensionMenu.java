@@ -30,6 +30,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
+import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -59,7 +60,7 @@ public class DimensionMenu extends LayoutComposite {
 
     public DimensionMenu() {
         super();
-        this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+       // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
 
@@ -74,6 +75,7 @@ public class DimensionMenu extends LayoutComposite {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 dimensionTree.ensureSelectedItemVisible();
+                
                 // TODO uncomment when implemented
                 // DimensionTreeItem selected = (DimensionTreeItem)dimensionTree.getSelectedItem().getWidget();
                 // selected.showButton();
@@ -99,7 +101,11 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onSuccess(final StringTree arg0) {
                         dimensionTree.clear();
-                        final TreeItem parent = dimensionTree.addItem(arg0.getValue());
+                        MemberSelectionLabel memberLabel = new MemberSelectionLabel(arg0.getValue());
+                        
+
+                        final TreeItem parent = dimensionTree.addItem(memberLabel);
+                        memberLabel.setTreeItem(parent);
                         addDimensionTreeItem(arg0, parent);
                     }
 
