@@ -17,6 +17,7 @@ public abstract class BaseCell implements Serializable, IsSerializable {
 	public boolean right = false;
 	public boolean sameAsPrev = false;
 
+	private String parentDimension = null;
 	/**
 	 * 
 	 * Blank Constructor for serialization dont use.
@@ -102,5 +103,18 @@ public abstract class BaseCell implements Serializable, IsSerializable {
 	@Override
 	public String toString() {
 		return formattedValue;
+	}
+	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 */
+	public void setParentDimension(String pdim){
+	    parentDimension=pdim;
+	}
+	
+	public String getParentDimension(){
+	    return parentDimension;
 	}
 }

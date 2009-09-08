@@ -19,10 +19,8 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
-import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
@@ -33,6 +31,7 @@ import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -165,27 +164,28 @@ public class OlapTable extends LayoutComposite implements QueryListener {
         final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
         final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
         for (int i = 0; i < olapData.getWidth(); i++) {
-
+            final int num = i;
             final BaseCell[] headers = colData.get(offset - 1);
             // work in progress
             if (offset > 1)
                 group = colData.get(offset - 2);
-
+            
             final int cell = i;
             SimplePanel colPanel = new SimplePanel();
            if(headers[i].getRawValue()!=null){
+               
             Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), headers[i].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
             cellButton.addClickHandler(new ClickHandler(){
 
 		public void onClick(ClickEvent arg0) {
-		    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), "Region");
+		    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), headers[num].getParentDimension());
 		}
         	
             });
             colPanel.add(cellButton);
            }else{
-               Label test = new Label("");
-               colPanel.add(test);
+               Label blanklabel = new Label("");
+               colPanel.add(blanklabel);
            }
                
             
@@ -194,26 +194,31 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(colPanel) {
                 @Override
                 public Widget getCellValue(final BaseCell[] rowValue) {
+                    SimplePanel panel = new SimplePanel();
+                    
                     if (rowValue[cell] == null) {
                         final Label testLabel = new Label(""); //$NON-NLS-1$
                         return testLabel;
                     } else {
-                        final LayoutPanel cellPanel = new LayoutPanel();
-                        final Image cross = Pat.IMAGES.cross().createImage();
-                        
-                        cross.addClickHandler(new ClickHandler() {
+                        if (rowValue[cell] instanceof MemberCell) {
+                        Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), rowValue[cell].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
+                        cellButton.addClickHandler(new ClickHandler() {
 
                             public void onClick(final ClickEvent arg0) {
-                                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), "Region");
+                                if (rowValue[cell] instanceof MemberCell) 
+                                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), rowValue[cell].getParentDimension());
                             }
 
                         });
-                        cellPanel.setLayout(new BoxLayout(Alignment.CENTER));
-
-                        Button cellButton =  new Button(ButtonHelper.createButtonLabel(Pat.IMAGES.cross(), rowValue[cell].formattedValue , ButtonLabelType.TEXT_ON_RIGHT));
-                        SimplePanel panel = new SimplePanel();
+                        
                         panel.add(cellButton);
-                        cellPanel.add(panel);
+                        }
+                        else{
+                            Label cellLabel = new Label(rowValue[cell].formattedValue);
+                            panel.add(cellLabel);                            
+                        }
+
+                        
                         return panel;
                     }
                 }

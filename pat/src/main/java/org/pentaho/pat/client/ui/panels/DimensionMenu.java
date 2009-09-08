@@ -67,9 +67,7 @@ public class DimensionMenu extends LayoutComposite {
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
         //dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
-        Label argh = new Label("argh!");
-        
-        dimensionTree.add(argh);
+
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {

@@ -19,7 +19,7 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -28,11 +28,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.DimensionMenu;
 
-import com.google.gwt.user.client.ui.Label;
-
 /**
  * Lists all Dimensions and Members and allows their including/excluding in a Query.
- * @created Aug 18, 2009 
+ * 
+ * @created Aug 18, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
@@ -44,10 +43,10 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     private static DimensionMenu dimensionMenuPanel = new DimensionMenu();
 
-    private LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-    
+    private final LayoutPanel windowContentpanel = new ScrollLayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
     private final static DimensionBrowserWindow dbw = new DimensionBrowserWindow();
-  
+
     /**
      * Cube Browser Window Constructor.
      */
@@ -55,28 +54,28 @@ public class DimensionBrowserWindow extends WindowPanel {
         super(TITLE);
         windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
-        
-        this.layout();
-        
-    }
-    
-    // public static void displayAllDimensions(final String queryId) {
-    //    query = queryId;
-    //    display(true);
-    //}
 
+        this.layout();
+
+    }
+
+    
     public static void displayDimension(final String queryId, final String dimension) {
         dimensionMenuPanel.loadMembers(queryId, dimension);
         display();
     }
-    
+
+    // public static void displayAllDimensions(final String queryId) {
+    // query = queryId;
+    // display(true);
+    // }
+
     private static void display() {
         dbw.setSize("450px", "300px");
         dbw.showModal(false);
-        //dbw.show();
+        // dbw.show();
         dbw.layout();
     }
+
     
-
 }
-
