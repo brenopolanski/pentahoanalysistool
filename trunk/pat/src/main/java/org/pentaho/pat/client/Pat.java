@@ -28,7 +28,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.ui.images.PatImages;
-import org.pentaho.pat.client.ui.widgets.LogoPanel;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.i18n.GuiConstants;

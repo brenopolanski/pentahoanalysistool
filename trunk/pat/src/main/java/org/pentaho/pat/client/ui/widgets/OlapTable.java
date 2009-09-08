@@ -213,6 +213,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 } else
                     colDef0.setHeader(1, groupPanel);
             }
+            
             colDef0.setHeaderTruncatable(false);
             colDef0.setColumnSortable(false);
             colDef0.setColumnTruncatable(false);
