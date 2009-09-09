@@ -102,11 +102,11 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onSuccess(final StringTree arg0) {
                         dimensionTree.clear();
-                        MemberSelectionLabel memberLabel = new MemberSelectionLabel(arg0.getValue());
+                        Label memberLabel = new Label(arg0.getValue());
                         
 
                         final TreeItem parent = dimensionTree.addItem(memberLabel);
-                        memberLabel.setTreeItem(parent);
+                        
                         addDimensionTreeItem(arg0, parent);
                         
                         ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(), memberLabel.getText(), new AsyncCallback(){
@@ -118,8 +118,8 @@ public class DimensionMenu extends LayoutComposite {
 			    }
 
 			    public void onSuccess(Object arg0) {
-				// TODO Auto-generated method stub
-				MessageBox.info("ok", "ran");
+				
+				
 			    }
                             
                         });

@@ -13,7 +13,6 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.Selection;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
