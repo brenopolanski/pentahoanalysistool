@@ -33,6 +33,7 @@ import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -67,6 +68,7 @@ public class DataPanel extends LayoutComposite implements QueryListener {
      * 
      */
     public DataPanel() {
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
 
         mainLayoutPanel.setPadding(0);
 
@@ -84,8 +86,9 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
                             public void onSuccess(final CellDataSet result1) {
                                 // TODO Auto-generated method stub
-                                onQueryExecuted(Pat.getCurrQuery(), result1);
-                                olapTable.setData(result1);
+                                //onQueryExecuted(Pat.getCurrQuery(), result1);
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(DataPanel.this, Pat.getCurrQuery(), result1);
+                               // olapTable.setData(result1);
                             }
 
                         });
@@ -134,5 +137,10 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
         baseLayoutPanel.layout();
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+            // TODO why is this called twice? why two instances of the same object?
+            olapTable.setData(matrix);
+    }
+
     }
 }
