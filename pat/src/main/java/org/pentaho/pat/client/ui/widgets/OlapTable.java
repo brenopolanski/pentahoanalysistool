@@ -147,7 +147,12 @@ public class OlapTable extends LayoutComposite implements QueryListener {
         table.redraw();
         this.layout();
     }
-
+    
+    /**
+     * 
+     * @param headers
+     * @return cellPanel
+     */
     private HorizontalPanel createCell(final BaseCell headers) {
         final HorizontalPanel cellPanel = new HorizontalPanel();
 
@@ -162,6 +167,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             });
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
+            if(!headers.getRawValue().equals(""))
             cellPanel.add(cellButton);
 
         }
@@ -199,10 +205,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                         final Label testLabel = new Label(""); //$NON-NLS-1$
                         return testLabel;
                     } else {
+
                         final HorizontalPanel cellPanel = createCell(rowValue[cell]);
                         return cellPanel;
                     }
-                }
+                }                
             };
 
             if (group != null) {
