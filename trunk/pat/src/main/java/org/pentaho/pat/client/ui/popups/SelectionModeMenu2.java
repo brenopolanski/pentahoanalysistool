@@ -125,6 +125,10 @@ public class SelectionModeMenu2 extends PopupMenu {
 
     /** The Constant SIBLINGS. */
     public static final int SIBLINGS = 3;
+    
+    public static final int DESCENDANTS = 4;
+    
+    public static final int ANCESTORS = 5;
 
     /** The Constant CLEAR. */
     public static final int CLEAR = -1;
@@ -151,6 +155,8 @@ public class SelectionModeMenu2 extends PopupMenu {
         this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
                 INCLUDE_CHILDREN)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
+        this.addItem(new MenuItem("Descendants", new SelectionModeCommand(DESCENDANTS)));
+        this.addItem(new MenuItem("Ancestors", new SelectionModeCommand(ANCESTORS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
 
     }
@@ -169,6 +175,13 @@ public class SelectionModeMenu2 extends PopupMenu {
             break;
         case 3:
             selection = "SIBLINGS"; //$NON-NLS-1$
+            break;
+        case 4:
+            selection = "DESCENDANTS"; //$NON-NLS-1$
+            break;
+        case 5:
+            selection = "ANCESTORS"; //$NON-NLS-1$
+
         default:
             break;
         }
@@ -186,8 +199,6 @@ public class SelectionModeMenu2 extends PopupMenu {
      */
     public final void showContextMenu(final Event event, final TreeItem selectedItem) {
 
-        // init();
-
         setSource(selectedItem.getWidget());
 
     }
@@ -195,9 +206,8 @@ public class SelectionModeMenu2 extends PopupMenu {
     protected final String getDimensionName(final MemberSelectionLabel targetLabel) {
         final Tree tree = (Tree) targetLabel.getParent();
         final TreeItem rootItem = tree.getItem(0);
-        final MemberSelectionLabel widget = (MemberSelectionLabel) rootItem.getWidget();
+        final Label widget = (Label) rootItem.getWidget();
 
-        final Label rootLabel = widget.getLabel();
-        return rootLabel.getText();
+        return widget.getText();
     }
 }

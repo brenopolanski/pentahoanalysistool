@@ -42,7 +42,9 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
@@ -63,13 +65,23 @@ public class DimensionMenu extends LayoutComposite {
         super();
        // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
-        baseLayoutPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
+        baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
         //dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
-
+        LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        
+        TextBox filterbox = new TextBox();
+        filterbox.setEnabled(false);
+        Button filterButton = new Button("Filter");
+        filterButton.setEnabled(false);
+        
+        filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
+        filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
+        
+        baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
