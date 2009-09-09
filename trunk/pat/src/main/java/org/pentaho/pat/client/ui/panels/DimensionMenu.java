@@ -21,7 +21,6 @@ package org.pentaho.pat.client.ui.panels;
 
 import java.util.List;
 
-import org.aspectj.bridge.Message;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -37,10 +36,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -112,16 +109,16 @@ public class DimensionMenu extends LayoutComposite {
                         MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
                     }
 
-                    public void onSuccess(final StringTree arg0) {
+                    public void onSuccess(final StringTree labels) {
                         dimensionTree.clear();
-                        Label memberLabel = new Label(arg0.getValue());
+                        Label dimensionLabel = new Label(labels.getValue());
                         
 
-                        final TreeItem parent = dimensionTree.addItem(memberLabel);
+                        final TreeItem parent = dimensionTree.addItem(dimensionLabel);
                         
-                        addDimensionTreeItem(arg0, parent);
                         
-                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(), memberLabel.getText(), new AsyncCallback(){
+                        
+                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), new AsyncCallback<String[][]>(){
 
 			    public void onFailure(Throwable arg0) {
 				// TODO Auto-generated method stub
@@ -129,8 +126,9 @@ public class DimensionMenu extends LayoutComposite {
 				
 			    }
 
-			    public void onSuccess(Object arg0) {
+			    public void onSuccess(String[][] selectionlist) {
 				
+				addDimensionTreeItem(labels, parent, selectionlist);
 				
 			    }
                             
@@ -142,14 +140,20 @@ public class DimensionMenu extends LayoutComposite {
 
     /**
      * Generates the Member Tree of a Dimension.
+     * @param arg0 
      */
-    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent) {
+    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent, String[][] selectionlist) {
         final List<StringTree> child = childStringTree.getChildren();
         for (int i = 0; i < child.size(); i++) {
             MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
+            for (int j=0; j<selectionlist.length; j++){
+        	if (memberLabel.getText().equals(selectionlist[j][0])){
+        	    String operator = selectionlist[j][1];
+        	}
+            }
             final TreeItem newParent = parent.addItem(memberLabel);
             memberLabel.setTreeItem(newParent);
-            addDimensionTreeItem(child.get(i), newParent);
+            addDimensionTreeItem(child.get(i), newParent, selectionlist);
         }
     }
 
