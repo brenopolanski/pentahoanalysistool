@@ -57,6 +57,7 @@ public class MenuBar extends LayoutComposite {
         rootPanel.setWidth("100%"); //$NON-NLS-1$
         addConnectionsButton();
         addCubesButton();
+        addSaveButton();
         rootPanel.add(logoPanel, new BoxLayoutData(FillStyle.BOTH));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
@@ -92,5 +93,21 @@ public class MenuBar extends LayoutComposite {
         });
         rootPanel.add(cubeButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
+    
+    private void addSaveButton() {
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+        // cases)
+        final ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), "Save",
+                ButtonLabelType.TEXT_ON_BOTTOM));
+        saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
 
+        saveButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                
+            }
+        });
+        saveButton.setEnabled(false);
+        rootPanel.add(saveButton, new BoxLayoutData(FillStyle.VERTICAL));
+    }
 }
