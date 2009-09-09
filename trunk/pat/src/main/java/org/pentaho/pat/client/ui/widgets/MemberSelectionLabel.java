@@ -189,6 +189,26 @@ public class MemberSelectionLabel extends HorizontalPanel  {
 	setImage(selectionImage);
     }
 
+    public final void setSelectionMode(final String mode) {
+        Image selectionImage = null;
+        if (mode.equals("MEMBER"))
+            selectionImage = selectionImageBundle.memberSelectIcon()
+            .createImage();
+        else if (mode.equals("CHILDREN"))
+            selectionImage = selectionImageBundle.childrenSelectIcon()
+            .createImage();
+        else if (mode.equals("INCLUDE_CHILDREN"))
+            selectionImage = selectionImageBundle.includeChildrenSelectIcon()
+            .createImage();
+        else if (mode.equals("SIBLINGS"))
+            selectionImage = selectionImageBundle.siblingsSelectIcon()
+            .createImage();
+        
+        if(selectionImage!=null)
+        setImage(selectionImage);
+        }
+
+    
     /**
      * Sets the labels text.
      *

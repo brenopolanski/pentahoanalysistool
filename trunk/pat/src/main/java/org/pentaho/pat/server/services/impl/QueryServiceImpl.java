@@ -206,7 +206,7 @@ public class QueryServiceImpl extends AbstractService
         for(Iterator iter = selList.iterator(); iter.hasNext();){ 
             
             Selection sel = (Selection) iter.next();
-            meh[i][0] = sel.getLevelName();
+            meh[i][0] = sel.getMember().getName();
             meh[i][1]= sel.getOperator().name();
             i++;
         }

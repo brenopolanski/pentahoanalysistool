@@ -64,19 +64,30 @@ public class DimensionBrowserWindow extends WindowPanel {
     public DimensionBrowserWindow() {
         super(TITLE);
         windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        Button updateQueryButton = new Button("Update Query");
+        LayoutPanel buttons = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        Button updateQueryButton = new Button("Ok");
+        Button cancelButton = new Button("Cancel");
+        buttons.add(updateQueryButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        buttons.add(cancelButton);
         
         updateQueryButton.addClickHandler( new ClickHandler(){
 
             public void onClick(ClickEvent arg0) {
                
-               updateQuery(); 
+               updateQuery();
+               DimensionBrowserWindow.this.hide();
             }
-
-            
-            
+                        
         });
-        windowContentpanel.add(updateQueryButton);
+        
+        cancelButton.addClickHandler( new ClickHandler(){
+           
+            public void onClick(ClickEvent arg0){
+                DimensionBrowserWindow.this.hide();
+            }
+        });
+        windowContentpanel.add(buttons);
+        
         this.setWidget(windowContentpanel);
 
         this.layout();
@@ -87,12 +98,10 @@ public class DimensionBrowserWindow extends WindowPanel {
         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
             public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
                 MessageBox.error(ConstantFactory.getInstance().error(), "Failed to execute query");
             }
 
             public void onSuccess(CellDataSet arg0) {
-                // TODO Auto-generated method stub
                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(DimensionBrowserWindow.this, Pat.getCurrQuery(), arg0);
 
                 DimensionBrowserWindow.this.hide();

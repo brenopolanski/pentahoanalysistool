@@ -36,6 +36,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -60,7 +62,7 @@ public class DimensionMenu extends LayoutComposite {
 
     public DimensionMenu() {
         super();
-       // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+        // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
@@ -68,16 +70,30 @@ public class DimensionMenu extends LayoutComposite {
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
         //dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
-        LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-        
-        TextBox filterbox = new TextBox();
+        final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
+        final TextBox filterbox = new TextBox();
         filterbox.setEnabled(false);
-        Button filterButton = new Button("Filter");
+        filterbox.addKeyUpHandler( new KeyUpHandler(){
+
+            public void onKeyUp(KeyUpEvent arg0) {
+                
+                String filter = filterbox.getText();
+                for (int i=0; i<dimensionTree.getItemCount(); i++){
+                if (!dimensionTree.getItem(i).getText().startsWith(filter))
+                    dimensionTree.getItem(i).remove();
+            }
+                
+            }
+            
+        });
+        final Button filterButton = new Button("Filter");
         filterButton.setEnabled(false);
+
         
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
-        
+
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
 
@@ -85,7 +101,7 @@ public class DimensionMenu extends LayoutComposite {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 dimensionTree.ensureSelectedItemVisible();
-                
+
                 // TODO uncomment when implemented
                 // DimensionTreeItem selected = (DimensionTreeItem)dimensionTree.getSelectedItem().getWidget();
                 // selected.showButton();
@@ -111,28 +127,26 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onSuccess(final StringTree labels) {
                         dimensionTree.clear();
-                        Label dimensionLabel = new Label(labels.getValue());
-                        
+                        final Label dimensionLabel = new Label(labels.getValue());
 
                         final TreeItem parent = dimensionTree.addItem(dimensionLabel);
-                        
-                        
-                        
-                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), new AsyncCallback<String[][]>(){
 
-			    public void onFailure(Throwable arg0) {
-				// TODO Auto-generated method stub
-				MessageBox.error("error", "failed");
-				
-			    }
+                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                                dimensionLabel.getText(), new AsyncCallback<String[][]>() {
 
-			    public void onSuccess(String[][] selectionlist) {
-				
-				addDimensionTreeItem(labels, parent, selectionlist);
-				
-			    }
-                            
-                        });
+                                    public void onFailure(final Throwable arg0) {
+                                        // TODO Auto-generated method stub
+                                        MessageBox.error("error", "failed");
+
+                                    }
+
+                                    public void onSuccess(final String[][] selectionlist) {
+
+                                        addDimensionTreeItem(labels, parent, selectionlist);
+
+                                    }
+
+                                });
                     }
 
                 });
@@ -140,17 +154,19 @@ public class DimensionMenu extends LayoutComposite {
 
     /**
      * Generates the Member Tree of a Dimension.
-     * @param arg0 
+     * 
+     * @param arg0
      */
-    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent, String[][] selectionlist) {
+    private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent,
+            final String[][] selectionlist) {
         final List<StringTree> child = childStringTree.getChildren();
+
         for (int i = 0; i < child.size(); i++) {
-            MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
-            for (int j=0; j<selectionlist.length; j++){
-        	if (memberLabel.getText().equals(selectionlist[j][0])){
-        	    String operator = selectionlist[j][1];
-        	}
-            }
+            final MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
+            for (final String[] element2 : selectionlist)
+                if (memberLabel.getText().equals(element2[0]))
+                    memberLabel.setSelectionMode(element2[1]);
+
             final TreeItem newParent = parent.addItem(memberLabel);
             memberLabel.setTreeItem(newParent);
             addDimensionTreeItem(child.get(i), newParent, selectionlist);
