@@ -32,6 +32,9 @@ import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.TextBox;
+
 /**
  *TODO JAVADOC
  * 
@@ -67,6 +70,8 @@ public class DimensionPanel extends LayoutComposite {
 
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
+        
+        
         dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
         dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
         dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
