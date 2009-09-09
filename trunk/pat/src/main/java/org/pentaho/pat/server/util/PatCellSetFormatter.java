@@ -220,19 +220,20 @@ public class PatCellSetFormatter  {
                 {
                     memberInfo.setRawValue(""); //$NON-NLS-1$
                     memberInfo.setFormattedValue(""); //$NON-NLS-1$
-                    memberInfo.setParentDimension(member.getDimension().getName());
+                    memberInfo.setParentDimension(null);
                 }
     	
                 if (isColumns) {
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(same);
+                    if (member !=null)
                     memberInfo.setParentDimension(member.getDimension().getName());
                     matrix.set(x, y, memberInfo);
                 } else {
                     if (same) {
                        memberInfo.setFormattedValue(""); //$NON-NLS-1$
                        memberInfo.setRawValue(""); //$NON-NLS-1$
-                       memberInfo.setParentDimension(member.getDimension().getName());
+                       memberInfo.setParentDimension(null);
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);
