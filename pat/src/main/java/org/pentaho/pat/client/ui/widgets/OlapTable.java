@@ -66,6 +66,8 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
     LiveTable<BaseCell[]> table;
 
+    private static String CELLBUTTON = "cellButton";
+    
     final LayoutPanel layoutPanel = getLayoutPanel();
 
     public OlapTable() {
@@ -167,6 +169,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             });
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
+            
+            cellPanel.setWidth("100%");
+            
+            cellButton.addStyleName(CELLBUTTON);
+            
             if(!headers.getRawValue().equals(""))
             cellPanel.add(cellButton);
 

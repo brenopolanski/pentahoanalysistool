@@ -47,3 +47,7 @@ background-color:#99bbe8;
 .Throbber-static {
 	background: url(loadinfostatic.gif);
 }
+
+.cellButton {
+align: right;
+}
