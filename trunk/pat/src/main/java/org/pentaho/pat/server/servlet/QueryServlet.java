@@ -9,9 +9,11 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.Selection;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
@@ -89,6 +91,20 @@ public class QueryServlet extends AbstractServlet implements Query {
         }
 	}
 
+    public String[][] getSelection(
+            String sessionId,
+            String queryId,
+            String dimensionName) throws RpcException
+    {
+		try {
+           return this.queryService.getSelection(getCurrentUserId(), sessionId, 
+            		queryId, dimensionName);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantGetMembers"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantGetMembers")); //$NON-NLS-1$
+        }
+		
+	}
     public void moveDimension(
             String sessionId,
             String queryId,

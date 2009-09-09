@@ -2,6 +2,8 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
+import org.olap4j.OlapException;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -133,4 +135,10 @@ public interface Query extends RemoteService {
 	        String sessionId, 
 	        String connectionId, 
 	        String mdx) throws RpcException;
+	
+	@Secured ({"Users"})
+	 public String[][] getSelection(
+	            String sessionId,
+	            String queryId,
+	            String dimensionName) throws RpcException;
 }
