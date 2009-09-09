@@ -105,7 +105,7 @@ public class SelectionModeMenu2 extends PopupMenu {
 
                         public void onSuccess(final Object arg0) {
                             targetLabel.setSelectionMode(selectionMode);
-
+                            
                         }
 
                     });
