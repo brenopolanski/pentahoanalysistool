@@ -187,6 +187,33 @@ public class QueryServiceImpl extends AbstractService
         qDim.include(selectionMode, member);
     }
 
+    public String[][] getSelection(
+            String userId, 
+            String sessionId,
+            String queryId,
+            String dimensionName) throws OlapException
+    {
+	    this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.getQuery(userId, sessionId, queryId);
+
+        QueryDimension qDim = 
+            OlapUtil.getQueryDimension(query, dimensionName);
+        
+        List<Selection> selList = qDim.getInclusions();
+        int i=0;
+        String[][] meh = new String[selList.size()][2];
+        for(Iterator iter = selList.iterator(); iter.hasNext();){ 
+            
+            Selection sel = (Selection) iter.next();
+            meh[i][0] = sel.getName();
+            meh[i][1]= sel.getOperator().name();
+            i++;
+        }
+	return meh;
+        
+    }
+    
     public void moveDimension(
             String userId, 
             String sessionId,

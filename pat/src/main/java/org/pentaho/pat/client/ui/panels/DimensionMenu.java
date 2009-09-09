@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import java.util.List;
 
+import org.aspectj.bridge.Message;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -107,6 +108,21 @@ public class DimensionMenu extends LayoutComposite {
                         final TreeItem parent = dimensionTree.addItem(memberLabel);
                         memberLabel.setTreeItem(parent);
                         addDimensionTreeItem(arg0, parent);
+                        
+                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(), memberLabel.getText(), new AsyncCallback(){
+
+			    public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				MessageBox.error("error", "failed");
+				
+			    }
+
+			    public void onSuccess(Object arg0) {
+				// TODO Auto-generated method stub
+				MessageBox.info("ok", "ran");
+			    }
+                            
+                        });
                     }
 
                 });

@@ -158,4 +158,12 @@ public interface QueryService extends Service {
 			String sessionId,
 			String connectionId,
 			String mdx) throws OlapException;
+	
+	
+	@Secured ({"Users"})
+	 public String[][] getSelection(
+	            String userId, 
+	            String sessionId,
+	            String queryId,
+	            String dimensionName) throws OlapException;
 }

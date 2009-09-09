@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * object that was previously instanciated through the Session service.
  * @author Luc Boudreau
  */
-@SuppressWarnings("unchecked")
+
 public interface QueryAsync {
 	
     public void moveDimension(
@@ -61,4 +61,9 @@ public interface QueryAsync {
             String sessionId, 
             String queryId,
             AsyncCallback<String> callback) throws RpcException;
+    
+    public void getSelection(
+            String sessionId,
+            String queryId,
+            String dimensionName, AsyncCallback callback);
 }
