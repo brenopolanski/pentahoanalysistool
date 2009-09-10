@@ -32,6 +32,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 
@@ -120,7 +121,7 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         dimensionTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final StringTree labels) {
@@ -133,7 +134,7 @@ public class DimensionMenu extends LayoutComposite {
                                 dimensionLabel.getText(), new AsyncCallback<String[][]>() {
 
                                     public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorGetSelectionFailed());
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
 
                                     }
 

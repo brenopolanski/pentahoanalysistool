@@ -34,6 +34,7 @@ import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -80,8 +81,8 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
                             public void onFailure(final Throwable arg0) {
                                 // TODO Auto-generated method stub
-                                MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                                        .queryError());
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedQuery(arg0.getLocalizedMessage()));
                             }
 
                             public void onSuccess(final CellDataSet result1) {
