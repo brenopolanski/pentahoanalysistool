@@ -811,4 +811,11 @@ public interface PatConstants extends Constants {
 	 * @return
 	 */
 	String queryWizard();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorDeleteQuery();
 }

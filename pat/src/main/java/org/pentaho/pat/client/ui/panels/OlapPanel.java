@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -85,7 +86,6 @@ public class OlapPanel extends DataWidget {
      */
     @Override
     public String getDescription() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -122,7 +122,7 @@ public class OlapPanel extends DataWidget {
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert("Warning", "Unable to delete query");
+                MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorDeleteQuery());
             }
 
             public void onSuccess(final Object arg0) {
@@ -158,7 +158,7 @@ public class OlapPanel extends DataWidget {
 
                     public void onFailure(final Throwable arg0) {
 
-                        MessageBox.alert("Warning", "Failed to create Query");
+                        MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorCreateQuery());
                     }
 
                     public void onSuccess(final String query) {
@@ -183,24 +183,23 @@ public class OlapPanel extends DataWidget {
                         final DataPanel dPanel = new DataPanel();
                         centerPanel.add(dPanel);
 
-                        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST,0.2, 10, 200, true));
+                        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
                         baselayoutPanel.setCollapsed(westPanel, false);
 
                         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
 
-                      
-                        //final Button bt = new Button("Test Dim Browser");
-//                        bt.addClickHandler(new ClickHandler() {
-//
-//                            public void onClick(final ClickEvent arg0) {
-//                                // TODO Test Code!
-//                                // DimensionBrowserWindow.displayDimension(queryId, "Time");
-//
-//                            }
-//                        });
-//
-//                        centerPanel.add(bt);
-//                        layoutPanel.layout();
+                        // final Button bt = new Button("Test Dim Browser");
+                        // bt.addClickHandler(new ClickHandler() {
+                        //
+                        // public void onClick(final ClickEvent arg0) {
+                        // // TODO Test Code!
+                        // // DimensionBrowserWindow.displayDimension(queryId, "Time");
+                        //
+                        // }
+                        // });
+                        //
+                        // centerPanel.add(bt);
+                        // layoutPanel.layout();
                     }
 
                 });

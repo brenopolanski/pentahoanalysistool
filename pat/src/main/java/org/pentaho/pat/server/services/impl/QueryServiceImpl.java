@@ -202,15 +202,15 @@ public class QueryServiceImpl extends AbstractService
         
         List<Selection> selList = qDim.getInclusions();
         int i=0;
-        String[][] meh = new String[selList.size()][2];
-        for(Iterator iter = selList.iterator(); iter.hasNext();){ 
+        String[][] selectionList = new String[selList.size()][2];
+        for(Iterator<Selection> iter = selList.iterator(); iter.hasNext();){ 
             
             Selection sel = (Selection) iter.next();
-            meh[i][0] = sel.getMember().getName();
-            meh[i][1]= sel.getOperator().name();
+            selectionList[i][0] = sel.getMember().getName();
+            selectionList[i][1]= sel.getOperator().name();
             i++;
         }
-	return meh;
+	return selectionList;
         
     }
     

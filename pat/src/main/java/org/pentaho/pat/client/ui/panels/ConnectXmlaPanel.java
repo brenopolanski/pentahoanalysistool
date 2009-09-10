@@ -56,10 +56,10 @@ public class ConnectXmlaPanel extends LayoutComposite {
     private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
 
     /** Height of the panel. */
-    private static final Integer HEIGHT = 280; //$NON-NLS-1$
+    private static final Integer HEIGHT = 280;
 
     /** Width of the Panel. */
-    private static final Integer WIDTH = 620; //$NON-NLS-1$
+    private static final Integer WIDTH = 620;
 
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
@@ -79,14 +79,14 @@ public class ConnectXmlaPanel extends LayoutComposite {
 
     /** Cancel button. */
     private final Button cancelButton;
-    
+
     /**
      * ConnectXmlaPanel Constructor.
      */
     public ConnectXmlaPanel() {
         super(new BorderLayout());
         connectButton = new Button(ConstantFactory.getInstance().save());
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button(ConstantFactory.getInstance().cancel());
         // catalogTextBox = new TextBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
@@ -97,7 +97,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
 
     @Override
     public Dimension getPreferredSize() {
-      return new Dimension(WIDTH, HEIGHT);
+        return new Dimension(WIDTH, HEIGHT);
     }
 
     /**
@@ -172,7 +172,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton,CellConstraints.xy(7, 11));
+        builder.add(cancelButton, CellConstraints.xy(7, 11));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);

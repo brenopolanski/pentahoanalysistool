@@ -31,6 +31,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -66,7 +67,7 @@ public class MenuBar extends LayoutComposite {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
         final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
-                "Connections", ButtonLabelType.TEXT_ON_BOTTOM));
+                ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
         connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
 
         connectionButton.addClickHandler(new ClickHandler() {
@@ -81,8 +82,8 @@ public class MenuBar extends LayoutComposite {
     private void addCubesButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
-        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), "Cubes",
-                ButtonLabelType.TEXT_ON_BOTTOM));
+        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+                .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
         cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
 
         cubeButton.addClickHandler(new ClickHandler() {
@@ -93,18 +94,18 @@ public class MenuBar extends LayoutComposite {
         });
         rootPanel.add(cubeButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
-    
+
     private void addSaveButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
-        final ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), "Save",
-                ButtonLabelType.TEXT_ON_BOTTOM));
+        final ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+                .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
         saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
 
         saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                
+
             }
         });
         saveButton.setEnabled(false);

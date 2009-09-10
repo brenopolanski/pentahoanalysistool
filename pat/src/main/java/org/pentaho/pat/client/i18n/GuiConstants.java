@@ -247,4 +247,200 @@ public interface GuiConstants extends Constants {
     String siblings();
     
     String clearSelections();
+    
+    String connectionError();
+    
+    String activeConnectionError();
+    
+    String disconnectionError();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String deleteConnectionError();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String cancel();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String loadConnectionError();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String executeQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String queryError();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorGetSelectionFailed();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String connections();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String cubes();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorDeleteQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorCreateQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String drillThrough();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String drillReplace();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String drillMember();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String drillPosition();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String pivot();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String hideBlankCells();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String showProperties();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String showFilters();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String showParent();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String ancestors();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String descendants();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String close();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String titleCubeBrowser();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String newQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String titleDimensionBrowser();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String ok();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorFetchMembers();
+
 }

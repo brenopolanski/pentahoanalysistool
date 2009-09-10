@@ -19,8 +19,6 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -32,13 +30,15 @@ import org.pentaho.pat.client.ui.panels.CubeMenu;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
  * Lists all Connections and Cubes and allows creation of new queries.
- * @created Aug 7, 2009 
+ * 
+ * @created Aug 7, 2009
  * @since 0.5.0
  * @author Paul Stoellberger
  * 
@@ -46,60 +46,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 public class CubeBrowserWindow extends WindowPanel {
 
     /** The Window Title. */
-    private static final String TITLE = "Cube Browser";
+    private static final String TITLE = ConstantFactory.getInstance().titleCubeBrowser();
 
-    private  final static CubeMenu cubeMenuPanel = new CubeMenu();
+    private final static CubeMenu cubeMenuPanel = new CubeMenu();
 
-    private  final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-    
-    private  final static ToolButton qmQueryButton = new ToolButton("New Query");
-    
-    private  final ToolButton qmCancelButton = new ToolButton("Cancel");
+    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private  final static CubeBrowserWindow cbw = new CubeBrowserWindow();
-    /**
-     * Cube Browser Window Constructor.
-     */
-    public CubeBrowserWindow() {
-        super(TITLE);
-        windowContentpanel.add(cubeMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        setupQueryButtons();
-        newQueryButtonPanel.add(qmQueryButton);
-        newQueryButtonPanel.add(qmCancelButton);
-        windowContentpanel.add(newQueryButtonPanel, new BoxLayoutData(FillStyle.VERTICAL));
-        this.setWidget(windowContentpanel);
-        this.layout();
-        
-    }
-    
-    private void setupQueryButtons() {
-	qmCancelButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent arg0) {
-               
-                    cbw.hide();
-                
-            }
-        });
-	
-        qmQueryButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent arg0) {
-                if (cubeMenuPanel.getCubeTree().getSelectedItem() != null) {
-                    final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem().getWidget();
-                    if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
-                        MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
-                    }
-                    if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
-                        OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
-                        MainTabPanel.displayContentWidget(olappanel);   
-                    }
-                    cbw.hide();
-                }
-            }
-        });
-        qmQueryButton.setEnabled(false);
-    }
-    
+    private final static ToolButton qmQueryButton = new ToolButton(ConstantFactory.getInstance().newQuery());
+
+    private final ToolButton qmCancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
+
+    private final static CubeBrowserWindow cbw = new CubeBrowserWindow();
+
     public static void display() {
         display(true);
     }
@@ -108,22 +66,61 @@ public class CubeBrowserWindow extends WindowPanel {
         cubeMenuPanel.loadCubes(connectionId);
         display(false);
     }
-    
-    private static void display(boolean refreshCubes) {
+
+    public static void enableQmQuery(final boolean enabled) {
+        qmQueryButton.setEnabled(true);
+    }
+
+    private static void display(final boolean refreshCubes) {
         qmQueryButton.setEnabled(false);
-        cbw.setSize("450px", "300px");
-        if (refreshCubes) {
+        cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (refreshCubes)
             cubeMenuPanel.loadCubes();
-        }
         cbw.showModal(false);
         cbw.layout();
     }
-    
-    public static void enableQmQuery(boolean enabled) {
-        qmQueryButton.setEnabled(true);
+
+    /**
+     * Cube Browser Window Constructor.
+     */
+    public CubeBrowserWindow() {
+        super(TITLE);
+        windowContentpanel.add(cubeMenuPanel, new BoxLayoutData(FillStyle.BOTH));
+        final LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        setupQueryButtons();
+        newQueryButtonPanel.add(qmQueryButton);
+        newQueryButtonPanel.add(qmCancelButton);
+        windowContentpanel.add(newQueryButtonPanel, new BoxLayoutData(FillStyle.VERTICAL));
+        this.setWidget(windowContentpanel);
+        this.layout();
+
     }
-    
-    
+
+    private void setupQueryButtons() {
+        qmCancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+
+                cbw.hide();
+
+            }
+        });
+
+        qmQueryButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+                if (cubeMenuPanel.getCubeTree().getSelectedItem() != null) {
+                    final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem()
+                            .getWidget();
+                    if (selected.getType() == CubeTreeItem.ItemType.CONNECTION)
+                        // MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
+                        if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+                            final OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
+                            MainTabPanel.displayContentWidget(olappanel);
+                        }
+                    cbw.hide();
+                }
+            }
+        });
+        qmQueryButton.setEnabled(false);
+    }
 
 }
-

@@ -54,75 +54,29 @@ public class ConnectionManagerWindow extends WindowPanel {
 
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
-    
-    private Button cmCancelButton = new Button("Close"); 
+
+    private final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
 
     private final static LayoutPanel mainContentpanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-    
+
     private final static LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-    
+
     private final static ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
 
     /** A Tab Layout Panel. */
     private transient final static TabLayoutPanel tabPanel = new TabLayoutPanel();
 
-    /**
-     * Connection Window Constructor.
-     */
-    public ConnectionManagerWindow() {
-        super(TITLE);
-        
-        
-        cmCancelButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent arg0) {
-               
-                    ConnectionManagerWindow.this.hide();
-                
-            }
-        });
-        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
-        mainContentpanel.add(windowContentpanel, new BoxLayoutData(FillStyle.BOTH));
-        mainContentpanel.add(cmCancelButton);
-//        connectMondrian = new ConnectMondrianPanel();
-//        connectXmla = new ConnectXmlaPanel();
-//        tabPanel.setPadding(5);
-//        tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-//        tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-//        tabPanel.selectTab(0);
-//        windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
-        // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
-        this.setWidget(mainContentpanel);
-        this.layout();
-        
-    }
-    
     public static void closeTabs() {
-        for(int i = 0; i < tabPanel.getWidgetCount();) {
+        for (final int i = 0; i < tabPanel.getWidgetCount();)
             tabPanel.remove(i);
-        }
         windowContentpanel.remove(tabPanel);
         refreshWindow();
     }
 
     public static void display() {
-                refreshWindow();
-            }
-
-    private static void refreshWindow() {
-//        
-//        int preferredWidth = Window.getClientWidth();
-//        preferredWidth = Math.max(preferredWidth / 3, 256);
-//
-//        connectionManagerWindow.setPixelSize(preferredWidth, 356);
-//
-//        if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
-//            connectionManagerWindow.setPixelSize(preferredWidth, 356);
-        connectionManagerWindow.invalidate();
-        ConnectionManagerPanel.refreshConnectionList();
-        connectionManagerWindow.showModal();
-        connectionManagerWindow.layout();
+        refreshWindow();
     }
-    
+
     public static void display(final CubeConnection cc) {
         if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian)
             // TODO uncomment when implemented
@@ -148,6 +102,50 @@ public class ConnectionManagerWindow extends WindowPanel {
             windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
             refreshWindow();
         }
+    }
+
+    private static void refreshWindow() {
+        //        
+        // int preferredWidth = Window.getClientWidth();
+        // preferredWidth = Math.max(preferredWidth / 3, 256);
+        //
+        // connectionManagerWindow.setPixelSize(preferredWidth, 356);
+        //
+        // if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
+        // connectionManagerWindow.setPixelSize(preferredWidth, 356);
+        connectionManagerWindow.invalidate();
+        ConnectionManagerPanel.refreshConnectionList();
+        connectionManagerWindow.showModal();
+        connectionManagerWindow.layout();
+    }
+
+    /**
+     * Connection Window Constructor.
+     */
+    public ConnectionManagerWindow() {
+        super(TITLE);
+
+        cmCancelButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+
+                ConnectionManagerWindow.this.hide();
+
+            }
+        });
+        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
+        mainContentpanel.add(windowContentpanel, new BoxLayoutData(FillStyle.BOTH));
+        mainContentpanel.add(cmCancelButton);
+        // connectMondrian = new ConnectMondrianPanel();
+        // connectXmla = new ConnectXmlaPanel();
+        // tabPanel.setPadding(5);
+        // tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+        // tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
+        // tabPanel.selectTab(0);
+        // windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
+        // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
+        this.setWidget(mainContentpanel);
+        this.layout();
+
     }
 
 }
