@@ -71,25 +71,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
 
     /** Height of the panel. */
-    private static final Integer HEIGHT = 280; //$NON-NLS-1$
+    private static final Integer HEIGHT = 280;
 
     /** Width of the Panel. */
-    private static final Integer WIDTH = 620; //$NON-NLS-1$
+    private static final Integer WIDTH = 620;
 
     /** Suffix for label constants. */
     private static final String LABEL_SUFFIX = ":"; //$NON-NLS-1$
-
-    /**
-     * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
-     * backend
-     */
-    private final String SCHEMA_START = "<PRE>[SCHEMA_START]"; //$NON-NLS-1$
-
-    /**
-     * Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the
-     * backend.
-     */
-    private final String SCHEMA_END = "[/SCHEMA_END]</PRE>"; //$NON-NLS-1$
 
     // Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
     public static native String decode(final String data) /*-{
@@ -117,6 +105,18 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                                           return out;
                                                           
                                                           }-*/;
+
+    /**
+     * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
+     * backend
+     */
+    private final String SCHEMA_START = "<PRE>[SCHEMA_START]"; //$NON-NLS-1$
+
+    /**
+     * Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the
+     * backend.
+     */
+    private final String SCHEMA_END = "[/SCHEMA_END]</PRE>"; //$NON-NLS-1$
 
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
@@ -157,7 +157,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         nameTextBox = new TextBox();
         connectButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button(ConstantFactory.getInstance().cancel());
         driverListBox = createDriverListComboBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
@@ -168,12 +168,11 @@ public class ConnectMondrianPanel extends LayoutComposite {
         init();
 
     }
-    
+
     @Override
     public Dimension getPreferredSize() {
-      return new Dimension(WIDTH, HEIGHT);
+        return new Dimension(WIDTH, HEIGHT);
     }
-
 
     /**
      * Driver Listbox setup.
@@ -289,18 +288,18 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 connectButton.setEnabled(false);
                 ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
                         new AsyncCallback<String>() {
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .noConnectionParam(arg0.getLocalizedMessage()));
-                        connectButton.setEnabled(true);
-                    }
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .noConnectionParam(arg0.getLocalizedMessage()));
+                                connectButton.setEnabled(true);
+                            }
 
-                    public void onSuccess(final String o) {
-                        connectButton.setEnabled(true);
-                        // TODO refresh or close?
-                        ConnectionManagerWindow.closeTabs();
-                    }
-                });
+                            public void onSuccess(final String o) {
+                                connectButton.setEnabled(true);
+                                // TODO refresh or close?
+                                ConnectionManagerWindow.closeTabs();
+                            }
+                        });
             }
         });
 
@@ -312,7 +311,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton,CellConstraints.xy(7, 15));
+        builder.add(cancelButton, CellConstraints.xy(7, 15));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);

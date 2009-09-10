@@ -61,7 +61,6 @@ public class DataPanel extends LayoutComposite implements QueryListener {
     final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
     final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
-    
 
     /**
      *TODO JAVADOC
@@ -72,7 +71,7 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
         mainLayoutPanel.setPadding(0);
 
-        final Button executeButton = new Button("Execute Query");
+        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -81,14 +80,16 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
                             public void onFailure(final Throwable arg0) {
                                 // TODO Auto-generated method stub
-                                MessageBox.error("Error", "Query Execution Failed");
+                                MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
+                                        .queryError());
                             }
 
                             public void onSuccess(final CellDataSet result1) {
                                 // TODO Auto-generated method stub
-                                //onQueryExecuted(Pat.getCurrQuery(), result1);
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(DataPanel.this, Pat.getCurrQuery(), result1);
-                               // olapTable.setData(result1);
+                                // onQueryExecuted(Pat.getCurrQuery(), result1);
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        DataPanel.this, Pat.getCurrQuery(), result1);
+                                // olapTable.setData(result1);
                             }
 
                         });
@@ -104,15 +105,15 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
         olapTable = new OlapTable();
-        LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
+        final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
         buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
         buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
         fillLayoutPanel.add(olapTable);
 
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
-        //mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
-        
+        // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
+
         baseLayoutPanel.add(mainLayoutPanel);
 
     }
@@ -137,10 +138,9 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
         baseLayoutPanel.layout();
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached())
             // TODO why is this called twice? why two instances of the same object?
             olapTable.setData(matrix);
-    }
 
     }
 }

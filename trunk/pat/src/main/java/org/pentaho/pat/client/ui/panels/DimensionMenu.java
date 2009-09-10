@@ -74,23 +74,21 @@ public class DimensionMenu extends LayoutComposite {
 
         final TextBox filterbox = new TextBox();
         filterbox.setEnabled(false);
-        filterbox.addKeyUpHandler( new KeyUpHandler(){
+        filterbox.addKeyUpHandler(new KeyUpHandler() {
 
-            public void onKeyUp(KeyUpEvent arg0) {
-                
-                String filter = filterbox.getText();
-                for (int i=0; i<dimensionTree.getItemCount(); i++){
-                if (!dimensionTree.getItem(i).getText().startsWith(filter))
-                    dimensionTree.getItem(i).remove();
+            public void onKeyUp(final KeyUpEvent arg0) {
+
+                final String filter = filterbox.getText();
+                for (int i = 0; i < dimensionTree.getItemCount(); i++)
+                    if (!dimensionTree.getItem(i).getText().startsWith(filter))
+                        dimensionTree.getItem(i).remove();
+
             }
-                
-            }
-            
+
         });
-        final Button filterButton = new Button("Filter");
+        final Button filterButton = new Button(ConstantFactory.getInstance().filter());
         filterButton.setEnabled(false);
 
-        
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
 
@@ -122,7 +120,7 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         dimensionTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
+                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
                     }
 
                     public void onSuccess(final StringTree labels) {
@@ -135,8 +133,7 @@ public class DimensionMenu extends LayoutComposite {
                                 dimensionLabel.getText(), new AsyncCallback<String[][]>() {
 
                                     public void onFailure(final Throwable arg0) {
-                                        // TODO Auto-generated method stub
-                                        MessageBox.error("error", "failed");
+                                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorGetSelectionFailed());
 
                                     }
 

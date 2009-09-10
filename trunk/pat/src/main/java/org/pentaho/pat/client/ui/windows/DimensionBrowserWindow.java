@@ -50,7 +50,7 @@ import com.google.gwt.user.client.ui.Button;
 public class DimensionBrowserWindow extends WindowPanel {
 
     /** The Window Title. */
-    private final static String TITLE = "Dimension Browser";
+    private final static String TITLE = ConstantFactory.getInstance().titleDimensionBrowser();
 
     private static DimensionMenu dimensionMenuPanel = new DimensionMenu();
 
@@ -58,61 +58,52 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     private final static DimensionBrowserWindow dbw = new DimensionBrowserWindow();
 
+    public static void displayDimension(final String queryId, final String dimension) {
+        dimensionMenuPanel.loadMembers(queryId, dimension);
+        display();
+    }
+
+    private static void display() {
+        dbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        dbw.showModal(false);
+        // dbw.show();
+        dbw.layout();
+    }
+
     /**
      * Cube Browser Window Constructor.
      */
     public DimensionBrowserWindow() {
         super(TITLE);
         windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        LayoutPanel buttons = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        Button updateQueryButton = new Button("Ok");
-        Button cancelButton = new Button("Cancel");
+        final LayoutPanel buttons = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        final Button updateQueryButton = new Button(ConstantFactory.getInstance().ok());
+        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         buttons.add(updateQueryButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         buttons.add(cancelButton);
-        
-        updateQueryButton.addClickHandler( new ClickHandler(){
 
-            public void onClick(ClickEvent arg0) {
-               
-               updateQuery();
-               DimensionBrowserWindow.this.hide();
+        updateQueryButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+
+                updateQuery();
+                DimensionBrowserWindow.this.hide();
             }
-                        
+
         });
-        
-        cancelButton.addClickHandler( new ClickHandler(){
-           
-            public void onClick(ClickEvent arg0){
+
+        cancelButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
                 DimensionBrowserWindow.this.hide();
             }
         });
         windowContentpanel.add(buttons);
-        
+
         this.setWidget(windowContentpanel);
 
         this.layout();
 
-    }
-
-    private void updateQuery() {
-        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-            public void onFailure(Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), "Failed to execute query");
-            }
-
-            public void onSuccess(CellDataSet arg0) {
-                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(DimensionBrowserWindow.this, Pat.getCurrQuery(), arg0);
-
-                DimensionBrowserWindow.this.hide();
-            }
-            
-        });        
-    }
-    
-    public static void displayDimension(final String queryId, final String dimension) {
-        dimensionMenuPanel.loadMembers(queryId, dimension);
-        display();
     }
 
     // public static void displayAllDimensions(final String queryId) {
@@ -120,12 +111,23 @@ public class DimensionBrowserWindow extends WindowPanel {
     // display(true);
     // }
 
-    private static void display() {
-        dbw.setSize("450px", "300px");
-        dbw.showModal(false);
-        // dbw.show();
-        dbw.layout();
+    private void updateQuery() {
+        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                new AsyncCallback<CellDataSet>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
+                                .queryError());
+                    }
+
+                    public void onSuccess(final CellDataSet arg0) {
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                DimensionBrowserWindow.this, Pat.getCurrQuery(), arg0);
+
+                        DimensionBrowserWindow.this.hide();
+                    }
+
+                });
     }
 
-    
 }

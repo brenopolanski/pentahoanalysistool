@@ -101,7 +101,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
+                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
                     }
 
                     public void onSuccess(final CubeConnection[] connections) {
@@ -116,7 +116,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Error loading connections");
+                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
                     }
 
                     public void onSuccess(final CubeConnection connection) {

@@ -26,14 +26,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.Application;
+import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
-
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
 
 /**
  *TODO JAVADOC
@@ -54,40 +51,8 @@ public class DimensionPanel extends LayoutComposite {
     private final DimensionDropWidget dimDropFilter;
 
     private static FlexTableRowDragController tableRowDragController;
-    
+
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
-
-    /**
-     *TODO JAVADOC
-     * 
-     */
-    public DimensionPanel() {
-        setTableRowDragController(new FlexTableRowDragController(Application.getMainPanel()));
-        
-        final LayoutPanel rootPanel = getLayoutPanel();
-
-        final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
-
-        mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        mainPanel.addStyleName(ROOT_STYLE_NAME);
-        
-        
-        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
-        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
-        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
-        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
-        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
-        
-        mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
-        mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
-        mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));
-
-        rootPanel.add(mainPanel);
-        
-        
-
-    }
-
 
     /**
      * Returns the drag controller.
@@ -95,7 +60,7 @@ public class DimensionPanel extends LayoutComposite {
      * @return tableRowDragController
      */
     public static FlexTableRowDragController getTableRowDragController() {
-            return tableRowDragController;
+        return tableRowDragController;
     }
 
     /**
@@ -105,7 +70,35 @@ public class DimensionPanel extends LayoutComposite {
      *            Accepts a FlexTableRowDragController
      */
     private static void setTableRowDragController(final FlexTableRowDragController tableRowDragController) {
-            DimensionPanel.tableRowDragController = tableRowDragController;
+        DimensionPanel.tableRowDragController = tableRowDragController;
     }
-    
+
+    /**
+     *TODO JAVADOC
+     * 
+     */
+    public DimensionPanel() {
+        setTableRowDragController(new FlexTableRowDragController(Application.getMainPanel()));
+
+        final LayoutPanel rootPanel = getLayoutPanel();
+
+        final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
+
+        mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        mainPanel.addStyleName(ROOT_STYLE_NAME);
+
+        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
+        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
+        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
+        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
+
+        mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
+        mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
+        mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));
+
+        rootPanel.add(mainPanel);
+
+    }
+
 }

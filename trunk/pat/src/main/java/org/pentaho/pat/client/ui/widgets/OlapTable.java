@@ -1,14 +1,21 @@
 /*
  * Copyright (C) 2009 Tom Barber
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
- *
- * @created Jul 10, 2009 
- * @author Tom Barber
  */
 package org.pentaho.pat.client.ui.widgets;
 
@@ -66,7 +73,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
     LiveTable<BaseCell[]> table;
 
-    private static String CELLBUTTON = "cellButton";
+    private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
     
     final LayoutPanel layoutPanel = getLayoutPanel();
 
@@ -123,7 +130,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
      * Fire on query changing.
      */
     public void onQueryChange(final Widget sender) {
-        // TODO Auto-generated method stub
+
 
     }
 
@@ -170,11 +177,11 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
             
-            cellPanel.setWidth("100%");
+            cellPanel.setWidth("100%"); //$NON-NLS-1$
             
             cellButton.addStyleName(CELLBUTTON);
             
-            if(!headers.getRawValue().equals(""))
+            if(!headers.getRawValue().equals("")) //$NON-NLS-1$
             cellPanel.add(cellButton);
 
         }

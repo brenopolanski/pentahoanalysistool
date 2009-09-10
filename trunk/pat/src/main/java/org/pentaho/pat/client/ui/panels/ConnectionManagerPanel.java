@@ -38,10 +38,10 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
@@ -64,11 +64,72 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  */
 public class ConnectionManagerPanel extends LayoutComposite {
 
+    private static ListBox<ConnectionItem> listBox;
+
     public static void addConnection(final ConnectionItem ci) {
         model.add(ci);
     }
 
-    private static ListBox<ConnectionItem> listBox;
+    public static void refreshConnectionList() {
+
+        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
+        final ArrayList<String> cIdList = new ArrayList<String>();
+        model.clear();
+        ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
+            public void onFailure(final Throwable arg0) {
+                MessageBox
+                        .alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().connectionError());
+
+            }
+
+            public void onSuccess(final CubeConnection[] ccArray) {
+                for (final CubeConnection element2 : ccArray) {
+                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
+                    cIdList.add(newCi.getId());
+                    cList.add(newCi);
+                }
+                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
+                        new AsyncCallback<CubeConnection[]>() {
+
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
+                                        .activeConnectionError());
+
+                            }
+
+                            public void onSuccess(final CubeConnection[] ccArray2) {
+                                for (final CubeConnection element2 : ccArray2) {
+                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2
+                                            .getName(), false);
+
+                                    // FIXME why is this not working, but the cIdList does work. cList should contain
+                                    // this element!!
+                                    // if(cList2.contains(newCi)) {
+                                    if (cIdList.contains(newCi.getId()))
+                                        cList.get(cIdList.indexOf(newCi.getId())).setConnected(true);
+                                    else {
+                                        newCi.setConnected(true);
+                                        cList.add(newCi);
+                                    }
+                                }
+
+                                for (final ConnectionItem cItem : cList)
+                                    model.add(cItem);
+                                refreshMe();
+                            }
+                        });
+
+            }
+        });
+
+    }
+
+    public static void refreshMe() {
+        connectionsList.invalidate();
+        listBox.invalidate();
+        connectionsList.layout();
+        listBox.layout();
+    }
 
     private ToolBar toolBar;
 
@@ -84,21 +145,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
         baseLayoutPanel.add(connectionsList);
     }
 
-    @Override
-    public void onLoad(){
-        //        listBox.invalidate();
-    }
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(256, 384);
-    }
-
-    public static void refreshMe(){
-        connectionsList.invalidate();
-        listBox.invalidate();
-        connectionsList.layout();
-        listBox.layout();
-    }
     public ListBox<ConnectionItem> createListBox() {
         final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
         cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
@@ -120,15 +166,15 @@ public class ConnectionManagerPanel extends LayoutComposite {
     public ToolBar createToolBar(final ListBox<ConnectionItem> linkedListBox) {
 
         final ToolBar toolBar = new ToolBar();
-        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_add(), null, ButtonLabelType.NO_TEXT),
-                new ClickHandler() {
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_add(), null,
+                ButtonLabelType.NO_TEXT), new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.showNewConnection();
             }
         }));
 
-        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_delete(), null, ButtonLabelType.NO_TEXT),
-                new ClickHandler() {
+        toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_delete(), null,
+                ButtonLabelType.NO_TEXT), new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 if (linkedListBox.getSelectedIndex() == -1) {
                     MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -137,42 +183,47 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 final ConnectionItem item = linkedListBox.getItem(linkedListBox.getSelectedIndex());
                 MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
                         "Are you sure you want to permanently delete '" + item.getName() //$NON-NLS-1$
-                        + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
-                    public void onResult(final boolean result) {
-                        if (result) {
-                            ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+                                + "' from the list?", new ConfirmationCallback() { //$NON-NLS-1$
+                            public void onResult(final boolean result) {
+                                if (result)
+                                    ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
+                                            new AsyncCallback<Object>() {
 
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert("Error", "Error during disconnection of Connection");
-                                    
-                                }
+                                                public void onFailure(final Throwable arg0) {
+                                                    MessageBox.alert(ConstantFactory.getInstance().error(),
+                                                            ConstantFactory.getInstance().disconnectionError());
 
-                                public void onSuccess(Object arg0) {
-                                    ServiceFactory.getSessionInstance().deleteConnection(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+                                                }
 
-                                        public void onFailure(Throwable arg0) {
-                                            MessageBox.alert("Error", "Error during deletion of Connection");
+                                                public void onSuccess(final Object arg0) {
+                                                    ServiceFactory.getSessionInstance().deleteConnection(
+                                                            Pat.getSessionID(), item.getId(),
+                                                            new AsyncCallback<Object>() {
 
-                                        }
+                                                                public void onFailure(final Throwable arg0) {
+                                                                    MessageBox.alert(ConstantFactory.getInstance()
+                                                                            .error(), ConstantFactory.getInstance()
+                                                                            .deleteConnectionError());
 
-                                        public void onSuccess(Object arg0) {
-                                            refreshConnectionList();
-                                        }
+                                                                }
 
-                                    });
-                                }
-                                
-                            });
-                           
-                        }
-                        model.remove(linkedListBox.getSelectedIndex());
-                    }
-                });
+                                                                public void onSuccess(final Object arg0) {
+                                                                    refreshConnectionList();
+                                                                }
+
+                                                            });
+                                                }
+
+                                            });
+                                model.remove(linkedListBox.getSelectedIndex());
+                            }
+                        });
             };
         }));
 
         // EDIT will be disabled for some more time
-        final ToolButton editButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_edit(), null, ButtonLabelType.NO_TEXT), new ClickHandler() { //$NON-NLS-1$
+        final ToolButton editButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_edit(), null,
+                ButtonLabelType.NO_TEXT), new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 if (linkedListBox.getSelectedIndex() == -1) {
                     MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -188,6 +239,16 @@ public class ConnectionManagerPanel extends LayoutComposite {
         return toolBar;
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(256, 384);
+    }
+
+    @Override
+    public void onLoad() {
+        // listBox.invalidate();
+    }
+
     public void setupConnectionList() {
         listBox = createListBox();
 
@@ -196,61 +257,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
             connectionsList.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
         connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
-    }
-
-    public static void refreshConnectionList() {
-
-        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
-        final ArrayList<String> cIdList = new ArrayList<String>();
-        model.clear();
-        ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(),new AsyncCallback<CubeConnection[]>() {
-            public void onFailure(Throwable arg0) {
-                MessageBox.alert("error", "errorSaved");
-
-            }
-
-            public void onSuccess(CubeConnection[] ccArray) {
-                for (int i = 0; i < ccArray.length;i++) {
-                    final ConnectionItem newCi = new ConnectionItem(ccArray[i].getId(),ccArray[i].getName(),false);
-                    cIdList.add(newCi.getId());
-                    cList.add(newCi);
-                }
-                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),new AsyncCallback<CubeConnection[]>() {
-
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.alert("error", "errorActive");
-
-                    }
-
-                    public void onSuccess(CubeConnection[] ccArray2) {
-                        for (int i = 0; i < ccArray2.length;i++) {
-                            final ConnectionItem newCi = new ConnectionItem(ccArray2[i].getId(),ccArray2[i].getName(),false);
-
-                            // FIXME why is this not working, but the cIdList does work. cList should contain this element!!
-                            //                            if(cList2.contains(newCi)) {
-                            if(cIdList.contains(newCi.getId())) {
-                                cList.get(cIdList.indexOf(newCi.getId())).setConnected(true);
-                            }
-                            else {
-                                newCi.setConnected(true);
-                                cList.add(newCi);
-                            }    
-                        }
-
-                        for (ConnectionItem cItem : cList) {
-                            model.add(cItem);
-                        }
-                        refreshMe();
-                    }
-                });
-
-            }
-        });
-
-
-
-
-
     }
 
     private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
@@ -275,35 +281,38 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 // TODO implement dis-/connect routine(externalize strings)
                 super.onClick();
                 LogoPanel.spinWheel(true);
-                if (item.isConnected()) {
-                    ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+                if (item.isConnected())
+                    ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
+                            new AsyncCallback<Object>() {
 
-                        public void onFailure(Throwable arg0) {
-                            MessageBox.alert(ConstantFactory.getInstance().error(), "Error during disconnecting");
-                            LogoPanel.spinWheel(false);
-                        }
+                                public void onFailure(final Throwable arg0) {
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory
+                                            .getInstance().disconnectionError());
+                                    LogoPanel.spinWheel(false);
+                                }
 
-                        public void onSuccess(Object arg0) {
-                            refreshConnectionList();
-                            LogoPanel.spinWheel(false);
-                        }
+                                public void onSuccess(final Object arg0) {
+                                    refreshConnectionList();
+                                    LogoPanel.spinWheel(false);
+                                }
 
-                    });
-                } else {
-                    ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(), new AsyncCallback<Object>() {
+                            });
+                else
+                    ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
+                            new AsyncCallback<Object>() {
 
-                        public void onFailure(Throwable arg0) {
-                            LogoPanel.spinWheel(false);
-                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().noConnectionParam(arg0.getLocalizedMessage()));
-                        }
+                                public void onFailure(final Throwable arg0) {
+                                    LogoPanel.spinWheel(false);
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                            .getInstance().noConnectionParam(arg0.getLocalizedMessage()));
+                                }
 
-                        public void onSuccess(Object arg0) {
-                            LogoPanel.spinWheel(false);
-                            refreshConnectionList();                            
-                        }
+                                public void onSuccess(final Object arg0) {
+                                    LogoPanel.spinWheel(false);
+                                    refreshConnectionList();
+                                }
 
-                    });
-                }
+                            });
                 final int index = linkedListBox.getSelectedIndex();
                 model.set(index, item);
 

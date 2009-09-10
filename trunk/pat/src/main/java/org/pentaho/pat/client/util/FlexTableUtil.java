@@ -129,24 +129,32 @@ public class FlexTableUtil {
                                                     new AsyncCallback<StringTree>() {
 
                                                         public void onFailure(final Throwable arg0) {
-                                                            MessageBox.error("Error", "Couldn't get members");
+                                                            MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                    ConstantFactory.getInstance().errorFetchMembers());
 
                                                         }
 
                                                         public void onSuccess(final StringTree memberTree) {
 
                                                             new String(memberTree.getValue());
-                                                            final ArrayList names = new ArrayList();
+                                                            final ArrayList<String> names = new ArrayList<String>();
                                                             names.add(memberTree.getChildren().get(0).getValue());
                                                             ServiceFactory.getQueryInstance().createSelection(
                                                                     Pat.getSessionID(), Pat.getCurrQuery(),
                                                                     w.getElement().getInnerText().trim(), names,
-                                                                    "MEMBER", new AsyncCallback() {
+                                                                    "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$
 
                                                                         public void onFailure(final Throwable arg0) {
-                                                                            // TODO Auto-generated method stub
-                                                                            MessageBox.error("Error",
-                                                                                    "Selection Failed");
+                                                                            MessageBox
+                                                                                    .error(
+                                                                                            ConstantFactory
+                                                                                                    .getInstance()
+                                                                                                    .error(),
+                                                                                            MessageFactory
+                                                                                                    .getInstance()
+                                                                                                    .noSelectionSet(
+                                                                                                            arg0
+                                                                                                                    .getLocalizedMessage()));
                                                                         }
 
                                                                         public void onSuccess(final Object arg0) {
