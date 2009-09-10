@@ -101,7 +101,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedActiveConnection(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final CubeConnection[] connections) {
@@ -116,7 +116,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().loadConnectionError());
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final CubeConnection connection) {

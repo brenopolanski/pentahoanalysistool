@@ -30,6 +30,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -122,7 +123,7 @@ public class OlapPanel extends DataWidget {
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorDeleteQuery());
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(arg0.getLocalizedMessage()));
             }
 
             public void onSuccess(final Object arg0) {
@@ -158,7 +159,7 @@ public class OlapPanel extends DataWidget {
 
                     public void onFailure(final Throwable arg0) {
 
-                        MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().errorCreateQuery());
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final String query) {

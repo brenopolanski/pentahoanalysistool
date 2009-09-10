@@ -149,7 +149,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
                         new AsyncCallback<String>() {
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .noConnectionParam(arg0.getLocalizedMessage()));
+                                        .failedLoadConnection(arg0.getLocalizedMessage()));
                                 connectButton.setEnabled(true);
                             }
 

@@ -31,6 +31,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.DimensionMenu;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -116,8 +117,8 @@ public class DimensionBrowserWindow extends WindowPanel {
                 new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                                .queryError());
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedQuery(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final CellDataSet arg0) {

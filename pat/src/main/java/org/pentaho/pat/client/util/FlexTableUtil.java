@@ -130,7 +130,8 @@ public class FlexTableUtil {
 
                                                         public void onFailure(final Throwable arg0) {
                                                             MessageBox.error(ConstantFactory.getInstance().error(),
-                                                                    ConstantFactory.getInstance().errorFetchMembers());
+                                                                    MessageFactory.getInstance().failedMemberFetch(
+                                                                            arg0.getLocalizedMessage()));
 
                                                         }
 

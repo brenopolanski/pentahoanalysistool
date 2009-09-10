@@ -248,18 +248,8 @@ public interface GuiConstants extends Constants {
     
     String clearSelections();
     
-    String connectionError();
     
-    String activeConnectionError();
-    
-    String disconnectionError();
 
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String deleteConnectionError();
 
     /**
      *TODO JAVADOC
@@ -268,12 +258,6 @@ public interface GuiConstants extends Constants {
      */
     String cancel();
 
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String loadConnectionError();
 
     /**
      *TODO JAVADOC
@@ -282,19 +266,8 @@ public interface GuiConstants extends Constants {
      */
     String executeQuery();
 
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String queryError();
-
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String errorGetSelectionFailed();
+   
+   
 
     /**
      *TODO JAVADOC
@@ -310,20 +283,7 @@ public interface GuiConstants extends Constants {
      */
     String cubes();
 
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String errorDeleteQuery();
-
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String errorCreateQuery();
-
+ 
     /**
      *TODO JAVADOC
      *
@@ -436,11 +396,5 @@ public interface GuiConstants extends Constants {
      */
     String ok();
 
-    /**
-     *TODO JAVADOC
-     *
-     * @return
-     */
-    String errorFetchMembers();
-
+   
 }

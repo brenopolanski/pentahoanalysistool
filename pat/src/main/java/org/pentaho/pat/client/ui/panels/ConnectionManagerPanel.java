@@ -78,7 +78,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
                 MessageBox
-                        .alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().connectionError());
+                        .alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(arg0.getLocalizedMessage()));
 
             }
 
@@ -92,8 +92,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         new AsyncCallback<CubeConnection[]>() {
 
                             public void onFailure(final Throwable arg0) {
-                                MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                                        .activeConnectionError());
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedActiveConnection(arg0.getLocalizedMessage()));
 
                             }
 
@@ -191,7 +191,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                                                 public void onFailure(final Throwable arg0) {
                                                     MessageBox.alert(ConstantFactory.getInstance().error(),
-                                                            ConstantFactory.getInstance().disconnectionError());
+                                                            MessageFactory.getInstance().failedDisconnection(arg0.getLocalizedMessage()));
 
                                                 }
 
@@ -202,8 +202,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                                                                 public void onFailure(final Throwable arg0) {
                                                                     MessageBox.alert(ConstantFactory.getInstance()
-                                                                            .error(), ConstantFactory.getInstance()
-                                                                            .deleteConnectionError());
+                                                                            .error(), MessageFactory.getInstance()
+                                                                            .failedDeleteConnection(arg0.getLocalizedMessage()));
 
                                                                 }
 
@@ -286,8 +286,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
                             new AsyncCallback<Object>() {
 
                                 public void onFailure(final Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(), ConstantFactory
-                                            .getInstance().disconnectionError());
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                            .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
                                     LogoPanel.spinWheel(false);
                                 }
 
@@ -304,7 +304,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                 public void onFailure(final Throwable arg0) {
                                     LogoPanel.spinWheel(false);
                                     MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
-                                            .getInstance().noConnectionParam(arg0.getLocalizedMessage()));
+                                            .getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
                                 }
 
                                 public void onSuccess(final Object arg0) {

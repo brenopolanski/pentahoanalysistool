@@ -72,16 +72,6 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
     String failedMemberFetch(String arg0);
 
     /**
-     * Failed to create a query.
-     * 
-     * @param localizedMessage
-     *            the localized message
-     * 
-     * @return the string
-     */
-    String failedQueryCreate(String localizedMessage);
-
-    /**
      * Failed to set sessionID.
      * 
      * @param localizedMessage
@@ -90,26 +80,6 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return the string
      */
     String failedSessionID(String localizedMessage);
-
-    /**
-     * Translated "Connection could not be established: {0}".
-     * 
-     * @param arg0
-     *            the arg0
-     * 
-     * @return translated "Connection could not be established: {0}" no_connection_param
-     */
-    String noConnectionParam(String arg0);
-
-    /**
-     * No Query Set
-     * 
-     * @param localizedMessage
-     *            the localized message
-     * 
-     * @return the string
-     */
-    String noQuerySet(String localizedMessage);
 
     /**
      * Translated "Selection could not be cleared: {0}".
@@ -141,14 +111,57 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String noServerData(String arg0);
 
+    
+    String failedConnection(String arg0);
+    
+    String failedActiveConnection(String arg0);
+    
+    String failedDisconnection(String arg0);
+
+
+
     /**
-     * Translated "Welcome.  The current time is {0}.".
-     * 
-     * @param arg0
-     *            the arg0
-     * 
-     * @return translated "Welcome.  The current time is {0}." welcome
+     *TODO JAVADOC
+     *
+     * @return
      */
-    String welcome(String arg0);
+    String failedDeleteConnection(String arg0);
+    
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedLoadConnection(String arg0);
+    
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedQuery(String arg0);
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedGetSelection(String arg0);
+    
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedDeleteQuery(String arg0);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedCreateQuery(String arg0);
+
+    
 
 }
