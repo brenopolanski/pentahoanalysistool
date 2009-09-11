@@ -162,6 +162,16 @@ public interface QueryService extends Service {
 			String mdx) throws OlapException;
 	
 	
+	/**
+	 * 
+	 *Returns the selection of the given dimension.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @return An array of members and selections.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
 	 public String[][] getSelection(
 	            String userId, 
@@ -171,10 +181,12 @@ public interface QueryService extends Service {
 
 
     /**
-     *TODO JAVADOC
-     *
-     * @param sessionId
-     * @param queryId
+     * Swaps the axis that the dimensions are on and then executes the query.
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param queryId The query id.
+     * @return CellDataSet The data for the executed query
+     * @throws OlapException If something goes sour.
      */
 	@Secured ({"Users"})
     public CellDataSet swapAxis(
@@ -182,6 +194,16 @@ public interface QueryService extends Service {
             String sessionId, 
             String queryId)throws OlapException;
 	
+	/**
+	 * 
+	 * Sets the sort order for the selected dimension.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @param sortOrder The sort order selected.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
 	public void setSortOrder(
 	        String userId,
@@ -190,6 +212,15 @@ public interface QueryService extends Service {
 	        String dimensionName,
 	        SortOrder sortOrder) throws OlapException;
 	
+	/**
+	 * 
+	 *Clears the sort order for the selected dimension.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
     public void clearSortOrder(
             String userId,
@@ -197,6 +228,16 @@ public interface QueryService extends Service {
             String queryId,
             String dimensionName) throws OlapException;
 	
+	/**
+	 * 
+	 *Gets the sort order for the selected dimension.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @return String The name of the sort order.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
     public String getSortOrder(
             String userId,
@@ -204,6 +245,16 @@ public interface QueryService extends Service {
             String queryId,
             String dimensionName) throws OlapException;
 	
+	/**
+	 * 
+	 * Sets the Hierarchize Mode for the selected dimension.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @param hierachizeMode
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
 	public void setHierarchizeMode(
 	        String userId,
@@ -212,6 +263,16 @@ public interface QueryService extends Service {
 	        String dimensionName,
 	        HierarchizeMode hierachizeMode) throws OlapException;
 	
+	/**
+	 * 
+	 * Returns the string of whichever hierarchize mode the selected dimension is in.
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension to perform the action on.
+	 * @return String The string of the selected hierarchize mode.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
 	public String getHierarchizeMode(
 	        String userId,
