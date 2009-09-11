@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
 import org.olap4j.query.SortOrder;
+import org.olap4j.query.QueryDimension.HierarchizeMode;
 
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
@@ -136,6 +137,44 @@ public class QueryServlet extends AbstractServlet implements Query {
             throw new RpcException(Messages.getString("Servlet.Query.CantSort")); //$NON-NLS-1$
         }
     }
+    
+    public void clearSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException
+    {
+        try {
+            this.queryService.clearSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantClearSortOrder"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantClearSortOrder")); //$NON-NLS-1$
+        }
+    }
+    
+    public String getSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException
+    {
+        try {
+            return this.queryService.getSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantGetSortOrder"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantGetSortOrder")); //$NON-NLS-1$
+        }
+        
+    }
+    
+    public void setHierachizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException
+    {
+        HierarchizeMode hMode = null;
+        for(HierarchizeMode v : HierarchizeMode.values()){
+            if( v.name().equals(mode)){
+                hMode = v;
+            }
+        }
+
+        try {
+            this.queryService.setHierarchizeMode(getCurrentUserId(), sessionId, queryId, dimensionName, hMode);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSetHierarchizeMode"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSethierarchizeMode")); //$NON-NLS-1$
+        }
+    }
     public CellDataSet swapAxis(String sessionId, String queryId) throws RpcException{
         
         try {
@@ -181,4 +220,5 @@ public class QueryServlet extends AbstractServlet implements Query {
     }
     
 
+    
 }

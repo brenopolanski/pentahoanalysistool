@@ -19,6 +19,7 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
+import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -281,4 +282,32 @@ public class QueryServiceImpl extends AbstractService
 	    Query query = this.getQuery(userId, sessionId, queryId);
 	    query.getDimension(dimensionName).sort(sortOrder);
 	}
+	
+	public void clearSortOrder(String userId, String sessionId, String queryId, String dimensionName){
+	    this.sessionService.validateSession(userId, sessionId);
+	    Query query = this.getQuery(userId, sessionId, queryId);
+        query.getDimension(dimensionName).clearSort();
+	}
+	
+	public String getSortOrder(String userId, String sessionId, String queryId, String dimensionName){
+        this.sessionService.validateSession(userId, sessionId);
+        Query query = this.getQuery(userId, sessionId, queryId);
+        SortOrder so = query.getDimension(dimensionName).getSortOrder();
+        String str = null;
+        if (so != null)
+            str = so.name();
+        
+        return str;
+    }
+	
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#setHierachizeMode(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.olap4j.query.QueryDimension.HierarchizeMode)
+     */
+    public void setHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName,
+            HierarchizeMode hierachizeMode) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        Query query = this.getQuery(userId, sessionId, queryId);
+        
+        query.getDimension(dimensionName).setHierarchizeMode(hierachizeMode);
+    }
 }

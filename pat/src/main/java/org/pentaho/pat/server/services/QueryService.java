@@ -7,6 +7,7 @@ import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
+import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -188,4 +189,26 @@ public interface QueryService extends Service {
 	        String queryId,
 	        String dimensionName,
 	        SortOrder sortOrder) throws OlapException;
+	
+	@Secured ({"Users"})
+    public void clearSortOrder(
+            String userId,
+            String sessionId,
+            String queryId,
+            String dimensionName) throws OlapException;
+	
+	@Secured ({"Users"})
+    public String getSortOrder(
+            String userId,
+            String sessionId,
+            String queryId,
+            String dimensionName) throws OlapException;
+	
+	@Secured ({"Users"})
+	public void setHierarchizeMode(
+	        String userId,
+	        String sessionId,
+	        String queryId,
+	        String dimensionName,
+	        HierarchizeMode hierachizeMode) throws OlapException;
 }

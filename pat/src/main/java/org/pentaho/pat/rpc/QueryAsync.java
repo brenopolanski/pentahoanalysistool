@@ -78,4 +78,23 @@ public interface QueryAsync {
            String dimensionName,
            String sort,
            AsyncCallback callback);
+   
+   public void clearSortOrder(
+           String sessionId,
+           String queryId,
+           String dimensionName,
+           AsyncCallback callback);
+   
+   public void getSortOrder(
+           String sessionId,
+           String queryId,
+           String dimensionName,
+           AsyncCallback callback);
+   
+   public void setHierachizeMode(
+           String sessionId, 
+           String queryId, 
+           String dimensionName, 
+           String mode,
+           AsyncCallback callback);
 }

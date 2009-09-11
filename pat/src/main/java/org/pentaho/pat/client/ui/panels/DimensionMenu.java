@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -28,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
@@ -37,16 +39,20 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Tree list of connections and cubes
@@ -61,6 +67,10 @@ public class DimensionMenu extends LayoutComposite {
     /** The main menu. */
     private final Tree dimensionTree;
 
+    Label dimensionLabel;
+   
+    final ComboBox<String> sortComboBox = new ComboBox<String>();
+    
     public DimensionMenu() {
         super();
         // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
@@ -93,7 +103,65 @@ public class DimensionMenu extends LayoutComposite {
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
 
+        
+        DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
+        model1.add("ASC");
+        model1.add("DESC");
+        model1.add("BASC");
+        model1.add("BDESC");
+
+        
+        sortComboBox.addChangeHandler( new ChangeHandler(){
+
+            public void onChange(ChangeEvent arg0) {
+
+                ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), 
+                        dimensionLabel.getText(), sortComboBox.getText(), new AsyncCallback(){
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
+                        
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        
+                        
+                    }
+                    
+                });
+                
+            }
+            
+        });
+        final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
+        DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+        model2.add("PRE");
+        model2.add("POST");
+        
+        hierarchyComboBox.addChangeHandler( new ChangeHandler(){
+
+            public void onChange(ChangeEvent arg0) {
+                ServiceFactory.getQueryInstance().setHierachizeMode(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), 
+                        hierarchyComboBox.getText(), new AsyncCallback(){
+
+                            public void onFailure(Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
+                            }
+
+                            public void onSuccess(Object arg0) {
+                                                               
+                            }
+                    
+                });
+                
+            }
+            
+        });
+
+        
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
@@ -126,7 +194,7 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onSuccess(final StringTree labels) {
                         dimensionTree.clear();
-                        final Label dimensionLabel = new Label(labels.getValue());
+                        dimensionLabel = new Label(labels.getValue());
 
                         final TreeItem parent = dimensionTree.addItem(dimensionLabel);
 
@@ -140,7 +208,25 @@ public class DimensionMenu extends LayoutComposite {
 
                                     public void onSuccess(final String[][] selectionlist) {
 
-                                        addDimensionTreeItem(labels, parent, selectionlist);
+                                        ServiceFactory.getQueryInstance().getSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), dimensionId, new AsyncCallback(){
+
+                                            public void onFailure(Throwable arg0) {
+                                                MessageBox.error(ConstantFactory.getInstance().error(), "failed to get sort");
+                                                
+                                            }
+
+                                            public void onSuccess(Object arg0) {
+                                                for (int i = 0; i<sortComboBox.getItemCount(); i++)
+                                                {
+                                                    if (sortComboBox.getModel().getElementAt(i).equals(arg0))                                                
+                                                    DimensionMenu.this.sortComboBox.setSelectedIndex(i);
+                                                }
+                                                addDimensionTreeItem(labels, parent, selectionlist);
+                                            }
+                                            
+                                        });
+                                        
+                                        
 
                                     }
 
