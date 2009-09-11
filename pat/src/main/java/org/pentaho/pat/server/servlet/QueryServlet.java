@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+import org.olap4j.query.SortOrder;
 
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
@@ -17,6 +18,8 @@ import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -117,7 +120,22 @@ public class QueryServlet extends AbstractServlet implements Query {
 			(axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
 			dimensionName);
 	}
+    public void setSortOrder(String sessionId, String queryId, String dimensionName, String sort) throws RpcException
+    {
+        SortOrder sortValue = null;
+            for(SortOrder v : SortOrder.values()){
+                if( v.name().equals(sort)){
+                    sortValue = v;
+                }
+            }
 
+        try {
+            this.queryService.setSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName, sortValue);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSort"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSort")); //$NON-NLS-1$
+        }
+    }
     public CellDataSet swapAxis(String sessionId, String queryId) throws RpcException{
         
         try {
@@ -159,6 +177,8 @@ public class QueryServlet extends AbstractServlet implements Query {
             log.error(Messages.getString("Servlet.Query.CantFetchMdx"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantFetchMdx")); //$NON-NLS-1$
         }
+        
     }
+    
 
 }

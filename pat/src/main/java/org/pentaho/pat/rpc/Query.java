@@ -9,6 +9,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
@@ -146,4 +147,10 @@ public interface Query extends RemoteService {
 	public CellDataSet swapAxis(
 	        String sessionId,
 	        String queryId) throws RpcException;
+	
+	public void setSortOrder(
+	           String sessionId,
+	           String queryId,
+	           String dimensionName,
+	           String sort) throws RpcException;
 }
