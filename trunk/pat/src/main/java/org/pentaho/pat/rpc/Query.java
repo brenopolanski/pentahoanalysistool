@@ -168,9 +168,15 @@ public interface Query extends RemoteService {
             String dimensionName) throws RpcException;
 	
 	@Secured ({"Users"})
-	public void setHierachizeMode(
+	public void setHierarchizeMode(
 	        String sessionId, 
 	        String queryId, 
 	        String dimensionName, 
 	        String mode) throws RpcException;
+	
+	@Secured ({"Users"})
+	public String getHierarchizeMode(
+	        String sessionId,
+	        String queryId,
+	        String dimensionName) throws RpcException;
 }

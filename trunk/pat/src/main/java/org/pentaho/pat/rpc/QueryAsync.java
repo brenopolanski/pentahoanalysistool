@@ -91,10 +91,16 @@ public interface QueryAsync {
            String dimensionName,
            AsyncCallback callback);
    
-   public void setHierachizeMode(
+   public void setHierarchizeMode(
            String sessionId, 
            String queryId, 
            String dimensionName, 
            String mode,
+           AsyncCallback callback);
+   
+   public void getHierarchizeMode(
+           String sessionId,
+           String queryId,
+           String dimensionName,
            AsyncCallback callback);
 }

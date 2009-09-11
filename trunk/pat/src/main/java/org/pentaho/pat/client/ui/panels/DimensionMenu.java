@@ -141,7 +141,7 @@ public class DimensionMenu extends LayoutComposite {
         hierarchyComboBox.addChangeHandler( new ChangeHandler(){
 
             public void onChange(ChangeEvent arg0) {
-                ServiceFactory.getQueryInstance().setHierachizeMode(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), 
+                ServiceFactory.getQueryInstance().setHierarchizeMode(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), 
                         hierarchyComboBox.getText(), new AsyncCallback(){
 
                             public void onFailure(Throwable arg0) {

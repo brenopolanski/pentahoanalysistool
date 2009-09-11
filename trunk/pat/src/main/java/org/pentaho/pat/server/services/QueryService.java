@@ -211,4 +211,11 @@ public interface QueryService extends Service {
 	        String queryId,
 	        String dimensionName,
 	        HierarchizeMode hierachizeMode) throws OlapException;
+	
+	@Secured ({"Users"})
+	public String getHierarchizeMode(
+	        String userId,
+	        String sessionId,
+	        String queryId,
+	        String dimensionName) throws OlapException;
 }

@@ -159,7 +159,7 @@ public class QueryServlet extends AbstractServlet implements Query {
         
     }
     
-    public void setHierachizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException
+    public void setHierarchizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException
     {
         HierarchizeMode hMode = null;
         for(HierarchizeMode v : HierarchizeMode.values()){
@@ -175,6 +175,17 @@ public class QueryServlet extends AbstractServlet implements Query {
             throw new RpcException(Messages.getString("Servlet.Query.CantSethierarchizeMode")); //$NON-NLS-1$
         }
     }
+    
+    public String getHierarchizeMode(String sessionId, String queryId, String dimensionName) throws RpcException
+    {
+       try {
+        return this.queryService.getHierarchizeMode(getCurrentUserId(), sessionId, queryId, dimensionName);
+    } catch (OlapException e) {
+        log.error(Messages.getString("Servlet.Query.CantGetHierarchizeMode"),e); //$NON-NLS-1$
+        throw new RpcException(Messages.getString("Servlet.Query.CantGetHierarchizeMode")); //$NON-NLS-1$
+    }
+    }
+    
     public CellDataSet swapAxis(String sessionId, String queryId) throws RpcException{
         
         try {
