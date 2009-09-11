@@ -47,12 +47,10 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Tree list of connections and cubes
@@ -68,9 +66,11 @@ public class DimensionMenu extends LayoutComposite {
     private final Tree dimensionTree;
 
     Label dimensionLabel;
-   
+
     final ComboBox<String> sortComboBox = new ComboBox<String>();
-    
+
+    final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
+
     public DimensionMenu() {
         super();
         // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
@@ -103,62 +103,58 @@ public class DimensionMenu extends LayoutComposite {
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
 
-        
-        DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
+        final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
         model1.add("ASC");
         model1.add("DESC");
         model1.add("BASC");
         model1.add("BDESC");
 
-        
-        sortComboBox.addChangeHandler( new ChangeHandler(){
+        sortComboBox.addChangeHandler(new ChangeHandler() {
 
-            public void onChange(ChangeEvent arg0) {
+            public void onChange(final ChangeEvent arg0) {
 
-                ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), 
-                        dimensionLabel.getText(), sortComboBox.getText(), new AsyncCallback(){
+                ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(),
+                        dimensionLabel.getText(), sortComboBox.getText(), new AsyncCallback<Object>() {
 
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
-                        
-                    }
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
 
-                    public void onSuccess(Object arg0) {
-                        
-                        
-                    }
-                    
-                });
-                
+                            }
+
+                            public void onSuccess(final Object arg0) {
+
+                            }
+
+                        });
+
             }
-            
+
         });
-        final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
-        DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+
+        final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
         model2.add("PRE");
         model2.add("POST");
-        
-        hierarchyComboBox.addChangeHandler( new ChangeHandler(){
 
-            public void onChange(ChangeEvent arg0) {
-                ServiceFactory.getQueryInstance().setHierarchizeMode(Pat.getSessionID(), Pat.getCurrQuery(), dimensionLabel.getText(), 
-                        hierarchyComboBox.getText(), new AsyncCallback(){
+        hierarchyComboBox.addChangeHandler(new ChangeHandler() {
 
-                            public void onFailure(Throwable arg0) {
+            public void onChange(final ChangeEvent arg0) {
+                ServiceFactory.getQueryInstance().setHierarchizeMode(Pat.getSessionID(), Pat.getCurrQuery(),
+                        dimensionLabel.getText(), hierarchyComboBox.getText(), new AsyncCallback<Object>() {
+
+                            public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
                             }
 
-                            public void onSuccess(Object arg0) {
-                                                               
+                            public void onSuccess(final Object arg0) {
+
                             }
-                    
-                });
-                
+
+                        });
+
             }
-            
+
         });
 
-        
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -189,7 +185,8 @@ public class DimensionMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         dimensionTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedMemberFetch(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final StringTree labels) {
@@ -202,31 +199,53 @@ public class DimensionMenu extends LayoutComposite {
                                 dimensionLabel.getText(), new AsyncCallback<String[][]>() {
 
                                     public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
 
                                     }
 
                                     public void onSuccess(final String[][] selectionlist) {
 
-                                        ServiceFactory.getQueryInstance().getSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), dimensionId, new AsyncCallback(){
+                                        ServiceFactory.getQueryInstance().getSortOrder(Pat.getSessionID(),
+                                                Pat.getCurrQuery(), dimensionId, new AsyncCallback<String>() {
 
-                                            public void onFailure(Throwable arg0) {
-                                                MessageBox.error(ConstantFactory.getInstance().error(), "failed to get sort");
-                                                
-                                            }
+                                                    public void onFailure(final Throwable arg0) {
+                                                        MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                "failed to get sort");
 
-                                            public void onSuccess(Object arg0) {
-                                                for (int i = 0; i<sortComboBox.getItemCount(); i++)
-                                                {
-                                                    if (sortComboBox.getModel().getElementAt(i).equals(arg0))                                                
-                                                    DimensionMenu.this.sortComboBox.setSelectedIndex(i);
-                                                }
-                                                addDimensionTreeItem(labels, parent, selectionlist);
-                                            }
-                                            
-                                        });
-                                        
-                                        
+                                                    }
+
+                                                    public void onSuccess(final String arg0) {
+                                                        for (int i = 0; i < sortComboBox.getItemCount(); i++)
+                                                            if (sortComboBox.getModel().getElementAt(i).equals(arg0))
+                                                                DimensionMenu.this.sortComboBox.setSelectedIndex(i);
+
+                                                        ServiceFactory.getQueryInstance().getHierarchizeMode(
+                                                                Pat.getCurrQuery(), Pat.getCurrQuery(), dimensionId,
+                                                                new AsyncCallback<String>() {
+
+                                                                    public void onFailure(final Throwable arg0) {
+                                                                        // TODO Auto-generated method stub
+
+                                                                    }
+
+                                                                    public void onSuccess(final String arg0) {
+                                                                        for (int i = 0; i < hierarchyComboBox
+                                                                                .getItemCount(); i++)
+                                                                            if (sortComboBox.getModel().getElementAt(i)
+                                                                                    .equals(arg0))
+                                                                                DimensionMenu.this.sortComboBox
+                                                                                        .setSelectedIndex(i);
+
+                                                                        addDimensionTreeItem(labels, parent,
+                                                                                selectionlist);
+                                                                    }
+
+                                                                });
+
+                                                    }
+
+                                                });
 
                                     }
 
