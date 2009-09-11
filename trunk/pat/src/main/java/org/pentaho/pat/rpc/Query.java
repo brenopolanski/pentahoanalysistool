@@ -141,4 +141,9 @@ public interface Query extends RemoteService {
 	            String sessionId,
 	            String queryId,
 	            String dimensionName) throws RpcException;
+	
+	@Secured ({"Users"})
+	public CellDataSet swapAxis(
+	        String sessionId,
+	        String queryId) throws RpcException;
 }

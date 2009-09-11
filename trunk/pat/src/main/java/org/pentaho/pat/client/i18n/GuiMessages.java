@@ -162,6 +162,6 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String failedCreateQuery(String arg0);
 
-    
+    String failedPivot(String arg0);
 
 }

@@ -118,6 +118,18 @@ public class QueryServlet extends AbstractServlet implements Query {
 			dimensionName);
 	}
 
+    public CellDataSet swapAxis(String sessionId, String queryId) throws RpcException{
+        
+        try {
+            return this.queryService.swapAxis(getCurrentUserId(), sessionId, queryId);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSwapAxis"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSwapAxis")); //$NON-NLS-1$
+        }
+        
+        
+        
+    }
     public CellDataSet executeQuery(String sessionId, String queryId) throws RpcException
 	{
 		try {

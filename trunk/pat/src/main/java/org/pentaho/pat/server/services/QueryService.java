@@ -166,4 +166,17 @@ public interface QueryService extends Service {
 	            String sessionId,
 	            String queryId,
 	            String dimensionName) throws OlapException;
+
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param sessionId
+     * @param queryId
+     */
+	@Secured ({"Users"})
+    public CellDataSet swapAxis(
+            String userId,
+            String sessionId, 
+            String queryId)throws OlapException;
 }
