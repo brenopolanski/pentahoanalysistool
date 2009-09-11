@@ -41,7 +41,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- *TODO JAVADOC
+ * Creates a properties panel, the properties panel controls things like drill method and pivot.
  * 
  * @created Aug 8, 2009
  * @since 0.5.0
@@ -51,7 +51,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class PropertiesPanel extends LayoutComposite {
 
     /**
-     *TODO JAVADOC
+     * PropertiesPanel Constructor.
      * 
      */
     public PropertiesPanel() {

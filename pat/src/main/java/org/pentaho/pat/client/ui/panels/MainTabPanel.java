@@ -40,7 +40,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * TODO JAVADOC
+ * The Main Tab Panel Controls the tabs created to hold the various different types of containers, 
+ * and allows closing of them. 
  * 
  * @created Aug 5, 2009
  * @since 0.5.0
@@ -87,6 +88,12 @@ public class MainTabPanel extends LayoutComposite {
         }
     }
 
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param content
+     */
     public static void displayContentWidget(final DataWidget content) {
         if (content != null) {
             if (!content.isInitialized())

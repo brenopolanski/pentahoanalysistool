@@ -47,7 +47,14 @@ public class LogoPanel extends LayoutComposite {
 
     static Label test = new Label(""); //$NON-NLS-1$
 
+    /**
+     * 
+     * Sets the spinner spinning, or hides it.
+     *
+     * @param spin
+     */
     public static void spinWheel(final boolean spin) {
+ 
         if (spin)
             test.setVisible(true);
         else
@@ -55,7 +62,7 @@ public class LogoPanel extends LayoutComposite {
     }
 
     /**
-     * 
+     *  Logo Panel Constructor.
      */
     public LogoPanel() {
 

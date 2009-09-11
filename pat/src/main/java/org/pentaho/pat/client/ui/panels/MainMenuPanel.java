@@ -34,7 +34,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
- *TODO JAVADOC
+ * The MainMenuPanel is the holder for the properties, and dimension panels.
  * 
  * @created Aug 5, 2009
  * @since 0.5.0
@@ -45,6 +45,11 @@ public class MainMenuPanel extends LayoutComposite {
 
     private final LayoutPanel rootPanel = getLayoutPanel();
 
+    /**
+     * 
+     * MainMenuPanel Constructor.
+     *
+     */
     public MainMenuPanel() {
         super();
         rootPanel.setLayout(new BorderLayout());

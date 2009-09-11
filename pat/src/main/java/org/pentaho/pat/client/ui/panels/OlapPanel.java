@@ -63,7 +63,7 @@ public class OlapPanel extends DataWidget {
     }
 
     /**
-     *TODO JAVADOC
+     * OLAP Panel Constructor.
      * 
      */
     public OlapPanel(final String cube, final String connection) {
@@ -111,10 +111,6 @@ public class OlapPanel extends DataWidget {
      */
     public String getQueryId() {
         return queryId;
-    }
-
-    @Override
-    public void onLoad() {
     }
 
     @Override
@@ -189,18 +185,6 @@ public class OlapPanel extends DataWidget {
 
                         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
 
-                        // final Button bt = new Button("Test Dim Browser");
-                        // bt.addClickHandler(new ClickHandler() {
-                        //
-                        // public void onClick(final ClickEvent arg0) {
-                        // // TODO Test Code!
-                        // // DimensionBrowserWindow.displayDimension(queryId, "Time");
-                        //
-                        // }
-                        // });
-                        //
-                        // centerPanel.add(bt);
-                        // layoutPanel.layout();
                     }
 
                 });

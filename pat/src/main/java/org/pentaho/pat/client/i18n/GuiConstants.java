@@ -234,20 +234,51 @@ public interface GuiConstants extends Constants {
      */
     String filter();
 
-    /**     *TODO JAVADOC
+    /**     
+     *TODO JAVADOC
      * 
      * @return
      */
     String properties();
 
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String member();
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String children();
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String includeChildren();
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String siblings();
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String clearSelections();
     
     

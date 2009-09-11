@@ -13,7 +13,6 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
@@ -97,12 +96,12 @@ public class WelcomePanel extends DataWidget {
     /**
      * Initialization routine.
      * 
-     * @return layoutPanel;
+     * @return layoutPanel
      */
     @Override
     public final Widget onInitialize() {
 
-        final LayoutPanel layoutPanel = new LayoutPanel(new FillLayout());
+        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
         final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
         buttonBar.setWidgetSpacing(20);
@@ -122,6 +121,12 @@ public class WelcomePanel extends DataWidget {
         return layoutPanel;
     }
 
+    /**
+     * 
+     * Set the panel name.
+     *
+     * @param name
+     */
     public void setName(final String name) {
         this.name = name;
     }

@@ -33,7 +33,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
 /**
- *TODO JAVADOC
+ * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
  * 
  * @created Aug 8, 2009
  * @since 0.5.0
@@ -74,7 +74,7 @@ public class DimensionPanel extends LayoutComposite {
     }
 
     /**
-     *TODO JAVADOC
+     * Creates a dimension panel this lists all the available dimensions on the various available axis.
      * 
      */
     public DimensionPanel() {

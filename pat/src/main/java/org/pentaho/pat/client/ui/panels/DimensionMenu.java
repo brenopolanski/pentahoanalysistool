@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
 /**
- * Tree list of connections and cubes
+ * Tree list of connections and cubes.
  * 
  * @created Aug 18, 2009
  * @since 0.5.0
@@ -71,6 +71,11 @@ public class DimensionMenu extends LayoutComposite {
 
     final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
+    /**
+     * 
+     * DimensionMenu Constructor.
+     *
+     */
     public DimensionMenu() {
         super();
         // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);

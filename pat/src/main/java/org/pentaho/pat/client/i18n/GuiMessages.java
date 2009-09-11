@@ -111,11 +111,31 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String noServerData(String arg0);
 
-    
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param arg0
+     * @return
+     */
     String failedConnection(String arg0);
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param arg0
+     * @return
+     */
     String failedActiveConnection(String arg0);
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param arg0
+     * @return
+     */
     String failedDisconnection(String arg0);
 
 
@@ -161,7 +181,14 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String failedCreateQuery(String arg0);
-
+    
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param arg0
+     * @return
+     */
     String failedPivot(String arg0);
 
 }
