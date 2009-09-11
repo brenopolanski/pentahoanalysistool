@@ -310,4 +310,16 @@ public class QueryServiceImpl extends AbstractService
         
         query.getDimension(dimensionName).setHierarchizeMode(hierachizeMode);
     }
+    
+    public String getHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        Query query = this.getQuery(userId, sessionId, queryId);
+        HierarchizeMode hm = query.getDimension(dimensionName).getHierarchizeMode();
+        String str = null;
+        if (hm!=null)
+            str = hm.name();
+        
+        return str;
+        
+    }
 }
