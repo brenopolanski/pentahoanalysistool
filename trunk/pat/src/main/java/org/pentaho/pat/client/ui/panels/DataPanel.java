@@ -46,7 +46,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *TODO JAVADOC
+ * Creates a DataPanel which holds the olap table and related widgets.
  * 
  * @created Aug 12, 2009
  * @since 0.5.0
@@ -64,7 +64,7 @@ public class DataPanel extends LayoutComposite implements QueryListener {
     final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
 
     /**
-     *TODO JAVADOC
+     *DataPanel Constructor.
      * 
      */
     public DataPanel() {

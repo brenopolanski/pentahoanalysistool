@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
 /**
- * Tree list of connections and cubes
+ * Tree list of connections and cubes.
  * 
  * @created Jul 2, 2009
  * @since 0.4.0
@@ -57,6 +57,10 @@ public class CubeMenu extends LayoutComposite {
     /** The main menu. */
     private final Tree cubeTree;
 
+    /**
+     * CubeMenu Constructor.
+     *
+     */
     public CubeMenu() {
         super();
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);

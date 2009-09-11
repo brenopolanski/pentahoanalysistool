@@ -63,6 +63,11 @@ public class MenuBar extends LayoutComposite {
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
 
+    /**
+     * 
+     * Adds a Connections button which controls the connection window.
+     *
+     */
     private void addConnectionsButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
@@ -78,7 +83,12 @@ public class MenuBar extends LayoutComposite {
         });
         rootPanel.add(connectionButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
-
+    
+    /**
+     * 
+     * Adds a button which generates the cube browser.
+     *
+     */
     private void addCubesButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
@@ -95,6 +105,11 @@ public class MenuBar extends LayoutComposite {
         rootPanel.add(cubeButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
+    /**
+     * 
+     * Adds a currently unusable save button.
+     *
+     */
     private void addSaveButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
