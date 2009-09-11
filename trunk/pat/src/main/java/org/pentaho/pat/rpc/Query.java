@@ -148,9 +148,29 @@ public interface Query extends RemoteService {
 	        String sessionId,
 	        String queryId) throws RpcException;
 	
+	@Secured ({"Users"})
 	public void setSortOrder(
 	           String sessionId,
 	           String queryId,
 	           String dimensionName,
 	           String sort) throws RpcException;
+	
+	@Secured ({"Users"})
+	public void clearSortOrder(
+	        String sessionId,
+	        String queryId,
+	        String dimensionName) throws RpcException;
+	
+	@Secured ({"Users"})
+	public String getSortOrder(
+            String sessionId,
+            String queryId,
+            String dimensionName) throws RpcException;
+	
+	@Secured ({"Users"})
+	public void setHierachizeMode(
+	        String sessionId, 
+	        String queryId, 
+	        String dimensionName, 
+	        String mode) throws RpcException;
 }
