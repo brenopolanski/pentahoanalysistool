@@ -22,13 +22,23 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.deprecated.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  *TODO JAVADOC
@@ -69,7 +79,28 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ToolButton checkButton5 = new ToolButton(ConstantFactory.getInstance().pivot());
         checkButton5.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton5.setEnabled(false);
+        checkButton5.addClickHandler( new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                    public void onFailure(Throwable arg0) {
+                        
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(CellDataSet arg0) {
+                        
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                        
+                        
+                    }
+                    
+                });
+                
+            }});
+        checkButton5.setEnabled(true);
 
         final ComboBox<String> comboBox1 = new ComboBox<String>();
         final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) comboBox1.getModel();

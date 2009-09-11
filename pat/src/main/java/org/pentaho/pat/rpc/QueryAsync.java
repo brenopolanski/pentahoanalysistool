@@ -66,4 +66,9 @@ public interface QueryAsync {
             String sessionId,
             String queryId,
             String dimensionName, AsyncCallback callback);
+    
+    public void swapAxis(
+            String sessionId, 
+            String queryId,
+            AsyncCallback<CellDataSet> callback);
 }

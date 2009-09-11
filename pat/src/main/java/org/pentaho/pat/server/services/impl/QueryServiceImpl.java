@@ -134,6 +134,7 @@ public class QueryServiceImpl extends AbstractService
 	    String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
 	    Selection selection = OlapUtil.findSelection(path, qDim);
 	    qDim.getInclusions().remove(selection);
+	    
 	}
 
     public void createSelection(
@@ -253,6 +254,25 @@ public class QueryServiceImpl extends AbstractService
             throw new OlapException(Messages.getString("Services.Query.NoSuchQuery")); //$NON-NLS-1$
         }
         return q.getSelect().toString();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#swapAxis(java.lang.String, java.lang.String)
+     */
+    public CellDataSet swapAxis(String userId, String sessionId, String queryId) throws OlapException {
+        // TODO Auto-generated method stub
+        this.sessionService.validateSession(userId, sessionId);
+        
+        Query q = this.getQuery(userId, sessionId, queryId);
+        if (q == null){
+            throw new OlapException(Messages.getString("Services.Query.NoSuchQuery")); //$NON-NLS-1$
+        }
+        else
+            q.swapAxes();
+        
+        return executeQuery(userId, sessionId, queryId);
+        
     }
 	
 	
