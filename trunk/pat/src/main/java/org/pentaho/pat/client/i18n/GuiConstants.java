@@ -40,6 +40,8 @@ public interface GuiConstants extends Constants {
     /** The STYLE_THEMES. */
     String[] STYLE_THEMES = {"aegean", "standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
+    String sortAscending();
+
     /**
      *TODO JAVADOC
      * 
@@ -395,6 +397,27 @@ public interface GuiConstants extends Constants {
      * @return
      */
     String ok();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortDescending();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortBreakAscending();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortBreakDescending();
 
    
 }

@@ -6,6 +6,7 @@ import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
+import org.olap4j.query.SortOrder;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -179,4 +180,12 @@ public interface QueryService extends Service {
             String userId,
             String sessionId, 
             String queryId)throws OlapException;
+	
+	@Secured ({"Users"})
+	public void setSortOrder(
+	        String userId,
+	        String sessionId,
+	        String queryId,
+	        String dimensionName,
+	        SortOrder sortOrder) throws OlapException;
 }

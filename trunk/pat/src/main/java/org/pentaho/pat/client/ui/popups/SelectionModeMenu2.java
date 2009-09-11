@@ -34,6 +34,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -130,6 +131,53 @@ public class SelectionModeMenu2 extends PopupMenu {
         }
     }
 
+    public class SelectionModeCommand2 implements Command {
+
+        /** The selection mode. */
+        private String selectionMode = null;
+
+        /**
+         * The Constructor.
+         * 
+         * @param selectionMode
+         *            the selection mode
+         */
+        public SelectionModeCommand2(final String selectionMode) {
+            this.selectionMode = selectionMode;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        /**
+         * The Command executed on click.
+         */
+        public final void execute() {
+            final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
+            final String dimName = getDimensionName(targetLabel);
+
+            ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), dimName, selectionMode, new AsyncCallback(){
+
+                public void onFailure(Throwable arg0) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
+                    
+                }
+
+                public void onSuccess(Object arg0) {
+                    
+                    
+                }
+                
+            });
+            
+            SelectionModeMenu2.this.hide();
+        }
+
+       
+    }
+
     /** The Constant MEMBER. */
     public static final int MEMBER = 0;
 
@@ -139,16 +187,18 @@ public class SelectionModeMenu2 extends PopupMenu {
     /** The Constant INCLUDE_CHILDREN. */
     public static final int INCLUDE_CHILDREN = 2;
 
+
+
     /** The Constant SIBLINGS. */
     public static final int SIBLINGS = 3;
 
     public static final int DESCENDANTS = 4;
-
+    
     public static final int ANCESTORS = 5;
-
     /** The Constant CLEAR. */
     public static final int CLEAR = -1;
 
+    
     /** The source. */
     private static Widget source;
 
@@ -174,7 +224,12 @@ public class SelectionModeMenu2 extends PopupMenu {
         this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
-
+        MenuBar sorting = new MenuBar(true);
+        sorting.addItem(new MenuItem(ConstantFactory.getInstance().sortAscending(), new SelectionModeCommand2("ASC")));
+        sorting.addItem(new MenuItem(ConstantFactory.getInstance().sortDescending(), new SelectionModeCommand2("DESC")));
+        sorting.addItem(new MenuItem(ConstantFactory.getInstance().sortBreakAscending(), new SelectionModeCommand2("BASC")));
+        sorting.addItem(new MenuItem(ConstantFactory.getInstance().sortBreakDescending(), new SelectionModeCommand2("BDESC")));
+        this.addItem("Sorting", sorting);
     }
 
     public final String setSelectionMode(final int selectionMode) {

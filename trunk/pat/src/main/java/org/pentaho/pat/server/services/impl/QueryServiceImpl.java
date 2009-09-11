@@ -18,6 +18,7 @@ import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
+import org.olap4j.query.SortOrder;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -275,5 +276,9 @@ public class QueryServiceImpl extends AbstractService
         
     }
 	
-	
+	public void setSortOrder(String userId, String sessionId, String queryId, String dimensionName, SortOrder sortOrder){
+	    this.sessionService.validateSession(userId, sessionId);
+	    Query query = this.getQuery(userId, sessionId, queryId);
+	    query.getDimension(dimensionName).sort(sortOrder);
+	}
 }

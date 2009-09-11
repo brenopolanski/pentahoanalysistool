@@ -60,7 +60,7 @@ public interface QueryAsync {
     public void getMdxForQuery(
             String sessionId, 
             String queryId,
-            AsyncCallback<String> callback) throws RpcException;
+            AsyncCallback<String> callback);
     
     public void getSelection(
             String sessionId,
@@ -71,4 +71,11 @@ public interface QueryAsync {
             String sessionId, 
             String queryId,
             AsyncCallback<CellDataSet> callback);
+    
+   public void setSortOrder(
+           String sessionId,
+           String queryId,
+           String dimensionName,
+           String sort,
+           AsyncCallback callback);
 }
