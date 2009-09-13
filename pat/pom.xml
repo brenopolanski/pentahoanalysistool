@@ -187,6 +187,36 @@
 					</artifactItems>
 				</configuration>
 			</plugin>
+			 <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-source-plugin</artifactId>
+    			<executions>
+       				<execution>
+          			<!-- Restrict execution of source compilation to install or deploy. -->
+          			<!-- The default is package. -->
+          			<phase>install</phase>
+          			<goals>
+             			<goal>jar</goal>
+          			</goals>
+       				</execution>
+    			</executions>
+ 			 </plugin>
+			
+			 <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-javadoc-plugin</artifactId>
+    			<executions>
+       				<execution>
+          				<id>attach-javadocs</id>
+          				<!-- Restrict execution of source compilation to install -->
+          				<phase>install</phase>
+          				<goals>
+             				<goal>jar</goal>
+          				</goals>
+       				</execution>
+    			</executions>
+ 			</plugin>
+			
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -627,4 +657,16 @@
 		</dependency>
 
 	</dependencies>
+<distributionManagement>
+   <repository>
+      <id>pat.releases</id>
+      <name>A friendly description of your release repo</name>
+      <url>scpexe://logical-analytics.co.uk/repository</url>
+   </repository>
+   <snapshotRepository>
+      <id>pat.snapshots</id>
+      <name>A friendly description of your snapshots repo</name>
+      <url>scpexe://logical-analytics.co.uk/snapshots</url>
+   </snapshotRepository>
+</distributionManagement>
 </project>
