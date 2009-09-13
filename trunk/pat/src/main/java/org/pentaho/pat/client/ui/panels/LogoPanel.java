@@ -22,8 +22,12 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.GridLayout;
+import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.jfree.ui.Align;
 import org.pentaho.pat.client.Pat;
 
 import com.google.gwt.user.client.ui.Image;
@@ -45,7 +49,7 @@ public class LogoPanel extends LayoutComposite {
 
     private static LayoutPanel mainPanel;
 
-    static Label test = new Label(""); //$NON-NLS-1$
+    static Label test = new Label("argh!"); //$NON-NLS-1$
 
     /**
      * 
@@ -68,17 +72,24 @@ public class LogoPanel extends LayoutComposite {
 
         mainPanel = new LayoutPanel();
 
-        final BoxLayout mainLayout = new BoxLayout();
-        mainLayout.setLeftToRight(false);
+        final GridLayout mainLayout = new GridLayout(2,1);
+        //mainLayout.setLeftToRight(false);
         mainPanel.setLayout(mainLayout);
+        //mainLayout.setAlignment(Alignment.END);
         this.setStylePrimaryName(LOGOPANEL_CSS_STYLE);
 
         test.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
         test.addStyleName("throbber"); //$NON-NLS-1$
+        test.setSize("100px", "100px");
+        GridLayoutData gl = new GridLayoutData(1, 3, true);
+        gl.setHorizontalAlignment(GridLayoutData.ALIGN_RIGHT);
+        gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
 
         final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
+        mainPanel.add(test);
+        
         mainPanel.add(patlogo);
-        mainPanel.add(test, new BoxLayoutData(FillStyle.VERTICAL));
+        
         rootPanel.add(mainPanel);
 
     }
