@@ -115,15 +115,17 @@ public class OlapPanel extends DataWidget {
 
     @Override
     public void onUnload() {
+        LogoPanel.spinWheel(true);
         ServiceFactory.getQueryInstance().deleteQuery(Pat.getSessionID(), queryId, new AsyncCallback<Object>() {
 
             public void onFailure(final Throwable arg0) {
 
                 MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(arg0.getLocalizedMessage()));
+                LogoPanel.spinWheel(false);
             }
 
             public void onSuccess(final Object arg0) {
-
+                LogoPanel.spinWheel(false);
             }
 
         });
@@ -149,6 +151,7 @@ public class OlapPanel extends DataWidget {
      */
     @Override
     protected Widget onInitialize() {
+        LogoPanel.spinWheel(true);
         final LayoutPanel baselayoutPanel = new LayoutPanel(new BorderLayout());
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
@@ -156,6 +159,7 @@ public class OlapPanel extends DataWidget {
                     public void onFailure(final Throwable arg0) {
 
                         MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
                     }
 
                     public void onSuccess(final String query) {
@@ -184,12 +188,12 @@ public class OlapPanel extends DataWidget {
                         baselayoutPanel.setCollapsed(westPanel, false);
 
                         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
-
+                        LogoPanel.spinWheel(false);
                     }
 
                 });
-
+        
         return baselayoutPanel;
-
+        
     }
 }

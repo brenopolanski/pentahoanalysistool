@@ -69,6 +69,8 @@ public class DimensionMenu extends LayoutComposite {
 
     final ComboBox<String> sortComboBox = new ComboBox<String>();
 
+    final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
+    
     final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
     /**
@@ -108,7 +110,7 @@ public class DimensionMenu extends LayoutComposite {
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
 
-        final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
+        
         model1.add("ASC");
         model1.add("DESC");
         model1.add("BASC");
@@ -222,11 +224,17 @@ public class DimensionMenu extends LayoutComposite {
 
                                                     public void onSuccess(final String arg0) {
                                                         for (int i = 0; i < sortComboBox.getItemCount(); i++)
-                                                            if (sortComboBox.getModel().getElementAt(i).equals(arg0))
-                                                                DimensionMenu.this.sortComboBox.setSelectedIndex(i);
-
+                                                            if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
+                                                                //DimensionMenu.this.sortComboBox.setSelectedIndex(i);
+                                                                DimensionMenu.this.model1.setSelectedItem(arg0);
+                                                                DimensionMenu.this.model1.getSelectedItem();
+                                                                break;
+                                                            }
+                                                            else
+                                                                DimensionMenu.this.model1.setSelectedItem(null);
+                                                        
                                                         ServiceFactory.getQueryInstance().getHierarchizeMode(
-                                                                Pat.getCurrQuery(), Pat.getCurrQuery(), dimensionId,
+                                                                Pat.getSessionID(), Pat.getCurrQuery(), dimensionId,
                                                                 new AsyncCallback<String>() {
 
                                                                     public void onFailure(final Throwable arg0) {

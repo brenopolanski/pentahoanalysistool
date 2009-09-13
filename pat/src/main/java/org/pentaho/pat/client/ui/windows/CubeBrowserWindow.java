@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.CubeMenu;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
@@ -114,6 +115,7 @@ public class CubeBrowserWindow extends WindowPanel {
                     if (selected.getType() == CubeTreeItem.ItemType.CONNECTION)
                          MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
                         if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+                            LogoPanel.spinWheel(true);
                             final OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
                             MainTabPanel.displayContentWidget(olappanel);
                         }
