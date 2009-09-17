@@ -73,6 +73,7 @@ public class DimensionMenu extends LayoutComposite {
     
     final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
+    final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
     /**
      * 
      * DimensionMenu Constructor.
@@ -138,7 +139,7 @@ public class DimensionMenu extends LayoutComposite {
 
         });
 
-        final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+
         model2.add("PRE");
         model2.add("POST");
 
@@ -245,11 +246,15 @@ public class DimensionMenu extends LayoutComposite {
                                                                     public void onSuccess(final String arg0) {
                                                                         for (int i = 0; i < hierarchyComboBox
                                                                                 .getItemCount(); i++)
-                                                                            if (sortComboBox.getModel().getElementAt(i)
-                                                                                    .equals(arg0))
-                                                                                DimensionMenu.this.sortComboBox
-                                                                                        .setSelectedIndex(i);
-
+                                                                            if (hierarchyComboBox.getModel().getElementAt(i)
+                                                                                    .equals(arg0)){
+                                                                                DimensionMenu.this.model2.setSelectedItem(arg0);
+                                                                        DimensionMenu.this.model2.getSelectedItem();
+                                                                        break;
+                                                                    }
+                                                                    else
+                                                                        DimensionMenu.this.model2.setSelectedItem(null);
+                                                                            
                                                                         addDimensionTreeItem(labels, parent,
                                                                                 selectionlist);
                                                                     }

@@ -20,16 +20,11 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.GridLayout;
-import org.gwt.mosaic.ui.client.layout.GridLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.jfree.ui.Align;
 import org.pentaho.pat.client.Pat;
 
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
@@ -47,9 +42,7 @@ public class LogoPanel extends LayoutComposite {
 
     private final LayoutPanel rootPanel = getLayoutPanel();
 
-    private static LayoutPanel mainPanel;
-
-    static Label test = new Label("argh!"); //$NON-NLS-1$
+    static Label throbberLabel = new Label(); 
 
     /**
      * 
@@ -60,9 +53,9 @@ public class LogoPanel extends LayoutComposite {
     public static void spinWheel(final boolean spin) {
  
         if (spin)
-            test.setVisible(true);
+            throbberLabel.setVisible(true);
         else
-            test.setVisible(false);
+            throbberLabel.setVisible(false);
     }
 
     /**
@@ -70,27 +63,21 @@ public class LogoPanel extends LayoutComposite {
      */
     public LogoPanel() {
 
-        mainPanel = new LayoutPanel();
 
-        final GridLayout mainLayout = new GridLayout(2,1);
-        //mainLayout.setLeftToRight(false);
-        mainPanel.setLayout(mainLayout);
-        //mainLayout.setAlignment(Alignment.END);
+
         this.setStylePrimaryName(LOGOPANEL_CSS_STYLE);
 
-        test.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
-        test.addStyleName("throbber"); //$NON-NLS-1$
-        test.setSize("100px", "100px");
-        GridLayoutData gl = new GridLayoutData(1, 3, true);
-        gl.setHorizontalAlignment(GridLayoutData.ALIGN_RIGHT);
-        gl.setVerticalAlignment(GridLayoutData.ALIGN_MIDDLE);
-
+        final Grid logoGrid = new Grid(1,2);
+        throbberLabel.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
+        throbberLabel.addStyleName("throbber");  //$NON-NLS-1$
+        throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
+        
         final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
-        mainPanel.add(test);
+        logoGrid.setWidget(0, 0, throbberLabel);
         
-        mainPanel.add(patlogo);
-        
-        rootPanel.add(mainPanel);
+        logoGrid.setWidget(0, 1, patlogo);
+        logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+        rootPanel.add(logoGrid);
 
     }
 
