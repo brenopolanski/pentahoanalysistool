@@ -43,7 +43,6 @@ public class LogoPanel extends LayoutComposite {
     private final LayoutPanel rootPanel = getLayoutPanel();
 
     static Label throbberLabel = new Label(); 
-
     /**
      * 
      * Sets the spinner spinning, or hides it.
@@ -54,6 +53,7 @@ public class LogoPanel extends LayoutComposite {
  
         if (spin)
             throbberLabel.setVisible(true);
+        
         else
             throbberLabel.setVisible(false);
     }
@@ -71,12 +71,14 @@ public class LogoPanel extends LayoutComposite {
         throbberLabel.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
         throbberLabel.addStyleName("throbber");  //$NON-NLS-1$
         throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
+        throbberLabel.setPixelSize(100, 100);
         
         final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
-        logoGrid.setWidget(0, 0, throbberLabel);
+        logoGrid.setWidget(0, 1, throbberLabel);
         
-        logoGrid.setWidget(0, 1, patlogo);
+        logoGrid.setWidget(0, 0, patlogo);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+        logoGrid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);
         rootPanel.add(logoGrid);
 
     }
