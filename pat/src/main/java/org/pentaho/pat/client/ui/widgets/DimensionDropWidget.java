@@ -83,7 +83,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      * 
      * @param unused
      * @param string
-     * 
+     *  
      */
     public DimensionDropWidget(final String labelText, final Standard targetAxis) {
         this.dimAxis = targetAxis;
