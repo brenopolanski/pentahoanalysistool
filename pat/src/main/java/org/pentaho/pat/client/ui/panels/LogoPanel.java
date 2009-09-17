@@ -53,7 +53,6 @@ public class LogoPanel extends LayoutComposite {
  
         if (spin)
             throbberLabel.setVisible(true);
-        
         else
             throbberLabel.setVisible(false);
     }
@@ -79,6 +78,12 @@ public class LogoPanel extends LayoutComposite {
         logoGrid.setWidget(0, 0, patlogo);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+        
+        final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
+        logoGrid.setWidget(0, 0, throbberLabel);
+        
+        logoGrid.setWidget(0, 1, patlogo);
+        logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
         rootPanel.add(logoGrid);
 
     }
