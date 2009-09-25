@@ -13,7 +13,11 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
@@ -100,10 +104,14 @@ public class WelcomePanel extends DataWidget {
      */
     @Override
     public final Widget onInitialize() {
-
-        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
+BoxLayout test = new BoxLayout();
+test.setOrientation(Orientation.VERTICAL);
+        final LayoutPanel layoutPanel = new LayoutPanel(test);
+        ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+        
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
         final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
+        ((BoxLayout)buttonBar.getLayout()).setAlignment(Alignment.CENTER);
         buttonBar.setWidgetSpacing(20);
         final ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.help_index(),
                 ConstantFactory.getInstance().wiki(), ButtonLabelType.TEXT_ON_BOTTOM), new ClickHandler() {
@@ -114,9 +122,10 @@ public class WelcomePanel extends DataWidget {
 
         buttonBar.add(patwikiBtn);
 
-        layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)));
+        
+        layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.HORIZONTAL));
 
-        layoutPanel.add(buttonBar);
+        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0,-1.0));        
 
         return layoutPanel;
     }
