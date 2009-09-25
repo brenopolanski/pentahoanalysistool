@@ -64,7 +64,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
 
     private FlexTableRowDropController flexTableRowDropController1;
 
-    private final String query = Pat.getCurrQuery();
+    private final String query;
 
     private FlexTableRowDragController trdc = null;
 
@@ -88,6 +88,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
     public DimensionDropWidget(final String labelText, final Standard targetAxis) {
         this.dimAxis = targetAxis;
         this.trdc = DimensionPanel.getTableRowDragController();
+        query = Pat.getCurrQuery();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captionLayoutPanel);
@@ -99,6 +100,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
         super();
         horizontal = orientation;
         this.dimAxis = targetAxis;
+        query = Pat.getCurrQuery();
         this.trdc = DimensionPanel.getTableRowDragController();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);

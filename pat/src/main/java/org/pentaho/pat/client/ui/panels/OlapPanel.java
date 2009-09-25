@@ -181,7 +181,7 @@ public class OlapPanel extends DataWidget {
                         final MainMenuPanel mainMenuPanel = new MainMenuPanel();
                         westPanel.add(mainMenuPanel);
 
-                        final DataPanel dPanel = new DataPanel();
+                        final DataPanel dPanel = new DataPanel(query);
                         centerPanel.add(dPanel);
 
                         baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));

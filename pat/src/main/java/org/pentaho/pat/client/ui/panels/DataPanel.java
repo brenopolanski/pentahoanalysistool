@@ -63,13 +63,17 @@ public class DataPanel extends LayoutComposite implements QueryListener {
 
     final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
 
+    private String queryId;
+
     /**
      *DataPanel Constructor.
+     * @param query 
      * 
      */
-    public DataPanel() {
+    public DataPanel(String query) {
+        this.queryId = query;
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
-
+        
         mainLayoutPanel.setPadding(0);
 
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
@@ -135,13 +139,15 @@ public class DataPanel extends LayoutComposite implements QueryListener {
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String,
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
-    public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
+    public void onQueryExecuted(final String query, final CellDataSet matrix) {
+        if (query.equals(queryId))
+        {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
         baseLayoutPanel.layout();
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached())
+        
             // TODO why is this called twice? why two instances of the same object?
             olapTable.setData(matrix);
-
+        }
     }
 }
