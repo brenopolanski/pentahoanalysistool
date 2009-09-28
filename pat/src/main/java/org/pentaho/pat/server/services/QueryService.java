@@ -306,4 +306,10 @@ public interface QueryService extends Service {
 	                         String sessionId, 
 	                         String queryId, 
 	                         MemberCell member) throws OlapException;
+	
+	public void drillReplaceMember(String userId, 
+            String sessionId, 
+            String queryId, 
+            MemberCell member) throws OlapException;
+	
 }

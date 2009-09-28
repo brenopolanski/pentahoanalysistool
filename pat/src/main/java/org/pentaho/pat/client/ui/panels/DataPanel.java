@@ -145,8 +145,7 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         baseLayoutPanel.remove(mainLayoutPanel);
         baseLayoutPanel.add(fillLayoutPanel);
         baseLayoutPanel.layout();
-        
-            // TODO why is this called twice? why two instances of the same object?
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached())
             olapTable.setData(matrix);
         }
     }

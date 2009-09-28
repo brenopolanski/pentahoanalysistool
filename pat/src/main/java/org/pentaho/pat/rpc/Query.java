@@ -280,4 +280,10 @@ public interface Query extends RemoteService {
 	           String sessionId, 
 	           String queryId, 
 	           MemberCell member) throws RpcException;
+	
+	@Secured ({"Users"})
+	public void drillReplaceMember(
+	        String sessionId, 
+	        String queryId, 
+	        MemberCell member) throws RpcException;
 }
