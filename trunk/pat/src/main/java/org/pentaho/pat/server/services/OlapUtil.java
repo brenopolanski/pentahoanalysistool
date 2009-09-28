@@ -19,12 +19,18 @@
  */
 package org.pentaho.pat.server.services;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
+import org.olap4j.CellSetAxis;
+import org.olap4j.Position;
+import org.olap4j.metadata.Dimension;
+import org.olap4j.metadata.Member;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
@@ -32,10 +38,14 @@ import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.util.Matrix;
 import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 public class OlapUtil {
+    
+    static ArrayList<String> cellSetIndex = new ArrayList();
+    static ArrayList<CellSet> cellSetItems = new ArrayList();
     public static CellDataSet cellSet2Matrix(final CellSet cellSet) {
         if (cellSet == null)
             return null;
@@ -98,7 +108,6 @@ public class OlapUtil {
      * @param path
      * @param dim
      */
-    @SuppressWarnings("deprecation")
     public static Selection findSelection(String path, final QueryDimension dim) {
         path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
         return findSelection(path, dim.getSelections());
@@ -203,4 +212,182 @@ public class OlapUtil {
             currentNode = OlapUtil.findOrCreateNode(currentNode, uniqueMemberNames[i]);
         return parentNode;
     }
+
+    /**
+     *TODO JAVADOC
+     * @param cellSet 
+     * @param queryId 
+     *
+     */
+    public static void storeCellSet(String queryId, CellSet cellSet) {
+        Collections.sort(cellSetIndex);
+        int index = Collections.binarySearch(cellSetIndex, queryId);
+        
+        if (index>=0){
+        cellSetIndex.remove(index);
+        cellSetItems.remove(index);
+        }
+        
+        cellSetIndex.add(queryId);
+        cellSetItems.add(cellSet);
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param queryId
+     * @return
+     */
+    public static CellSet getCellSet(String queryId) {
+        Collections.sort(cellSetIndex);
+        int index = Collections.binarySearch(cellSetIndex, queryId);
+       
+        return cellSetItems.get(index);
+        
+    }
+    
+    
+    private static AxisInfo computeAxisInfo(CellSetAxis axis)
+    {
+        if (axis == null) {
+            return new AxisInfo(0);
+        }
+        final AxisInfo axisInfo =
+            new AxisInfo(axis.getAxisMetaData().getHierarchies().size());
+        int p = -1;
+        for (Position position : axis.getPositions()) {
+            ++p;
+            int k = -1;
+            for (Member member : position.getMembers()) {
+                ++k;
+                final AxisOrdinalInfo axisOrdinalInfo =
+                    axisInfo.ordinalInfos.get(k);
+                final int topDepth =
+                    member.isAll()
+                        ? member.getDepth()
+                        : member.getHierarchy().hasAll()
+                            ? 1
+                            : 0;
+                if (axisOrdinalInfo.minDepth > topDepth
+                    || p == 0)
+                {
+                    axisOrdinalInfo.minDepth = topDepth;
+                }
+                axisOrdinalInfo.maxDepth =
+                    Math.max(
+                        axisOrdinalInfo.maxDepth,
+                        member.getDepth());
+            }
+        }
+        return axisInfo;
+    }
+    
+
+    public static Member getMember(Query query, QueryDimension dimension, MemberCell member, CellSet cellSet){
+        Member memberActual=null;
+        QueryDimension qd = query.getDimension(dimension.getName());
+        QueryAxis axis = qd.getAxis();
+        
+        
+        final CellSetAxis columnsAxis;
+
+        if (cellSet.getAxes().size() > 0) {
+            columnsAxis = cellSet.getAxes().get(0);
+        } else {
+            columnsAxis = null;
+        }
+        
+        AxisInfo columnsAxisInfo = computeAxisInfo(columnsAxis);
+
+        // Compute how many columns are required to display the rows axis.
+        final CellSetAxis rowsAxis;
+        if (cellSet.getAxes().size() > 1) {
+            rowsAxis = cellSet.getAxes().get(1);
+        } else {
+            rowsAxis = null;
+        }
+        AxisInfo rowsAxisInfo = computeAxisInfo(rowsAxis);
+
+        for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
+        List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
+        for (int j = 0; j < memberList.size(); j++) {
+            String memberPD = member.getParentDimension();
+            String memberListPD = memberList.get(j).getDimension().getName();
+            String memberRV = member.getRawValue();
+            String memberListName = memberList.get(j).getName();
+            if (member.getParentDimension().equals(memberList.get(j).getDimension().getName()) &&
+                    member.getRawValue().equals(memberList.get(j).getName())){
+            memberActual = memberList.get(j);
+            }
+        }
+        }
+        
+        return memberActual;
+        
+        
+    }
+    public static boolean isDescendant(Member parent, Member testForDescendituitivitiness) {
+        if (testForDescendituitivitiness.equals(parent)) return false;
+        while (testForDescendituitivitiness != null) {
+            if (testForDescendituitivitiness.equals(parent)) return true;
+            testForDescendituitivitiness = testForDescendituitivitiness.getParentMember();
+        }
+        return false;
+    }
+
+
+    public static boolean isDescendantOrEqualTo(
+            Member parent, Member testForEquidescendituitivitiness) {
+        return parent.equals(testForEquidescendituitivitiness) ||
+            isDescendant(parent, testForEquidescendituitivitiness);
+    }
+
+    public static boolean isChild(Member parent, Member testForChildishness) {
+        return parent.equals(testForChildishness.getParentMember());
+    }
+
+    private static class AxisInfo {
+        final List<AxisOrdinalInfo> ordinalInfos;
+
+        /**
+         * Creates an AxisInfo.
+         *
+         * @param ordinalCount Number of hierarchies on this axis
+         */
+        AxisInfo(int ordinalCount) {
+            ordinalInfos = new ArrayList<AxisOrdinalInfo>(ordinalCount);
+            for (int i = 0; i < ordinalCount; i++) {
+                ordinalInfos.add(new AxisOrdinalInfo());
+            }
+        }
+
+        /**
+         * Returns the number of matrix columns required by this axis. The
+         * sum of the width of the hierarchies on this axis.
+         *
+         * @return Width of axis
+         */
+        public int getWidth() {
+            int width = 0;
+            for (AxisOrdinalInfo info : ordinalInfos) {
+                width += info.getWidth();
+            }
+            return width;
+        }
+    }
+    
+    private static class AxisOrdinalInfo {
+        int minDepth = 1;
+        int maxDepth = 0;
+
+        /**
+         * Returns the number of matrix columns required to display this
+         * hierarchy.
+         */
+        public int getWidth() {
+            return maxDepth - minDepth + 1;
+        }
+    }
+
+
 }

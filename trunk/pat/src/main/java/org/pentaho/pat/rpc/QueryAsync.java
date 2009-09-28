@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -119,5 +120,11 @@ public interface QueryAsync {
            String sessionId,
            String queryId,
            String dimensionName,
+           AsyncCallback callback);
+   
+   public void drillReplace2(
+           String sessionId, 
+           String queryId, 
+           MemberCell member,
            AsyncCallback callback);
 }

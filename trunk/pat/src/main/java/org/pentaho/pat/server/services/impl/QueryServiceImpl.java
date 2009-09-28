@@ -28,10 +28,13 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.olap4j.Axis;
+import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.mdx.SelectNode;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
@@ -39,7 +42,11 @@ import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
+import org.olap4j.query.Selection.Operator;
+import org.olap4j.transform.DrillReplaceTransform;
+import org.olap4j.transform.MdxQueryTransform;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -156,7 +163,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
-        return OlapUtil.cellSet2Matrix(mdx.execute());
+        CellSet cellSet = mdx.execute();
+        
+        OlapUtil.storeCellSet(queryId, cellSet);
+        
+        return OlapUtil.cellSet2Matrix(cellSet);
+        
     }
 
     public String getHierarchizeMode(final String userId, final String sessionId, final String queryId,
@@ -304,4 +316,32 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
     }
+    
+    public void drillReplace2(final String userId, final String sessionId, String queryId, MemberCell member) {
+        this.sessionService.validateSession(userId, sessionId);
+        Query q = getQuery(userId, sessionId, queryId);
+        CellSet cellSet = OlapUtil.getCellSet(queryId);
+        QueryDimension qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
+        Member memberFetched = OlapUtil.getMember(q, qd, member, cellSet);
+        for (Iterator<Selection> it = qd.getInclusions().iterator(); it.hasNext(); ) {
+            Selection s = it.next();
+            Member victim = s.getMember();
+            
+            if (!OlapUtil.isDescendantOrEqualTo(memberFetched, victim)) {
+                if (OlapUtil.isChild(victim, memberFetched) &&
+                                (s.getOperator() == Operator.CHILDREN)) {
+                                        // If the member is there as one of its parent's children
+                                        // rather than itself, then we need to replace the selection
+                                        // of children with itself in the inclusions
+                        qd.include(memberFetched);
+                }
+                it.remove();
+            }
+        }
+    
+    }
+    
+    
+    
+
 }

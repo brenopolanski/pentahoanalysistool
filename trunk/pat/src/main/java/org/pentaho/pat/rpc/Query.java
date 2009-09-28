@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
@@ -273,4 +274,10 @@ public interface Query extends RemoteService {
 	        String sessionId,
 	        String queryId,
 	        String dimensionName) throws RpcException;
+	
+	@Secured ({"Users"})
+	public void drillReplace2( 
+	           String sessionId, 
+	           String queryId, 
+	           MemberCell member) throws RpcException;
 }
