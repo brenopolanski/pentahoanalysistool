@@ -178,11 +178,13 @@ public class OlapTable extends LayoutComposite implements QueryListener {
 
             });
             
-            final Image drillButton = Pat.IMAGES.cube().createImage();
+            Image drillButton = null;
+            if(((MemberCell)headers).getChildMemberCount()>0){
+            drillButton = Pat.IMAGES.cube().createImage();
             drillButton.addClickHandler(new ClickHandler() {
 
                 public void onClick(final ClickEvent arg0) {
-                    ServiceFactory.getQueryInstance().drillReplaceMember(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
+                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
 
                         public void onFailure(Throwable arg0) {
                             MessageBox.alert("Failed", "failed");
@@ -210,7 +212,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 }
 
             });
-
+            }
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
             
@@ -220,6 +222,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             
             if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
             cellPanel.add(cellButton);
+            if(drillButton!=null)
             cellPanel.add(drillButton);
             }
         }

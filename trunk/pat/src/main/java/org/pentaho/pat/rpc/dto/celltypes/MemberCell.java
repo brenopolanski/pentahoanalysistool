@@ -34,6 +34,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 	private String parentMember = null;
 
     private String uniqueName;
+
+    private int childMemberCount;
 	/**
 	 * 
 	 * Blank Constructor for Serializable niceness, don't use it.
@@ -127,5 +129,18 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     
     public String getUniqueName(){
         return uniqueName;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param childMemberCount
+     */
+    public void setChildMemberCount(int childMemberCount) {
+        this.childMemberCount=childMemberCount;
+    }
+    
+    public int getChildMemberCount(){
+        return childMemberCount;
     }
 }
