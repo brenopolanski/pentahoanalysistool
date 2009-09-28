@@ -341,6 +341,26 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     
     }
     
+    public void drillReplaceMember(final String userId, final String sessionId, String queryId, MemberCell member) {
+        this.sessionService.validateSession(userId, sessionId);
+        Query q = getQuery(userId, sessionId, queryId);
+        CellSet cellSet = OlapUtil.getCellSet(queryId);
+        QueryDimension qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
+        Member memberFetched = OlapUtil.getMember(q, qd, member, cellSet);
+           NamedList<? extends Member> childmembers = null;
+            try {
+                childmembers = memberFetched.getChildMembers();
+            } catch (OlapException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (childmembers!=null){
+            for (int i = 0; i<childmembers.size(); i++)
+            qd.include(childmembers.get(i));
+            }
+        }
+    
+    
     
     
 

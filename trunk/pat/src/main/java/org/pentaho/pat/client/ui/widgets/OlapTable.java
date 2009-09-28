@@ -177,21 +177,33 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 }
 
             });
-
+            
             final Image drillButton = Pat.IMAGES.cube().createImage();
             drillButton.addClickHandler(new ClickHandler() {
 
                 public void onClick(final ClickEvent arg0) {
-                    ServiceFactory.getQueryInstance().drillReplace2(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
+                    ServiceFactory.getQueryInstance().drillReplaceMember(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
 
                         public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
                             MessageBox.alert("Failed", "failed");
                         }
 
                         public void onSuccess(Object arg0) {
-                            // TODO Auto-generated method stub
-                            MessageBox.alert("Worked", "worked");
+                         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                            public void onFailure(Throwable arg0) {
+                                
+                                MessageBox.alert("Failed", "failed");    
+                                
+                            }
+
+                            public void onSuccess(CellDataSet arg0) {
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        OlapTable.this, Pat.getCurrQuery(), arg0);                        
+                                
+                            }
+                             
+                         });
                         }
                         
                     });

@@ -245,7 +245,6 @@ public class QueryServlet extends AbstractServlet implements Query {
         }
         
     }
-    
     public void drillReplace2(String sessionId, String queryId, MemberCell member) throws RpcException
     {
         try {
@@ -255,4 +254,14 @@ public class QueryServlet extends AbstractServlet implements Query {
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
     }
+    public void drillReplaceMember(String sessionId, String queryId, MemberCell member) throws RpcException
+    {
+        try {
+            this.queryService.drillReplaceMember(getCurrentUserId(), sessionId, queryId, member);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
+        }
+    }
+
 }
