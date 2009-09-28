@@ -367,7 +367,6 @@ public class PatCellSetFormatter {
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);
-                    // noinspection SuspiciousNameCombination
 
                     matrix.set(y, x, memberInfo);
                 }

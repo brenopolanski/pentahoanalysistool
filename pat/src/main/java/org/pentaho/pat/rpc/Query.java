@@ -276,12 +276,6 @@ public interface Query extends RemoteService {
 	        String dimensionName) throws RpcException;
 	
 	@Secured ({"Users"})
-	public void drillReplace2( 
-	           String sessionId, 
-	           String queryId, 
-	           MemberCell member) throws RpcException;
-	
-	@Secured ({"Users"})
 	public void drillPosition(
 	        String sessionId, 
 	        String queryId, 

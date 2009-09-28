@@ -246,25 +246,6 @@ public class OlapUtil {
         return values[0];
     }
 
-    public static boolean isChild(final Member parent, final Member testForChildishness) {
-        return parent.equals(testForChildishness.getParentMember());
-    }
-
-    public static boolean isDescendant(final Member parent, Member testForDescendituitivitiness) {
-        if (testForDescendituitivitiness.equals(parent))
-            return false;
-        while (testForDescendituitivitiness != null) {
-            if (testForDescendituitivitiness.equals(parent))
-                return true;
-            testForDescendituitivitiness = testForDescendituitivitiness.getParentMember();
-        }
-        return false;
-    }
-
-    public static boolean isDescendantOrEqualTo(final Member parent, final Member testForEquidescendituitivitiness) {
-        return parent.equals(testForEquidescendituitivitiness)
-                || isDescendant(parent, testForEquidescendituitivitiness);
-    }
 
     /**
      * @param memberNames

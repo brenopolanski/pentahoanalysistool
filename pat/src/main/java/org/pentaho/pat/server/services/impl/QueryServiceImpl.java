@@ -315,30 +315,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
     }
     
-    public void drillReplace2(final String userId, final String sessionId, String queryId, MemberCell member) {
-        this.sessionService.validateSession(userId, sessionId);
-        Query q = getQuery(userId, sessionId, queryId);
-        CellSet cellSet = OlapUtil.getCellSet(queryId);
-        QueryDimension qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
-        Member memberFetched = OlapUtil.getMember(q, qd, member, cellSet);
-        for (Iterator<Selection> it = qd.getInclusions().iterator(); it.hasNext(); ) {
-            Selection s = it.next();
-            Member victim = s.getMember();
-            
-            if (!OlapUtil.isDescendantOrEqualTo(memberFetched, victim)) {
-                if (OlapUtil.isChild(victim, memberFetched) &&
-                                (s.getOperator() == Operator.CHILDREN)) {
-                                        // If the member is there as one of its parent's children
-                                        // rather than itself, then we need to replace the selection
-                                        // of children with itself in the inclusions
-                        qd.include(memberFetched);
-                }
-                it.remove();
-            }
-        }
-    
-    }
-    
     public void drillPosition(final String userId, final String sessionId, String queryId, MemberCell member) {
         this.sessionService.validateSession(userId, sessionId);
         Query q = getQuery(userId, sessionId, queryId);

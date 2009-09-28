@@ -301,12 +301,6 @@ public interface QueryService extends Service {
 	        String dimensionName) throws OlapException;
 	
 	@Secured ({"Users"})
-	public void drillReplace2(String userId, 
-	                         String sessionId, 
-	                         String queryId, 
-	                         MemberCell member) throws OlapException;
-	
-	@Secured ({"Users"})
 	public void drillPosition(String userId, 
             String sessionId, 
             String queryId, 

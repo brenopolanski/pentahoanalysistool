@@ -121,13 +121,7 @@ public interface QueryAsync {
            String queryId,
            String dimensionName,
            AsyncCallback callback);
-   
-   public void drillReplace2(
-           String sessionId, 
-           String queryId, 
-           MemberCell member,
-           AsyncCallback callback);
-   
+      
    public void drillPosition(
            String sessionId, 
            String queryId, 
