@@ -189,7 +189,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                         }
 
                         public void onSuccess(Object arg0) {
-                         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
                             public void onFailure(Throwable arg0) {
                                 

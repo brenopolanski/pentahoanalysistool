@@ -20,7 +20,6 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class MemberCell extends BaseCell implements Serializable, IsSerializable {
@@ -28,7 +27,13 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 
 	private boolean lastRow = false;
 
+	private boolean expanded;
+	
 	private String parentDimension = null;
+	
+	private String parentMember = null;
+
+    private String uniqueName;
 	/**
 	 * 
 	 * Blank Constructor for Serializable niceness, don't use it.
@@ -76,4 +81,51 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 	public String getParentDimension(){
 	    return parentDimension;
 	}
+
+    /**
+     *TODO JAVADOC
+     * @return the expanded
+     */
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param expanded the expanded to set
+     */
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param parentMember
+     */
+    public void setParentMember(String parentMember) {
+        
+        this.parentMember = parentMember;
+        
+    }
+    
+    public String getParentMember(){
+        return parentMember;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param uniqueName
+     */
+    public void setUniquename(String uniqueName) {
+        
+        this.uniqueName = uniqueName;
+        
+    }
+    
+    public String getUniqueName(){
+        return uniqueName;
+    }
 }
