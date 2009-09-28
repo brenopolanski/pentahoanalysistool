@@ -64,6 +64,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     private DiscoveryService discoveryService = null;
 
+    QueryDimension qd = null;
+    
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(this.discoveryService);
         Assert.notNull(this.sessionService);
@@ -345,7 +347,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         Query q = getQuery(userId, sessionId, queryId);
         CellSet cellSet = OlapUtil.getCellSet(queryId);
-        QueryDimension qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
+        qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
         Member memberFetched = OlapUtil.getMember(q, qd, member, cellSet);
            NamedList<? extends Member> childmembers = null;
             try {
@@ -354,13 +356,38 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            
             if (childmembers!=null){
-            for (int i = 0; i<childmembers.size(); i++)
-            qd.include(childmembers.get(i));
+               if(!member.isExpanded())
+                for (int i = 0; i<childmembers.size(); i++){
+                    qd.include(childmembers.get(i));
+
+                }
+               else
+                   for (int i = 0; i<childmembers.size(); i++){
+                       try {
+                        removeChildren(childmembers.get(i).getChildMembers());
+                        
+                    } catch (OlapException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    qd.exclude(childmembers.get(i));
+                   }
             }
         }
     
-    
+    private void removeChildren(NamedList<? extends Member> list){
+        for (int i = 0; i<list.size(); i++){
+            qd.exclude(list.get(i));
+            try {
+                removeChildren(list.get(i).getChildMembers());
+            } catch (OlapException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
     
     
 

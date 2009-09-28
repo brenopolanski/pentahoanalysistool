@@ -201,6 +201,8 @@ public class PatCellSetFormatter  {
             final List<Member> memberList = position.getMembers();
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
+                
+                    
                 final AxisOrdinalInfo ordinalInfo =
                     axisInfo.ordinalInfos.get(j);
                 while (member != null) {
@@ -225,6 +227,22 @@ public class PatCellSetFormatter  {
                     && Olap4jUtil.equal(prevMembers[y], member);
                                     
                 MemberCell memberInfo = new MemberCell();
+                
+                for (int j = 0; j < axis.getPositions().size(); j++)
+                {
+                    Position position2 = axis.getPositions().get(j);
+                    final List<Member> memberListChild = position2.getMembers();
+                    
+                    for (int k = 0; k < memberList.size(); k++) {
+                        Member memberChild = memberListChild.get(k);
+                        
+                        if(memberChild.getParentMember()!=null) 
+                        if (memberChild.getParentMember().equals(member))
+                            memberInfo.setExpanded(true);
+                    }
+                }
+       
+                
                 if(member!=null){
                 	if(x-1==offset){
                 		memberInfo.setLastRow(true);
@@ -234,11 +252,17 @@ public class PatCellSetFormatter  {
                 memberInfo.setRawValue(member.getCaption(null));
     	        memberInfo.setFormattedValue(member.getCaption(null));  // First try to get a formatted value
     	        memberInfo.setParentDimension(member.getDimension().getName());
+    	        memberInfo.setUniquename(member.getUniqueName());
+    	        if(member.getParentMember()!=null)
+    	            memberInfo.setParentMember(member.getParentMember().getName());
+    	        
+    	        
+    	            
                 }
                 else
                 {
-                    memberInfo.setRawValue(""); //$NON-NLS-1$
-                    memberInfo.setFormattedValue(""); //$NON-NLS-1$
+                    memberInfo.setRawValue(null);
+                    memberInfo.setFormattedValue(null);
                     memberInfo.setParentDimension(null);
                 }
     	
@@ -250,13 +274,17 @@ public class PatCellSetFormatter  {
                     matrix.set(x, y, memberInfo);
                 } else {
                     if (same) {
-                       memberInfo.setFormattedValue(""); //$NON-NLS-1$
-                       memberInfo.setRawValue(""); //$NON-NLS-1$
+                       memberInfo.setFormattedValue(null);
+                       memberInfo.setRawValue(null);
                        memberInfo.setParentDimension(null);
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);
 		    //noinspection SuspiciousNameCombination
+                    
+                    
+                    
+                    
                     matrix.set(y, x, memberInfo);
                 }
                 prevMembers[y] = member;
