@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
@@ -32,6 +33,7 @@ import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.PatColDef;
 import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -47,6 +49,7 @@ import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -174,6 +177,28 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 }
 
             });
+
+            final Image drillButton = Pat.IMAGES.cube().createImage();
+            drillButton.addClickHandler(new ClickHandler() {
+
+                public void onClick(final ClickEvent arg0) {
+                    ServiceFactory.getQueryInstance().drillReplace2(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
+
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+                            MessageBox.alert("Failed", "failed");
+                        }
+
+                        public void onSuccess(Object arg0) {
+                            // TODO Auto-generated method stub
+                            MessageBox.alert("Worked", "worked");
+                        }
+                        
+                    });
+                }
+
+            });
+
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
             
@@ -181,9 +206,10 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             
             cellButton.addStyleName(CELLBUTTON);
             
-            if(!headers.getRawValue().equals("")) //$NON-NLS-1$
+            if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
             cellPanel.add(cellButton);
-
+            cellPanel.add(drillButton);
+            }
         }
 
         else {

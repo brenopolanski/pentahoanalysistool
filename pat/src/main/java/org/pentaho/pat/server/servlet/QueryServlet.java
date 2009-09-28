@@ -25,12 +25,14 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+import org.olap4j.metadata.Member;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 
 import org.pentaho.pat.rpc.Query;
 import org.pentaho.pat.rpc.dto.Axis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
@@ -244,6 +246,13 @@ public class QueryServlet extends AbstractServlet implements Query {
         
     }
     
-
-    
+    public void drillReplace2(String sessionId, String queryId, MemberCell member) throws RpcException
+    {
+        try {
+            this.queryService.drillReplace2(getCurrentUserId(), sessionId, queryId, member);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
+        }
+    }
 }
