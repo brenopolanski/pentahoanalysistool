@@ -128,7 +128,7 @@ public interface QueryAsync {
            MemberCell member,
            AsyncCallback callback);
    
-   public void drillReplaceMember(
+   public void drillPosition(
            String sessionId, 
            String queryId, 
            MemberCell member,

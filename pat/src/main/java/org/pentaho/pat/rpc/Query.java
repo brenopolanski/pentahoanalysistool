@@ -282,7 +282,7 @@ public interface Query extends RemoteService {
 	           MemberCell member) throws RpcException;
 	
 	@Secured ({"Users"})
-	public void drillReplaceMember(
+	public void drillPosition(
 	        String sessionId, 
 	        String queryId, 
 	        MemberCell member) throws RpcException;

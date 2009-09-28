@@ -28,8 +28,6 @@ import java.util.Set;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.CellSetAxis;
-import org.olap4j.Position;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Member;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
@@ -43,13 +41,15 @@ import org.pentaho.pat.server.util.Matrix;
 import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 public class OlapUtil {
-    
+
     static ArrayList<String> cellSetIndex = new ArrayList();
+
     static ArrayList<CellSet> cellSetItems = new ArrayList();
+
     public static CellDataSet cellSet2Matrix(final CellSet cellSet) {
         if (cellSet == null)
             return null;
-    
+
         final PatCellSetFormatter pcsf = new PatCellSetFormatter();
 
         final Matrix matrix = pcsf.format(cellSet);
@@ -114,6 +114,20 @@ public class OlapUtil {
     }
 
     /**
+     *TODO JAVADOC
+     * 
+     * @param queryId
+     * @return
+     */
+    public static CellSet getCellSet(final String queryId) {
+        Collections.sort(cellSetIndex);
+        final int index = Collections.binarySearch(cellSetIndex, queryId);
+
+        return cellSetItems.get(index);
+
+    }
+
+    /**
      * @param formattedValue
      * @return color
      */
@@ -125,37 +139,78 @@ public class OlapUtil {
             for (int i = 2; i < values.length; i++)
                 if (values[i].startsWith("style")) { //$NON-NLS-1$
                     final String colorString = values[i].split("=")[1]; //$NON-NLS-1$
-                    if (colorString.equalsIgnoreCase("black"))
+                    if (colorString.equalsIgnoreCase("black"))//$NON-NLS-1$
                         color = "#000000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("blue"))
+                    else if (colorString.equalsIgnoreCase("blue"))//$NON-NLS-1$
                         color = "#0000FF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("cyan"))
+                    else if (colorString.equalsIgnoreCase("cyan"))//$NON-NLS-1$
                         color = "#00FFFF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("dark-gray"))
+                    else if (colorString.equalsIgnoreCase("dark-gray"))//$NON-NLS-1$
                         color = "#A9A9A9"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("gray"))
+                    else if (colorString.equalsIgnoreCase("gray"))//$NON-NLS-1$
                         color = "#808080"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("green"))
+                    else if (colorString.equalsIgnoreCase("green"))//$NON-NLS-1$
                         color = "#008000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("light-gray"))
+                    else if (colorString.equalsIgnoreCase("light-gray"))//$NON-NLS-1$
                         color = "#D3D3D3"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("magenta"))
+                    else if (colorString.equalsIgnoreCase("magenta"))//$NON-NLS-1$
                         color = "#FF00FF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("orange"))
+                    else if (colorString.equalsIgnoreCase("orange"))//$NON-NLS-1$
                         color = "#FFA500"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("pink"))
+                    else if (colorString.equalsIgnoreCase("pink"))//$NON-NLS-1$
                         color = "#FFC0CB"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("red"))
+                    else if (colorString.equalsIgnoreCase("red"))//$NON-NLS-1$
                         color = "#FF0000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("white"))
+                    else if (colorString.equalsIgnoreCase("white"))//$NON-NLS-1$
                         color = "#FFFFFF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("yellow"))
+                    else if (colorString.equalsIgnoreCase("yellow"))//$NON-NLS-1$
                         color = "#FFFF00"; //$NON-NLS-1$
                     else
                         color = colorString;
                 }
 
         return color;
+    }
+
+    public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
+            final CellSet cellSet) {
+        Member memberActual = null;
+        final QueryDimension qd = query.getDimension(dimension.getName());
+        qd.getAxis();
+
+        final CellSetAxis columnsAxis;
+
+        if (cellSet.getAxes().size() > 0)
+            columnsAxis = cellSet.getAxes().get(0);
+        else
+            columnsAxis = null;
+
+        final CellSetAxis rowsAxis;
+        if (cellSet.getAxes().size() > 1)
+            rowsAxis = cellSet.getAxes().get(1);
+        else
+            rowsAxis = null;
+
+        if (rowsAxis != null)
+            for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
+                final List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
+                for (int j = 0; j < memberList.size(); j++)
+                    if (member.getParentDimension().equals(memberList.get(j).getDimension().getName())
+                            && member.getRawValue().equals(memberList.get(j).getName()))
+                        memberActual = memberList.get(j);
+            }
+
+        if (columnsAxis != null)
+            for (int i = 0; i < columnsAxis.getPositions().size(); i++) {
+                final List<Member> memberList = columnsAxis.getPositions().get(i).getMembers();
+                for (int j = 0; j < memberList.size(); j++)
+                    if (member.getParentDimension().equals(memberList.get(j).getDimension().getName())
+                            && member.getRawValue().equals(memberList.get(j).getName()))
+                        memberActual = memberList.get(j);
+            }
+
+        return memberActual;
+
     }
 
     /**
@@ -191,6 +246,26 @@ public class OlapUtil {
         return values[0];
     }
 
+    public static boolean isChild(final Member parent, final Member testForChildishness) {
+        return parent.equals(testForChildishness.getParentMember());
+    }
+
+    public static boolean isDescendant(final Member parent, Member testForDescendituitivitiness) {
+        if (testForDescendituitivitiness.equals(parent))
+            return false;
+        while (testForDescendituitivitiness != null) {
+            if (testForDescendituitivitiness.equals(parent))
+                return true;
+            testForDescendituitivitiness = testForDescendituitivitiness.getParentMember();
+        }
+        return false;
+    }
+
+    public static boolean isDescendantOrEqualTo(final Member parent, final Member testForEquidescendituitivitiness) {
+        return parent.equals(testForEquidescendituitivitiness)
+                || isDescendant(parent, testForEquidescendituitivitiness);
+    }
+
     /**
      * @param memberNames
      *            in the form memberNames[0] = "All Products", memberNames[1] = "Food", memberNames[2] = "Snacks"
@@ -215,179 +290,22 @@ public class OlapUtil {
 
     /**
      *TODO JAVADOC
-     * @param cellSet 
-     * @param queryId 
-     *
+     * 
+     * @param cellSet
+     * @param queryId
+     * 
      */
-    public static void storeCellSet(String queryId, CellSet cellSet) {
+    public static void storeCellSet(final String queryId, final CellSet cellSet) {
         Collections.sort(cellSetIndex);
-        int index = Collections.binarySearch(cellSetIndex, queryId);
-        
-        if (index>=0){
-        cellSetIndex.remove(index);
-        cellSetItems.remove(index);
+        final int index = Collections.binarySearch(cellSetIndex, queryId);
+
+        if (index >= 0) {
+            cellSetIndex.remove(index);
+            cellSetItems.remove(index);
         }
-        
+
         cellSetIndex.add(queryId);
         cellSetItems.add(cellSet);
     }
-
-    /**
-     *TODO JAVADOC
-     *
-     * @param queryId
-     * @return
-     */
-    public static CellSet getCellSet(String queryId) {
-        Collections.sort(cellSetIndex);
-        int index = Collections.binarySearch(cellSetIndex, queryId);
-       
-        return cellSetItems.get(index);
-        
-    }
-    
-    
-    private static AxisInfo computeAxisInfo(CellSetAxis axis)
-    {
-        if (axis == null) {
-            return new AxisInfo(0);
-        }
-        final AxisInfo axisInfo =
-            new AxisInfo(axis.getAxisMetaData().getHierarchies().size());
-        int p = -1;
-        for (Position position : axis.getPositions()) {
-            ++p;
-            int k = -1;
-            for (Member member : position.getMembers()) {
-                ++k;
-                final AxisOrdinalInfo axisOrdinalInfo =
-                    axisInfo.ordinalInfos.get(k);
-                final int topDepth =
-                    member.isAll()
-                        ? member.getDepth()
-                        : member.getHierarchy().hasAll()
-                            ? 1
-                            : 0;
-                if (axisOrdinalInfo.minDepth > topDepth
-                    || p == 0)
-                {
-                    axisOrdinalInfo.minDepth = topDepth;
-                }
-                axisOrdinalInfo.maxDepth =
-                    Math.max(
-                        axisOrdinalInfo.maxDepth,
-                        member.getDepth());
-            }
-        }
-        return axisInfo;
-    }
-    
-
-    public static Member getMember(Query query, QueryDimension dimension, MemberCell member, CellSet cellSet){
-        Member memberActual=null;
-        QueryDimension qd = query.getDimension(dimension.getName());
-        QueryAxis axis = qd.getAxis();
-        
-        
-        final CellSetAxis columnsAxis;
-
-        if (cellSet.getAxes().size() > 0) {
-            columnsAxis = cellSet.getAxes().get(0);
-        } else {
-            columnsAxis = null;
-        }
-        
-        AxisInfo columnsAxisInfo = computeAxisInfo(columnsAxis);
-
-        // Compute how many columns are required to display the rows axis.
-        final CellSetAxis rowsAxis;
-        if (cellSet.getAxes().size() > 1) {
-            rowsAxis = cellSet.getAxes().get(1);
-        } else {
-            rowsAxis = null;
-        }
-        AxisInfo rowsAxisInfo = computeAxisInfo(rowsAxis);
-
-        for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
-        List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
-        for (int j = 0; j < memberList.size(); j++) {
-            String memberPD = member.getParentDimension();
-            String memberListPD = memberList.get(j).getDimension().getName();
-            String memberRV = member.getRawValue();
-            String memberListName = memberList.get(j).getName();
-            if (member.getParentDimension().equals(memberList.get(j).getDimension().getName()) &&
-                    member.getRawValue().equals(memberList.get(j).getName())){
-            memberActual = memberList.get(j);
-            }
-        }
-        }
-        
-        return memberActual;
-        
-        
-    }
-    public static boolean isDescendant(Member parent, Member testForDescendituitivitiness) {
-        if (testForDescendituitivitiness.equals(parent)) return false;
-        while (testForDescendituitivitiness != null) {
-            if (testForDescendituitivitiness.equals(parent)) return true;
-            testForDescendituitivitiness = testForDescendituitivitiness.getParentMember();
-        }
-        return false;
-    }
-
-
-    public static boolean isDescendantOrEqualTo(
-            Member parent, Member testForEquidescendituitivitiness) {
-        return parent.equals(testForEquidescendituitivitiness) ||
-            isDescendant(parent, testForEquidescendituitivitiness);
-    }
-
-    public static boolean isChild(Member parent, Member testForChildishness) {
-        return parent.equals(testForChildishness.getParentMember());
-    }
-
-    private static class AxisInfo {
-        final List<AxisOrdinalInfo> ordinalInfos;
-
-        /**
-         * Creates an AxisInfo.
-         *
-         * @param ordinalCount Number of hierarchies on this axis
-         */
-        AxisInfo(int ordinalCount) {
-            ordinalInfos = new ArrayList<AxisOrdinalInfo>(ordinalCount);
-            for (int i = 0; i < ordinalCount; i++) {
-                ordinalInfos.add(new AxisOrdinalInfo());
-            }
-        }
-
-        /**
-         * Returns the number of matrix columns required by this axis. The
-         * sum of the width of the hierarchies on this axis.
-         *
-         * @return Width of axis
-         */
-        public int getWidth() {
-            int width = 0;
-            for (AxisOrdinalInfo info : ordinalInfos) {
-                width += info.getWidth();
-            }
-            return width;
-        }
-    }
-    
-    private static class AxisOrdinalInfo {
-        int minDepth = 1;
-        int maxDepth = 0;
-
-        /**
-         * Returns the number of matrix columns required to display this
-         * hierarchy.
-         */
-        public int getWidth() {
-            return maxDepth - minDepth + 1;
-        }
-    }
-
 
 }

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
-import org.olap4j.metadata.Member;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
@@ -307,7 +306,8 @@ public interface QueryService extends Service {
 	                         String queryId, 
 	                         MemberCell member) throws OlapException;
 	
-	public void drillReplaceMember(String userId, 
+	@Secured ({"Users"})
+	public void drillPosition(String userId, 
             String sessionId, 
             String queryId, 
             MemberCell member) throws OlapException;

@@ -32,9 +32,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
-import org.olap4j.mdx.SelectNode;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.query.Query;
@@ -43,8 +41,6 @@ import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.olap4j.query.Selection.Operator;
-import org.olap4j.transform.DrillReplaceTransform;
-import org.olap4j.transform.MdxQueryTransform;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.messages.Messages;
@@ -343,7 +339,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     
     }
     
-    public void drillReplaceMember(final String userId, final String sessionId, String queryId, MemberCell member) {
+    public void drillPosition(final String userId, final String sessionId, String queryId, MemberCell member) {
         this.sessionService.validateSession(userId, sessionId);
         Query q = getQuery(userId, sessionId, queryId);
         CellSet cellSet = OlapUtil.getCellSet(queryId);
