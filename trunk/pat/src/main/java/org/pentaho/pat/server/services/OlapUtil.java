@@ -42,9 +42,18 @@ import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 public class OlapUtil {
 
-    static ArrayList<String> cellSetIndex = new ArrayList();
+    private static ArrayList<String> cellSetIndex = new ArrayList();
 
-    static ArrayList<CellSet> cellSetItems = new ArrayList();
+    private static ArrayList<CellSet> cellSetItems = new ArrayList();
+
+    /**
+     * 
+     * Converts a Olap4j cellset to a CellDataSet Matrix.
+     * 
+     * @param cellSet
+     *            The Olap4j cellset.
+     * @return cds The Matrix.
+     */
 
     public static CellDataSet cellSet2Matrix(final CellSet cellSet) {
         if (cellSet == null)
@@ -67,12 +76,10 @@ public class OlapUtil {
 
         cds.setCellSetBody(bodyvalues);
 
-        // final BaseCell[][] headervalues = new BaseCell[matrix.getMatrixHeight()][matrix.getMatrixWidth()];
         final BaseCell[][] headervalues = new BaseCell[matrix.getOffset()][matrix.getMatrixWidth()];
         for (int y = 0; y < matrix.getOffset(); y++)
             for (int x = 0; x < matrix.getMatrixWidth(); x++)
                 headervalues[y][x] = matrix.get(x, y);
-        // headervalues[y][x].setParentDimension(matrix.get(x, y));
 
         cds.setCellSetHeaders(headervalues);
         cds.setOffset(matrix.getOffset());
@@ -80,6 +87,16 @@ public class OlapUtil {
 
     }
 
+    /**
+     * 
+     * Finds or creates a node from a string tree.
+     * 
+     * @param parent
+     *            The parent String Tree.
+     * @param srchString
+     *            The search string.
+     * @return found String Tree.
+     */
     public static StringTree findOrCreateNode(final StringTree parent, final String srchString) {
         StringTree found = null;
         for (int i = 0; i < parent.getChildren().size() && found == null; i++) {
@@ -114,9 +131,10 @@ public class OlapUtil {
     }
 
     /**
-     *TODO JAVADOC
+     * getCellSet returns a stored cellset for a query.
      * 
      * @param queryId
+     *            The queryId.
      * @return
      */
     public static CellSet getCellSet(final String queryId) {
@@ -172,6 +190,20 @@ public class OlapUtil {
         return color;
     }
 
+    /**
+     * 
+     * Returns a Olap4J member from a search with a membercell member.
+     * 
+     * @param query
+     *            The query to search.
+     * @param dimension
+     *            The dimension to search.
+     * @param member
+     *            The member to find.
+     * @param cellSet
+     *            The Olap4J CellSet.
+     * @return
+     */
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
             final CellSet cellSet) {
         Member memberActual = null;
@@ -195,18 +227,18 @@ public class OlapUtil {
             for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
                 final List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
                 for (int j = 0; j < memberList.size(); j++)
-                    if (member.getParentDimension().equals(memberList.get(j).getDimension().getName())
-                            && member.getRawValue().equals(memberList.get(j).getName()))
+                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName()))
                         memberActual = memberList.get(j);
+                break;
             }
 
         if (columnsAxis != null)
             for (int i = 0; i < columnsAxis.getPositions().size(); i++) {
                 final List<Member> memberList = columnsAxis.getPositions().get(i).getMembers();
                 for (int j = 0; j < memberList.size(); j++)
-                    if (member.getParentDimension().equals(memberList.get(j).getDimension().getName())
-                            && member.getRawValue().equals(memberList.get(j).getName()))
+                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName()))
                         memberActual = memberList.get(j);
+                break;
             }
 
         return memberActual;
@@ -246,7 +278,6 @@ public class OlapUtil {
         return values[0];
     }
 
-
     /**
      * @param memberNames
      *            in the form memberNames[0] = "All Products", memberNames[1] = "Food", memberNames[2] = "Snacks"
@@ -270,7 +301,7 @@ public class OlapUtil {
     }
 
     /**
-     *TODO JAVADOC
+     * storeCellSet stores a cellset generated from a query so we can manipulate it at a later date.
      * 
      * @param cellSet
      * @param queryId

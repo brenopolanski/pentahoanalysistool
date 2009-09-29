@@ -300,6 +300,16 @@ public interface QueryService extends Service {
 	        String queryId,
 	        String dimensionName) throws OlapException;
 	
+	/**
+	 * 
+	 *TODO JAVADOC
+	 *
+	 * @param userId The owner of the query.
+	 * @param sessionId The session id into which the query is stored.
+	 * @param queryId The query id.
+	 * @param member The member being drilled.
+	 * @throws OlapException If something goes sour.
+	 */
 	@Secured ({"Users"})
 	public void drillPosition(String userId, 
             String sessionId, 
