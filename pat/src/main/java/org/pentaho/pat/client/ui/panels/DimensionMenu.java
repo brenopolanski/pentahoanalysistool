@@ -41,8 +41,8 @@ import org.pentaho.pat.rpc.dto.StringTree;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -65,15 +65,16 @@ public class DimensionMenu extends LayoutComposite {
     /** The main menu. */
     private final Tree dimensionTree;
 
-    Label dimensionLabel;
+    private Label dimensionLabel;
 
-    final ComboBox<String> sortComboBox = new ComboBox<String>();
+    private final ComboBox<String> sortComboBox = new ComboBox<String>();
 
-    final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) sortComboBox.getModel();
+    private final DefaultComboBoxModel<String> sortModeModel = (DefaultComboBoxModel<String>) sortComboBox.getModel();
     
-    final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
+    private final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
-    final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+    private final DefaultComboBoxModel<String> hierarchyModeModel = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+    
     /**
      * 
      * DimensionMenu Constructor.
@@ -92,30 +93,39 @@ public class DimensionMenu extends LayoutComposite {
         final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
         final TextBox filterbox = new TextBox();
-        filterbox.setEnabled(false);
-        filterbox.addKeyUpHandler(new KeyUpHandler() {
-
-            public void onKeyUp(final KeyUpEvent arg0) {
-
-                final String filter = filterbox.getText();
-                for (int i = 0; i < dimensionTree.getItemCount(); i++)
-                    if (!dimensionTree.getItem(i).getText().startsWith(filter))
-                        dimensionTree.getItem(i).remove();
-
-            }
-
-        });
+//        filterbox.setEnabled(false);
+//        filterbox.addKeyUpHandler(new KeyUpHandler() {
+//
+//            public void onKeyUp(final KeyUpEvent arg0) {
+//
+//                final String filter = filterbox.getText();
+//                for (int i = 0; i < dimensionTree.getItemCount(); i++)
+//                    if (!dimensionTree.getItem(i).getText().startsWith(filter))
+//                        dimensionTree.getItem(i).remove();
+//
+//            }
+//
+//        });
         final Button filterButton = new Button(ConstantFactory.getInstance().filter());
-        filterButton.setEnabled(false);
+//        filterButton.setEnabled(false);
+        filterButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                if (!filterbox.getText().isEmpty()) {
+                    findItems(filterbox.getText());
+                }
+                
+            }
+        });
 
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
 
         
-        model1.add("ASC");
-        model1.add("DESC");
-        model1.add("BASC");
-        model1.add("BDESC");
+        sortModeModel.add("ASC");
+        sortModeModel.add("DESC");
+        sortModeModel.add("BASC");
+        sortModeModel.add("BDESC");
 
         sortComboBox.addChangeHandler(new ChangeHandler() {
 
@@ -140,8 +150,8 @@ public class DimensionMenu extends LayoutComposite {
         });
 
 
-        model2.add("PRE");
-        model2.add("POST");
+        hierarchyModeModel.add("PRE");
+        hierarchyModeModel.add("POST");
 
         hierarchyComboBox.addChangeHandler(new ChangeHandler() {
 
@@ -227,12 +237,12 @@ public class DimensionMenu extends LayoutComposite {
                                                         for (int i = 0; i < sortComboBox.getItemCount(); i++)
                                                             if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
                                                                 //DimensionMenu.this.sortComboBox.setSelectedIndex(i);
-                                                                DimensionMenu.this.model1.setSelectedItem(arg0);
-                                                                DimensionMenu.this.model1.getSelectedItem();
+                                                                DimensionMenu.this.sortModeModel.setSelectedItem(arg0);
+                                                                DimensionMenu.this.sortModeModel.getSelectedItem();
                                                                 break;
                                                             }
                                                             else
-                                                                DimensionMenu.this.model1.setSelectedItem(null);
+                                                                DimensionMenu.this.sortModeModel.setSelectedItem(null);
                                                         
                                                         ServiceFactory.getQueryInstance().getHierarchizeMode(
                                                                 Pat.getSessionID(), Pat.getCurrQuery(), dimensionId,
@@ -248,12 +258,12 @@ public class DimensionMenu extends LayoutComposite {
                                                                                 .getItemCount(); i++)
                                                                             if (hierarchyComboBox.getModel().getElementAt(i)
                                                                                     .equals(arg0)){
-                                                                                DimensionMenu.this.model2.setSelectedItem(arg0);
-                                                                        DimensionMenu.this.model2.getSelectedItem();
+                                                                                DimensionMenu.this.hierarchyModeModel.setSelectedItem(arg0);
+                                                                        DimensionMenu.this.hierarchyModeModel.getSelectedItem();
                                                                         break;
                                                                     }
                                                                     else
-                                                                        DimensionMenu.this.model2.setSelectedItem(null);
+                                                                        DimensionMenu.this.hierarchyModeModel.setSelectedItem(null);
                                                                             
                                                                         addDimensionTreeItem(labels, parent,
                                                                                 selectionlist);
@@ -293,5 +303,29 @@ public class DimensionMenu extends LayoutComposite {
             addDimensionTreeItem(child.get(i), newParent, selectionlist);
         }
     }
+    
+    private final void findItems(final String searchText) {
+        for(int i = 0; i< dimensionTree.getItemCount();i++) {
+            searchTreeItems(dimensionTree.getItem(i),searchText);
+        }
+    }
 
+    private final void searchTreeItems(final TreeItem item,final String searchText) {
+        if (item.getText().toUpperCase().contains(searchText.toUpperCase())) {
+            item.setSelected(true);
+            if (item.getParentItem() != null) {
+                openParent(item.getParentItem());
+            }
+        }
+        for (int i = 0; i < item.getChildCount();i++) {
+            searchTreeItems(item.getChild(i),searchText);
+        }
+    }
+    
+    private final void openParent(final TreeItem item) {
+        item.setState(true);
+        if (item.getParentItem() != null) {
+            openParent(item.getParentItem());
+        }
+    }
 }
