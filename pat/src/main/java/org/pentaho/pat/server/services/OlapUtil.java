@@ -42,9 +42,9 @@ import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 public class OlapUtil {
 
-    private static ArrayList<String> cellSetIndex = new ArrayList();
+    private static ArrayList<String> cellSetIndex = new ArrayList<String>();
 
-    private static ArrayList<CellSet> cellSetItems = new ArrayList();
+    private static ArrayList<CellSet> cellSetItems = new ArrayList<CellSet>();
 
     /**
      * 
@@ -127,7 +127,7 @@ public class OlapUtil {
      */
     public static Selection findSelection(String path, final QueryDimension dim) {
         path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
-        return findSelection(path, dim.getSelections());
+        return findSelection(path, dim.getInclusions());
     }
 
     /**
@@ -206,6 +206,10 @@ public class OlapUtil {
      */
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
             final CellSet cellSet) {
+        
+        /**
+         * TODO TIDY UP AND VERIFY!
+         */
         Member memberActual = null;
         final QueryDimension qd = query.getDimension(dimension.getName());
         qd.getAxis();
@@ -227,18 +231,21 @@ public class OlapUtil {
             for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
                 final List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
                 for (int j = 0; j < memberList.size(); j++)
-                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName()))
+                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName())){
                         memberActual = memberList.get(j);
-                break;
+                        break;
+                    }
+                
             }
 
         if (columnsAxis != null)
             for (int i = 0; i < columnsAxis.getPositions().size(); i++) {
                 final List<Member> memberList = columnsAxis.getPositions().get(i).getMembers();
                 for (int j = 0; j < memberList.size(); j++)
-                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName()))
+                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName())){
                         memberActual = memberList.get(j);
-                break;
+                        break;
+                    }
             }
 
         return memberActual;

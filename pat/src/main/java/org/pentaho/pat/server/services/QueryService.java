@@ -50,7 +50,15 @@ public interface QueryService extends Service {
     public String createNewQuery(String userId, String sessionId,
         String connectionId, String cubeName) throws OlapException;
     
-    
+    /**
+     * 
+     * Returns a query object
+     *
+     * @param userId
+     * @param sessionId
+     * @param queryId
+     * @return
+     */
     @Secured ({"Users"})
     public Query getQuery(String userId, String sessionId, String queryId);
     
@@ -302,7 +310,8 @@ public interface QueryService extends Service {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Carries out a drill position drill type expanding the current member in place 
+	 * to show its child members.
 	 *
 	 * @param userId The owner of the query.
 	 * @param sessionId The session id into which the query is stored.
