@@ -32,6 +32,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 	private String parentDimension = null;
 	
 	private String parentMember = null;
+	
+	private String rightOf = null;
 
     private String uniqueName;
 
@@ -142,5 +144,19 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     
     public int getChildMemberCount(){
         return childMemberCount;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param uniqueName2
+     */
+    public void setRightOf(String uniqueName2) {
+        this.rightOf= uniqueName2;
+        
+    }
+    
+    public String getRightOf(){
+        return rightOf;
     }
 }

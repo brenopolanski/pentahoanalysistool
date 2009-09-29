@@ -344,6 +344,10 @@ public class PatCellSetFormatter {
                     memberInfo.setParentDimension(member.getDimension().getName());
                     memberInfo.setUniquename(member.getUniqueName());
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
+                    
+                    if(y>0 && prevMembers[y-1]!=null)
+                    memberInfo.setRightOf(prevMembers[y-1].getUniqueName());
+                    
                     if (member.getParentMember() != null)
                         memberInfo.setParentMember(member.getParentMember().getName());
 
