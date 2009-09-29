@@ -83,7 +83,8 @@ public interface QueryAsync {
     public void getSelection(
             String sessionId,
             String queryId,
-            String dimensionName, AsyncCallback callback);
+            String dimensionName, 
+            AsyncCallback<String[][]> callback);
     
     public void swapAxis(
             String sessionId, 
@@ -107,7 +108,7 @@ public interface QueryAsync {
            String sessionId,
            String queryId,
            String dimensionName,
-           AsyncCallback callback);
+           AsyncCallback<String> callback);
    
    public void setHierarchizeMode(
            String sessionId, 
@@ -120,7 +121,7 @@ public interface QueryAsync {
            String sessionId,
            String queryId,
            String dimensionName,
-           AsyncCallback callback);
+           AsyncCallback<String> callback);
       
    public void drillPosition(
            String sessionId, 

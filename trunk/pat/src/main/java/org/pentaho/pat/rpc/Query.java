@@ -150,13 +150,13 @@ public interface Query extends RemoteService {
 
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Executes an mdx based query.
 	 *
-	 * @param sessionId
-	 * @param connectionId
-	 * @param mdx
-	 * @return
-	 * @throws RpcException
+	 * @param sessionId The current session id.
+	 * @param connectionId The current connectionId.
+	 * @param mdx The mdx code.
+	 * @return A cell data set.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public CellDataSet executeMdxQuery(
@@ -166,13 +166,13 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Gets the selection status for a dimension.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @return
-	 * @throws RpcException
+	 * @param sessionId The current session id.
+	 * @param queryId The current query id.
+	 * @param dimensionName The dimension in question.
+	 * @return A String Array.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	 public String[][] getSelection(
@@ -182,12 +182,12 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Swaps the axis of the data set.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @return
-	 * @throws RpcException
+	 * @param sessionId The current session id.
+	 * @param queryId The current query id.
+	 * @return A CellDataSet
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public CellDataSet swapAxis(
@@ -196,13 +196,13 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Sets the sort order of a dimension.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @param sort
-	 * @throws RpcException
+	 * @param sessionId The current session id.
+	 * @param queryId The current query id.
+	 * @param dimensionName The dimension in question.
+	 * @param sort The sort type.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public void setSortOrder(
@@ -213,12 +213,12 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Clears the sort order on a dimension.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @throws RpcException
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public void clearSortOrder(
@@ -228,13 +228,13 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Gets the sort order for a dimension.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @return
-	 * @throws RpcException
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @return A String.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public String getSortOrder(
@@ -244,13 +244,13 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Set the hierarchize mode for a dimension.
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @param mode
-	 * @throws RpcException
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @param mode The hierarchize mode.
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public void setHierarchizeMode(
@@ -261,13 +261,13 @@ public interface Query extends RemoteService {
 	
 	/**
 	 * 
-	 *TODO JAVADOC
+	 * Gets the hierarchize mode for a dimension
 	 *
-	 * @param sessionId
-	 * @param queryId
-	 * @param dimensionName
-	 * @return
-	 * @throws RpcException
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @return A String
+	 * @throws RpcException If something turns sour.
 	 */
 	@Secured ({"Users"})
 	public String getHierarchizeMode(
@@ -275,6 +275,15 @@ public interface Query extends RemoteService {
 	        String queryId,
 	        String dimensionName) throws RpcException;
 	
+	/**
+	 * 
+	 * Perform a drill position drill on a member.
+	 *
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param member The member cell.
+	 * @throws RpcException If something turns sour.
+	 */
 	@Secured ({"Users"})
 	public void drillPosition(
 	        String sessionId, 
