@@ -42,6 +42,7 @@ import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -171,7 +172,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * (non-Javadoc)
      * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang.String, java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public void drillPosition(final String userId, final String sessionId, final String queryId, final MemberCell member) {
+    public void drillPosition(final String userId, final String sessionId, final String queryId, final MemberCell member) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query q = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
@@ -181,8 +182,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         try {
             childmembers = memberFetched.getChildMembers();
         } catch (final OlapException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new OlapException(Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
         }
 
         if (childmembers != null) {
@@ -197,8 +197,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     removeChildren(childmembers.get(i).getChildMembers());
 
                 } catch (final OlapException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw new OlapException(Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
                 }
                 qd.exclude(childmembers.get(i));
             }
