@@ -84,17 +84,13 @@ public class DataPanel extends LayoutComposite implements QueryListener {
                         new AsyncCallback<CellDataSet>() {
 
                             public void onFailure(final Throwable arg0) {
-                                // TODO Auto-generated method stub
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                         .failedQuery(arg0.getLocalizedMessage()));
                             }
 
                             public void onSuccess(final CellDataSet result1) {
-                                // TODO Auto-generated method stub
-                                // onQueryExecuted(Pat.getCurrQuery(), result1);
                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                         DataPanel.this, Pat.getCurrQuery(), result1);
-                                // olapTable.setData(result1);
                             }
 
                         });
