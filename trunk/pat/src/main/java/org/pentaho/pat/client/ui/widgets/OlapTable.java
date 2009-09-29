@@ -184,7 +184,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
             drillButton.addClickHandler(new ClickHandler() {
 
                 public void onClick(final ClickEvent arg0) {
-                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback(){
+                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
 
                         public void onFailure(Throwable arg0) {
                             MessageBox.alert("Failed", "failed");
