@@ -111,7 +111,7 @@ public class DimensionMenu extends LayoutComposite {
         filterButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
-                if (!filterbox.getText().isEmpty()) {
+                if (filterbox.getText() != null && filterbox.getText().length() > 0) {
                     findItems(filterbox.getText());
                 }
                 
