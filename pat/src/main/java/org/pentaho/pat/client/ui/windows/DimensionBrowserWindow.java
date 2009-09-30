@@ -65,7 +65,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     }
 
     private static void display() {
-        dbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        dbw.setSize("650px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         dbw.showModal(false);
         // dbw.show();
         dbw.layout();
