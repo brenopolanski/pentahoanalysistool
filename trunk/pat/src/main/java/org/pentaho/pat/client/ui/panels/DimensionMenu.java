@@ -23,13 +23,18 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
+import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.gwt.mosaic.ui.client.list.Filter;
+import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
@@ -43,8 +48,11 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -74,7 +82,23 @@ public class DimensionMenu extends LayoutComposite {
     private final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
     private final DefaultComboBoxModel<String> hierarchyModeModel = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+
+    private final DefaultListModel<MemberSelectionLabel> memberListBoxModel = new DefaultListModel<MemberSelectionLabel>();
     
+    private final  ListBox<MemberSelectionLabel> memberListBox = new ListBox<MemberSelectionLabel>(new String[]  {"Member","Path"});
+    
+    private FilterProxyListModel<MemberSelectionLabel, String> filterModel;
+    
+    private final TextBox filterbox = new TextBox();
+
+
+    private Timer filterTimer = new Timer() {
+        @Override
+        public void run() {
+          filterModel.filter(filterbox.getText());
+        }
+    };
+
     /**
      * 
      * DimensionMenu Constructor.
@@ -89,38 +113,52 @@ public class DimensionMenu extends LayoutComposite {
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
+      
+        
+        memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
+            public void renderCell(ListBox<MemberSelectionLabel> listBox, int row, int column,
+            		MemberSelectionLabel item) {
+              switch (column) {
+                case 0:
+                  listBox.setWidget(row, column, item);
+                  break;
+                case 1:
+                	String path = "";
+                	for (int i=0;i<item.getFullPath().length;i++) {
+                		path+=item.getFullPath()[i];
+                		if((i+1)<item.getFullPath().length) {
+                			path+="->";
+                		}
+                	}
+                  listBox.setText(row, column, path);
+                  break;
+                default:
+                  throw new RuntimeException("Should not happen");
+              }
+            }
+          });
+
+        
         //dimensionTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
         final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        filterbox.addKeyPressHandler(new KeyPressHandler() {
+            public void onKeyPress(KeyPressEvent event) {
+                filterTimer.schedule(300);
+              }
+            });
 
-        final TextBox filterbox = new TextBox();
-//        filterbox.setEnabled(false);
-//        filterbox.addKeyUpHandler(new KeyUpHandler() {
-//
-//            public void onKeyUp(final KeyUpEvent arg0) {
-//
-//                final String filter = filterbox.getText();
-//                for (int i = 0; i < dimensionTree.getItemCount(); i++)
-//                    if (!dimensionTree.getItem(i).getText().startsWith(filter))
-//                        dimensionTree.getItem(i).remove();
-//
-//            }
-//
-//        });
         final Button filterButton = new Button(ConstantFactory.getInstance().filter());
-//        filterButton.setEnabled(false);
         filterButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
                 if (filterbox.getText() != null && filterbox.getText().length() > 0) {
                     findItems(filterbox.getText());
                 }
-                
             }
         });
 
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
-
         
         sortModeModel.add("ASC");
         sortModeModel.add("DESC");
@@ -128,25 +166,18 @@ public class DimensionMenu extends LayoutComposite {
         sortModeModel.add("BDESC");
 
         sortComboBox.addChangeHandler(new ChangeHandler() {
-
             public void onChange(final ChangeEvent arg0) {
-
                 ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(),
                         dimensionLabel.getText(), sortComboBox.getText(), new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
-
                             }
 
                             public void onSuccess(final Object arg0) {
-
                             }
-
                         });
-
             }
-
         });
 
 
@@ -177,6 +208,7 @@ public class DimensionMenu extends LayoutComposite {
         baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
+        baseLayoutPanel.add(memberListBox, new BoxLayoutData(FillStyle.BOTH));
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
@@ -192,6 +224,7 @@ public class DimensionMenu extends LayoutComposite {
         });
 
     }
+    
 
     public Tree getDimensionTree() {
         return dimensionTree;
@@ -264,9 +297,22 @@ public class DimensionMenu extends LayoutComposite {
                                                                     }
                                                                     else
                                                                         DimensionMenu.this.hierarchyModeModel.setSelectedItem(null);
-                                                                            
+                                                                        
+                                                                        memberListBoxModel.clear();
                                                                         addDimensionTreeItem(labels, parent,
                                                                                 selectionlist);
+                                                                        // TODO why do i have to do it here and not in the constructor?
+                                                                        filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(memberListBoxModel);
+                                                                        filterModel.setModelFilter(new Filter<MemberSelectionLabel, String>() {
+                                                                            public boolean select(MemberSelectionLabel element, String filter) {
+                                                                              if (filter == null || filter.length() == 0) {
+                                                                                return true;
+                                                                              }
+                                                                              return element.getText().toUpperCase().contains(filter.toUpperCase());
+                                                                            }
+                                                                          });
+                                                                        memberListBox.setModel(filterModel);
+                                                                        
                                                                     }
 
                                                                 });
@@ -295,10 +341,12 @@ public class DimensionMenu extends LayoutComposite {
         for (int i = 0; i < child.size(); i++) {
             final MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
             for (final String[] element2 : selectionlist)
-                if (memberLabel.getText().equals(element2[0]))
+                if (memberLabel.getText().equals(element2[0])) {
                     memberLabel.setSelectionMode(element2[1]);
-
+                }
+            
             final TreeItem newParent = parent.addItem(memberLabel);
+            memberListBoxModel.add(memberLabel);
             memberLabel.setTreeItem(newParent);
             addDimensionTreeItem(child.get(i), newParent, selectionlist);
         }

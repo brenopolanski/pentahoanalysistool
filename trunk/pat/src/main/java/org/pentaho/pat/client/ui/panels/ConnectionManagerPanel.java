@@ -65,72 +65,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 public class ConnectionManagerPanel extends LayoutComposite {
 
     private static ListBox<ConnectionItem> listBox;
-
-    public static void addConnection(final ConnectionItem ci) {
-        model.add(ci);
-    }
-
-    public static void refreshConnectionList() {
-
-        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
-        final ArrayList<String> cIdList = new ArrayList<String>();
-        model.clear();
-        ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
-            public void onFailure(final Throwable arg0) {
-                MessageBox
-                        .alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(arg0.getLocalizedMessage()));
-
-            }
-
-            public void onSuccess(final CubeConnection[] ccArray) {
-                for (final CubeConnection element2 : ccArray) {
-                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
-                    cIdList.add(newCi.getId());
-                    cList.add(newCi);
-                }
-                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
-                        new AsyncCallback<CubeConnection[]>() {
-
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedActiveConnection(arg0.getLocalizedMessage()));
-
-                            }
-
-                            public void onSuccess(final CubeConnection[] ccArray2) {
-                                for (final CubeConnection element2 : ccArray2) {
-                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2
-                                            .getName(), false);
-
-                                    // FIXME why is this not working, but the cIdList does work. cList should contain
-                                    // this element!!
-                                    // if(cList2.contains(newCi)) {
-                                    if (cIdList.contains(newCi.getId()))
-                                        cList.get(cIdList.indexOf(newCi.getId())).setConnected(true);
-                                    else {
-                                        newCi.setConnected(true);
-                                        cList.add(newCi);
-                                    }
-                                }
-
-                                for (final ConnectionItem cItem : cList)
-                                    model.add(cItem);
-                                refreshMe();
-                            }
-                        });
-
-            }
-        });
-
-    }
-
-    public static void refreshMe() {
-        connectionsList.invalidate();
-        listBox.invalidate();
-        connectionsList.layout();
-        listBox.layout();
-    }
-
+    
     private ToolBar toolBar;
 
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
@@ -144,6 +79,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         setupConnectionList();
         baseLayoutPanel.add(connectionsList);
     }
+
 
     public ListBox<ConnectionItem> createListBox() {
         final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
@@ -249,6 +185,72 @@ public class ConnectionManagerPanel extends LayoutComposite {
         // listBox.invalidate();
     }
 
+
+    public static void addConnection(final ConnectionItem ci) {
+        model.add(ci);
+    }
+
+    public static void refreshConnectionList() {
+
+        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
+        final ArrayList<String> cIdList = new ArrayList<String>();
+        model.clear();
+        ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
+            public void onFailure(final Throwable arg0) {
+                MessageBox
+                        .alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(arg0.getLocalizedMessage()));
+
+            }
+
+            public void onSuccess(final CubeConnection[] ccArray) {
+                for (final CubeConnection element2 : ccArray) {
+                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
+                    cIdList.add(newCi.getId());
+                    cList.add(newCi);
+                }
+                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
+                        new AsyncCallback<CubeConnection[]>() {
+
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedActiveConnection(arg0.getLocalizedMessage()));
+
+                            }
+
+                            public void onSuccess(final CubeConnection[] ccArray2) {
+                                for (final CubeConnection element2 : ccArray2) {
+                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2
+                                            .getName(), false);
+
+                                    // FIXME why is this not working, but the cIdList does work. cList should contain
+                                    // this element!!
+                                    // if(cList2.contains(newCi)) {
+                                    if (cIdList.contains(newCi.getId()))
+                                        cList.get(cIdList.indexOf(newCi.getId())).setConnected(true);
+                                    else {
+                                        newCi.setConnected(true);
+                                        cList.add(newCi);
+                                    }
+                                }
+
+                                for (final ConnectionItem cItem : cList)
+                                    model.add(cItem);
+                                refreshMe();
+                            }
+                        });
+
+            }
+        });
+
+    }
+
+    public static void refreshMe() {
+        connectionsList.invalidate();
+        listBox.invalidate();
+        connectionsList.layout();
+        listBox.layout();
+    }
+    
     public void setupConnectionList() {
         listBox = createListBox();
 
