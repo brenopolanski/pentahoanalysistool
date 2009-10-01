@@ -64,7 +64,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     private final static ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
 
     /** A Tab Layout Panel. */
-    private transient final static TabLayoutPanel tabPanel = new TabLayoutPanel();
+    private final static TabLayoutPanel tabPanel = new TabLayoutPanel();
 
     public static void closeTabs() {
         for (final int i = 0; i < tabPanel.getWidgetCount();)

@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.ui.windows;
 
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -55,7 +54,7 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     private static DimensionMenu dimensionMenuPanel = new DimensionMenu();
 
-    private final LayoutPanel windowContentpanel = new ScrollLayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static DimensionBrowserWindow dbw = new DimensionBrowserWindow();
 

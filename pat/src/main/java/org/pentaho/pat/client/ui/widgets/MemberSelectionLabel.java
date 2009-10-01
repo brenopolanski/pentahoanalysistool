@@ -19,9 +19,6 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.pentaho.pat.client.ui.images.SelectionModeImageBundle;
 import org.pentaho.pat.client.ui.popups.SelectionModeMenu2;
 
@@ -32,7 +29,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
@@ -43,20 +39,17 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class MemberSelectionLabel extends HorizontalPanel {
 
     /** PatImages ImageBundle. */
-    private transient SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
-
-    /** Click Listener Collection. */
-    // private transient ClickListenerCollection clickListeners;
+    private SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
 
     /** Label. */
-    private final transient Label label = new Label();
+    private Label label = new Label();
 
     /** Image. */
     private Image image;
 
-    /** TreeItems. */
-    private TreeItem treeItem;
-
+    private String dimension;
+    
+    private String[] fullPath;
     /**
      * Create the Label.
      */
@@ -86,17 +79,17 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * 
      * @return the full path
      */
-    public final String[] getFullPath() {
-        final List<String> pathList = new ArrayList<String>();
-        pathList.add(label.getText());
-        TreeItem currentTreeItem = treeItem;
-        while (currentTreeItem.getParentItem() != null
-                && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
-            currentTreeItem = currentTreeItem.getParentItem();
-            pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
-        }
-        final String[] values = new String[pathList.size()];
-        return pathList.toArray(values);
+    public String[] getFullPath() {
+        return fullPath;
+    }
+    
+    /**
+     * Sets the full path.
+     * 
+     * @param full path
+     */
+    public void setFullPath(String[] fullpath) {
+        fullPath = fullpath;
     }
 
     /**
@@ -104,7 +97,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * 
      * @return the label
      */
-    public final Label getLabel() {
+    public Label getLabel() {
         return label;
     }
 
@@ -113,17 +106,8 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * 
      * @return the text
      */
-    public final String getText() {
+    public String getText() {
         return label.getText();
-    }
-
-    /**
-     * Return a treeItem.
-     * 
-     * @return the tree item
-     */
-    public final TreeItem getTreeItem() {
-        return treeItem;
     }
 
     /*
@@ -146,7 +130,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
         case Event.ONCLICK:
             final SelectionModeMenu2 test = new SelectionModeMenu2();
             // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
-            test.showContextMenu(event, getTreeItem());
+            test.showContextMenu(event, this);
             test.setPopupPositionAndShow(new PositionCallback() {
                 public void setPosition(final int offsetWidth, final int offsetHeight) {
                     test.setPopupPosition(event.getClientX(), event.getClientY());
@@ -222,14 +206,11 @@ public class MemberSelectionLabel extends HorizontalPanel {
         label.setText(text);
     }
 
-    /**
-     * Set the treeItem.
-     * 
-     * @param treeItem
-     *            the tree item
-     */
-    public final void setTreeItem(final TreeItem treeItem) {
-        this.treeItem = treeItem;
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
     }
 
+    public String getDimension() {
+        return dimension;
+    }
 }
