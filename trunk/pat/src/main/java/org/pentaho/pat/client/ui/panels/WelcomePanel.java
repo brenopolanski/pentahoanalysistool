@@ -40,7 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class WelcomePanel extends DataWidget {
 
     /** Name. */
-    private transient String name;
+    private String name;
 
     /**
      * The PAT Welcome Panel. Currently allows connection editing and opening of the PAT Wiki.

@@ -60,7 +60,7 @@ public class SelectionModeMenu2 extends PopupMenu {
         public final void execute() {
 
             final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
-            final String dimName = getDimensionName(targetLabel);
+            final String dimName = targetLabel.getDimension();
             final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
@@ -83,7 +83,7 @@ public class SelectionModeMenu2 extends PopupMenu {
     public class SelectionModeCommand implements Command {
 
         /** The selection mode. */
-        private transient int selectionMode = -1;
+        private int selectionMode = -1;
 
         /**
          * The Constructor.
@@ -105,7 +105,7 @@ public class SelectionModeMenu2 extends PopupMenu {
          */
         public final void execute() {
             final MemberSelectionLabel targetLabel = (MemberSelectionLabel) getSource();
-            final String dimName = getDimensionName(targetLabel);
+            final String dimName = targetLabel.getDimension();
 
             final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
@@ -212,9 +212,9 @@ public class SelectionModeMenu2 extends PopupMenu {
      * @param selectedItem
      *            the selected item
      */
-    public final void showContextMenu(final Event event, final TreeItem selectedItem) {
+    public final void showContextMenu(final Event event, final MemberSelectionLabel selectedItem) {
 
-        setSource(selectedItem.getWidget());
+        setSource(selectedItem);
 
     }
 

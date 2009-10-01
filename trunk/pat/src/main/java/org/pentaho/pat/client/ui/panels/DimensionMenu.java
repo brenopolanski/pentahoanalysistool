@@ -19,12 +19,14 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -46,15 +48,12 @@ import org.pentaho.pat.rpc.dto.StringTree;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
@@ -118,6 +117,7 @@ public class DimensionMenu extends LayoutComposite {
         memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
             public void renderCell(ListBox<MemberSelectionLabel> listBox, int row, int column,
             		MemberSelectionLabel item) {
+                
               switch (column) {
                 case 0:
                   listBox.setWidget(row, column, item);
@@ -147,19 +147,20 @@ public class DimensionMenu extends LayoutComposite {
               }
             });
 
-        final Button filterButton = new Button(ConstantFactory.getInstance().filter());
-        filterButton.addClickHandler(new ClickHandler() {
-            
-            public void onClick(ClickEvent arg0) {
-                if (filterbox.getText() != null && filterbox.getText().length() > 0) {
-                    findItems(filterbox.getText());
-                }
-            }
-        });
-
+        final Label filterText= new Label(ConstantFactory.getInstance().filter()+":");
+        filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
-        filterPanel.add(filterButton, new BoxLayoutData(FillStyle.VERTICAL));
         
+//        final Button searchButton = new Button(ConstantFactory.getInstance().filter());
+//        searchButton.addClickHandler(new ClickHandler() {
+//            
+//            public void onClick(ClickEvent arg0) {
+//                if (filterbox.getText() != null && filterbox.getText().length() > 0) {
+//                    findItems(filterbox.getText());
+//                }
+//            }
+//        });
+
         sortModeModel.add("ASC");
         sortModeModel.add("DESC");
         sortModeModel.add("BASC");
@@ -207,8 +208,17 @@ public class DimensionMenu extends LayoutComposite {
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
-        baseLayoutPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
         baseLayoutPanel.add(memberListBox, new BoxLayoutData(FillStyle.BOTH));
+        ScrollLayoutPanel dimTreeScrollPanel = new ScrollLayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        dimTreeScrollPanel.setAnimationEnabled(true);
+        
+        // TODO this needs a proper fix, it just means that the scrollpanel and the dimensiontree will 
+        // have the same background (if you expand it will look weird otherwise)
+        dimTreeScrollPanel.setStyleName(dimensionTree.getStyleName());
+        
+        dimTreeScrollPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
+        baseLayoutPanel.add(dimTreeScrollPanel, new BoxLayoutData(FillStyle.BOTH));
+        
 
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
@@ -226,6 +236,12 @@ public class DimensionMenu extends LayoutComposite {
     }
     
 
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        filterbox.setText("");
+    };
+    
     public Tree getDimensionTree() {
         return dimensionTree;
     }
@@ -300,7 +316,7 @@ public class DimensionMenu extends LayoutComposite {
                                                                         
                                                                         memberListBoxModel.clear();
                                                                         addDimensionTreeItem(labels, parent,
-                                                                                selectionlist);
+                                                                                selectionlist,dimensionLabel.getText());
                                                                         // TODO why do i have to do it here and not in the constructor?
                                                                         filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(memberListBoxModel);
                                                                         filterModel.setModelFilter(new Filter<MemberSelectionLabel, String>() {
@@ -335,22 +351,44 @@ public class DimensionMenu extends LayoutComposite {
      * @param arg0
      */
     private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent,
-            final String[][] selectionlist) {
+            final String[][] selectionlist, final String dimension) {
         final List<StringTree> child = childStringTree.getChildren();
 
         for (int i = 0; i < child.size(); i++) {
-            final MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
+            MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
+            MemberSelectionLabel memberLabelcopy = new MemberSelectionLabel(child.get(i).getValue());
+            memberLabel.setDimension(dimension);
+            memberLabelcopy.setDimension(dimension);
+
+            
             for (final String[] element2 : selectionlist)
                 if (memberLabel.getText().equals(element2[0])) {
                     memberLabel.setSelectionMode(element2[1]);
+                    memberLabelcopy.setSelectionMode(element2[1]);
                 }
             
-            final TreeItem newParent = parent.addItem(memberLabel);
-            memberListBoxModel.add(memberLabel);
-            memberLabel.setTreeItem(newParent);
-            addDimensionTreeItem(child.get(i), newParent, selectionlist);
+            TreeItem newParent = parent.addItem(memberLabel);
+            memberLabel.setFullPath(getFullPath(newParent));
+            memberLabelcopy.setFullPath(getFullPath(newParent));
+            memberListBoxModel.add(memberLabelcopy);
+//            memberLabel.setTreeItem(newParent);
+            addDimensionTreeItem(child.get(i), newParent, selectionlist, dimension);
         }
     }
+
+    
+    public final String[] getFullPath(TreeItem currentTreeItem) {
+        final List<String> pathList = new ArrayList<String>();
+        pathList.add(currentTreeItem.getText());
+        while (currentTreeItem.getParentItem() != null
+                && currentTreeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
+            currentTreeItem = currentTreeItem.getParentItem();
+            pathList.add(0, ((MemberSelectionLabel) currentTreeItem.getWidget()).getText());
+        }
+        final String[] values = new String[pathList.size()];
+        return pathList.toArray(values);
+    }
+
     
     private final void findItems(final String searchText) {
         for(int i = 0; i< dimensionTree.getItemCount();i++) {
