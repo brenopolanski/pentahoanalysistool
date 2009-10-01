@@ -28,6 +28,8 @@ import java.util.Set;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.CellSetAxis;
+import org.olap4j.OlapException;
+import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
@@ -37,6 +39,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.util.Matrix;
 import org.pentaho.pat.server.util.PatCellSetFormatter;
 
@@ -145,6 +148,17 @@ public class OlapUtil {
 
     }
 
+    public static void deleteCellSet(final String queryId) {
+        Collections.sort(cellSetIndex);
+        final int index = Collections.binarySearch(cellSetIndex, queryId);
+
+        if (index >= 0) {
+            cellSetIndex.remove(index);
+            cellSetItems.remove(index);
+        }
+        
+    }
+
     /**
      * @param formattedValue
      * @return color
@@ -205,51 +219,36 @@ public class OlapUtil {
      * @return
      */
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
-            final CellSet cellSet) {
+            final CellSet cellSet) throws OlapException{
+
+        final Cube cube = query.getCube();
         
-        /**
-         * TODO TIDY UP AND VERIFY!
-         */
-        Member memberActual = null;
-        final QueryDimension qd = query.getDimension(dimension.getName());
-        qd.getAxis();
+        Member memberOut = cube.lookupMember(member.getRawValue());
 
-        final CellSetAxis columnsAxis;
+        if (member == null) {
+            // Let's try with only the dimension name in front.
+            final List<String> dimPlusMemberNames = new ArrayList<String>();
+            dimPlusMemberNames.add(dimension.getName());
+            dimPlusMemberNames.add(member.getRawValue());
+            memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
-        if (cellSet.getAxes().size() > 0)
-            columnsAxis = cellSet.getAxes().get(0);
-        else
-            columnsAxis = null;
+            if (member == null) {
+                // Sometimes we need to find it in a different name format.
+                // To make sure we find the member, the first element
+                // will be sent as DimensionName.HierarchyName. Cubes which have
+                // more than one hierarchy in a given dimension will require this
+                // format anyways.
+                final List<String> completeMemberNames = new ArrayList<String>();
+                memberOut = cube.lookupMember(member.getUniqueName());
 
-        final CellSetAxis rowsAxis;
-        if (cellSet.getAxes().size() > 1)
-            rowsAxis = cellSet.getAxes().get(1);
-        else
-            rowsAxis = null;
-
-        if (rowsAxis != null)
-            for (int i = 0; i < rowsAxis.getPositions().size(); i++) {
-                final List<Member> memberList = rowsAxis.getPositions().get(i).getMembers();
-                for (int j = 0; j < memberList.size(); j++)
-                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName())){
-                        memberActual = memberList.get(j);
-                        break;
-                    }
-                
+                if (member == null)
+                    // We failed to find the member.
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
             }
+        }
 
-        if (columnsAxis != null)
-            for (int i = 0; i < columnsAxis.getPositions().size(); i++) {
-                final List<Member> memberList = columnsAxis.getPositions().get(i).getMembers();
-                for (int j = 0; j < memberList.size(); j++)
-                    if (member.getUniqueName().equals(memberList.get(j).getUniqueName())){
-                        memberActual = memberList.get(j);
-                        break;
-                    }
-            }
-
-        return memberActual;
-
+        return memberOut;
+      
     }
 
     /**

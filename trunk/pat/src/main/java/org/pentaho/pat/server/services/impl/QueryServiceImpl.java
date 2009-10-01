@@ -42,7 +42,6 @@ import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
-import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -176,8 +175,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final Query q = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
+        
         qd = OlapUtil.getQueryDimension(q, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(q, qd, member, cellSet);
+        
         NamedList<? extends Member> childmembers = null;
         try {
             childmembers = memberFetched.getChildMembers();
@@ -188,8 +189,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         if (childmembers != null) {
             if (!member.isExpanded())
                 for (int i = 0; i < childmembers.size(); i++)
-                    qd.include(childmembers.get(i));
-        }
+                    qd.include(childmembers.get(0));
+                   }
 
         else
             for (int i = 0; i < childmembers.size(); i++) {
@@ -341,6 +342,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      */
     public void releaseQuery(final String userId, final String sessionId, final String queryId) {
         sessionService.validateSession(userId, sessionId);
+        
+        OlapUtil.deleteCellSet(queryId);
+        
         sessionService.getSession(userId, sessionId).getQueries().remove(queryId);
     }
     
