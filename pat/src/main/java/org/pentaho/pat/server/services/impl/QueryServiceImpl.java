@@ -189,7 +189,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         if (childmembers != null) {
             if (!member.isExpanded())
                 for (int i = 0; i < childmembers.size(); i++)
-                    qd.include(childmembers.get(0));
+                    qd.include(childmembers.get(i));
                    }
 
         else
@@ -202,6 +202,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
                 qd.exclude(childmembers.get(i));
             }
+        qd.setHierarchizeMode(HierarchizeMode.PRE);
     }
 
     /*
