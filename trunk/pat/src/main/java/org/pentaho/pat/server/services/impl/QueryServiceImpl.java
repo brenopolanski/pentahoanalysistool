@@ -32,9 +32,11 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
+import org.olap4j.metadata.Schema;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
@@ -420,13 +422,20 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     private Cube getCube4Guid(final String userId, final String sessionId, final String connectionId,
             final String cubeName) throws OlapException {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
-        final NamedList<Cube> cubes = connection.getSchema().getCubes();
+
         Cube cube = null;
-        final Iterator<Cube> iter = cubes.iterator();
-        while (iter.hasNext() && cube == null) {
-            final Cube testCube = iter.next();
-            if (cubeName.equals(testCube.getName()))
-                cube = testCube;
+        NamedList<Catalog> catalogs = connection.getCatalogs();
+        for(int k = 0; k < catalogs.size();k++) {
+            NamedList<Schema> schemas = catalogs.get(k).getSchemas();
+            for(int j = 0; j < schemas.size();j++) {
+                NamedList<Cube> cubes = schemas.get(j).getCubes();
+                final Iterator<Cube> iter = cubes.iterator();
+                while (iter.hasNext() && cube == null) {
+                    final Cube testCube = iter.next();
+                    if (cubeName.equals(testCube.getName()))
+                        cube = testCube;
+                }
+            }
         }
         if (cube != null)
             return cube;
