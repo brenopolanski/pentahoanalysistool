@@ -24,8 +24,10 @@ import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
@@ -39,6 +41,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.TextArea;
 
 /**
  * Creates a properties panel, the properties panel controls things like drill method and pivot.
@@ -60,7 +63,66 @@ public class PropertiesPanel extends LayoutComposite {
         final LayoutPanel mainPanel = new LayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        // TODO localize string
+        final ToolButton mdxButton = new ToolButton("Show MDX");
+        mdxButton.addClickHandler( new ClickHandler(){
 
+            public void onClick(ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<String>(){
+
+                    public void onFailure(Throwable arg0) {
+                        
+                        //MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(String mdx) {
+                        // TODO localize + externalize strings
+                        final WindowPanel wp = new WindowPanel("Show MDX");
+                        LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+                        wpLayoutPanel.setSize("400px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+                        final TextArea mdxArea = new TextArea();
+                        
+                        mdxArea.setText(mdx);
+
+                        wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
+                        ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                        closeBtn.addClickHandler(new ClickHandler() {
+                                public void onClick(ClickEvent arg0) {
+//                                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+//
+//                                                public void onFailure(Throwable arg0) {
+//                                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+//                                                }
+//
+//                                                public void onSuccess(CellDataSet matrix) {
+//                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
+//                                                        
+//                                                }
+//                                                
+//                                        });
+           
+                                        wp.hide();
+                                        
+                                }
+                        });
+                        wpLayoutPanel.add(closeBtn);
+                        wpLayoutPanel.layout();
+                        wp.add(wpLayoutPanel);
+                        wp.layout();
+                        wp.pack();
+                        wp.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+                        wp.center();
+
+                        
+                        
+                    }
+                    
+                });
+                
+            }});
+        mdxButton.setEnabled(true);
+
+        
         final ToolButton checkButton1 = new ToolButton(ConstantFactory.getInstance().showParent());
         checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton1.setEnabled(false);
@@ -114,6 +176,7 @@ public class PropertiesPanel extends LayoutComposite {
         checkButton6.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton6.setEnabled(false);
 
+        mainPanel.add(mdxButton);
         mainPanel.add(checkButton1);
         mainPanel.add(checkButton2);
         mainPanel.add(checkButton3);
