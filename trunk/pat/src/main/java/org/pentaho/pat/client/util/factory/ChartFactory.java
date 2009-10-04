@@ -187,7 +187,6 @@ public class ChartFactory {
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][rowColCount].getRawValue());
 
                 if (isParsableToInt(cell[rowColCount].getRawValue()))
-                    ;
                 {
                     lc2.addValues(Integer.parseInt(cell[rowColCount].getRawValue()));
                     if (Integer.parseInt(cell[rowColCount].getRawValue()) > maxval)
