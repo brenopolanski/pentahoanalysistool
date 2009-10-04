@@ -10,7 +10,7 @@
 
 	
 <!--  -->	<inherits name='com.google.gwt.gen2.complexpanel.ComplexPanel' />-->
-	
+ <inherits name='com.rednels.ofcgwt.OFCGWT'/>	
 	<inherits name='org.gwt.mosaic.theme.standard.StandardResources' />
 	<inherits name="org.gwt.mosaic.theme.chrome.ChromeResources" />
 	<inherits name="org.gwt.mosaic.theme.dark.DarkResources" />
