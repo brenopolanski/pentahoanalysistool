@@ -19,13 +19,26 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.ButtonHelper;
+import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.rednels.ofcgwt.client.ChartWidget;
 
@@ -41,13 +54,22 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     private CellDataSet matrix;
     final ChartWidget chart = new ChartWidget();
     ChartFactory cf = new ChartFactory();
+    private ChartType ct = ChartType.LINE;
+    
     public ChartPanel(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
+        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
+        
+
         
         chart.setSize("500", "400");
+        ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+        ((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
+        layoutPanel.add(buttonLayoutPanel());
+        layoutPanel.add(chart, new BoxLayoutData(FillStyle.HORIZONTAL));
         
-        this.getLayoutPanel().add(chart);
+        this.getLayoutPanel().add(layoutPanel);
 
     }
     
@@ -66,7 +88,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
         this.matrix = matrix;
-        chart.setChartData(cf.getChart(ChartType.LINE, matrix, "CHART!!!"));
+        chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
         this.layout();
         }
     }
@@ -77,5 +99,51 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
         LINE
    }
         
-    
+    private LayoutPanel buttonLayoutPanel(){
+        final LayoutPanel hBox1 = new LayoutPanel();
+        hBox1.setLayout(new BoxLayout());
+
+        ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Pie Chart",
+                ButtonLabelType.TEXT_ON_TOP));
+        pieButton.addClickHandler(new ClickHandler(){
+            
+            public void onClick(ClickEvent arg0) {
+                ct = ChartType.PIE;
+                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+            }
+            
+        });
+
+        ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Bar Chart",
+                ButtonLabelType.TEXT_ON_TOP));
+        barButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                ct = ChartType.BAR;
+                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+            }
+            
+        });
+       
+        
+        ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Line Chart",
+                ButtonLabelType.TEXT_ON_TOP));
+        
+        lineButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                ct = ChartType.LINE;
+                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+            }
+            
+        });
+        hBox1.add(pieButton);
+        hBox1.add(barButton);
+        hBox1.add(lineButton);
+        
+        return hBox1;
+    }
 }
