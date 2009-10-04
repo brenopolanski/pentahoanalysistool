@@ -101,6 +101,7 @@ public class OlapPanel extends DataWidget {
         return panelName;
     }
 
+    
     public String getQuery() {
         return queryId;
     }
@@ -195,8 +196,9 @@ public class OlapPanel extends DataWidget {
 
                 });
         ChartPanel OFCPanel = new ChartPanel();
-        stackPanel.add(baselayoutPanel, "BaseLayout");
-        stackPanel.add(OFCPanel, "OFCPanel");
+        stackPanel.add(baselayoutPanel, "Table");
+        stackPanel.add(OFCPanel, "Chart");
+        stackPanel.showStack(0);
         return stackPanel;
         
     }
