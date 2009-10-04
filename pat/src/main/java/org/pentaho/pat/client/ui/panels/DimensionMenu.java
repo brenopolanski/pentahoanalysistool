@@ -98,6 +98,7 @@ public class DimensionMenu extends LayoutComposite {
         }
     };
 
+    final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
     /**
      * 
      * DimensionMenu Constructor.
