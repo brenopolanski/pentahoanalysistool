@@ -169,33 +169,31 @@ public class ChartFactory {
         }
 
         int maxval = 0;
-        for (int i = 1; i < patTableModel.getColumnCount() - 1; i++) {
-
+        int actualRow = rowColCount;
+        for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
+            
             final LineChart lc2 = new LineChart();
             lc2.setDotStyle(new HollowDot());
             lc2.setColour(getRandomColor());
 
             for (int j = 0; j < data.size(); j++) {
                 final BaseCell[] cell = data.get(j);
-                int rc = 0;
-                while (cell[rc].getRawValue() == null)
-                    rc++;
-
-                if (dataColHeaders[patTableModel.getOffset() - 1][rowColCount].getRawValue() != null) {
-                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][rowColCount].getRawValue());
+               
+                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null) {
+                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue());
                 } else
-                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][rowColCount].getRawValue());
+                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue());
 
-                if (isParsableToInt(cell[rowColCount].getRawValue()))
+                if (isParsableToInt(cell[actualRow].getRawValue()))
                 {
-                    lc2.addValues(Integer.parseInt(cell[rowColCount].getRawValue()));
-                    if (Integer.parseInt(cell[rowColCount].getRawValue()) > maxval)
-                        maxval = Integer.parseInt(cell[rowColCount].getRawValue());
+                    lc2.addValues(Integer.parseInt(cell[actualRow].getRawValue()));
+                    if (Integer.parseInt(cell[actualRow].getRawValue()) > maxval)
+                        maxval = Integer.parseInt(cell[actualRow].getRawValue());
                 }
 
             }
             cd.addElements(lc2);
-            rowColCount++;
+            actualRow++;
         }
 
         final XAxis xa = new XAxis();
