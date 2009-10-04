@@ -53,7 +53,6 @@ public class LogoPanel extends LayoutComposite {
  
         if (spin)
             throbberLabel.setVisible(true);
-        
         else
             throbberLabel.setVisible(false);
     }
