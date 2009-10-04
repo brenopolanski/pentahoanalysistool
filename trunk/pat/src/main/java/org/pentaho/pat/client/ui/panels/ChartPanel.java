@@ -1,35 +1,38 @@
-/**
- * TODO JAVADOC
+/*
+ * Copyright (C) 2009 Thomas Barber
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
  */
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
-import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
-import com.google.gwt.user.client.Random;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.rednels.ofcgwt.client.ChartWidget;
-import com.rednels.ofcgwt.client.model.ChartData;
-import com.rednels.ofcgwt.client.model.Legend;
-import com.rednels.ofcgwt.client.model.Legend.Position;
-import com.rednels.ofcgwt.client.model.elements.PieChart;
 
 /**
  *TODO JAVADOC
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class ChartPanel extends LayoutComposite implements QueryListener {
@@ -63,7 +66,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
         this.matrix = matrix;
-        chart.setChartData(cf.getChart(ChartType.BAR, matrix, "CHART!!!"));
+        chart.setChartData(cf.getChart(ChartType.LINE, matrix, "CHART!!!"));
         this.layout();
         }
     }
