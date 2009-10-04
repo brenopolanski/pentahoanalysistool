@@ -33,6 +33,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
 import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -43,8 +44,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.rednels.ofcgwt.client.ChartWidget;
 
 /**
- *TODO JAVADOC
- * 
+ * Create the chart panel, currently supports Open Flash Charts.
+ *
+ * @since 0.5.0 
  * @author tom(at)wamonline.org.uk
  * 
  */
@@ -52,8 +54,8 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
 
     
     private CellDataSet matrix;
-    final ChartWidget chart = new ChartWidget();
-    ChartFactory cf = new ChartFactory();
+    private final ChartWidget chart = new ChartWidget();
+    private ChartFactory cf = new ChartFactory();
     private ChartType ct = ChartType.LINE;
     
     public ChartPanel(){
@@ -61,9 +63,6 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
 
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
         
-
-        
-        chart.setSize("500", "400");
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(buttonLayoutPanel());
@@ -78,7 +77,6 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
     public void onQueryChange(Widget sender) {
-        // TODO Auto-generated method stub
         
     }
 
@@ -88,7 +86,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
         this.matrix = matrix;
-        chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+        chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
         this.layout();
         }
     }
@@ -100,8 +98,8 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
    }
         
     private LayoutPanel buttonLayoutPanel(){
-        final LayoutPanel hBox1 = new LayoutPanel();
-        hBox1.setLayout(new BoxLayout());
+        final LayoutPanel buttonsBox = new LayoutPanel();
+        buttonsBox.setLayout(new BoxLayout());
 
         ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(
                 MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Pie Chart",
@@ -110,7 +108,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
             
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
             
         });
@@ -122,7 +120,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
 
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
             
         });
@@ -136,14 +134,28 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
 
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, "CHART!!!"));
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
             
         });
-        hBox1.add(pieButton);
-        hBox1.add(barButton);
-        hBox1.add(lineButton);
+
+        ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Options",
+                ButtonLabelType.TEXT_ON_TOP));
         
-        return hBox1;
+        optionsButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                ChartOptionsWindow.display();
+            }
+            
+        });
+
+        
+        buttonsBox.add(pieButton);
+        buttonsBox.add(barButton);
+        buttonsBox.add(lineButton);
+        buttonsBox.add(optionsButton);
+        return buttonsBox;
     }
 }

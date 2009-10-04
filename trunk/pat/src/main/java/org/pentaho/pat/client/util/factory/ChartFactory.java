@@ -22,6 +22,7 @@ package org.pentaho.pat.client.util.factory;
 import java.util.Arrays;
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.style.Color;
 import org.pentaho.pat.client.ui.panels.ChartPanel.ChartType;
 import org.pentaho.pat.client.util.PatTableModel;
@@ -29,9 +30,10 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
+import com.rednels.ofcgwt.client.event.ChartClickEvent;
+import com.rednels.ofcgwt.client.event.ChartClickHandler;
 import com.rednels.ofcgwt.client.model.ChartData;
 import com.rednels.ofcgwt.client.model.Legend;
-import com.rednels.ofcgwt.client.model.Text;
 import com.rednels.ofcgwt.client.model.Legend.Position;
 import com.rednels.ofcgwt.client.model.axis.Label;
 import com.rednels.ofcgwt.client.model.axis.XAxis;
@@ -39,36 +41,52 @@ import com.rednels.ofcgwt.client.model.axis.YAxis;
 import com.rednels.ofcgwt.client.model.elements.BarChart;
 import com.rednels.ofcgwt.client.model.elements.LineChart;
 import com.rednels.ofcgwt.client.model.elements.PieChart;
+import com.rednels.ofcgwt.client.model.elements.BarChart.Bar;
 import com.rednels.ofcgwt.client.model.elements.BarChart.BarStyle;
+import com.rednels.ofcgwt.client.model.elements.PieChart.Slice;
+import com.rednels.ofcgwt.client.model.elements.dot.BaseDot;
 import com.rednels.ofcgwt.client.model.elements.dot.HollowDot;
+import com.rednels.ofcgwt.client.model.elements.dot.SolidDot;
 
 /**
- *TODO JAVADOC
+ * A basic Chart Factory that creates different OFC chart models.
  * 
+ * @since 0.5.0
  * @author tom(at)wamonline.org.uk
  * 
  */
 public class ChartFactory {
 
     /**
-     *TODO JAVADOC
+     * The Chart Factory Constructor.
      * 
-     * @param pie
+     * @param chartType
+     *            The ChartType Enum value.
      * @param matrix
-     * @param string
-     * @return
+     *            The CellDataSet from the current query.
+     * @param chartTitle
+     *            The chart title.
+     * @return A ChartData object.
      */
-    public ChartData getChart(final ChartType pie, final CellDataSet matrix, final String string) {
-        if (pie.equals(ChartType.PIE))
-            return getPieChartData(matrix, string);
-        else if (pie.equals(ChartType.BAR))
-            return getBarChartGlassData(matrix, string);
-        else if (pie.equals(ChartType.LINE))
-            return getLineChartData(matrix, string);
+    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle) {
+        if (chartType.equals(ChartType.PIE))
+            return getPieChartData(matrix, chartTitle);
+        else if (chartType.equals(ChartType.BAR))
+            return getBarChartData(matrix, chartTitle);
+        else if (chartType.equals(ChartType.LINE))
+            return getLineChartData(matrix, chartTitle);
         else
             return null;
     }
 
+    /**
+     * 
+     * Checks if a string is able to be parsed to an integer.
+     * 
+     * @param i
+     *            The string.
+     * @return A boolean.
+     */
     public boolean isParsableToInt(final String i) {
         try {
             Integer.parseInt(i);
@@ -78,6 +96,12 @@ public class ChartFactory {
         }
     }
 
+    /**
+     * 
+     * Create a random color for various chart objects.
+     * 
+     * @return A hex color value.
+     */
     String getRandomColor() {
         final double r = Math.random() * 256;
         final double g = Math.random() * 256;
@@ -86,7 +110,17 @@ public class ChartFactory {
         return myColor.getHexValue();
     }
 
-    private ChartData getBarChartGlassData(final CellDataSet matrix, final String chartTitle) {
+    /**
+     * 
+     * Create a bar chart.
+     * 
+     * @param matrix
+     *            The CellDataSet from the current query.
+     * @param chartTitle
+     *            The chart title.
+     * @return A Chart Data object.
+     */
+    private ChartData getBarChartData(final CellDataSet matrix, final String chartTitle) {
 
         matrix.getCellSetHeaders();
         final PatTableModel patTableModel = new PatTableModel(matrix);
@@ -96,18 +130,30 @@ public class ChartFactory {
             if (rowData[0][i] instanceof MemberCell)
                 rowColCount++;
 
-        final ChartData cd2 = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
-        cd2.setBackgroundColour("#ffffff");
+        // TODO Allow user defined fonts etc.
+        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
+
+        // TODO Allow user defined background color.
+        cd.setBackgroundColour("#ffffff");
+
         final XAxis xa = new XAxis();
 
-        cd2.setXAxis(xa);
+        cd.setXAxis(xa);
         final YAxis ya = new YAxis();
+
+        // TODO Allow users to select the steppage.
         ya.setSteps(16);
 
-        cd2.setYAxis(ya);
+        cd.setYAxis(ya);
+
+        // TODO Allow users to change the Bar Style.
         final BarChart bchart2 = new BarChart(BarStyle.GLASS);
-        bchart2.setColour("#00aa00");
+
+        // TODO Allow user defined tooltips.
         bchart2.setTooltip("$#val#");
+
+        // TODO Allow user defined Legend on or off and position.
+        cd.setLegend(new Legend(Position.RIGHT, true));
 
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         final Label[] labels = new Label[data.size()];
@@ -128,18 +174,27 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            if (isParsableToInt(cell[rowColCount].getRawValue()))
-                ;
-            {
-                bchart2.addValues(Integer.parseInt(cell[rowColCount].getRawValue()));
+
+            if (isParsableToInt(cell[rowColCount].getRawValue())) {
+                final Bar bar = new Bar(Integer.parseInt(cell[rowColCount].getRawValue()));
+                bar.setColour(getRandomColor());
+                bar.addChartClickHandler(new ChartClickHandler() {
+
+                    public void onClick(final ChartClickEvent event) {
+                        // TODO Allow chart drilling.
+                        MessageBox.info("Clicked Bar", bar.getColour());
+                    }
+
+                });
+                bchart2.addBars(bar);
                 if (Integer.parseInt(cell[rowColCount].getRawValue()) > maxval)
                     maxval = Integer.parseInt(cell[rowColCount].getRawValue());
             }
 
         }
         ya.setMax(maxval);
-        cd2.addElements(bchart2);
-        return cd2;
+        cd.addElements(bchart2);
+        return cd;
     }
 
     private ChartData getLineChartData(final CellDataSet matrix, final String chartTitle) {
@@ -151,11 +206,14 @@ public class ChartFactory {
             if (rowData[0][i] instanceof MemberCell)
                 rowColCount++;
 
-        final ChartData cd = new ChartData("Relative Performance",
-                "font-size: 14px; font-family: Verdana; text-align: center;");
+        // TODO Allow user defined fonts etc.
+        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
 
+        // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff");
 
+        // TODO Allow user defined Legend on or off and position.
+        cd.setLegend(new Legend(Position.RIGHT, true));
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         final BaseCell[][] dataColHeaders = patTableModel.getColumnHeaders();
         final Label[] labels = new Label[data.size()];
@@ -169,26 +227,37 @@ public class ChartFactory {
         }
 
         int maxval = 0;
+        int minval = 0;
         int actualRow = rowColCount;
         for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
-            
+
             final LineChart lc2 = new LineChart();
             lc2.setDotStyle(new HollowDot());
             lc2.setColour(getRandomColor());
 
             for (int j = 0; j < data.size(); j++) {
                 final BaseCell[] cell = data.get(j);
-               
-                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null) {
+
+                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null)
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue());
-                } else
+                else
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue());
 
-                if (isParsableToInt(cell[actualRow].getRawValue()))
-                {
-                    lc2.addValues(Integer.parseInt(cell[actualRow].getRawValue()));
+                if (isParsableToInt(cell[actualRow].getRawValue())) {
+                    final BaseDot dot = new SolidDot(Integer.parseInt(cell[actualRow].getRawValue()));
+                    dot.addChartClickHandler(new ChartClickHandler() {
+
+                        public void onClick(final ChartClickEvent event) {
+                            // TODO Allow chart drilling.
+                            MessageBox.info("Clicked Bar", dot.getColour());
+                        }
+
+                    });
+                    lc2.addDots(dot);
                     if (Integer.parseInt(cell[actualRow].getRawValue()) > maxval)
                         maxval = Integer.parseInt(cell[actualRow].getRawValue());
+                    if (Integer.parseInt(cell[actualRow].getRawValue()) < minval)
+                        minval = Integer.parseInt(cell[actualRow].getRawValue());
                 }
 
             }
@@ -203,10 +272,10 @@ public class ChartFactory {
 
         final YAxis ya = new YAxis();
 
-        ya.setMin(-1);
+        ya.setMin(minval);
         cd.setYAxis(ya);
 
-        cd.setXLegend(new Text("Annual performance over 30 years", "{font-size: 10px; color: #000000}"));
+        // cd.setXLegend(new Text(xLegend, "{font-size: 10px; color: #000000}"));
 
         ya.setMax(maxval);
 
@@ -223,17 +292,24 @@ public class ChartFactory {
             if (rowData[0][i] instanceof MemberCell)
                 rowColCount++;
 
+        // TODO Allow user defined fonts etc.
         final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
+
+        // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff");
+
+        // TODO Allow user defined Legend on or off and position.
         cd.setLegend(new Legend(Position.RIGHT, true));
 
         final PieChart pie = new PieChart();
         pie.setAlpha(0.5f);
         pie.setRadius(130);
         pie.setNoLabels(true);
+        
+        // TODO Allow user defined tooltips.
         pie.setTooltip("#label# $#val#<br>#percent#");
         pie.setGradientFill(true);
-        pie.setColours("#ff0000", "#00aa00", "#0000ff", "#ff9900", "#ff00ff");
+        pie.setColours(getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor());
         pie.setAnimateOnShow(true);
         pie.setAnimation(new PieChart.PieBounceAnimation(30));
 
@@ -243,11 +319,19 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            if (isParsableToInt(cell[rowColCount].getRawValue()))
-                ;
-            pie
-                    .addSlices(new PieChart.Slice(Integer.parseInt(cell[rowColCount].getRawValue()), cell[rc]
-                            .getRawValue()));
+            if (isParsableToInt(cell[rowColCount].getRawValue())) {
+                final Slice slice = new Slice(Integer.parseInt(cell[rowColCount].getRawValue()), cell[rc].getRawValue());
+
+                slice.addChartClickHandler(new ChartClickHandler() {
+
+                    public void onClick(final ChartClickEvent event) {
+                        // TODO Allow chart drilling.
+                        MessageBox.info("Clicked Slice", slice.getLabel());
+                    }
+
+                });
+                pie.addSlices(slice);
+            }
         }
         cd.addElements(pie);
         return cd;
