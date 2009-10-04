@@ -27,6 +27,7 @@ import java.util.List;
 import org.olap4j.Cell;
 import org.olap4j.CellSet;
 import org.olap4j.CellSetAxis;
+import org.olap4j.OlapException;
 import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
@@ -256,7 +257,15 @@ public class PatCellSetFormatter {
             if (coordList.size() > 1)
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
-            cellInfo.setRawValue(cell.getFormattedValue());
+            Integer blahval = null;
+            try {
+                blahval = (int)cell.getDoubleValue();
+            } catch (OlapException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            cellInfo.setRawValue(blahval.toString());
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
             if (cellValue.length() < 1) {

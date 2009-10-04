@@ -23,6 +23,7 @@ import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
@@ -152,6 +153,7 @@ public class OlapPanel extends DataWidget {
     @Override
     protected Widget onInitialize() {
         LogoPanel.spinWheel(true);
+        final StackLayoutPanel stackPanel = new StackLayoutPanel();
         final LayoutPanel baselayoutPanel = new LayoutPanel(new BorderLayout());
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
@@ -192,8 +194,10 @@ public class OlapPanel extends DataWidget {
                     }
 
                 });
-        
-        return baselayoutPanel;
+        ChartPanel OFCPanel = new ChartPanel();
+        stackPanel.add(baselayoutPanel, "BaseLayout");
+        stackPanel.add(OFCPanel, "OFCPanel");
+        return stackPanel;
         
     }
 }
