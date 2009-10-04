@@ -41,6 +41,9 @@
         <security:intercept-url pattern="/pat/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <!--  added to stop favicon redirect when first visiting the site -->
     	<security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    	<security:intercept-url pattern="/pat/images/arrow_right_16.png" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    	<security:intercept-url pattern="/pat/images/home_go_32.png" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    	<security:intercept-url pattern="/pat/images/md-hd-bg.png" access="IS_AUTHENTICATED_ANONYMOUSLY" />
     	<!--  Everything else that was not defined up there ^^ must be secured.
     		We use a simple wildcard trap. -->    
         <security:intercept-url pattern="/**" access="Users" />
