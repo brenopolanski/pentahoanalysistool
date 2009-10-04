@@ -8,8 +8,10 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.util.PatTableModel;
+import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
@@ -35,7 +37,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     
     private CellDataSet matrix;
     final ChartWidget chart = new ChartWidget();
-    
+    ChartFactory cf = new ChartFactory();
     public ChartPanel(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
@@ -59,46 +61,18 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
         this.matrix = matrix;
-        chart.setChartData(getPieChartData());
+        chart.setChartData(cf.getChart(ChartType.BAR, matrix, "CHART!!!"));
         this.layout();
+        }
     }
 
-    private ChartData getPieChartData() {
+    public enum ChartType {
+        PIE,
+        BAR,
+        LINE
+   }
         
-        matrix.getCellSetHeaders();
-        PatTableModel patTableModel = new PatTableModel(matrix);
-        final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
-        BaseCell[][] rowData = patTableModel.getRowData();
-        int rowColCount =0; 
-        for (int i = 0; i< patTableModel.getColumnCount(); i++){
-            if (rowData[0][i] instanceof MemberCell)
-                rowColCount++;
-        }
-
-        ChartData cd = new ChartData("Sales by Region", "font-size: 14px; font-family: Verdana; text-align: center;");
-        cd.setBackgroundColour("#ffffff");
-        cd.setLegend(new Legend(Position.RIGHT, true));
-
-        PieChart pie = new PieChart();        
-        pie.setAlpha(0.5f);
-        pie.setRadius(130);
-        pie.setNoLabels(true);
-        pie.setTooltip("#label# $#val#<br>#percent#");
-        pie.setGradientFill(true);
-        pie.setColours("#ff0000", "#00aa00", "#0000ff", "#ff9900", "#ff00ff");
-
-        final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
-        for (int i=0; i<data.size(); i++){
-            BaseCell[] cell = data.get(i);
-            if (cell[0].getRawValue()!=null)
-            pie.addSlices(new PieChart.Slice(Integer.parseInt(cell[1].getRawValue()), cell[0].getRawValue()));
-            
-            else
-                pie.addSlices(new PieChart.Slice(Integer.parseInt(cell[2].getRawValue()), cell[1].getRawValue()));
-        }
-        cd.addElements(pie);
-        return cd;
-}
     
 }
