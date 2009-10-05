@@ -31,7 +31,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * 
  * @author Luc Boudreau
  */
-public interface Session extends RemoteService {
+public interface ISession extends RemoteService {
 
 	/**
 	 * Creates a new session. Call this method for every browser window that

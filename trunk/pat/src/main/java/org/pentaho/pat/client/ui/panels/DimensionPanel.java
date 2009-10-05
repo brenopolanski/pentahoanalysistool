@@ -30,7 +30,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
@@ -87,10 +87,10 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
-        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), Axis.UNUSED);
-        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
-        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
-        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
+        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), IAxis.UNUSED);
+        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS);
+        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), IAxis.COLUMNS);
+        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), IAxis.FILTER);
 
         mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));

@@ -20,7 +20,7 @@
 
 package org.pentaho.pat.client.listeners;
 
-import org.pentaho.pat.client.events.SourcesQueryEvents;
+import org.pentaho.pat.client.events.ISourcesQueryEvents;
 
 /**
  *TODO JAVADOC
@@ -30,7 +30,7 @@ import org.pentaho.pat.client.events.SourcesQueryEvents;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class QueryChangeListeners implements SourcesQueryEvents {
+public class QueryChangeListeners implements ISourcesQueryEvents {
     /** ConnectionListenerCollection Object. */
 
     private final QueryListenerCollection queryListeners = new QueryListenerCollection();
@@ -44,7 +44,7 @@ public class QueryChangeListeners implements SourcesQueryEvents {
     /**
      * Initialize the connectionListeners instance.
      */
-    public void addQueryListener(final QueryListener listener) {
+    public void addQueryListener(final IQueryListener listener) {
         queryListeners.add(listener);
     }
 
@@ -65,7 +65,7 @@ public class QueryChangeListeners implements SourcesQueryEvents {
     /**
      * Remove a connectionListener
      */
-    public void removeQueryListener(final QueryListener listener) {
+    public void removeQueryListener(final IQueryListener listener) {
         this.queryListeners.remove(listener);
     }
 

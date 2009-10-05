@@ -20,7 +20,7 @@
 package org.pentaho.pat.rpc;
 
 
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -29,11 +29,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Defines discovery operations methods.
  * @author Luc Boudreau
  */
-public interface DiscoveryAsync {
+public interface IDiscoveryAsync {
 	
 	public void getDrivers(AsyncCallback<String[]> callback);
 
-	public void getDimensions(String sessionId, String queryId, Axis axis, AsyncCallback<String []> callback);
+	public void getDimensions(String sessionId, String queryId, IAxis axis, AsyncCallback<String []> callback);
 	
 	public void getCubes(String sessionId, String connectionId, AsyncCallback<String []> callback);
 	

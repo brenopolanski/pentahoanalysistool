@@ -19,7 +19,7 @@
  */
 package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.client.i18n.GuiConstants;
+import org.pentaho.pat.client.i18n.IGuiConstants;
 
 import com.google.gwt.core.client.GWT;
 
@@ -33,16 +33,16 @@ import com.google.gwt.core.client.GWT;
 public class ConstantFactory {
 
     /** Pat Constansts Object. */
-    private static GuiConstants constants = null;
+    private static IGuiConstants constants = null;
 
     /**
      * Create the PatConstants instance.
      * 
      * @return the instance
      */
-    public static GuiConstants getInstance() {
+    public static IGuiConstants getInstance() {
         if (constants == null)
-            constants = (GuiConstants) GWT.create(GuiConstants.class);
+            constants = (IGuiConstants) GWT.create(IGuiConstants.class);
         return constants;
     }
 }

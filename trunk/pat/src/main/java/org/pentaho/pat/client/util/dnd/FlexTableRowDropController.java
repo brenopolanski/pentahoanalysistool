@@ -20,7 +20,7 @@
 package org.pentaho.pat.client.util.dnd;
 
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
@@ -53,7 +53,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private final int targetCol = 0;
 
     /** The Drop Axis. */
-    private org.pentaho.pat.rpc.dto.Axis targetAxis;
+    private org.pentaho.pat.rpc.dto.IAxis targetAxis;
 
     /**
      * Constructor.
@@ -74,7 +74,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
      * @param rows
      *            the rows
      */
-    public FlexTableRowDropController(final DimensionFlexTable flexTable, final Axis rows) {
+    public FlexTableRowDropController(final DimensionFlexTable flexTable, final IAxis rows) {
         super(flexTable);
         this.flexTable = flexTable;
         targetAxis = rows;

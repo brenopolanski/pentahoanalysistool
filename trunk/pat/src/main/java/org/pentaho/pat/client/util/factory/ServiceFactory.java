@@ -12,12 +12,12 @@
  */
 package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.rpc.Discovery;
-import org.pentaho.pat.rpc.DiscoveryAsync;
-import org.pentaho.pat.rpc.Query;
-import org.pentaho.pat.rpc.QueryAsync;
-import org.pentaho.pat.rpc.Session;
-import org.pentaho.pat.rpc.SessionAsync;
+import org.pentaho.pat.rpc.IDiscovery;
+import org.pentaho.pat.rpc.IDiscoveryAsync;
+import org.pentaho.pat.rpc.IQuery;
+import org.pentaho.pat.rpc.IQueryAsync;
+import org.pentaho.pat.rpc.ISession;
+import org.pentaho.pat.rpc.ISessionAsync;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -32,22 +32,22 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 public class ServiceFactory {
 
     /** The discovery service. */
-    private static DiscoveryAsync dService = null;
+    private static IDiscoveryAsync dService = null;
 
     /** The session service. */
-    private static SessionAsync sService = null;
+    private static ISessionAsync sService = null;
 
     /** The query service. */
-    private static QueryAsync qService = null;
+    private static IQueryAsync qService = null;
 
     /**
      * Gets the discovery instance.
      * 
      * @return the discovery instance
      */
-    public static DiscoveryAsync getDiscoveryInstance() {
+    public static IDiscoveryAsync getDiscoveryInstance() {
         if (dService == null) {
-            dService = (DiscoveryAsync) GWT.create(Discovery.class);
+            dService = (IDiscoveryAsync) GWT.create(IDiscovery.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) dService;
             final String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);
@@ -60,9 +60,9 @@ public class ServiceFactory {
      * 
      * @return the query instance
      */
-    public static QueryAsync getQueryInstance() {
+    public static IQueryAsync getQueryInstance() {
         if (qService == null) {
-            qService = (QueryAsync) GWT.create(Query.class);
+            qService = (IQueryAsync) GWT.create(IQuery.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) qService;
             final String moduleRelativeURL = GWT.getModuleBaseURL() + "query.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);
@@ -75,9 +75,9 @@ public class ServiceFactory {
      * 
      * @return the session instance
      */
-    public static SessionAsync getSessionInstance() {
+    public static ISessionAsync getSessionInstance() {
         if (sService == null) {
-            sService = (SessionAsync) GWT.create(Session.class);
+            sService = (ISessionAsync) GWT.create(ISession.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) sService;
             final String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);

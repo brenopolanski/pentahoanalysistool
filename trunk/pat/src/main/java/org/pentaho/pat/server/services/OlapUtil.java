@@ -221,6 +221,7 @@ public class OlapUtil {
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
             final CellSet cellSet) throws OlapException{
 
+        // FIXME this method doesn't seem to be correct at all, member and memberout swapped?
         final Cube cube = query.getCube();
         
         Member memberOut = cube.lookupMember(member.getRawValue());
@@ -229,6 +230,7 @@ public class OlapUtil {
             // Let's try with only the dimension name in front.
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimension.getName());
+            // FIXME member could be null at this point, whats supposed to happen in here?
             dimPlusMemberNames.add(member.getRawValue());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 

@@ -25,16 +25,16 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDropController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.Axis.Standard;
+import org.pentaho.pat.rpc.dto.IAxis.Standard;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -50,7 +50,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class DimensionDropWidget extends LayoutComposite implements QueryListener {
+public class DimensionDropWidget extends LayoutComposite implements IQueryListener {
 
     private final Standard dimAxis;
 
@@ -133,7 +133,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
      * @param targetAxis
      *            the target axis
      */
-    public final void init(final String labelText, final Axis targetAxis) {
+    public final void init(final String labelText, final IAxis targetAxis) {
 
         captionLayoutPanel = new CaptionLayoutPanel(labelText);
 
@@ -190,7 +190,7 @@ public class DimensionDropWidget extends LayoutComposite implements QueryListene
         DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
     }
 
-    public void populateDimensionTable(final Axis targetAxis) {
+    public void populateDimensionTable(final IAxis targetAxis) {
 
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                 new AsyncCallback<String[]>() {

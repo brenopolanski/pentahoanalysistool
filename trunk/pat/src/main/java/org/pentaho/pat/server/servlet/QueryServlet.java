@@ -28,8 +28,8 @@ import org.olap4j.OlapException;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 
-import org.pentaho.pat.rpc.Query;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.IQuery;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -42,7 +42,7 @@ import org.pentaho.pat.server.services.SessionService;
  * @author luc Boudreau
  *
  */
-public class QueryServlet extends AbstractServlet implements Query {
+public class QueryServlet extends AbstractServlet implements IQuery {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -126,14 +126,14 @@ public class QueryServlet extends AbstractServlet implements Query {
     public void moveDimension(
             String sessionId,
             String queryId,
-            Axis axis, 
+            IAxis axis, 
             String dimensionName) throws RpcException
 	{
 		this.queryService.moveDimension(
 			getCurrentUserId(), 
 			sessionId, 
 			queryId,
-			(axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
+			(axis.equals(IAxis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
 			dimensionName);
 	}
     public void setSortOrder(String sessionId, String queryId, String dimensionName, String sort) throws RpcException

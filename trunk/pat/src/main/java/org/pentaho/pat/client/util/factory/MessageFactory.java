@@ -19,7 +19,7 @@
  */
 package org.pentaho.pat.client.util.factory;
 
-import org.pentaho.pat.client.i18n.GuiMessages;
+import org.pentaho.pat.client.i18n.IGuiMessages;
 
 import com.google.gwt.core.client.GWT;
 
@@ -35,16 +35,16 @@ import com.google.gwt.core.client.GWT;
 public class MessageFactory {
 
     /** PatMessages object. */
-    private static GuiMessages guiMessages = null;
+    private static IGuiMessages guiMessages = null;
 
     /**
      * Create a message instance.
      * 
      * @return the instance
      */
-    public static GuiMessages getInstance() {
+    public static IGuiMessages getInstance() {
         if (guiMessages == null)
-            guiMessages = (GuiMessages) GWT.create(GuiMessages.class);
+            guiMessages = (IGuiMessages) GWT.create(IGuiMessages.class);
         return guiMessages;
     }
 }

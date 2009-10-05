@@ -28,7 +28,7 @@ import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -62,7 +62,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom (at) wamonline.org.uk
  * 
  */
-public class OlapTable extends LayoutComposite implements QueryListener {
+public class OlapTable extends LayoutComposite implements IQueryListener {
 
     Image cross = Pat.IMAGES.cross().createImage();
 

@@ -26,7 +26,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
-import org.pentaho.pat.rpc.Session;
+import org.pentaho.pat.rpc.ISession;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -34,7 +34,7 @@ import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.SessionService;
 
-public class SessionServlet extends AbstractServlet implements Session {
+public class SessionServlet extends AbstractServlet implements ISession {
 
 	private static final long serialVersionUID = 1L;
 	

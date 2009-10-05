@@ -27,11 +27,11 @@ import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
-import org.pentaho.pat.client.ui.images.PatImages;
+import org.pentaho.pat.client.ui.images.IGuiImages;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.client.i18n.GuiConstants;
+import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -60,12 +60,12 @@ public class Pat implements EntryPoint {
     /**
      * PatImages ImageBundle.
      */
-    public static final PatImages IMAGES = (PatImages) GWT.create(PatImages.class);
+    public static final IGuiImages IMAGES = (IGuiImages) GWT.create(IGuiImages.class);
 
     /**
      * The current style theme.
      */
-    public static String CUR_THEME = GuiConstants.STYLE_THEMES[0];
+    public static String CUR_THEME = IGuiConstants.STYLE_THEMES[0];
 
     /**
      * The base style name.

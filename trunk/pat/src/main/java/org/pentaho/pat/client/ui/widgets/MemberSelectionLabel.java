@@ -19,7 +19,7 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.pentaho.pat.client.ui.images.SelectionModeImageBundle;
+import org.pentaho.pat.client.ui.images.ISelectionModeImageBundle;
 import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 
 import com.google.gwt.core.client.GWT;
@@ -40,7 +40,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class MemberSelectionLabel extends HorizontalPanel {
 
     /** PatImages ImageBundle. */
-    private SelectionModeImageBundle selectionImageBundle = GWT.create(SelectionModeImageBundle.class);
+    private ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
 
     /** Label. */
     private Label label = new Label();
@@ -57,7 +57,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
     public MemberSelectionLabel() {
         super();
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
-        selectionImageBundle = (SelectionModeImageBundle) GWT.create(SelectionModeImageBundle.class);
+        selectionImageBundle = (ISelectionModeImageBundle) GWT.create(ISelectionModeImageBundle.class);
 
         setStyleName("olap-MemberSelectionLabel"); //$NON-NLS-1$
 

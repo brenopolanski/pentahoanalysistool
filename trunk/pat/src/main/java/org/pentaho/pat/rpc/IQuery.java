@@ -21,7 +21,7 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -34,7 +34,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * object that was previously instanciated through the Session service.
  * @author Luc Boudreau
  */
-public interface Query extends RemoteService {
+public interface IQuery extends RemoteService {
 
     /**
      * Tells the server that we want to create a new query. 
@@ -81,7 +81,7 @@ public interface Query extends RemoteService {
 	public void moveDimension(
 		String sessionId,
 		String queryId,
-		Axis axis, 
+		IAxis axis, 
 		String dimensionName) throws RpcException;
 	/**
 	 * Performs a selection of certain members in a dimension.
