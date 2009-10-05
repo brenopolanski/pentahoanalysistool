@@ -450,5 +450,82 @@ public interface GuiConstants extends Constants {
      */
     String sortBreakDescending();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortFailed();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String hierarchizeFailed();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String path();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String pre();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String post();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String chartOptions();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String pieChart();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String barChart();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String lineChart();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String showMDX();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String mdx();
+
    
 }

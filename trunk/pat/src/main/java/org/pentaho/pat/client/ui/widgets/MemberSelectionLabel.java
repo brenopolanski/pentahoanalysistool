@@ -20,7 +20,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.ui.images.SelectionModeImageBundle;
-import org.pentaho.pat.client.ui.popups.SelectionModeMenu2;
+import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -128,7 +128,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
         case Event.ONCONTEXTMENU:
             break;
         case Event.ONCLICK:
-            final SelectionModeMenu2 test = new SelectionModeMenu2();
+            final SelectionModeMenu test = new SelectionModeMenu();
             // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
             test.showContextMenu(event, this);
             test.setPopupPositionAndShow(new PositionCallback() {
@@ -164,16 +164,16 @@ public class MemberSelectionLabel extends HorizontalPanel {
     public final void setSelectionMode(final int mode) {
         Image selectionImage = null;
         switch (mode) {
-        case SelectionModeMenu2.MEMBER:
+        case SelectionModeMenu.MEMBER:
             selectionImage = selectionImageBundle.memberSelectIcon().createImage();
             break;
-        case SelectionModeMenu2.CHILDREN:
+        case SelectionModeMenu.CHILDREN:
             selectionImage = selectionImageBundle.childrenSelectIcon().createImage();
             break;
-        case SelectionModeMenu2.INCLUDE_CHILDREN:
+        case SelectionModeMenu.INCLUDE_CHILDREN:
             selectionImage = selectionImageBundle.includeChildrenSelectIcon().createImage();
             break;
-        case SelectionModeMenu2.SIBLINGS:
+        case SelectionModeMenu.SIBLINGS:
             selectionImage = selectionImageBundle.siblingsSelectIcon().createImage();
         default:
             break;

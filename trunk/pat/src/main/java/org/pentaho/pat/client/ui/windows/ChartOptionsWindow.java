@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.ChartOptionsPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 /**
  * Allows users to adjust chart options.
@@ -35,7 +36,7 @@ import org.pentaho.pat.client.ui.panels.ChartOptionsPanel;
  */
 public class ChartOptionsWindow extends WindowPanel {
 
-    private static final String TITLE = "Chart Options";
+    private static final String TITLE = ConstantFactory.getInstance().chartOptions();
     
     private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     

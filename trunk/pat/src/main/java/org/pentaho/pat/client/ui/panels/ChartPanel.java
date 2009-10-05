@@ -35,6 +35,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
 import org.pentaho.pat.client.util.factory.ChartFactory;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -58,6 +59,11 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
     private ChartFactory cf = new ChartFactory();
     private ChartType ct = ChartType.LINE;
     
+    /**
+     * 
+     * Chart Panel Constructor.
+     *
+     */
     public ChartPanel(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
@@ -91,18 +97,32 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
         }
     }
 
+    /**
+     * 
+     * Chart Type Enum.
+     *
+     * @author tom(at)wamonline.org.uk
+     * @since 0.5.0
+     *
+     */
     public enum ChartType {
         PIE,
         BAR,
         LINE
    }
         
+    /**
+     * 
+     * Button Panel for chart panel.
+     *
+     * @return A LayoutPanel containing buttons.
+     */
     private LayoutPanel buttonLayoutPanel(){
         final LayoutPanel buttonsBox = new LayoutPanel();
         buttonsBox.setLayout(new BoxLayout());
 
         ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Pie Chart",
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().pieChart(),
                 ButtonLabelType.TEXT_ON_TOP));
         pieButton.addClickHandler(new ClickHandler(){
             
@@ -114,7 +134,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
         });
 
         ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Bar Chart",
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().barChart(),
                 ButtonLabelType.TEXT_ON_TOP));
         barButton.addClickHandler(new ClickHandler(){
 
@@ -127,7 +147,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
        
         
         ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Line Chart",
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().lineChart(),
                 ButtonLabelType.TEXT_ON_TOP));
         
         lineButton.addClickHandler(new ClickHandler(){
@@ -140,7 +160,7 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
         });
 
         ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), "Options",
+                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().chartOptions(),
                 ButtonLabelType.TEXT_ON_TOP));
         
         optionsButton.addClickHandler(new ClickHandler(){

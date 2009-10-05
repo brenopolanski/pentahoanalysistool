@@ -191,4 +191,11 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String failedPivot(String arg0);
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedGetSort();
+
 }

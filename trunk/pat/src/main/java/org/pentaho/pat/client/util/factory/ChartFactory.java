@@ -131,10 +131,10 @@ public class ChartFactory {
                 rowColCount++;
 
         // TODO Allow user defined fonts etc.
-        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
+        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;"); //$NON-NLS-1$
 
         // TODO Allow user defined background color.
-        cd.setBackgroundColour("#ffffff");
+        cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
         final XAxis xa = new XAxis();
 
@@ -150,7 +150,7 @@ public class ChartFactory {
         final BarChart bchart2 = new BarChart(BarStyle.GLASS);
 
         // TODO Allow user defined tooltips.
-        bchart2.setTooltip("$#val#");
+        bchart2.setTooltip("$#val#"); //$NON-NLS-1$
 
         // TODO Allow user defined Legend on or off and position.
         cd.setLegend(new Legend(Position.RIGHT, true));
@@ -207,10 +207,10 @@ public class ChartFactory {
                 rowColCount++;
 
         // TODO Allow user defined fonts etc.
-        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
+        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;"); //$NON-NLS-1$
 
         // TODO Allow user defined background color.
-        cd.setBackgroundColour("#ffffff");
+        cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
         // TODO Allow user defined Legend on or off and position.
         cd.setLegend(new Legend(Position.RIGHT, true));
@@ -293,10 +293,10 @@ public class ChartFactory {
                 rowColCount++;
 
         // TODO Allow user defined fonts etc.
-        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;");
+        final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;"); //$NON-NLS-1$
 
         // TODO Allow user defined background color.
-        cd.setBackgroundColour("#ffffff");
+        cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
         // TODO Allow user defined Legend on or off and position.
         cd.setLegend(new Legend(Position.RIGHT, true));
@@ -307,7 +307,7 @@ public class ChartFactory {
         pie.setNoLabels(true);
         
         // TODO Allow user defined tooltips.
-        pie.setTooltip("#label# $#val#<br>#percent#");
+        pie.setTooltip("#label# $#val#<br>#percent#"); //$NON-NLS-1$
         pie.setGradientFill(true);
         pie.setColours(getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor());
         pie.setAnimateOnShow(true);
