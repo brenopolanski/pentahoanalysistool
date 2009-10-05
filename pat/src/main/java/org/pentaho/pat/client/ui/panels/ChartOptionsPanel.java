@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.TextBox;
 /**
  * Create the chart options panel.
  *
+ * @created Oct 4, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
  *

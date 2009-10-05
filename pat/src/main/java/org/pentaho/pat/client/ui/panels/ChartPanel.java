@@ -53,37 +53,46 @@ import com.rednels.ofcgwt.client.ChartWidget;
  */
 public class ChartPanel extends LayoutComposite implements QueryListener {
 
-    
+
     private CellDataSet matrix;
     private final ChartWidget chart = new ChartWidget();
-    private ChartFactory cf = new ChartFactory();
-    private ChartType ct = ChartType.LINE;
-    
+    private ChartFactory chartFactory = new ChartFactory();
+    private ChartType chartType = ChartType.LINE;
+
     /**
-     * 
+     * Chart Type Enum.
+     * @author tom(at)wamonline.org.uk
+     * @since 0.5.0
+     */
+    public enum ChartType {
+        PIE,
+        BAR,
+        LINE
+    }
+
+    /**
      * Chart Panel Constructor.
-     *
      */
     public ChartPanel(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
-        
+
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
-        layoutPanel.add(buttonLayoutPanel());
+        layoutPanel.add(createBtnLayoutPanel());
         layoutPanel.add(chart, new BoxLayoutData(FillStyle.HORIZONTAL));
-        
+
         this.getLayoutPanel().add(layoutPanel);
 
     }
-    
+
     /* (non-Javadoc)
      * 
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
     public void onQueryChange(Widget sender) {
-        
+
     }
 
     /* (non-Javadoc)
@@ -91,33 +100,19 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
      */
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
-        this.matrix = matrix;
-        chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
-        this.layout();
+            this.matrix = matrix;
+            chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+            this.layout();
         }
     }
 
-    /**
-     * 
-     * Chart Type Enum.
-     *
-     * @author tom(at)wamonline.org.uk
-     * @since 0.5.0
-     *
-     */
-    public enum ChartType {
-        PIE,
-        BAR,
-        LINE
-   }
-        
     /**
      * 
      * Button Panel for chart panel.
      *
      * @return A LayoutPanel containing buttons.
      */
-    private LayoutPanel buttonLayoutPanel(){
+    private LayoutPanel createBtnLayoutPanel(){
         final LayoutPanel buttonsBox = new LayoutPanel();
         buttonsBox.setLayout(new BoxLayout());
 
@@ -125,53 +120,49 @@ public class ChartPanel extends LayoutComposite implements QueryListener {
                 MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().pieChart(),
                 ButtonLabelType.TEXT_ON_TOP));
         pieButton.addClickHandler(new ClickHandler(){
-            
+
             public void onClick(ClickEvent arg0) {
-                ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+                chartType = ChartType.PIE;
+                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
             }
-            
+
         });
 
         ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(
                 MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().barChart(),
                 ButtonLabelType.TEXT_ON_TOP));
-        barButton.addClickHandler(new ClickHandler(){
-
-            public void onClick(ClickEvent arg0) {
-                ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
-            }
-            
-        });
-       
         
+        barButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent arg0) {
+                chartType = ChartType.BAR;
+                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+            }
+        });
+
+
         ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(
                 MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().lineChart(),
                 ButtonLabelType.TEXT_ON_TOP));
         
         lineButton.addClickHandler(new ClickHandler(){
-
             public void onClick(ClickEvent arg0) {
-                ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+                chartType = ChartType.LINE;
+                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
             }
-            
         });
 
+        
         ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(
                 MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().chartOptions(),
                 ButtonLabelType.TEXT_ON_TOP));
         
         optionsButton.addClickHandler(new ClickHandler(){
-
             public void onClick(ClickEvent arg0) {
                 ChartOptionsWindow.display();
             }
-            
         });
 
-        
+
         buttonsBox.add(pieButton);
         buttonsBox.add(barButton);
         buttonsBox.add(lineButton);
