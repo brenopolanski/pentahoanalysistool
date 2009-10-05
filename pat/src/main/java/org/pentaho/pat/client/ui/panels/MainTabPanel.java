@@ -154,8 +154,10 @@ public class MainTabPanel extends LayoutComposite {
                 contentWrapper.getWidget(selectEvent.getSelectedItem());
                 final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
 
-                if (widget instanceof OlapPanel)
+                if (widget instanceof OlapPanel) {
                     Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
+                    Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
+                }
 
             }
         });

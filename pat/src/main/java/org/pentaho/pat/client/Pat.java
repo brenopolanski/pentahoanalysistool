@@ -73,6 +73,40 @@ public class Pat implements EntryPoint {
     public static final String DEF_STYLE_NAME = "Pat"; //$NON-NLS-1$
 
     /**
+     * The {@link Application}.
+     */
+    private final Application app;
+
+    /**
+     * Global State.
+     */
+    private static State applicationState = new State();
+
+    private static String currQuery = null;
+    
+    private static String currConnection = null;
+
+    public static String getCurrConnection() {
+        return currConnection;
+    }
+
+
+    public static void setCurrConnection(String currConnection) {
+        Pat.currConnection = currConnection;
+    }
+
+
+    /**
+     * Returns the SESSION_ID.
+     * 
+     * @return SESSION_ID
+     */
+    public static String getSessionID() {
+        return applicationState.getSession();
+    }
+
+
+    /**
      * @return State
      */
     public static State getApplicationState() {
@@ -97,27 +131,6 @@ public class Pat implements EntryPoint {
      */
     public static void setCurrQuery(final String currQuery) {
         Pat.currQuery = currQuery;
-    }
-
-    /**
-     * The {@link Application}.
-     */
-    private final Application app;
-
-    /**
-     * Global State.
-     */
-    private static State applicationState = new State();
-
-    private static String currQuery = null;
-
-    /**
-     * Returns the SESSION_ID.
-     * 
-     * @return SESSION_ID
-     */
-    public static String getSessionID() {
-        return applicationState.getSession();
     }
 
     /**
