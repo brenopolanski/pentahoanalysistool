@@ -146,6 +146,14 @@ public class OlapPanel extends DataWidget {
         queryId = name;
     }
 
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -168,6 +176,7 @@ public class OlapPanel extends DataWidget {
                     public void onSuccess(final String query) {
                         queryId = query;
                         Pat.setCurrQuery(query);
+                        Pat.setCurrConnection(connectionId);
 
                         final LayoutPanel centerPanel = new LayoutPanel();
                         final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();

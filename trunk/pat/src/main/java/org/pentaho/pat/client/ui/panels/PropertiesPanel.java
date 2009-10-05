@@ -77,9 +77,9 @@ public class PropertiesPanel extends LayoutComposite {
 
                     public void onSuccess(String mdx) {
                         // TODO localize + externalize strings
-                        final WindowPanel wp = new WindowPanel("Show MDX");
+                        final WindowPanel wp = new WindowPanel("MDX");
                         LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-                        wpLayoutPanel.setSize("400px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+                        wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                         final TextArea mdxArea = new TextArea();
                         
                         mdxArea.setText(mdx);
@@ -87,25 +87,36 @@ public class PropertiesPanel extends LayoutComposite {
                         wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
                         ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
                         closeBtn.addClickHandler(new ClickHandler() {
+                            public void onClick(ClickEvent arg0) {
+                               wp.hide();
+                            }
+                            
+                        });
+                        ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().executeQuery());
+                        mdxBtn.addClickHandler(new ClickHandler() {
                                 public void onClick(ClickEvent arg0) {
-//                                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
-//
-//                                                public void onFailure(Throwable arg0) {
-//                                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-//                                                }
-//
-//                                                public void onSuccess(CellDataSet matrix) {
-//                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(QueryPanel.this, fQuery, matrix);
-//                                                        
-//                                                }
-//                                                
-//                                        });
+                                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), Pat.getCurrConnection(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+
+                                                public void onFailure(Throwable arg0) {
+                                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+                                                }
+
+                                                public void onSuccess(CellDataSet matrix) {
+                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new OlapPanel(), Pat.getCurrQuery(), matrix);
+                                                        
+                                                }
+                                                
+                                        });
            
                                         wp.hide();
                                         
                                 }
                         });
-                        wpLayoutPanel.add(closeBtn);
+                        LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+                        
+                        wpButtonPanel.add(mdxBtn);
+                        wpButtonPanel.add(closeBtn);
+                        wpLayoutPanel.add(wpButtonPanel);
                         wpLayoutPanel.layout();
                         wp.add(wpLayoutPanel);
                         wp.layout();
