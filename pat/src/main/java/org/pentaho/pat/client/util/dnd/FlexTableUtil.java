@@ -29,7 +29,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -90,7 +90,7 @@ public class FlexTableUtil {
      *            the target axis
      */
     public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
-            final int sourceRow, final int targetRow, final int sourceCol, final int targetCol, final Axis targetAxis) {
+            final int sourceRow, final int targetRow, final int sourceCol, final int targetCol, final IAxis targetAxis) {
         // targetRow = targetTable.getRowCount();
         LogoPanel.spinWheel(true);
         final int sRow = sourceRow;

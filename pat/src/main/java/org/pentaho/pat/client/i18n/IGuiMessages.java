@@ -29,7 +29,7 @@ package org.pentaho.pat.client.i18n;
  * 
  */
 
-public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
+public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
 
     /**
      * Failed to get a list of cubes.

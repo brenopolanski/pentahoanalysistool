@@ -32,7 +32,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
 import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -51,7 +51,7 @@ import com.rednels.ofcgwt.client.ChartWidget;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class ChartPanel extends LayoutComposite implements QueryListener {
+public class ChartPanel extends LayoutComposite implements IQueryListener {
 
 
     private CellDataSet matrix;

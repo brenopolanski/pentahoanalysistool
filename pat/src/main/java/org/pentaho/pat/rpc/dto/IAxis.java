@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public interface Axis extends Serializable {
+public interface IAxis extends Serializable {
 
     Standard FILTER = Standard.FILTER;
     Standard COLUMNS = Standard.COLUMNS;
@@ -35,7 +35,7 @@ public interface Axis extends Serializable {
     int axisOrdinal();
     String getCaption();
 
-    public enum Standard implements Axis,IsSerializable {
+    public enum Standard implements IAxis,IsSerializable {
         FILTER,
         COLUMNS,
         ROWS,
@@ -57,7 +57,7 @@ public interface Axis extends Serializable {
     class Factory {
         private static final Standard[] STANDARD_VALUES = Standard.values();
 
-        public static Axis forOrdinal(final int ordinal) {
+        public static IAxis forOrdinal(final int ordinal) {
             if (ordinal < -1) {
                 throw new IllegalArgumentException(
                     "Axis ordinal must be -1 or higher"); //$NON-NLS-1$
@@ -65,7 +65,7 @@ public interface Axis extends Serializable {
             if (ordinal + 1 < STANDARD_VALUES.length) {
                 return STANDARD_VALUES[ordinal + 1];
             }
-            return new Axis() 
+            return new IAxis() 
             {
 				private static final long serialVersionUID = 1L;
 

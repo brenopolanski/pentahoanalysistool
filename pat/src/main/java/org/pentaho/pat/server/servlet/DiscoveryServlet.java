@@ -25,8 +25,8 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
-import org.pentaho.pat.rpc.Discovery;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.IDiscovery;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
@@ -39,7 +39,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
  * @author Luc Boudreau
  *
  */
-public class DiscoveryServlet extends AbstractServlet implements Discovery {
+public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,7 +69,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 	public String [] getDimensions(
             String sessionId, 
             String queryId, 
-            Axis axis) throws RpcException
+            IAxis axis) throws RpcException
 	{
 		List<String> dimensionsList;
 		try {
@@ -77,7 +77,7 @@ public class DiscoveryServlet extends AbstractServlet implements Discovery {
 			    getCurrentUserId(), 
 			    sessionId,
 			    queryId,
-			    (axis.equals(Axis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
+			    (axis.equals(IAxis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
 			return dimensionsList.toArray(new String[dimensionsList.size()]);
 		} catch (OlapException e) {
 		    log.error(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"),e); //$NON-NLS-1$

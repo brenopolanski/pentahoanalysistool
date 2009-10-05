@@ -15,34 +15,27 @@
  * You should have received a copy of the GNU General Public License along 
  * with this program; if not, write to the Free Software Foundation, Inc., 
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
- * 
+ *
  */
-package org.pentaho.pat.client.events;
+package org.pentaho.pat.client.listeners;
 
-import org.pentaho.pat.client.listeners.QueryListener;
+import java.util.EventListener;
+
+import org.pentaho.pat.rpc.dto.CellDataSet;
+
+import com.google.gwt.user.client.ui.Widget;
+
 
 /**
- * A widget that implements this interface sources the events defined by the
- * {@link org.pentaho.pat.client.listeners.QueryListener} interface.
+ * The Interface ConnectionListener.
  * 
- * @created Jun 9, 2009
- * @since 0.2 
- * @author Tom Barber
-
+ * @author tom(at)wamonline.org.uk
  */
-public interface SourcesQueryEvents {
+public interface IQueryListener extends EventListener {
+	
+	public void onQueryChange(Widget sender);
+	
+	public void onQueryExecuted(String queryId, CellDataSet matrix);
 
-	/**
-	 * Adds a listener interface to receive query events.
-	 * 
-	 * @param listener the listener interface to add
-	 */
-	void addQueryListener(QueryListener listener);
-
-	/**
-	 * Removes a previously added listener interface.
-	 * 
-	 * @param listener the listener interface to remove
-	 */
-	void removeQueryListener(QueryListener listener);
+	
 }

@@ -21,7 +21,7 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -33,14 +33,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Luc Boudreau
  */
 
-public interface QueryAsync {
+public interface IQueryAsync {
 	
     public void moveDimension(
             String sessionId,
             String queryId,
-            Axis axis, 
+            IAxis axis, 
             String dimensionName,
-            AsyncCallback callback);
+            AsyncCallback<Object> callback);
 	
 	public void createSelection(
 	        String sessionId,
@@ -48,7 +48,7 @@ public interface QueryAsync {
 	        String dimensionName, 
 	        List<String> memberNames, 
 	        String selectionType,
-	        AsyncCallback callback);	
+	        AsyncCallback<Object> callback);	
 	
 	
 	public void clearSelection(
@@ -56,7 +56,7 @@ public interface QueryAsync {
 	        String queryId,
 	        String dimensionName, 
 	        List<String> memberNames,
-	        AsyncCallback callback);
+	        AsyncCallback<Object> callback);
 	
 	public void executeQuery(
 	        String sessionId, 
@@ -73,7 +73,7 @@ public interface QueryAsync {
     
     public void getQueries(String sessionId, AsyncCallback<String[]> callback);
 
-    public void deleteQuery(String sessionId, String queryId, AsyncCallback callback);
+    public void deleteQuery(String sessionId, String queryId, AsyncCallback<Object> callback);
     
     public void getMdxForQuery(
             String sessionId, 
@@ -96,13 +96,13 @@ public interface QueryAsync {
            String queryId,
            String dimensionName,
            String sort,
-           AsyncCallback callback);
+           AsyncCallback<Object> callback);
    
    public void clearSortOrder(
            String sessionId,
            String queryId,
            String dimensionName,
-           AsyncCallback callback);
+           AsyncCallback<Object> callback);
    
    public void getSortOrder(
            String sessionId,
@@ -115,7 +115,7 @@ public interface QueryAsync {
            String queryId, 
            String dimensionName, 
            String mode,
-           AsyncCallback callback);
+           AsyncCallback<Object> callback);
    
    public void getHierarchizeMode(
            String sessionId,
@@ -127,5 +127,5 @@ public interface QueryAsync {
            String sessionId, 
            String queryId, 
            MemberCell member,
-           AsyncCallback callback);
+           AsyncCallback<Object> callback);
 }

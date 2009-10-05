@@ -18,62 +18,45 @@
  *
  */
 
+
 package org.pentaho.pat.client.ui.images;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;
 
 /**
- * Pat Images.
+ * The Interface SelectionModeImageBundle.
  * 
- * @created Apr 23, 2009 
+ * @created May 8, 2009
  * @author tom(at)wamonline.org.uk
  */
-public interface PatImages extends ImageBundle{
-
+public interface ISelectionModeImageBundle extends ImageBundle {
+	
 	/**
-	 * Chart Image.
+	 * Children select icon.
 	 * 
 	 * @return the abstract image prototype
 	 */
-	AbstractImagePrototype chart();
-
+	public AbstractImagePrototype childrenSelectIcon();
+	
 	/**
-	 * Cube Image.
+	 * Include children select icon.
 	 * 
 	 * @return the abstract image prototype
 	 */
-	AbstractImagePrototype cube();
-
+	public AbstractImagePrototype includeChildrenSelectIcon();
+	
 	/**
+	 * Member select icon.
 	 * 
-	 *Close Tab Image
-	 *
 	 * @return the abstract image prototype
 	 */
-	AbstractImagePrototype closeButton();
+	public AbstractImagePrototype memberSelectIcon();
 	
-	AbstractImagePrototype database();
-	
-	AbstractImagePrototype databases();
-	
-	AbstractImagePrototype help_index();
-	
-	AbstractImagePrototype add();
-	
-	AbstractImagePrototype cross();
-	
-	AbstractImagePrototype connect();
-	
-	AbstractImagePrototype disconnect();
-	
-	AbstractImagePrototype windowButtonClose();
-	
-	AbstractImagePrototype database_add();
-	
-	AbstractImagePrototype database_delete();
-	
-	AbstractImagePrototype database_edit();
-	
-	AbstractImagePrototype pat_orange_banner();
+	/**
+	 * Siblings select icon.
+	 * 
+	 * @return the abstract image prototype
+	 */
+	public AbstractImagePrototype siblingsSelectIcon();
 }

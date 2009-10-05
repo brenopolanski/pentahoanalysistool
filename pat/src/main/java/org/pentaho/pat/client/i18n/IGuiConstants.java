@@ -29,7 +29,7 @@ import com.google.gwt.i18n.client.Constants;
  * @author tom(at)wamonline.org.uk
  */
 
-public interface GuiConstants extends Constants {
+public interface IGuiConstants extends Constants {
 
     /** The Constant CURRENT_QUERY_NAME. */
     String CURRENT_QUERY_NAME = "current-query-name"; //$NON-NLS-1$

@@ -29,14 +29,14 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.QueryListener;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class DataPanel extends LayoutComposite implements QueryListener {
+public class DataPanel extends LayoutComposite implements IQueryListener {
 
     OlapTable olapTable;
 
@@ -100,8 +100,8 @@ public class DataPanel extends LayoutComposite implements QueryListener {
         });
 
         final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                Axis.COLUMNS, true);
-        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS,
+                IAxis.COLUMNS, true);
+        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS,
                 false);
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);

@@ -20,7 +20,7 @@
 package org.pentaho.pat.rpc;
 
 
-import org.pentaho.pat.rpc.dto.Axis;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -31,7 +31,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * Defines discovery operations methods.
  * @author Luc Boudreau
  */
-public interface Discovery extends RemoteService {
+public interface IDiscovery extends RemoteService {
 
 	/**
 	 * Fetches a list of JDBC drivers available for use.
@@ -58,7 +58,7 @@ public interface Discovery extends RemoteService {
 	public String [] getDimensions(
 	        String sessionId, 
 	        String queryId, 
-	        Axis axis) throws RpcException;
+	        IAxis axis) throws RpcException;
 	
 	/**
 	 * Returns all the cube names available on the current connection.
