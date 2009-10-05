@@ -34,7 +34,8 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 /**
  * The Class MemberSelectionLabel.
  * 
- * @author wseyler
+ * @created Sept 8, 2009
+ * @author tom(at)wamonline.co.uk
  */
 public class MemberSelectionLabel extends HorizontalPanel {
 

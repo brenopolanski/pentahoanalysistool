@@ -54,6 +54,31 @@ public class MainTabPanel extends LayoutComposite {
     private static int counter = 0;
 
     /**
+     *TODO JAVADOC
+     * 
+     */
+    public MainTabPanel() {
+        super();
+        final LayoutPanel rootLayoutPanel = getLayoutPanel();
+
+        contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
+        contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
+            public void onSelection(final SelectionEvent<Integer> selectEvent) {
+                contentWrapper.getWidget(selectEvent.getSelectedItem());
+                final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
+
+                if (widget instanceof OlapPanel) {
+                    Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
+                    Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
+                }
+
+            }
+        });
+
+        rootLayoutPanel.add(contentWrapper);
+    }
+
+    /**
      * Adds a new Tab to the contentPanel.
      * 
      * @param content
@@ -66,8 +91,9 @@ public class MainTabPanel extends LayoutComposite {
 
             final Iterator<Widget> iter = contentWrapper.iterator();
             while (iter.hasNext())
-                if (iter.next() instanceof WelcomePanel)
+                if (iter.next() instanceof WelcomePanel) {
                     isWelcomePanel = true;
+                }
 
             if (!isWelcomePanel) {
                 contentWrapper.add(content, tabName);
@@ -140,28 +166,5 @@ public class MainTabPanel extends LayoutComposite {
         return hPanel;
     }
 
-    /**
-     *TODO JAVADOC
-     * 
-     */
-    public MainTabPanel() {
-        super();
-        final LayoutPanel rootLayoutPanel = getLayoutPanel();
 
-        contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
-        contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
-            public void onSelection(final SelectionEvent<Integer> selectEvent) {
-                contentWrapper.getWidget(selectEvent.getSelectedItem());
-                final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
-
-                if (widget instanceof OlapPanel) {
-                    Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
-                    Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
-                }
-
-            }
-        });
-
-        rootLayoutPanel.add(contentWrapper);
-    }
 }

@@ -63,7 +63,6 @@ public class PropertiesPanel extends LayoutComposite {
         final LayoutPanel mainPanel = new LayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        // TODO localize string
         final ToolButton mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
         mdxButton.addClickHandler( new ClickHandler(){
 
@@ -71,49 +70,48 @@ public class PropertiesPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<String>(){
 
                     public void onFailure(Throwable arg0) {
-                        
-                        //MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(String mdx) {
-                        // TODO localize + externalize strings
+                        // TODO localize + externalize strings + extract show mdx window
                         final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
                         LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                         wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                         final TextArea mdxArea = new TextArea();
-                        
+
                         mdxArea.setText(mdx);
 
                         wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
                         ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
                         closeBtn.addClickHandler(new ClickHandler() {
                             public void onClick(ClickEvent arg0) {
-                               wp.hide();
+                                wp.hide();
                             }
-                            
+
                         });
                         ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().executeQuery());
                         mdxBtn.addClickHandler(new ClickHandler() {
-                                public void onClick(ClickEvent arg0) {
-                                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), Pat.getCurrConnection(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
+                            public void onClick(ClickEvent arg0) {
+                                ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), Pat.getCurrConnection(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
 
-                                                public void onFailure(Throwable arg0) {
-                                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-                                                }
+                                    public void onFailure(Throwable arg0) {
+                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
+                                    }
 
-                                                public void onSuccess(CellDataSet matrix) {
-                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new OlapPanel(), Pat.getCurrQuery(), matrix);
-                                                        
-                                                }
-                                                
-                                        });
-           
-                                        wp.hide();
-                                        
-                                }
+                                    public void onSuccess(CellDataSet matrix) {
+                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new OlapPanel(), Pat.getCurrQuery(), matrix);
+
+                                    }
+
+                                });
+
+                                wp.hide();
+
+                            }
                         });
                         LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-                        
+
                         wpButtonPanel.add(mdxBtn);
                         wpButtonPanel.add(closeBtn);
                         wpLayoutPanel.add(wpButtonPanel);
@@ -124,16 +122,16 @@ public class PropertiesPanel extends LayoutComposite {
                         wp.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
                         wp.center();
 
-                        
-                        
+
+
                     }
-                    
+
                 });
-                
+
             }});
         mdxButton.setEnabled(true);
 
-        
+
         final ToolButton checkButton1 = new ToolButton(ConstantFactory.getInstance().showParent());
         checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton1.setEnabled(false);
@@ -158,20 +156,20 @@ public class PropertiesPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
                     public void onFailure(Throwable arg0) {
-                        
+
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(CellDataSet arg0) {
-                        
+
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, Pat.getCurrQuery(), arg0);
-                        
-                        
+
+
                     }
-                    
+
                 });
-                
+
             }});
         checkButton5.setEnabled(true);
 

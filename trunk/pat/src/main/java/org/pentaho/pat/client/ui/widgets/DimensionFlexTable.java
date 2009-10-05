@@ -19,7 +19,7 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 
 import com.google.gwt.user.client.ui.FlexTable;
 

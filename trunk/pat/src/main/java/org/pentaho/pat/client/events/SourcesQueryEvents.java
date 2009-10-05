@@ -23,7 +23,7 @@ import org.pentaho.pat.client.listeners.QueryListener;
 
 /**
  * A widget that implements this interface sources the events defined by the
- * {@link org.pentaho.pat.client.deprecated.listeners.QueryListener} interface.
+ * {@link org.pentaho.pat.client.listeners.QueryListener} interface.
  * 
  * @created Jun 9, 2009
  * @since 0.2 

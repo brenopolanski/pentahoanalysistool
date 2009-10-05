@@ -73,7 +73,7 @@ public class DataPanel extends LayoutComposite implements QueryListener {
     public DataPanel(String query) {
         this.queryId = query;
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
-        
+
         mainLayoutPanel.setPadding(0);
 
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
@@ -83,17 +83,17 @@ public class DataPanel extends LayoutComposite implements QueryListener {
                 ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
                         new AsyncCallback<CellDataSet>() {
 
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedQuery(arg0.getLocalizedMessage()));
-                            }
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedQuery(arg0.getLocalizedMessage()));
+                    }
 
-                            public void onSuccess(final CellDataSet result1) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        DataPanel.this, Pat.getCurrQuery(), result1);
-                            }
+                    public void onSuccess(final CellDataSet result1) {
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                DataPanel.this, Pat.getCurrQuery(), result1);
+                    }
 
-                        });
+                });
 
             }
 
@@ -138,11 +138,12 @@ public class DataPanel extends LayoutComposite implements QueryListener {
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
         if (query.equals(queryId))
         {
-        baseLayoutPanel.remove(mainLayoutPanel);
-        baseLayoutPanel.add(fillLayoutPanel);
-        baseLayoutPanel.layout();
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached())
-            olapTable.setData(matrix);
+            baseLayoutPanel.remove(mainLayoutPanel);
+            baseLayoutPanel.add(fillLayoutPanel);
+            baseLayoutPanel.layout();
+            if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+                olapTable.setData(matrix);
+            }
         }
     }
 }

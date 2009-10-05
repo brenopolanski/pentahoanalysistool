@@ -28,7 +28,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
-import org.pentaho.pat.client.util.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.Axis;
 
@@ -91,8 +91,8 @@ public class DimensionPanel extends LayoutComposite {
         dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), Axis.ROWS);
         dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), Axis.COLUMNS);
         dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), Axis.FILTER);
-        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
 
+        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));

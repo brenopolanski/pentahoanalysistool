@@ -18,11 +18,9 @@
  *
  */
 
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.client.listeners;
 
 import org.pentaho.pat.client.events.SourcesQueryEvents;
-import org.pentaho.pat.client.listeners.QueryListener;
-import org.pentaho.pat.client.listeners.QueryListenerCollection;
 
 /**
  *TODO JAVADOC

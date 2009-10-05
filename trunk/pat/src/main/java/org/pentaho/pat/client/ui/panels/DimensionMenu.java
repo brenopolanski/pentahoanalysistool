@@ -106,14 +106,12 @@ public class DimensionMenu extends LayoutComposite {
      */
     public DimensionMenu() {
         super();
-        // this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(true);
-      
         
         memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
             public void renderCell(ListBox<MemberSelectionLabel> listBox, int row, int column,
@@ -152,16 +150,6 @@ public class DimensionMenu extends LayoutComposite {
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         
-//        final Button searchButton = new Button(ConstantFactory.getInstance().filter());
-//        searchButton.addClickHandler(new ClickHandler() {
-//            
-//            public void onClick(ClickEvent arg0) {
-//                if (filterbox.getText() != null && filterbox.getText().length() > 0) {
-//                    findItems(filterbox.getText());
-//                }
-//            }
-//        });
-
         sortModeModel.add(ConstantFactory.getInstance().sortAscending());
         sortModeModel.add(ConstantFactory.getInstance().sortDescending());
         sortModeModel.add(ConstantFactory.getInstance().sortBreakAscending());
@@ -184,7 +172,7 @@ public class DimensionMenu extends LayoutComposite {
                     scb = "BDESC"; //$NON-NLS-1$
                     break;
                 default:
-                    throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                    throw new RuntimeException(MessageFactory.getInstance().unexpectedError());
                 }
                 ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(),
                         dimensionLabel.getText(), scb, new AsyncCallback<Object>() {
@@ -204,7 +192,6 @@ public class DimensionMenu extends LayoutComposite {
         hierarchyModeModel.add(ConstantFactory.getInstance().post());
 
         hierarchyComboBox.addChangeHandler(new ChangeHandler() {
-
             public void onChange(final ChangeEvent arg0) {
                 String hcb = new String();
                 switch (hierarchyComboBox.getSelectedIndex()){
@@ -215,7 +202,7 @@ public class DimensionMenu extends LayoutComposite {
                     hcb = "POST"; //$NON-NLS-1$
                     break;
                 default:
-                    throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                    throw new RuntimeException(MessageFactory.getInstance().unexpectedError());
                 }
                 ServiceFactory.getQueryInstance().setHierarchizeMode(Pat.getSessionID(), Pat.getCurrQuery(),
                         dimensionLabel.getText(), hcb, new AsyncCallback<Object>() {
@@ -253,18 +240,15 @@ public class DimensionMenu extends LayoutComposite {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 dimensionTree.ensureSelectedItemVisible();
-
-                // TODO uncomment when implemented
-                // DimensionTreeItem selected = (DimensionTreeItem)dimensionTree.getSelectedItem().getWidget();
-                // selected.showButton();
-
             }
 
         });
 
     }
-    
 
+    /** 
+     * Empties filter textbox when being attached
+     */
     @Override
     protected void onAttach() {
         super.onAttach();
@@ -275,6 +259,11 @@ public class DimensionMenu extends LayoutComposite {
         return dimensionTree;
     }
 
+    /**
+     * Loads all Members of a given dimension and query
+     * @param queryId - Query to use to discover dimension members
+     * @param dimensionId - Dimension of interest
+     */
     public final void loadMembers(final String queryId, final String dimensionId) {
         ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
                 new AsyncCallback<StringTree>() {
@@ -375,15 +364,18 @@ public class DimensionMenu extends LayoutComposite {
     }
 
     /**
-     * Generates the Member Tree of a Dimension.
-     * 
-     * @param arg0
+     * Adds children {@link StringTree} to a given parent in the Tree 
+     * @param childStringTree - Children StringTree
+     * @param parent - Parent in the Tree
+     * @param selectionlist - List of selected members
+     * @param dimension - Currently processed dimension 
      */
     private final void addDimensionTreeItem(final StringTree childStringTree, final TreeItem parent,
             final String[][] selectionlist, final String dimension) {
         final List<StringTree> child = childStringTree.getChildren();
 
         for (int i = 0; i < child.size(); i++) {
+            // Need a copy of the memberLabel because of GWT's lack of clone support
             MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
             MemberSelectionLabel memberLabelcopy = new MemberSelectionLabel(child.get(i).getValue());
             memberLabel.setDimension(dimension);
@@ -400,12 +392,15 @@ public class DimensionMenu extends LayoutComposite {
             memberLabel.setFullPath(getFullPath(newParent));
             memberLabelcopy.setFullPath(getFullPath(newParent));
             memberListBoxModel.add(memberLabelcopy);
-//            memberLabel.setTreeItem(newParent);
             addDimensionTreeItem(child.get(i), newParent, selectionlist, dimension);
         }
     }
 
-    
+    /**
+     * Returns the full path of the member in the dimension tree
+     * @param currentTreeItem - TreeItem of interest
+     * @return String[] path
+     */
     public final String[] getFullPath(TreeItem currentTreeItem) {
         final List<String> pathList = new ArrayList<String>();
         pathList.add(currentTreeItem.getText());

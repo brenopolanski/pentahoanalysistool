@@ -25,7 +25,7 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.style.Color;
 import org.pentaho.pat.client.ui.panels.ChartPanel.ChartType;
-import org.pentaho.pat.client.util.PatTableModel;
+import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;

@@ -65,9 +65,9 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 public class ConnectionManagerPanel extends LayoutComposite {
 
     private final int preferredWidth = 284;
-    
+
     private final int preferredHeight = 384;
-    
+
     private static ListBox<ConnectionItem> listBox;
 
     private ToolBar toolBar;
@@ -218,9 +218,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                 for (final CubeConnection element2 : ccArray2) {
                                     final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
 
-                                     if(cList.contains(newCi)) {
+                                    if(cList.contains(newCi)) {
                                         cList.get(cList.indexOf(newCi)).setConnected(true);
-                                     }
+                                    }
                                     else {
                                         newCi.setConnected(true);
                                         cList.add(newCi);
