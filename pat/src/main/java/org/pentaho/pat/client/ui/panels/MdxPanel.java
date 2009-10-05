@@ -19,24 +19,11 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import org.gwt.mosaic.ui.client.Caption;
-import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
-import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
-import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
-import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -67,7 +54,7 @@ public class MdxPanel extends DataWidget {
     public MdxPanel(final String mdx, final String connection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
-        panelName = "MDX";
+        panelName = ConstantFactory.getInstance().mdx();
         connectionId = connection;
 
     }

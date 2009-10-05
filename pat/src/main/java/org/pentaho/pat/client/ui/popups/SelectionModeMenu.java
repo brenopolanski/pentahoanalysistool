@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author bugg
  * 
  */
-public class SelectionModeMenu2 extends PopupMenu {
+public class SelectionModeMenu extends PopupMenu {
 
     public class SelectionModeClearCommand implements Command {
 
@@ -76,7 +76,7 @@ public class SelectionModeMenu2 extends PopupMenu {
 
                         }
                     });
-            SelectionModeMenu2.this.hide();
+            SelectionModeMenu.this.hide();
         }
     }
 
@@ -126,7 +126,7 @@ public class SelectionModeMenu2 extends PopupMenu {
 
                     });
 
-            SelectionModeMenu2.this.hide();
+            SelectionModeMenu.this.hide();
         }
     }
 
@@ -160,7 +160,7 @@ public class SelectionModeMenu2 extends PopupMenu {
         source = source2;
     }
 
-    public SelectionModeMenu2() {
+    public SelectionModeMenu() {
         init();
     }
 

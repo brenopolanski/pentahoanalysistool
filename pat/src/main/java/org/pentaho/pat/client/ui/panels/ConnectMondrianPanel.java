@@ -235,7 +235,6 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
             public void onSubmitComplete(final SubmitCompleteEvent arg0) {
                 if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
-                    String res = arg0.getResults();
                     if (arg0.getResults().contains(SCHEMA_START)) {
                         final String tmp = arg0.getResults().substring(
                                 arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),

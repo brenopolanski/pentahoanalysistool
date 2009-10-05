@@ -64,7 +64,7 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         // TODO localize string
-        final ToolButton mdxButton = new ToolButton("Show MDX");
+        final ToolButton mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
         mdxButton.addClickHandler( new ClickHandler(){
 
             public void onClick(ClickEvent arg0) {
@@ -77,7 +77,7 @@ public class PropertiesPanel extends LayoutComposite {
 
                     public void onSuccess(String mdx) {
                         // TODO localize + externalize strings
-                        final WindowPanel wp = new WindowPanel("MDX");
+                        final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
                         LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                         wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                         final TextArea mdxArea = new TextArea();

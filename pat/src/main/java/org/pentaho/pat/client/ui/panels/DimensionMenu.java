@@ -84,7 +84,7 @@ public class DimensionMenu extends LayoutComposite {
 
     private final DefaultListModel<MemberSelectionLabel> memberListBoxModel = new DefaultListModel<MemberSelectionLabel>();
     
-    private final  ListBox<MemberSelectionLabel> memberListBox = new ListBox<MemberSelectionLabel>(new String[]  {"Member","Path"});
+    private final  ListBox<MemberSelectionLabel> memberListBox = new ListBox<MemberSelectionLabel>(new String[]  {ConstantFactory.getInstance().member(),ConstantFactory.getInstance().path()});
     
     private FilterProxyListModel<MemberSelectionLabel, String> filterModel;
     
@@ -124,17 +124,17 @@ public class DimensionMenu extends LayoutComposite {
                   listBox.setWidget(row, column, item);
                   break;
                 case 1:
-                	String path = "";
+                	String path = ""; //$NON-NLS-1$
                 	for (int i=0;i<item.getFullPath().length;i++) {
                 		path+=item.getFullPath()[i];
                 		if((i+1)<item.getFullPath().length) {
-                			path+="->";
+                			path+="->"; //$NON-NLS-1$
                 		}
                 	}
                   listBox.setText(row, column, path);
                   break;
                 default:
-                  throw new RuntimeException("Should not happen");
+                  throw new RuntimeException("Should not happen"); //$NON-NLS-1$
               }
             }
           });
@@ -148,7 +148,7 @@ public class DimensionMenu extends LayoutComposite {
               }
             });
 
-        final Label filterText= new Label(ConstantFactory.getInstance().filter()+":");
+        final Label filterText= new Label(ConstantFactory.getInstance().filter()+":"); //$NON-NLS-1$
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filterbox, new BoxLayoutData(FillStyle.BOTH));
         
@@ -162,18 +162,35 @@ public class DimensionMenu extends LayoutComposite {
 //            }
 //        });
 
-        sortModeModel.add("ASC");
-        sortModeModel.add("DESC");
-        sortModeModel.add("BASC");
-        sortModeModel.add("BDESC");
+        sortModeModel.add(ConstantFactory.getInstance().sortAscending());
+        sortModeModel.add(ConstantFactory.getInstance().sortDescending());
+        sortModeModel.add(ConstantFactory.getInstance().sortBreakAscending());
+        sortModeModel.add(ConstantFactory.getInstance().sortBreakDescending());
 
         sortComboBox.addChangeHandler(new ChangeHandler() {
             public void onChange(final ChangeEvent arg0) {
+                String scb = new String();
+                switch (sortComboBox.getSelectedIndex()) {
+                case 0:
+                    scb = "ASC"; //$NON-NLS-1$
+                    break;
+                case 1:
+                    scb = "DESC"; //$NON-NLS-1$
+                    break;
+                case 2:
+                    scb = "BASC"; //$NON-NLS-1$
+                    break;
+                case 3:
+                    scb = "BDESC"; //$NON-NLS-1$
+                    break;
+                default:
+                    throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                }
                 ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(),
-                        dimensionLabel.getText(), sortComboBox.getText(), new AsyncCallback<Object>() {
+                        dimensionLabel.getText(), scb, new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
+                                MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().sortFailed());
                             }
 
                             public void onSuccess(final Object arg0) {
@@ -183,17 +200,28 @@ public class DimensionMenu extends LayoutComposite {
         });
 
 
-        hierarchyModeModel.add("PRE");
-        hierarchyModeModel.add("POST");
+        hierarchyModeModel.add(ConstantFactory.getInstance().pre());
+        hierarchyModeModel.add(ConstantFactory.getInstance().post());
 
         hierarchyComboBox.addChangeHandler(new ChangeHandler() {
 
             public void onChange(final ChangeEvent arg0) {
+                String hcb = new String();
+                switch (hierarchyComboBox.getSelectedIndex()){
+                case 0:
+                    hcb = "PRE"; //$NON-NLS-1$
+                    break;
+                case 1:
+                    hcb = "POST"; //$NON-NLS-1$
+                    break;
+                default:
+                    throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                }
                 ServiceFactory.getQueryInstance().setHierarchizeMode(Pat.getSessionID(), Pat.getCurrQuery(),
-                        dimensionLabel.getText(), hierarchyComboBox.getText(), new AsyncCallback<Object>() {
+                        dimensionLabel.getText(), hcb, new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed");
+                                MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance().hierarchizeFailed());
                             }
 
                             public void onSuccess(final Object arg0) {
@@ -240,7 +268,7 @@ public class DimensionMenu extends LayoutComposite {
     @Override
     protected void onAttach() {
         super.onAttach();
-        filterbox.setText("");
+        filterbox.setText(""); //$NON-NLS-1$
     };
     
     public Tree getDimensionTree() {
@@ -279,7 +307,7 @@ public class DimensionMenu extends LayoutComposite {
 
                                                     public void onFailure(final Throwable arg0) {
                                                         MessageBox.error(ConstantFactory.getInstance().error(),
-                                                                "failed to get sort");
+                                                                MessageFactory.getInstance().failedGetSort());
 
                                                     }
 
@@ -388,31 +416,5 @@ public class DimensionMenu extends LayoutComposite {
         }
         final String[] values = new String[pathList.size()];
         return pathList.toArray(values);
-    }
-
-    
-    private final void findItems(final String searchText) {
-        for(int i = 0; i< dimensionTree.getItemCount();i++) {
-            searchTreeItems(dimensionTree.getItem(i),searchText);
-        }
-    }
-
-    private final void searchTreeItems(final TreeItem item,final String searchText) {
-        if (item.getText().toUpperCase().contains(searchText.toUpperCase())) {
-            item.setSelected(true);
-            if (item.getParentItem() != null) {
-                openParent(item.getParentItem());
-            }
-        }
-        for (int i = 0; i < item.getChildCount();i++) {
-            searchTreeItems(item.getChild(i),searchText);
-        }
-    }
-    
-    private final void openParent(final TreeItem item) {
-        item.setState(true);
-        if (item.getParentItem() != null) {
-            openParent(item.getParentItem());
-        }
     }
 }
