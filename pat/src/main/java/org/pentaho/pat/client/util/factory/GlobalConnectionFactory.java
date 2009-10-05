@@ -13,7 +13,7 @@
 package org.pentaho.pat.client.util.factory;
 
 
-import org.pentaho.pat.client.util.QueryChangeListeners;
+import org.pentaho.pat.client.listeners.QueryChangeListeners;
 
 import com.google.gwt.core.client.GWT;
 

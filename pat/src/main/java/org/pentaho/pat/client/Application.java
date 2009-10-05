@@ -81,9 +81,9 @@ public class Application extends Viewport {
     }
 
     private static MainTabPanel mainTabPanel = null;
-    
+
     private MenuBar menuBar = null;
-    
+
     private static LayoutPanel rootPanel;
     /**
      * Constructor.
@@ -93,9 +93,9 @@ public class Application extends Viewport {
         super();
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        
-        
-        
+
+
+
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
 
@@ -106,15 +106,15 @@ public class Application extends Viewport {
                 rootPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
             }
 
-            
+
             if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
                 MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
             }
-            
+
             mainTabPanel = new MainTabPanel();
             rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
         }
-        
+
         else {
             //TODO Disabled until new OlapTable implemented
             //rootPanel.add(new OlapTable(), new BoxLayoutData(FillStyle.BOTH));

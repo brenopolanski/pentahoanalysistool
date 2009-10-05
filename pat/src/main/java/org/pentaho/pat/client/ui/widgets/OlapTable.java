@@ -30,10 +30,10 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.QueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
-import org.pentaho.pat.client.util.PatColDef;
-import org.pentaho.pat.client.util.PatTableModel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.client.util.table.PatColDef;
+import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -77,7 +77,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
     LiveTable<BaseCell[]> table;
 
     private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
-    
+
     final LayoutPanel layoutPanel = getLayoutPanel();
 
     public OlapTable() {
@@ -159,7 +159,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
         table.redraw();
         this.layout();
     }
-    
+
     /**
      * 
      * @param headers
@@ -177,53 +177,53 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 }
 
             });
-            
+
             Image drillButton = null;
             if(((MemberCell)headers).getChildMemberCount()>0){
-            drillButton = Pat.IMAGES.cube().createImage();
-            drillButton.addClickHandler(new ClickHandler() {
+                drillButton = Pat.IMAGES.cube().createImage();
+                drillButton.addClickHandler(new ClickHandler() {
 
-                public void onClick(final ClickEvent arg0) {
-                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
-
-                        public void onFailure(Throwable arg0) {
-                            MessageBox.alert("Failed", "failed");
-                        }
-
-                        public void onSuccess(Object arg0) {
-                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                    public void onClick(final ClickEvent arg0) {
+                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
 
                             public void onFailure(Throwable arg0) {
-                                
-                                MessageBox.alert("Failed", "failed");    
-                                
+                                MessageBox.alert("Failed", "failed");
                             }
 
-                            public void onSuccess(CellDataSet arg0) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        OlapTable.this, Pat.getCurrQuery(), arg0);                        
-                                
-                            }
-                             
-                         });
-                        }
-                        
-                    });
-                }
+                            public void onSuccess(Object arg0) {
+                                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
-            });
+                                    public void onFailure(Throwable arg0) {
+
+                                        MessageBox.alert("Failed", "failed");    
+
+                                    }
+
+                                    public void onSuccess(CellDataSet arg0) {
+                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                                OlapTable.this, Pat.getCurrQuery(), arg0);                        
+
+                                    }
+
+                                });
+                            }
+
+                        });
+                    }
+
+                });
             }
             final Label cellLabel = new Label(headers.formattedValue);
             cellPanel.add(cellLabel);
-            
+
             cellPanel.setWidth("100%"); //$NON-NLS-1$
-            
+
             cellButton.addStyleName(CELLBUTTON);
-            
+
             if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
-            cellPanel.add(cellButton);
-            if(drillButton!=null)
-            cellPanel.add(drillButton);
+                cellPanel.add(cellButton);
+                if(drillButton!=null)
+                    cellPanel.add(drillButton);
             }
         }
 
@@ -275,7 +275,7 @@ public class OlapTable extends LayoutComposite implements QueryListener {
                 } else
                     colDef0.setHeader(1, groupPanel);
             }
-            
+
             colDef0.setHeaderTruncatable(false);
             colDef0.setColumnSortable(false);
             colDef0.setColumnTruncatable(false);

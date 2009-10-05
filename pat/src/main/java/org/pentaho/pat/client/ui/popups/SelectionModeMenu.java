@@ -65,17 +65,17 @@ public class SelectionModeMenu extends PopupMenu {
 
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
                     dimSelections, new AsyncCallback<Object>() {
-                        public void onFailure(final Throwable caught) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                    .noSelectionCleared(caught.getLocalizedMessage()));
+                public void onFailure(final Throwable caught) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .noSelectionCleared(caught.getLocalizedMessage()));
 
-                        }
+                }
 
-                        public void onSuccess(final Object result) {
-                            targetLabel.setSelectionMode(CLEAR);
+                public void onSuccess(final Object result) {
+                    targetLabel.setSelectionMode(CLEAR);
 
-                        }
-                    });
+                }
+            });
             SelectionModeMenu.this.hide();
         }
     }
@@ -113,18 +113,18 @@ public class SelectionModeMenu extends PopupMenu {
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
                     dimSelections, selection, new AsyncCallback<Object>() {
 
-                        public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                    .noSelectionSet(arg0.getLocalizedMessage()));
+                public void onFailure(final Throwable arg0) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .noSelectionSet(arg0.getLocalizedMessage()));
 
-                        }
+                }
 
-                        public void onSuccess(final Object arg0) {
-                            targetLabel.setSelectionMode(selectionMode);
+                public void onSuccess(final Object arg0) {
+                    targetLabel.setSelectionMode(selectionMode);
 
-                        }
+                }
 
-                    });
+            });
 
             SelectionModeMenu.this.hide();
         }

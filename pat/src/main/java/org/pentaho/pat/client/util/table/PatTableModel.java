@@ -10,7 +10,7 @@
  * @created Jul 10, 2009 
  * @author Tom Barber
  */
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.client.util.table;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;

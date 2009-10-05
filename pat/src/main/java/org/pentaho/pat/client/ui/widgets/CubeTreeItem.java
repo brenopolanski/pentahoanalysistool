@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 /**
- * TreeItems for Cube Menu
+ * Widget for Cube Menu
  * 
  * @created Aug 7, 2009
  * @since 0.5.0
@@ -52,6 +52,11 @@ public class CubeTreeItem extends HorizontalPanel {
 
     private ItemType type;
 
+    /**
+     * Represents a cube item
+     * @param connection - Connection the cube belongs to
+     * @param cube - Name of the Cube
+     */
     public CubeTreeItem(final CubeConnection connection, final String cube) {
         if (connection != null) {
             this.connection = connection;
@@ -66,7 +71,6 @@ public class CubeTreeItem extends HorizontalPanel {
                 this.type = ItemType.CONNECTION;
             }
 
-            this.setSpacing(5);
             this.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));
             this.add(new HTML(this.itemName));
 

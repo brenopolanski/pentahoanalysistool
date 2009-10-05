@@ -80,15 +80,6 @@ public class CubeMenu extends LayoutComposite {
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
                 CubeBrowserWindow.enableQmQuery(true);
-                // CubeTreeItem selected = (CubeTreeItem)cubeTree.getSelectedItem().getWidget();
-                // if (selected.getType() == CubeTreeItem.ItemType.CONNECTION) {
-                // MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
-                // }
-                // if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
-                // MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId() + " Cube: " +
-                // selected.getCube());
-                // }
-
             }
 
         });
@@ -99,6 +90,9 @@ public class CubeMenu extends LayoutComposite {
         return cubeTree;
     }
 
+    /**
+     * Loads all cubes of all active connections
+     */
     public final void loadCubes() {
         ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
                 new AsyncCallback<CubeConnection[]>() {
@@ -114,20 +108,24 @@ public class CubeMenu extends LayoutComposite {
                 });
     }
 
+    /**
+     * Loads all cubes of the given connection
+     * @param connectionId
+     */
     public final void loadCubes(final String connectionId) {
         ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
                 new AsyncCallback<CubeConnection>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
-                    }
+            public void onFailure(final Throwable arg0) {
+                cubeTree.clear();
+                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
+            }
 
-                    public void onSuccess(final CubeConnection connection) {
-                        final CubeConnection[] connections = new CubeConnection[] {connection};
-                        refreshCubeMenu(connections);
-                    }
-                });
+            public void onSuccess(final CubeConnection connection) {
+                final CubeConnection[] connections = new CubeConnection[] {connection};
+                refreshCubeMenu(connections);
+            }
+        });
     }
 
     /**
@@ -145,7 +143,6 @@ public class CubeMenu extends LayoutComposite {
                         }
 
                         public void onSuccess(final String[] o) {
-
                             for (final String element2 : o)
                                 cubesList.addItem(new CubeTreeItem(connection, element2));
                             cubesList.setState(true);

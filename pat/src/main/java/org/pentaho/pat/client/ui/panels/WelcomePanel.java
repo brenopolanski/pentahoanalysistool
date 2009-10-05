@@ -104,11 +104,11 @@ public class WelcomePanel extends DataWidget {
      */
     @Override
     public final Widget onInitialize() {
-BoxLayout test = new BoxLayout();
-test.setOrientation(Orientation.VERTICAL);
+        BoxLayout test = new BoxLayout();
+        test.setOrientation(Orientation.VERTICAL);
         final LayoutPanel layoutPanel = new LayoutPanel(test);
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
-        
+
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
         final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
         ((BoxLayout)buttonBar.getLayout()).setAlignment(Alignment.CENTER);
@@ -122,7 +122,7 @@ test.setOrientation(Orientation.VERTICAL);
 
         buttonBar.add(patwikiBtn);
 
-        
+
         layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.HORIZONTAL));
 
         layoutPanel.add(buttonBar, new BoxLayoutData(-1.0,-1.0));        

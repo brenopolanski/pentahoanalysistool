@@ -18,7 +18,7 @@
  *
  *
  */
-package org.pentaho.pat.client.util;
+package org.pentaho.pat.client.util.table;
 
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 

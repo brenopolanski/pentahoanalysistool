@@ -87,7 +87,6 @@ public class ConnectXmlaPanel extends LayoutComposite {
         super(new BorderLayout());
         connectButton = new Button(ConstantFactory.getInstance().save());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
-        // catalogTextBox = new TextBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
@@ -138,9 +137,6 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(userTextBox, CellConstraints.xy(3, 5));
         builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-        // builder.addLabel(ConstantFactory.getInstance().catalog() +
-        // LABEL_SUFFIX, CellConstraints.xy(1, 8));
-        // builder.add(catalogTextBox, CellConstraints.xyw(3,8,5));
 
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -155,11 +151,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
 
                             public void onSuccess(final String o) {
                                 connectButton.setEnabled(true);
-                                // TODO refresh or close?
                                 ConnectionManagerWindow.closeTabs();
-
-                                // ConnectionManagerPanel.addConnection(new
-                                // ConnectionItem("1234",getCubeConnection().getName(),false));
                             }
                         });
             }
