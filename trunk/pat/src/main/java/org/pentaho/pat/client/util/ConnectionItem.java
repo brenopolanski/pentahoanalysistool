@@ -20,6 +20,7 @@
 
 package org.pentaho.pat.client.util;
 
+
 /**
  * Connection Item
  * 
@@ -41,6 +42,22 @@ public class ConnectionItem {
         this.isConnected = isConnected;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        final ConnectionItem other = (ConnectionItem) obj;
+        if (!id.equals(other.id))
+            return false;
+        
+        return true;
+    }
+    
     public String getId() {
         return id;
     }

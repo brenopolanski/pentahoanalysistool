@@ -198,4 +198,16 @@ public interface GuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String failedGetSort();
 
+    /**
+     * 
+     * @return
+     */
+    String unexpectedError();
+    
+    /**
+     * 
+     * @param item - Name of the item to delete
+     * @return
+     */
+    String confirmDelete(String item);
 }
