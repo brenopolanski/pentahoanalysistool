@@ -60,7 +60,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     private ChartType ct = ChartType.LINE;
     private final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
     private LayoutPanel chartLayoutPanel = new LayoutPanel();
-    private String chartTitle = new String(Pat.getCurrQuery());
+    private String chartTitle = new String();
     private String xAxisLabel = new String();
     private String yAxisLabel = new String();
     /**
