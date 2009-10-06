@@ -76,4 +76,10 @@ public interface IGuiImages extends ImageBundle{
 	AbstractImagePrototype database_edit();
 	
 	AbstractImagePrototype pat_orange_banner();
+	
+	AbstractImagePrototype drill();
+	
+	AbstractImagePrototype drill2();
+	
+	AbstractImagePrototype dimbrowser();
 }
