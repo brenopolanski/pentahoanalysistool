@@ -110,7 +110,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      * 
      * Button Panel for chart panel.
      *
-     * @return A LayoutPanel containing buttons.
+     * @return A LayoutPanel containing chart buttons.
      */
     private LayoutPanel createBtnLayoutPanel(){
         final LayoutPanel buttonsBox = new LayoutPanel();
