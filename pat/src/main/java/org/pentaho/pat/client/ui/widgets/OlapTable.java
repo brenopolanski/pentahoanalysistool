@@ -42,12 +42,17 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -167,9 +172,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      */
     private HorizontalPanel createCell(final BaseCell headers) {
         final HorizontalPanel cellPanel = new HorizontalPanel();
-
         if (headers.getRawValue() != null && headers instanceof MemberCell) {
-            final Image cellButton = Pat.IMAGES.cross().createImage();
+            final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
             cellButton.addClickHandler(new ClickHandler() {
 
                 public void onClick(final ClickEvent arg0) {
@@ -178,42 +182,77 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             });
 
+            ClickHandler drillClick = new ClickHandler() {
+
+                public void onClick(final ClickEvent arg0) {
+                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
+
+                        public void onFailure(Throwable arg0) {
+                            MessageBox.alert("Failed", "failed");
+                        }
+
+                        public void onSuccess(Object arg0) {
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                                public void onFailure(Throwable arg0) {
+
+                                    MessageBox.alert("Failed", "failed");    
+
+                                }
+
+                                public void onSuccess(CellDataSet arg0) {
+                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                            OlapTable.this, Pat.getCurrQuery(), arg0);                        
+
+                                }
+
+                            });
+                        }
+
+                    });
+                }
+
+            };
+            
             Image drillButton = null;
             if(((MemberCell)headers).getChildMemberCount()>0){
-                drillButton = Pat.IMAGES.cube().createImage();
-                drillButton.addClickHandler(new ClickHandler() {
-
-                    public void onClick(final ClickEvent arg0) {
-                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
-
-                            public void onFailure(Throwable arg0) {
-                                MessageBox.alert("Failed", "failed");
-                            }
-
-                            public void onSuccess(Object arg0) {
-                                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-                                    public void onFailure(Throwable arg0) {
-
-                                        MessageBox.alert("Failed", "failed");    
-
-                                    }
-
-                                    public void onSuccess(CellDataSet arg0) {
-                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                                OlapTable.this, Pat.getCurrQuery(), arg0);                        
-
-                                    }
-
-                                });
-                            }
-
-                        });
-                    }
-
-                });
+                drillButton = Pat.IMAGES.drill().createImage();
+                drillButton.addClickHandler(drillClick);
             }
             final Label cellLabel = new Label(headers.formattedValue);
+
+            cellLabel.addClickHandler(drillClick);
+            cellLabel.addMouseOverHandler(new MouseOverHandler() {
+
+                public void onMouseOver(MouseOverEvent arg0) {
+                    if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
+                        cellButton.setVisible(true);
+                    }
+
+                }
+            });
+
+            final Timer dimbrowserTimer = new Timer() {
+                @Override
+                public void run() {
+                    cellButton.setVisible(false);
+                }
+            };
+
+            cellLabel.addMouseOutHandler(new MouseOutHandler() {
+
+                public void onMouseOut(MouseOutEvent arg0) {
+                    if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
+                        dimbrowserTimer.schedule(400);
+                    }
+
+                    
+                }
+            });
+
+            if(drillButton!=null) {
+                cellPanel.add(drillButton);
+            }
             cellPanel.add(cellLabel);
 
             cellPanel.setWidth("100%"); //$NON-NLS-1$
@@ -222,8 +261,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
                 cellPanel.add(cellButton);
-                if(drillButton!=null)
-                    cellPanel.add(drillButton);
+                cellButton.setVisible(false);
             }
         }
 
