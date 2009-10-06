@@ -21,16 +21,27 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Application;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
@@ -97,7 +108,31 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));
 
+        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        executeButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                        new AsyncCallback<CellDataSet>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedQuery(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(final CellDataSet result1) {
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                DimensionPanel.this, Pat.getCurrQuery(), result1);
+                    }
+
+                });
+
+            }
+
+        });
+        mainPanel.add(executeButton);
         rootPanel.add(mainPanel);
+        
 
     }
 

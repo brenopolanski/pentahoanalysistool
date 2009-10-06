@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -164,6 +165,10 @@ public class OlapPanel extends DataWidget {
         LogoPanel.spinWheel(true);
         final StackLayoutPanel stackPanel = new StackLayoutPanel();
         final LayoutPanel baselayoutPanel = new LayoutPanel(new BorderLayout());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(baselayoutPanel.getElement(),"background", "white");
+        DOM.setStyleAttribute(stackPanel.getElement(),"background", "white");
+
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 

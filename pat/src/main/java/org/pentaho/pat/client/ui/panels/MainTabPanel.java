@@ -60,6 +60,9 @@ public class MainTabPanel extends LayoutComposite {
     public MainTabPanel() {
         super();
         final LayoutPanel rootLayoutPanel = getLayoutPanel();
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(rootLayoutPanel.getElement(),"background", "white");
+        DOM.setStyleAttribute(contentWrapper.getElement(),"background", "white");
 
         contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
         contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {

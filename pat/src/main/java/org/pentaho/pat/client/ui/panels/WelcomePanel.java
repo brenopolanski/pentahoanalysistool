@@ -10,6 +10,7 @@
 
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -107,6 +108,8 @@ public class WelcomePanel extends DataWidget {
         BoxLayout test = new BoxLayout();
         test.setOrientation(Orientation.VERTICAL);
         final LayoutPanel layoutPanel = new LayoutPanel(test);
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(layoutPanel.getElement(),"background", "white");
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$

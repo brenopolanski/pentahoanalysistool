@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
@@ -116,6 +117,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(baseLayoutPanel.getElement(),"background", "white");
+        DOM.setStyleAttribute(mainLayoutPanel.getElement(),"background", "white");
+
 
     }
 
