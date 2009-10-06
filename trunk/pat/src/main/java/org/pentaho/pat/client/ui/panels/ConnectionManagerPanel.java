@@ -22,6 +22,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import java.util.ArrayList;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.core.client.Dimension;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
@@ -104,6 +105,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
             }
         });
         cListBox.setModel(ciModel);
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(cListBox.getElement(),"background", "white");
+
         return cListBox;
     }
 

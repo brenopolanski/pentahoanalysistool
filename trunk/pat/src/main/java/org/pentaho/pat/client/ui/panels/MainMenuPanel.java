@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
@@ -54,15 +55,27 @@ public class MainMenuPanel extends LayoutComposite {
         super();
         rootPanel.setLayout(new BorderLayout());
         rootPanel.addStyleName("pat-MainMenu"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(rootPanel.getElement(),"background", "white");
+
         final DimensionPanel dimPanel = new DimensionPanel();
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(dimPanel.getElement(),"background", "white");
 
         final PropertiesPanel propertiesPanel = new PropertiesPanel();
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(propertiesPanel.getElement(),"background", "white");
 
         final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().dimensions());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(centerPanel.getElement(),"background", "white");
+
         centerPanel.add(dimPanel);
         rootPanel.add(centerPanel);
 
         final CaptionLayoutPanel southPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().properties());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(southPanel.getElement(),"background", "white");
 
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
         southPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);

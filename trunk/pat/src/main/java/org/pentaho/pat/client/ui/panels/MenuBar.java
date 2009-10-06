@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -74,6 +75,10 @@ public class MenuBar extends LayoutComposite {
         final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
                 ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
         connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(connectionButton.getElement(),"background", "white");
+
+        
 
         connectionButton.addClickHandler(new ClickHandler() {
 
@@ -95,6 +100,8 @@ public class MenuBar extends LayoutComposite {
         final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
                 .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
         cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(cubeButton.getElement(),"background", "white");
 
         cubeButton.addClickHandler(new ClickHandler() {
 
@@ -116,7 +123,8 @@ public class MenuBar extends LayoutComposite {
         final ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
                 .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
         saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
-
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(saveButton.getElement(),"background", "white");
         saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
