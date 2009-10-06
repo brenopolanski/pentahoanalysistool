@@ -21,8 +21,10 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.ComboBox;
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
@@ -40,6 +42,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.TextArea;
 
@@ -173,14 +176,27 @@ public class PropertiesPanel extends LayoutComposite {
             }});
         checkButton5.setEnabled(true);
 
-        final ComboBox<String> comboBox1 = new ComboBox<String>();
-        final DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) comboBox1.getModel();
-        model1.add(ConstantFactory.getInstance().drillPosition());
-        model1.add(ConstantFactory.getInstance().drillMember());
-        model1.add(ConstantFactory.getInstance().drillReplace());
+        ToolButton menuButton = new ToolButton("Layout");
+        menuButton.setStyle(ToolButtonStyle.MENU);
 
-        comboBox1.setEnabled(false);
+        Command cmd1 = new Command() {
+            public void execute() {
+              InfoPanel.show("Menu Button", "You selected a menu item!");
+            }
+          };
 
+        PopupMenu menuBtnMenu = new PopupMenu();
+        menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().top(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().left(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().right(), cmd1);
+        
+
+        menuButton.setMenu(menuBtnMenu);
+
+        
         final ToolButton checkButton6 = new ToolButton(ConstantFactory.getInstance().drillThrough());
         checkButton6.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton6.setEnabled(false);
@@ -191,7 +207,7 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.add(checkButton3);
         mainPanel.add(checkButton4);
         mainPanel.add(checkButton5);
-        mainPanel.add(comboBox1);
+        mainPanel.add(menuButton);
 
         rootPanel.add(mainPanel);
     }

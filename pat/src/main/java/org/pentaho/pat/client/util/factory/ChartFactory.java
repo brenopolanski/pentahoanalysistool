@@ -69,14 +69,16 @@ public class ChartFactory {
      * @return A ChartData object.
      */
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle) {
-        if (chartType.equals(ChartType.PIE))
+        switch(chartType){
+        case PIE:
             return getPieChartData(matrix, chartTitle);
-        else if (chartType.equals(ChartType.BAR))
-            return getBarChartData(matrix, chartTitle);
-        else if (chartType.equals(ChartType.LINE))
+        case LINE:
             return getLineChartData(matrix, chartTitle);
-        else
+        case BAR:
+            return getBarChartData(matrix, chartTitle);
+        default:
             return null;
+        }
     }
 
     /**

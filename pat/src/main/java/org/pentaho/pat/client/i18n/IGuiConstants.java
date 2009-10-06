@@ -527,5 +527,47 @@ public interface IGuiConstants extends Constants {
      */
     String mdx();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String grid();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String chart();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String top();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String bottom();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String left();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String right();
+
    
 }

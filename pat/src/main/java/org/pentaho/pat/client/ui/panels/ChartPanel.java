@@ -56,8 +56,10 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
     private CellDataSet matrix;
     private final ChartWidget chart = new ChartWidget();
-    private ChartFactory chartFactory = new ChartFactory();
-    private ChartType chartType = ChartType.LINE;
+    private ChartFactory cf = new ChartFactory();
+    private ChartType ct = ChartType.LINE;
+    private final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
+    private LayoutPanel chartLayoutPanel = new LayoutPanel();
 
     /**
      * Chart Type Enum.
@@ -69,20 +71,17 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         BAR,
         LINE
     }
-
     /**
      * Chart Panel Constructor.
      */
     public ChartPanel(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
-        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
-
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
-        layoutPanel.add(chart, new BoxLayoutData(FillStyle.HORIZONTAL));
-
+        layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH)); 
+        
         this.getLayoutPanel().add(layoutPanel);
 
     }
@@ -101,7 +100,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
             this.matrix = matrix;
-            chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+            chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+            chartLayoutPanel.add(chart);
             this.layout();
         }
     }
@@ -122,8 +122,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         pieButton.addClickHandler(new ClickHandler(){
 
             public void onClick(ClickEvent arg0) {
-                chartType = ChartType.PIE;
-                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+                ct = ChartType.PIE;
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
 
         });
@@ -134,8 +134,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         
         barButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
-                chartType = ChartType.BAR;
-                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+                ct = ChartType.BAR;
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
         });
 
@@ -146,8 +146,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         
         lineButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
-                chartType = ChartType.LINE;
-                chart.setChartData(chartFactory.getChart(chartType, matrix, Pat.getCurrQuery()));
+                ct = ChartType.LINE;
+                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
             }
         });
 
