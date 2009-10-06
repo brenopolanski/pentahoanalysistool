@@ -60,7 +60,9 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     private ChartType ct = ChartType.LINE;
     private final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
     private LayoutPanel chartLayoutPanel = new LayoutPanel();
-
+    private String chartTitle = new String(Pat.getCurrQuery());
+    private String xAxisLabel = new String();
+    private String yAxisLabel = new String();
     /**
      * Chart Type Enum.
      * @author tom(at)wamonline.org.uk
@@ -123,7 +125,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
             }
 
         });
@@ -135,7 +137,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         barButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
             }
         });
 
@@ -147,7 +149,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         lineButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
             }
         });
 
@@ -158,7 +160,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         
         optionsButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
-                ChartOptionsWindow.display();
+                ChartOptionsWindow.display(ChartPanel.this);
             }
         });
 
@@ -168,5 +170,83 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         buttonsBox.add(lineButton);
         buttonsBox.add(optionsButton);
         return buttonsBox;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the ct
+     */
+    public ChartType getCt() {
+        return ct;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param ct the ct to set
+     */
+    public void setCt(ChartType ct) {
+        this.ct = ct;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the chartTitle
+     */
+    public String getChartTitle() {
+        return chartTitle;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param chartTitle the chartTitle to set
+     */
+    public void setChartTitle(String chartTitle) {
+        this.chartTitle = chartTitle;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     */
+    public void updateChart() {
+        chart.setChartData(cf.getChart(ct, matrix, chartTitle));
+        chartLayoutPanel.add(chart);
+        this.layout();
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the xAxisLabel
+     */
+    public String getxAxisLabel() {
+        return xAxisLabel;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param xAxisLabel the xAxisLabel to set
+     */
+    public void setxAxisLabel(String xAxisLabel) {
+        this.xAxisLabel = xAxisLabel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the yAxisLabel
+     */
+    public String getyAxisLabel() {
+        return yAxisLabel;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param yAxisLabel the yAxisLabel to set
+     */
+    public void setyAxisLabel(String yAxisLabel) {
+        this.yAxisLabel = yAxisLabel;
     }
 }

@@ -43,19 +43,23 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class ChartOptionsPanel extends LayoutComposite{
 
+    private TextBox chartTitleTextBox = new TextBox();
+    private TextBox xAxisTextBox = new TextBox();
+    private TextBox yAxisTextBox = new TextBox();
     /**
      * 
      * Chart options constructor.
      *
      */
     public ChartOptionsPanel(){
-        
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
 
         tabPanel.add(generalOptionsPanel(), "General Options");
         tabPanel.add(barOptionsPanel(), "Bar Chart Options");
 
+
         this.getLayoutPanel().add(tabPanel);
+        
     }
     
     /**
@@ -80,16 +84,16 @@ public class ChartOptionsPanel extends LayoutComposite{
 
         builder.addLabel("Chart Title:");
         builder.nextColumn(2);
-        builder.add(new TextBox());
+        builder.add(chartTitleTextBox);
         builder.nextLine(2);
 
         builder.addLabel("X Axis Label:");
         builder.nextColumn(2);
-        builder.add(new TextBox());
+        builder.add(xAxisTextBox);
         builder.nextColumn(2);
         builder.addLabel("Y Axis Label:");
         builder.nextColumn(2);
-        builder.add(new TextBox());
+        builder.add(yAxisTextBox);
         builder.nextLine(2);
 
         generalOptionsPanel.add(builder.getPanel());
@@ -124,5 +128,56 @@ public class ChartOptionsPanel extends LayoutComposite{
           });
 
         return barOptionsPanel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the chartTitleTextBox Text Value
+     */
+    public String getChartTitleTextBox() {
+        return chartTitleTextBox.getText();
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param chartTitleTextBox the chartTitleTextBox to set
+     */
+    public void setChartTitleTextBox(String chartTitleTextBox) {
+        this.chartTitleTextBox.setText(chartTitleTextBox);
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the xAxisTextBox Text Value
+     */
+    public String getxAxisTextBox() {
+        return xAxisTextBox.getText();
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param xAxisTextBox the xAxisTextBox to set
+     */
+    public void setxAxisTextBox(String xAxisTextBox) {
+        this.xAxisTextBox.setText(xAxisTextBox);
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the yAxisTextBox
+     */
+    public String getyAxisTextBox() {
+        return yAxisTextBox.getText();
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param yAxisTextBox the yAxisTextBox to set
+     */
+    public void setyAxisTextBox(String yAxisTextBox) {
+        this.yAxisTextBox.setText(yAxisTextBox);
     }
 }

@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
+import org.gwt.mosaic.forms.client.factories.ButtonBarFactory;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -26,7 +27,12 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.ChartOptionsPanel;
+import org.pentaho.pat.client.ui.panels.ChartPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 
 /**
  * Allows users to adjust chart options.
@@ -44,12 +50,19 @@ public class ChartOptionsWindow extends WindowPanel {
 
     private final static ChartOptionsWindow cow = new ChartOptionsWindow();
     
+    private static ChartPanel cp;
+    
     /**
      * 
      * Dislay the window.
+     * @param chartPanel 
      *
      */
-    public static void display() {
+    public static void display(ChartPanel chartPanel) {
+        cp = chartPanel;
+        chartOptionsPanel.setChartTitleTextBox(cp.getChartTitle());
+        chartOptionsPanel.setxAxisTextBox(cp.getxAxisLabel());
+        chartOptionsPanel.setyAxisTextBox(cp.getyAxisLabel());
         cow.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         cow.showModal(true);
         cow.layout();
@@ -64,6 +77,31 @@ public class ChartOptionsWindow extends WindowPanel {
         super(TITLE);
         windowContentpanel.add(chartOptionsPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
+        
+        Button okButton = new Button("Ok");
+        okButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                cp.setChartTitle(chartOptionsPanel.getChartTitleTextBox());
+                cp.setxAxisLabel(chartOptionsPanel.getxAxisTextBox());
+                cp.setyAxisLabel(chartOptionsPanel.getyAxisTextBox());
+                cp.updateChart();
+                cow.hide();
+            }
+            
+        });
+        Button cancelButton = new Button("Cancel");
+        cancelButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+               cow.hide();
+            }
+            
+        });
+        final LayoutPanel buttonBar = ButtonBarFactory.buildOKCancelBar(
+                okButton, cancelButton);
+            buttonBar.setPadding(5);
+        this.setFooter(buttonBar);
         this.layout();
     }
     
