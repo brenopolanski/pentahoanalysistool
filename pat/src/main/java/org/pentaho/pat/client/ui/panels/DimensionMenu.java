@@ -310,15 +310,35 @@ public class DimensionMenu extends LayoutComposite {
 
                                                     public void onSuccess(final String arg0) {
                                                         for (int i = 0; i < sortComboBox.getItemCount(); i++)
-                                                            if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
+                                                            //if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
                                                                 //DimensionMenu.this.sortComboBox.setSelectedIndex(i);
-                                                                DimensionMenu.this.sortModeModel.setSelectedItem(arg0);
+                                                                if(arg0.equals("ASC")){
+                                                                    DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortAscending()); //$NON-NLS-1$
+                                                                    break;
+                                                                }
+                                                                else if(arg0.equals("DESC")){
+                                                                    DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortDescending()); //$NON-NLS-1$
+                                                                    break;
+                                                                }
+                                                                else if(arg0.equals("BASC")){
+                                                                    DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakAscending()); //$NON-NLS-1$
+                                                                    break;
+                                                                }
+                                                                else if(arg0.equals("BDESC")){
+                                                                    DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakDescending()); //$NON-NLS-1$
+                                                                    break;
+                                                                }
+                                                                else{
+                                                                    DimensionMenu.this.sortModeModel.setSelectedItem(null);
+                                                                }
+                                                                    
+                                                                //DimensionMenu.this.sortModeModel.setSelectedItem(arg0);
                                                                 DimensionMenu.this.sortModeModel.getSelectedItem();
-                                                                break;
-                                                            }
-                                                            else
-                                                                DimensionMenu.this.sortModeModel.setSelectedItem(null);
-                                                        
+                                                                
+                                                            //}
+                                                            //else
+                                                             //   DimensionMenu.this.sortModeModel.setSelectedItem(null);
+                                        
                                                         ServiceFactory.getQueryInstance().getHierarchizeMode(
                                                                 Pat.getSessionID(), Pat.getCurrQuery(), dimensionId,
                                                                 new AsyncCallback<String>() {
