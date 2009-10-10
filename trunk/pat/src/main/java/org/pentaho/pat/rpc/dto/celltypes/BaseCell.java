@@ -28,7 +28,7 @@ public abstract class BaseCell implements Serializable, IsSerializable {
 	private static final long serialVersionUID = 1L;
 
 	/** The formatted value. */
-	public String formattedValue;
+	private String formattedValue;
 
 	/** The raw value. */
 	String rawValue;

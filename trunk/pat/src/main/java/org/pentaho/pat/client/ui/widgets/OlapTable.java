@@ -73,6 +73,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
     private CellDataSet olapData;
 
+    private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
+    
     private int offset;
 
     PatTableModel patTableModel;
@@ -81,7 +83,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
     LiveTable<BaseCell[]> table;
 
-    private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
+    
 
     final LayoutPanel layoutPanel = getLayoutPanel();
 
@@ -171,98 +173,9 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      * @return cellPanel
      */
     private HorizontalPanel createCell(final BaseCell headers) {
-        final HorizontalPanel cellPanel = new HorizontalPanel();
+        HorizontalPanel cellPanel = new HorizontalPanel();
         if (headers.getRawValue() != null && headers instanceof MemberCell) {
-            final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
-            cellButton.addClickHandler(new ClickHandler() {
-
-                public void onClick(final ClickEvent arg0) {
-                    DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), headers.getParentDimension());
-                }
-
-            });
-
-            ClickHandler drillClick = new ClickHandler() {
-
-                public void onClick(final ClickEvent arg0) {
-                    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), (MemberCell)headers, new AsyncCallback<Object>(){
-
-                        public void onFailure(Throwable arg0) {
-                            MessageBox.alert("Failed", "failed");
-                        }
-
-                        public void onSuccess(Object arg0) {
-                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-                                public void onFailure(Throwable arg0) {
-
-                                    MessageBox.alert("Failed", "failed");    
-
-                                }
-
-                                public void onSuccess(CellDataSet arg0) {
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                            OlapTable.this, Pat.getCurrQuery(), arg0);                        
-
-                                }
-
-                            });
-                        }
-
-                    });
-                }
-
-            };
-            
-            Image drillButton = null;
-            if(((MemberCell)headers).getChildMemberCount()>0){
-                drillButton = Pat.IMAGES.drill().createImage();
-                drillButton.addClickHandler(drillClick);
-            }
-            final Label cellLabel = new Label(headers.formattedValue);
-
-            cellLabel.addClickHandler(drillClick);
-            cellLabel.addMouseOverHandler(new MouseOverHandler() {
-
-                public void onMouseOver(MouseOverEvent arg0) {
-                    if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
-                        cellButton.setVisible(true);
-                    }
-
-                }
-            });
-
-            final Timer dimbrowserTimer = new Timer() {
-                @Override
-                public void run() {
-                    cellButton.setVisible(false);
-                }
-            };
-
-            cellLabel.addMouseOutHandler(new MouseOutHandler() {
-
-                public void onMouseOut(MouseOutEvent arg0) {
-                    if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
-                        dimbrowserTimer.schedule(400);
-                    }
-
-                    
-                }
-            });
-
-            if(drillButton!=null) {
-                cellPanel.add(drillButton);
-            }
-            cellPanel.add(cellLabel);
-
-            cellPanel.setWidth("100%"); //$NON-NLS-1$
-
-            cellButton.addStyleName(CELLBUTTON);
-
-            if(!headers.getRawValue().equals("")){ //$NON-NLS-1$
-                cellPanel.add(cellButton);
-                cellButton.setVisible(false);
-            }
+            cellPanel = ((MemberCell) headers).getLabel();
         }
 
         else {
@@ -307,7 +220,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             if (group != null) {
                 HorizontalPanel groupPanel = null;
-                if (group[i].formattedValue != null) {
+                if (group[i].getFormattedValue() != null) {
                     groupPanel = createCell(group[i]);
                     colDef0.setHeader(1, groupPanel);
                 } else

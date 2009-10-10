@@ -20,7 +20,27 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CellDataSet;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 
 public class MemberCell extends BaseCell implements Serializable, IsSerializable {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +58,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     private String uniqueName;
 
     private int childMemberCount;
+    
+    private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
 	/**
 	 * 
 	 * Blank Constructor for Serializable niceness, don't use it.
@@ -158,5 +180,102 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     
     public String getRightOf(){
         return rightOf;
+    }
+    
+    public HorizontalPanel getLabel(){
+        final HorizontalPanel cellPanel = new HorizontalPanel();
+        
+        final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
+        cellButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
+            }
+
+        });
+
+        ClickHandler drillClick = new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), MemberCell.this, new AsyncCallback<Object>(){
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.alert("Failed", "failed");
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                            public void onFailure(Throwable arg0) {
+
+                                MessageBox.alert("Failed", "failed");    
+
+                            }
+
+                            public void onSuccess(CellDataSet arg0) {
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        cellPanel, Pat.getCurrQuery(), arg0);                        
+
+                            }
+
+                        });
+                    }
+
+                });
+            }
+
+        };
+        
+        Image drillButton = null;
+        if((MemberCell.this).getChildMemberCount()>0){
+            drillButton = Pat.IMAGES.drill().createImage();
+            drillButton.addClickHandler(drillClick);
+        }
+        final Label cellLabel = new Label(getFormattedValue());
+
+        cellLabel.addClickHandler(drillClick);
+        cellLabel.addMouseOverHandler(new MouseOverHandler() {
+
+            public void onMouseOver(MouseOverEvent arg0) {
+                if(!getRawValue().equals("")){ //$NON-NLS-1$
+                    cellButton.setVisible(true);
+                }
+
+            }
+        });
+
+        final Timer dimbrowserTimer = new Timer() {
+            @Override
+            public void run() {
+                cellButton.setVisible(false);
+            }
+        };
+
+        cellLabel.addMouseOutHandler(new MouseOutHandler() {
+
+            public void onMouseOut(MouseOutEvent arg0) {
+                if(!getRawValue().equals("")){ //$NON-NLS-1$
+                    dimbrowserTimer.schedule(400);
+                }
+
+                
+            }
+        });
+
+        if(drillButton!=null) {
+            cellPanel.add(drillButton);
+        }
+        cellPanel.add(cellLabel);
+
+        cellPanel.setWidth("100%"); //$NON-NLS-1$
+
+        cellButton.addStyleName(CELLBUTTON);
+
+        if(!getRawValue().equals("")){ //$NON-NLS-1$
+            cellPanel.add(cellButton);
+            cellButton.setVisible(false);
+        }
+        
+        return cellPanel;
     }
 }
