@@ -43,6 +43,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.rednels.ofcgwt.client.ChartWidget;
+import com.rednels.ofcgwt.client.model.Legend.Position;
 
 /**
  * Create the chart panel, currently supports Open Flash Charts.
@@ -63,6 +64,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     private String chartTitle = new String();
     private String xAxisLabel = new String();
     private String yAxisLabel = new String();
+    private Position pos; 
     /**
      * Chart Type Enum.
      * @author tom(at)wamonline.org.uk
@@ -102,7 +104,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
             this.matrix = matrix;
-            chart.setChartData(cf.getChart(ct, matrix, Pat.getCurrQuery()));
+            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
             chartLayoutPanel.add(chart);
             this.layout();
         }
@@ -125,7 +127,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
+                
             }
 
         });
@@ -137,7 +140,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         barButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
             }
         });
 
@@ -149,7 +152,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         lineButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent arg0) {
                 ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
             }
         });
 
@@ -211,7 +214,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      *
      */
     public void updateChart() {
-        chart.setChartData(cf.getChart(ct, matrix, chartTitle));
+        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
         chartLayoutPanel.add(chart);
         this.layout();
     }
@@ -248,5 +251,22 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      */
     public void setyAxisLabel(String yAxisLabel) {
         this.yAxisLabel = yAxisLabel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the pos
+     */
+    public Position getPos() {
+        return pos;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param pos the pos to set
+     */
+    public void setPos(Position pos) {
+        this.pos = pos;
     }
 }
