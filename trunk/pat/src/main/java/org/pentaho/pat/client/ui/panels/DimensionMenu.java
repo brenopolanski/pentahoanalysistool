@@ -112,10 +112,10 @@ public class DimensionMenu extends LayoutComposite {
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(false);
-        dimensionTree.setWidth("300px");
+        dimensionTree.setWidth("300px"); //$NON-NLS-1$
         memberListBox.setColumnTruncatable(0, false);
         memberListBox.setColumnTruncatable(1, false);
-        memberListBox.setWidth("500px");
+        memberListBox.setWidth("500px"); //$NON-NLS-1$
         
         memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
             public void renderCell(ListBox<MemberSelectionLabel> listBox, int row, int column,
@@ -136,7 +136,7 @@ public class DimensionMenu extends LayoutComposite {
                   listBox.setText(row, column, path);
                   break;
                 default:
-                  throw new RuntimeException(MessageFactory.getInstance().unexpectedError()); //$NON-NLS-1$
+                  throw new RuntimeException(MessageFactory.getInstance().unexpectedError());
               }
             }
           });

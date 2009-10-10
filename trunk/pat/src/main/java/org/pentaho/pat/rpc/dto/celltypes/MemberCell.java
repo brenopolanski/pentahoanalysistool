@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -184,7 +184,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     
     @Override
     public HorizontalPanel getLabel(){
-        final HorizontalPanel cellPanel = new HorizontalPanel();
+        final CellLabelPanel cellPanel = new CellLabelPanel(MemberCell.this);
+        
         if(this.getRawValue()!=null){
         final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
         cellButton.addClickHandler(new ClickHandler() {
@@ -279,4 +280,6 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
         }
         return cellPanel;
     }
+    
+     
 }

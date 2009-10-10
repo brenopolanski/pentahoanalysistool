@@ -25,36 +25,24 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
-import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.table.PatColDef;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
-import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -72,8 +60,6 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     Image cross = Pat.IMAGES.cross().createImage();
 
     private CellDataSet olapData;
-
-    private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
     
     private int offset;
 
@@ -104,7 +90,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         patTableModel = new PatTableModel(olapData);
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         offset = patTableModel.getOffset();
-        // tableModel = null;
+
         tableModel = new IterableTableModel<BaseCell[]>(data) {
             @Override
             public int getRowCount() {
@@ -167,23 +153,6 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         this.layout();
     }
 
-    /**
-     * 
-     * @param headers
-     * @return cellPanel
-     */
-    private HorizontalPanel createCell(final BaseCell headers) {
-       /* HorizontalPanel cellPanel = new HorizontalPanel();
-        if (headers.getRawValue() != null && headers instanceof MemberCell) {
-            cellPanel = ((MemberCell) headers).getLabel();
-        }
-
-        else {
-            final Label blanklabel = new Label(headers.getFormattedValue());
-            cellPanel.add(blanklabel);
-        }*/
-        return headers.getLabel();
-    }
 
     /**
      * Create the Live Table Column Definitions.
@@ -202,7 +171,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             final int cell = i;
 
-            final HorizontalPanel cellPanel = createCell(headers[i]);
+            final HorizontalPanel cellPanel = headers[i].getLabel();
 
             final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(cellPanel) {
                 @Override
@@ -212,7 +181,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                         return testLabel;
                     } else {
 
-                        final HorizontalPanel cellPanel = createCell(rowValue[cell]);
+                        final HorizontalPanel cellPanel = rowValue[cell].getLabel();
                         return cellPanel;
                     }
                 }                
@@ -221,7 +190,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
             if (group != null) {
                 HorizontalPanel groupPanel = null;
                 if (group[i].getFormattedValue() != null) {
-                    groupPanel = createCell(group[i]);
+                    groupPanel = group[i].getLabel();
                     colDef0.setHeader(1, groupPanel);
                 } else
                     colDef0.setHeader(1, groupPanel);
