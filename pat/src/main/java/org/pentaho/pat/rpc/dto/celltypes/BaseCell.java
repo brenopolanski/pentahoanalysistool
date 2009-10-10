@@ -137,8 +137,10 @@ public abstract class BaseCell implements Serializable, IsSerializable {
 	public String getParentDimension(){
 	    return parentDimension;
 	}
+	
 	public HorizontalPanel getLabel(){
         return null;
 	}
 	
+    
 }
