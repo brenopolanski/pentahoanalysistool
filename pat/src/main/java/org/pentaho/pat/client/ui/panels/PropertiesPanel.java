@@ -20,7 +20,6 @@
 
 package org.pentaho.pat.client.ui.panels;
 
-import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -32,12 +31,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.event.dom.client.ClickEvent;
