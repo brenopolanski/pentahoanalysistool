@@ -182,9 +182,10 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
         return rightOf;
     }
     
+    @Override
     public HorizontalPanel getLabel(){
         final HorizontalPanel cellPanel = new HorizontalPanel();
-        
+        if(this.getRawValue()!=null){
         final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
         cellButton.addClickHandler(new ClickHandler() {
 
@@ -250,7 +251,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
                 cellButton.setVisible(false);
             }
         };
-
+        
         cellLabel.addMouseOutHandler(new MouseOutHandler() {
 
             public void onMouseOut(MouseOutEvent arg0) {
@@ -275,7 +276,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
             cellPanel.add(cellButton);
             cellButton.setVisible(false);
         }
-        
+        }
         return cellPanel;
     }
 }

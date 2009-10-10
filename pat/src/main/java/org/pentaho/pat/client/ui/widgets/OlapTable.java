@@ -173,7 +173,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      * @return cellPanel
      */
     private HorizontalPanel createCell(final BaseCell headers) {
-        HorizontalPanel cellPanel = new HorizontalPanel();
+       /* HorizontalPanel cellPanel = new HorizontalPanel();
         if (headers.getRawValue() != null && headers instanceof MemberCell) {
             cellPanel = ((MemberCell) headers).getLabel();
         }
@@ -181,8 +181,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         else {
             final Label blanklabel = new Label(headers.getFormattedValue());
             cellPanel.add(blanklabel);
-        }
-        return cellPanel;
+        }*/
+        return headers.getLabel();
     }
 
     /**
