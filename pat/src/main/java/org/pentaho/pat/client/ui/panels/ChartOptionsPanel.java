@@ -26,12 +26,17 @@ import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
 import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.user.client.ui.TextBox;
+import com.rednels.ofcgwt.client.model.Legend.Position;
 
 /**
  * Create the chart options panel.
@@ -46,6 +51,11 @@ public class ChartOptionsPanel extends LayoutComposite{
     private TextBox chartTitleTextBox = new TextBox();
     private TextBox xAxisTextBox = new TextBox();
     private TextBox yAxisTextBox = new TextBox();
+    private TextBox bgColorTextBox = new TextBox();
+    private Position pos;
+    ToolButton legendOffButton = new ToolButton("Off");
+    ToolButton legendTopButton = new ToolButton("Top");    
+    ToolButton legendRightButton = new ToolButton("Right");
     /**
      * 
      * Chart options constructor.
@@ -76,6 +86,38 @@ public class ChartOptionsPanel extends LayoutComposite{
                     + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
                     + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
 
+        
+        legendOffButton.setStyle(ToolButtonStyle.RADIO);
+        legendOffButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                pos = null;
+                
+            }
+            
+        });
+        legendTopButton.setStyle(ToolButtonStyle.RADIO);
+        legendTopButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                pos = Position.TOP;
+                
+            }
+            
+        });
+        
+        legendRightButton.setStyle(ToolButtonStyle.RADIO);
+        legendRightButton.setEnabled(false);
+        legendRightButton.setChecked(true);
+        legendRightButton.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                pos = Position.RIGHT;
+                
+            }
+            
+        });
+
         PanelBuilder builder = new PanelBuilder(layout);
 
         builder.addSeparator("Titles");
@@ -95,6 +137,18 @@ public class ChartOptionsPanel extends LayoutComposite{
         builder.nextColumn(2);
         builder.add(yAxisTextBox);
         builder.nextLine(2);
+        builder.addLabel("Show Legend:");
+        builder.nextColumn(2);
+        builder.add(legendOffButton);
+        builder.nextColumn(2);
+        builder.add(legendTopButton);
+        builder.nextColumn(2);
+        builder.add(legendRightButton);
+        builder.nextLine(2);
+        builder.addLabel("Background Color:");
+        builder.nextColumn(2);
+        builder.add(bgColorTextBox);
+        
 
         generalOptionsPanel.add(builder.getPanel());
         return generalOptionsPanel;
@@ -180,4 +234,40 @@ public class ChartOptionsPanel extends LayoutComposite{
     public void setyAxisTextBox(String yAxisTextBox) {
         this.yAxisTextBox.setText(yAxisTextBox);
     }
+
+    /**
+     *TODO JAVADOC
+     * @return the bgColorTextBox
+     */
+    public String getBgColorTextBox() {
+        return bgColorTextBox.getText();
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param bgColorTextBox the bgColorTextBox to set
+     */
+    public void setBgColorTextBox(String bgColorTextBox) {
+        this.bgColorTextBox.setText(bgColorTextBox);
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the pos
+     */
+    public Position getPos() {
+        return pos;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param pos the pos to set
+     */
+    public void setPos(Position pos) {
+        this.pos = pos;
+    }
+
+    
 }

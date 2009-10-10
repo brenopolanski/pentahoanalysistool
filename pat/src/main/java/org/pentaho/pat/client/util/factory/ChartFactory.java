@@ -57,6 +57,7 @@ import com.rednels.ofcgwt.client.model.elements.dot.SolidDot;
  */
 public class ChartFactory {
 
+    Position pos;
     /**
      * The Chart Factory Constructor.
      * 
@@ -81,6 +82,16 @@ public class ChartFactory {
         }
     }
 
+    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle, Position legendPosition){
+        
+        ChartData cd = getChart(chartType, matrix, chartTitle);
+        if(legendPosition!=null){
+        cd.setLegend(new Legend(legendPosition, true));
+        }
+        return cd;
+        
+        
+    }
     /**
      * 
      * Checks if a string is able to be parsed to an integer.
@@ -154,7 +165,7 @@ public class ChartFactory {
         // TODO Allow user defined tooltips.
         bchart2.setTooltip("$#val#"); //$NON-NLS-1$
 
-        // TODO Allow user defined Legend on or off and position.
+        
         cd.setLegend(new Legend(Position.RIGHT, true));
 
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
