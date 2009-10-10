@@ -111,7 +111,11 @@ public class DimensionMenu extends LayoutComposite {
 
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
-        dimensionTree.setAnimationEnabled(true);
+        dimensionTree.setAnimationEnabled(false);
+        dimensionTree.setWidth("300px");
+        memberListBox.setColumnTruncatable(0, false);
+        memberListBox.setColumnTruncatable(1, false);
+        memberListBox.setWidth("500px");
         
         memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
             public void renderCell(ListBox<MemberSelectionLabel> listBox, int row, int column,
@@ -132,7 +136,7 @@ public class DimensionMenu extends LayoutComposite {
                   listBox.setText(row, column, path);
                   break;
                 default:
-                  throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                  throw new RuntimeException(MessageFactory.getInstance().unexpectedError()); //$NON-NLS-1$
               }
             }
           });
@@ -224,7 +228,8 @@ public class DimensionMenu extends LayoutComposite {
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
         baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
-        baseLayoutPanel.add(memberListBox, new BoxLayoutData(FillStyle.BOTH));
+        
+        
         ScrollLayoutPanel dimTreeScrollPanel = new ScrollLayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
         dimTreeScrollPanel.setAnimationEnabled(true);
         
@@ -233,9 +238,7 @@ public class DimensionMenu extends LayoutComposite {
         dimTreeScrollPanel.setStyleName(dimensionTree.getStyleName());
         
         dimTreeScrollPanel.add(dimensionTree, new BoxLayoutData(FillStyle.BOTH));
-        baseLayoutPanel.add(dimTreeScrollPanel, new BoxLayoutData(FillStyle.BOTH));
         
-
         dimensionTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
@@ -243,6 +246,11 @@ public class DimensionMenu extends LayoutComposite {
             }
 
         });
+        
+        LayoutPanel groupPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        groupPanel.add(dimTreeScrollPanel,new BoxLayoutData(FillStyle.BOTH, true));
+        groupPanel.add(memberListBox,new BoxLayoutData(FillStyle.BOTH));
+        baseLayoutPanel.add(groupPanel, new BoxLayoutData(FillStyle.BOTH));
 
     }
 
