@@ -19,6 +19,8 @@ package org.pentaho.pat.rpc.dto.celltypes;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * The Class CellInfo.
@@ -71,4 +73,17 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 		this.colorValue = colorValue;
 	}
 
+	@Override
+	public HorizontalPanel getLabel(){
+	    final HorizontalPanel cellPanel = new HorizontalPanel();
+	    
+	    final Label cellLabel = new Label(getFormattedValue());
+	    
+	    cellPanel.add(cellLabel);
+
+        cellPanel.setWidth("100%"); //$NON-NLS-1$
+
+        return cellPanel;
+	    
+	}
 }

@@ -22,6 +22,7 @@ package org.pentaho.pat.rpc.dto.celltypes;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public abstract class BaseCell implements Serializable, IsSerializable {
 
@@ -136,4 +137,8 @@ public abstract class BaseCell implements Serializable, IsSerializable {
 	public String getParentDimension(){
 	    return parentDimension;
 	}
+	public HorizontalPanel getLabel(){
+        return null;
+	}
+	
 }
