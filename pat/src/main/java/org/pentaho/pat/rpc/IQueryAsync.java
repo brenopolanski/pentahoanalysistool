@@ -50,7 +50,13 @@ public interface IQueryAsync {
 	        String selectionType,
 	        AsyncCallback<Object> callback);	
 	
-	
+	public void createExclusion(
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List <String> memberNames,
+            AsyncCallback<Object> callback);    
+    
 	public void clearSelection(
 	        String sessionId,
 	        String queryId,

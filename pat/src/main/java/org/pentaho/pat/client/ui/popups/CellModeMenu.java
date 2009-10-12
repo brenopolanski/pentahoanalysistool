@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.client.ui.popups;
 
+import java.util.ArrayList;
+
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
@@ -100,25 +102,55 @@ public class CellModeMenu extends PopupMenu {
         }
     }
 
-    /** The Constant MEMBER. */
-    public static final int MEMBER = 0;
+    public class ExcludeCommand implements Command {
 
-    /** The Constant CHILDREN. */
-    public static final int CHILDREN = 1;
+            
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        /**
+         * The Command executed on click.
+         */
+        public final void execute() {
+            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
+            ArrayList memberList = new ArrayList();
+            memberList.add(targetLabel.getMc().getRawValue());
+            
+            ServiceFactory.getQueryInstance().createExclusion(Pat.getSessionID(), Pat.getCurrQuery(), 
+                    targetLabel.getMc().getParentDimension(), memberList, new AsyncCallback(){
 
-    /** The Constant INCLUDE_CHILDREN. */
-    public static final int INCLUDE_CHILDREN = 2;
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+                            
+                        }
 
-    /** The Constant SIBLINGS. */
-    public static final int SIBLINGS = 3;
+                        public void onSuccess(Object arg0) {
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
-    public static final int DESCENDANTS = 4;
+                                public void onFailure(Throwable arg0) {
+                                    MessageBox.error("Error", "failed");
+                                }
 
-    public static final int ANCESTORS = 5;
+                                public void onSuccess(CellDataSet arg0) {
+                                
+                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                            targetLabel, Pat.getCurrQuery(), arg0);
+                                }
+                                
+                            });
+                            
+                            
+                        }
+                        
+                    });
+           
+            CellModeMenu.this.hide();
+        }
+    }
 
-    /** The Constant CLEAR. */
-    public static final int CLEAR = -1;
-
+    
     /** The source. */
     private static Widget source;
 
@@ -138,8 +170,8 @@ public class CellModeMenu extends PopupMenu {
         this.setAutoOpen(true);
         this.addItem(new MenuItem("Sort A-Z", new SortOrderCommand("ASC")));
         this.addItem(new MenuItem("Sort Z-A", new SortOrderCommand("DESC")));
-        /*this.addItem(new MenuItem("Exclude", new SortOrderCommand(
-                INCLUDE_CHILDREN)));*/
+        this.addItem(new MenuItem("Exclude", new ExcludeCommand(
+                )));
     }
 
     /**

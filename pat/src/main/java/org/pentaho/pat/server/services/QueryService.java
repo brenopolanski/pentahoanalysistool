@@ -122,6 +122,26 @@ public interface QueryService extends Service {
 		Selection.Operator selectionType)
 	    throws OlapException;	
 	
+    /**
+     * Creates a exclusion of members on a given dimension.
+     * You must first specify onto which query to perform the
+     * operation via Session.setCurrentQuery().
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param dimensionName The name of the dimension onto which to
+     * apply the selection.
+     * @param memberNames A list of member names to select.
+     * @param selectionType The type of selection to perform.
+     * @throws OlapException If something goes sour.
+     */
+    @Secured ({"Users"})
+    public void createExclusion(
+        String userId, 
+        String sessionId,
+        String queryId,
+        String dimensionName, 
+        List<String> memberNames)
+        throws OlapException;   
 
 	/**
 	 * Unselects members from a dimension inside a query.

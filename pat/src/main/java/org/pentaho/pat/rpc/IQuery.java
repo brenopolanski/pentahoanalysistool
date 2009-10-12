@@ -102,7 +102,26 @@ public interface IQuery extends RemoteService {
 		String dimensionName, 
 		List<String> memberNames, 
 		String selectionType) throws RpcException;	
-	
+
+	   /**
+     * Performs a selection of certain members in a dimension.
+     * 
+     * @param sessionId Identifies the window session id that requested the operation.
+     * @param queryId Identifies on which query to perform the operation.
+     * @param dimensionName The name of the dimension on which we want to 
+     * select members.
+     * @param memberNames The actual names of the members to perform a 
+     * selection on.
+     * @param selectionType The type of selection to perform.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"Users"})
+    public void createExclusion(
+        String sessionId,
+        String queryId,
+        String dimensionName, 
+        List<String> memberNames) throws RpcException;  
+
 	/**
 	 * Removes the selection status of members inside a given dimension.
 	 * 

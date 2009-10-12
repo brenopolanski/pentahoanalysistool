@@ -19,6 +19,9 @@
  */
 package org.pentaho.pat.server.services.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,6 +35,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
@@ -169,6 +173,45 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         qDim.include(selectionMode, member);
     }
 
+    public void createExclusion(final String userId, final String sessionId, final String queryId,
+            final String dimensionName, final List<String> memberNames)
+    throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final Cube cube = query.getCube();
+
+        // First try to resolve the member quick and dirty.
+        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
+
+        if (member == null) {
+            // Let's try with only the dimension name in front.
+            final List<String> dimPlusMemberNames = new ArrayList<String>();
+            dimPlusMemberNames.add(dimensionName);
+            dimPlusMemberNames.addAll(memberNames);
+            member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
+
+            if (member == null) {
+                // Sometimes we need to find it in a different name format.
+                // To make sure we find the member, the first element
+                // will be sent as DimensionName.HierarchyName. Cubes which have
+                // more than one hierarchy in a given dimension will require this
+                // format anyways.
+                final List<String> completeMemberNames = new ArrayList<String>();
+                completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+                completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+                member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+
+                if (member == null)
+                    // We failed to find the member.
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+            }
+        }
+
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        
+        qDim.exclude(member);
+    }
     /*
      * (non-Javadoc)
      * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang.String, java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
@@ -206,7 +249,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
             }
         }
-        queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
+        //queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
     }
 
     /*
@@ -232,7 +275,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final CellSet cellSet = mdx.execute();
 
         OlapUtil.storeCellSet(queryId, cellSet);
-
+        //Check the mdx generated
+        //Writer writer = new StringWriter();
+        //mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         return OlapUtil.cellSet2Matrix(cellSet);
 
     }
@@ -390,6 +435,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
         query.getDimension(dimensionName).sort(sortOrder);
+        
     }
 
     /*
