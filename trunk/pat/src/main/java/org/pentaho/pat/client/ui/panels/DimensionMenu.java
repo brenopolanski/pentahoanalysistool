@@ -312,6 +312,7 @@ public class DimensionMenu extends LayoutComposite {
                                                         for (int i = 0; i < sortComboBox.getItemCount(); i++)
                                                             //if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
                                                                 //DimensionMenu.this.sortComboBox.setSelectedIndex(i);
+                                                        if(arg0!=null){
                                                                 if(arg0.equals("ASC")){
                                                                     DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortAscending()); //$NON-NLS-1$
                                                                     break;
@@ -328,6 +329,7 @@ public class DimensionMenu extends LayoutComposite {
                                                                     DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakDescending()); //$NON-NLS-1$
                                                                     break;
                                                                 }
+                                                        }
                                                                 else{
                                                                     DimensionMenu.this.sortModeModel.setSelectedItem(null);
                                                                 }

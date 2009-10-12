@@ -109,6 +109,21 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
 	}
 
+    public void createExclusion(
+            String sessionId,
+            String queryId,
+            String dimensionName, 
+            List<String> memberNames) throws RpcException
+    {
+        try {
+            this.queryService.createExclusion(getCurrentUserId(), sessionId, 
+                    queryId, dimensionName, memberNames);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSelectMembers"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
+        }
+    }
+
     public String[][] getSelection(
             String sessionId,
             String queryId,
