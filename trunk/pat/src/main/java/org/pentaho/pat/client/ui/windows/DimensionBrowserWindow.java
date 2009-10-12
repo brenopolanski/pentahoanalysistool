@@ -130,4 +130,10 @@ public class DimensionBrowserWindow extends WindowPanel {
                 });
     }
 
+    public static DimensionMenu getDimensionMenuPanel() {
+        return dimensionMenuPanel;
+    }
+    
+    
+
 }
