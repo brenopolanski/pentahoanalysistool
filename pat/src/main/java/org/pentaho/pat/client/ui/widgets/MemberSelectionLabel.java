@@ -156,6 +156,10 @@ public class MemberSelectionLabel extends HorizontalPanel {
             this.add(this.image);
     }
 
+    public Image getImage() {
+        return image;
+    }
+
     /**
      * Sets the selection mode.
      * 
@@ -193,8 +197,9 @@ public class MemberSelectionLabel extends HorizontalPanel {
         else if (mode.equals("SIBLINGS")) //$NON-NLS-1$
             selectionImage = selectionImageBundle.siblingsSelectIcon().createImage();
 
-        if (selectionImage != null)
+        if (selectionImage != null) {
             setImage(selectionImage);
+        }
     }
 
     /**

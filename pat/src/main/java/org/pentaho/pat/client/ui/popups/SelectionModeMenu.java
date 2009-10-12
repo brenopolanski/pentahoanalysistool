@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -73,6 +74,7 @@ public class SelectionModeMenu extends PopupMenu {
 
                 public void onSuccess(final Object result) {
                     targetLabel.setSelectionMode(CLEAR);
+                    DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, CLEAR);
 
                 }
             });
@@ -121,6 +123,7 @@ public class SelectionModeMenu extends PopupMenu {
 
                 public void onSuccess(final Object arg0) {
                     targetLabel.setSelectionMode(selectionMode);
+                    DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
 
                 }
 
