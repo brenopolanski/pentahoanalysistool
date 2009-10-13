@@ -46,10 +46,102 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class CellModeMenu extends PopupMenu {
 
+    public class ClearExcludeCommand implements Command {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        /**
+         * The Command executed on click.
+         */
+        public final void execute() {
+            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
+
+            ServiceFactory.getQueryInstance().clearExclusion(Pat.getSessionID(), Pat.getCurrQuery(),
+                    targetLabel.getMc().getParentDimension(), new AsyncCallback<Object>() {
+
+                        public void onFailure(final Throwable arg0) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onSuccess(final Object arg0) {
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    new AsyncCallback<CellDataSet>() {
+
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error("Error", "failed");
+                                        }
+
+                                        public void onSuccess(final CellDataSet arg0) {
+
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                    .fireQueryExecuted(targetLabel, Pat.getCurrQuery(), arg0);
+                                        }
+
+                                    });
+
+                        }
+
+                    });
+
+            CellModeMenu.this.hide();
+        }
+    }
+
+    public class ExcludeCommand implements Command {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        /**
+         * The Command executed on click.
+         */
+        public final void execute() {
+            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
+            final ArrayList<String> memberList = new ArrayList<String>();
+            memberList.add(targetLabel.getMc().getRawValue());
+
+            ServiceFactory.getQueryInstance().createExclusion(Pat.getSessionID(), Pat.getCurrQuery(),
+                    targetLabel.getMc().getParentDimension(), memberList, new AsyncCallback<Object>() {
+
+                        public void onFailure(final Throwable arg0) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onSuccess(final Object arg0) {
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    new AsyncCallback<CellDataSet>() {
+
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error("Error", "failed");
+                                        }
+
+                                        public void onSuccess(final CellDataSet arg0) {
+
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                    .fireQueryExecuted(targetLabel, Pat.getCurrQuery(), arg0);
+                                        }
+
+                                    });
+
+                        }
+
+                    });
+
+            CellModeMenu.this.hide();
+        }
+    }
+
     public class SortOrderCommand implements Command {
 
         /** The selection mode. */
-        private String sortOrder;
+        private final String sortOrder;
 
         /**
          * The Constructor.
@@ -71,132 +163,38 @@ public class CellModeMenu extends PopupMenu {
          */
         public final void execute() {
             final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
-            
+
             ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(),
                     targetLabel.getMc().getParentDimension(), sortOrder, new AsyncCallback<Object>() {
 
-                        public void onFailure(Throwable arg0) {
-                            
+                        public void onFailure(final Throwable arg0) {
+
                             MessageBox.error("Error", "failed");
                         }
 
-                        public void onSuccess(Object arg0) {
-                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                        public void onSuccess(final Object arg0) {
+                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    new AsyncCallback<CellDataSet>() {
 
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.error("Error", "failed");
-                                }
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error("Error", "failed");
+                                        }
 
-                                public void onSuccess(CellDataSet arg0) {
-                                
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                            targetLabel, Pat.getCurrQuery(), arg0);
-                                }
-                                
-                            });
-                            
+                                        public void onSuccess(final CellDataSet arg0) {
+
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                    .fireQueryExecuted(targetLabel, Pat.getCurrQuery(), arg0);
+                                        }
+
+                                    });
+
                         }
 
-            });
-            CellModeMenu.this.hide();
-        }
-    }
-
-    public class ExcludeCommand implements Command {
-
-            
-        /*
-         * (non-Javadoc)
-         * 
-         * @see com.google.gwt.user.client.Command#execute()
-         */
-        /**
-         * The Command executed on click.
-         */
-        public final void execute() {
-            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
-            ArrayList memberList = new ArrayList();
-            memberList.add(targetLabel.getMc().getRawValue());
-            
-            ServiceFactory.getQueryInstance().createExclusion(Pat.getSessionID(), Pat.getCurrQuery(), 
-                    targetLabel.getMc().getParentDimension(), memberList, new AsyncCallback(){
-
-                        public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
-                            
-                        }
-
-                        public void onSuccess(Object arg0) {
-                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.error("Error", "failed");
-                                }
-
-                                public void onSuccess(CellDataSet arg0) {
-                                
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                            targetLabel, Pat.getCurrQuery(), arg0);
-                                }
-                                
-                            });
-                            
-                            
-                        }
-                        
                     });
-           
             CellModeMenu.this.hide();
         }
     }
 
-    public class ClearExcludeCommand implements Command {
-
-        
-        /*
-         * (non-Javadoc)
-         * 
-         * @see com.google.gwt.user.client.Command#execute()
-         */
-        /**
-         * The Command executed on click.
-         */
-        public final void execute() {
-            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
-           
-            
-            ServiceFactory.getQueryInstance().clearExclusion(Pat.getSessionID(), Pat.getCurrQuery(), 
-                    targetLabel.getMc().getParentDimension(),new AsyncCallback(){
-
-                        public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
-                            
-                        }
-
-                        public void onSuccess(Object arg0) {
-                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.error("Error", "failed");
-                                }
-
-                                public void onSuccess(CellDataSet arg0) {
-                                
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                            targetLabel, Pat.getCurrQuery(), arg0);
-                                }
-                                
-                            });
-                            
-                            
-                        }
-                        
-                    });
-           
-            CellModeMenu.this.hide();
-        }
-    }
-    
     /** The source. */
     private static Widget source;
 
