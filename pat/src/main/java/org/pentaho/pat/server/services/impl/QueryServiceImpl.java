@@ -24,7 +24,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -70,6 +69,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     public void afterPropertiesSet() throws Exception {
@@ -79,7 +79,25 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.List)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.util.List)
+     */
+    public void clearExclusion(final String userId, final String sessionId, final String queryId,
+            final String dimensionName) {
+        this.sessionService.validateSession(userId, sessionId);
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+
+        qDim.getExclusions().clear();
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.util.List)
      */
     public void clearSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames) {
@@ -94,22 +112,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.List)
-     */
-    public void clearExclusion(final String userId, final String sessionId, final String queryId,
-            final String dimensionName) {
-        this.sessionService.validateSession(userId, sessionId);
-        final Query query = this.getQuery(userId, sessionId, queryId);
-        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        
-        
-        qDim.getExclusions().clear();
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#clearSortOrder(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#clearSortOrder(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public void clearSortOrder(final String userId, final String sessionId, final String queryId,
             final String dimensionName) {
@@ -118,9 +123,50 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         query.getDimension(dimensionName).clearSort();
     }
 
+    public void createExclusion(final String userId, final String sessionId, final String queryId,
+            final String dimensionName, final List<String> memberNames) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final Cube cube = query.getCube();
+
+        // First try to resolve the member quick and dirty.
+        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
+
+        if (member == null) {
+            // Let's try with only the dimension name in front.
+            final List<String> dimPlusMemberNames = new ArrayList<String>();
+            dimPlusMemberNames.add(dimensionName);
+            dimPlusMemberNames.addAll(memberNames);
+            member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
+
+            if (member == null) {
+                // Sometimes we need to find it in a different name format.
+                // To make sure we find the member, the first element
+                // will be sent as DimensionName.HierarchyName. Cubes which have
+                // more than one hierarchy in a given dimension will require this
+                // format anyways.
+                final List<String> completeMemberNames = new ArrayList<String>();
+                completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+                completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+                member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+
+                if (member == null)
+                    // We failed to find the member.
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+            }
+        }
+
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+
+        qDim.exclude(member);
+    }
+
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#createNewQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#createNewQuery(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public String createNewQuery(final String userId, final String sessionId, final String connectionId,
             final String cubeName) throws OlapException {
@@ -147,11 +193,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
     public void createSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames, final Selection.Operator selectionType)
-    throws OlapException {
+            throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -189,50 +237,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         qDim.include(selectionMode, member);
     }
 
-    public void createExclusion(final String userId, final String sessionId, final String queryId,
-            final String dimensionName, final List<String> memberNames)
-    throws OlapException {
-        this.sessionService.validateSession(userId, sessionId);
-
-        final Query query = this.getQuery(userId, sessionId, queryId);
-        final Cube cube = query.getCube();
-
-        // First try to resolve the member quick and dirty.
-        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
-
-        if (member == null) {
-            // Let's try with only the dimension name in front.
-            final List<String> dimPlusMemberNames = new ArrayList<String>();
-            dimPlusMemberNames.add(dimensionName);
-            dimPlusMemberNames.addAll(memberNames);
-            member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
-
-            if (member == null) {
-                // Sometimes we need to find it in a different name format.
-                // To make sure we find the member, the first element
-                // will be sent as DimensionName.HierarchyName. Cubes which have
-                // more than one hierarchy in a given dimension will require this
-                // format anyways.
-                final List<String> completeMemberNames = new ArrayList<String>();
-                completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
-                completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
-                member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
-
-                if (member == null)
-                    // We failed to find the member.
-                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
-            }
-        }
-
-        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        
-        qDim.exclude(member);
-    }
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang.String, java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang.String, java.lang.String,
+     * java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public void drillPosition(final String userId, final String sessionId, final String queryId, final MemberCell member) throws OlapException {
+    public void drillPosition(final String userId, final String sessionId, final String queryId, final MemberCell member)
+            throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
@@ -240,39 +252,36 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
 
-
         NamedList<? extends Member> childmembers = null;
         try {
             childmembers = memberFetched.getChildMembers();
         } catch (final OlapException e) {
-            throw new OlapException(Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
+            throw new OlapException(
+                    Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
         }
 
-        
-
-        if (childmembers != null) {
-            if (!member.isExpanded())  {
-                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+        if (childmembers != null)
+            if (!member.isExpanded()) {
+                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                        .getInclusions());
                 queryDimension.getInclusions().remove(selection);
                 queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
-            }
-            else {
-                //for (int i=0; i<childmembers.size();i++){
-                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
-                //selection.getOperator()
-                //queryDimension.getInclusions().remove(Selection.Operator.CHILDREN, selection);
+            } else {
+
+                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                        .getInclusions());
                 queryDimension.getInclusions().remove(selection);
                 queryDimension.include(Selection.Operator.MEMBER, memberFetched);
-                
-                //}   
+
             }
-            }
-        //queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
+
     }
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#executeMdxQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#executeMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public CellDataSet executeMdxQuery(final String userId, final String sessionId, final String connectionId,
             final String mdx) throws OlapException {
@@ -284,17 +293,19 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#executeQuery(java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#executeQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
      */
     public CellDataSet executeQuery(final String userId, final String sessionId, final String queryId)
-    throws OlapException {
+            throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
         final CellSet cellSet = mdx.execute();
 
         OlapUtil.storeCellSet(queryId, cellSet);
-        //Check the mdx generated
-        Writer writer = new StringWriter();
+        // Check the mdx generated
+        final Writer writer = new StringWriter();
         mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         return OlapUtil.cellSet2Matrix(cellSet);
 
@@ -302,7 +313,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#getHierarchizeMode(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#getHierarchizeMode(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public String getHierarchizeMode(final String userId, final String sessionId, final String queryId,
             final String dimensionName) throws OlapException {
@@ -319,10 +332,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#getMdxForQuery(java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#getMdxForQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
      */
     public String getMdxForQuery(final String userId, final String sessionId, final String queryId)
-    throws OlapException {
+            throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query q = this.getQuery(userId, sessionId, queryId);
         if (q == null)
@@ -332,6 +347,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.services.QueryService#getQueries(java.lang.String, java.lang.String)
      */
     public List<String> getQueries(final String userId, final String sessionId) {
@@ -345,6 +361,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.services.QueryService#getQuery(java.lang.String, java.lang.String, java.lang.String)
      */
     public Query getQuery(final String userId, final String sessionId, final String queryId) {
@@ -354,7 +371,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#getSelection(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#getSelection(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public String[][] getSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName) throws OlapException {
@@ -380,7 +399,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#getSortOrder(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#getSortOrder(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     public String getSortOrder(final String userId, final String sessionId, final String queryId,
             final String dimensionName) {
@@ -393,9 +414,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         return str;
     }
+
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#moveDimension(java.lang.String, java.lang.String, java.lang.String, org.olap4j.Axis.Standard, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#moveDimension(java.lang.String, java.lang.String,
+     * java.lang.String, org.olap4j.Axis.Standard, java.lang.String)
      */
     public void moveDimension(final String userId, final String sessionId, final String queryId,
             final Axis.Standard axis, final String dimensionName) {
@@ -406,7 +430,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#releaseQuery(java.lang.String, java.lang.String, java.lang.String)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#releaseQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
      */
     public void releaseQuery(final String userId, final String sessionId, final String queryId) {
         sessionService.validateSession(userId, sessionId);
@@ -437,7 +463,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /**
      * 
      * TODO JAVADOC
-     *
+     * 
      * @param service
      */
     public void setSessionService(final SessionService service) {
@@ -446,14 +472,16 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#setSortOrder(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.olap4j.query.SortOrder)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#setSortOrder(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, org.olap4j.query.SortOrder)
      */
     public void setSortOrder(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final SortOrder sortOrder) {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
         query.getDimension(dimensionName).sort(sortOrder);
-        
+
     }
 
     /*
@@ -477,7 +505,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /**
      * 
      * TODO JAVADOC
-     *
+     * 
      * @param userId
      * @param sessionId
      * @param connectionId
@@ -490,11 +518,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         Cube cube = null;
-        NamedList<Catalog> catalogs = connection.getCatalogs();
-        for(int k = 0; k < catalogs.size();k++) {
-            NamedList<Schema> schemas = catalogs.get(k).getSchemas();
-            for(int j = 0; j < schemas.size();j++) {
-                NamedList<Cube> cubes = schemas.get(j).getCubes();
+        final NamedList<Catalog> catalogs = connection.getCatalogs();
+        for (int k = 0; k < catalogs.size(); k++) {
+            final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
+            for (int j = 0; j < schemas.size(); j++) {
+                final NamedList<Cube> cubes = schemas.get(j).getCubes();
                 final Iterator<Cube> iter = cubes.iterator();
                 while (iter.hasNext() && cube == null) {
                     final Cube testCube = iter.next();
@@ -507,24 +535,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             return cube;
 
         throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
-    }
-
-    /**
-     * 
-     * Remove Children
-     *
-     * @param list
-     */
-    private void removeChildren(final NamedList<? extends Member> list) {
-        for (int i = 0; i < list.size(); i++) {
-            queryDimension.exclude(list.get(i));
-            try {
-                removeChildren(list.get(i).getChildMembers());
-            } catch (final OlapException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
     }
 
 }
