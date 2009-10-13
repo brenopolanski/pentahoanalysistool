@@ -140,7 +140,25 @@ public interface IQuery extends RemoteService {
 		String queryId,
 		String dimensionName, 
 		List<String> memberNames) throws RpcException;
-	
+
+	   /**
+     * Removes the selection status of members inside a given dimension.
+     * 
+     * @param sessionId Identifies the window session id that requested the operation.
+     * @param queryId Identifies on which query to perform the operation.
+     * @param dimensionName Name of the dimension that includes the 
+     * members to remove selection status.
+     * @param memberNames The actual member names of which we want to 
+     * remove the selection status.
+     * @return True if all is well.
+     * @throws RpcException If something goes sour.
+     */
+    @Secured ({"Users"})
+    public void clearExclusion(
+        String sessionId,
+        String queryId,
+        String dimensionName) throws RpcException;
+
 	/**
 	 * Executes the current query.
 	 * 

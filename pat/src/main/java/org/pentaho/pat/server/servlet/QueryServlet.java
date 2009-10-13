@@ -93,6 +93,15 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 				sessionId, queryId, dimensionName, memberNames);
 	}
 
+    public void clearExclusion(
+            String sessionId,
+            String queryId,
+            String dimensionName) throws RpcException
+    {
+        this.queryService.clearExclusion(getCurrentUserId(), 
+                sessionId, queryId, dimensionName);
+    }
+    
     public void createSelection(
             String sessionId,
             String queryId,
