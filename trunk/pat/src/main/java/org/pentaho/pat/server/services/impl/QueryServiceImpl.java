@@ -93,6 +93,21 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     /*
      * (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.List)
+     */
+    public void clearExclusion(final String userId, final String sessionId, final String queryId,
+            final String dimensionName) {
+        this.sessionService.validateSession(userId, sessionId);
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        
+        
+        qDim.getExclusions().clear();
+
+    }
+
+    /*
+     * (non-Javadoc)
      * @see org.pentaho.pat.server.services.QueryService#clearSortOrder(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     public void clearSortOrder(final String userId, final String sessionId, final String queryId,
@@ -276,8 +291,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         OlapUtil.storeCellSet(queryId, cellSet);
         //Check the mdx generated
-        //Writer writer = new StringWriter();
-        //mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
+        Writer writer = new StringWriter();
+        mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         return OlapUtil.cellSet2Matrix(cellSet);
 
     }

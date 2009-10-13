@@ -64,6 +64,12 @@ public interface IQueryAsync {
 	        List<String> memberNames,
 	        AsyncCallback<Object> callback);
 	
+	public void clearExclusion(
+            String sessionId,
+            String queryId,
+            String dimensionName,
+            AsyncCallback<Object> callback);
+	
 	public void executeQuery(
 	        String sessionId, 
             String queryId,

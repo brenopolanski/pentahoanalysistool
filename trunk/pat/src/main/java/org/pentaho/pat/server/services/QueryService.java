@@ -162,6 +162,22 @@ public interface QueryService extends Service {
 		List<String> memberNames);
 	
 	/**
+     * Unselects members from a dimension inside a query.
+     * You must first specify onto which query to perform the
+     * operation via Session.setCurrentQuery().
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param dimensionName The name of the dimension that contains the
+     * members to deselect.
+     * @param memberNames A list of member names to deselect.
+     */
+    @Secured ({"Users"})
+    public void clearExclusion(
+        String userId, 
+        String sessionId,
+        String queryId,
+        String dimensionName);
+	/**
 	 * Executes a query.
 	 * You must first specify onto which query to perform the
      * operation via Session.setCurrentQuery().
