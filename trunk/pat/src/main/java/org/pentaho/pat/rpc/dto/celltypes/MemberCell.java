@@ -189,7 +189,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
         if(this.getRawValue()!=null){
         final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
         cellButton.addClickHandler(new ClickHandler() {
-
+            
             public void onClick(final ClickEvent arg0) {
                 DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
             }

@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -239,6 +240,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
 
+
         NamedList<? extends Member> childmembers = null;
         try {
             childmembers = memberFetched.getChildMembers();
@@ -246,24 +248,25 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             throw new OlapException(Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
         }
 
+        
+
         if (childmembers != null) {
             if (!member.isExpanded())  {
-                for (int i = 0; i < childmembers.size(); i++) {
-                    queryDimension.include(childmembers.get(i));
-                }
+                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+                queryDimension.getInclusions().remove(selection);
+                queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
             }
             else {
-                for (int i = 0; i < childmembers.size(); i++) {
-                    try {
-                        removeChildren(childmembers.get(i).getChildMembers());
-
-                    } catch (final OlapException e) {
-                        throw new OlapException(Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
-                    }
-                    queryDimension.exclude(childmembers.get(i));
-                }
+                //for (int i=0; i<childmembers.size();i++){
+                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+                //selection.getOperator()
+                //queryDimension.getInclusions().remove(Selection.Operator.CHILDREN, selection);
+                queryDimension.getInclusions().remove(selection);
+                queryDimension.include(Selection.Operator.MEMBER, memberFetched);
+                
+                //}   
             }
-        }
+            }
         //queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
     }
 
