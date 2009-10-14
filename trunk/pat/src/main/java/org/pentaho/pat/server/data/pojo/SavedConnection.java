@@ -65,6 +65,9 @@ public class SavedConnection implements Comparable<SavedConnection> {
 	private String password;
 
     @Basic
+    private String catalog;
+    
+    @Basic
     @Type(
         type = "org.pentaho.pat.server.data.pojo.ConnectionType"
     )
@@ -119,7 +122,15 @@ public class SavedConnection implements Comparable<SavedConnection> {
 		this.url = url;
 	}
 
-	public String getUsername() {
+	public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getUsername() {
 		return username;
 	}
 

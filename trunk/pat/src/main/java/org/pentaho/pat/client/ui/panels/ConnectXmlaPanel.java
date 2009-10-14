@@ -67,8 +67,9 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Url Textbox. */
     private final TextBox urlTextBox;
 
-    // private final TextBox catalogTextBox;
-    /** User Textbox. */
+     private final TextBox catalogTextBox;
+    
+     /** User Textbox. */
     private final TextBox userTextBox;
 
     /** Password Textbox. */
@@ -91,6 +92,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
+        catalogTextBox =  new TextBox();
         init();
     }
 
@@ -117,6 +119,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
         else
             cc.setPassword(null);
 
+        if (catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0)
+            cc.setCatalog(catalogTextBox.getText());
         return cc;
     }
 
@@ -137,7 +141,9 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(userTextBox, CellConstraints.xy(3, 5));
         builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-
+        builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+        builder.add(catalogTextBox, CellConstraints.xyw(3, 7, 5));
+        
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
