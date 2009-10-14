@@ -130,6 +130,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
 	    cc.setUrl(sc.getUrl());
 	    cc.setUsername(sc.getUsername());
 	    cc.setPassword(sc.getPassword());
+	    cc.setCatalog(sc.getCatalog());
 	    cc.setSchemaData(sc.getSchemaData());
 	    cc.setId(sc.getId());
 
@@ -143,6 +144,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
 	    sc.setName(cc.getName());
 	    sc.setDriverClassName(cc.getDriverClassName());
 	    sc.setUrl(cc.getUrl());
+	    sc.setCatalog(cc.getCatalog());
 	    sc.setUsername(cc.getUsername());
 	    sc.setPassword(cc.getPassword());
 	    sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));

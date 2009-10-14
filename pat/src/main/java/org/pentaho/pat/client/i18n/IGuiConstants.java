@@ -175,6 +175,14 @@ public interface IGuiConstants extends Constants {
      */
     String username();
 
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return
+     */
+    String catalog();
+    
     /**
      *TODO JAVADOC
      * 

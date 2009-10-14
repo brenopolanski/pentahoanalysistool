@@ -196,7 +196,10 @@ public class SessionServiceImpl extends AbstractService
                     .concat("JdbcPassword=").concat(sc.getPassword()); //$NON-NLS-1$
             }            
         } else if (sc.getType() == ConnectionType.XMLA) {
-            olap4jUrl = "jdbc:xmla:Server=".concat(sc.getUrl()); //$NON-NLS-1$
+            olap4jUrl = "jdbc:xmla:Server=".concat(sc.getUrl());
+            if (sc.getCatalog() != null && sc.getCatalog().length() > 0) {
+                olap4jUrl = olap4jUrl.concat(";Catalog=").concat(sc.getCatalog()); //$NON-NLS-1$
+            }
             olap4jDriver = "org.olap4j.driver.xmla.XmlaOlap4jDriver"; //$NON-NLS-1$
             // CONNECT
         } else {
