@@ -19,6 +19,7 @@ Details about this development sprint can be found [DevelopmentSprint050 here]
   * Chart drilling
   * MDX Editor (because of lack of calc'd member wizard support)
   * Measures filter wizard (Measures.Actual > 1000)
+  * biserver integration
 
 == Post PAT 1.0 Backlog==
   * Enable mixed DnD and MDX querying
