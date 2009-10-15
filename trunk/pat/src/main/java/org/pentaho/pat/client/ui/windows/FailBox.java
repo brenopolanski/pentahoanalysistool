@@ -15,24 +15,19 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-import java.util.Date;
-
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.core.client.UserAgent;
 import org.gwt.mosaic.ui.client.MessageBoxImages;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.WindowPanel;
-import org.gwt.mosaic.ui.client.datepicker.DatePicker;
-import org.gwt.mosaic.ui.client.datepicker.DateTimePicker;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -48,7 +43,6 @@ import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -86,9 +80,9 @@ public abstract class FailBox extends WindowPanel {
     alert.setAnimationEnabled(true);
     int preferredWidth = Window.getClientWidth();
     preferredWidth = Math.max(preferredWidth / 3, 256);
-    alert.setWidth(preferredWidth + "px");
+    alert.setWidth(preferredWidth + "px"); //$NON-NLS-1$
     
-    final Button buttonOK = new Button("OK");
+    final Button buttonOK = new Button(ConstantFactory.getInstance().ok());
     buttonOK.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
         alert.hide();
@@ -100,7 +94,7 @@ public abstract class FailBox extends WindowPanel {
     ScrollLayoutPanel sPanel = new ScrollLayoutPanel();
     sPanel.add(new WidgetWrapper(new HTML(error),
             HasAlignment.ALIGN_LEFT, HasAlignment.ALIGN_TOP));
-    sPanel.setHeight("50px");
+    sPanel.setHeight("50px"); //$NON-NLS-1$
     dPanel.add(sPanel);
     dPanel.setOpen(true);
     lp.add(new WidgetWrapper(new HTML(message),
@@ -110,7 +104,7 @@ public abstract class FailBox extends WindowPanel {
     alert.showModal();
     dPanel.setOpen(false);
     if (alert.getOffsetWidth() < preferredWidth) {
-      alert.setWidth(preferredWidth + "px");
+      alert.setWidth(preferredWidth + "px"); //$NON-NLS-1$
       alert.center();
     }
 
@@ -125,215 +119,13 @@ public abstract class FailBox extends WindowPanel {
     alert(MessageBoxType.ALERT, caption, message, error);
   }
 
-  public static void confirm(String caption, String message,
-      final ConfirmationCallback callback) {
-    final FailBox confirm = new FailBox(MessageBoxType.CONFIRM, caption) {
-      @Override
-      public void onClose(boolean result) {
-        hide();
-        callback.onResult(result);
-      }
-    };
-    confirm.setAnimationEnabled(true);
-    int preferredWidth = Window.getClientWidth();
-    preferredWidth = Math.max(preferredWidth / 3, 256);
-    confirm.setWidth(preferredWidth + "px");
-
-    final Button buttonOK = new Button("OK");
-    buttonOK.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        confirm.onClose(true);
-      }
-    });
-
-    final Button buttonCancel = new Button("Cancel");
-    buttonCancel.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        confirm.onClose(false);
-      }
-    });
-
-    confirm.getButtonPanel().add(buttonOK);
-    confirm.getButtonPanel().add(buttonCancel);
-
-    confirm.setWidget(new WidgetWrapper(new HTML(message),
-        HasAlignment.ALIGN_LEFT, HasAlignment.ALIGN_TOP));
-    confirm.showModal();
-
-    if (confirm.getOffsetWidth() < preferredWidth) {
-      confirm.setWidth(preferredWidth + "px");
-      confirm.center();
-    }
-
-    DeferredCommand.addCommand(new Command() {
-      public void execute() {
-        buttonOK.setFocus(true);
-      }
-    });
-  }
-
   public static void error(String caption, String message, String error) {
     alert(MessageBoxType.ERROR, caption, message, error);
   }
 
-  /*public static void info(String caption, String message) {
-    alert(MessageBoxType.INFO, caption, message);
-  }*/
-
-  public static void prompt(String caption, Date defaultValue,
-      boolean use24Hours, final PromptCallback<Date> callback) {
-    final DateTimePicker dateTimePicker = new DateTimePicker(use24Hours);
-    // dateTimePicker.getDatePicker().setSelectedDate(defaultValue, true);
-    dateTimePicker.getTimePicker().setDateTime(defaultValue);
-
-    final FailBox prompt = new FailBox(caption) {
-      @Override
-      public void onClose(boolean result) {
-        hide();
-        if (result) {
-          callback.onResult(dateTimePicker.getDate());
-        } else {
-          callback.onResult(null);
-        }
-      }
-    };
-    prompt.setAnimationEnabled(true);
-    int preferredWidth = Window.getClientWidth();
-    preferredWidth = Math.max(preferredWidth / 3, 256);
-    prompt.setWidth(preferredWidth + "px");
-
-    Button buttonOK = new Button("OK");
-    buttonOK.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(true);
-      }
-    });
-
-    Button buttonCancel = new Button("Cancel");
-    buttonCancel.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(false);
-      }
-    });
-
-    prompt.getButtonPanel().add(buttonOK);
-    prompt.getButtonPanel().add(buttonCancel);
-
-    prompt.setWidget(dateTimePicker, 0);
-    prompt.showModal();
-
-    if (prompt.getOffsetWidth() < preferredWidth) {
-      prompt.setWidth(preferredWidth + "px");
-      prompt.center();
-    }
-  }
-
-  public static void prompt(String caption, Date defaultValue,
-      final PromptCallback<Date> callback) {
-    final DatePicker datePicker = new DatePicker();
-    datePicker.setValue(defaultValue);
-
-    final FailBox prompt = new FailBox(caption) {
-      @Override
-      public void onClose(boolean result) {
-        hide();
-        if (result) {
-          callback.onResult(datePicker.getValue());
-        } else {
-          callback.onResult(null);
-        }
-      }
-    };
-    prompt.setAnimationEnabled(true);
-    int preferredWidth = Window.getClientWidth();
-    preferredWidth = Math.max(preferredWidth / 3, 256);
-    prompt.setWidth(preferredWidth + "px");
-
-    Button buttonOK = new Button("OK");
-    buttonOK.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(true);
-      }
-    });
-
-    Button buttonCancel = new Button("Cancel");
-    buttonCancel.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(false);
-      }
-    });
-
-    prompt.getButtonPanel().add(buttonOK);
-    prompt.getButtonPanel().add(buttonCancel);
-
-    prompt.setWidget(datePicker, 0);
-    prompt.showModal();
-
-    if (prompt.getOffsetWidth() < preferredWidth) {
-      prompt.setWidth(preferredWidth + "px");
-      prompt.center();
-    }
-  }
-
-  public static void prompt(String caption, String message,
-      String defaultValue, final PromptCallback<String> callback) {
-    final TextBox input = new TextBox();
-    input.setText(defaultValue);
-
-    final FailBox prompt = new FailBox(MessageBoxType.PROMPT, caption) {
-      @Override
-      public void onClose(boolean result) {
-        hide();
-        if (result) {
-          callback.onResult(input.getText());
-        } else {
-          callback.onResult(null);
-        }
-      }
-    };
-    prompt.setAnimationEnabled(true);
-    int preferredWidth = Window.getClientWidth();
-    preferredWidth = Math.max(preferredWidth / 3, 256);
-    prompt.setWidth(preferredWidth + "px");
-
-    final LayoutPanel panel = new LayoutPanel(new BoxLayout(
-        Orientation.VERTICAL));
-    panel.setPadding(0);
-    panel.add(new HTML(message), new BoxLayoutData(FillStyle.HORIZONTAL));
-    panel.add(input, new BoxLayoutData(FillStyle.HORIZONTAL));
-
-    Button buttonOK = new Button("OK");
-    buttonOK.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(true);
-      }
-    });
-
-    Button buttonCancel = new Button("Cancel");
-    buttonCancel.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        prompt.onClose(false);
-      }
-    });
-
-    prompt.getButtonPanel().add(buttonOK);
-    prompt.getButtonPanel().add(buttonCancel);
-
-    prompt.setWidget(panel);
-    prompt.showModal();
-
-    if (prompt.getOffsetWidth() < preferredWidth) {
-      prompt.setWidth(preferredWidth + "px");
-      prompt.center();
-    }
-
-    DeferredCommand.addCommand(new Command() {
-      public void execute() {
-        input.setFocus(true);
-      }
-    });
-  }
-
+  
+  
+  
   private Widget widget;
 
   private LayoutPanel buttonPanel = new LayoutPanel();
@@ -363,7 +155,7 @@ public abstract class FailBox extends WindowPanel {
 
     // (ggeorg) this is a workaround for the infamous Firefox cursor bug
     if (UserAgent.isGecko()) {
-      DOM.setStyleAttribute(getLayoutPanel().getElement(), "overflow", "auto");
+      DOM.setStyleAttribute(getLayoutPanel().getElement(), "overflow", "auto"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     final BoxLayout buttonPanelLayout = new BoxLayout(Orientation.HORIZONTAL);
@@ -386,7 +178,7 @@ public abstract class FailBox extends WindowPanel {
       setImage(MESSAGEBOX_IMAGES.dialogQuestion().createImage());
     }
 
-    addStyleName("mosaic-MessageBox");
+    addStyleName("mosaic-MessageBox"); //$NON-NLS-1$
   }
 
   public FailBox(String text) {
