@@ -40,6 +40,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
+import org.pentaho.pat.client.ui.windows.FailBox;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -302,8 +303,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                         public void onFailure(final Throwable arg0) {
                             LogoPanel.spinWheel(false);
-                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
-                                    .getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
+                            FailBox.alert(ConstantFactory.getInstance().error(), "There has been an error regarding the Connection. " +
+                            		"Please contact the system administrator", MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage())); //$NON-NLS-1$
                         }
 
                         public void onSuccess(final Object arg0) {
