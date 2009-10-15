@@ -5,29 +5,38 @@ A detailed list of tasks can be found [http://jira.pentaho.com/browse/PAT?report
 
 = Future Releases = 
 
-== [DevelopmentSprint050 Current Development Sprint 0.5.0] ==
-  * Heavy UI redesign
-  * Save connections in the persistance layer
-  * Add new default user with different permissions
-  * New query workflow
-  * New connection workflow
-  * New MDX Editor
-  * New dimension browser
 
 Details about this development sprint can be found [DevelopmentSprint050 here]
+== PAT 1.0 (December 2009) ==
+  * Theme
+  * Drag and Drop
+  * (Live Table) Writeback
+  * Save/Load
+  * Basic Users
+  * Export to XLS
+  * Drilling
+  * Visual Totals
+  * Chart drilling
+  * MDX Editor (because of lack of calc'd member wizard support)
+  * Measures filter wizard (Measures.Actual > 1000)
 
-==PAT 1.0 Backlog==
-  * Save View as xaction
+== Post PAT 1.0 Backlog==
   * Enable mixed DnD and MDX querying
-  * Charting
   * Saving filter sets
   * New Calculated Measures wizard
   * Formatting options
   * Be very user friendly with most possible functionality
-  * Export options
   * Provide JSON/WebService connectivity to backend
 
 = Released Versions =
+
+== [DevelopmentSprint050 PAT 0.5.0] ==
+  * Heavy UI redesign
+  * Save connections in the persistance layer
+  * New query workflow
+  * New connection workflow
+  * New dimension browser
+
 
 ==PAT 0.4==
   * Support of plain MDX Queries
