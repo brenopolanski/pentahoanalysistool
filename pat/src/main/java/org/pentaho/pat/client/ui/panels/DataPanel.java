@@ -58,7 +58,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     OlapTable olapTable;
 
-    LayoutPanel fillLayoutPanel = new LayoutPanel();
+    LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
 
     final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
@@ -110,8 +110,11 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
         buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
         buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
-        fillLayoutPanel.add(olapTable);
+        fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
+        ChartPanel OFCPanel = new ChartPanel();
+        
+        fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
