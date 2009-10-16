@@ -209,11 +209,11 @@ public class OlapPanel extends DataWidget {
                     }
 
                 });
-        ChartPanel OFCPanel = new ChartPanel();
-        stackPanel.add(baselayoutPanel, "Table");
-        stackPanel.add(OFCPanel, "Chart");
-        stackPanel.showStack(0);
-        return stackPanel;
+        //ChartPanel OFCPanel = new ChartPanel();
+        //stackPanel.add(baselayoutPanel, "Table");
+        //stackPanel.add(OFCPanel, "Chart");
+        //stackPanel.showStack(0);
+        return baselayoutPanel;
         
     }
 }
