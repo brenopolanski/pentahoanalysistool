@@ -53,6 +53,7 @@ import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.util.MdxQuery;
 import org.springframework.util.Assert;
 
 /**
@@ -171,7 +172,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public String createNewQuery(final String userId, final String sessionId, final String connectionId,
             final String cubeName) throws OlapException {
 
-        sessionService.validateUser(userId);
+        this.sessionService.validateSession(userId, sessionId);
 
         if (cubeName == null)
             throw new OlapException(Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
@@ -194,12 +195,77 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /*
      * (non-Javadoc)
      * 
+     * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
+     */
+    public String createNewMdxQuery(String userId, String sessionId, String connectionId) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+
+        if (connection == null)
+            throw new OlapException("Not a valid connection");
+
+        final String generatedId = String.valueOf(UUID.randomUUID());
+        MdxQuery newMdxQuery;
+        newMdxQuery = new MdxQuery(generatedId, connection );
+
+        sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
+
+        return generatedId;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String)
+     */
+    public String createNewMdxQuery(String userId, String sessionId,String connectionId, String mdx) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+
+        if (connection == null)
+            throw new OlapException("Not a valid connection");
+
+        final String generatedId = String.valueOf(UUID.randomUUID());
+        MdxQuery newMdxQuery;
+        newMdxQuery = new MdxQuery(generatedId, connection, mdx );
+
+        sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
+
+        return generatedId;
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#setMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
+     */
+    public void setMdxQuery(String userId, String sessionId, String mdxQueryId, String mdx) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        final MdxQuery mdxQuery = this.getMdxQuery(userId, sessionId, mdxQueryId);
+        if (mdxQuery == null)
+            throw new OlapException("can't set mdx query");
+        
+        mdxQuery.setMdx(mdx);
+        sessionService.getSession(userId, sessionId).getMdxQueries().remove(mdxQueryId);
+        sessionService.getSession(userId, sessionId).getMdxQueries().put(mdxQueryId, mdxQuery);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
     public void createSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames, final Selection.Operator selectionType)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -244,7 +310,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
     public void drillPosition(final String userId, final String sessionId, final String queryId, final MemberCell member)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
@@ -280,9 +346,38 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /*
      * (non-Javadoc)
      * 
+     * @see org.pentaho.pat.server.services.QueryService#getMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
+     */
+
+    public MdxQuery getMdxQuery(String userId, String sessionId, String mdxQueryId)
+    {
+        sessionService.validateSession(userId, sessionId);
+        return sessionService.getSession(userId, sessionId).getMdxQueries().get(mdxQueryId);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#getMdxQueries(java.lang.String, java.lang.String)
+     */
+    public List<String> getMdxQueries(String userId, String sessionId) 
+    {
+        sessionService.validateSession(userId, sessionId);
+        final List<String> names = new ArrayList<String>();
+        final Set<Entry<String, MdxQuery>> entries = sessionService.getSession(userId, sessionId).getMdxQueries().entrySet();
+        for (final Entry<String, MdxQuery> entry : entries)
+            names.add(entry.getKey());
+        return names;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.services.QueryService#executeMdxQuery(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
+    @Deprecated
     public CellDataSet executeMdxQuery(final String userId, final String sessionId, final String connectionId,
             final String mdx) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
@@ -294,11 +389,42 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /*
      * (non-Javadoc)
      * 
+     * @see org.pentaho.pat.server.services.QueryService#executeMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
+     */
+    public CellDataSet executeMdxQuery(final String userId, final String sessionId, final String mdxQueryId) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        
+        final MdxQuery mdxQuery = this.getMdxQuery(userId, sessionId, mdxQueryId);
+        final CellSet cellSet = mdxQuery.execute();
+
+        OlapUtil.storeCellSet(mdxQueryId, cellSet);
+
+        return OlapUtil.cellSet2Matrix(cellSet);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#releaseMdxQuery(java.lang.String, java.lang.String,
+     * java.lang.String)
+     */
+    public void releaseMdxQuery(final String userId, final String sessionId, final String mdxQueryId) {
+        sessionService.validateSession(userId, sessionId);
+
+        OlapUtil.deleteCellSet(mdxQueryId);
+
+        sessionService.getSession(userId, sessionId).getMdxQueries().remove(mdxQueryId);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.services.QueryService#executeQuery(java.lang.String, java.lang.String,
      * java.lang.String)
      */
     public CellDataSet executeQuery(final String userId, final String sessionId, final String queryId)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
         final CellSet cellSet = mdx.execute();
@@ -337,7 +463,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String)
      */
     public String getMdxForQuery(final String userId, final String sessionId, final String queryId)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query q = this.getQuery(userId, sessionId, queryId);
         if (q == null)

@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.query.Query;
+import org.pentaho.pat.server.util.MdxQuery;
 
 public class Session {
 
@@ -43,6 +44,8 @@ public class Session {
 	private Map<String,OlapConnection> connections = new ConcurrentHashMap<String, OlapConnection>();
 	
 	private Map<String,Query> queries = new ConcurrentHashMap<String, Query>();
+	
+	private Map<String,MdxQuery> mdxQueries = new ConcurrentHashMap<String, MdxQuery>();
 	
 	public Session(String id) {
 		this.id = id;
@@ -67,6 +70,8 @@ public class Session {
 		this.variables = null;
 		this.queries.clear();
 		this.queries=null;
+		this.mdxQueries.clear();
+		this.mdxQueries=null;
 	}
 	
 	
@@ -118,4 +123,12 @@ public class Session {
 	public void setQueries(Map<String, Query> queries) {
 		this.queries = queries;
 	}
+
+	public Map<String, MdxQuery> getMdxQueries() {
+        return mdxQueries;
+    }
+
+    public void setMdxQueries(Map<String, MdxQuery> mdxQueries) {
+        this.mdxQueries = mdxQueries;
+    }
 }
