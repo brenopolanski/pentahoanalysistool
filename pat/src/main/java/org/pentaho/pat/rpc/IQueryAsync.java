@@ -21,9 +21,10 @@ package org.pentaho.pat.rpc;
 
 import java.util.List;
 
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -140,4 +141,28 @@ public interface IQueryAsync {
            String queryId, 
            MemberCell member,
            AsyncCallback<Object> callback);
+   
+   public void drillPosition(
+           String sessionId, 
+           String queryId, 
+           MemberCell member) throws RpcException;
+
+   public void createNewMdxQuery(String sessionId, String connectionId,
+           AsyncCallback<Object> callback);
+
+   public String createNewMdxQuery(String sessionId, String connectionId, String mdx,
+           AsyncCallback<String> callback);
+
+   public String[] getMdxQueries(String sessionId,
+           AsyncCallback<String[]> callback);
+
+   public void deleteMdxQuery(String sessionId, String mdxQueryId,
+           AsyncCallback<Object> callback);
+
+   public void executeMdxQuery(String sessionId, String mdxQueryId,
+           AsyncCallback<CellDataSet> callback);
+
+   public void setMdxQuery(String sessionId, String mdxQueryId, String mdx,
+           AsyncCallback<Object> callback) throws RpcException;
+
 }

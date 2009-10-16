@@ -30,6 +30,7 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.util.MdxQuery;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -43,6 +44,8 @@ public interface QueryService extends Service {
      * Creates a new query for a given session.
      * @param userId The owner of the query to create.
      * @param sessionId The session id into which we want to create a new query.
+     * @param connectionId The target connection
+     * @param cubeName The target cube for the query
      * @return A unique query identification number.
      * @throws OlapException If creating the query fails.
      */
@@ -206,25 +209,6 @@ public interface QueryService extends Service {
             String sessionId,
             String queryId) throws OlapException;
 	
-	// TODO is this the way we want mdx to work?
-	/**
-	 * Executes a mdx query.
-	 * You must first create a connection via Session.createConnection()
-     * @param userId The owner of the query.
-     * @param sessionId The session id into which the query is stored.
-     * @param connectionId The connction ID onto which to execute the
-     * ad-hoc query
-     * @param mdx The mdx query.
-	 * @return The resultset of the query as a OlapData object.
-	 * @throws OlapException If something goes sour.
-	 */
-	@Secured ({"Users"})
-	public CellDataSet executeMdxQuery(
-			String userId, 
-			String sessionId,
-			String connectionId,
-			String mdx) throws OlapException;
-	
 	
 	/**
 	 * 
@@ -360,5 +344,116 @@ public interface QueryService extends Service {
             String sessionId, 
             String queryId, 
             MemberCell member) throws OlapException;
+	
+	/**
+     * Creates a new mdx query for a given session.
+     * @param userId The owner of the query to create.
+     * @param sessionId The session id into which we want to create a new query.
+     * @param connectionId The target connection
+     * @return A unique mdx query identification number.
+     * @throws OlapException If creating the query fails.
+     */
+    @Secured ({"Users"})
+    public String createNewMdxQuery(String userId, String sessionId,
+        String connectionId) throws OlapException;
+    
+    /**
+     * Creates a new mdx query for a given session.
+     * @param userId The owner of the query to create.
+     * @param sessionId The session id into which we want to create a new query.
+     * @param connectionId The target connection
+     * @param mdx The initial mdx statement for the mdx query
+     * @return A unique mdx query identification number.
+     * @throws OlapException If creating the query fails.
+     */
+    @Secured ({"Users"})
+    public String createNewMdxQuery(String userId, String sessionId,
+        String connectionId, String mdx) throws OlapException;
+    	
+	/**
+     * 
+     * Returns a mdx query
+     *
+     * @param userId
+     * @param sessionId
+     * @param queryId
+     * @return
+     */
+    @Secured ({"Users"})
+    public MdxQuery getMdxQuery(String userId, String sessionId, String queryId);
+    
+    /**
+     * Returns a list of the currently created  mdx queries inside a
+     * given session.
+     * @param userId The owner of the session and queries. 
+     * @param sessionId The unique id of the session for which we want the current opened queries.
+     * @return A list of query names.
+     */
+    @Secured ({"Users"})
+    public List<String> getMdxQueries(String userId, String sessionId);
+    
+    /**
+     * Executes a temporary volatile mdx query.
+     * You must first create a connection via Session.createConnection()
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param connectionId The connction ID onto which to execute the
+     * ad-hoc query
+     * @param mdx The mdx query.
+     * @return The resultset of the query as a OlapData object.
+     * @throws OlapException If something goes sour.
+     */
+    @Secured ({"Users"})
+    @Deprecated
+    public CellDataSet executeMdxQuery(
+            String userId, 
+            String sessionId,
+            String connectionId,
+            String mdx) throws OlapException;
+    
+
+    /**
+     * Executes a mdx query.
+     * You must first create a connection via Session.createConnection()
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param mdxQueryId The Id of the mdx query we want to execute
+     * @param mdx The mdx query.
+     * @return The resultset of the query as a OlapData object.
+     * @throws OlapException If something goes sour.
+     */
+    @Secured ({"Users"})
+    public CellDataSet executeMdxQuery(
+            String userId, 
+            String sessionId,
+            String mdxQueryId) throws OlapException;
+    
+    /**
+     * Sets a mdx query.
+     * You must first create a connection via Session.createConnection()
+     * You must first create a mdx query via QueryService.createNewMdxQuery()
+     * @param userId The owner of the query.
+     * @param sessionId The session id into which the query is stored.
+     * @param mdxQueryId The Id of the mdx query we want to set
+     * @param mdx The mdx query.
+     * @return The resultset of the query as a OlapData object.
+     * @throws OlapException If something goes sour.
+     */
+    @Secured ({"Users"})
+    public void setMdxQuery(
+            String userId, 
+            String sessionId,
+            String mdxQueryId,
+            String mdx) throws OlapException;
+    
+    
+    /**
+     * Releases and closes a mdx query inside a given session.
+     * @param userId The owner of the query.
+     * @param sessionId The unique session id for which we want to close and delete a query.
+     * @param mdxQueryId The unique id of the query to close and release.
+     */
+    @Secured ({"Users"})
+    public void releaseMdxQuery(final String userId, final String sessionId, final String mdxQueryId);
 	
 }
