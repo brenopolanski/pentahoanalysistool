@@ -142,18 +142,13 @@ public interface IQueryAsync {
            MemberCell member,
            AsyncCallback<Object> callback);
    
-   public void drillPosition(
-           String sessionId, 
-           String queryId, 
-           MemberCell member) throws RpcException;
-
    public void createNewMdxQuery(String sessionId, String connectionId,
            AsyncCallback<Object> callback);
 
-   public String createNewMdxQuery(String sessionId, String connectionId, String mdx,
+   public void createNewMdxQuery(String sessionId, String connectionId, String mdx,
            AsyncCallback<String> callback);
 
-   public String[] getMdxQueries(String sessionId,
+   public void getMdxQueries(String sessionId,
            AsyncCallback<String[]> callback);
 
    public void deleteMdxQuery(String sessionId, String mdxQueryId,
@@ -163,6 +158,6 @@ public interface IQueryAsync {
            AsyncCallback<CellDataSet> callback);
 
    public void setMdxQuery(String sessionId, String mdxQueryId, String mdx,
-           AsyncCallback<Object> callback) throws RpcException;
+           AsyncCallback<Object> callback);
 
 }
