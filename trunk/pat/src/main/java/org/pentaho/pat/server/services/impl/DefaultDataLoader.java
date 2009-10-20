@@ -30,7 +30,7 @@ import org.pentaho.pat.server.messages.Messages;
 import org.springframework.beans.factory.InitializingBean;
 
 public class DefaultDataLoader implements InitializingBean {
-
+    
     private UserManager userManager = null;
     
     private GroupManager groupManager = null;
@@ -43,7 +43,6 @@ public class DefaultDataLoader implements InitializingBean {
         if (this.loadDefaultData) {
             assert userManager != null;
             assert groupManager != null;
-
             // Test if data is already present
             if (userManager.getDefaultUsers().size() > 0)
                 return;

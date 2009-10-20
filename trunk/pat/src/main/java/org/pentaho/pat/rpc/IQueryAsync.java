@@ -160,4 +160,13 @@ public interface IQueryAsync {
    public void setMdxQuery(String sessionId, String mdxQueryId, String mdx,
            AsyncCallback<Object> callback);
 
-}
+   public void saveQuery(
+           String sessionId,
+           String queryId,
+           AsyncCallback<Object> callback);
+
+   public void loadQuery(
+           String sessionID, 
+           String currQuery, 
+           AsyncCallback asyncCallback);
+    }

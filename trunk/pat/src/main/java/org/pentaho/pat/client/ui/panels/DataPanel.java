@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
@@ -135,22 +136,27 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     public void chartPosition(Region chartPos){
                 
-        
+        OFCPanel.removeFromParent();
         switch(chartPos){
         case WEST:
             fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+            break;
         case EAST:
             fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.EAST, 0.5, 50, 200));
+            break;
         case NORTH:
             fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.NORTH, 0.5, 50, 200));
+            break;
         case SOUTH:
             fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
+            break;
         case CENTER:
             
          default:
+             OFCPanel.removeFromParent();
         }
-
-        
+        WidgetHelper.invalidate(OFCPanel);
+        WidgetHelper.layout(OFCPanel);
     }
     /*
      * (non-Javadoc)

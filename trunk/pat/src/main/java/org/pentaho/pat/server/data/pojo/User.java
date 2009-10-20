@@ -54,6 +54,8 @@ public class User {
 	
     private Set<SavedConnection> savedConnections = new HashSet<SavedConnection>();
 	
+    private Set<SavedQuery> savedQueries = new HashSet<SavedQuery>();
+    
 	@Id
 	public String getUsername() {
 		return username;
@@ -88,6 +90,20 @@ public class User {
 	public void setSavedConnections(Set<SavedConnection> savedConnections) {
 		this.savedConnections = savedConnections;
 	}
+
+	@OneToMany(fetch=FetchType.EAGER,targetEntity=SavedQuery.class,cascade=CascadeType.ALL)
+    @JoinTable(
+        name="USERS_QUERIES",
+        joinColumns=@JoinColumn(name="user_id",table="USERS",referencedColumnName="username"),
+        inverseJoinColumns=@JoinColumn(name="query_id",table="QUERIES",referencedColumnName="id"))
+    @Cascade({org.hibernate.annotations.CascadeType.ALL,org.hibernate.annotations.CascadeType.DELETE_ORPHAN,org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    public Set<SavedQuery> getSavedQueries() {
+        return savedQueries;
+    }
+
+    public void setSavedQueries(Set<SavedQuery> savedQueries) {
+        this.savedQueries = savedQueries;
+    }
 
     public String getPassword() {
         return password;

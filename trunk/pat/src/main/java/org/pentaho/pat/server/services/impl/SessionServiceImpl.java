@@ -411,4 +411,5 @@ public class SessionServiceImpl extends AbstractService
             throw new SecurityException(
                 Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
     }
+
 }
