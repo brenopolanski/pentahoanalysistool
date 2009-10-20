@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
@@ -56,6 +57,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements IQueryListener {
 
+    ChartPanel OFCPanel = new ChartPanel();
+    
     OlapTable olapTable;
 
     LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
@@ -101,20 +104,23 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         });
 
         final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                IAxis.COLUMNS, true);
+                IAxis.COLUMNS, true, Application.tableRowDragController);
         final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS,
-                false);
+                false, Application.tableRowDragController);
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
         olapTable = new OlapTable();
         final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
         buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
         buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
+        
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
-        ChartPanel OFCPanel = new ChartPanel();
         
         fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+        
+        
+        
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
@@ -127,6 +133,25 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     }
 
+    public void chartPosition(Region chartPos){
+                
+        
+        switch(chartPos){
+        case WEST:
+            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+        case EAST:
+            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.EAST, 0.5, 50, 200));
+        case NORTH:
+            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.NORTH, 0.5, 50, 200));
+        case SOUTH:
+            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
+        case CENTER:
+            
+         default:
+        }
+
+        
+    }
     /*
      * (non-Javadoc)
      * 

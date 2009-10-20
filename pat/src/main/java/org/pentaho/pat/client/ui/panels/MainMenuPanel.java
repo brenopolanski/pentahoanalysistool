@@ -49,9 +49,10 @@ public class MainMenuPanel extends LayoutComposite {
     /**
      * 
      * MainMenuPanel Constructor.
+     * @param dPanel 
      *
      */
-    public MainMenuPanel() {
+    public MainMenuPanel(DataPanel dPanel) {
         super();
         rootPanel.setLayout(new BorderLayout());
         rootPanel.addStyleName("pat-MainMenu"); //$NON-NLS-1$
@@ -62,7 +63,7 @@ public class MainMenuPanel extends LayoutComposite {
         // FIXME remove that and use style
         DOM.setStyleAttribute(dimPanel.getElement(),"background", "white");
 
-        final PropertiesPanel propertiesPanel = new PropertiesPanel();
+        final PropertiesPanel propertiesPanel = new PropertiesPanel(dPanel);
         // FIXME remove that and use style
         DOM.setStyleAttribute(propertiesPanel.getElement(),"background", "white");
 
