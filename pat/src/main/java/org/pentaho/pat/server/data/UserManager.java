@@ -22,6 +22,7 @@ package org.pentaho.pat.server.data;
 import java.util.List;
 
 import org.pentaho.pat.server.data.pojo.SavedConnection;
+import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.data.pojo.User;
 import org.springframework.security.annotation.Secured;
 
@@ -85,4 +86,7 @@ public interface UserManager {
 	 */
 	@Secured ({"Users"})
     public SavedConnection getSavedConnection(String userId, String connectionName);
+	
+	@Secured ({"Users"})
+	public SavedQuery getSavedQuery(String userId, String queryName);
 }

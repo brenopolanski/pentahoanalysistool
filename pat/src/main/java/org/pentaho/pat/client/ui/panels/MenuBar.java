@@ -63,6 +63,7 @@ public class MenuBar extends LayoutComposite {
         addConnectionsButton();
         addCubesButton();
         addSaveButton();
+        addLoadButton();
         rootPanel.add(logoPanel, new BoxLayoutData(FillStyle.BOTH));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }

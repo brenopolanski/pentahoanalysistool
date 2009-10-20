@@ -368,7 +368,20 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
     public void loadQuery(String sessioinId, String queryId) throws RpcException {
-        // TODO Auto-generated method stub
+        try{
+            Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
+            
+             
+             SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessioinId, qm.toString());
+        
+             XStream xstream = new XStream(new DomDriver()); 
+             
+             Query newQuery = (Query)xstream.fromXML(sc.getXml());
+             
+            } catch (Exception e) {
+                log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+                throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            }
         
     }
 }
