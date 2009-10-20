@@ -466,5 +466,14 @@ public interface QueryService extends Service {
      */
     @Secured ({"Users"})
     public void releaseMdxQuery(final String userId, final String sessionId, final String mdxQueryId);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessioinId
+     * @param string
+     */
+    public SavedQuery loadQuery(String currentUserId, String sessioinId, String string);
 	
 }
