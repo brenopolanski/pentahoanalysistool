@@ -30,6 +30,7 @@ import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -54,11 +55,14 @@ import com.google.gwt.user.client.ui.TextArea;
  */
 public class PropertiesPanel extends LayoutComposite {
 
+    private DataPanel dataPanel;
     /**
      * PropertiesPanel Constructor.
+     * @param dPanel 
      * 
      */
-    public PropertiesPanel() {
+    public PropertiesPanel(DataPanel dPanel) {
+        this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
 
         final LayoutPanel mainPanel = new LayoutPanel();
@@ -177,7 +181,7 @@ public class PropertiesPanel extends LayoutComposite {
         ToolButton menuButton = new ToolButton("Layout");
         menuButton.setStyle(ToolButtonStyle.MENU);
 
-        Command cmd1 = new Command() {
+         Command cmd1 = new Command() {
             public void execute() {
               InfoPanel.show("Menu Button", "You selected a menu item!");
             }
@@ -186,10 +190,10 @@ public class PropertiesPanel extends LayoutComposite {
         PopupMenu menuBtnMenu = new PopupMenu();
         menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), cmd1);
         menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), cmd1);
-        menuBtnMenu.addItem(ConstantFactory.getInstance().top(), cmd1);
-        menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), cmd1);
-        menuBtnMenu.addItem(ConstantFactory.getInstance().left(), cmd1);
-        menuBtnMenu.addItem(ConstantFactory.getInstance().right(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
+        menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
+        menuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
+        menuBtnMenu.addItem(ConstantFactory.getInstance().right(), new LayoutCommand(Region.EAST));
         
 
         menuButton.setMenu(menuBtnMenu);
@@ -199,15 +203,31 @@ public class PropertiesPanel extends LayoutComposite {
         checkButton6.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton6.setEnabled(false);
 
+        mainPanel.add(menuButton);
         mainPanel.add(mdxButton);
         mainPanel.add(checkButton1);
         mainPanel.add(checkButton2);
         mainPanel.add(checkButton3);
         mainPanel.add(checkButton4);
         mainPanel.add(checkButton5);
-        mainPanel.add(menuButton);
+
 
         rootPanel.add(mainPanel);
+        
     }
+    public class LayoutCommand implements Command {
 
+        private Region region;
+        public LayoutCommand(Region region){
+            this.region = region;
+        }
+        /* (non-Javadoc)
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        public void execute() {
+            dataPanel.chartPosition(region);
+            
+        }
+        
+    }
 }

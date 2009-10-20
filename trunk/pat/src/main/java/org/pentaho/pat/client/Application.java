@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -84,6 +85,8 @@ public class Application extends Viewport {
 
     private MenuBar menuBar = null;
 
+    public static FlexTableRowDragController tableRowDragController;
+
     private static LayoutPanel rootPanel;
     /**
      * Constructor.
@@ -91,10 +94,11 @@ public class Application extends Viewport {
 
     public Application() {
         super();
+        
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
-
+        Application.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
 
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {

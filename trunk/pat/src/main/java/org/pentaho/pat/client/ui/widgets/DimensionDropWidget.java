@@ -66,9 +66,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     private final String query;
 
-    private FlexTableRowDragController trdc = null;
-
     private final Label spacerLabel = new Label(""); //$NON-NLS-1$
+
+    private FlexTableRowDragController tableRowDragConroller;
 
     private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 
@@ -80,14 +80,15 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     /**
      *TODO JAVADOC
+     * @param tableRowDragController 
      * 
      * @param unused
      * @param string
      *  
      */
-    public DimensionDropWidget(final String labelText, final Standard targetAxis) {
+    public DimensionDropWidget(final String labelText, final Standard targetAxis, FlexTableRowDragController tableRowDragController) {
+        this.tableRowDragConroller = tableRowDragController;
         this.dimAxis = targetAxis;
-        this.trdc = DimensionPanel.getTableRowDragController();
         query = Pat.getCurrQuery();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
@@ -96,17 +97,17 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     }
 
-    public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation) {
+    public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation, FlexTableRowDragController tableRowDragController) {
         super();
         horizontal = orientation;
         this.dimAxis = targetAxis;
         query = Pat.getCurrQuery();
-        this.trdc = DimensionPanel.getTableRowDragController();
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captionLayoutPanel);
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 
+        this.tableRowDragConroller = tableRowDragController;
     }
 
     public void clearDimensionTable() {
@@ -137,7 +138,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
         captionLayoutPanel = new CaptionLayoutPanel(labelText);
 
-        dimensionTable = new DimensionFlexTable(DimensionPanel.getTableRowDragController(), horizontal);
+        dimensionTable = new DimensionFlexTable(tableRowDragConroller, horizontal);
         dimensionTable.addStyleName("pat-dropTable"); //$NON-NLS-1$
 
         captionLayoutPanel.add(dimensionTable);
@@ -150,7 +151,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     @Override
     public void onLoad() {
         flexTableRowDropController1 = new FlexTableRowDropController(dimensionTable, dimAxis);
-        DimensionPanel.getTableRowDragController().registerDropController(flexTableRowDropController1);
+        DimensionDropWidget.this.tableRowDragConroller.registerDropController(flexTableRowDropController1);
 
     }
 
@@ -187,7 +188,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     @Override
     public void onUnload() {
-        DimensionPanel.getTableRowDragController().unregisterDropController(flexTableRowDropController1);
+        tableRowDragConroller.unregisterDropController(flexTableRowDropController1);
     }
 
     public void populateDimensionTable(final IAxis targetAxis) {
@@ -205,7 +206,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                         for (int row = 0; row < arg0.length; row++) {
                             final Label handle = new Label(arg0[row]);
                             handle.setStylePrimaryName(TABLE_DRAG_WIDGET);
-                            trdc.makeDraggable(handle);
+                            tableRowDragConroller.makeDraggable(handle);
 
                             if (!horizontal) {
                                 dimensionTable.setWidget(row, 0, handle);

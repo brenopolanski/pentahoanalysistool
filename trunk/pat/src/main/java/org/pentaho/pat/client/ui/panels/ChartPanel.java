@@ -23,6 +23,7 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -105,7 +106,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
             this.matrix = matrix;
             chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-            chartLayoutPanel.add(chart);
+            WidgetWrapper wr = new WidgetWrapper(chart);
+            chartLayoutPanel.add(wr);
             this.layout();
         }
     }
