@@ -577,5 +577,12 @@ public interface IGuiConstants extends Constants {
      */
     String right();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String load();
+
    
 }

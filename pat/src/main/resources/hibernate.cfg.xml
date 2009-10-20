@@ -13,6 +13,7 @@
     <property name="hibernate.cache.use_query_cache">false</property>
     <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>
     <mapping class="org.pentaho.pat.server.data.pojo.SavedConnection"/>
+    <mapping class="org.pentaho.pat.server.data.pojo.SavedQuery"/>
     <mapping class="org.pentaho.pat.server.data.pojo.User"/>
     <mapping class="org.pentaho.pat.server.data.pojo.Group"/>
   </session-factory>

@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -33,9 +34,11 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Menu Bar
@@ -128,10 +131,49 @@ public class MenuBar extends LayoutComposite {
         saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback(){
 
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.info("failed", "boo");
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        MessageBox.info("Success", "yay");
+                    }
+                    
+                });
             }
         });
-        saveButton.setEnabled(false);
+        saveButton.setEnabled(true);
         rootPanel.add(saveButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
+
+    private void addLoadButton() {
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+        // cases)
+        final ToolButton loadButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+                .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
+        loadButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(loadButton.getElement(),"background", "white");
+        loadButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback(){
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.info("failed", "boo");
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        MessageBox.info("Success", "yay");
+                    }
+                    
+                });
+            }
+        });
+        loadButton.setEnabled(true);
+        rootPanel.add(loadButton, new BoxLayoutData(FillStyle.VERTICAL));
+    }
+
 }

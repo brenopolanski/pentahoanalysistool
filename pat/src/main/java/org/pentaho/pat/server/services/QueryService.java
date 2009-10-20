@@ -31,6 +31,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.util.MdxQuery;
+import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -344,6 +345,16 @@ public interface QueryService extends Service {
             String sessionId, 
             String queryId, 
             MemberCell member) throws OlapException;
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessionId
+     * @param queryId
+     */
+	@Secured ({"Users"})
+    public void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
 	
 	/**
      * Creates a new mdx query for a given session.

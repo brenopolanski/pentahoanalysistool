@@ -48,6 +48,8 @@ import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.server.data.pojo.SavedQuery;
+import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.OlapUtil;
@@ -55,6 +57,9 @@ import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
 import org.springframework.util.Assert;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * Simple service implementation as a Spring bean.
@@ -77,7 +82,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         Assert.notNull(this.discoveryService);
         Assert.notNull(this.sessionService);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -661,6 +666,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             return cube;
 
         throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#saveQuery(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void saveQuery(String userId, String sessionId, SavedQuery queryId) {
+        this.sessionService.validateSession(userId, sessionId);
+        
+        
+        User user = this.userManager.getUser(userId);
+        user.getSavedQueries().add(queryId);
+        this.userManager.updateUser(user);
     }
 
 }

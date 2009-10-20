@@ -25,17 +25,24 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+import org.olap4j.query.Query;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 
 import org.pentaho.pat.rpc.IQuery;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.data.pojo.SavedConnection;
+import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 
 /**
@@ -331,4 +338,37 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
+    public void saveQuery(String sessionId, String queryId) throws RpcException{
+        try{
+        Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
+        
+        SavedQuery sc = this.convert(qm);
+        this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
+        } catch (Exception e) {
+            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+        }
+    }
+    
+    private SavedQuery convert(Query cc) {
+        XStream xstream = new XStream(new DomDriver()); 
+        
+        String xml = xstream.toXML(cc);
+        //TODO Fixme
+        SavedQuery sc = new SavedQuery(cc.toString());
+        
+        sc.setName(cc.getName());
+        sc.setUsername(getCurrentUserId());
+        sc.setXml(xml);
+
+        return sc;
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
+     */
+    public void loadQuery(String sessioinId, String queryId) throws RpcException {
+        // TODO Auto-generated method stub
+        
+    }
 }

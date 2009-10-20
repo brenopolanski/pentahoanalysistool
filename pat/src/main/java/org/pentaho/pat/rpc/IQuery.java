@@ -280,54 +280,6 @@ public interface IQuery extends RemoteService {
             String queryId,
             String dimensionName) throws RpcException;
 
-    /**
-     * 
-     * Set the hierarchize mode for a dimension.
-     *
-     * @param sessionId The session id.
-     * @param queryId The query id.
-     * @param dimensionName The dimension in question.
-     * @param mode The hierarchize mode.
-     * @throws RpcException If something turns sour.
-     */
-    @Secured ({"Users"})
-    public void setHierarchizeMode(
-            String sessionId, 
-            String queryId, 
-            String dimensionName, 
-            String mode) throws RpcException;
-
-    /**
-     * 
-     * Gets the hierarchize mode for a dimension
-     *
-     * @param sessionId The session id.
-     * @param queryId The query id.
-     * @param dimensionName The dimension in question.
-     * @return A String
-     * @throws RpcException If something turns sour.
-     */
-    @Secured ({"Users"})
-    public String getHierarchizeMode(
-            String sessionId,
-            String queryId,
-            String dimensionName) throws RpcException;
-
-    /**
-     * 
-     * Perform a drill position drill on a member.
-     *
-     * @param sessionId The session id.
-     * @param queryId The query id.
-     * @param member The member cell.
-     * @throws RpcException If something turns sour.
-     */
-    @Secured ({"Users"})
-    public void drillPosition(
-            String sessionId, 
-            String queryId, 
-            MemberCell member) throws RpcException;
-
     @Secured ({"Users"})
     public String createNewMdxQuery(String sessionId, String connectionId) throws RpcException;
 
@@ -346,4 +298,57 @@ public interface IQuery extends RemoteService {
     @Secured ({"Users"})
     public void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
 
+	
+	/**
+	 * 
+	 * Set the hierarchize mode for a dimension.
+	 *
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @param mode The hierarchize mode.
+	 * @throws RpcException If something turns sour.
+	 */
+	@Secured ({"Users"})
+	public void setHierarchizeMode(
+	        String sessionId, 
+	        String queryId, 
+	        String dimensionName, 
+	        String mode) throws RpcException;
+	
+	/**
+	 * 
+	 * Gets the hierarchize mode for a dimension
+	 *
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param dimensionName The dimension in question.
+	 * @return A String
+	 * @throws RpcException If something turns sour.
+	 */
+	@Secured ({"Users"})
+	public String getHierarchizeMode(
+	        String sessionId,
+	        String queryId,
+	        String dimensionName) throws RpcException;
+	
+	/**
+	 * 
+	 * Perform a drill position drill on a member.
+	 *
+	 * @param sessionId The session id.
+	 * @param queryId The query id.
+	 * @param member The member cell.
+	 * @throws RpcException If something turns sour.
+	 */
+	@Secured ({"Users"})
+	public void drillPosition(
+	        String sessionId, 
+	        String queryId, 
+	        MemberCell member) throws RpcException;
+	
+	@Secured ({"Users"})
+	public void saveQuery(String sessionId, String queryId) throws RpcException;
+
+	public void loadQuery(String sessioinId, String queryId) throws RpcException;
 }
