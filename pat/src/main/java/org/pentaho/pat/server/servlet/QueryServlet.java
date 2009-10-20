@@ -351,7 +351,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
     
     private SavedQuery convert(Query cc) {
-        XStream xstream = new XStream(new DomDriver()); 
+        XStream xstream = new XStream(); 
         
         String xml = xstream.toXML(cc);
         //TODO Fixme
@@ -374,7 +374,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
              
              SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessioinId, qm.toString());
         
-             XStream xstream = new XStream(new DomDriver()); 
+             XStream xstream = new XStream(); 
              
              Query newQuery = (Query)xstream.fromXML(sc.getXml());
              
