@@ -20,6 +20,7 @@
 package org.pentaho.pat.rpc;
 
 
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -69,7 +70,7 @@ public interface IDiscovery extends RemoteService {
 	 * @throws RpcException If something goes sour.
 	 */
 	@Secured ({"Users"})
-	public String [] getCubes(
+	public CubeItem [] getCubes(
 	        String sessionId, 
 	        String connectionId) throws RpcException;
 	

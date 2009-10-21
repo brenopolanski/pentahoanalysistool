@@ -25,6 +25,7 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import org.springframework.security.annotation.Secured;
@@ -61,7 +62,7 @@ public interface DiscoveryService extends Service {
 	 * @return A list of cubes.
 	 */
 	@Secured ({"Users"})
-	public List<String> getCubes(String userId, String sessionId,
+	public List<CubeItem> getCubes(String userId, String sessionId,
 	    String connectionId) throws OlapException;
 	
 	@Secured ({"Users"})

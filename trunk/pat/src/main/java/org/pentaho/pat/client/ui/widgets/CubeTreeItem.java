@@ -22,6 +22,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -44,7 +45,7 @@ public class CubeTreeItem extends HorizontalPanel {
 
     private CubeConnection connection;
 
-    private String cube;
+    private CubeItem cube;
 
     private AbstractImagePrototype itemImage;
 
@@ -57,13 +58,13 @@ public class CubeTreeItem extends HorizontalPanel {
      * @param connection - Connection the cube belongs to
      * @param cube - Name of the Cube
      */
-    public CubeTreeItem(final CubeConnection connection, final String cube) {
+    public CubeTreeItem(final CubeConnection connection, final CubeItem cube) {
         if (connection != null) {
             this.connection = connection;
             this.cube = cube;
             if (cube != null) {
                 this.itemImage = Pat.IMAGES.cube();
-                this.itemName = "<b>" + this.cube + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
+                this.itemName = "<b>" + this.cube.getName() + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
                 this.type = ItemType.CUBE;
             } else {
                 this.itemImage = Pat.IMAGES.database();
@@ -84,10 +85,17 @@ public class CubeTreeItem extends HorizontalPanel {
         return this.connection.getId();
     }
 
-    public String getCube() {
-        return this.cube;
+    public String getCubeName() {
+        return this.cube.getName();
     }
 
+    public String getCatalogName() {
+        return this.cube.getCatalog();
+    }
+    
+    public String getSchemaName() {
+        return this.cube.getSchema();
+    }
     public ItemType getType() {
         return this.type;
     }

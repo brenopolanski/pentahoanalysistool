@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.IDiscovery;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -54,16 +55,16 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
             throw new ServletException(Messages.getString("Servlet.DiscoveryServiceNotFound")); //$NON-NLS-1$
 	}
 	
-	public String[] getCubes(String sessionId, String connectionId) throws RpcException
+	public CubeItem[] getCubes(String sessionId, String connectionId) throws RpcException
 	{
-		List<String> list;
+		List<CubeItem> list;
         try {
             list = this.discoveryService.getCubes(getCurrentUserId(), sessionId, connectionId);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Discovery.CantGenerateCubesList"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateCubesList")); //$NON-NLS-1$
         } 
-		return list.toArray(new String[list.size()]);
+		return list.toArray(new CubeItem[list.size()]);
 	}
 
 	public String [] getDimensions(

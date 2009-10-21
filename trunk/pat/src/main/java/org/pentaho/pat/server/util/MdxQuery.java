@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.server.util;
 
+import java.sql.SQLException;
+
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
@@ -33,27 +35,31 @@ import org.olap4j.OlapStatement;
  * 
  */
 public class MdxQuery {
-    private OlapConnection connection;
-    private String mdx;
-    private String id;
+    private OlapConnection connection = null;
+    private String catalogName = null;
+
+    private String mdx = null;
+    private String id = null;
 
 
     public String getId() {
         return id;
     }
 
-    public MdxQuery(String id,OlapConnection connection, String mdx) {
+    public MdxQuery(String id,OlapConnection connection, String catalogName) {
         this.connection = connection;
+        this.catalogName = catalogName;
+        this.mdx = null;
+        this.id = id;
+    }
+    
+    public MdxQuery(String id,OlapConnection connection, String catalogName, String mdx) {
+        this.connection = connection;
+        this.catalogName = catalogName;
         this.mdx = mdx;
         this.id = id;
     }
     
-    public MdxQuery(String id,OlapConnection connection) {
-        this.connection = connection;
-        this.mdx = "";
-        this.id = id;
-    }
-
     public OlapConnection getconnection() {
         return connection;
     }
@@ -70,10 +76,29 @@ public class MdxQuery {
         this.mdx = mdx;
     }
 
+    public String getCatalogName() {
+        return catalogName;
+    }
+
+    public void setCatalogName(String catalogName) {
+        this.catalogName = catalogName;
+    }
+
     public CellSet execute() throws OlapException{
         OlapStatement stmt;
+        try {
+            if (this.catalogName != null) {
+                this.connection.setCatalog(catalogName);
+            }
+        } catch (SQLException e) {
+            throw new OlapException("Error setting catalog for MDX statement: '" + catalogName + "'");
+        }
+
         stmt = connection.createStatement();
-        return stmt.executeOlapQuery(mdx);
+        if (mdx != null && mdx.length() > 0 ) 
+            return stmt.executeOlapQuery(mdx);
+        
+        throw new OlapException("Can't execute blank or empty query");
     }
 
 }

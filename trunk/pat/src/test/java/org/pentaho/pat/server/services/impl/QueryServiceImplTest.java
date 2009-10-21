@@ -32,7 +32,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
         String connectionId = createConnection(this.sessionService, userId, sessionId); 
         
         // Create a query object.
-        String cubeName = this.discoveryService.getCubes(userId, sessionId, connectionId).get(0);
+        String cubeName = this.discoveryService.getCubes(userId, sessionId, connectionId).get(0).getName();
         assertNotNull(cubeName); 
         String queryId = this.queryService.createNewQuery(userId, sessionId, connectionId, cubeName); 
         assertNotNull(queryId); 
