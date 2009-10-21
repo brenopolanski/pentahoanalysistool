@@ -28,21 +28,17 @@ import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
-
 import org.pentaho.pat.rpc.IQuery;
-import org.pentaho.pat.rpc.dto.CubeConnection;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 
 /**
@@ -338,11 +334,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
-    public void saveQuery(String sessionId, String queryId) throws RpcException{
+    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId) throws RpcException{
         try{
         Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
         
-        SavedQuery sc = this.convert(qm);
+        SavedQuery sc = this.convert(qm, queryName, connectionId);
         this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
         } catch (Exception e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
@@ -350,17 +346,16 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
-    private SavedQuery convert(Query cc) {
+    private SavedQuery convert(Query cc, String queryName, String connectionId) {
         XStream xstream = new XStream(); 
         
         String xml = xstream.toXML(cc);
-        //TODO Fixme
         SavedQuery sc = new SavedQuery(cc.toString());
         
-        sc.setName(cc.getName());
+        sc.setName(queryName);
         sc.setUsername(getCurrentUserId());
         sc.setXml(xml);
-
+        sc.setConnectionId(connectionId);
         return sc;
     }
 

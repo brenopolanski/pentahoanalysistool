@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+
 /**
  *TODO JAVADOC
  *
@@ -38,6 +40,9 @@ public class SavedQuery implements Comparable<SavedQuery> {
     @Basic
     private String username;
 
+    @Basic
+    private String connectionId;
+    
     public SavedQuery() {
         this(null);
     }
@@ -81,6 +86,23 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param connectionId the connectionId to set
+     */
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the connectionId
+     */
+    public String getConnectionId() {
+        return connectionId;
     }
 
     /* (non-Javadoc)

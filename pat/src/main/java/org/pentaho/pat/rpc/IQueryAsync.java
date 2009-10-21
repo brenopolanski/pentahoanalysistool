@@ -163,6 +163,8 @@ public interface IQueryAsync {
    public void saveQuery(
            String sessionId,
            String queryId,
+           String queryName,
+           String connectionId,
            AsyncCallback<Object> callback);
 
 
