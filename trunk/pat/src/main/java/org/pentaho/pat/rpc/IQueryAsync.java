@@ -142,10 +142,10 @@ public interface IQueryAsync {
            MemberCell member,
            AsyncCallback<Object> callback);
    
-   public void createNewMdxQuery(String sessionId, String connectionId,
+   public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, 
            AsyncCallback<Object> callback);
 
-   public void createNewMdxQuery(String sessionId, String connectionId, String mdx,
+   public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx,
            AsyncCallback<String> callback);
 
    public void getMdxQueries(String sessionId,
@@ -164,6 +164,7 @@ public interface IQueryAsync {
            String sessionId,
            String queryId,
            AsyncCallback<Object> callback);
+
 
    public void loadQuery(
            String sessionID, 
