@@ -34,6 +34,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -136,14 +137,14 @@ public class CubeMenu extends LayoutComposite {
         for (final CubeConnection connection : connections) {
             final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connection, null));
             ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
-                    new AsyncCallback<String[]>() {
+                    new AsyncCallback<CubeItem[]>() {
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .failedCubeList(arg0.getLocalizedMessage()));
                         }
 
-                        public void onSuccess(final String[] o) {
-                            for (final String element2 : o)
+                        public void onSuccess(final CubeItem[] o) {
+                            for (final CubeItem element2 : o)
                                 cubesList.addItem(new CubeTreeItem(connection, element2));
                             cubesList.setState(true);
                         }

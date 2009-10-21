@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.olap4j.Axis;
 import org.olap4j.metadata.Cube;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
@@ -27,10 +28,10 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		String connectionId = createConnection(this.sessionService, userId, sessionId); 
 		
 		// Test returned cubes.
-		List<String> cubes = this.discoveryService.getCubes(userId, sessionId, connectionId); 
+		List<CubeItem> cubes = this.discoveryService.getCubes(userId, sessionId, connectionId); 
 		assertNotNull(cubes);
 		assertEquals(1, cubes.size());
-		assertEquals("Quadrant Analysis", cubes.get(0)); //$NON-NLS-1$
+		assertEquals("Quadrant Analysis", cubes.get(0).getName()); //$NON-NLS-1$
 		
 		// Release the session.
 		this.sessionService.releaseSession(userId, sessionId); 

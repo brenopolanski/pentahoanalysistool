@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -110,15 +109,12 @@ public class CubeBrowserWindow extends WindowPanel {
         qmQueryButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 if (cubeMenuPanel.getCubeTree().getSelectedItem() != null) {
-                    final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem()
-                            .getWidget();
-                    if (selected.getType() == CubeTreeItem.ItemType.CONNECTION)
-                         MessageBox.info("Selected Item", "Connection: " + selected.getConnectionId());
-                        if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
-                            LogoPanel.spinWheel(true);
-                            final OlapPanel olappanel = new OlapPanel(selected.getCube(), selected.getConnectionId());
-                            MainTabPanel.displayContentWidget(olappanel);
-                        }
+                    final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem().getWidget();
+                    if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+                        LogoPanel.spinWheel(true);
+                        final OlapPanel olappanel = new OlapPanel(selected.getCubeName(), selected.getConnectionId());
+                        MainTabPanel.displayContentWidget(olappanel);
+                    }
                     cbw.hide();
                 }
             }
