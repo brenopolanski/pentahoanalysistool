@@ -10,7 +10,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.ui.panels.SaveMenuPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 
 /**
@@ -42,10 +46,24 @@ public class SaveWindow extends WindowPanel{
         super(TITLE);
         windowContentpanel.add(saveMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
-        this.setFooter(buttonBar);
+        this.setFooter(buttonBar());
         this.layout();   
     }
     
     
+    public LayoutPanel buttonBar(){
+        Button okButton = new Button(ConstantFactory.getInstance().ok());
+        okButton.addClickHandler(new ClickHandler(){
 
+            public void onClick(ClickEvent arg0) {
+                
+                saveMenuPanel.save();
+                
+            }
+            
+        });
+        Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        
+        return ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);
+    }
 }

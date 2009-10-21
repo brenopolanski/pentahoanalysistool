@@ -347,7 +347,8 @@ public interface IQuery extends RemoteService {
     public void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
 
     @Secured ({"Users"})
-    public void saveQuery(String sessionId, String queryId) throws RpcException;
-
+    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId) throws RpcException;
+    
+    @Secured ({"Users"})
     public void loadQuery(String sessioinId, String queryId) throws RpcException;
 }

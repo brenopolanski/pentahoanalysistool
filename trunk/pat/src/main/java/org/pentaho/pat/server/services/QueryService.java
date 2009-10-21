@@ -352,6 +352,8 @@ public interface QueryService extends Service {
      * @param currentUserId
      * @param sessionId
      * @param queryId
+     * @param connectionId 
+     * @param queryName 
      */
     @Secured ({"Users"})
     public void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
