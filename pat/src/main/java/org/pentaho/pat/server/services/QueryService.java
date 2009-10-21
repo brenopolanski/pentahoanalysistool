@@ -353,7 +353,7 @@ public interface QueryService extends Service {
      * @param sessionId
      * @param queryId
      */
-	@Secured ({"Users"})
+    @Secured ({"Users"})
     public void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
 	
 	/**
@@ -366,7 +366,7 @@ public interface QueryService extends Service {
      */
     @Secured ({"Users"})
     public String createNewMdxQuery(String userId, String sessionId,
-        String connectionId) throws OlapException;
+        String connectionId, String catalogName) throws OlapException;
     
     /**
      * Creates a new mdx query for a given session.
@@ -379,7 +379,7 @@ public interface QueryService extends Service {
      */
     @Secured ({"Users"})
     public String createNewMdxQuery(String userId, String sessionId,
-        String connectionId, String mdx) throws OlapException;
+        String connectionId, String catalogName, String mdx) throws OlapException;
     	
 	/**
      * 

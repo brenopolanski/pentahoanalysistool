@@ -264,20 +264,20 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
-    public String createNewMdxQuery(String sessionId, String connectionId) throws RpcException
+    public String createNewMdxQuery(String sessionId, String connectionId, String catalogName) throws RpcException
     {
         try {
-            return queryService.createNewMdxQuery(getCurrentUserId(), sessionId, connectionId);
+            return queryService.createNewMdxQuery(getCurrentUserId(), sessionId, connectionId, catalogName);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
         }
     }
 
-    public String createNewMdxQuery(String sessionId, String connectionId, String mdx) throws RpcException
+    public String createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx) throws RpcException
     {
         try {
-            return queryService.createNewMdxQuery(getCurrentUserId(), sessionId, connectionId, mdx);
+            return queryService.createNewMdxQuery(getCurrentUserId(), sessionId, connectionId, catalogName, mdx);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Query.CantCreateQuery"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$

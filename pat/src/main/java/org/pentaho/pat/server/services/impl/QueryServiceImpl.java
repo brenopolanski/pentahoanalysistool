@@ -203,7 +203,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
-    public String createNewMdxQuery(String userId, String sessionId, String connectionId) throws OlapException {
+    public String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
@@ -213,7 +213,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
-        newMdxQuery = new MdxQuery(generatedId, connection );
+        newMdxQuery = new MdxQuery(generatedId, connection, catalogName );
 
         sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
 
@@ -226,7 +226,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String)
      */
-    public String createNewMdxQuery(String userId, String sessionId,String connectionId, String mdx) throws OlapException {
+    public String createNewMdxQuery(String userId, String sessionId,String connectionId, String catalogName, String mdx) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
@@ -236,7 +236,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
-        newMdxQuery = new MdxQuery(generatedId, connection, mdx );
+        newMdxQuery = new MdxQuery(generatedId, connection, catalogName, mdx );
 
         sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
 
@@ -649,19 +649,36 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         Cube cube = null;
+        Catalog catalog = null;
         final NamedList<Catalog> catalogs = connection.getCatalogs();
         for (int k = 0; k < catalogs.size(); k++) {
+            try {
+                connection.setCatalog(catalogs.get(k).getName());
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
             for (int j = 0; j < schemas.size(); j++) {
                 final NamedList<Cube> cubes = schemas.get(j).getCubes();
                 final Iterator<Cube> iter = cubes.iterator();
                 while (iter.hasNext() && cube == null) {
                     final Cube testCube = iter.next();
-                    if (cubeName.equals(testCube.getName()))
+                    if (cubeName.equals(testCube.getName())) {
                         cube = testCube;
+                        catalog = catalogs.get(k);
+                    }
                 }
             }
         }
+//        if (catalog != null) {
+//            try {
+//                 connection.setCatalog(catalog.getName());
+//            } catch (SQLException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
         if (cube != null)
             return cube;
 
