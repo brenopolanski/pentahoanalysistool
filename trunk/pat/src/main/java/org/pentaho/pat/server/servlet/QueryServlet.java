@@ -19,7 +19,10 @@
  */
 package org.pentaho.pat.server.servlet;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 
@@ -31,6 +34,7 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
@@ -359,6 +363,26 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         return sc;
     }
 
+    public List getSavedQueries(String sessionId) throws RpcException{
+        try{
+            Set<SavedQuery> ssc = this.queryService.getSavedQueries(getCurrentUserId(), sessionId);
+            
+            Iterator it = ssc.iterator();
+            List results = new ArrayList();
+            while (it.hasNext()) {
+                // Get element
+                SavedQuery element = (SavedQuery) it.next();
+                
+                results.add(new QuerySaveModel(element.getName(), this.sessionService.getConnection(getCurrentUserId(), element.getConnectionId()).getName()));
+                
+            }
+
+            return results;
+        } catch (Exception e) {
+            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+        }
+    }
     /* (non-Javadoc)
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */

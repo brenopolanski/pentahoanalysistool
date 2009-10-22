@@ -20,6 +20,7 @@
 package org.pentaho.pat.server.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
@@ -477,5 +478,13 @@ public interface QueryService extends Service {
      * @param string
      */
     public SavedQuery loadQuery(String currentUserId, String sessioinId, String string);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessionId
+     */
+    public Set<SavedQuery> getSavedQueries(String currentUserId, String sessionId);
 	
 }

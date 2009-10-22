@@ -3,24 +3,37 @@
  */
 package org.pentaho.pat.rpc.dto;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  *TODO JAVADOC
  *
  * @author bugg
  *
  */
-public class QuerySaveModel {
+public class QuerySaveModel implements Serializable{
 
+    /**
+     *TODO JAVADOC
+     */
+    private static final long serialVersionUID = 1L;
     private String name;
     private String connection;
-    private String savedDate;
+    private Date savedDate;
     
-    public QuerySaveModel(String name, String connection, String savedDate) {
+    private QuerySaveModel(){
+        
+    }
+    public QuerySaveModel(String name, String connection, Date savedDate) {
         this.name = name;
         this.connection = connection;
         this.savedDate = savedDate;
     }
-
+    public QuerySaveModel(String name, String connection) {
+        this.name = name;
+        this.connection = connection;
+    }
     /**
      *TODO JAVADOC
      * @return the name
@@ -59,7 +72,7 @@ public class QuerySaveModel {
      *TODO JAVADOC
      * @return the savedDate
      */
-    public String getSavedDate() {
+    public Date getSavedDate() {
         return savedDate;
     }
 
@@ -68,7 +81,7 @@ public class QuerySaveModel {
      *TODO JAVADOC
      * @param savedDate the savedDate to set
      */
-    public void setSavedDate(String savedDate) {
+    public void setSavedDate(Date savedDate) {
         this.savedDate = savedDate;
     }
     
