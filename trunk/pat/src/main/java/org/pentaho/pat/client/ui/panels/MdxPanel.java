@@ -284,14 +284,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
     }
     
-    @Override
-    protected void onLoad() {
-        if (queryId != null) {
-            Pat.setCurrQuery(queryId);
-            Pat.setCurrConnection(connectionId);
-        }
-        
-    }
+    
 
 
 }
