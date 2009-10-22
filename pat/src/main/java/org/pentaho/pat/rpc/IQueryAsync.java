@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 
@@ -171,5 +172,10 @@ public interface IQueryAsync {
    public void loadQuery(
            String sessionID, 
            String currQuery, 
-           AsyncCallback asyncCallback);
-    }
+           AsyncCallback callback);
+    
+
+public void getSavedQueries(
+        String sessionId,
+        AsyncCallback<List<QuerySaveModel>> callback);
+}

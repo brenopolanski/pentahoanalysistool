@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -351,4 +352,8 @@ public interface IQuery extends RemoteService {
     
     @Secured ({"Users"})
     public void loadQuery(String sessioinId, String queryId) throws RpcException;
+    
+    @Secured ({"Users"})
+    public List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;
+    
 }

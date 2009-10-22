@@ -707,5 +707,16 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return this.userManager.getSavedQuery(userId, queryName);
     }
 
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#getSavedQueries(java.lang.String, java.lang.String)
+     */
+    public Set<SavedQuery> getSavedQueries(String userId, String sessionId) {
+        this.sessionService.validateSession(userId, sessionId);
+        
+        User user = this.userManager.getUser(userId);
+        
+        return user.getSavedQueries(); 
+    }
+
     
 }

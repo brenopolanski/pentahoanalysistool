@@ -3,6 +3,9 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+
+import java.util.List;
+
 import org.gwt.mosaic.core.client.CoreConstants;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
@@ -115,11 +118,27 @@ public class SaveMenuPanel extends LayoutComposite{
         });
 
         final DefaultListModel<QuerySaveModel> model = new DefaultListModel<QuerySaveModel>();
-        model.add(new QuerySaveModel("QueryModel 1", "Pentaho XMLA/A", "21-05-09"));
-        model.add(new QuerySaveModel("QueryModel 2", "Mondrian Test Connection", "21-05-09"));
-        model.add(new QuerySaveModel("Pauls QueryModel", null, "21-05-09"));
-        model.add(new QuerySaveModel("Toms the best", "Pentaho XML/A", "21-05-09"));
+       
+        ServiceFactory.getQueryInstance().getSavedQueries(Pat.getSessionID(), new AsyncCallback<List<QuerySaveModel>>(){
 
+            public void onFailure(Throwable arg0) {
+             MessageBox.error("error", "Message");  
+            }
+
+            public void onSuccess(List<QuerySaveModel> arg0) {
+                if(arg0!=null){
+                for (int i=0; i< arg0.size(); i++){
+                   
+                   model.add(arg0.get(i));
+               }
+                   
+            }
+            }
+        });
+        
+        
+        
+        
         filterModel = new FilterProxyListModel<QuerySaveModel, String>(model);
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {
           public boolean select(QuerySaveModel element, String filter) {
