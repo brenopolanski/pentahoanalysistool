@@ -69,7 +69,7 @@ public class MainTabPanel extends LayoutComposite {
             public void onSelection(final SelectionEvent<Integer> selectEvent) {
                 contentWrapper.getWidget(selectEvent.getSelectedItem());
                 final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
-
+                
                 if (widget instanceof OlapPanel) {
                     Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
                     Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
@@ -86,6 +86,9 @@ public class MainTabPanel extends LayoutComposite {
         rootLayoutPanel.add(contentWrapper);
     }
 
+    public static Widget getSelectedWidget() {
+        return contentWrapper.getWidget(contentWrapper.getSelectedTab());
+    }
     /**
      * Adds a new Tab to the contentPanel.
      * 

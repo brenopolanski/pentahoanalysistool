@@ -44,6 +44,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Creates a properties panel, the properties panel controls things like drill method and pivot.
@@ -95,23 +96,19 @@ public class PropertiesPanel extends LayoutComposite {
                             }
 
                         });
-                        ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().executeQuery());
+                        ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
                         mdxBtn.addClickHandler(new ClickHandler() {
                             public void onClick(ClickEvent arg0) {
-                                ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), Pat.getCurrConnection(), mdxArea.getText(), new AsyncCallback<CellDataSet>() {
-
-                                    public void onFailure(Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), arg0.getLocalizedMessage());
-                                    }
-
-                                    public void onSuccess(CellDataSet matrix) {
-                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(new OlapPanel(), Pat.getCurrQuery(), matrix);
-
-                                    }
-
-                                });
-
+                                
+                                Widget widget = MainTabPanel.getSelectedWidget();
+                                if (widget != null && widget instanceof OlapPanel) {
+                                    ((OlapPanel) widget).getCubeItem();
+                                    final MdxPanel mdxpanel= new MdxPanel(((OlapPanel) widget).getCubeItem(), Pat.getCurrConnection(), mdxArea.getText());
+                                    MainTabPanel.displayContentWidget(mdxpanel);
+                                }
+                                
                                 wp.hide();
+                                
 
                             }
                         });

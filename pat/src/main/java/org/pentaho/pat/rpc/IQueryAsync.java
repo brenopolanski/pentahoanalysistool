@@ -25,7 +25,6 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
-import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -172,7 +171,7 @@ public interface IQueryAsync {
    public void loadQuery(
            String sessionID, 
            String currQuery, 
-           AsyncCallback callback);
+           AsyncCallback<Object> callback);
     
 
 public void getSavedQueries(
