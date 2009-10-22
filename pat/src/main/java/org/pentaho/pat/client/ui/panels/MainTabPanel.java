@@ -75,6 +75,11 @@ public class MainTabPanel extends LayoutComposite {
                     Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
                 }
 
+                if (widget instanceof MdxPanel) {
+                    Pat.setCurrQuery(((MdxPanel) widget).getQueryId());
+                    Pat.setCurrConnection(((MdxPanel) widget).getConnectionId());
+                }
+
             }
         });
 

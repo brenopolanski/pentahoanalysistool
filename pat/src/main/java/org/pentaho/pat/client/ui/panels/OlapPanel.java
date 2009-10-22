@@ -217,14 +217,4 @@ public class OlapPanel extends DataWidget {
         this.connectionId = connectionId;
     }
 
-    @Override
-    protected void onLoad() {
-        if (queryId != null) {
-            Pat.setCurrQuery(queryId);
-            Pat.setCurrConnection(connectionId);
-        }
-        
-    }
-
-
 }
