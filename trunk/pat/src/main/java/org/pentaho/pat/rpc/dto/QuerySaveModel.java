@@ -22,9 +22,10 @@ public class QuerySaveModel implements Serializable{
     private String connection;
     private Date savedDate;
     
-    private QuerySaveModel(){
+    private QuerySaveModel() {
         
     }
+    
     public QuerySaveModel(String name, String connection, Date savedDate) {
         this.name = name;
         this.connection = connection;

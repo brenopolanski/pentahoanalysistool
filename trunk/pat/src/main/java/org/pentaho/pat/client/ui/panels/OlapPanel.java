@@ -34,6 +34,7 @@ import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -52,6 +53,8 @@ public class OlapPanel extends DataWidget {
     private String panelName = null;
 
     private String cubeName = null;
+    
+    private CubeItem cubeItem = null;
 
     private String connectionId = null;
 
@@ -68,12 +71,13 @@ public class OlapPanel extends DataWidget {
      * OLAP Panel Constructor.
      * 
      */
-    public OlapPanel(final String cube, final String connection) {
+    public OlapPanel(final CubeItem cube, final String connection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
-        panelName = cube;
+        panelName = cube.getName();
 
-        cubeName = cube;
+        cubeItem = cube;
+        cubeName = cube.getName();
         connectionId = connection;
 
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
@@ -140,6 +144,10 @@ public class OlapPanel extends DataWidget {
     }
 
 
+    public CubeItem getCubeItem() {
+        return cubeItem;
+    }
+    
     public String getCube() {
         return cubeName;
     }

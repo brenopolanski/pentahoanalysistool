@@ -156,7 +156,7 @@ public class SaveMenuPanel extends LayoutComposite{
       }
 
     public void save(){
-        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(), Pat.getCurrConnection(), new AsyncCallback(){
+        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(), Pat.getCurrConnection(), new AsyncCallback<Object>(){
 
             public void onFailure(Throwable arg0) {
                 MessageBox.error("Error", "fuckup");                

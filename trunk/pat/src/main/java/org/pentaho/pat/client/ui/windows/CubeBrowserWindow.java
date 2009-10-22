@@ -121,7 +121,7 @@ public class CubeBrowserWindow extends WindowPanel {
                     final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem().getWidget();
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
                         LogoPanel.spinWheel(true);
-                        final OlapPanel olappanel = new OlapPanel(selected.getCubeName(), selected.getConnectionId());
+                        final OlapPanel olappanel = new OlapPanel(selected.getCubeItem(), selected.getConnectionId());
                         MainTabPanel.displayContentWidget(olappanel);
                     }
                     cbw.hide();

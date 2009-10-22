@@ -151,7 +151,7 @@ public class MenuBar extends LayoutComposite {
         loadButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback(){
+                ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<Object>(){
 
                     public void onFailure(Throwable arg0) {
                         MessageBox.info("failed", "boo");

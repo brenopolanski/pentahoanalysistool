@@ -60,6 +60,8 @@ public class MdxPanel extends DataWidget implements IQueryListener {
     private String catalog = null;
 
     private String cube = null;
+    
+    private CubeItem cubeItem = null;
 
     private String connectionId = null;
 
@@ -67,7 +69,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
     private OlapTable olapTable = null;
 
-    private TextArea mdxArea = null;
+    private TextArea mdxArea = new TextArea();;
 
     private LayoutPanel baselayoutPanel;
 
@@ -81,7 +83,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
     }
 
     /**
-     * OLAP Panel Constructor.
+     * Mdx Panel Constructor.
      * 
      */
     public MdxPanel(final CubeItem cube, final String connection) {
@@ -91,6 +93,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
         GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
 
+        this.cubeItem = cube;
         this.cube = cube.getName();
         this.connectionId = connection;
         this.catalog = cube.getCatalog();
@@ -117,7 +120,12 @@ public class MdxPanel extends DataWidget implements IQueryListener {
         });
 
     }
-
+    
+    public MdxPanel(final CubeItem cube, final String connection, final String mdx) {
+        this(cube,connection);
+        this.mdxArea.setText(mdx);
+    }
+        
     protected void initializeWidget() {
 
         baselayoutPanel = new LayoutPanel();
@@ -130,7 +138,6 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
 
         final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        mdxArea = new TextArea();
         mdxArea.setWidth("100%");
         mdxArea.setHeight("150px");
         ScrollPanel spMdx = new ScrollPanel(mdxArea);
@@ -187,7 +194,10 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
     }
 
-
+    public CubeItem getCubeItem() {
+        return cubeItem;
+    }
+    
     public String getCube() {
         return cube;
     }
