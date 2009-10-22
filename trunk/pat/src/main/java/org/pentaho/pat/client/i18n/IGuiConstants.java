@@ -428,6 +428,13 @@ public interface IGuiConstants extends Constants {
      *
      * @return
      */
+    String newMdxQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String titleDimensionBrowser();
 
     /**

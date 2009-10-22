@@ -48,7 +48,7 @@ public class WelcomePanel extends DataWidget {
      * 
      */
     public WelcomePanel() {
-
+        initializeWidget();
     }
 
     /**
@@ -60,6 +60,7 @@ public class WelcomePanel extends DataWidget {
     public WelcomePanel(final String name) {
         super();
         this.name = name;
+        initializeWidget();
 
     }
 
@@ -103,7 +104,6 @@ public class WelcomePanel extends DataWidget {
      * 
      * @return layoutPanel
      */
-    @Override
     public final Widget onInitialize() {
         BoxLayout test = new BoxLayout();
         test.setOrientation(Orientation.VERTICAL);
@@ -141,5 +141,11 @@ public class WelcomePanel extends DataWidget {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+    @Override
+    protected void initializeWidget() {
+        getLayoutPanel().add(onInitialize());
+        
     }
 }

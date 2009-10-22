@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.CubeMenu;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -54,8 +55,10 @@ public class CubeBrowserWindow extends WindowPanel {
     private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static ToolButton qmQueryButton = new ToolButton(ConstantFactory.getInstance().newQuery());
+    
+    private final static ToolButton mdxQueryButton = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
 
-    private final ToolButton qmCancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
+    private final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
 
     private final static CubeBrowserWindow cbw = new CubeBrowserWindow();
 
@@ -68,12 +71,17 @@ public class CubeBrowserWindow extends WindowPanel {
         display(false);
     }
 
+    public static void enableMdxQuery(final boolean enabled) {
+        mdxQueryButton.setEnabled(true);
+    }
+    
     public static void enableQmQuery(final boolean enabled) {
         qmQueryButton.setEnabled(true);
     }
 
     private static void display(final boolean refreshCubes) {
         qmQueryButton.setEnabled(false);
+        mdxQueryButton.setEnabled(false);
         cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         if (refreshCubes)
             cubeMenuPanel.loadCubes();
@@ -90,7 +98,8 @@ public class CubeBrowserWindow extends WindowPanel {
         final LayoutPanel newQueryButtonPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         setupQueryButtons();
         newQueryButtonPanel.add(qmQueryButton);
-        newQueryButtonPanel.add(qmCancelButton);
+        newQueryButtonPanel.add(mdxQueryButton);
+        newQueryButtonPanel.add(cancelButton);
         windowContentpanel.add(newQueryButtonPanel, new BoxLayoutData(FillStyle.VERTICAL));
         this.setWidget(windowContentpanel);
         this.layout();
@@ -98,7 +107,7 @@ public class CubeBrowserWindow extends WindowPanel {
     }
 
     private void setupQueryButtons() {
-        qmCancelButton.addClickHandler(new ClickHandler() {
+        cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
 
                 cbw.hide();
@@ -120,6 +129,21 @@ public class CubeBrowserWindow extends WindowPanel {
             }
         });
         qmQueryButton.setEnabled(false);
+        
+        mdxQueryButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+                if (cubeMenuPanel.getCubeTree().getSelectedItem() != null) {
+                    final CubeTreeItem selected = (CubeTreeItem) cubeMenuPanel.getCubeTree().getSelectedItem().getWidget();
+                    if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
+                        LogoPanel.spinWheel(true);
+                        final MdxPanel mdxPanel = new MdxPanel(selected.getCubeItem(), selected.getConnectionId());
+                        MainTabPanel.displayContentWidget(mdxPanel);
+                    }
+                    cbw.hide();
+                }
+            }
+        });
+        mdxQueryButton.setEnabled(false);
     }
 
 }

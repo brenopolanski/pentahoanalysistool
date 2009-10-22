@@ -23,10 +23,15 @@ package org.pentaho.pat.rpc.dto;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
- * @author pstoellberger
- *
+ * Object that represents a connection.
+ * 
+ * @created Mar 26, 2009
+ * @since 0.3
+ * @author Paul Stoellberger
  */
+
 public class CubeConnection implements Serializable,IsSerializable {
 	
 	

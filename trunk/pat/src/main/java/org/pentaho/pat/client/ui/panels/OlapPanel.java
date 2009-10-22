@@ -24,22 +24,20 @@ import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.StackLayoutPanel;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  *Creates a query tab panel for the selected cube and connection.
@@ -59,6 +57,8 @@ public class OlapPanel extends DataWidget {
 
     private String queryId = null;
 
+    private LayoutPanel baselayoutPanel;
+
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
         super();
@@ -76,7 +76,69 @@ public class OlapPanel extends DataWidget {
         cubeName = cube;
         connectionId = connection;
 
+        ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
+                new AsyncCallback<String>() {
+
+            public void onFailure(final Throwable arg0) {
+
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
+                LogoPanel.spinWheel(false);
+            }
+
+            public void onSuccess(final String query) {
+                queryId = query;
+                Pat.setCurrQuery(query);
+                Pat.setCurrConnection(connectionId);
+
+                initializeWidget();
+            }
+        });
+
     }
+
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.client.ui.widgets.DataWidget#nitializeWidgets()
+     */
+    @Override
+    protected void initializeWidget() {
+        LogoPanel.spinWheel(true);
+        baselayoutPanel = new LayoutPanel(new BorderLayout());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(baselayoutPanel.getElement(),"background", "white");
+
+
+
+        final LayoutPanel centerPanel = new LayoutPanel();
+        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+
+        collapseBtn3.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                baselayoutPanel.setCollapsed(westPanel, !baselayoutPanel.isCollapsed(westPanel));
+                baselayoutPanel.layout();
+            }
+        });
+
+
+        final DataPanel dPanel = new DataPanel(queryId);
+        centerPanel.add(dPanel);
+
+        final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
+        westPanel.add(mainMenuPanel);
+
+        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
+        baselayoutPanel.setCollapsed(westPanel, false);
+
+        baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
+        
+        getLayoutPanel().add(baselayoutPanel);
+        LogoPanel.spinWheel(false);
+    }
+
 
     public String getCube() {
         return cubeName;
@@ -102,7 +164,7 @@ public class OlapPanel extends DataWidget {
         return panelName;
     }
 
-    
+
     public String getQuery() {
         return queryId;
     }
@@ -155,66 +217,14 @@ public class OlapPanel extends DataWidget {
         this.connectionId = connectionId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
-     */
     @Override
-    protected Widget onInitialize() {
-        LogoPanel.spinWheel(true);
-        final StackLayoutPanel stackPanel = new StackLayoutPanel();
-        final LayoutPanel baselayoutPanel = new LayoutPanel(new BorderLayout());
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(baselayoutPanel.getElement(),"background", "white");
-        DOM.setStyleAttribute(stackPanel.getElement(),"background", "white");
-
-        ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
-                new AsyncCallback<String>() {
-
-                    public void onFailure(final Throwable arg0) {
-
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
-                        LogoPanel.spinWheel(false);
-                    }
-
-                    public void onSuccess(final String query) {
-                        queryId = query;
-                        Pat.setCurrQuery(query);
-                        Pat.setCurrConnection(connectionId);
-
-                        final LayoutPanel centerPanel = new LayoutPanel();
-                        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-                        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-                        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-
-                        collapseBtn3.addClickHandler(new ClickHandler() {
-                            public void onClick(final ClickEvent event) {
-                                baselayoutPanel.setCollapsed(westPanel, !baselayoutPanel.isCollapsed(westPanel));
-                                baselayoutPanel.layout();
-                            }
-                        });
-
-                        
-                        final DataPanel dPanel = new DataPanel(query);
-                        centerPanel.add(dPanel);
-
-                        final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
-                        westPanel.add(mainMenuPanel);
-
-                        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
-                        baselayoutPanel.setCollapsed(westPanel, false);
-
-                        baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
-                        LogoPanel.spinWheel(false);
-                    }
-
-                });
-        //ChartPanel OFCPanel = new ChartPanel();
-        //stackPanel.add(baselayoutPanel, "Table");
-        //stackPanel.add(OFCPanel, "Chart");
-        //stackPanel.showStack(0);
-        return baselayoutPanel;
+    protected void onLoad() {
+        if (queryId != null) {
+            Pat.setCurrQuery(queryId);
+            Pat.setCurrConnection(connectionId);
+        }
         
     }
+
+
 }
