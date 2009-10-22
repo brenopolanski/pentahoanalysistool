@@ -125,8 +125,6 @@ public class MainTabPanel extends LayoutComposite {
      */
     public static void displayContentWidget(final DataWidget content) {
         if (content != null) {
-            if (!content.isInitialized())
-                content.initialize();
             addContent(content, content.getName());
         }
     }

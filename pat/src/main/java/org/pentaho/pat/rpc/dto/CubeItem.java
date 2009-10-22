@@ -23,10 +23,15 @@ package org.pentaho.pat.rpc.dto;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
- * @author pstoellberger
- *
+ * A CubeItem represents a cube with the info about the schema and catalog it lives in
+ * 
+ * @created Oct 21, 2009
+ * @since 0.5.1
+ * @author Paul Stoellberger
  */
+
 public class CubeItem implements Serializable,IsSerializable {
 	
 	

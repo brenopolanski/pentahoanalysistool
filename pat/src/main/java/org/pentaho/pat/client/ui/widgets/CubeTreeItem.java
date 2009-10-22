@@ -99,4 +99,8 @@ public class CubeTreeItem extends HorizontalPanel {
     public ItemType getType() {
         return this.type;
     }
+    
+    public CubeItem getCubeItem() {
+        return this.cube;
+    }
 }

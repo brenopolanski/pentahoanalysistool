@@ -17,13 +17,7 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-
-import com.google.gwt.user.client.ui.Widget;
+import org.gwt.mosaic.ui.client.LayoutComposite;
 
 /**
  * A widget used to show the examples in the content panel. It includes a tab bar with options to view the example, view
@@ -33,13 +27,10 @@ import com.google.gwt.user.client.ui.Widget;
  * called, which happens the first time the widget is added to the page. The data in the source and css tabs are loaded
  * using RPC call to the server.
  */
-public abstract class DataWidget extends LayoutPanel {
+public abstract class DataWidget extends LayoutComposite {
 
     /** The default style name. */
     protected static final String DEFAULT_STYLE_NAME = "Pat-ContentWidget"; //$NON-NLS-1$
-
-    /** A boolean indicating whether or not this widget has been initialized. */
-    private boolean initialized = false;
 
     /**
      * Constructor.
@@ -74,58 +65,12 @@ public abstract class DataWidget extends LayoutPanel {
     public abstract String getName();
 
     /**
-     * Initialize this widget by creating the elements that should be added to the page.
-     */
-    public final void initialize() {
-        if (initialized)
-            return;
-        initialized = true;
-
-        final LayoutPanel vPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        vPanel.setPadding(0);
-        vPanel.setWidgetSpacing(0);
-
-        add(vPanel);
-        // Initialize the widget and add it to the page
-        final Widget widget = onInitialize();
-        if (widget != null)
-            vPanel.add(widget, new BoxLayoutData(FillStyle.BOTH));
-        onInitializeComplete();
-    }
-
-    /**
-     * Checks if is initialized.
-     * 
-     * @return true, if is initialized
-     */
-    public final boolean isInitialized() {
-        return initialized;
-    }
-
-    /**
      * When the widget is first initialized, this method is called. If it returns a Widget, the widget will be added as
      * the first tab. Return <code>null</code> to disable the first tab.
      * 
      * @return the widget
      */
-    protected abstract Widget onInitialize();
-
-    /**
-     * Called when initialization has completed and the widget has been added to the page.
-     */
-    protected void onInitializeComplete() {
-        // Nothing to do here!
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gwt.mosaic.ui.client.layout.LayoutPanel#onLoad()
-     */
-    @Override
-    protected void onLoad() {
-        // Initialize this widget if we haven't already
-        initialize();
-    }
+    protected abstract void initializeWidget();
+    
 
 }

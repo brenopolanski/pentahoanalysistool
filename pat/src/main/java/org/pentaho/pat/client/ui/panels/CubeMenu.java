@@ -81,6 +81,7 @@ public class CubeMenu extends LayoutComposite {
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
                 CubeBrowserWindow.enableQmQuery(true);
+                CubeBrowserWindow.enableMdxQuery(true);
             }
 
         });
