@@ -143,7 +143,7 @@ public interface IQueryAsync {
            AsyncCallback<Object> callback);
    
    public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, 
-           AsyncCallback<Object> callback);
+           AsyncCallback<String> callback);
 
    public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx,
            AsyncCallback<String> callback);
