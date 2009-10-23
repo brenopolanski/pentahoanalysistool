@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.ui.panels.LoadMenuPanel;
 import org.pentaho.pat.client.ui.panels.SaveMenuPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
@@ -40,16 +41,16 @@ import com.google.gwt.user.client.ui.Button;
  * @since 0.5.1
  * @author tom (at) wamonline.org.uk
  */
-public class SaveWindow extends WindowPanel{
- 
-    private static final String SAVE_TITLE = "Save As....";
+public class LoadWindow extends WindowPanel{
+
+    private static final String LOAD_TITLE = "Load....";
     
     
-    private final static SaveMenuPanel saveMenuPanel = new SaveMenuPanel();
+    private final static LoadMenuPanel loadMenuPanel = new LoadMenuPanel();
 
     private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-       
-    private final static SaveWindow cbw = new SaveWindow();
+    
+    private final static LoadWindow cbw = new LoadWindow();
     
     final LayoutPanel buttonBar = ButtonBarFactory.buildOKCancelBar(new Button("OK"), new Button("Cancel"));
     
@@ -57,15 +58,14 @@ public class SaveWindow extends WindowPanel{
         cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         
         cbw.showModal(true);
-        saveMenuPanel.loadSavedQueries();
+        loadMenuPanel.loadSavedQueries();
         cbw.layout();
     }
     
-    public SaveWindow(){
-         super(SAVE_TITLE);
+    public LoadWindow(){
+         super(LOAD_TITLE);
         
-        
-        windowContentpanel.add(saveMenuPanel, new BoxLayoutData(FillStyle.BOTH));
+        windowContentpanel.add(loadMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
         this.setFooter(buttonBar());
         this.layout();   
@@ -78,7 +78,7 @@ public class SaveWindow extends WindowPanel{
 
             public void onClick(ClickEvent arg0) {
                 
-                saveMenuPanel.save();
+                loadMenuPanel.load();
                 cbw.hide();
             }
             
@@ -92,7 +92,6 @@ public class SaveWindow extends WindowPanel{
             }
             
         });
-
         return ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);
     }
 }
