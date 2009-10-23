@@ -33,6 +33,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
+import org.pentaho.pat.client.ui.windows.LoadWindow;
 import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -151,17 +152,7 @@ public class MenuBar extends LayoutComposite {
         loadButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<Object>(){
-
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.info("failed", "boo");
-                    }
-
-                    public void onSuccess(Object arg0) {
-                        MessageBox.info("Success", "yay");
-                    }
-                    
-                });
+                LoadWindow.display();
             }
         });
         loadButton.setEnabled(true);

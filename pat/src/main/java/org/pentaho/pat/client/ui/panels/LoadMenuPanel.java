@@ -58,7 +58,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  * @since 0.5.0
  * @author Paul Stoellberger*
  */
-public class SaveMenuPanel extends LayoutComposite{
+public class LoadMenuPanel extends LayoutComposite{
 
     /**
      */
@@ -82,11 +82,11 @@ public class SaveMenuPanel extends LayoutComposite{
 
 
     
-    public SaveMenuPanel(){
+    public LoadMenuPanel(){
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
                 Orientation.VERTICAL));
             layoutPanel.setPadding(0);
-
+            
             textBox = new TextBox();
             textBox.addKeyPressHandler(new KeyPressHandler() {
               public void onKeyPress(KeyPressEvent event) {
@@ -142,12 +142,7 @@ public class SaveMenuPanel extends LayoutComposite{
         });
 
         model = (DefaultListModel<QuerySaveModel>) listBox.getModel();
-        model.add(new QuerySaveModel("Id", "Name", "Connection"));
-
-       
-                
-        
-        
+        model.add(new QuerySaveModel("ID", "Name", "Connection"));
         
         filterModel = new FilterProxyListModel<QuerySaveModel, String>(model);
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {
@@ -165,15 +160,15 @@ public class SaveMenuPanel extends LayoutComposite{
         return listBox;
       }
 
-    public void save(){
-        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(), Pat.getCurrConnection(), new AsyncCallback<Object>(){
+    public void load(){
+        ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<Object>(){
 
             public void onFailure(Throwable arg0) {
                 MessageBox.error("Error", "fuckup");                
             }
 
             public void onSuccess(Object arg0) {
-                loadSavedQueries();
+                
                 
             }
             

@@ -373,7 +373,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 // Get element
                 SavedQuery element = (SavedQuery) it.next();
                 
-                results.add(new QuerySaveModel(element.getName(), this.sessionService.getConnection(getCurrentUserId(), element.getConnectionId()).getName()));
+                results.add(new QuerySaveModel(element.getId(), element.getName(), this.sessionService.getConnection(getCurrentUserId(), element.getConnectionId()).getName()));
                 
             }
 
@@ -388,10 +388,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     public void loadQuery(String sessioinId, String queryId) throws RpcException {
         try{
-            Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
+            //Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
             
              
-             SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessioinId, qm.toString());
+             SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessioinId, queryId);
         
              XStream xstream = new XStream(); 
              
