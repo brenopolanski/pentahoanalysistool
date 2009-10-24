@@ -33,6 +33,7 @@ import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -338,11 +339,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
-    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId) throws RpcException{
+    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cube, String cubeName) throws RpcException{
         try{
         Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
         
-        SavedQuery sc = this.convert(qm, queryName, connectionId);
+        SavedQuery sc = this.convert(qm, queryName, connectionId,  cube, cubeName);
         this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
         } catch (Exception e) {
             log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
@@ -350,12 +351,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
-    private SavedQuery convert(Query cc, String queryName, String connectionId) {
+    private SavedQuery convert(Query cc, String queryName, String connectionId, CubeItem cube, String cubeName) {
         XStream xstream = new XStream(); 
         
         String xml = xstream.toXML(cc);
         SavedQuery sc = new SavedQuery(cc.toString());
-        
+        sc.setCubeName(cubeName);
+        sc.setCube(cube);
         sc.setName(queryName);
         sc.setUsername(getCurrentUserId());
         sc.setXml(xml);
@@ -386,7 +388,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     /* (non-Javadoc)
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
-    public void loadQuery(String sessioinId, String queryId) throws RpcException {
+    public String loadQuery(String sessioinId, String queryId) throws RpcException {
         try{
             //Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
             
@@ -396,7 +398,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
              XStream xstream = new XStream(); 
              
              Query newQuery = (Query)xstream.fromXML(sc.getXml());
-             
+             return this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(), /*sc.getCubeName(),*/ newQuery);
             } catch (Exception e) {
                 log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
                 throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$

@@ -161,14 +161,15 @@ public class LoadMenuPanel extends LayoutComposite{
       }
 
     public void load(){
-        ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<Object>(){
+        ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<String>(){
 
             public void onFailure(Throwable arg0) {
                 MessageBox.error("Error", "fuckup");                
             }
 
-            public void onSuccess(Object arg0) {
-                
+            public void onSuccess(String arg0) {
+                OlapPanel olapPanel = new OlapPanel(arg0, listBox.getItem(listBox.getSelectedIndex()));
+                MainTabPanel.displayContentWidget(olapPanel);
                 
             }
             

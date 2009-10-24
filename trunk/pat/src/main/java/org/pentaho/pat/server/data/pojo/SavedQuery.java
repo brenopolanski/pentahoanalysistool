@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.pentaho.pat.rpc.dto.CubeItem;
+
 
 
 /**
@@ -42,6 +45,15 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     @Basic
     private String connectionId;
+    
+    @Basic 
+    private String cubeName;
+    
+    @Basic
+    @Type(
+        type = "org.pentaho.pat.rpc.dto.CubeItem"
+    )
+    private CubeItem cube;
     
     public SavedQuery() {
         this(null);
@@ -111,5 +123,36 @@ public class SavedQuery implements Comparable<SavedQuery> {
     public int compareTo(SavedQuery arg0) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the cubeName
+     */
+    public String getCubeName() {
+        return cubeName;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param cubeName the cubeName to set
+     */
+    public void setCubeName(String cubeName) {
+        this.cubeName = cubeName;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param cube
+     */
+    public void setCube(CubeItem cube) {
+        this.cube = cube;
+        
+    }
+    
+    public CubeItem getCube(){
+        return cube;
     }
 }

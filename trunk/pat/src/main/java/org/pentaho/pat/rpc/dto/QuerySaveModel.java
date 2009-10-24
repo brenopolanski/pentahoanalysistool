@@ -22,7 +22,10 @@ public class QuerySaveModel implements Serializable{
     private String connection;
     private Date savedDate;
     private String id;
+    private CubeItem cube;
+    private String cubeName;
     
+    @SuppressWarnings("unused")
     private QuerySaveModel() {
         
     }
@@ -109,6 +112,40 @@ public class QuerySaveModel implements Serializable{
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param cube the cube to set
+     */
+    public void setCube(CubeItem cube) {
+        this.cube = cube;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the cube
+     */
+    public CubeItem getCube() {
+        return cube;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param cubeName the cubeName to set
+     */
+    public void setCubeName(String cubeName) {
+        this.cubeName = cubeName;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the cubeName
+     */
+    public String getCubeName() {
+        return cubeName;
     }
 
 }

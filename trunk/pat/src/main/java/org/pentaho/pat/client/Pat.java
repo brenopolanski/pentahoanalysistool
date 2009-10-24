@@ -35,6 +35,7 @@ import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -86,6 +87,10 @@ public class Pat implements EntryPoint {
     
     private static String currConnection = null;
 
+    private static CubeItem currCube = null;
+
+    private static String currCubeName;
+    
     public static String getCurrConnection() {
         return currConnection;
     }
@@ -293,6 +298,32 @@ public class Pat implements EntryPoint {
             applicationState.setMode(mode);
         final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
         assignSessionID(_sessionParam);
+    }
+
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param cubeName
+     */
+    public static void setCurrCubeName(String cubeName) {
+    
+        currCubeName = cubeName;
+        
+    }
+    
+    public static String getCurrCubeName() {
+        
+        return currCubeName;
+    }
+    
+    public static void setCurrCube(CubeItem cube) {
+        
+        currCube = cube;
+    }
+    
+    public static CubeItem getCurrCube(){
+     return currCube;
     }
 
 }

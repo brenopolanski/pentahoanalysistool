@@ -718,5 +718,26 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return user.getSavedQueries(); 
     }
 
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#createSavedQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.olap4j.query.Query)
+     */
+    public String createSavedQuery(String userId, String sessionId, String connectionId, /*String cubeName,*/
+            Query newQuery)throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        //if (cubeName == null)
+        //    throw new OlapException(Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
+
+        //final Cube cube = this.getCube4Guid(userId, sessionId, connectionId, cubeName);
+        final String generatedId = String.valueOf(UUID.randomUUID());
+        
+
+        sessionService.getSession(userId, sessionId).getQueries().put(generatedId, newQuery);
+
+        return generatedId;
+        
+        
+    }
+
     
 }
