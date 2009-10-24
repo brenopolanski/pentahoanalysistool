@@ -142,7 +142,7 @@ public class SaveMenuPanel extends LayoutComposite{
         });
 
         model = (DefaultListModel<QuerySaveModel>) listBox.getModel();
-        model.add(new QuerySaveModel("Id", "Name", "Connection"));
+        //model.add(new QuerySaveModel("Id", "Name", "Connection"));
 
        
                 
