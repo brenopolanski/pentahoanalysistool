@@ -89,7 +89,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
     public MdxPanel(final CubeItem cube, final String connection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
-        panelName = ConstantFactory.getInstance().mdx()+ " : " + cube.getName() ; 
+        panelName = ConstantFactory.getInstance().mdx()+ " : " + cube.getName() ;  //$NON-NLS-1$
 
         GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
 
@@ -138,8 +138,8 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
 
         final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        mdxArea.setWidth("100%");
-        mdxArea.setHeight("150px");
+        mdxArea.setWidth("100%"); //$NON-NLS-1$
+        mdxArea.setHeight("150px"); //$NON-NLS-1$
         ScrollPanel spMdx = new ScrollPanel(mdxArea);
         centerPanel.add(spMdx, new BoxLayoutData(FillStyle.HORIZONTAL));
 

@@ -20,7 +20,6 @@
 
 package org.pentaho.pat.client.ui.panels;
 
-import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
@@ -56,13 +55,35 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PropertiesPanel extends LayoutComposite {
 
-    private DataPanel dataPanel;
+    public class LayoutCommand implements Command {
+
+        private final Region region;
+
+        public LayoutCommand(final Region region) {
+            this.region = region;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        public void execute() {
+            dataPanel.chartPosition(region);
+
+        }
+
+    }
+
+    private final DataPanel dataPanel;
+
     /**
      * PropertiesPanel Constructor.
-     * @param dPanel 
+     * 
+     * @param dPanel
      * 
      */
-    public PropertiesPanel(DataPanel dPanel) {
+    public PropertiesPanel(final DataPanel dPanel) {
         this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -70,69 +91,69 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         final ToolButton mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
-        mdxButton.addClickHandler( new ClickHandler(){
+        mdxButton.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<String>(){
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                        new AsyncCallback<String>() {
 
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
-                    }
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedPivot(arg0.getLocalizedMessage()));
+                            }
 
-                    public void onSuccess(String mdx) {
-                        // TODO localize + externalize strings + extract show mdx window
-                        final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
-                        LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-                        wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-                        final TextArea mdxArea = new TextArea();
+                            public void onSuccess(final String mdx) {
+                                // TODO localize + externalize strings + extract show mdx window
+                                final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
+                                final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+                                wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+                                final TextArea mdxArea = new TextArea();
 
-                        mdxArea.setText(mdx);
+                                mdxArea.setText(mdx);
 
-                        wpLayoutPanel.add(mdxArea, new BoxLayoutData(1,0.9));
-                        ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
-                        closeBtn.addClickHandler(new ClickHandler() {
-                            public void onClick(ClickEvent arg0) {
-                                wp.hide();
+                                wpLayoutPanel.add(mdxArea, new BoxLayoutData(1, 0.9));
+                                final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                                closeBtn.addClickHandler(new ClickHandler() {
+                                    public void onClick(final ClickEvent arg0) {
+                                        wp.hide();
+                                    }
+
+                                });
+                                final ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
+                                mdxBtn.addClickHandler(new ClickHandler() {
+                                    public void onClick(final ClickEvent arg0) {
+
+                                        final Widget widget = MainTabPanel.getSelectedWidget();
+                                        if (widget != null && widget instanceof OlapPanel) {
+                                            ((OlapPanel) widget).getCubeItem();
+                                            final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
+                                                    Pat.getCurrConnection(), mdxArea.getText());
+                                            MainTabPanel.displayContentWidget(mdxpanel);
+                                        }
+
+                                        wp.hide();
+
+                                    }
+                                });
+                                final LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
+                                wpButtonPanel.add(mdxBtn);
+                                wpButtonPanel.add(closeBtn);
+                                wpLayoutPanel.add(wpButtonPanel);
+                                wpLayoutPanel.layout();
+                                wp.add(wpLayoutPanel);
+                                wp.layout();
+                                wp.pack();
+                                wp.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+                                wp.center();
+
                             }
 
                         });
-                        ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
-                        mdxBtn.addClickHandler(new ClickHandler() {
-                            public void onClick(ClickEvent arg0) {
-                                
-                                Widget widget = MainTabPanel.getSelectedWidget();
-                                if (widget != null && widget instanceof OlapPanel) {
-                                    ((OlapPanel) widget).getCubeItem();
-                                    final MdxPanel mdxpanel= new MdxPanel(((OlapPanel) widget).getCubeItem(), Pat.getCurrConnection(), mdxArea.getText());
-                                    MainTabPanel.displayContentWidget(mdxpanel);
-                                }
-                                
-                                wp.hide();
-                                
 
-                            }
-                        });
-                        LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-
-                        wpButtonPanel.add(mdxBtn);
-                        wpButtonPanel.add(closeBtn);
-                        wpLayoutPanel.add(wpButtonPanel);
-                        wpLayoutPanel.layout();
-                        wp.add(wpLayoutPanel);
-                        wp.layout();
-                        wp.pack();
-                        wp.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
-                        wp.center();
-
-
-
-                    }
-
-                });
-
-            }});
+            }
+        });
         mdxButton.setEnabled(true);
-
 
         final ToolButton checkButton1 = new ToolButton(ConstantFactory.getInstance().showParent());
         checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
@@ -152,50 +173,50 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ToolButton checkButton5 = new ToolButton(ConstantFactory.getInstance().pivot());
         checkButton5.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton5.addClickHandler( new ClickHandler(){
+        checkButton5.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(),
+                        new AsyncCallback<CellDataSet>() {
 
-                    public void onFailure(Throwable arg0) {
+                            public void onFailure(final Throwable arg0) {
 
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedPivot(arg0.getLocalizedMessage()));
-                    }
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedPivot(arg0.getLocalizedMessage()));
+                            }
 
-                    public void onSuccess(CellDataSet arg0) {
+                            public void onSuccess(final CellDataSet arg0) {
 
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
 
+                            }
 
-                    }
+                        });
 
-                });
-
-            }});
+            }
+        });
         checkButton5.setEnabled(true);
 
-        ToolButton menuButton = new ToolButton("Layout");
+        final ToolButton menuButton = new ToolButton(ConstantFactory.getInstance().layout());
         menuButton.setStyle(ToolButtonStyle.MENU);
 
-         Command cmd1 = new Command() {
+        final Command cmd1 = new Command() {
             public void execute() {
-              InfoPanel.show("Menu Button", "You selected a menu item!");
-            }
-          };
 
-        PopupMenu menuBtnMenu = new PopupMenu();
+            }
+        };
+
+        final PopupMenu menuBtnMenu = new PopupMenu();
         menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), cmd1);
         menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), cmd1);
         menuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
         menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
         menuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
         menuBtnMenu.addItem(ConstantFactory.getInstance().right(), new LayoutCommand(Region.EAST));
-        
 
         menuButton.setMenu(menuBtnMenu);
 
-        
         final ToolButton checkButton6 = new ToolButton(ConstantFactory.getInstance().drillThrough());
         checkButton6.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton6.setEnabled(false);
@@ -208,23 +229,7 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.add(checkButton4);
         mainPanel.add(checkButton5);
 
-
         rootPanel.add(mainPanel);
-        
-    }
-    public class LayoutCommand implements Command {
 
-        private Region region;
-        public LayoutCommand(Region region){
-            this.region = region;
-        }
-        /* (non-Javadoc)
-         * @see com.google.gwt.user.client.Command#execute()
-         */
-        public void execute() {
-            dataPanel.chartPosition(region);
-            
-        }
-        
     }
 }

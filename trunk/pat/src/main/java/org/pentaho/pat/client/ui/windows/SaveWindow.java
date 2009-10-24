@@ -35,62 +35,57 @@ import com.google.gwt.user.client.ui.Button;
 
 /**
  *TODO JAVADOC
- *
+ * 
  * @created Oct 21, 2009
  * @since 0.5.1
  * @author tom (at) wamonline.org.uk
  */
-public class SaveWindow extends WindowPanel{
- 
-    private static final String SAVE_TITLE = "Save As....";
-    
-    
+public class SaveWindow extends WindowPanel {
+
+    private static final String SAVE_TITLE = ConstantFactory.getInstance().save();
+
     private final static SaveMenuPanel saveMenuPanel = new SaveMenuPanel();
 
     private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-       
+
     private final static SaveWindow cbw = new SaveWindow();
-    
-    final LayoutPanel buttonBar = ButtonBarFactory.buildOKCancelBar(new Button("OK"), new Button("Cancel"));
-    
+
     public static void display() {
         cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         cbw.showModal(true);
         saveMenuPanel.loadSavedQueries();
         cbw.layout();
     }
-    
-    public SaveWindow(){
-         super(SAVE_TITLE);
-        
-        
+
+    public SaveWindow() {
+        super(SAVE_TITLE);
+
         windowContentpanel.add(saveMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
         this.setFooter(buttonBar());
-        this.layout();   
+        this.layout();
     }
-    
-    
-    public LayoutPanel buttonBar(){
-        Button okButton = new Button(ConstantFactory.getInstance().ok());
-        okButton.addClickHandler(new ClickHandler(){
 
-            public void onClick(ClickEvent arg0) {
-                
+    public LayoutPanel buttonBar() {
+        final Button okButton = new Button(ConstantFactory.getInstance().ok());
+        okButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+
                 saveMenuPanel.save();
                 cbw.hide();
             }
-            
-        });
-        Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
-        cancelButton.addClickHandler(new ClickHandler(){
 
-            public void onClick(ClickEvent arg0) {
+        });
+        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        cancelButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
                 cbw.hide();
-                
+
             }
-            
+
         });
 
         return ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);

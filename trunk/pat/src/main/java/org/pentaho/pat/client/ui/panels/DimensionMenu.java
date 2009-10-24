@@ -311,23 +311,21 @@ public class DimensionMenu extends LayoutComposite {
 
                                     public void onSuccess(final String arg0) {
                                         for (int i = 0; i < sortComboBox.getItemCount(); i++)
-                                            //if (sortComboBox.getModel().getElementAt(i).equals(arg0)){
-                                                //DimensionMenu.this.sortComboBox.setSelectedIndex(i);
                                                 if(arg0!=null){
-                                                    if(arg0.equals("ASC")){
-                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortAscending()); //$NON-NLS-1$
+                                                    if(arg0.equals("ASC")){ //$NON-NLS-1$
+                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortAscending());
                                                         break;
                                                     }
-                                                    else if(arg0.equals("DESC")){
-                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortDescending()); //$NON-NLS-1$
+                                                    else if(arg0.equals("DESC")){ //$NON-NLS-1$
+                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortDescending()); 
                                                         break;
                                                     }
-                                                    else if(arg0.equals("BASC")){
-                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakAscending()); //$NON-NLS-1$
+                                                    else if(arg0.equals("BASC")){ //$NON-NLS-1$
+                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakAscending());
                                                         break;
                                                     }
-                                                    else if(arg0.equals("BDESC")){
-                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakDescending()); //$NON-NLS-1$
+                                                    else if(arg0.equals("BDESC")){ //$NON-NLS-1$
+                                                        DimensionMenu.this.sortModeModel.setSelectedItem(ConstantFactory.getInstance().sortBreakDescending());
                                                         break;
                                                     }
                                                 }
@@ -335,12 +333,8 @@ public class DimensionMenu extends LayoutComposite {
                                                     DimensionMenu.this.sortModeModel.setSelectedItem(null);
                                                 }
 
-                                        //DimensionMenu.this.sortModeModel.setSelectedItem(arg0);
+                                        
                                         DimensionMenu.this.sortModeModel.getSelectedItem();
-
-                                        //}
-                                        //else
-                                        //   DimensionMenu.this.sortModeModel.setSelectedItem(null);
 
                                         ServiceFactory.getQueryInstance().getHierarchizeMode(
                                                 Pat.getSessionID(), Pat.getCurrQuery(), dimensionId,

@@ -83,11 +83,20 @@ public interface IQueryAsync {
             String mdx,
 			AsyncCallback<CellDataSet> callback);
 	
-	public void createNewQuery(String sessionId, String connectionId, String cubeName, AsyncCallback<String> callback);
+	public void createNewQuery(
+	        String sessionId, 
+	        String connectionId, 
+	        String cubeName, 
+	        AsyncCallback<String> callback);
     
-    public void getQueries(String sessionId, AsyncCallback<String[]> callback);
+    public void getQueries(
+            String sessionId, 
+            AsyncCallback<String[]> callback);
 
-    public void deleteQuery(String sessionId, String queryId, AsyncCallback<Object> callback);
+    public void deleteQuery(
+            String sessionId, 
+            String queryId, 
+            AsyncCallback<Object> callback);
     
     public void getMdxForQuery(
             String sessionId, 
@@ -143,22 +152,37 @@ public interface IQueryAsync {
            MemberCell member,
            AsyncCallback<Object> callback);
    
-   public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, 
+   public void createNewMdxQuery(
+           String sessionId, 
+           String connectionId, 
+           String catalogName, 
            AsyncCallback<String> callback);
 
-   public void createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx,
+   public void createNewMdxQuery(
+           String sessionId, 
+           String connectionId, 
+           String catalogName, 
+           String mdx,
            AsyncCallback<String> callback);
 
-   public void getMdxQueries(String sessionId,
+   public void getMdxQueries(
+           String sessionId,
            AsyncCallback<String[]> callback);
 
-   public void deleteMdxQuery(String sessionId, String mdxQueryId,
+   public void deleteMdxQuery(
+           String sessionId, 
+           String mdxQueryId,
            AsyncCallback<Object> callback);
 
-   public void executeMdxQuery(String sessionId, String mdxQueryId,
+   public void executeMdxQuery(
+           String sessionId, 
+           String mdxQueryId,
            AsyncCallback<CellDataSet> callback);
 
-   public void setMdxQuery(String sessionId, String mdxQueryId, String mdx,
+   public void setMdxQuery(
+           String sessionId, 
+           String mdxQueryId, 
+           String mdx,
            AsyncCallback<Object> callback);
 
    public void saveQuery(
@@ -177,7 +201,7 @@ public interface IQueryAsync {
            AsyncCallback<String> asyncCallback);
     
 
-public void getSavedQueries(
-        String sessionId,
-        AsyncCallback<List<QuerySaveModel>> callback);
+   public void getSavedQueries(
+           String sessionId,
+           AsyncCallback<List<QuerySaveModel>> callback);
 }
