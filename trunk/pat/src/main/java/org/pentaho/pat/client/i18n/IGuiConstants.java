@@ -612,5 +612,89 @@ public interface IGuiConstants extends Constants {
      */
     String errorDetail();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String off();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String generalOptions();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String barChartOptions();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String glass();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String normal();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String threed();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String titles();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String chartTitle();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String xaxisLabel();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String yaxisLabel();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String legend();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String backgroundColor();
+
    
 }
