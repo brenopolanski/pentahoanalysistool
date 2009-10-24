@@ -210,4 +210,26 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String confirmDelete(String item);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedOpenQuery(String arg0);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param localizedMessage
+     * @return
+     */
+    String failedGetQueryList(String localizedMessage);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedSaveQuery(String arg0);
 }

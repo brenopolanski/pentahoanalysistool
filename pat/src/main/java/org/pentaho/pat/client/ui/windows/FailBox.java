@@ -90,7 +90,7 @@ public abstract class FailBox extends WindowPanel {
     });
     alert.getButtonPanel().add(buttonOK);
     LayoutPanel lp = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-    DisclosurePanel dPanel = new DisclosurePanel("STACK");
+    DisclosurePanel dPanel = new DisclosurePanel(ConstantFactory.getInstance().errorDetail());
     ScrollLayoutPanel sPanel = new ScrollLayoutPanel();
     sPanel.add(new WidgetWrapper(new HTML(error),
             HasAlignment.ALIGN_LEFT, HasAlignment.ALIGN_TOP));

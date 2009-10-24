@@ -19,10 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-
 import java.util.List;
-
-
 
 import org.gwt.mosaic.core.client.CoreConstants;
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -37,9 +34,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.list.Filter;
 import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
-import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.LabelTextBox;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
@@ -53,151 +51,143 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
- * Creates the Save/Load Panel for the SaveWindow.
- * @created Aug 18, 2009
- * @since 0.5.0
- * @author Paul Stoellberger*
+ * Creates the Save Panel for the SaveWindow.
+ * 
+ * @created Oct 21, 2009
+ * @since 0.5.1
+ * @author tom (at) wamonline.org.uk
  */
-public class SaveMenuPanel extends LayoutComposite{
+public class SaveMenuPanel extends LayoutComposite {
 
     /**
      */
-    private TextBox textBox;
+    private final TextBox textBox;
 
     DefaultListModel<QuerySaveModel> model;
-    
+
     final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
-    
+
     LabelTextBox ltb = new LabelTextBox();
+
     /**
      */
     private FilterProxyListModel<QuerySaveModel, String> filterModel;
 
-    private Timer filterTimer = new Timer() {
+    private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
-          filterModel.filter(textBox.getText());
+            filterModel.filter(textBox.getText());
         }
-      };
+    };
 
+    public SaveMenuPanel() {
+        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        layoutPanel.setPadding(0);
 
-    
-    public SaveMenuPanel(){
-        final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(
-                Orientation.VERTICAL));
-            layoutPanel.setPadding(0);
-
-            textBox = new TextBox();
-            textBox.addKeyPressHandler(new KeyPressHandler() {
-              public void onKeyPress(KeyPressEvent event) {
+        textBox = new TextBox();
+        textBox.addKeyPressHandler(new KeyPressHandler() {
+            public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
-              }
-            });
+            }
+        });
 
-            layoutPanel.add(textBox, new BoxLayoutData(FillStyle.HORIZONTAL));
-            layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
-            
-            ltb.setTextBoxLabelText("Save as:");
-            layoutPanel.add(ltb);
-           this.getLayoutPanel().add(layoutPanel);
+        layoutPanel.add(textBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
-           
+        ltb.setTextBoxLabelText(ConstantFactory.getInstance().save());
+        layoutPanel.add(ltb);
+        this.getLayoutPanel().add(layoutPanel);
+
     }
-    
-    private Widget createRichListBoxCell(QuerySaveModel item) {
-        final FlexTable table = new FlexTable();
-        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-
-        table.setWidth("100%");
-        table.setBorderWidth(0);
-        table.setCellPadding(3);
-        table.setCellSpacing(0);
-        table.setStyleName("RichListBoxCell");
-        
-        table.setWidget(0, 0, Pat.IMAGES.database_add().createImage());
-        cellFormatter.setRowSpan(0, 0, 3);
-        cellFormatter.setWidth(0, 0, "32px");
-        
-        table.setHTML(0, 1, "<b>" + item.getName() + "</b>");
-        
-        table.setText(1, 0, "Connection: " + item.getConnection());
-        table.setText(2, 0, "Last Updated: " + item.getSavedDate());
-
-        return table;
-      }
 
     public ListBox<?> createListBox() {
-        
+
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
-          public void renderCell(ListBox<QuerySaveModel> listBox, int row, int column,
-              QuerySaveModel item) {
-            switch (column) {
-              case 0:
-                listBox.setWidget(row, column, createRichListBoxCell(item));
-                break;
-              default:
-                throw new RuntimeException("Should not happen");
+            public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
+                    final QuerySaveModel item) {
+                switch (column) {
+                case 0:
+                    listBox.setWidget(row, column, createRichListBoxCell(item));
+                    break;
+                default:
+                    throw new RuntimeException(ConstantFactory.getInstance().shouldnthappen());
+                }
             }
-          }
         });
 
         model = (DefaultListModel<QuerySaveModel>) listBox.getModel();
-        //model.add(new QuerySaveModel("Id", "Name", "Connection"));
 
-       
-                
-        
-        
-        
         filterModel = new FilterProxyListModel<QuerySaveModel, String>(model);
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {
-          public boolean select(QuerySaveModel element, String filter) {
-            final String regexp = ".*" + filter + ".*";
-            if (regexp == null || regexp.length() == 0) {
-              return true;
+            public boolean select(final QuerySaveModel element, final String filter) {
+                final String regexp = ".*" + filter + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                if (regexp == null || regexp.length() == 0)
+                    return true;
+                return element.getName().matches(regexp);
             }
-            return element.getName().matches(regexp);
-          }
         });
-
-        
 
         return listBox;
-      }
-
-    public void save(){
-        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(), Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>(){
-
-            public void onFailure(Throwable arg0) {
-                MessageBox.error("Error", "fuckup");                
-            }
-
-            public void onSuccess(Object arg0) {
-                loadSavedQueries();
-                
-            }
-            
-        }); 
     }
-    public void loadSavedQueries(){
-        ServiceFactory.getQueryInstance().getSavedQueries(Pat.getSessionID(), new AsyncCallback<List<QuerySaveModel>>(){
 
-            public void onFailure(Throwable arg0) {
-             MessageBox.error("error", "Message");  
-            }
+    public void loadSavedQueries() {
+        ServiceFactory.getQueryInstance().getSavedQueries(Pat.getSessionID(),
+                new AsyncCallback<List<QuerySaveModel>>() {
 
-            public void onSuccess(List<QuerySaveModel> arg0) {
-                listBox.setModel(model);
-                if(arg0!=null){
-                    model.clear();
-                for (int i=0; i< arg0.size(); i++){
-                   model.add(arg0.get(i));
-               }
-                listBox.setModel(filterModel);
-                
-            }
-            }
-        });
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedGetQueryList(arg0.getLocalizedMessage()));
+                    }
 
+                    public void onSuccess(final List<QuerySaveModel> arg0) {
+                        listBox.setModel(model);
+                        if (arg0 != null) {
+                            model.clear();
+                            for (int i = 0; i < arg0.size(); i++)
+                                model.add(arg0.get(i));
+                            listBox.setModel(filterModel);
+
+                        }
+                    }
+                });
+
+    }
+
+    public void save() {
+        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(),
+                Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedSaveQuery(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(final Object arg0) {
+                        loadSavedQueries();
+
+                    }
+
+                });
+    }
+
+    private Widget createRichListBoxCell(final QuerySaveModel item) {
+        final FlexTable table = new FlexTable();
+        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
+
+        table.setWidth("100%"); //$NON-NLS-1$
+        table.setBorderWidth(0);
+        table.setCellPadding(3);
+        table.setCellSpacing(0);
+
+        table.setWidget(0, 0, Pat.IMAGES.database_add().createImage());
+        cellFormatter.setRowSpan(0, 0, 3);
+        cellFormatter.setWidth(0, 0, "32px"); //$NON-NLS-1$
+
+        table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        table.setText(1, 0, "Connection: " + item.getConnection()); //$NON-NLS-1$
+        table.setText(2, 0, "Last Updated: " + item.getSavedDate()); //$NON-NLS-1$
+
+        return table;
     }
 }

@@ -365,12 +365,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         return sc;
     }
 
-    public List getSavedQueries(String sessionId) throws RpcException{
+    public List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException{
         try{
             Set<SavedQuery> ssc = this.queryService.getSavedQueries(getCurrentUserId(), sessionId);
             
-            Iterator it = ssc.iterator();
-            List results = new ArrayList();
+            Iterator<SavedQuery> it = ssc.iterator();
+            List<QuerySaveModel> results = new ArrayList<QuerySaveModel>();
             while (it.hasNext()) {
                 // Get element
                 SavedQuery element = (SavedQuery) it.next();

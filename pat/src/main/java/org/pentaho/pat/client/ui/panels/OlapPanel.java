@@ -54,7 +54,7 @@ public class OlapPanel extends DataWidget {
     private String panelName = null;
 
     private String cubeName = null;
-    
+
     private CubeItem cubeItem = null;
 
     private String connectionId = null;
@@ -84,87 +84,63 @@ public class OlapPanel extends DataWidget {
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 
-            public void onFailure(final Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
-                LogoPanel.spinWheel(false);
-            }
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedCreateQuery(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
+                    }
 
-            public void onSuccess(final String query) {
-                queryId = query;
-                Pat.setCurrQuery(query);
-                Pat.setCurrConnection(connectionId);
-                Pat.setCurrCubeName(cubeName);
-                Pat.setCurrCube(cubeItem);
-                initializeWidget();
-            }
-        });
+                    public void onSuccess(final String query) {
+                        queryId = query;
+                        Pat.setCurrQuery(query);
+                        Pat.setCurrConnection(connectionId);
+                        Pat.setCurrCubeName(cubeName);
+                        Pat.setCurrCube(cubeItem);
+                        initializeWidget();
+                    }
+                });
 
     }
 
-    public OlapPanel(String query, final QuerySaveModel qsm){
+    /**
+     * 
+     * OlapPanel constructor when loading a saved query model.
+     * 
+     * @param query
+     * @param qsm
+     */
+    public OlapPanel(final String query, final QuerySaveModel qsm) {
         super();
         queryId = query;
         Pat.setCurrQuery(query);
         Pat.setCurrCube(qsm.getCube());
         Pat.setCurrCubeName(qsm.getCubeName());
         Pat.setCurrConnection(qsm.getConnection());
-        
+
         panelName = qsm.getCubeName();
         cubeItem = qsm.getCube();
         connectionId = qsm.getConnection();
         initializeWidget();
-        
+
     }
+
     /*
      * (non-Javadoc)
      * 
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#nitializeWidgets()
      */
-    @Override
-    protected void initializeWidget() {
-        LogoPanel.spinWheel(true);
-        baselayoutPanel = new LayoutPanel(new BorderLayout());
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(baselayoutPanel.getElement(),"background", "white");
 
-
-
-        final LayoutPanel centerPanel = new LayoutPanel();
-        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
-        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
-
-        collapseBtn3.addClickHandler(new ClickHandler() {
-            public void onClick(final ClickEvent event) {
-                baselayoutPanel.setCollapsed(westPanel, !baselayoutPanel.isCollapsed(westPanel));
-                baselayoutPanel.layout();
-            }
-        });
-
-
-        final DataPanel dPanel = new DataPanel(queryId);
-        centerPanel.add(dPanel);
-
-        final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
-        westPanel.add(mainMenuPanel);
-
-        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
-        baselayoutPanel.setCollapsed(westPanel, false);
-
-        baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
-        
-        getLayoutPanel().add(baselayoutPanel);
-        LogoPanel.spinWheel(false);
+    public String getConnectionId() {
+        return connectionId;
     }
 
+    public String getCube() {
+        return cubeName;
+    }
 
     public CubeItem getCubeItem() {
         return cubeItem;
-    }
-    
-    public String getCube() {
-        return cubeName;
     }
 
     /*
@@ -187,7 +163,6 @@ public class OlapPanel extends DataWidget {
         return panelName;
     }
 
-
     public String getQuery() {
         return queryId;
     }
@@ -208,7 +183,8 @@ public class OlapPanel extends DataWidget {
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(arg0.getLocalizedMessage()));
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(
+                        arg0.getLocalizedMessage()));
                 LogoPanel.spinWheel(false);
             }
 
@@ -218,6 +194,10 @@ public class OlapPanel extends DataWidget {
 
         });
 
+    }
+
+    public void setConnectionId(final String connectionId) {
+        this.connectionId = connectionId;
     }
 
     public void setCube(final String name) {
@@ -232,12 +212,38 @@ public class OlapPanel extends DataWidget {
         queryId = name;
     }
 
-    public String getConnectionId() {
-        return connectionId;
-    }
+    @Override
+    protected void initializeWidget() {
+        LogoPanel.spinWheel(true);
+        baselayoutPanel = new LayoutPanel(new BorderLayout());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white");
 
-    public void setConnectionId(String connectionId) {
-        this.connectionId = connectionId;
+        final LayoutPanel centerPanel = new LayoutPanel();
+        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+        final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
+        westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
+
+        collapseBtn3.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                baselayoutPanel.setCollapsed(westPanel, !baselayoutPanel.isCollapsed(westPanel));
+                baselayoutPanel.layout();
+            }
+        });
+
+        final DataPanel dPanel = new DataPanel(queryId);
+        centerPanel.add(dPanel);
+
+        final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
+        westPanel.add(mainMenuPanel);
+
+        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
+        baselayoutPanel.setCollapsed(westPanel, false);
+
+        baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
+
+        getLayoutPanel().add(baselayoutPanel);
+        LogoPanel.spinWheel(false);
     }
 
 }

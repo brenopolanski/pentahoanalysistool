@@ -591,5 +591,26 @@ public interface IGuiConstants extends Constants {
      */
     String load();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String shouldnthappen();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String layout();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String errorDetail();
+
    
 }
