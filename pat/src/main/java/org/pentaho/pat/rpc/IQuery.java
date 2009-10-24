@@ -22,6 +22,7 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -348,10 +349,10 @@ public interface IQuery extends RemoteService {
     public void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
 
     @Secured ({"Users"})
-    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId) throws RpcException;
+    public void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cube, String cubeName) throws RpcException;
     
     @Secured ({"Users"})
-    public void loadQuery(String sessioinId, String queryId) throws RpcException;
+    public String loadQuery(String sessioinId, String queryId) throws RpcException;
     
     @Secured ({"Users"})
     public List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;

@@ -35,6 +35,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -93,14 +94,28 @@ public class OlapPanel extends DataWidget {
                 queryId = query;
                 Pat.setCurrQuery(query);
                 Pat.setCurrConnection(connectionId);
-
+                Pat.setCurrCubeName(cubeName);
+                Pat.setCurrCube(cubeItem);
                 initializeWidget();
             }
         });
 
     }
 
-
+    public OlapPanel(String query, final QuerySaveModel qsm){
+        super();
+        queryId = query;
+        Pat.setCurrQuery(query);
+        Pat.setCurrCube(qsm.getCube());
+        Pat.setCurrCubeName(qsm.getCubeName());
+        Pat.setCurrConnection(qsm.getConnection());
+        
+        panelName = qsm.getCubeName();
+        cubeItem = qsm.getCube();
+        connectionId = qsm.getConnection();
+        initializeWidget();
+        
+    }
     /*
      * (non-Javadoc)
      * 

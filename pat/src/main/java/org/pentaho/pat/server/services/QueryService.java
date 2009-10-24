@@ -486,5 +486,17 @@ public interface QueryService extends Service {
      * @param sessionId
      */
     public Set<SavedQuery> getSavedQueries(String currentUserId, String sessionId);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessioinId
+     * @param connectionId
+     * @param cubeName
+     * @param newQuery
+     */
+    public String createSavedQuery(String currentUserId, String sessioinId, String connectionId, /*String cubeName,*/
+            Query newQuery)throws OlapException;;
 	
 }

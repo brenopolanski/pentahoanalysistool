@@ -22,6 +22,7 @@ package org.pentaho.pat.rpc;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -165,13 +166,15 @@ public interface IQueryAsync {
            String queryId,
            String queryName,
            String connectionId,
+           CubeItem cubeItem, 
+           String cubeName, 
            AsyncCallback<Object> callback);
 
 
    public void loadQuery(
            String sessionID, 
            String currQuery, 
-           AsyncCallback<Object> callback);
+           AsyncCallback<String> asyncCallback);
     
 
 public void getSavedQueries(
