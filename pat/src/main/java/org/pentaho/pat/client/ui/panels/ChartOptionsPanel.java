@@ -22,7 +22,6 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
-import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
@@ -30,6 +29,7 @@ import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -53,9 +53,9 @@ public class ChartOptionsPanel extends LayoutComposite{
     private TextBox yAxisTextBox = new TextBox();
     private TextBox bgColorTextBox = new TextBox();
     private Position pos;
-    ToolButton legendOffButton = new ToolButton("Off");
-    ToolButton legendTopButton = new ToolButton("Top");    
-    ToolButton legendRightButton = new ToolButton("Right");
+    ToolButton legendOffButton = new ToolButton(ConstantFactory.getInstance().off());
+    ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());    
+    ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
     /**
      * 
      * Chart options constructor.
@@ -64,8 +64,8 @@ public class ChartOptionsPanel extends LayoutComposite{
     public ChartOptionsPanel(){
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
 
-        tabPanel.add(generalOptionsPanel(), "General Options");
-        tabPanel.add(barOptionsPanel(), "Bar Chart Options");
+        tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
+        tabPanel.add(barOptionsPanel(), ConstantFactory.getInstance().barChartOptions());
 
 
         this.getLayoutPanel().add(tabPanel);
@@ -120,24 +120,24 @@ public class ChartOptionsPanel extends LayoutComposite{
 
         PanelBuilder builder = new PanelBuilder(layout);
 
-        builder.addSeparator("Titles");
+        builder.addSeparator(ConstantFactory.getInstance().titles());
 
         builder.nextLine(2);
 
-        builder.addLabel("Chart Title:");
+        builder.addLabel(ConstantFactory.getInstance().chartTitle());
         builder.nextColumn(2);
         builder.add(chartTitleTextBox);
         builder.nextLine(2);
 
-        builder.addLabel("X Axis Label:");
+        builder.addLabel(ConstantFactory.getInstance().xaxisLabel());
         builder.nextColumn(2);
         builder.add(xAxisTextBox);
         builder.nextColumn(2);
-        builder.addLabel("Y Axis Label:");
+        builder.addLabel(ConstantFactory.getInstance().yaxisLabel());
         builder.nextColumn(2);
         builder.add(yAxisTextBox);
         builder.nextLine(2);
-        builder.addLabel("Show Legend:");
+        builder.addLabel(ConstantFactory.getInstance().legend());
         builder.nextColumn(2);
         builder.add(legendOffButton);
         builder.nextColumn(2);
@@ -145,7 +145,7 @@ public class ChartOptionsPanel extends LayoutComposite{
         builder.nextColumn(2);
         builder.add(legendRightButton);
         builder.nextLine(2);
-        builder.addLabel("Background Color:");
+        builder.addLabel(ConstantFactory.getInstance().backgroundColor());
         builder.nextColumn(2);
         builder.add(bgColorTextBox);
         
@@ -168,15 +168,15 @@ public class ChartOptionsPanel extends LayoutComposite{
 
         final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
 
-        model.add("Glass");
-        model.add("Normal");
-        model.add("Threed");
+        model.add(ConstantFactory.getInstance().glass());
+        model.add(ConstantFactory.getInstance().normal());
+        model.add(ConstantFactory.getInstance().threed());
         
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
             public void onRowSelection(RowSelectionEvent event) {
               int index = listBox.getSelectedIndex();
               if (index != -1) {
-                InfoPanel.show("RowSelectionHandler", listBox.getItem(index));
+                //InfoPanel.show("RowSelectionHandler", listBox.getItem(index));
               }
             }
           });
