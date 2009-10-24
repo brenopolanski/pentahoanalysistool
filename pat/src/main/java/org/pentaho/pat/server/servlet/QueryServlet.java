@@ -69,7 +69,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         if (sessionService==null)
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
     }
-
+/*
+ * (non-Javadoc)
+ * @see org.pentaho.pat.rpc.IQuery#createNewQuery(java.lang.String, java.lang.String, java.lang.String)
+ */
     public String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException
     {
         try {
@@ -80,17 +83,29 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#deleteQuery(java.lang.String, java.lang.String)
+     */
     public void deleteQuery(String sessionId, String queryId) throws RpcException
     {
         queryService.releaseQuery(getCurrentUserId(), sessionId, queryId);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getQueries(java.lang.String)
+     */
     public String[] getQueries(String sessionId) throws RpcException
     {
         List<String> list = queryService.getQueries(getCurrentUserId(), sessionId);
         return list.toArray(new String[list.size()]);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#clearSelection(java.lang.String, java.lang.String, java.lang.String, java.util.List)
+     */
     public void clearSelection(
             String sessionId,
             String queryId,
@@ -101,6 +116,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 sessionId, queryId, dimensionName, memberNames);
             }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#clearExclusion(java.lang.String, java.lang.String, java.lang.String)
+     */
     public void clearExclusion(
             String sessionId,
             String queryId,
@@ -110,6 +129,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 sessionId, queryId, dimensionName);
             }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String, java.util.List, java.lang.String)
+     */
     public void createSelection(
             String sessionId,
             String queryId,
@@ -126,6 +149,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
             }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#createExclusion(java.lang.String, java.lang.String, java.lang.String, java.util.List)
+     */
     public void createExclusion(
             String sessionId,
             String queryId,
@@ -141,6 +168,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
             }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getSelection(java.lang.String, java.lang.String, java.lang.String)
+     */
     public String[][] getSelection(
             String sessionId,
             String queryId,
@@ -155,6 +186,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
 
             }
+    
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#moveDimension(java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.IAxis, java.lang.String)
+     */
     public void moveDimension(
             String sessionId,
             String queryId,
@@ -168,6 +204,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 (axis.equals(IAxis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()), 
                         dimensionName);
             }
+    
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#setSortOrder(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
     public void setSortOrder(String sessionId, String queryId, String dimensionName, String sort) throws RpcException
     {
         SortOrder sortValue = null;
@@ -185,6 +226,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#clearSortOrder(java.lang.String, java.lang.String, java.lang.String)
+     */
     public void clearSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException
     {
         try {
@@ -195,6 +240,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getSortOrder(java.lang.String, java.lang.String, java.lang.String)
+     */
     public String getSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException
     {
         try {
@@ -206,6 +255,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
+/*
+ * (non-Javadoc)
+ * @see org.pentaho.pat.rpc.IQuery#setHierarchizeMode(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+ */
     public void setHierarchizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException
     {
         HierarchizeMode hMode = null;
@@ -222,7 +275,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             throw new RpcException(Messages.getString("Servlet.Query.CantSethierarchizeMode")); //$NON-NLS-1$
         }
     }
-
+   
+    /*
+ * (non-Javadoc)
+ * @see org.pentaho.pat.rpc.IQuery#getHierarchizeMode(java.lang.String, java.lang.String, java.lang.String)
+ */
+   
     public String getHierarchizeMode(String sessionId, String queryId, String dimensionName) throws RpcException
     {
         try {
@@ -233,6 +291,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#swapAxis(java.lang.String, java.lang.String)
+     */
     public CellDataSet swapAxis(String sessionId, String queryId) throws RpcException{
 
         try {
@@ -245,6 +307,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
 
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#executeQuery(java.lang.String, java.lang.String)
+     */
     public CellDataSet executeQuery(String sessionId, String queryId) throws RpcException
     {
         try {
@@ -255,6 +322,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#drillPosition(java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
+     */
     public void drillPosition(String sessionId, String queryId, MemberCell member) throws RpcException
     {
         try {
@@ -265,6 +336,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#createNewMdxQuery(java.lang.String, java.lang.String, java.lang.String)
+     */
     public String createNewMdxQuery(String sessionId, String connectionId, String catalogName) throws RpcException
     {
         try {
@@ -275,6 +350,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#createNewMdxQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
     public String createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx) throws RpcException
     {
         try {
@@ -285,17 +364,29 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getMdxQueries(java.lang.String)
+     */
     public String[] getMdxQueries(String sessionId) throws RpcException
     {
         List<String> list = queryService.getMdxQueries(getCurrentUserId(), sessionId);
         return list.toArray(new String[list.size()]);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#deleteMdxQuery(java.lang.String, java.lang.String)
+     */
     public void deleteMdxQuery(String sessionId, String mdxQueryId) throws RpcException
     {
         queryService.releaseMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#executeMdxQuery(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Deprecated
     public CellDataSet executeMdxQuery(String sessionId, String connectionId, String mdx) throws RpcException
     {
@@ -307,6 +398,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#executeMdxQuery(java.lang.String, java.lang.String)
+     */
     public CellDataSet executeMdxQuery(String sessionId, String mdxQueryId) throws RpcException 
     {
         try {
@@ -317,6 +412,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#setMdxQuery(java.lang.String, java.lang.String, java.lang.String)
+     */
     public void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException
     {
             try {
@@ -328,6 +427,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getMdxForQuery(java.lang.String, java.lang.String)
+     */
     public String getMdxForQuery(String sessionId, String queryId)
     throws RpcException {
         try {
@@ -339,6 +442,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#saveQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.CubeItem, java.lang.String)
+     */
     public void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cube, String cubeName) throws RpcException{
         try{
         Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
@@ -346,11 +453,22 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         SavedQuery sc = this.convert(qm, queryName, connectionId,  cube, cubeName);
         this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
         } catch (Exception e) {
-            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            log.error(Messages.getString("Servlet.Query.QuerySaveError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.QuerySaveError"),e); //$NON-NLS-1$
         }
     }
     
+    /**
+     * 
+     *TODO JAVADOC
+     *
+     * @param cc
+     * @param queryName
+     * @param connectionId
+     * @param cube
+     * @param cubeName
+     * @return
+     */
     private SavedQuery convert(Query cc, String queryName, String connectionId, CubeItem cube, String cubeName) {
         XStream xstream = new XStream(); 
         
@@ -365,6 +483,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         return sc;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#getSavedQueries(java.lang.String)
+     */
     public List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException{
         try{
             Set<SavedQuery> ssc = this.queryService.getSavedQueries(getCurrentUserId(), sessionId);
@@ -381,10 +503,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
             return results;
         } catch (Exception e) {
-            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+            log.error(Messages.getString("Servlet.Query.GetSavedQueriesError"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.GetSavedQueriesError"),e); //$NON-NLS-1$
         }
     }
+    
     /* (non-Javadoc)
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
@@ -400,8 +523,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
              Query newQuery = (Query)xstream.fromXML(sc.getXml());
              return this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(), /*sc.getCubeName(),*/ newQuery);
             } catch (Exception e) {
-                log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
-                throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"),e); //$NON-NLS-1$
+                log.error(Messages.getString("Servlet.Query.LoadQueryError"),e); //$NON-NLS-1$
+                throw new RpcException(Messages.getString("Servlet.Query.LoadQueryError"),e); //$NON-NLS-1$
             }
         
     }
