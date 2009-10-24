@@ -36,10 +36,12 @@ public class QuerySaveModel implements Serializable{
         this.id = id;
         this.savedDate = savedDate;
     }
-    public QuerySaveModel(String id, String name, String connection) {
+    public QuerySaveModel(String id, String name, String connection, CubeItem cube, String cubeName) {
         this.name = name;
         this.connection = connection;
         this.id = id;
+        this.cube = cube;
+        this.cubeName = cubeName;
     }
     /**
      *TODO JAVADOC

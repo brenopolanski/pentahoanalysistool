@@ -142,7 +142,7 @@ public class LoadMenuPanel extends LayoutComposite{
         });
 
         model = (DefaultListModel<QuerySaveModel>) listBox.getModel();
-        model.add(new QuerySaveModel("ID", "Name", "Connection"));
+//        model.add(new QuerySaveModel("ID", "Name", "Connection"));
         
         filterModel = new FilterProxyListModel<QuerySaveModel, String>(model);
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {

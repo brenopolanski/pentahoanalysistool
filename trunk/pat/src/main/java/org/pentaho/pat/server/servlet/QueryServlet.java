@@ -375,7 +375,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 // Get element
                 SavedQuery element = (SavedQuery) it.next();
                 
-                results.add(new QuerySaveModel(element.getId(), element.getName(), this.sessionService.getConnection(getCurrentUserId(), element.getConnectionId()).getName()));
+                results.add(new QuerySaveModel(element.getId(), element.getName(), element.getConnectionId(), element.getCube(), element.getCubeName()));
                 
             }
 
