@@ -1,17 +1,21 @@
 /*
- * Copyright (c) 2008-2009 GWT Mosaic Georgios J. Georgopoulos.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Copyright (C) 2009 Thomas Barber
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
  */
 package org.pentaho.pat.client.ui.windows;
 
@@ -33,6 +37,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
@@ -46,8 +54,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * 
- * @author georgopoulos.georgios(at)gmail.com
+ * @created Oct 18, 2009
+ * @since 0.5.0
+ * @author tom (at) wamonline.org.uk
  */
 public abstract class FailBox extends WindowPanel {
 
@@ -81,6 +90,9 @@ public abstract class FailBox extends WindowPanel {
     int preferredWidth = Window.getClientWidth();
     preferredWidth = Math.max(preferredWidth / 3, 256);
     alert.setWidth(preferredWidth + "px"); //$NON-NLS-1$
+    int preferredHeight = Window.getClientHeight();
+    preferredHeight = Math.max(preferredHeight / 3, 256);
+    alert.setHeight(preferredHeight + "px"); //$NON-NLS-1$
     
     final Button buttonOK = new Button(ConstantFactory.getInstance().ok());
     buttonOK.addClickHandler(new ClickHandler() {
@@ -91,18 +103,38 @@ public abstract class FailBox extends WindowPanel {
     alert.getButtonPanel().add(buttonOK);
     LayoutPanel lp = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
     DisclosurePanel dPanel = new DisclosurePanel(ConstantFactory.getInstance().errorDetail());
+    dPanel.addOpenHandler(new OpenHandler<DisclosurePanel>(){
+
+        public void onOpen(OpenEvent<DisclosurePanel> arg0) {
+            if (alert.isShowing()) {
+            alert.pack();
+            alert.layout();
+            }            
+        }
+        
+    });
+    
+    dPanel.addCloseHandler(new CloseHandler<DisclosurePanel>(){
+
+        public void onClose(CloseEvent<DisclosurePanel> arg0) {
+            if (alert.isShowing()) {
+
+            alert.pack();
+            alert.layout();
+            }
+        }
+     
+    });
     ScrollLayoutPanel sPanel = new ScrollLayoutPanel();
     sPanel.add(new WidgetWrapper(new HTML(error),
             HasAlignment.ALIGN_LEFT, HasAlignment.ALIGN_TOP));
     sPanel.setHeight("50px"); //$NON-NLS-1$
     dPanel.add(sPanel);
-    dPanel.setOpen(true);
     lp.add(new WidgetWrapper(new HTML(message),
             HasAlignment.ALIGN_LEFT, HasAlignment.ALIGN_TOP));
     lp.add(dPanel);
     alert.setWidget(lp);
-    alert.showModal();
-    dPanel.setOpen(false);
+    alert.showModal(false);
     if (alert.getOffsetWidth() < preferredWidth) {
       alert.setWidth(preferredWidth + "px"); //$NON-NLS-1$
       alert.center();

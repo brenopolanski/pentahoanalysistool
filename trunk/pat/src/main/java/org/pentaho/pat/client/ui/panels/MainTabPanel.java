@@ -70,14 +70,12 @@ public class MainTabPanel extends LayoutComposite {
                 contentWrapper.getWidget(selectEvent.getSelectedItem());
                 final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
                 
-                if (widget instanceof OlapPanel) {
+                if (widget instanceof OlapPanel || widget instanceof MdxPanel) {
+                    MenuBar.enableSave(true);
                     Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
                     Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
-                }
-
-                if (widget instanceof MdxPanel) {
-                    Pat.setCurrQuery(((MdxPanel) widget).getQueryId());
-                    Pat.setCurrConnection(((MdxPanel) widget).getConnectionId());
+                } else{
+                    MenuBar.enableSave(false);
                 }
 
             }

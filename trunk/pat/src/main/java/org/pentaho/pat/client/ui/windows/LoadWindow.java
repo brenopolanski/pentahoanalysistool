@@ -52,9 +52,8 @@ public class LoadWindow extends WindowPanel {
 
     public static void display() {
         cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        cbw.showModal(true);
         loadMenuPanel.loadSavedQueries();
+        cbw.showModal(false);
         cbw.layout();
     }
 

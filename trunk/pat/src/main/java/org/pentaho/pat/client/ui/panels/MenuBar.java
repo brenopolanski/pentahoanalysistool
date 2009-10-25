@@ -54,6 +54,9 @@ public class MenuBar extends LayoutComposite {
 
     private final LayoutPanel rootPanel = getLayoutPanel();
 
+    private final static ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+            .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
+
     /**
      * Initializes the Menu Bar contents
      */
@@ -126,8 +129,6 @@ public class MenuBar extends LayoutComposite {
     private void addSaveButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
-        final ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-                .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
         saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
         DOM.setStyleAttribute(saveButton.getElement(),"background", "white");
@@ -137,7 +138,7 @@ public class MenuBar extends LayoutComposite {
                 SaveWindow.display();
             }
         });
-        saveButton.setEnabled(true);
+        saveButton.setEnabled(false);
         rootPanel.add(saveButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
@@ -159,4 +160,7 @@ public class MenuBar extends LayoutComposite {
         rootPanel.add(loadButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
+    public static void enableSave(Boolean enabled){
+        saveButton.setEnabled(enabled);
+    }
 }

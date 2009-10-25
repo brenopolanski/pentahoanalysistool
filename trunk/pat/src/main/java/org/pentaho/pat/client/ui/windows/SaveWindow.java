@@ -52,9 +52,9 @@ public class SaveWindow extends WindowPanel {
 
     public static void display() {
         cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        cbw.showModal(true);
         saveMenuPanel.loadSavedQueries();
+        cbw.showModal(false);
+        
         cbw.layout();
     }
 
