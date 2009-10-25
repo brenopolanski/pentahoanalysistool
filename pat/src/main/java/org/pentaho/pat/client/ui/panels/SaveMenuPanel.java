@@ -96,6 +96,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
         ltb.setTextBoxLabelText(ConstantFactory.getInstance().save());
         layoutPanel.add(ltb);
+        
         this.getLayoutPanel().add(layoutPanel);
 
     }
