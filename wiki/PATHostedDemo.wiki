@@ -38,11 +38,11 @@ Once that has extracted succesfully enter the PentahoAnalysisTool/ directory and
 Navigate the following URL in your browser to view the demo:
 
 {{{
-  http://localhost:8080/
+  http://localhost:9999/
 }}}
 or
 {{{ 
-  http://your_ip_address:8080/
+  http://your_ip_address:9999/
 }}}
 
 When prompted to login use the username *admin* and the password *admin*. 
