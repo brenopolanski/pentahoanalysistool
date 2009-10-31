@@ -44,6 +44,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 
 /**
  * Creates a properties panel, the properties panel controls things like drill method and pivot.
@@ -107,7 +108,7 @@ public class PropertiesPanel extends LayoutComposite {
                                 final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
                                 final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                                 wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-                                final TextArea mdxArea = new TextArea();
+                                final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
                                 mdxArea.setText(mdx);
 
