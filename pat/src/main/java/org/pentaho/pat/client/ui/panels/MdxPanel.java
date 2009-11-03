@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -42,7 +43,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -69,7 +69,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
 
     private OlapTable olapTable = null;
 
-    private TextArea mdxArea = new TextArea();;
+    private MDXRichTextArea mdxArea = new MDXRichTextArea();;
 
     private LayoutPanel baselayoutPanel;
 
@@ -97,6 +97,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
         this.cube = cube.getName();
         this.connectionId = connection;
         this.catalog = cube.getCatalog();
+        
 
         ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,
                 new AsyncCallback<String>() {
@@ -161,6 +162,7 @@ public class MdxPanel extends DataWidget implements IQueryListener {
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
+                mdxArea.formatMDX();
                 ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId,mdxArea.getText(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
