@@ -78,7 +78,7 @@ public class ChartOptionsWindow extends WindowPanel {
         windowContentpanel.add(chartOptionsPanel, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(windowContentpanel);
         
-        Button okButton = new Button("Ok");
+        Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler(){
 
             public void onClick(ClickEvent arg0) {
@@ -91,7 +91,7 @@ public class ChartOptionsWindow extends WindowPanel {
             }
             
         });
-        Button cancelButton = new Button("Cancel");
+        Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         cancelButton.addClickHandler(new ClickHandler(){
 
             public void onClick(ClickEvent arg0) {

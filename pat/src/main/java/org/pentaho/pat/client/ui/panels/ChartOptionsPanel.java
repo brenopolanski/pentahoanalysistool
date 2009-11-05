@@ -53,7 +53,6 @@ public class ChartOptionsPanel extends LayoutComposite{
     private TextBox yAxisTextBox = new TextBox();
     private TextBox bgColorTextBox = new TextBox();
     private Position pos;
-    ToolButton legendOffButton = new ToolButton(ConstantFactory.getInstance().off());
     ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());    
     ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
     /**
@@ -87,15 +86,6 @@ public class ChartOptionsPanel extends LayoutComposite{
                     + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
 
         
-        legendOffButton.setStyle(ToolButtonStyle.RADIO);
-        legendOffButton.addClickHandler(new ClickHandler(){
-
-            public void onClick(ClickEvent arg0) {
-                pos = null;
-                
-            }
-            
-        });
         legendTopButton.setStyle(ToolButtonStyle.RADIO);
         legendTopButton.addClickHandler(new ClickHandler(){
 
@@ -138,8 +128,6 @@ public class ChartOptionsPanel extends LayoutComposite{
         builder.add(yAxisTextBox);
         builder.nextLine(2);
         builder.addLabel(ConstantFactory.getInstance().legend());
-        builder.nextColumn(2);
-        builder.add(legendOffButton);
         builder.nextColumn(2);
         builder.add(legendTopButton);
         builder.nextColumn(2);
