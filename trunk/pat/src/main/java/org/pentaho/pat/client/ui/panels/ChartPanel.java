@@ -270,5 +270,6 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      */
     public void setPos(Position pos) {
         this.pos = pos;
+        
     }
 }

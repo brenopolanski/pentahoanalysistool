@@ -88,6 +88,7 @@ public class ChartFactory {
         if(legendPosition!=null){
         cd.setLegend(new Legend(legendPosition, true));
         }
+        
         return cd;
         
         
