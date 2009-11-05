@@ -154,7 +154,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
     }
 
-    public void save() {
+    public void save() { 
         ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(),
                 Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 

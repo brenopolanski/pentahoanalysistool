@@ -3,6 +3,7 @@
  */
 package org.pentaho.pat.server.data.pojo;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Basic;
@@ -48,6 +49,9 @@ public class SavedQuery implements Comparable<SavedQuery> {
     
     @Basic 
     private String cubeName;
+    
+    @Basic
+    private Date updatedDate;
     
     @Basic
     @Type(
@@ -154,5 +158,22 @@ public class SavedQuery implements Comparable<SavedQuery> {
     
     public CubeItem getCube(){
         return cube;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param updatedDate the updatedDate to set
+     */
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the updatedDate
+     */
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 }

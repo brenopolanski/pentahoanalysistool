@@ -20,6 +20,7 @@
 package org.pentaho.pat.server.servlet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -480,6 +481,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         sc.setUsername(getCurrentUserId());
         sc.setXml(xml);
         sc.setConnectionId(connectionId);
+        sc.setUpdatedDate(new Date());
         return sc;
     }
 
@@ -497,7 +499,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 // Get element
                 SavedQuery element = (SavedQuery) it.next();
                 
-                results.add(new QuerySaveModel(element.getId(), element.getName(), element.getConnectionId(), element.getCube(), element.getCubeName()));
+                results.add(new QuerySaveModel(element.getId(), element.getName(), element.getConnectionId(), element.getCube(), element.getCubeName(), element.getUpdatedDate()));
                 
             }
 

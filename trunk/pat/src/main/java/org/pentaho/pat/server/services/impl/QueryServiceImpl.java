@@ -58,9 +58,6 @@ import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
 import org.springframework.util.Assert;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 /**
  * Simple service implementation as a Spring bean.
  * 
@@ -703,7 +700,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public SavedQuery loadQuery(String userId, String sessionId, String queryName) {
         this.sessionService.validateSession(userId, sessionId);
         
-        User user = this.userManager.getUser(userId);
         return this.userManager.getSavedQuery(userId, queryName);
     }
 
