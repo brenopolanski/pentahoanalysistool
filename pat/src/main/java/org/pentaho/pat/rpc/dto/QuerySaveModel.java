@@ -30,18 +30,19 @@ public class QuerySaveModel implements Serializable{
         
     }
     
-    public QuerySaveModel(String id, String name, String connection, Date savedDate) {
+ /*   public QuerySaveModel(String id, String name, String connection, Date savedDate) {
         this.name = name;
         this.connection = connection;
         this.id = id;
         this.savedDate = savedDate;
-    }
-    public QuerySaveModel(String id, String name, String connection, CubeItem cube, String cubeName) {
+    }*/
+    public QuerySaveModel(String id, String name, String connection, CubeItem cube, String cubeName, Date updatedDate) {
         this.name = name;
         this.connection = connection;
         this.id = id;
         this.cube = cube;
         this.cubeName = cubeName;
+        this.savedDate = updatedDate;
     }
     /**
      *TODO JAVADOC
