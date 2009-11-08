@@ -21,20 +21,27 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
+import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WindowPanel;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.pentaho.pat.client.util.colorpicker.ColorPicker;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
 import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.rednels.ofcgwt.client.model.Legend.Position;
 
@@ -48,6 +55,7 @@ import com.rednels.ofcgwt.client.model.Legend.Position;
  */
 public class ChartOptionsPanel extends LayoutComposite{
 
+    private WindowPanel basic;
     private TextBox chartTitleTextBox = new TextBox();
     private TextBox xAxisTextBox = new TextBox();
     private TextBox yAxisTextBox = new TextBox();
@@ -77,6 +85,16 @@ public class ChartOptionsPanel extends LayoutComposite{
      * @return A LayoutPanel.
      */
     private LayoutPanel generalOptionsPanel() {
+        createBasicWindowPanel();
+        bgColorTextBox.addClickHandler(new ClickHandler(){
+
+            public void onClick(ClickEvent arg0) {
+                
+                basic.showModal(false);
+                
+             }
+            
+        });
         LayoutPanel generalOptionsPanel = new LayoutPanel();
         FormLayout layout = new FormLayout(
                 "right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
@@ -130,6 +148,7 @@ public class ChartOptionsPanel extends LayoutComposite{
         builder.addLabel(ConstantFactory.getInstance().legend());
         builder.nextColumn(2);
         builder.add(legendTopButton);
+        builder.nextColumn(2);
         builder.nextColumn(2);
         builder.add(legendRightButton);
         builder.nextLine(2);
@@ -258,4 +277,23 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     
+    private void createBasicWindowPanel() {
+        basic.setSize("500px", "500px");
+        basic = new WindowPanel("Background Color");
+        basic.setAnimationEnabled(true);
+        basic.setWidget(new ColorPicker());
+
+        basic.getHeader().add(Caption.IMAGES.window().createImage());
+
+        //addMaximizeButton(basic, CaptionRegion.RIGHT);
+        //addMinimizeButton(basic, CaptionRegion.RIGHT);
+
+        basic.addCloseHandler(new CloseHandler<PopupPanel>() {
+          public void onClose(CloseEvent<PopupPanel> event) {
+            basic = null;
+          }
+        });
+      }
+
+
 }
