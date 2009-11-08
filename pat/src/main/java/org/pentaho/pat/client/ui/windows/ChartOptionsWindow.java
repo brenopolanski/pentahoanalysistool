@@ -63,7 +63,7 @@ public class ChartOptionsWindow extends WindowPanel {
         chartOptionsPanel.setChartTitleTextBox(cp.getChartTitle());
         chartOptionsPanel.setxAxisTextBox(cp.getxAxisLabel());
         chartOptionsPanel.setyAxisTextBox(cp.getyAxisLabel());
-        cow.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        cow.setSize("550px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         cow.showModal(false);
         cow.layout();
     }
