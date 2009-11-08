@@ -21,6 +21,7 @@ package org.pentaho.pat.client.util.factory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.style.Color;
@@ -58,6 +59,7 @@ import com.rednels.ofcgwt.client.model.elements.dot.SolidDot;
 public class ChartFactory {
 
     Position pos;
+
     /**
      * The Chart Factory Constructor.
      * 
@@ -69,30 +71,38 @@ public class ChartFactory {
      *            The chart title.
      * @return A ChartData object.
      */
-    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle) {
-        switch(chartType){
+    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
+            Map<String, Object> chartOptions) {
+        switch (chartType) {
         case PIE:
-            return getPieChartData(matrix, chartTitle);
+            return getPieChartData(matrix, chartTitle, chartOptions);
         case LINE:
-            return getLineChartData(matrix, chartTitle);
+            return getLineChartData(matrix, chartTitle, chartOptions);
         case BAR:
-            return getBarChartData(matrix, chartTitle);
+            return getBarChartData(matrix, chartTitle, chartOptions);
         default:
             return null;
         }
     }
 
-    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle, Position legendPosition){
-        
-        ChartData cd = getChart(chartType, matrix, chartTitle);
-        if(legendPosition!=null){
-        cd.setLegend(new Legend(legendPosition, true));
-        }
-        
+    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
+            Position legendPosition, Map<String, Object> chartOptions) {
+
+        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions);
+
         return cd;
-        
-        
+
     }
+
+    public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
+            Position legendPosition) {
+        Map<String, Object> chartOptions = null;
+        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions);
+
+        return cd;
+
+    }
+
     /**
      * 
      * Checks if a string is able to be parsed to an integer.
@@ -134,7 +144,8 @@ public class ChartFactory {
      *            The chart title.
      * @return A Chart Data object.
      */
-    private ChartData getBarChartData(final CellDataSet matrix, final String chartTitle) {
+    private ChartData getBarChartData(final CellDataSet matrix, final String chartTitle,
+            Map<String, Object> chartOptions) {
 
         matrix.getCellSetHeaders();
         final PatTableModel patTableModel = new PatTableModel(matrix);
@@ -161,14 +172,15 @@ public class ChartFactory {
         cd.setYAxis(ya);
 
         // TODO Allow users to change the Bar Style.
-        final BarChart bchart2 = new BarChart(BarStyle.GLASS);
+
+        final BarChart bchart2 = new BarChart((BarStyle) chartOptions.get("barStyle")); //$NON-NLS-1$
 
         // TODO Allow user defined tooltips.
         bchart2.setTooltip("$#val#"); //$NON-NLS-1$
 
-        
-        cd.setLegend(new Legend(Position.RIGHT, true));
-
+        if (pos != null) {
+            cd.setLegend(new Legend(pos, true));
+        }
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         final Label[] labels = new Label[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -211,7 +223,8 @@ public class ChartFactory {
         return cd;
     }
 
-    private ChartData getLineChartData(final CellDataSet matrix, final String chartTitle) {
+    private ChartData getLineChartData(final CellDataSet matrix, final String chartTitle,
+            Map<String, Object> chartOptions) {
 
         final PatTableModel patTableModel = new PatTableModel(matrix);
         final BaseCell[][] rowData = patTableModel.getRowData();
@@ -226,8 +239,9 @@ public class ChartFactory {
         // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
-        // TODO Allow user defined Legend on or off and position.
-        cd.setLegend(new Legend(Position.RIGHT, true));
+        if (pos != null) {
+            cd.setLegend(new Legend(pos, true));
+        }
         final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         final BaseCell[][] dataColHeaders = patTableModel.getColumnHeaders();
         final Label[] labels = new Label[data.size()];
@@ -296,7 +310,8 @@ public class ChartFactory {
         return cd;
     }
 
-    private ChartData getPieChartData(final CellDataSet matrix, final String chartTitle) {
+    private ChartData getPieChartData(final CellDataSet matrix, final String chartTitle,
+            Map<String, Object> chartOptions) {
 
         matrix.getCellSetHeaders();
         final PatTableModel patTableModel = new PatTableModel(matrix);
@@ -312,14 +327,14 @@ public class ChartFactory {
         // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
-        // TODO Allow user defined Legend on or off and position.
-        cd.setLegend(new Legend(Position.RIGHT, true));
-
+        if (pos != null) {
+            cd.setLegend(new Legend(pos, true));
+        }
         final PieChart pie = new PieChart();
         pie.setAlpha(0.5f);
         pie.setRadius(130);
         pie.setNoLabels(true);
-        
+
         // TODO Allow user defined tooltips.
         pie.setTooltip("#label# $#val#<br>#percent#"); //$NON-NLS-1$
         pie.setGradientFill(true);

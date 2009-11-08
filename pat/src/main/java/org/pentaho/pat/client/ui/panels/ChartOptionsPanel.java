@@ -19,6 +19,9 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.gwt.mosaic.forms.client.builder.PanelBuilder;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.Caption;
@@ -28,7 +31,6 @@ import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
-import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
@@ -44,86 +46,96 @@ import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.rednels.ofcgwt.client.model.Legend.Position;
+import com.rednels.ofcgwt.client.model.elements.BarChart.BarStyle;
 
 /**
  * Create the chart options panel.
- *
+ * 
  * @created Oct 4, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
- *
+ * 
  */
-public class ChartOptionsPanel extends LayoutComposite{
+public class ChartOptionsPanel extends LayoutComposite {
 
     private WindowPanel basic;
+
     private TextBox chartTitleTextBox = new TextBox();
+
     private TextBox xAxisTextBox = new TextBox();
+
     private TextBox yAxisTextBox = new TextBox();
+
     private TextBox bgColorTextBox = new TextBox();
+
     private Position pos;
-    ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());    
-    ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
+
+    private BarStyle bs = BarStyle.NORMAL;
+
+    private ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
+
+    private ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
+
+    private Map<String, Object> optionsMap = new HashMap<String, Object>();
+
     /**
      * 
      * Chart options constructor.
-     *
+     * 
      */
-    public ChartOptionsPanel(){
+    public ChartOptionsPanel() {
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
 
         tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
         tabPanel.add(barOptionsPanel(), ConstantFactory.getInstance().barChartOptions());
 
-
         this.getLayoutPanel().add(tabPanel);
-        
+
     }
-    
+
     /**
      * Create the general options panel.
-     *
+     * 
      * @return A LayoutPanel.
      */
     private LayoutPanel generalOptionsPanel() {
         createBasicWindowPanel();
-        bgColorTextBox.addClickHandler(new ClickHandler(){
+        bgColorTextBox.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
-                
+
                 basic.showModal(false);
-                
-             }
-            
+
+            }
+
         });
         LayoutPanel generalOptionsPanel = new LayoutPanel();
-        FormLayout layout = new FormLayout(
-                "right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
-                    + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+        FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+                + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
-                    + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
-                    + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
 
-        
         legendTopButton.setStyle(ToolButtonStyle.RADIO);
-        legendTopButton.addClickHandler(new ClickHandler(){
+        legendTopButton.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
                 pos = Position.TOP;
-                
+
             }
-            
+
         });
-        
+
         legendRightButton.setStyle(ToolButtonStyle.RADIO);
         legendRightButton.setEnabled(false);
         legendRightButton.setChecked(true);
-        legendRightButton.addClickHandler(new ClickHandler(){
+        legendRightButton.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
                 pos = Position.RIGHT;
-                
+
             }
-            
+
         });
 
         PanelBuilder builder = new PanelBuilder(layout);
@@ -155,7 +167,6 @@ public class ChartOptionsPanel extends LayoutComposite{
         builder.addLabel(ConstantFactory.getInstance().backgroundColor());
         builder.nextColumn(2);
         builder.add(bgColorTextBox);
-        
 
         generalOptionsPanel.add(builder.getPanel());
         return generalOptionsPanel;
@@ -164,13 +175,19 @@ public class ChartOptionsPanel extends LayoutComposite{
     /**
      * 
      * Create the bar options panel.
-     *
+     * 
      * @return A LayoutPanel.
      */
-    private LayoutPanel barOptionsPanel(){
-        
+    private LayoutPanel barOptionsPanel() {
+
         LayoutPanel barOptionsPanel = new LayoutPanel();
-        
+
+        FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+                + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+                "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
+
         final ListBox<String> listBox = new ListBox<String>();
 
         final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
@@ -178,21 +195,46 @@ public class ChartOptionsPanel extends LayoutComposite{
         model.add(ConstantFactory.getInstance().glass());
         model.add(ConstantFactory.getInstance().normal());
         model.add(ConstantFactory.getInstance().threed());
-        
+
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
             public void onRowSelection(RowSelectionEvent event) {
-              int index = listBox.getSelectedIndex();
-              if (index != -1) {
-                //InfoPanel.show("RowSelectionHandler", listBox.getItem(index));
-              }
+                int index = listBox.getSelectedIndex();
+                if (index != -1) {
+                    switch (listBox.getSelectedIndex()) {
+                    case 0:
+                        setBs(BarStyle.GLASS);
+                        break;
+                    case 1:
+                        setBs(BarStyle.NORMAL);
+                        break;
+                    case 2:
+                        setBs(BarStyle.THREED);
+                        break;
+                    default:
+                        throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                    }
+                }
             }
-          });
+        });
 
+        PanelBuilder builder = new PanelBuilder(layout);
+
+        builder.addSeparator(ConstantFactory.getInstance().titles());
+
+        builder.nextLine(2);
+
+        builder.addLabel(ConstantFactory.getInstance().chartTitle());
+        builder.nextColumn(2);
+        builder.add(listBox);
+        builder.nextLine(2);
+
+        barOptionsPanel.add(builder.getPanel());
         return barOptionsPanel;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the chartTitleTextBox Text Value
      */
     public String getChartTitleTextBox() {
@@ -200,9 +242,11 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param chartTitleTextBox the chartTitleTextBox to set
+     * 
+     * @param chartTitleTextBox
+     *            the chartTitleTextBox to set
      */
     public void setChartTitleTextBox(String chartTitleTextBox) {
         this.chartTitleTextBox.setText(chartTitleTextBox);
@@ -210,6 +254,7 @@ public class ChartOptionsPanel extends LayoutComposite{
 
     /**
      *TODO JAVADOC
+     * 
      * @return the xAxisTextBox Text Value
      */
     public String getxAxisTextBox() {
@@ -217,9 +262,11 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param xAxisTextBox the xAxisTextBox to set
+     * 
+     * @param xAxisTextBox
+     *            the xAxisTextBox to set
      */
     public void setxAxisTextBox(String xAxisTextBox) {
         this.xAxisTextBox.setText(xAxisTextBox);
@@ -227,6 +274,7 @@ public class ChartOptionsPanel extends LayoutComposite{
 
     /**
      *TODO JAVADOC
+     * 
      * @return the yAxisTextBox
      */
     public String getyAxisTextBox() {
@@ -234,9 +282,11 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param yAxisTextBox the yAxisTextBox to set
+     * 
+     * @param yAxisTextBox
+     *            the yAxisTextBox to set
      */
     public void setyAxisTextBox(String yAxisTextBox) {
         this.yAxisTextBox.setText(yAxisTextBox);
@@ -244,6 +294,7 @@ public class ChartOptionsPanel extends LayoutComposite{
 
     /**
      *TODO JAVADOC
+     * 
      * @return the bgColorTextBox
      */
     public String getBgColorTextBox() {
@@ -251,9 +302,11 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param bgColorTextBox the bgColorTextBox to set
+     * 
+     * @param bgColorTextBox
+     *            the bgColorTextBox to set
      */
     public void setBgColorTextBox(String bgColorTextBox) {
         this.bgColorTextBox.setText(bgColorTextBox);
@@ -261,6 +314,7 @@ public class ChartOptionsPanel extends LayoutComposite{
 
     /**
      *TODO JAVADOC
+     * 
      * @return the pos
      */
     public Position getPos() {
@@ -268,32 +322,73 @@ public class ChartOptionsPanel extends LayoutComposite{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param pos the pos to set
+     * 
+     * @param pos
+     *            the pos to set
      */
     public void setPos(Position pos) {
         this.pos = pos;
     }
 
-    
     private void createBasicWindowPanel() {
-        basic.setSize("500px", "500px");
-        basic = new WindowPanel("Background Color");
+
+        basic = new WindowPanel("Background Color"); //$NON-NLS-1$
+        basic.setSize("500px", "500px"); //$NON-NLS-1$ //$NON-NLS-2$
         basic.setAnimationEnabled(true);
-        basic.setWidget(new ColorPicker());
+        ColorPicker cp = new ColorPicker();
+        basic.setWidget(cp);
 
         basic.getHeader().add(Caption.IMAGES.window().createImage());
 
-        //addMaximizeButton(basic, CaptionRegion.RIGHT);
-        //addMinimizeButton(basic, CaptionRegion.RIGHT);
-
         basic.addCloseHandler(new CloseHandler<PopupPanel>() {
-          public void onClose(CloseEvent<PopupPanel> event) {
-            basic = null;
-          }
+            public void onClose(CloseEvent<PopupPanel> event) {
+                basic = null;
+            }
         });
-      }
+    }
 
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param bs
+     *            the bs to set
+     */
+    public void setBs(BarStyle bs) {
+        this.bs = bs;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the bs
+     */
+    public BarStyle getBs() {
+        return bs;
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param barOptions
+     *            the barOptions to set
+     */
+    public void setBarOptions(Map<String, Object> optionsMap) {
+        this.optionsMap = optionsMap;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the barOptions
+     */
+    public Map<String, Object> getOptionsMap() {
+        optionsMap = new HashMap<String, Object>();
+        optionsMap.put("barStyle", bs); //$NON-NLS-1$
+        return optionsMap;
+    }
 
 }

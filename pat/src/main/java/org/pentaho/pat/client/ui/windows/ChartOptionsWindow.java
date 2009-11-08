@@ -86,6 +86,7 @@ public class ChartOptionsWindow extends WindowPanel {
                 cp.setxAxisLabel(chartOptionsPanel.getxAxisTextBox());
                 cp.setyAxisLabel(chartOptionsPanel.getyAxisTextBox());
                 cp.setPos(chartOptionsPanel.getPos());
+                cp.setOptionsMap(chartOptionsPanel.getOptionsMap());
                 cp.updateChart();
                 cow.hide();
             }
