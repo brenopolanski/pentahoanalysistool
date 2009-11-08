@@ -1,5 +1,21 @@
 package org.pentaho.pat.client.util.colorpicker;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+
 /**
  * Copyright (c) 2007, AurorisNET.
  *
@@ -182,9 +198,7 @@ package org.pentaho.pat.client.util.colorpicker;
  * DAMAGE.
  */
 
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
+
 
 /**
  * This is the implementation of the Colorpicker. It defines the user interface, the glue and calculations necessary for colorpicker functionality.
@@ -215,7 +229,7 @@ import com.google.gwt.user.client.Window;
  * @author AurorisNET
  * @copyright (C) 2007 AurorisNET. All Rights Reserved.
  */
-public class ColorPicker extends Composite implements ClickListener, KeyboardListener, ChangeListener
+public class ColorPicker extends Composite implements ClickHandler, KeyPressHandler, ChangeHandler
 {
 	// Elements
 	private HTML colorpreview;
@@ -265,110 +279,110 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 		// Add the large slider map
 		slidermap = new SliderMap(this);
 		panel.add(slidermap);
-		panel.setCellWidth(slidermap, "258px");
-		panel.setCellHeight(slidermap, "258px");
+		panel.setCellWidth(slidermap, "258px"); //$NON-NLS-1$
+		panel.setCellHeight(slidermap, "258px"); //$NON-NLS-1$
 
 		// Add the small slider bar
 		sliderbar = new SliderBar(this);
 		panel.add(sliderbar);
-		panel.setCellWidth(sliderbar, "40px");
-		panel.setCellHeight(sliderbar, "258px");
+		panel.setCellWidth(sliderbar, "40px"); //$NON-NLS-1$
+		panel.setCellHeight(sliderbar, "258px"); //$NON-NLS-1$
 
 		// Define the Flextable's content
 		// Color preview at the top
-		colorpreview = new HTML("");
-		colorpreview.setWidth("50px");
-		colorpreview.setHeight("50px");
-		DOM.setStyleAttribute(colorpreview.getElement(), "border", "1px solid black");
+		colorpreview = new HTML(""); //$NON-NLS-1$
+		colorpreview.setWidth("50px"); //$NON-NLS-1$
+		colorpreview.setHeight("50px"); //$NON-NLS-1$
+		DOM.setStyleAttribute(colorpreview.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Radio buttons
-		rbHue = new RadioButton("color", "H:");
-		rbHue.addClickListener(this);
-		rbSaturation = new RadioButton("color", "S:");
-		rbSaturation.addClickListener(this);
-		rbBrightness = new RadioButton("color", "V:");
-		rbBrightness.addClickListener(this);
-		rbRed = new RadioButton("color", "R:");
-		rbRed.addClickListener(this);
-		rbGreen = new RadioButton("color", "G:");
-		rbGreen.addClickListener(this);
-		rbBlue = new RadioButton("color", "B:");
-		rbBlue.addClickListener(this);
+		rbHue = new RadioButton("color", "H:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbHue.addClickHandler(this);
+		rbSaturation = new RadioButton("color", "S:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbSaturation.addClickHandler(this);
+		rbBrightness = new RadioButton("color", "V:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbBrightness.addClickHandler(this);
+		rbRed = new RadioButton("color", "R:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbRed.addClickHandler(this);
+		rbGreen = new RadioButton("color", "G:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbGreen.addClickHandler(this);
+		rbBlue = new RadioButton("color", "B:"); //$NON-NLS-1$ //$NON-NLS-2$
+		rbBlue.addClickHandler(this);
 
 		// Textboxes
 		tbHue = new TextBox();
 		tbHue.setText(new Integer(hue).toString());
 		tbHue.setMaxLength(3);
 		tbHue.setVisibleLength(4);
-		tbHue.addKeyboardListener(this);
-		tbHue.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbHue.addChangeHandler(this);
 		tbSaturation = new TextBox();
 		tbSaturation.setText(new Integer(saturation).toString());
 		tbSaturation.setMaxLength(3);
 		tbSaturation.setVisibleLength(4);
-		tbSaturation.addKeyboardListener(this);
-		tbSaturation.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbSaturation.addChangeHandler(this);
 		tbBrightness = new TextBox();
 		tbBrightness.setText(new Integer(brightness).toString());
 		tbBrightness.setMaxLength(3);
 		tbBrightness.setVisibleLength(4);
-		tbBrightness.addKeyboardListener(this);
-		tbBrightness.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbBrightness.addChangeHandler(this);
 		tbRed = new TextBox();
 		tbRed.setText(new Integer(red).toString());
 		tbRed.setMaxLength(3);
 		tbRed.setVisibleLength(4);
-		tbRed.addKeyboardListener(this);
-		tbRed.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbRed.addChangeHandler(this);
 		tbGreen = new TextBox();
 		tbGreen.setText(new Integer(green).toString());
 		tbGreen.setMaxLength(3);
 		tbGreen.setVisibleLength(4);
-		tbGreen.addKeyboardListener(this);
-		tbGreen.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbGreen.addChangeHandler(this);
 		tbBlue = new TextBox();
 		tbBlue.setText(new Integer(blue).toString());
 		tbBlue.setMaxLength(3);
 		tbBlue.setVisibleLength(4);
-		tbBlue.addKeyboardListener(this);
-		tbBlue.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbBlue.addChangeHandler(this);
 		tbHexColor = new TextBox();
-		tbHexColor.setText("ff0000");
+		tbHexColor.setText("ff0000"); //$NON-NLS-1$
 		tbHexColor.setMaxLength(6);
 		tbHexColor.setVisibleLength(6);
-		tbHexColor.addKeyboardListener(this);
-		tbHexColor.addChangeListener(this);
+		tbHue.addKeyPressHandler(this);
+		tbHexColor.addChangeHandler(this);
 
 		// Put together the FlexTable
 		table.setWidget(0, 0, colorpreview);
 		table.getFlexCellFormatter().setColSpan(0, 0, 3);
 		table.setWidget(1, 0, rbHue);
 		table.setWidget(1, 1, tbHue);
-		table.setWidget(1, 2, new HTML("&deg;"));
+		table.setWidget(1, 2, new HTML("&deg;")); //$NON-NLS-1$
 		table.setWidget(2, 0, rbSaturation);
 		table.setWidget(2, 1, tbSaturation);
-		table.setText(2, 2, "%");
+		table.setText(2, 2, "%"); //$NON-NLS-1$
 		table.setWidget(3, 0, rbBrightness);
 		table.setWidget(3, 1, tbBrightness);
-		table.setText(3, 2, "%");
+		table.setText(3, 2, "%"); //$NON-NLS-1$
 		table.setWidget(4, 0, rbRed);
 		table.setWidget(4, 1, tbRed);
 		table.setWidget(5, 0, rbGreen);
 		table.setWidget(5, 1, tbGreen);
 		table.setWidget(6, 0, rbBlue);
 		table.setWidget(6, 1, tbBlue);
-		table.setText(7,0, "#:");
+		table.setText(7,0, "#:"); //$NON-NLS-1$
 		table.setWidget(7,1, tbHexColor);
 		table.getFlexCellFormatter().setColSpan(7, 1, 2);
 
 		// Final setup
 		panel.add(table);
-		rbSaturation.setChecked(true);
-		setPreview("ff0000");
-		DOM.setStyleAttribute(colorpreview.getElement(), "cursor", "default");
+		rbSaturation.setValue(true);
+		setPreview("ff0000"); //$NON-NLS-1$
+		DOM.setStyleAttribute(colorpreview.getElement(), "cursor", "default"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// First event
-		onClick(rbSaturation);
+		onClick2(rbSaturation);
 
 		initWidget(panel);
 	}
@@ -392,7 +406,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 */
 	private void setPreview(String hex)
 	{
-		DOM.setStyleAttribute(colorpreview.getElement(), "backgroundColor", "#" + hex);
+		DOM.setStyleAttribute(colorpreview.getElement(), "backgroundColor", "#" + hex); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -411,42 +425,42 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				brightness = 100 - percentOf(y, 100);
 				tbSaturation.setText(Integer.toString(saturation));
 				tbBrightness.setText(Integer.toString(brightness));
-				onChange(tbHue);
+				onChange2(tbHue);
 				break;
 			case SliderMap.Saturation:
 				hue = percentOf(x, 360);
 				brightness = 100 - percentOf(y, 100);
 				tbHue.setText(Integer.toString(hue));
 				tbBrightness.setText(Integer.toString(brightness));
-				onChange(tbSaturation);
+				onChange2(tbSaturation);
 				break;
 			case SliderMap.Brightness:
 				hue = percentOf(x, 360);
 				saturation = 100 - percentOf(y, 100);
 				tbHue.setText(Integer.toString(hue));
 				tbSaturation.setText(Integer.toString(saturation));
-				onChange(tbBrightness);
+				onChange2(tbBrightness);
 				break;
 			case SliderMap.Red:
 				blue = x;
 				green = 256 - y;
 				tbBlue.setText(Integer.toString(blue));
 				tbGreen.setText(Integer.toString(green));
-				onChange(tbRed);
+				onChange2(tbRed);
 				break;
 			case SliderMap.Green:
 				blue = x;
 				red = 256 - y;
 				tbBlue.setText(Integer.toString(blue));
 				tbRed.setText(Integer.toString(red));
-				onChange(tbGreen);
+				onChange2(tbGreen);
 				break;
 			case SliderMap.Blue:
 				red = x;
 				green = 256 - y;
 				tbRed.setText(Integer.toString(red));
 				tbGreen.setText(Integer.toString(green));
-				onChange(tbBlue);
+				onChange2(tbBlue);
 				break;
 		}
 	}
@@ -464,32 +478,32 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			case SliderMap.Hue:
 				hue = 360 - percentOf(y, 360);
 				tbHue.setText(Integer.toString(hue));
-				onChange(tbHue);
+				onChange2(tbHue);
 				break;
 			case SliderMap.Saturation:
 				saturation = 100 - percentOf(y, 100);
 				tbSaturation.setText(Integer.toString(saturation));
-				onChange(tbSaturation);
+				onChange2(tbSaturation);
 				break;
 			case SliderMap.Brightness:
 				brightness = 100 - percentOf(y, 100);
 				tbBrightness.setText(Integer.toString(brightness));
-				onChange(tbBrightness);
+				onChange2(tbBrightness);
 				break;
 			case SliderMap.Red:
 				red = 255 - y;
 				tbRed.setText(Integer.toString(red));
-				onChange(tbRed);
+				onChange2(tbRed);
 				break;
 			case SliderMap.Green:
 				green = 255 - y;
 				tbGreen.setText(Integer.toString(green));
-				onChange(tbGreen);
+				onChange2(tbGreen);
 				break;
 			case SliderMap.Blue:
 				blue = 255 - y;
 				tbBlue.setText(Integer.toString(blue));
-				onChange(tbBlue);
+				onChange2(tbBlue);
 				break;
 		}
 	}
@@ -500,7 +514,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 * Subclasses that override this method must call <tt>super.onClick(sender)</tt> to ensure that the Widget recieves its events.
 	 * @param sender the widget sending the event.
 	 */
-	public void onClick(Widget sender)
+	public void onClick2(Widget sender)
 	{
 		if (sender == rbHue)
 		{
@@ -517,7 +531,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				Color color = new Color();
 				color.setHSV(hue, 100, 100);
-				slidermap.setOverlayColor("#" + color.getHex());
+				slidermap.setOverlayColor("#" + color.getHex()); //$NON-NLS-1$
 			}
 			catch (Exception e) {}
 
@@ -532,8 +546,8 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				colorMode = SliderMap.Saturation;
 				slidermap.setColorSelectMode(SliderMap.Saturation);
 				sliderbar.setColorSelectMode(SliderBar.Saturation);
-				slidermap.setOverlayColor("transparent");
-				sliderbar.setLayerColor("#ffffff", SliderBar.BarC);
+				slidermap.setOverlayColor("transparent"); //$NON-NLS-1$
+				sliderbar.setLayerColor("#ffffff", SliderBar.BarC); //$NON-NLS-1$
 				sliderbar.setLayerOpacity(100, SliderBar.BarD);
 			}
 
@@ -551,8 +565,8 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				colorMode = SliderMap.Brightness;
 				slidermap.setColorSelectMode(SliderMap.Brightness);
 				sliderbar.setColorSelectMode(SliderBar.Brightness);
-				slidermap.setUnderlayColor("#000000");
-				slidermap.setOverlayColor("transparent");
+				slidermap.setUnderlayColor("#000000"); //$NON-NLS-1$
+				slidermap.setOverlayColor("transparent"); //$NON-NLS-1$
 				sliderbar.setLayerOpacity(100, SliderBar.BarD);
 			}
 
@@ -560,7 +574,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				Color color = new Color();
 				color.setHSV(hue, saturation, 100);
-				sliderbar.setLayerColor("#" + color.getHex(), SliderBar.BarD);
+				sliderbar.setLayerColor("#" + color.getHex(), SliderBar.BarD); //$NON-NLS-1$
 			}
 			catch (Exception e) {}
 
@@ -665,7 +679,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 * Subclasses that override this method must call <tt>super.onChange(sender)</tt> to ensure that the Widget recieves its events.
 	 * @param sender the widget that has changed.
 	 */
-	public void onChange(Widget sender)
+	public void onChange2(Widget sender)
 	{
 	    if (sender == tbHexColor)
         {
@@ -696,11 +710,11 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				if (Integer.parseInt(((TextBox)sender).getText()) > 255)
 				{
-					((TextBox)sender).setText("255");
+					((TextBox)sender).setText("255"); //$NON-NLS-1$
 				}
 				if (Integer.parseInt(((TextBox)sender).getText()) < 0)
 				{
-					((TextBox)sender).setText("0");
+					((TextBox)sender).setText("0"); //$NON-NLS-1$
 				}
 			}
 			catch (Exception e)
@@ -736,17 +750,17 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				if (Integer.parseInt(tbHue.getText()) > 359)
 				{
-					tbHue.setText("359");
+					tbHue.setText("359"); //$NON-NLS-1$
 				}
 
 				if (Integer.parseInt(tbSaturation.getText()) > 100)
 				{
-					tbSaturation.setText("100");
+					tbSaturation.setText("100"); //$NON-NLS-1$
 				}
 
 				if (Integer.parseInt(tbBrightness.getText()) > 100)
 				{
-					tbBrightness.setText("100");
+					tbBrightness.setText("100"); //$NON-NLS-1$
 				}
 			}
 			catch (Exception e)
@@ -803,12 +817,12 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				&& (keyCode != 'D') && (keyCode != 'd')
 				&& (keyCode != 'E') && (keyCode != 'e')
 				&& (keyCode != 'F') && (keyCode != 'f')
-				&& (keyCode != (char) KeyboardListener.KEY_TAB)
-				&& (keyCode != (char) KeyboardListener.KEY_BACKSPACE)
-				&& (keyCode != (char) KeyboardListener.KEY_DELETE) && (keyCode != (char) KeyboardListener.KEY_ENTER)
-				&& (keyCode != (char) KeyboardListener.KEY_HOME) && (keyCode != (char) KeyboardListener.KEY_END)
-				&& (keyCode != (char) KeyboardListener.KEY_LEFT) && (keyCode != (char) KeyboardListener.KEY_UP)
-				&& (keyCode != (char) KeyboardListener.KEY_RIGHT) && (keyCode != (char) KeyboardListener.KEY_DOWN))
+				&& (keyCode != (char) KeyCodes.KEY_TAB)
+				&& (keyCode != (char) KeyCodes.KEY_BACKSPACE)
+				&& (keyCode != (char) KeyCodes.KEY_DELETE) && (keyCode != (char) KeyCodes.KEY_ENTER)
+				&& (keyCode != (char) KeyCodes.KEY_HOME) && (keyCode != (char) KeyCodes.KEY_END)
+				&& (keyCode != (char) KeyCodes.KEY_LEFT) && (keyCode != (char) KeyCodes.KEY_UP)
+				&& (keyCode != (char) KeyCodes.KEY_RIGHT) && (keyCode != (char) KeyCodes.KEY_DOWN))
 			{
 				((TextBox)sender).cancelKey();
 			}
@@ -817,12 +831,13 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 		{
 			// Disallow non-numerics in numeric boxes
 			if ((!Character.isDigit(keyCode))
-				&& (keyCode != (char) KeyboardListener.KEY_TAB)
-				&& (keyCode != (char) KeyboardListener.KEY_BACKSPACE)
-				&& (keyCode != (char) KeyboardListener.KEY_DELETE) && (keyCode != (char) KeyboardListener.KEY_ENTER)
-				&& (keyCode != (char) KeyboardListener.KEY_HOME) && (keyCode != (char) KeyboardListener.KEY_END)
-				&& (keyCode != (char) KeyboardListener.KEY_LEFT) && (keyCode != (char) KeyboardListener.KEY_UP)
-				&& (keyCode != (char) KeyboardListener.KEY_RIGHT) && (keyCode != (char) KeyboardListener.KEY_DOWN))
+				&& (keyCode != (char) KeyCodes.KEY_TAB)
+				&& (keyCode != (char) KeyCodes.KEY_BACKSPACE)
+				&& (keyCode != (char) KeyCodes.KEY_DELETE) && (keyCode != (char) KeyCodes.KEY_ENTER)
+				&& (keyCode != (char) KeyCodes.KEY_HOME) && (keyCode != (char) KeyCodes.KEY_END)
+				&& (keyCode != (char) KeyCodes.KEY_LEFT) && (keyCode != (char) KeyCodes.KEY_UP)
+				&& (keyCode != (char) KeyCodes.KEY_RIGHT) && (keyCode != (char) KeyCodes.KEY_DOWN))
+			    
 			{
 				((TextBox)sender).cancelKey();
 			}
@@ -840,7 +855,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 */
 	public void onKeyUp(Widget sender, char keyCode, int modifiers)
 	{
-		onChange(sender);
+		onChange2(sender);
 	}
 
 	/**
@@ -977,11 +992,35 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	private void updateSliders()
 	{
 		// Let the sliders know something's changed
-		if (rbHue.isChecked()) onClick(rbHue);
-		if (rbSaturation.isChecked()) onClick(rbSaturation);
-		if (rbBrightness.isChecked()) onClick(rbBrightness);
-		if (rbRed.isChecked()) onClick(rbRed);
-		if (rbGreen.isChecked()) onClick(rbGreen);
-		if (rbBlue.isChecked()) onClick(rbBlue);
+		if (rbHue.getValue()) onClick2(rbHue);
+		if (rbSaturation.getValue()) onClick2(rbSaturation);
+		if (rbBrightness.getValue()) onClick2(rbBrightness);
+		if (rbRed.getValue()) onClick2(rbRed);
+		if (rbGreen.getValue()) onClick2(rbGreen);
+		if (rbBlue.getValue()) onClick2(rbBlue);
 	}
-}
+
+    /* (non-Javadoc)
+     * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
+     */
+    public void onClick(ClickEvent arg0) {
+        // TODO Auto-generated method stub
+        onClick2(this);
+    }
+
+    /* (non-Javadoc)
+     * @see com.google.gwt.event.dom.client.KeyPressHandler#onKeyPress(com.google.gwt.event.dom.client.KeyPressEvent)
+     */
+    public void onKeyPress(KeyPressEvent arg0) {
+        onChange2(this);
+    }
+
+    /* (non-Javadoc)
+     * @see com.google.gwt.event.dom.client.ChangeHandler#onChange(com.google.gwt.event.dom.client.ChangeEvent)
+     */
+    public void onChange(ChangeEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+ }

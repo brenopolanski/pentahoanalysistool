@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.Map;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -48,154 +49,63 @@ import com.rednels.ofcgwt.client.model.Legend.Position;
 
 /**
  * Create the chart panel, currently supports Open Flash Charts.
- *
- * @since 0.5.0 
+ * 
+ * @since 0.5.0
  * @author tom(at)wamonline.org.uk
  * 
  */
 public class ChartPanel extends LayoutComposite implements IQueryListener {
 
-
-    private CellDataSet matrix;
-    private final ChartWidget chart = new ChartWidget();
-    private ChartFactory cf = new ChartFactory();
-    private ChartType ct = ChartType.LINE;
-    private final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
-    private LayoutPanel chartLayoutPanel = new LayoutPanel();
-    private String chartTitle = new String();
-    private String xAxisLabel = new String();
-    private String yAxisLabel = new String();
-    private Position pos; 
     /**
      * Chart Type Enum.
+     * 
      * @author tom(at)wamonline.org.uk
      * @since 0.5.0
      */
     public enum ChartType {
-        PIE,
-        BAR,
-        LINE
+        PIE, BAR, LINE
     }
+
+    private CellDataSet matrix;
+
+    private final ChartWidget chart = new ChartWidget();
+
+    private final ChartFactory cf = new ChartFactory();
+
+    private ChartType ct = ChartType.LINE;
+
+    private final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout());
+
+    private final LayoutPanel chartLayoutPanel = new LayoutPanel();
+
+    private String chartTitle = new String();
+
+    private String xAxisLabel = new String();
+
+    private String yAxisLabel = new String();
+
+    private Position pos;
+
+    private Map<String, Object> optionsMap;
+
     /**
      * Chart Panel Constructor.
      */
-    public ChartPanel(){
+    public ChartPanel() {
         GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
-        ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
-        ((BoxLayout)layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
+        ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+        ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
-        layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH)); 
-        
+        layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
+
         this.getLayoutPanel().add(layoutPanel);
 
     }
 
-    /* (non-Javadoc)
+    /**
+     *TODO JAVADOC
      * 
-     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
-     */
-    public void onQueryChange(Widget sender) {
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String, org.pentaho.pat.rpc.dto.CellDataSet)
-     */
-    public void onQueryExecuted(String queryId, CellDataSet matrix) {
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()){
-            this.matrix = matrix;
-            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-            WidgetWrapper wr = new WidgetWrapper(chart);
-            chartLayoutPanel.add(wr);
-            this.layout();
-        }
-    }
-
-    /**
-     * 
-     * Button Panel for chart panel.
-     *
-     * @return A LayoutPanel containing chart buttons.
-     */
-    private LayoutPanel createBtnLayoutPanel(){
-        final LayoutPanel buttonsBox = new LayoutPanel();
-        buttonsBox.setLayout(new BoxLayout());
-
-        ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().pieChart(),
-                ButtonLabelType.TEXT_ON_TOP));
-        pieButton.addClickHandler(new ClickHandler(){
-
-            public void onClick(ClickEvent arg0) {
-                ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-                
-            }
-
-        });
-
-        ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().barChart(),
-                ButtonLabelType.TEXT_ON_TOP));
-        
-        barButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent arg0) {
-                ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-            }
-        });
-
-
-        ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().lineChart(),
-                ButtonLabelType.TEXT_ON_TOP));
-        
-        lineButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent arg0) {
-                ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-            }
-        });
-
-        
-        ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(
-                MessageBox.MESSAGEBOX_IMAGES.dialogInformation(), ConstantFactory.getInstance().chartOptions(),
-                ButtonLabelType.TEXT_ON_TOP));
-        
-        optionsButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent arg0) {
-                ChartOptionsWindow.display(ChartPanel.this);
-            }
-        });
-
-
-        buttonsBox.add(pieButton);
-        buttonsBox.add(barButton);
-        buttonsBox.add(lineButton);
-        buttonsBox.add(optionsButton);
-        return buttonsBox;
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the ct
-     */
-    public ChartType getCt() {
-        return ct;
-    }
-
-    /**
-     *
-     *TODO JAVADOC
-     * @param ct the ct to set
-     */
-    public void setCt(ChartType ct) {
-        this.ct = ct;
-    }
-
-    /**
-     *TODO JAVADOC
      * @return the chartTitle
      */
     public String getChartTitle() {
@@ -203,60 +113,17 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     }
 
     /**
-     *
      *TODO JAVADOC
-     * @param chartTitle the chartTitle to set
+     * 
+     * @return the ct
      */
-    public void setChartTitle(String chartTitle) {
-        this.chartTitle = chartTitle;
+    public ChartType getCt() {
+        return ct;
     }
 
     /**
      *TODO JAVADOC
-     *
-     */
-    public void updateChart() {
-        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos));
-        chartLayoutPanel.add(chart);
-        this.layout();
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the xAxisLabel
-     */
-    public String getxAxisLabel() {
-        return xAxisLabel;
-    }
-
-    /**
-     *
-     *TODO JAVADOC
-     * @param xAxisLabel the xAxisLabel to set
-     */
-    public void setxAxisLabel(String xAxisLabel) {
-        this.xAxisLabel = xAxisLabel;
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the yAxisLabel
-     */
-    public String getyAxisLabel() {
-        return yAxisLabel;
-    }
-
-    /**
-     *
-     *TODO JAVADOC
-     * @param yAxisLabel the yAxisLabel to set
-     */
-    public void setyAxisLabel(String yAxisLabel) {
-        this.yAxisLabel = yAxisLabel;
-    }
-
-    /**
-     *TODO JAVADOC
+     * 
      * @return the pos
      */
     public Position getPos() {
@@ -264,12 +131,180 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     }
 
     /**
-     *
      *TODO JAVADOC
-     * @param pos the pos to set
+     * 
+     * @return the xAxisLabel
      */
-    public void setPos(Position pos) {
+    public String getxAxisLabel() {
+        return xAxisLabel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the yAxisLabel
+     */
+    public String getyAxisLabel() {
+        return yAxisLabel;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
+     */
+    public void onQueryChange(final Widget sender) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String,
+     * org.pentaho.pat.rpc.dto.CellDataSet)
+     */
+    public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+            this.matrix = matrix;
+            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+            final WidgetWrapper wr = new WidgetWrapper(chart);
+            chartLayoutPanel.add(wr);
+            this.layout();
+        }
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param chartTitle
+     *            the chartTitle to set
+     */
+    public void setChartTitle(final String chartTitle) {
+        this.chartTitle = chartTitle;
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param ct
+     *            the ct to set
+     */
+    public void setCt(final ChartType ct) {
+        this.ct = ct;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @param barOptions
+     */
+    public void setOptionsMap(final Map<String, Object> optionsMap) {
+        this.optionsMap = optionsMap;
+
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param pos
+     *            the pos to set
+     */
+    public void setPos(final Position pos) {
         this.pos = pos;
-        
+
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param xAxisLabel
+     *            the xAxisLabel to set
+     */
+    public void setxAxisLabel(final String xAxisLabel) {
+        this.xAxisLabel = xAxisLabel;
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
+     * @param yAxisLabel
+     *            the yAxisLabel to set
+     */
+    public void setyAxisLabel(final String yAxisLabel) {
+        this.yAxisLabel = yAxisLabel;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     */
+    public void updateChart() {
+        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+        chartLayoutPanel.add(chart);
+        this.layout();
+    }
+
+    /**
+     * 
+     * Button Panel for chart panel.
+     * 
+     * @return A LayoutPanel containing chart buttons.
+     */
+    private LayoutPanel createBtnLayoutPanel() {
+        final LayoutPanel buttonsBox = new LayoutPanel();
+        buttonsBox.setLayout(new BoxLayout());
+
+        final ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+                .dialogInformation(), ConstantFactory.getInstance().pieChart(), ButtonLabelType.TEXT_ON_TOP));
+        pieButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ct = ChartType.PIE;
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+
+            }
+
+        });
+
+        final ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+                .dialogInformation(), ConstantFactory.getInstance().barChart(), ButtonLabelType.TEXT_ON_TOP));
+
+        barButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+                ct = ChartType.BAR;
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+            }
+        });
+
+        final ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+                .dialogInformation(), ConstantFactory.getInstance().lineChart(), ButtonLabelType.TEXT_ON_TOP));
+
+        lineButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ct = ChartType.LINE;
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+            }
+        });
+
+        final ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+                .dialogInformation(), ConstantFactory.getInstance().chartOptions(), ButtonLabelType.TEXT_ON_TOP));
+
+        optionsButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+                ChartOptionsWindow.display(ChartPanel.this);
+            }
+        });
+
+        buttonsBox.add(pieButton);
+        buttonsBox.add(barButton);
+        buttonsBox.add(lineButton);
+        buttonsBox.add(optionsButton);
+        return buttonsBox;
     }
 }
