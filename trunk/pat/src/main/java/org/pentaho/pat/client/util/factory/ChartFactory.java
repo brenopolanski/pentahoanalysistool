@@ -161,22 +161,15 @@ public class ChartFactory {
         // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
-        final XAxis xa = new XAxis();
+        XAxis xa = createXAxis(chartOptions);
 
+        YAxis ya = createYAxis(chartOptions);
+        
         cd.setXAxis(xa);
-        final YAxis ya = new YAxis();
+        
 
         // TODO Allow users to select the steppage.
-        ya.setSteps(16);
-
-        ya.setColour((String) chartOptions.get("yaxisColor")); //$NON-NLS-1$
-        
-        ya.setGridColour((String) chartOptions.get("yaxisGridColor")); //$NON-NLS-1$
-        
-        ya.setMax((Number) chartOptions.get("yaxisMin")); //$NON-NLS-1$
-        
-        ya.setMin((Number) chartOptions.get("yaxisMax")); //$NON-NLS-1$
-        
+             
         cd.setYAxis(ya);
 
         final BarChart bchart2 = new BarChart((BarStyle) chartOptions.get("barStyle")); //$NON-NLS-1$
@@ -198,14 +191,6 @@ public class ChartFactory {
 
         }
 
-        xa.setColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
-        
-        xa.setGridColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
-        
-        xa.setMax((Number) chartOptions.get("xaxisMin")); //$NON-NLS-1$
-        
-        xa.setMin((Number) chartOptions.get("xaxisMax"));         //$NON-NLS-1$
-        
         xa.addLabels(labels);
         
         int maxval = 0;
@@ -237,6 +222,47 @@ public class ChartFactory {
         return cd;
     }
 
+    private YAxis createYAxis(Map<String, Object> chartOptions){
+        final YAxis ya = new YAxis();
+        ya.setSteps(16);
+
+        if(chartOptions!=null){
+        if(chartOptions.containsKey("yaxisColor"))
+        ya.setColour((String) chartOptions.get("yaxisColor")); //$NON-NLS-1$
+        
+        if(chartOptions.containsKey("yaxisGridColor"))
+        ya.setGridColour((String) chartOptions.get("yaxisGridColor")); //$NON-NLS-1$
+        
+        if(chartOptions.containsKey("yaxisMin"))
+        ya.setMin(Integer.parseInt((String) chartOptions.get("yaxisMin"))); //$NON-NLS-1$
+        
+        if(chartOptions.containsKey("yaxisMax"))
+        ya.setMax(Integer.parseInt((String) chartOptions.get("yaxisMax"))); //$NON-NLS-1$
+        }
+        return ya;
+
+    }
+    
+    private XAxis createXAxis(Map<String, Object> chartOptions){
+        final XAxis xa = new XAxis();        
+    if(chartOptions!=null){
+        if(chartOptions.containsKey("xaxisColor"))
+            xa.setColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
+            
+            if(chartOptions.containsKey("xaxisGridColor"))
+            xa.setGridColour((String) chartOptions.get("xaxisGridColor")); //$NON-NLS-1$
+            
+            if(chartOptions.containsKey("xaxisMin"))
+            xa.setMin(Integer.parseInt((String) chartOptions.get("xaxisMin"))); //$NON-NLS-1$
+            
+            if(chartOptions.containsKey("xaxisMax"))
+            xa.setMin(Integer.parseInt((String) chartOptions.get("xaxisMax")));         //$NON-NLS-1$
+    }
+            return xa;
+            
+            
+
+    }
     private ChartData getLineChartData(final CellDataSet matrix, final String chartTitle,
             Map<String, Object> chartOptions) {
 
@@ -307,20 +333,12 @@ public class ChartFactory {
             actualRow++;
         }
 
-        final XAxis xa = new XAxis();
-        xa.setSteps(2);
-        xa.addLabels(labels);
-        cd.setXAxis(xa);
+        XAxis xa = createXAxis(chartOptions);
 
-        final YAxis ya = new YAxis();
-
-        ya.setMin(minval);
-        cd.setYAxis(ya);
-
-        // cd.setXLegend(new Text(xLegend, "{font-size: 10px; color: #000000}"));
-
-        ya.setMax(maxval);
-
+        YAxis ya = createYAxis(chartOptions);
+      // cd.setXAxis(xa);
+      //  cd.setYAxis(ya);
+        
         return cd;
     }
 
