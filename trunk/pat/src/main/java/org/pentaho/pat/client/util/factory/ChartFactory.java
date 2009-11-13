@@ -169,9 +169,15 @@ public class ChartFactory {
         // TODO Allow users to select the steppage.
         ya.setSteps(16);
 
+        ya.setColour((String) chartOptions.get("yaxisColor")); //$NON-NLS-1$
+        
+        ya.setGridColour((String) chartOptions.get("yaxisGridColor")); //$NON-NLS-1$
+        
+        ya.setMax((Number) chartOptions.get("yaxisMin")); //$NON-NLS-1$
+        
+        ya.setMin((Number) chartOptions.get("yaxisMax")); //$NON-NLS-1$
+        
         cd.setYAxis(ya);
-
-        // TODO Allow users to change the Bar Style.
 
         final BarChart bchart2 = new BarChart((BarStyle) chartOptions.get("barStyle")); //$NON-NLS-1$
 
@@ -192,8 +198,16 @@ public class ChartFactory {
 
         }
 
+        xa.setColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
+        
+        xa.setGridColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
+        
+        xa.setMax((Number) chartOptions.get("xaxisMin")); //$NON-NLS-1$
+        
+        xa.setMin((Number) chartOptions.get("xaxisMax"));         //$NON-NLS-1$
+        
         xa.addLabels(labels);
-
+        
         int maxval = 0;
         for (int i = 0; i < data.size(); i++) {
             final BaseCell[] cell = data.get(i);
@@ -208,7 +222,7 @@ public class ChartFactory {
 
                     public void onClick(final ChartClickEvent event) {
                         // TODO Allow chart drilling.
-                        MessageBox.info("Clicked Bar", bar.getColour());
+                        MessageBox.info("Clicked Bar", bar.getColour()); //$NON-NLS-1$
                     }
 
                 });
@@ -277,7 +291,7 @@ public class ChartFactory {
 
                         public void onClick(final ChartClickEvent event) {
                             // TODO Allow chart drilling.
-                            MessageBox.info("Clicked Bar", dot.getColour());
+                            MessageBox.info("Clicked Bar", dot.getColour()); //$NON-NLS-1$
                         }
 
                     });
@@ -355,7 +369,7 @@ public class ChartFactory {
 
                     public void onClick(final ChartClickEvent event) {
                         // TODO Allow chart drilling.
-                        MessageBox.info("Clicked Slice", slice.getLabel());
+                        MessageBox.info("Clicked Slice", slice.getLabel()); //$NON-NLS-1$
                     }
 
                 });

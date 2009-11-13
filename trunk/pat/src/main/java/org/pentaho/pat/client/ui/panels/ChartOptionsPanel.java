@@ -78,6 +78,22 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private Map<String, Object> optionsMap = new HashMap<String, Object>();
 
+    private TextBox yaxisColorTextBox = new TextBox();
+
+    private TextBox yAxisGridColorTextBox = new TextBox();
+
+    private TextBox yAxisMinTextBox = new TextBox();
+
+    private TextBox yAxisMaxTextBox = new TextBox();
+
+    private TextBox xaxisColorTextBox = new TextBox();
+
+    private TextBox xaxisGridColorTextBox = new TextBox();
+
+    private TextBox xaxisMinTextBox = new TextBox();
+
+    private TextBox xaxisMaxTextBox = new TextBox();
+
     /**
      * 
      * Chart options constructor.
@@ -167,7 +183,43 @@ public class ChartOptionsPanel extends LayoutComposite {
         builder.addLabel(ConstantFactory.getInstance().backgroundColor());
         builder.nextColumn(2);
         builder.add(bgColorTextBox);
-
+        builder.nextLine(2);
+        builder.addLabel(ConstantFactory.getInstance().yaxisColor());
+        builder.nextColumn(2);
+        builder.add(yaxisColorTextBox);
+        builder.nextColumn(2);
+        builder.addLabel(ConstantFactory.getInstance().yaxisGridColor());
+        builder.nextColumn(2);
+        builder.add(yAxisGridColorTextBox);
+        builder.nextLine(2);
+        
+        builder.addLabel(ConstantFactory.getInstance().yaxisMin());
+        builder.nextColumn(2);
+        builder.add(yAxisMinTextBox);
+        builder.nextColumn(2);
+        builder.addLabel(ConstantFactory.getInstance().yaxisMax());
+        builder.nextColumn(2);
+        builder.add(yAxisMaxTextBox);
+        builder.nextLine(2);
+        
+        builder.nextLine(2);
+        builder.addLabel(ConstantFactory.getInstance().xaxisColor());
+        builder.nextColumn(2);
+        builder.add(xaxisColorTextBox);
+        builder.nextColumn(2);
+        builder.addLabel(ConstantFactory.getInstance().xaxisGridColor());
+        builder.nextColumn(2);
+        builder.add(xaxisGridColorTextBox);
+        builder.nextLine(2);
+        
+        builder.addLabel(ConstantFactory.getInstance().xaxisMin());
+        builder.nextColumn(2);
+        builder.add(xaxisMinTextBox);
+        builder.nextColumn(2);
+        builder.addLabel(ConstantFactory.getInstance().xaxisMax());
+        builder.nextColumn(2);
+        builder.add(xaxisMaxTextBox);
+        builder.nextLine(2);
         generalOptionsPanel.add(builder.getPanel());
         return generalOptionsPanel;
     }
@@ -219,11 +271,11 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         PanelBuilder builder = new PanelBuilder(layout);
 
-        builder.addSeparator(ConstantFactory.getInstance().titles());
+        builder.addSeparator(ConstantFactory.getInstance().barChartOptions());
 
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().chartTitle());
+        builder.addLabel(ConstantFactory.getInstance().barStyle());
         builder.nextColumn(2);
         builder.add(listBox);
         builder.nextLine(2);
@@ -334,7 +386,7 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private void createBasicWindowPanel() {
 
-        basic = new WindowPanel("Background Color"); //$NON-NLS-1$
+        basic = new WindowPanel(ConstantFactory.getInstance().backgroundColor()); 
         basic.setSize("500px", "500px"); //$NON-NLS-1$ //$NON-NLS-2$
         basic.setAnimationEnabled(true);
         ColorPicker cp = new ColorPicker();

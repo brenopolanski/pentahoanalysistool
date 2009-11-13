@@ -696,5 +696,70 @@ public interface IGuiConstants extends Constants {
      */
     String backgroundColor();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String barStyle();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String yaxisColor();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String yaxisGridColor();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String yaxisMin();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String yaxisMax();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String xaxisColor();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String xaxisGridColor();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String xaxisMin();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String xaxisMax();
+
+    
+
    
 }
