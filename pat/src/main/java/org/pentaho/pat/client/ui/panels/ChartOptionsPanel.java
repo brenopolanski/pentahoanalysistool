@@ -440,6 +440,31 @@ public class ChartOptionsPanel extends LayoutComposite {
     public Map<String, Object> getOptionsMap() {
         optionsMap = new HashMap<String, Object>();
         optionsMap.put("barStyle", bs); //$NON-NLS-1$
+        
+        if(yaxisColorTextBox.getText().length()>0)
+        optionsMap.put("yaxisColor", yaxisColorTextBox.getText()); //$NON-NLS-1$
+        
+        if(yAxisGridColorTextBox.getText().length()>0)
+        optionsMap.put("yaxisGridColor", yAxisGridColorTextBox.getText()); //$NON-NLS-1$
+        
+        if(yAxisMinTextBox.getText().length()>0)
+        optionsMap.put("yaxisMin", yAxisMinTextBox.getText()); //$NON-NLS-1$
+        
+        if(yAxisMaxTextBox.getText().length()>0)
+        optionsMap.put("yaxisMax", yAxisMaxTextBox.getText()); //$NON-NLS-1$
+        
+        if(xaxisColorTextBox.getText().length()>0)
+        optionsMap.put("xaxisColor", xaxisColorTextBox.getText()); //$NON-NLS-1$
+        
+        if(xaxisGridColorTextBox.getText().length()>0)
+        optionsMap.put("xaxisGridColor", xaxisGridColorTextBox.getText()); //$NON-NLS-1$
+        
+        if(xaxisMinTextBox.getText().length()>0)
+        optionsMap.put("xaxisMin", xaxisMinTextBox.getText()); //$NON-NLS-1$
+        
+        if(xaxisMaxTextBox.getText().length()>0)
+        optionsMap.put("xaxisMax", xaxisMaxTextBox.getText()); //$NON-NLS-1$
+        
         return optionsMap;
     }
 
