@@ -169,8 +169,13 @@ public class ChartFactory {
              
         cd.setYAxis(ya);
 
-        final BarChart bchart2 = new BarChart((BarStyle) chartOptions.get("barStyle")); //$NON-NLS-1$
-
+        final BarChart bchart2;
+        if(chartOptions.containsKey("barStyle")){ //$NON-NLS-1$
+        bchart2 = new BarChart((BarStyle) chartOptions.get("barStyle")); //$NON-NLS-1$
+        }
+        else{
+            bchart2 = new BarChart();
+        }
         // TODO Allow user defined tooltips.
         bchart2.setTooltip("$#val#"); //$NON-NLS-1$
 
@@ -315,6 +320,7 @@ public class ChartFactory {
         for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
 
             final LineChart lc2 = new LineChart();
+            if(chartOptions.containsKey("dotStyle")) //$NON-NLS-1$
             lc2.setDotStyle((BaseDot) chartOptions.get("dotStyle")); //$NON-NLS-1$
             lc2.setColour(getRandomColor());
 

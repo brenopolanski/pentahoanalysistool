@@ -333,33 +333,38 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         if (childmembers != null)
             if (!member.isExpanded()) {
-                if(member.getRightOf()==null){
-                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
-                        .getInclusions());
-                queryDimension.getInclusions().remove(selection);
-                queryDimension.include(memberFetched);
-                for (int i = 0; i<childmembers.size();i++){
-                queryDimension.include(childmembers.get(i));
+                if (member.getRightOf() == null) {
+                    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                            .getInclusions());
+                    queryDimension.getInclusions().remove(selection);
+                    queryDimension.include(memberFetched);
+                    for (int i = 0; i < childmembers.size(); i++) {
+                        queryDimension.include(childmembers.get(i));
+                    }
                 }
-                }
-                
+
                 else {
-                    
-                    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());            
-                    Selection children =OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
-                    Selection add = queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
-                                children.addContext(add); 
-                                
+
+                    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());
+                    Selection children = OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
+                    children.addContext(queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN, memberFetched));
+       //             for (int i = 0; i < childmembers.size(); i++) {
+       //                 children.addContext(queryDimension.createSelection(childmembers.get(i)));
+       //             }
                 }
             } else {
-                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());            
-                Selection children =OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
-                for (int i = 0; i<children.getSelectionContext().size();i++){
-                    if(children.getSelectionContext().get(i).getMember().equals(memberFetched))
-                        children.removeContext(children.getSelectionContext().get(i));
+                if (member.getRightOf() == null) {
+                    queryDimension.clearInclusions();
+                    queryDimension.include(memberFetched);
+                } else {
+                    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());
+                    Selection children = OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
+                    for (int i = 0; i < children.getSelectionContext().size(); i++) {
+                        if (children.getSelectionContext().get(i).getMember().equals(memberFetched))
+                            children.removeContext(children.getSelectionContext().get(i));
+                    }
                 }
-                
-                            
+
             }
 
     }
@@ -448,12 +453,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
+        final Writer writer = new StringWriter();
+        mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         final CellSet cellSet = mdx.execute();
 
         OlapUtil.storeCellSet(queryId, cellSet);
         // Check the mdx generated
-        final Writer writer = new StringWriter();
-        mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
+
         return OlapUtil.cellSet2Matrix(cellSet);
 
     }
