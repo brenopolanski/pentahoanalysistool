@@ -58,6 +58,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     private String uniqueName;
 
     private int childMemberCount;
+
+    private String rightOfDimension;
     
     private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
 	/**
@@ -279,6 +281,21 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
         }
         }
         return cellPanel;
+    }
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param name
+     */
+    public void setRightOfDimension(String name) {
+
+        this.rightOfDimension = name;
+        
+    }
+    
+    public String getRightOfDimension(){
+        return this.rightOfDimension;
     }
     
      

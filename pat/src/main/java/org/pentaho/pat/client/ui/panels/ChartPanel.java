@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -86,7 +87,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
     private Position pos;
 
-    private Map<String, Object> optionsMap;
+    private Map<String, Object> optionsMap = new HashMap<String, Object>();
 
     /**
      * Chart Panel Constructor.
