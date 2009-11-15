@@ -47,6 +47,9 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.rednels.ofcgwt.client.model.Legend.Position;
 import com.rednels.ofcgwt.client.model.elements.BarChart.BarStyle;
+import com.rednels.ofcgwt.client.model.elements.dot.BaseDot;
+import com.rednels.ofcgwt.client.model.elements.dot.HollowDot;
+import com.rednels.ofcgwt.client.model.elements.dot.Star;
 
 /**
  * Create the chart options panel.
@@ -71,6 +74,8 @@ public class ChartOptionsPanel extends LayoutComposite {
     private Position pos;
 
     private BarStyle bs = BarStyle.NORMAL;
+    
+    private BaseDot bd;
 
     private ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
 
@@ -104,7 +109,7 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
         tabPanel.add(barOptionsPanel(), ConstantFactory.getInstance().barChartOptions());
-
+        tabPanel.add(lineOptionsPanel(), ConstantFactory.getInstance().lineChartOptions());
         this.getLayoutPanel().add(tabPanel);
 
     }
@@ -285,6 +290,66 @@ public class ChartOptionsPanel extends LayoutComposite {
     }
 
     /**
+     * 
+     * Create the bar options panel.
+     * 
+     * @return A LayoutPanel.
+     */
+    private LayoutPanel lineOptionsPanel() {
+
+        LayoutPanel barOptionsPanel = new LayoutPanel();
+
+        FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+                + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
+                "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
+                        + "p, 3dlu, p, 3dlu, p, 3dlu, p"); //$NON-NLS-1$
+
+        final ListBox<String> listBox = new ListBox<String>();
+
+        final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
+
+        model.add(ConstantFactory.getInstance().normal());
+        model.add(ConstantFactory.getInstance().hollow());
+        model.add(ConstantFactory.getInstance().star());
+
+        listBox.addRowSelectionHandler(new RowSelectionHandler() {
+            public void onRowSelection(RowSelectionEvent event) {
+                int index = listBox.getSelectedIndex();
+                if (index != -1) {
+                    switch (listBox.getSelectedIndex()) {
+                    case 0:
+                        setBd(null);
+                        break;
+                    case 1:
+                        setBd(new HollowDot());
+                        break;
+                    case 2:
+                        setBd(new Star());
+                        break;
+                    default:
+                        throw new RuntimeException("Should not happen"); //$NON-NLS-1$
+                    }
+                }
+            }
+        });
+
+        PanelBuilder builder = new PanelBuilder(layout);
+
+        builder.addSeparator(ConstantFactory.getInstance().lineChartOptions());
+
+        builder.nextLine(2);
+
+        builder.addLabel(ConstantFactory.getInstance().dotStyle());
+        builder.nextColumn(2);
+        builder.add(listBox);
+        builder.nextLine(2);
+
+        barOptionsPanel.add(builder.getPanel());
+        return barOptionsPanel;
+    }
+
+    /**
      *TODO JAVADOC
      * 
      * @return the chartTitleTextBox Text Value
@@ -425,6 +490,26 @@ public class ChartOptionsPanel extends LayoutComposite {
      * 
      *TODO JAVADOC
      * 
+     * @param bs
+     *            the bs to set
+     */
+    public void setBd(BaseDot bd) {
+        this.bd = bd;
+    }
+
+    /**
+     *TODO JAVADOC
+     * 
+     * @return the bs
+     */
+    public BaseDot getBd() {
+        return bd;
+    }
+
+    /**
+     * 
+     *TODO JAVADOC
+     * 
      * @param barOptions
      *            the barOptions to set
      */
@@ -440,6 +525,7 @@ public class ChartOptionsPanel extends LayoutComposite {
     public Map<String, Object> getOptionsMap() {
         optionsMap = new HashMap<String, Object>();
         optionsMap.put("barStyle", bs); //$NON-NLS-1$
+        optionsMap.put("dotStyle", bd); //$NON-NLS-1$
         
         if(yaxisColorTextBox.getText().length()>0)
         optionsMap.put("yaxisColor", yaxisColorTextBox.getText()); //$NON-NLS-1$
