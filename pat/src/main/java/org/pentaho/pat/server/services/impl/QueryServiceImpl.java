@@ -337,9 +337,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
                         .getInclusions());
                 queryDimension.getInclusions().remove(selection);
-                NamedList<? extends Member> childmemb = memberFetched.getChildMembers();
-                for (int i = 0; i<childmemb.size();i++){
-                queryDimension.include(childmemb.get(i));
+                queryDimension.include(memberFetched);
+                for (int i = 0; i<childmembers.size();i++){
+                queryDimension.include(childmembers.get(i));
                 }
                 }
                 
@@ -352,18 +352,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                                 
                 }
             } else {
-/*
-                final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
-                        .getInclusions());
-                queryDimension.getInclusions().remove(selection);
-                queryDimension.include(Selection.Operator.MEMBER, memberFetched);
-*/
-
                 QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());            
                 Selection children =OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
-                Selection add = queryDimension.createSelection(Selection.Operator.MEMBER, memberFetched);
-                            children.addContext(add);
-                            List<Selection> list = children.getSelectionContext();
+                for (int i = 0; i<children.getSelectionContext().size();i++){
+                    if(children.getSelectionContext().get(i).getMember().equals(memberFetched))
+                        children.removeContext(children.getSelectionContext().get(i));
+                }
+                
+                            
             }
 
     }
