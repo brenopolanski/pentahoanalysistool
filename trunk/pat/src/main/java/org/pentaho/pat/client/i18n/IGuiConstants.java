@@ -759,6 +759,34 @@ public interface IGuiConstants extends Constants {
      */
     String xaxisMax();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String star();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String hollow();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String lineChartOptions();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String dotStyle();
+
     
 
    

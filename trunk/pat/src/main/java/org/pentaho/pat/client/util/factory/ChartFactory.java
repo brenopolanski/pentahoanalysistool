@@ -46,7 +46,6 @@ import com.rednels.ofcgwt.client.model.elements.BarChart.Bar;
 import com.rednels.ofcgwt.client.model.elements.BarChart.BarStyle;
 import com.rednels.ofcgwt.client.model.elements.PieChart.Slice;
 import com.rednels.ofcgwt.client.model.elements.dot.BaseDot;
-import com.rednels.ofcgwt.client.model.elements.dot.HollowDot;
 import com.rednels.ofcgwt.client.model.elements.dot.SolidDot;
 
 /**
@@ -153,7 +152,7 @@ public class ChartFactory {
         int rowColCount = 0;
         for (int i = 0; i < patTableModel.getColumnCount(); i++)
             if (rowData[0][i] instanceof MemberCell)
-                rowColCount++;
+                 rowColCount++;
 
         // TODO Allow user defined fonts etc.
         final ChartData cd = new ChartData(chartTitle, "font-size: 14px; font-family: Verdana; text-align: center;"); //$NON-NLS-1$
@@ -167,8 +166,6 @@ public class ChartFactory {
         
         cd.setXAxis(xa);
         
-
-        // TODO Allow users to select the steppage.
              
         cd.setYAxis(ya);
 
@@ -194,6 +191,7 @@ public class ChartFactory {
         xa.addLabels(labels);
         
         int maxval = 0;
+        int minval =0;
         for (int i = 0; i < data.size(); i++) {
             final BaseCell[] cell = data.get(i);
             int rc = 0;
@@ -214,29 +212,37 @@ public class ChartFactory {
                 bchart2.addBars(bar);
                 if (Integer.parseInt(cell[rowColCount].getRawValue()) > maxval)
                     maxval = Integer.parseInt(cell[rowColCount].getRawValue());
+                if (Integer.parseInt(cell[rowColCount].getRawValue()) < minval)
+                    minval = Integer.parseInt(cell[rowColCount].getRawValue());
             }
 
         }
+        if(!chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
         ya.setMax(maxval);
+        
+        if(!chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
+            ya.setMin(minval);
+            
+        
         cd.addElements(bchart2);
         return cd;
     }
 
     private YAxis createYAxis(Map<String, Object> chartOptions){
         final YAxis ya = new YAxis();
-        ya.setSteps(16);
+        //ya.setSteps(16);
 
         if(chartOptions!=null){
-        if(chartOptions.containsKey("yaxisColor"))
+        if(chartOptions.containsKey("yaxisColor")) //$NON-NLS-1$
         ya.setColour((String) chartOptions.get("yaxisColor")); //$NON-NLS-1$
         
-        if(chartOptions.containsKey("yaxisGridColor"))
+        if(chartOptions.containsKey("yaxisGridColor")) //$NON-NLS-1$
         ya.setGridColour((String) chartOptions.get("yaxisGridColor")); //$NON-NLS-1$
         
-        if(chartOptions.containsKey("yaxisMin"))
+        if(chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
         ya.setMin(Integer.parseInt((String) chartOptions.get("yaxisMin"))); //$NON-NLS-1$
         
-        if(chartOptions.containsKey("yaxisMax"))
+        if(chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
         ya.setMax(Integer.parseInt((String) chartOptions.get("yaxisMax"))); //$NON-NLS-1$
         }
         return ya;
@@ -244,18 +250,19 @@ public class ChartFactory {
     }
     
     private XAxis createXAxis(Map<String, Object> chartOptions){
-        final XAxis xa = new XAxis();        
+        final XAxis xa = new XAxis();
+        //xa.setSteps(16);
     if(chartOptions!=null){
-        if(chartOptions.containsKey("xaxisColor"))
+        if(chartOptions.containsKey("xaxisColor")) //$NON-NLS-1$
             xa.setColour((String) chartOptions.get("xaxisColor")); //$NON-NLS-1$
             
-            if(chartOptions.containsKey("xaxisGridColor"))
+            if(chartOptions.containsKey("xaxisGridColor")) //$NON-NLS-1$
             xa.setGridColour((String) chartOptions.get("xaxisGridColor")); //$NON-NLS-1$
             
-            if(chartOptions.containsKey("xaxisMin"))
+            if(chartOptions.containsKey("xaxisMin")) //$NON-NLS-1$
             xa.setMin(Integer.parseInt((String) chartOptions.get("xaxisMin"))); //$NON-NLS-1$
             
-            if(chartOptions.containsKey("xaxisMax"))
+            if(chartOptions.containsKey("xaxisMax")) //$NON-NLS-1$
             xa.setMin(Integer.parseInt((String) chartOptions.get("xaxisMax")));         //$NON-NLS-1$
     }
             return xa;
@@ -279,6 +286,13 @@ public class ChartFactory {
         // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
+        XAxis xa = createXAxis(chartOptions);
+
+        YAxis ya = createYAxis(chartOptions);
+       cd.setXAxis(xa);
+        cd.setYAxis(ya);
+
+        
         if (pos != null) {
             cd.setLegend(new Legend(pos, true));
         }
@@ -294,23 +308,26 @@ public class ChartFactory {
 
         }
 
+        xa.addLabels(labels);
         int maxval = 0;
         int minval = 0;
         int actualRow = rowColCount;
         for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
 
             final LineChart lc2 = new LineChart();
-            lc2.setDotStyle(new HollowDot());
+            lc2.setDotStyle((BaseDot) chartOptions.get("dotStyle")); //$NON-NLS-1$
             lc2.setColour(getRandomColor());
 
             for (int j = 0; j < data.size(); j++) {
                 final BaseCell[] cell = data.get(j);
 
-                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null)
+                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null){
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue());
-                else
+                }
+                else{
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue());
 
+                }
                 if (isParsableToInt(cell[actualRow].getRawValue())) {
                     final BaseDot dot = new SolidDot(Integer.parseInt(cell[actualRow].getRawValue()));
                     dot.addChartClickHandler(new ChartClickHandler() {
@@ -329,15 +346,17 @@ public class ChartFactory {
                 }
 
             }
+            
+            if(!chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
+            ya.setMax(maxval);
+            
+            if(!chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
+            ya.setMin(minval);
+            
             cd.addElements(lc2);
             actualRow++;
         }
 
-        XAxis xa = createXAxis(chartOptions);
-
-        YAxis ya = createYAxis(chartOptions);
-      // cd.setXAxis(xa);
-      //  cd.setYAxis(ya);
         
         return cd;
     }
