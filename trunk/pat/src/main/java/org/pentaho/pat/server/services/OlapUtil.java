@@ -235,12 +235,6 @@ public class OlapUtil {
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
             if (member == null) {
-                // Sometimes we need to find it in a different name format.
-                // To make sure we find the member, the first element
-                // will be sent as DimensionName.HierarchyName. Cubes which have
-                // more than one hierarchy in a given dimension will require this
-                // format anyways.
-                final List<String> completeMemberNames = new ArrayList<String>();
                 memberOut = cube.lookupMember(member.getUniqueName());
 
                 if (member == null)

@@ -358,6 +358,11 @@ public class PatCellSetFormatter {
                         memberInfo.setRightOf(prevMembers[y-1].getUniqueName());
                     }
                     
+
+                    if(y>0 && prevMembers[y-1]!=null) {
+                        memberInfo.setRightOfDimension(prevMembers[y-1].getDimension().getName());
+                    }
+                    
                     if (member.getParentMember() != null) {
                         memberInfo.setParentMember(member.getParentMember().getName());
                     }
