@@ -53,7 +53,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 	
 	private String parentMember = null;
 	
-	private String rightOf = null;
+	private MemberCell rightOf = null;
 
     private String uniqueName;
 
@@ -173,14 +173,14 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     /**
      *TODO JAVADOC
      *
-     * @param uniqueName2
+     * @param memberCell
      */
-    public void setRightOf(String uniqueName2) {
-        this.rightOf= uniqueName2;
+    public void setRightOf(MemberCell memberCell) {
+        this.rightOf= memberCell;
         
     }
     
-    public String getRightOf(){
+    public MemberCell getRightOf(){
         return rightOf;
     }
     

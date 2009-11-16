@@ -37,6 +37,8 @@ import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 public class PatCellSetFormatter {
     private Matrix matrix;
+    
+    
     /**
      * Description of an axis.
      */
@@ -258,14 +260,19 @@ public class PatCellSetFormatter {
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
             Integer blahval = null;
-            try {
-                blahval = (int)cell.getDoubleValue();
-            } catch (OlapException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+	    try {
+		blahval = (int)cell.getDoubleValue();
+	    } catch (OlapException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		
+	    }
+        
             
+           
+	    if(blahval!=null)
             cellInfo.setRawValue(blahval.toString());
+            
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
             if (cellValue.length() < 1) {
@@ -302,6 +309,7 @@ public class PatCellSetFormatter {
         if (axis == null)
             return;
         final Member[] prevMembers = new Member[axisInfo.getWidth()];
+        final MemberCell[] prevMemberInfo = new MemberCell[axisInfo.getWidth()];
         final Member[] members = new Member[axisInfo.getWidth()];
         for (int i = 0; i < axis.getPositions().size(); i++) {
             final int x = offset + i;
@@ -355,7 +363,7 @@ public class PatCellSetFormatter {
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
                     
                     if(y>0 && prevMembers[y-1]!=null) {
-                        memberInfo.setRightOf(prevMembers[y-1].getUniqueName());
+                        memberInfo.setRightOf(prevMemberInfo[y-1]);
                     }
                     
 
@@ -391,9 +399,17 @@ public class PatCellSetFormatter {
                     matrix.set(y, x, memberInfo);
                 }
                 prevMembers[y] = member;
+                prevMemberInfo[y] = memberInfo;
                 members[y] = null;
             }
         }
     }
-
+    private boolean validateNumber(String num) {
+	try {
+	    Double.parseDouble(num);
+	    return true;
+	} catch (Exception e) {
+	    return false;
+	}
+    }
 }
