@@ -38,7 +38,6 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Schema;
@@ -345,12 +344,24 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 else {
 
-                    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());
-                    Selection children = OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
-                    children.addContext(queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN, memberFetched));
-       //             for (int i = 0; i < childmembers.size(); i++) {
-       //                 children.addContext(queryDimension.createSelection(childmembers.get(i)));
-       //             }
+                    
+                    MemberCell memberdrill = member;
+                
+                    while(memberdrill.getRightOf()!=null){
+                	if(memberdrill.getRightOf().getRawValue()!=null){
+                    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+                    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+            		queryDimension2.include(memberFetched2);
+                
+                	Selection children = OlapUtil.findSelection(memberdrill.getRightOf().getUniqueName(), queryDimension2.getInclusions());
+
+                	
+                	children.addContext(queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN,memberFetched));
+
+                	}
+                    memberdrill=memberdrill.getRightOf();
+                    }
+                    
                 }
             } else {
                 if (member.getRightOf() == null) {
@@ -358,7 +369,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     queryDimension.include(memberFetched);
                 } else {
                     QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, member.getRightOfDimension());
-                    Selection children = OlapUtil.findSelection(member.getRightOf(), queryDimension2.getInclusions());
+                    Selection children = OlapUtil.findSelection(member.getRightOf().getUniqueName(), queryDimension2.getInclusions());
                     for (int i = 0; i < children.getSelectionContext().size(); i++) {
                         if (children.getSelectionContext().get(i).getMember().equals(memberFetched))
                             children.removeContext(children.getSelectionContext().get(i));
