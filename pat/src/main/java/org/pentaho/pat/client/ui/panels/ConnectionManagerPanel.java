@@ -281,7 +281,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
             protected void onClick() {
                 super.onClick();
                 LogoPanel.spinWheel(true);
-                if (item.isConnected())
+                if (item.isConnected()) {
                     ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
                             new AsyncCallback<Object>() {
 
@@ -297,7 +297,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         }
 
                     });
-                else
+                }
+                else {
                     ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
                             new AsyncCallback<Object>() {
 
@@ -313,8 +314,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         }
 
                     });
+                }
                 final int index = linkedListBox.getSelectedIndex();
-                ciModel.set(index, item);
+//                ciModel.set(index, item);
 
             };
         };

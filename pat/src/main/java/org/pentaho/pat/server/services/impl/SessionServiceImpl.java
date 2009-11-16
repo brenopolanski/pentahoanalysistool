@@ -234,6 +234,7 @@ public class SessionServiceImpl extends AbstractService
                 this.discoveryService.getCubes(userId, sessionId, sc.getId());
                 
             } else {
+                sessions.get(userId).get(sessionId).closeConnection(sc.getId());
                 throw new OlapException(
                     Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
             }
