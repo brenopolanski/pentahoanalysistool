@@ -326,7 +326,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         NamedList<? extends Member> childmembers = null;
         try {
             childmembers = memberFetched.getChildMembers();
-        } catch (final OlapException e) {
+        } catch (final Exception e) {
             throw new OlapException(
                     Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
         }
