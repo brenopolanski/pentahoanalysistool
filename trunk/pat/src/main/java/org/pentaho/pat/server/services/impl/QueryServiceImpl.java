@@ -389,23 +389,35 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
 	if (childmembers != null)
 	    if (!member.isExpanded()) {
+		//If its the left most dimension don't do anything apart from include.
 		if (member.getRightOf() == null) {
 		    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
 		    queryDimension.getInclusions().remove(selection);
-		    queryDimension.include(memberFetched);
-		    for (int i = 0; i < childmembers.size(); i++) {
-			queryDimension.include(childmembers.get(i));
-		    }
+		    queryDimension.include(Selection.Operator.INCLUDE_CHILDREN,memberFetched);
 		}
 
 		else {
 
+		    //
+		    //Very very testing code, doesn't work in most situations!!!!
+		    //
+		    
+		    //Get the drilling member
 		    MemberCell memberdrill = member;
 
+		    //Test to see if there are populated cells to its left
 		    while (memberdrill.getRightOf() != null) {
-			if (memberdrill.getRightOf().getRawValue() != null && !memberdrill.getRightOf().getRawValue().contains("All")) {
+			
+			//If yes test to make sure its not name isn't null and it hasn't just skipped back to its all member level
+			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+			    
+			    //Get dimension to the left of the current member.
 			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+			    
+			    //Get the Olap4J member.
 			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+			    
+			    //Make sure it is included within the current dimension.
 			    List<Selection> inc = queryDimension2.getInclusions();
 			    List<Member> memberList = new ArrayList<Member>();
 			    for (int i=0; i< inc.size();i++){
@@ -414,18 +426,21 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 			    if(!memberList.contains(memberFetched2)){
 			    queryDimension2.include(memberFetched2);
 			    }
+			    
+			    //Get the selection and remove and contexts currently assigned to it.
 			    Selection children = OlapUtil.findSelection(memberdrill.getRightOf().getUniqueName(),queryDimension2.getInclusions());
+			    
 			    List<Selection> contexts = children.getSelectionContext();
 			    if(contexts!=null)
 			    for (int i=0; i< contexts.size();i++){
+				if (contexts.get(i).getMember().equals(memberFetched2))
 				children.removeContext(contexts.get(i));
 			    }
-			    
-			    children.addContext(queryDimension.createSelection(
-				    Selection.Operator.INCLUDE_CHILDREN,
-				    memberFetched));
+			    //Add Context for the clicked member including children.
+			    children.addContext(queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN,memberFetched));
 
 			}
+			//Get next member.
 			memberdrill = memberdrill.getRightOf();
 		    }
 

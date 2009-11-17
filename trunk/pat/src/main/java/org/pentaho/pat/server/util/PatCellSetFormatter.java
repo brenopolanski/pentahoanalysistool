@@ -264,7 +264,7 @@ public class PatCellSetFormatter {
 		blahval = (int)cell.getDoubleValue();
 	    } catch (OlapException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		//e.printStackTrace();
 		
 	    }
         
@@ -372,7 +372,7 @@ public class PatCellSetFormatter {
                     }
                     
                     if (member.getParentMember() != null) {
-                        memberInfo.setParentMember(member.getParentMember().getName());
+                        memberInfo.setParentMember(member.getParentMember().getUniqueName());
                     }
 
                 } else {
