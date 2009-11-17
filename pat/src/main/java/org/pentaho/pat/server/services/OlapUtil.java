@@ -223,18 +223,23 @@ public class OlapUtil {
 
         // FIXME this method doesn't seem to be correct at all, member and memberout swapped?
         final Cube cube = query.getCube();
-        
-        Member memberOut = cube.lookupMember(member.getRawValue());
+        Member memberOut=null;
+        if(member.getRawValue()!=null)
+         memberOut = cube.lookupMember(member.getRawValue());
 
         if (memberOut == null) {
             // Let's try with only the dimension name in front.
+            if(member.getRawValue()!=null){
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimension.getName());
             dimPlusMemberNames.add(member.getRawValue());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
-
+            }
             if (memberOut == null) {
-                memberOut = cube.lookupMember(member.getUniqueName());
+        	String membername = member.getUniqueName().substring(1, member.getUniqueName().length()-1);
+        	      String[] memberNames = membername.split("\\]\\.\\[");
+
+                memberOut = cube.lookupMember(memberNames);
 
                 if (memberOut == null)
                     // We failed to find the member.
