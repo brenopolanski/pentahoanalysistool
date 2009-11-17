@@ -390,8 +390,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 	if (childmembers != null)
 	    if (!member.isExpanded()) {
 		if (member.getRightOf() == null) {
-		    final Selection selection = OlapUtil.findSelection(member
-			    .getUniqueName(), queryDimension.getInclusions());
+		    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
 		    queryDimension.getInclusions().remove(selection);
 		    queryDimension.include(memberFetched);
 		    for (int i = 0; i < childmembers.size(); i++) {
@@ -404,19 +403,24 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		    MemberCell memberdrill = member;
 
 		    while (memberdrill.getRightOf() != null) {
-			if (memberdrill.getRightOf().getRawValue() != null) {
-			    QueryDimension queryDimension2 = OlapUtil
-				    .getQueryDimension(query, memberdrill
-					    .getRightOfDimension());
-			    final Member memberFetched2 = OlapUtil.getMember(
-				    query, queryDimension2, memberdrill
-					    .getRightOf(), cellSet);
+			if (memberdrill.getRightOf().getRawValue() != null && !memberdrill.getRightOf().getRawValue().contains("All")) {
+			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+			    List<Selection> inc = queryDimension2.getInclusions();
+			    List<Member> memberList = new ArrayList<Member>();
+			    for (int i=0; i< inc.size();i++){
+				memberList.add(inc.get(i).getMember());
+			    }
+			    if(!memberList.contains(memberFetched2)){
 			    queryDimension2.include(memberFetched2);
-
-			    Selection children = OlapUtil.findSelection(
-				    memberdrill.getRightOf().getUniqueName(),
-				    queryDimension2.getInclusions());
-
+			    }
+			    Selection children = OlapUtil.findSelection(memberdrill.getRightOf().getUniqueName(),queryDimension2.getInclusions());
+			    List<Selection> contexts = children.getSelectionContext();
+			    if(contexts!=null)
+			    for (int i=0; i< contexts.size();i++){
+				children.removeContext(contexts.get(i));
+			    }
+			    
 			    children.addContext(queryDimension.createSelection(
 				    Selection.Operator.INCLUDE_CHILDREN,
 				    memberFetched));
