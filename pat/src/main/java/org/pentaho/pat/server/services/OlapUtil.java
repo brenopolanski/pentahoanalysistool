@@ -226,18 +226,17 @@ public class OlapUtil {
         
         Member memberOut = cube.lookupMember(member.getRawValue());
 
-        if (member == null) {
+        if (memberOut == null) {
             // Let's try with only the dimension name in front.
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimension.getName());
-            // FIXME member could be null at this point, whats supposed to happen in here?
             dimPlusMemberNames.add(member.getRawValue());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
-            if (member == null) {
+            if (memberOut == null) {
                 memberOut = cube.lookupMember(member.getUniqueName());
 
-                if (member == null)
+                if (memberOut == null)
                     // We failed to find the member.
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
             }
