@@ -229,6 +229,8 @@ public class OlapUtil {
             if(member.getRawValue()!=null){
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimension.getName());
+
+            if(member.getRawValue()!=null){
             dimPlusMemberNames.add(member.getRawValue());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }

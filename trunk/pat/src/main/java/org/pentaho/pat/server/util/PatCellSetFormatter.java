@@ -270,9 +270,9 @@ public class PatCellSetFormatter {
         
             
            
-	    if(blahval!=null)
-            cellInfo.setRawValue(blahval.toString());
-            
+	    if(blahval!=null){
+	           cellInfo.setRawValue(blahval.toString());
+	               }
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
             if (cellValue.length() < 1) {
