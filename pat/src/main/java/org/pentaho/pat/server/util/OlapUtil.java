@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  *
  */
-package org.pentaho.pat.server.services;
+package org.pentaho.pat.server.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,6 @@ import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
-import org.olap4j.CellSetAxis;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
@@ -40,8 +39,6 @@ import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.messages.Messages;
-import org.pentaho.pat.server.util.Matrix;
-import org.pentaho.pat.server.util.PatCellSetFormatter;
 
 public class OlapUtil {
 
