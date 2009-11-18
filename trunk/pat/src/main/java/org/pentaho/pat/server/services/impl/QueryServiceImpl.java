@@ -405,6 +405,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		    //Get the drilling member
 		    MemberCell memberdrill = member;
 
+		    Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+		    
 		    //Test to see if there are populated cells to its left
 		    while (memberdrill.getRightOf() != null) {
 			
@@ -417,27 +419,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 			    //Get the Olap4J member.
 			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
 			    
-			    //Make sure it is included within the current dimension.
-			    List<Selection> inc = queryDimension2.getInclusions();
-			    List<Member> memberList = new ArrayList<Member>();
-			    for (int i=0; i< inc.size();i++){
-				memberList.add(inc.get(i).getMember());
-			    }
-			    if(!memberList.contains(memberFetched2)){
-			    queryDimension2.include(memberFetched2);
-			    }
+			    selection.addContext(queryDimension2.createSelection(memberFetched2));
 			    
-			    //Get the selection and remove and contexts currently assigned to it.
-			    Selection children = OlapUtil.findSelection(memberdrill.getRightOf().getUniqueName(),queryDimension2.getInclusions());
-			    
-			    List<Selection> contexts = children.getSelectionContext();
-			    if(contexts!=null)
-			    for (int i=0; i< contexts.size();i++){
-				if (contexts.get(i).getMember().equals(memberFetched2))
-				children.removeContext(contexts.get(i));
-			    }
-			    //Add Context for the clicked member including children.
-			    children.addContext(queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN,memberFetched));
 
 			}
 			//Get next member.
