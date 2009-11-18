@@ -39,10 +39,10 @@ import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
-import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.JdbcDriverFinder;
+import org.pentaho.pat.server.util.OlapUtil;
 import org.springframework.util.Assert;
 
 /**

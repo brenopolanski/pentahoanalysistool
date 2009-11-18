@@ -52,10 +52,10 @@ import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
-import org.pentaho.pat.server.services.OlapUtil;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
+import org.pentaho.pat.server.util.OlapUtil;
 import org.springframework.util.Assert;
 
 /**
@@ -433,23 +433,34 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		    queryDimension.clearInclusions();
 		    queryDimension.include(memberFetched);
 		} else {
-		    QueryDimension queryDimension2 = OlapUtil
-			    .getQueryDimension(query, member
-				    .getRightOfDimension());
-		    Selection children = OlapUtil.findSelection(member
-			    .getRightOf().getUniqueName(), queryDimension2
-			    .getInclusions());
-		    for (int i = 0; i < children.getSelectionContext().size(); i++) {
-			if (children.getSelectionContext().get(i).getMember()
-				.equals(memberFetched))
-			    children.removeContext(children
-				    .getSelectionContext().get(i));
+		    final Selection selection =OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+		   queryDimension.getInclusions().remove(selection);
+		   MemberCell memberdrill = member;
+		   while (memberdrill.getRightOf() != null) {
+			
+			//If yes test to make sure its not name isn't null and it hasn't just skipped back to its all member level
+			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+			    
+			    //Get dimension to the left of the current member.
+			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+			    
+			    //Get the Olap4J member.
+			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+			    Selection sel = OlapUtil.findSelection(memberFetched2.getUniqueName(), queryDimension2.getInclusions());
+			   // selection.removeContext(sel);
+			    
+			
+
+			}
+			//Get next member.
+			memberdrill = memberdrill.getRightOf();
+		    }
 		    }
 		}
 
 	    }
 
-    }
+    
 
     /*
      * (non-Javadoc)
@@ -803,7 +814,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		userId, sessionId, connectionId);
 
 	Cube cube = null;
-	Catalog catalog = null;
 	final NamedList<Catalog> catalogs = connection.getCatalogs();
 	for (int k = 0; k < catalogs.size(); k++) {
 	    try {
@@ -820,7 +830,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		    final Cube testCube = iter.next();
 		    if (cubeName.equals(testCube.getName())) {
 			cube = testCube;
-			catalog = catalogs.get(k);
 		    }
 		}
 	    }

@@ -47,7 +47,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 
 	private boolean lastRow = false;
 
-	private boolean expanded;
+	private boolean expanded = false;
 	
 	private String parentDimension = null;
 	
