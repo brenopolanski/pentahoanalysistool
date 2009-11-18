@@ -37,8 +37,7 @@ import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 public class PatCellSetFormatter {
     private Matrix matrix;
-    
-    
+
     /**
      * Description of an axis.
      */
@@ -139,8 +138,6 @@ public class PatCellSetFormatter {
             }
         };
     }
-
-    
 
     /**
      * Creates a PatCellSetFormatter.
@@ -259,20 +256,12 @@ public class PatCellSetFormatter {
             if (coordList.size() > 1)
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
-            Integer blahval = null;
-	    try {
-		blahval = (int)cell.getDoubleValue();
-	    } catch (OlapException e) {
-		// TODO Auto-generated catch block
-		//e.printStackTrace();
-		
-	    }
-        
-            
-           
-	    if(blahval!=null){
-	           cellInfo.setRawValue(blahval.toString());
-	               }
+            Object blahval = null;
+            blahval = cell.getValue();
+
+            if (blahval != null) {
+                cellInfo.setRawValue(blahval.toString());
+            }
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
             if (cellValue.length() < 1) {
@@ -316,10 +305,10 @@ public class PatCellSetFormatter {
             final Position position = axis.getPositions().get(i);
             int yOffset = 0;
             final List<Member> memberList = position.getMembers();
-                       
+
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
-                
+
                 final AxisOrdinalInfo ordinalInfo = axisInfo.ordinalInfos.get(j);
                 while (member != null) {
                     if (member.getDepth() < ordinalInfo.minDepth)
@@ -330,75 +319,61 @@ public class PatCellSetFormatter {
                 }
                 yOffset += ordinalInfo.getWidth();
             }
-            
-            
+
             boolean same = true;
             for (int y = 0; y < members.length; y++) {
-        	 final MemberCell memberInfo = new MemberCell();
+                final MemberCell memberInfo = new MemberCell();
                 final Member member = members[y];
-                  
-         
+
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
 
-                if(member!=null)
-                for(int z =0; z<member.getChildMemberCount();z++){
-                    try {
-			if(member.getChildMembers().get(z).isHidden())
-			memberInfo.setExpanded(true);
-		    } catch (OlapException e) {
-			e.printStackTrace();
-		    }
-                }
                 List memberChildrenList = null;
-                
-                if(member!=null)
-                if (member.getChildMemberCount()>0){
-                    try {
-			 memberChildrenList = member.getChildMembers();
-		    } catch (OlapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		    }
+
+                if (member != null)
+                    if (member.getChildMemberCount() > 0) {
+                        try {
+                            memberChildrenList = member.getChildMembers();
+                        } catch (OlapException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
-                
+
                 // TODO Check to see if any child members are included in the resultset, is there a better way?
                 for (int j = 0; j < axis.getPositions().size(); j++) {
                     final List<Member> memberListChild = axis.getPositions().get(j).getMembers();
-  
+
                     for (int k = 0; k < memberListChild.size(); k++) {
                         final Member memberChild = memberListChild.get(k);
-                        
-                        if(memberChildrenList!=null)
-                        if(memberChildrenList.contains(memberChild))
-                        {
-                            memberInfo.setExpanded(true);
-                            break;
-                        }
-               
+
+                        if (memberChildrenList != null)
+                            if (memberChildrenList.contains(memberChild)) {
+                                memberInfo.setExpanded(true);
+                                break;
+                            }
+
                     }
                 }
 
-                
                 if (member != null) {
                     if (x - 1 == offset)
                         memberInfo.setLastRow(true);
-                    
+
                     matrix.setOffset(offset);
                     memberInfo.setRawValue(member.getCaption(null));
                     memberInfo.setFormattedValue(member.getCaption(null)); // First try to get a formatted value
                     memberInfo.setParentDimension(member.getDimension().getName());
                     memberInfo.setUniquename(member.getUniqueName());
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
-                    
-                    if(y>0 && prevMembers[y-1]!=null) {
-                        memberInfo.setRightOf(prevMemberInfo[y-1]);
-                    }
-                    
 
-                    if(y>0 && prevMembers[y-1]!=null) {
-                        memberInfo.setRightOfDimension(prevMembers[y-1].getDimension().getName());
+                    if (y > 0 && prevMembers[y - 1] != null) {
+                        memberInfo.setRightOf(prevMemberInfo[y - 1]);
                     }
-                    
+
+                    if (y > 0 && prevMembers[y - 1] != null) {
+                        memberInfo.setRightOfDimension(prevMembers[y - 1].getDimension().getName());
+                    }
+
                     if (member.getParentMember() != null) {
                         memberInfo.setParentMember(member.getParentMember().getUniqueName());
                     }

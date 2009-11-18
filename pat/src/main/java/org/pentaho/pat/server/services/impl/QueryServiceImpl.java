@@ -392,14 +392,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
 			    
 			    //Get dimension to the left of the current member.
-			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
-			    
-			    //Get the Olap4J member.
-			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
-			    Selection sel = OlapUtil.findSelection(memberFetched2.getUniqueName(), queryDimension2.getInclusions());
-			   // selection.removeContext(sel);
-			    
-			
+                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+                
+                //Get the Olap4J member.
+                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+                
+            selection.removeContext(queryDimension2.createSelection(memberFetched2));
 
 			}
 			//Get next member.
