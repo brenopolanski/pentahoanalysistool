@@ -230,7 +230,7 @@ public class OlapUtil {
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimension.getName());
 
-            if(member.getRawValue()!=null){
+            
             dimPlusMemberNames.add(member.getRawValue());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }
@@ -244,8 +244,9 @@ public class OlapUtil {
                     // We failed to find the member.
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
             }
+        
         }
-
+ 
         return memberOut;
       
     }
