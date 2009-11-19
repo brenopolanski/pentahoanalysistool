@@ -28,6 +28,7 @@ import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -201,7 +202,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
         ClickHandler drillClick = new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), MemberCell.this, new AsyncCallback<Object>(){
+                ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
 
                     public void onFailure(Throwable arg0) {
                         MessageBox.alert("Failed", "failed");

@@ -787,6 +787,8 @@ public interface IGuiConstants extends Constants {
      */
     String dotStyle();
 
+    String sort();
+
     
 
    

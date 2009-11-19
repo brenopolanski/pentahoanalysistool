@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -327,7 +328,7 @@ public interface IQuery extends RemoteService {
     @Secured ({"Users"})
     public void drillPosition(
             String sessionId, 
-            String queryId, 
+            String queryId, DrillType drillType,
             MemberCell member) throws RpcException;
 
     @Secured ({"Users"})

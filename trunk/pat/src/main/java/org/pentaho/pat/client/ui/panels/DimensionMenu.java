@@ -79,9 +79,9 @@ public class DimensionMenu extends LayoutComposite {
 
     private final DefaultComboBoxModel<String> sortModeModel = (DefaultComboBoxModel<String>) sortComboBox.getModel();
 
-    private final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
+    //private final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
-    private final DefaultComboBoxModel<String> hierarchyModeModel = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+    //private final DefaultComboBoxModel<String> hierarchyModeModel = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
 
     private final DefaultListModel<MemberSelectionLabel> memberListBoxModel = new DefaultListModel<MemberSelectionLabel>();
 
@@ -99,7 +99,7 @@ public class DimensionMenu extends LayoutComposite {
         }
     };
 
-    final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+    //final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
     /**
      * 
      * DimensionMenu Constructor.
@@ -193,7 +193,7 @@ public class DimensionMenu extends LayoutComposite {
         });
 
 
-        hierarchyModeModel.add(ConstantFactory.getInstance().pre());
+       /* hierarchyModeModel.add(ConstantFactory.getInstance().pre());
         hierarchyModeModel.add(ConstantFactory.getInstance().post());
 
         hierarchyComboBox.addChangeHandler(new ChangeHandler() {
@@ -225,10 +225,15 @@ public class DimensionMenu extends LayoutComposite {
             }
 
         });
-
+*/
         baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-        baseLayoutPanel.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
-        baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        
+        LayoutPanel sortLayout = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        
+        sortLayout.add(new Label(ConstantFactory.getInstance().sort()));
+        sortLayout.add(sortComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        baseLayoutPanel.add(sortLayout);
+        //baseLayoutPanel.add(hierarchyComboBox, new BoxLayoutData(FillStyle.HORIZONTAL));
 
 
         ScrollLayoutPanel dimTreeScrollPanel = new ScrollLayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
@@ -346,7 +351,7 @@ public class DimensionMenu extends LayoutComposite {
                                                     }
 
                                                     public void onSuccess(final String arg0) {
-                                                        for (int i = 0; i < hierarchyComboBox
+                                                       /* for (int i = 0; i < hierarchyComboBox
                                                         .getItemCount(); i++)
                                                             if (hierarchyComboBox.getModel().getElementAt(i)
                                                                     .equals(arg0)){
@@ -356,7 +361,7 @@ public class DimensionMenu extends LayoutComposite {
                                                             }
                                                             else
                                                                 DimensionMenu.this.hierarchyModeModel.setSelectedItem(null);
-
+*/
                                                         memberListBoxModel.clear();
                                                         addDimensionTreeItem(labels, parent,
                                                                 selectionlist,dimensionLabel.getText());

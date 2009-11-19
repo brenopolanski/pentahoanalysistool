@@ -222,7 +222,7 @@ public class OlapUtil {
         final Cube cube = query.getCube();
         Member memberOut=null;
         if(member.getRawValue()!=null)
-         memberOut = cube.lookupMember(member.getRawValue());
+         memberOut = cube.lookupMember(member.getRawValue().toString());
 
         if (memberOut == null) {
             // Let's try with only the dimension name in front.
@@ -231,7 +231,7 @@ public class OlapUtil {
             dimPlusMemberNames.add(dimension.getName());
 
             
-            dimPlusMemberNames.add(member.getRawValue());
+            dimPlusMemberNames.add(member.getRawValue().toString());
             memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }
             if (memberOut == null) {
