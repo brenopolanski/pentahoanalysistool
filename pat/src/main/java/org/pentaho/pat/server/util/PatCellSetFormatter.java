@@ -31,6 +31,7 @@ import org.olap4j.OlapException;
 import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
+import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
@@ -300,15 +301,18 @@ public class PatCellSetFormatter {
         final Member[] prevMembers = new Member[axisInfo.getWidth()];
         final MemberCell[] prevMemberInfo = new MemberCell[axisInfo.getWidth()];
         final Member[] members = new Member[axisInfo.getWidth()];
+
+        //Test getting the hierachies, get current one, move back 1 and match levels
+        List<Hierarchy> test = axis.getAxisMetaData().getHierarchies();
         for (int i = 0; i < axis.getPositions().size(); i++) {
             final int x = offset + i;
             final Position position = axis.getPositions().get(i);
             int yOffset = 0;
             final List<Member> memberList = position.getMembers();
-
+            
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
-
+                
                 final AxisOrdinalInfo ordinalInfo = axisInfo.ordinalInfos.get(j);
                 while (member != null) {
                     if (member.getDepth() < ordinalInfo.minDepth)
@@ -339,10 +343,10 @@ public class PatCellSetFormatter {
                         }
                     }
 
-                // TODO Check to see if any child members are included in the resultset, is there a better way?
+                // TODO Check to see if any child members are included in the resultset, is there a way that actually works?!
                 for (int j = 0; j < axis.getPositions().size(); j++) {
                     final List<Member> memberListChild = axis.getPositions().get(j).getMembers();
-
+                    
                     for (int k = 0; k < memberListChild.size(); k++) {
                         final Member memberChild = memberListChild.get(k);
 

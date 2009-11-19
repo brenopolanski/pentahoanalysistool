@@ -423,7 +423,11 @@ public class ChartFactory {
                 slice.addChartClickHandler(new ChartClickHandler() {
 
                     public void onClick(final ChartClickEvent event) {
-                        // TODO Allow chart drilling.
+                        
+                        String label = slice.getLabel();
+                        
+           
+           
                         MessageBox.info("Clicked Slice", slice.getLabel()); //$NON-NLS-1$
                     }
 
