@@ -110,6 +110,18 @@ The following describes the action plan and planned new features for this develo
 
 *0.5.2*
   * biserver integration
+1. save/load queries with solution repository
+2. new queries (show schema/cubes window just like Jpivot and analyzer) ... would result in a new PUC tab with a PAT without anything except the query tab within PAT
+
+STEPS to take for that:
+1. make hibernate save and reload just like biserver HSQLDB (maybe even create a new HSQLDB next to hibernate/quartz/sampledata as default db)
+2. enable mdx query saving
+3. strip out security so it works with the biserver
+4. introduce some parameters like we had already.. for demo mode + last biserver integration
+5. enable "connect on startup" for connections
+6. the new query thing... not 100% sure how exactly we're going to do this.. if we need a separate plugin or whatever
+7. change the pat biserver plugin so it adapts to the new things i just said
+
   * save queries in the biserver
 
 *0.5.x*
