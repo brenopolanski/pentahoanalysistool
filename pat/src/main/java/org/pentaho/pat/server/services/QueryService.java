@@ -29,6 +29,7 @@ import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.util.MdxQuery;
@@ -338,6 +339,7 @@ public interface QueryService extends Service {
 	 * @param userId The owner of the query.
 	 * @param sessionId The session id into which the query is stored.
 	 * @param queryId The query id.
+	 * @param drillType 
 	 * @param member The member being drilled.
 	 * @throws OlapException If something goes sour.
 	 */
@@ -345,7 +347,7 @@ public interface QueryService extends Service {
 	public void drillPosition(String userId, 
             String sessionId, 
             String queryId, 
-            MemberCell member) throws OlapException;
+            DrillType drillType, MemberCell member) throws OlapException;
 
     /**
      *TODO JAVADOC

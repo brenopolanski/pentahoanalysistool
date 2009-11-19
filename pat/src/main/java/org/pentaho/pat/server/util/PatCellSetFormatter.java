@@ -32,6 +32,7 @@ import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
+import org.olap4j.metadata.NamedList;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -256,11 +257,10 @@ public class PatCellSetFormatter {
             if (coordList.size() > 1)
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
-            Object blahval = null;
-            blahval = cell.getValue();
-
-            if (blahval != null) {
-                cellInfo.setRawValue(blahval.toString());
+          
+            if (cell.getValue() != null) {
+        	if(cell.getValue() instanceof Number)
+                cellInfo.setRawNumber((Number)cell.getValue());
             }
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
@@ -327,7 +327,7 @@ public class PatCellSetFormatter {
 
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
 
-                List memberChildrenList = null;
+                NamedList<? extends Member> memberChildrenList = null;
 
                 if (member != null)
                     if (member.getChildMemberCount() > 0) {

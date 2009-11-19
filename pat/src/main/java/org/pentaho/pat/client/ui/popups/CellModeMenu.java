@@ -104,7 +104,7 @@ public class CellModeMenu extends PopupMenu {
         public final void execute() {
             final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
             final ArrayList<String> memberList = new ArrayList<String>();
-            memberList.add(targetLabel.getMc().getRawValue());
+            memberList.add(targetLabel.getMc().getRawValue().toString());
 
             ServiceFactory.getQueryInstance().createExclusion(Pat.getSessionID(), Pat.getCurrQuery(),
                     targetLabel.getMc().getParentDimension(), memberList, new AsyncCallback<Object>() {

@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -149,7 +150,7 @@ public interface IQueryAsync {
    public void drillPosition(
            String sessionId, 
            String queryId, 
-           MemberCell member,
+           DrillType drillType, MemberCell member,
            AsyncCallback<Object> callback);
    
    public void createNewMdxQuery(

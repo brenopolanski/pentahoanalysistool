@@ -47,6 +47,7 @@ import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.data.pojo.User;
@@ -318,7 +319,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
     public void drillPosition(final String userId, final String sessionId,
-	    final String queryId, final MemberCell member) throws OlapException {
+	    final String queryId, DrillType drillType, final MemberCell member)
+	    throws OlapException {
 	this.sessionService.validateSession(userId, sessionId);
 	final Query query = getQuery(userId, sessionId, queryId);
 	final CellSet cellSet = OlapUtil.getCellSet(queryId);
@@ -339,74 +341,121 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
 	if (childmembers != null)
 	    if (!member.isExpanded()) {
-		//If its the left most dimension don't do anything apart from include.
+		// If its the left most dimension don't do anything apart from
+		// include.
 		if (member.getRightOf() == null) {
 		    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
 		    queryDimension.getInclusions().remove(selection);
-		    queryDimension.include(Selection.Operator.INCLUDE_CHILDREN,memberFetched);
+		    switch (drillType) {
+		    case POSITION:
+			queryDimension.include(Selection.Operator.INCLUDE_CHILDREN,memberFetched);
+			break;
+		    case MEMBER:
+			queryDimension.include(Selection.Operator.CHILDREN,memberFetched);
+			break;
+		    default:
+break;
+		    }
+		    
 		}
 
 		else {
-
-		    //
-		    //Very very testing code, doesn't work in most situations!!!!
-		    //
-		    
-		    //Get the drilling member
+		    // Get the drilling member
 		    MemberCell memberdrill = member;
 
-		    Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+		    Selection selection = queryDimension.include(
+			    Selection.Operator.CHILDREN, memberFetched);
 		    
-		    //Test to see if there are populated cells to its left
+		    
+		    switch (drillType){
+		    case POSITION:
+		  
+		    // Test to see if there are populated cells to its left
 		    while (memberdrill.getRightOf() != null) {
-			
-			//If yes test to make sure its not name isn't null and it hasn't just skipped back to its all member level
+
+			// If yes test to make sure its not name isn't null and
+			// it hasn't just skipped back to its all member level
 			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
-			    
-			    //Get dimension to the left of the current member.
+
+			    // Get dimension to the left of the current member.
 			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
-			    
-			    //Get the Olap4J member.
+
+			    // Get the Olap4J member.
 			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
-			    
+
 			    selection.addContext(queryDimension2.createSelection(memberFetched2));
-			    
 
 			}
-			//Get next member.
+			// Get next member.
 			memberdrill = memberdrill.getRightOf();
 		    }
+		    break;
+		    case MEMBER:
+			queryDimension.getInclusions().remove(currentMemberSelection);
+			    // Test to see if there are populated cells to its left
+			    while (memberdrill.getRightOf() != null) {
 
+				// If yes test to make sure its not name isn't null and
+				// it hasn't just skipped back to its all member level
+				if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+
+				    // Get dimension to the left of the current member.
+				    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+
+				    // Get the Olap4J member.
+				    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+
+				    selection.addContext(queryDimension2.createSelection(memberFetched2));
+
+				}
+				// Get next member.
+				memberdrill = memberdrill.getRightOf();
+			    }
+			
+			break;
+			default:
+			    break;
+		    }
 		}
 	    } else {
 		if (member.getRightOf() == null) {
 		    queryDimension.clearInclusions();
 		    queryDimension.include(memberFetched);
 		} else {
-		    final Selection selection =OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
-		   queryDimension.getInclusions().remove(selection);
-		   MemberCell memberdrill = member;
-		   while (memberdrill.getRightOf() != null) {
-			
-			//If yes test to make sure its not name isn't null and it hasn't just skipped back to its all member level
-			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
-			    
-			    //Get dimension to the left of the current member.
-                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
-                
-                //Get the Olap4J member.
-                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
-                
-            selection.removeContext(queryDimension2.createSelection(memberFetched2));
+		    final Selection selection = OlapUtil.findSelection(member
+			    .getUniqueName(), queryDimension.getInclusions());
+		    queryDimension.getInclusions().remove(selection);
+		    MemberCell memberdrill = member;
+		    while (memberdrill.getRightOf() != null) {
+
+			// If yes test to make sure its not name isn't null and
+			// it hasn't just skipped back to its all member level
+			if (memberdrill.getRightOf().getUniqueName() != null
+				&& !memberdrill.getRightOf().getUniqueName()
+					.equals(memberdrill.getParentMember())) {
+
+			    // Get dimension to the left of the current member.
+			    QueryDimension queryDimension2 = OlapUtil
+				    .getQueryDimension(query, memberdrill
+					    .getRightOfDimension());
+
+			    // Get the Olap4J member.
+			    final Member memberFetched2 = OlapUtil.getMember(
+				    query, queryDimension2, memberdrill
+					    .getRightOf(), cellSet);
+
+			    selection.removeContext(queryDimension2
+				    .createSelection(memberFetched2));
 
 			}
-			//Get next member.
+			// Get next member.
 			memberdrill = memberdrill.getRightOf();
 		    }
-		    }
 		}
-
 	    }
+
+    }
 
     
 

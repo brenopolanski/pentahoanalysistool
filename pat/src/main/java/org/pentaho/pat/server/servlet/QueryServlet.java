@@ -35,6 +35,7 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -327,10 +328,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * (non-Javadoc)
      * @see org.pentaho.pat.rpc.IQuery#drillPosition(java.lang.String, java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public void drillPosition(String sessionId, String queryId, MemberCell member) throws RpcException
+    public void drillPosition(String sessionId, String queryId, DrillType drillType, MemberCell member) throws RpcException
     {
         try {
-            this.queryService.drillPosition(getCurrentUserId(), sessionId, queryId, member);
+            this.queryService.drillPosition(getCurrentUserId(), sessionId, queryId, drillType, member);
         } catch (OlapException e) {
             log.error(Messages.getString("Servlet.Query.CantExecuteQuery"),e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$

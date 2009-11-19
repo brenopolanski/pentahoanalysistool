@@ -29,6 +29,7 @@ import org.pentaho.pat.client.ui.panels.ChartPanel.ChartType;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.rednels.ofcgwt.client.event.ChartClickEvent;
@@ -39,6 +40,7 @@ import com.rednels.ofcgwt.client.model.Legend.Position;
 import com.rednels.ofcgwt.client.model.axis.Label;
 import com.rednels.ofcgwt.client.model.axis.XAxis;
 import com.rednels.ofcgwt.client.model.axis.YAxis;
+import com.rednels.ofcgwt.client.model.axis.XAxis.Labels;
 import com.rednels.ofcgwt.client.model.elements.BarChart;
 import com.rednels.ofcgwt.client.model.elements.LineChart;
 import com.rednels.ofcgwt.client.model.elements.PieChart;
@@ -189,22 +191,24 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            labels[i] = new Label(cell[rc].getRawValue(), 45);
+            labels[i] = new Label(cell[rc].getRawValue().toString(), 45);
 
         }
 
         xa.addLabels(labels);
         
-        int maxval = 0;
-        int minval =0;
+        Float maxval = 0.0f;
+        Float minval = 0.0f;
+        Number cellValue = null;
         for (int i = 0; i < data.size(); i++) {
             final BaseCell[] cell = data.get(i);
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-
-            if (isParsableToInt(cell[rowColCount].getRawValue())) {
-                final Bar bar = new Bar(Integer.parseInt(cell[rowColCount].getRawValue()));
+            if(((DataCell)cell[rowColCount]).getRawNumber()!=null)
+        	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+           /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
+                final Bar bar = new Bar(cellValue);
                 bar.setColour(getRandomColor());
                 bar.addChartClickHandler(new ChartClickHandler() {
 
@@ -215,10 +219,10 @@ public class ChartFactory {
 
                 });
                 bchart2.addBars(bar);
-                if (Integer.parseInt(cell[rowColCount].getRawValue()) > maxval)
-                    maxval = Integer.parseInt(cell[rowColCount].getRawValue());
-                if (Integer.parseInt(cell[rowColCount].getRawValue()) < minval)
-                    minval = Integer.parseInt(cell[rowColCount].getRawValue());
+                if (cellValue.floatValue() > maxval)
+                    maxval =(cellValue.floatValue());
+                if (cellValue.floatValue() < minval)
+                    minval =(cellValue.floatValue());
             }
 
         }
@@ -291,7 +295,7 @@ public class ChartFactory {
         // TODO Allow user defined background color.
         cd.setBackgroundColour("#ffffff"); //$NON-NLS-1$
 
-        XAxis xa = createXAxis(chartOptions);
+        final XAxis xa = createXAxis(chartOptions);
 
         YAxis ya = createYAxis(chartOptions);
        cd.setXAxis(xa);
@@ -309,13 +313,14 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            labels[i] = new Label(cell[rc].getRawValue(), 45);
+            labels[i] = new Label(cell[rc].getRawValue().toString(), 45);
 
         }
 
         xa.addLabels(labels);
-        int maxval = 0;
-        int minval = 0;
+        Float maxval = 0.0f;
+        Float minval = 0.0f;
+        Number cellValue = null;
         int actualRow = rowColCount;
         for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
 
@@ -323,32 +328,37 @@ public class ChartFactory {
             if(chartOptions.containsKey("dotStyle")) //$NON-NLS-1$
             lc2.setDotStyle((BaseDot) chartOptions.get("dotStyle")); //$NON-NLS-1$
             lc2.setColour(getRandomColor());
-
+            lc2.setTooltip("#x_label#"); //$NON-NLS-1$
             for (int j = 0; j < data.size(); j++) {
                 final BaseCell[] cell = data.get(j);
 
                 if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null){
-                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue());
+                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue().toString());
                 }
                 else{
-                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue());
+                    lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue().toString());
 
                 }
-                if (isParsableToInt(cell[actualRow].getRawValue())) {
-                    final BaseDot dot = new SolidDot(Integer.parseInt(cell[actualRow].getRawValue()));
+                if(((DataCell)cell[rowColCount]).getRawNumber()!=null)
+            	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+               /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
+                    final BaseDot dot = new SolidDot(cellValue);
                     dot.addChartClickHandler(new ChartClickHandler() {
 
                         public void onClick(final ChartClickEvent event) {
                             // TODO Allow chart drilling.
+                            Number i = dot.getX();
+                            Labels label = xa.getLabels();
+                            String drillmember = dot.getTooltip();
                             MessageBox.info("Clicked Bar", dot.getColour()); //$NON-NLS-1$
                         }
 
                     });
                     lc2.addDots(dot);
-                    if (Integer.parseInt(cell[actualRow].getRawValue()) > maxval)
-                        maxval = Integer.parseInt(cell[actualRow].getRawValue());
-                    if (Integer.parseInt(cell[actualRow].getRawValue()) < minval)
-                        minval = Integer.parseInt(cell[actualRow].getRawValue());
+                    if (cellValue.floatValue() > maxval)
+                        maxval =(cellValue.floatValue());
+                    if (cellValue.floatValue() < minval)
+                        minval =(cellValue.floatValue());
                 }
 
             }
@@ -405,8 +415,10 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            if (isParsableToInt(cell[rowColCount].getRawValue())) {
-                final Slice slice = new Slice(Integer.parseInt(cell[rowColCount].getRawValue()), cell[rc].getRawValue());
+            Number cellValue = null;
+	    if(((DataCell)cell[rowColCount]).getRawNumber() != null)
+            	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+                final Slice slice = new Slice((cellValue.floatValue()), cell[rc].getRawValue().toString());
 
                 slice.addChartClickHandler(new ChartClickHandler() {
 
@@ -418,7 +430,7 @@ public class ChartFactory {
                 });
                 pie.addSlices(slice);
             }
-        }
+       
         cd.addElements(pie);
         return cd;
     }

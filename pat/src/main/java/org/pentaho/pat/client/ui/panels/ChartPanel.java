@@ -99,7 +99,8 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
         layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
-
+        final WidgetWrapper wr = new WidgetWrapper(chart);
+        chartLayoutPanel.add(wr);
         this.getLayoutPanel().add(layoutPanel);
 
     }
@@ -165,11 +166,10 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()) {
             this.matrix = matrix;
             chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
-            final WidgetWrapper wr = new WidgetWrapper(chart);
-            chartLayoutPanel.add(wr);
+            
             this.layout();
         }
     }

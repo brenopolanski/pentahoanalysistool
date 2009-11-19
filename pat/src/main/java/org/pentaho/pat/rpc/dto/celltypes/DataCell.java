@@ -34,6 +34,15 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	/** The color value. */
 	String colorValue = null; // Color held as hex String
 
+	Number rawNumber = null;
+	public Number getRawNumber() {
+	    return rawNumber;
+	}
+
+	public void setRawNumber(Number rawNumber) {
+	    this.rawNumber = rawNumber;
+	}
+
 	/**
 	 * 
 	 * Blank constructor for serialization purposes, don't use it.
@@ -73,6 +82,7 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 		this.colorValue = colorValue;
 	}
 
+	
 	@Override
 	public HorizontalPanel getLabel(){
 	    final HorizontalPanel cellPanel = new HorizontalPanel();
