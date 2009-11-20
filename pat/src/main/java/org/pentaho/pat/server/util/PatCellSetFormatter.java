@@ -302,13 +302,13 @@ public class PatCellSetFormatter {
         final MemberCell[] prevMemberInfo = new MemberCell[axisInfo.getWidth()];
         final Member[] members = new Member[axisInfo.getWidth()];
 
-        //Test getting the hierachies, get current one, move back 1 and match levels
-        List<Hierarchy> test = axis.getAxisMetaData().getHierarchies();
         for (int i = 0; i < axis.getPositions().size(); i++) {
             final int x = offset + i;
             final Position position = axis.getPositions().get(i);
             int yOffset = 0;
             final List<Member> memberList = position.getMembers();
+            
+
             
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
@@ -324,40 +324,32 @@ public class PatCellSetFormatter {
                 yOffset += ordinalInfo.getWidth();
             }
 
+            boolean expanded = false;
             boolean same = true;
             for (int y = 0; y < members.length; y++) {
                 final MemberCell memberInfo = new MemberCell();
                 final Member member = members[y];
-
+                List<String> memberPath = new ArrayList<String>();
+                expanded = false;
+                for(int z = 0; z<=position.getMembers().size()-1; z++)
+                {
+                    
+                    if(i<axis.getPositions().size()-1)
+                        if(axis.getPositions().get(i+1).getMembers().get(z).getParentMember()!=null && axis.getPositions().get(i+1).getMembers().get(z).getParentMember().equals(member))
+                        {
+                    	expanded = true;
+                        }
+                    
+                    if(member==null || position.getMembers().get(z).getUniqueName().equals(member.getUniqueName()))
+                	break;
+                	
+                   
+                    memberPath.add(position.getMembers().get(z).getUniqueName());
+                }
+                memberInfo.setMemberPath(memberPath);
+                memberInfo.setExpanded(expanded);
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
 
-                NamedList<? extends Member> memberChildrenList = null;
-
-                if (member != null)
-                    if (member.getChildMemberCount() > 0) {
-                        try {
-                            memberChildrenList = member.getChildMembers();
-                        } catch (OlapException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-
-                // TODO Check to see if any child members are included in the resultset, is there a way that actually works?!
-                for (int j = 0; j < axis.getPositions().size(); j++) {
-                    final List<Member> memberListChild = axis.getPositions().get(j).getMembers();
-                    
-                    for (int k = 0; k < memberListChild.size(); k++) {
-                        final Member memberChild = memberListChild.get(k);
-
-                        if (memberChildrenList != null)
-                            if (memberChildrenList.contains(memberChild)) {
-                                memberInfo.setExpanded(true);
-                                break;
-                            }
-
-                    }
-                }
 
                 if (member != null) {
                     if (x - 1 == offset)
@@ -381,7 +373,8 @@ public class PatCellSetFormatter {
                     if (member.getParentMember() != null) {
                         memberInfo.setParentMember(member.getParentMember().getUniqueName());
                     }
-
+                
+                    
                 } else {
                     memberInfo.setRawValue(null);
                     memberInfo.setFormattedValue(null);
@@ -398,7 +391,7 @@ public class PatCellSetFormatter {
                     if (same) {
                         memberInfo.setFormattedValue(null);
                         memberInfo.setRawValue(null);
-                        memberInfo.setParentDimension(null);
+                        memberInfo.setParentDimension(member.getDimension().getName());
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);

@@ -416,8 +416,9 @@ public class ChartFactory {
             while (cell[rc].getRawValue() == null)
                 rc++;
             Number cellValue = null;
-	    if(((DataCell)cell[rowColCount]).getRawNumber() != null)
+	    if(((DataCell)cell[rowColCount]).getRawNumber() != null){
             	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+	    	
                 final Slice slice = new Slice((cellValue.floatValue()), cell[rc].getRawValue().toString());
 
                 slice.addChartClickHandler(new ChartClickHandler() {
@@ -434,7 +435,7 @@ public class ChartFactory {
                 });
                 pie.addSlices(slice);
             }
-       
+        }
         cd.addElements(pie);
         return cd;
     }
