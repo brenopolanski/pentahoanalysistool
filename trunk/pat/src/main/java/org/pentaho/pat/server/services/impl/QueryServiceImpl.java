@@ -423,39 +423,18 @@ break;
 		    queryDimension.clearInclusions();
 		    queryDimension.include(memberFetched);
 		} else {
-		    final Selection selection = OlapUtil.findSelection(member
-			    .getUniqueName(), queryDimension.getInclusions());
-		    queryDimension.getInclusions().remove(selection);
+		   
 		    MemberCell memberdrill = member;
-		    while (memberdrill.getRightOf() != null) {
 
-			// If yes test to make sure its not name isn't null and
-			// it hasn't just skipped back to its all member level
-			if (memberdrill.getRightOf().getUniqueName() != null
-				&& !memberdrill.getRightOf().getUniqueName()
-					.equals(memberdrill.getParentMember())) {
+		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+		   
 
-			    // Get dimension to the left of the current member.
-			    QueryDimension queryDimension2 = OlapUtil
-				    .getQueryDimension(query, memberdrill
-					    .getRightOfDimension());
-
-			    // Get the Olap4J member.
-			    final Member memberFetched2 = OlapUtil.getMember(
-				    query, queryDimension2, memberdrill
-					    .getRightOf(), cellSet);
-
-			    selection.removeContext(queryDimension2
-				    .createSelection(memberFetched2));
-
-			}
-			// Get next member.
-			memberdrill = memberdrill.getRightOf();
+			
 		    }
 		}
 	    }
 
-    }
+    
 
     
 

@@ -20,6 +20,7 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
@@ -61,6 +62,8 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     private int childMemberCount;
 
     private String rightOfDimension;
+
+    private List<String> memberPath;
     
     private static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
 	/**
@@ -298,6 +301,14 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     public String getRightOfDimension(){
         return this.rightOfDimension;
     }
+
+    public void setMemberPath(List<String> memberPath) {
+	this.memberPath = memberPath;
+	
+    }
     
+    public List<String> getMemberPath(){
+	return memberPath;
+    }
      
 }
