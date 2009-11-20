@@ -391,7 +391,7 @@ public class PatCellSetFormatter {
                     if (same) {
                         memberInfo.setFormattedValue(null);
                         memberInfo.setRawValue(null);
-                        memberInfo.setParentDimension(member.getDimension().getName());
+                        memberInfo.setParentDimension(null);
                     }
                     memberInfo.setRight(false);
                     memberInfo.setSameAsPrev(false);
