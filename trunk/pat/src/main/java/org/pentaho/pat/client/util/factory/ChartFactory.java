@@ -418,8 +418,12 @@ public class ChartFactory {
             Number cellValue = null;
 	    if(((DataCell)cell[rowColCount]).getRawNumber() != null){
             	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
-	    	
-                final Slice slice = new Slice((cellValue.floatValue()), cell[rc].getRawValue().toString());
+	    	List<String> path = ((MemberCell) cell[rc]).getMemberPath();
+	    	String label ="";
+	    	for(int j=0; j<path.size(); j++){
+	    	    label+=path.get(j);
+	    	}
+                final Slice slice = new Slice((cellValue.floatValue()), label);
 
                 slice.addChartClickHandler(new ChartClickHandler() {
 

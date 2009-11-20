@@ -346,6 +346,9 @@ public class PatCellSetFormatter {
                    
                     memberPath.add(position.getMembers().get(z).getUniqueName());
                 }
+                if(member!=null){
+                memberPath.add(member.getUniqueName());
+                }
                 memberInfo.setMemberPath(memberPath);
                 memberInfo.setExpanded(expanded);
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
