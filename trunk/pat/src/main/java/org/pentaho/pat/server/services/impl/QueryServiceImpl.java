@@ -424,11 +424,9 @@ break;
 		    queryDimension.include(memberFetched);
 		} else {
 		   
-		    MemberCell memberdrill = member;
-
-		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
 		   
-
+		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions(), Selection.Operator.CHILDREN);
+		    queryDimension.getInclusions().remove(currentMemberSelection);
 			
 		    }
 		}
