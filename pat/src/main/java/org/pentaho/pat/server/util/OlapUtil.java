@@ -123,6 +123,18 @@ public class OlapUtil {
 
     /**
      * @param path
+     * @param selections
+     * @return null
+     */
+    public static Selection findSelection(final String path, final List<Selection> selections, final Selection.Operator oper) {
+        for (final Selection selection : selections)
+            if (selection.getName().equals(path) && selection.getOperator().equals(oper))
+                return selection;
+        return null;
+    }
+    
+    /**
+     * @param path
      * @param dim
      */
     public static Selection findSelection(String path, final QueryDimension dim) {
