@@ -232,4 +232,12 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String failedSaveQuery(String arg0);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param localizedMessage
+     * @return
+     */
+    String failedDrill(String localizedMessage);
 }

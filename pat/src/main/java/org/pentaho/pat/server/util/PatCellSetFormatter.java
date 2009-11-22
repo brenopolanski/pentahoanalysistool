@@ -27,19 +27,14 @@ import java.util.List;
 import org.olap4j.Cell;
 import org.olap4j.CellSet;
 import org.olap4j.CellSetAxis;
-import org.olap4j.OlapException;
 import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
-import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Member;
-import org.olap4j.metadata.NamedList;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 public class PatCellSetFormatter {
-    private Matrix matrix;
-
     /**
      * Description of an axis.
      */
@@ -140,6 +135,8 @@ public class PatCellSetFormatter {
             }
         };
     }
+
+    private Matrix matrix;
 
     /**
      * Creates a PatCellSetFormatter.
@@ -258,11 +255,10 @@ public class PatCellSetFormatter {
             if (coordList.size() > 1)
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
-          
-            if (cell.getValue() != null) {
-        	if(cell.getValue() instanceof Number)
-                cellInfo.setRawNumber((Number)cell.getValue());
-            }
+
+            if (cell.getValue() != null)
+                if (cell.getValue() instanceof Number)
+                    cellInfo.setRawNumber((Number) cell.getValue());
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
             if (cellValue.length() < 1) {
@@ -307,12 +303,10 @@ public class PatCellSetFormatter {
             final Position position = axis.getPositions().get(i);
             int yOffset = 0;
             final List<Member> memberList = position.getMembers();
-            
 
-            
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
-                
+
                 final AxisOrdinalInfo ordinalInfo = axisInfo.ordinalInfos.get(j);
                 while (member != null) {
                     if (member.getDepth() < ordinalInfo.minDepth)
@@ -329,30 +323,25 @@ public class PatCellSetFormatter {
             for (int y = 0; y < members.length; y++) {
                 final MemberCell memberInfo = new MemberCell();
                 final Member member = members[y];
-                List<String> memberPath = new ArrayList<String>();
+                final List<String> memberPath = new ArrayList<String>();
                 expanded = false;
-                for(int z = 0; z<=position.getMembers().size()-1; z++)
-                {
-                    
-                    if(i<axis.getPositions().size()-1)
-                        if(axis.getPositions().get(i+1).getMembers().get(z).getParentMember()!=null && axis.getPositions().get(i+1).getMembers().get(z).getParentMember().equals(member))
-                        {
-                    	expanded = true;
-                        }
-                    
-                    if(member==null || position.getMembers().get(z).getUniqueName().equals(member.getUniqueName()))
-                	break;
-                	
-                   
+                for (int z = 0; z <= position.getMembers().size() - 1; z++) {
+
+                    if (i < axis.getPositions().size() - 1)
+                        if (axis.getPositions().get(i + 1).getMembers().get(z).getParentMember() != null
+                                && axis.getPositions().get(i + 1).getMembers().get(z).getParentMember().equals(member))
+                            expanded = true;
+
+                    if (member == null || position.getMembers().get(z).getUniqueName().equals(member.getUniqueName()))
+                        break;
+
                     memberPath.add(position.getMembers().get(z).getUniqueName());
                 }
-                if(member!=null){
-                memberPath.add(member.getUniqueName());
-                }
+                if (member != null)
+                    memberPath.add(member.getUniqueName());
                 memberInfo.setMemberPath(memberPath);
                 memberInfo.setExpanded(expanded);
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
-
 
                 if (member != null) {
                     if (x - 1 == offset)
@@ -365,19 +354,15 @@ public class PatCellSetFormatter {
                     memberInfo.setUniquename(member.getUniqueName());
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
 
-                    if (y > 0 && prevMembers[y - 1] != null) {
+                    if (y > 0 && prevMembers[y - 1] != null)
                         memberInfo.setRightOf(prevMemberInfo[y - 1]);
-                    }
 
-                    if (y > 0 && prevMembers[y - 1] != null) {
+                    if (y > 0 && prevMembers[y - 1] != null)
                         memberInfo.setRightOfDimension(prevMembers[y - 1].getDimension().getName());
-                    }
 
-                    if (member.getParentMember() != null) {
+                    if (member.getParentMember() != null)
                         memberInfo.setParentMember(member.getParentMember().getUniqueName());
-                    }
-                
-                    
+
                 } else {
                     memberInfo.setRawValue(null);
                     memberInfo.setFormattedValue(null);

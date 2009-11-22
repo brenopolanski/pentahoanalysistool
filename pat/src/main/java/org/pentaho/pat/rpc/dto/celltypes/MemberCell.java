@@ -26,7 +26,9 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
@@ -208,7 +210,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
                 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
 
                     public void onFailure(Throwable arg0) {
-                        MessageBox.alert("Failed", "failed");
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(Object arg0) {
@@ -216,7 +218,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 
                             public void onFailure(Throwable arg0) {
 
-                                MessageBox.alert("Failed", "failed");    
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
 
                             }
 
