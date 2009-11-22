@@ -209,7 +209,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         if (connection == null)
-            throw new OlapException("Not a valid connection");
+            throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
 
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
@@ -233,7 +233,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         if (connection == null)
-            throw new OlapException("Not a valid connection");
+            throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
 
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
@@ -255,7 +255,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final MdxQuery mdxQuery = this.getMdxQuery(userId, sessionId, mdxQueryId);
         if (mdxQuery == null)
-            throw new OlapException("can't set mdx query");
+            throw new OlapException(Messages.getString("Servlet.Query.CantSetMdx")); //$NON-NLS-1$
 
         mdxQuery.setMdx(mdx);
         sessionService.getSession(userId, sessionId).getMdxQueries().remove(mdxQueryId);
@@ -313,128 +313,124 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.pentaho.pat.server.services.QueryService#drillPosition(java.lang.
-     * String, java.lang.String, java.lang.String,
-     * org.pentaho.pat.rpc.dto.celltypes.MemberCell)
+     * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang. String, java.lang.String,
+     * java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public void drillPosition(final String userId, final String sessionId,
-	    final String queryId, DrillType drillType, final MemberCell member)
-	    throws OlapException {
-	this.sessionService.validateSession(userId, sessionId);
-	final Query query = getQuery(userId, sessionId, queryId);
-	final CellSet cellSet = OlapUtil.getCellSet(queryId);
+    public void drillPosition(final String userId, final String sessionId, final String queryId, DrillType drillType,
+            final MemberCell member) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        final Query query = getQuery(userId, sessionId, queryId);
+        final CellSet cellSet = OlapUtil.getCellSet(queryId);
 
-	queryDimension = OlapUtil.getQueryDimension(query, member
-		.getParentDimension());
-	final Member memberFetched = OlapUtil.getMember(query, queryDimension,
-		member, cellSet);
+        queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
+        final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
 
-	NamedList<? extends Member> childmembers = null;
-	try {
-	    childmembers = memberFetched.getChildMembers();
-	} catch (final Exception e) {
-	    throw new OlapException(
-		    Messages
-			    .getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
-	}
+        NamedList<? extends Member> childmembers = null;
+        try {
+            childmembers = memberFetched.getChildMembers();
+        } catch (final Exception e) {
+            throw new OlapException(
+                    Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
+        }
 
-	if (childmembers != null)
-	    if (!member.isExpanded()) {
-		// If its the left most dimension don't do anything apart from
-		// include.
-		if (member.getRightOf() == null) {
-		    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
-		    queryDimension.getInclusions().remove(selection);
-		    switch (drillType) {
-		    case POSITION:
-			queryDimension.include(Selection.Operator.INCLUDE_CHILDREN,memberFetched);
-			break;
-		    case MEMBER:
-			queryDimension.include(Selection.Operator.CHILDREN,memberFetched);
-			break;
-		    default:
-break;
-		    }
-		    
-		}
+        if (childmembers != null)
+            if (!member.isExpanded()) {
+                // If its the left most dimension don't do anything apart from
+                // include.
+                if (member.getRightOf() == null) {
+                    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                            .getInclusions());
+                    queryDimension.getInclusions().remove(selection);
+                    switch (drillType) {
+                    case POSITION:
+                        queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+                        break;
+                    case MEMBER:
+                        queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        break;
+                    default:
+                        break;
+                    }
 
-		else {
-		    // Get the drilling member
-		    MemberCell memberdrill = member;
+                }
 
-		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
-		    Selection selection = queryDimension.include(
-			    Selection.Operator.CHILDREN, memberFetched);
-		    
-		    
-		    switch (drillType){
-		    case POSITION:
-		  
-		    // Test to see if there are populated cells to its left
-		    while (memberdrill.getRightOf() != null) {
+                else {
+                    // Get the drilling member
+                    MemberCell memberdrill = member;
 
-			// If yes test to make sure its not name isn't null and
-			// it hasn't just skipped back to its all member level
-			if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+                    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
+                            queryDimension.getInclusions());
+                    Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
 
-			    // Get dimension to the left of the current member.
-			    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+                    switch (drillType) {
+                    case POSITION:
 
-			    // Get the Olap4J member.
-			    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+                        // Test to see if there are populated cells to its left
+                        while (memberdrill.getRightOf() != null) {
 
-			    selection.addContext(queryDimension2.createSelection(memberFetched2));
+                            // If yes test to make sure its not name isn't null and
+                            // it hasn't just skipped back to its all member level
+                            if (memberdrill.getRightOf().getUniqueName() != null
+                                    && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
 
-			}
-			// Get next member.
-			memberdrill = memberdrill.getRightOf();
-		    }
-		    break;
-		    case MEMBER:
-			queryDimension.getInclusions().remove(currentMemberSelection);
-			    // Test to see if there are populated cells to its left
-			    while (memberdrill.getRightOf() != null) {
+                                // Get dimension to the left of the current member.
+                                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                                        .getRightOfDimension());
 
-				// If yes test to make sure its not name isn't null and
-				// it hasn't just skipped back to its all member level
-				if (memberdrill.getRightOf().getUniqueName() != null && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+                                // Get the Olap4J member.
+                                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
+                                        .getRightOf(), cellSet);
 
-				    // Get dimension to the left of the current member.
-				    QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill.getRightOfDimension());
+                                selection.addContext(queryDimension2.createSelection(memberFetched2));
 
-				    // Get the Olap4J member.
-				    final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill.getRightOf(), cellSet);
+                            }
+                            // Get next member.
+                            memberdrill = memberdrill.getRightOf();
+                        }
+                        break;
+                    case MEMBER:
+                        queryDimension.getInclusions().remove(currentMemberSelection);
+                        // Test to see if there are populated cells to its left
+                        while (memberdrill.getRightOf() != null) {
 
-				    selection.addContext(queryDimension2.createSelection(memberFetched2));
+                            // If yes test to make sure its not name isn't null and
+                            // it hasn't just skipped back to its all member level
+                            if (memberdrill.getRightOf().getUniqueName() != null
+                                    && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
 
-				}
-				// Get next member.
-				memberdrill = memberdrill.getRightOf();
-			    }
-			
-			break;
-			default:
-			    break;
-		    }
-		}
-	    } else {
-		if (member.getRightOf() == null) {
-		    queryDimension.clearInclusions();
-		    queryDimension.include(memberFetched);
-		} else {
-		   
-		   
-		    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions(), Selection.Operator.CHILDREN);
-		    queryDimension.getInclusions().remove(currentMemberSelection);
-			
-		    }
-		}
-	    }
+                                // Get dimension to the left of the current member.
+                                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                                        .getRightOfDimension());
 
-    
+                                // Get the Olap4J member.
+                                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
+                                        .getRightOf(), cellSet);
 
-    
+                                selection.addContext(queryDimension2.createSelection(memberFetched2));
+
+                            }
+                            // Get next member.
+                            memberdrill = memberdrill.getRightOf();
+                        }
+
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            } else {
+                if (member.getRightOf() == null) {
+                    queryDimension.clearInclusions();
+                    queryDimension.include(memberFetched);
+                } else {
+
+                    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
+                            queryDimension.getInclusions(), Selection.Operator.CHILDREN);
+                    queryDimension.getInclusions().remove(currentMemberSelection);
+
+                }
+            }
+    }
 
     /*
      * (non-Javadoc)
@@ -733,46 +729,43 @@ break;
      * @return
      * @throws OlapException
      */
-    private Cube getCube4Guid(final String userId, final String sessionId,
-	    final String connectionId, final String cubeName)
-	    throws OlapException {
-	final OlapConnection connection = sessionService.getNativeConnection(
-		userId, sessionId, connectionId);
+    private Cube getCube4Guid(final String userId, final String sessionId, final String connectionId,
+            final String cubeName) throws OlapException {
+        final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
-	Cube cube = null;
-	final NamedList<Catalog> catalogs = connection.getCatalogs();
-	for (int k = 0; k < catalogs.size(); k++) {
-	    try {
-		connection.setCatalog(catalogs.get(k).getName());
-	    } catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
-	    for (int j = 0; j < schemas.size(); j++) {
-		final NamedList<Cube> cubes = schemas.get(j).getCubes();
-		final Iterator<Cube> iter = cubes.iterator();
-		while (iter.hasNext() && cube == null) {
-		    final Cube testCube = iter.next();
-		    if (cubeName.equals(testCube.getName())) {
-			cube = testCube;
-		    }
-		}
-	    }
-	}
-	// if (catalog != null) {
-	// try {
-	// connection.setCatalog(catalog.getName());
-	// } catch (SQLException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	if (cube != null)
-	    return cube;
+        Cube cube = null;
+        final NamedList<Catalog> catalogs = connection.getCatalogs();
+        for (int k = 0; k < catalogs.size(); k++) {
+            try {
+                connection.setCatalog(catalogs.get(k).getName());
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
+            for (int j = 0; j < schemas.size(); j++) {
+                final NamedList<Cube> cubes = schemas.get(j).getCubes();
+                final Iterator<Cube> iter = cubes.iterator();
+                while (iter.hasNext() && cube == null) {
+                    final Cube testCube = iter.next();
+                    if (cubeName.equals(testCube.getName())) {
+                        cube = testCube;
+                    }
+                }
+            }
+        }
+        // if (catalog != null) {
+        // try {
+        // connection.setCatalog(catalog.getName());
+        // } catch (SQLException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // }
+        if (cube != null)
+            return cube;
 
-	throw new OlapException(Messages
-		.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
+        throw new OlapException(Messages.getString("Services.Session.CubeNameNotValid")); //$NON-NLS-1$
     }
 
     /*
