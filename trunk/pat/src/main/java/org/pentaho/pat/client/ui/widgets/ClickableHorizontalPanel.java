@@ -2,7 +2,9 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
@@ -35,14 +37,14 @@ public class ClickableHorizontalPanel extends HorizontalPanel {
 
 		public void onFailure(Throwable arg0) {
 		    // TODO Auto-generated method stub
-		    MessageBox.error("Error", "Error");
+		    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
 		}
 
 		public void onSuccess(Object arg0) {
 		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, prm, new AsyncCallback<Object>(){
 
 		    public void onFailure(Throwable arg0) {
-			MessageBox.error("Error", "Error");
+			MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
 			
 		    }
 
@@ -50,7 +52,7 @@ public class ClickableHorizontalPanel extends HorizontalPanel {
 			ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
 			    public void onFailure(Throwable arg0) {
-				MessageBox.error("Error", "Error");
+				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
 				
 			    }
 

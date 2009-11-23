@@ -217,7 +217,7 @@ public class OlapPanel extends DataWidget {
         LogoPanel.spinWheel(true);
         baselayoutPanel = new LayoutPanel(new BorderLayout());
         // FIXME remove that and use style
-        DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white");
+        DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final LayoutPanel centerPanel = new LayoutPanel();
         final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();

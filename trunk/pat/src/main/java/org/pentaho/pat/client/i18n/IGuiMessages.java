@@ -240,4 +240,12 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String failedDrill(String localizedMessage);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param localizedMessage
+     * @return
+     */
+    String failedSetSortOrder(String localizedMessage);
 }

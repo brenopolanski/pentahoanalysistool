@@ -50,7 +50,7 @@ public class DimensionFlexTable extends FlexTable {
     public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
         addStyleName(TABLE_CSS_NAME);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(getElement(),"background", "#EEEEEE");
+        DOM.setStyleAttribute(getElement(),"background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
 
         horizontal = orientation;
 

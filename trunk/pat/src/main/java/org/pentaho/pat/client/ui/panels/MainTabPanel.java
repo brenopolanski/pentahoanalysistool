@@ -61,8 +61,8 @@ public class MainTabPanel extends LayoutComposite {
         super();
         final LayoutPanel rootLayoutPanel = getLayoutPanel();
         // FIXME remove that and use style
-        DOM.setStyleAttribute(rootLayoutPanel.getElement(),"background", "white");
-        DOM.setStyleAttribute(contentWrapper.getElement(),"background", "white");
+        DOM.setStyleAttribute(rootLayoutPanel.getElement(),"background", "white");  //$NON-NLS-1$//$NON-NLS-2$
+        DOM.setStyleAttribute(contentWrapper.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
         contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
