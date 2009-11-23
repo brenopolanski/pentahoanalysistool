@@ -211,7 +211,7 @@ public class ChartFactory {
             else{
         	cellValue = 0;
             }
-           /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
+            {
                 final Bar bar = new Bar(cellValue);
                 bar.setColour(getRandomColor());
                 bar.addChartClickHandler(new ChartClickHandler() {
@@ -349,13 +349,14 @@ public class ChartFactory {
                 else{
                     cellValue = 0;
                 }
-               /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
+                {
                     final BaseDot dot = new SolidDot(cellValue);
                     dot.addChartClickHandler(new ChartClickHandler() {
 
                         public void onClick(final ChartClickEvent event) {
                             // TODO Allow chart drilling.
                             Number i = dot.getX();
+                            
                             Labels label = xa.getLabels();
                             String drillmember = dot.getTooltip();
                             MessageBox.info("Clicked Bar", dot.getColour()); //$NON-NLS-1$

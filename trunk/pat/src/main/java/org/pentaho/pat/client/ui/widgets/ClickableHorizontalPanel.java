@@ -2,7 +2,6 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -32,7 +31,7 @@ public class ClickableHorizontalPanel extends HorizontalPanel {
 	super.onBrowserEvent(e);
 	
 	if(DOM.eventGetType(e)== Event.ONDBLCLICK){
-	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, pcm, new AsyncCallback(){
+	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, pcm, new AsyncCallback<Object>(){
 
 		public void onFailure(Throwable arg0) {
 		    // TODO Auto-generated method stub
@@ -40,7 +39,7 @@ public class ClickableHorizontalPanel extends HorizontalPanel {
 		}
 
 		public void onSuccess(Object arg0) {
-		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, prm, new AsyncCallback(){
+		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, prm, new AsyncCallback<Object>(){
 
 		    public void onFailure(Throwable arg0) {
 			MessageBox.error("Error", "Error");
