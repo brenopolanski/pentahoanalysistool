@@ -205,8 +205,12 @@ public class ChartFactory {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-            if(((DataCell)cell[rowColCount]).getRawNumber()!=null)
+            if(((DataCell)cell[rowColCount]).getRawNumber()!=null){
         	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+            }
+            else{
+        	cellValue = 0;
+            }
            /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
                 final Bar bar = new Bar(cellValue);
                 bar.setColour(getRandomColor());
@@ -339,8 +343,12 @@ public class ChartFactory {
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue().toString());
 
                 }
-                if(((DataCell)cell[rowColCount]).getRawNumber()!=null)
+                if(((DataCell)cell[rowColCount]).getRawNumber()!=null){
             	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+                }
+                else{
+                    cellValue = 0;
+                }
                /* if (isParsableToInt(cell[rowColCount].getRawValue()))*/ {
                     final BaseDot dot = new SolidDot(cellValue);
                     dot.addChartClickHandler(new ChartClickHandler() {
