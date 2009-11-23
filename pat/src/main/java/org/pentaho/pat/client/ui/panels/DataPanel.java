@@ -128,8 +128,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
         baseLayoutPanel.add(mainLayoutPanel);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(baseLayoutPanel.getElement(),"background", "white");
-        DOM.setStyleAttribute(mainLayoutPanel.getElement(),"background", "white");
+        DOM.setStyleAttribute(baseLayoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(mainLayoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
 
     }

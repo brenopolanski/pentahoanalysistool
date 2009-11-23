@@ -82,7 +82,7 @@ public class MenuBar extends LayoutComposite {
                 ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
         connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(connectionButton.getElement(),"background", "white");
+        DOM.setStyleAttribute(connectionButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         
 
@@ -107,7 +107,7 @@ public class MenuBar extends LayoutComposite {
                 .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
         cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(cubeButton.getElement(),"background", "white");
+        DOM.setStyleAttribute(cubeButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         cubeButton.addClickHandler(new ClickHandler() {
 
@@ -128,7 +128,7 @@ public class MenuBar extends LayoutComposite {
         // cases)
         saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(saveButton.getElement(),"background", "white");
+        DOM.setStyleAttribute(saveButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -146,7 +146,7 @@ public class MenuBar extends LayoutComposite {
                 .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
         loadButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(loadButton.getElement(),"background", "white");
+        DOM.setStyleAttribute(loadButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         loadButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {

@@ -25,7 +25,9 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -72,7 +74,7 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error("Error", "failed");
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {
@@ -119,7 +121,7 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error("Error", "failed");
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {
@@ -169,7 +171,7 @@ public class CellModeMenu extends PopupMenu {
 
                         public void onFailure(final Throwable arg0) {
 
-                            MessageBox.error("Error", "failed");
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSetSortOrder(arg0.getLocalizedMessage()));
                         }
 
                         public void onSuccess(final Object arg0) {
@@ -177,7 +179,7 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error("Error", "failed");
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {
@@ -212,10 +214,10 @@ public class CellModeMenu extends PopupMenu {
 
     public void init() {
         this.setAutoOpen(true);
-        this.addItem(new MenuItem("Sort A-Z", new SortOrderCommand("ASC")));
-        this.addItem(new MenuItem("Sort Z-A", new SortOrderCommand("DESC")));
-        this.addItem(new MenuItem("Exclude", new ExcludeCommand()));
-        this.addItem(new MenuItem("Clear Excluded Members", new ClearExcludeCommand()));
+        this.addItem(new MenuItem(ConstantFactory.getInstance().sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
+        this.addItem(new MenuItem(ConstantFactory.getInstance().sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
+        this.addItem(new MenuItem(ConstantFactory.getInstance().exclude(), new ExcludeCommand()));
+        this.addItem(new MenuItem(ConstantFactory.getInstance().clearExclusions(), new ClearExcludeCommand()));
     }
 
     /**

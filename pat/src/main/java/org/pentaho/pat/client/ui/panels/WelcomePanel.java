@@ -109,7 +109,7 @@ public class WelcomePanel extends DataWidget {
         test.setOrientation(Orientation.VERTICAL);
         final LayoutPanel layoutPanel = new LayoutPanel(test);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(layoutPanel.getElement(),"background", "white");
+        DOM.setStyleAttribute(layoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$

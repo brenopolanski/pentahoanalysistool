@@ -789,6 +789,34 @@ public interface IGuiConstants extends Constants {
 
     String sort();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortAZ();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String sortZA();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String exclude();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String clearExclusions();
+
     
 
    

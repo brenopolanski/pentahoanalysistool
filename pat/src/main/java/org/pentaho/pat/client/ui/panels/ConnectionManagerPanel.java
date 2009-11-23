@@ -107,7 +107,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         });
         cListBox.setModel(ciModel);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(cListBox.getElement(),"background", "white");
+        DOM.setStyleAttribute(cListBox.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         return cListBox;
     }
