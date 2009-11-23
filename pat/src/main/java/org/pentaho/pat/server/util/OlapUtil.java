@@ -248,7 +248,7 @@ public class OlapUtil {
             }
             if (memberOut == null) {
         	String membername = member.getUniqueName().substring(1, member.getUniqueName().length()-1);
-        	      String[] memberNames = membername.split("\\]\\.\\[");
+        	      String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
 
                 memberOut = cube.lookupMember(memberNames);
 
