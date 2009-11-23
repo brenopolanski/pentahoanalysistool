@@ -40,7 +40,6 @@ import com.rednels.ofcgwt.client.model.Legend.Position;
 import com.rednels.ofcgwt.client.model.axis.Label;
 import com.rednels.ofcgwt.client.model.axis.XAxis;
 import com.rednels.ofcgwt.client.model.axis.YAxis;
-import com.rednels.ofcgwt.client.model.axis.XAxis.Labels;
 import com.rednels.ofcgwt.client.model.elements.BarChart;
 import com.rednels.ofcgwt.client.model.elements.LineChart;
 import com.rednels.ofcgwt.client.model.elements.PieChart;
@@ -355,10 +354,7 @@ public class ChartFactory {
 
                         public void onClick(final ChartClickEvent event) {
                             // TODO Allow chart drilling.
-                            Number i = dot.getX();
-                            
-                            Labels label = xa.getLabels();
-                            String drillmember = dot.getTooltip();
+                        
                             MessageBox.info("Clicked Bar", dot.getColour()); //$NON-NLS-1$
                         }
 
@@ -428,7 +424,7 @@ public class ChartFactory {
 	    if(((DataCell)cell[rowColCount]).getRawNumber() != null){
             	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
 	    	List<String> path = ((MemberCell) cell[rc]).getMemberPath();
-	    	String label ="";
+	    	String label =""; //$NON-NLS-1$
 	    	for(int j=0; j<path.size(); j++){
 	    	    label+=path.get(j);
 	    	}
