@@ -18,7 +18,7 @@ package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
 
-import org.pentaho.pat.client.ui.widgets.ClickableHorizontalPanel;
+import org.pentaho.pat.client.ui.widgets.DataCellPanel;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -109,7 +109,7 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	
 	@Override
 	public HorizontalPanel getLabel(){
-	    final ClickableHorizontalPanel cellPanel = new ClickableHorizontalPanel(parentColMember, parentRowMember);
+	    final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember);
 	   
 	    final Label cellLabel = new Label(getFormattedValue());
 	    

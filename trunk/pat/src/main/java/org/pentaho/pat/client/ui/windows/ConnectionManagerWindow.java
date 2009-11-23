@@ -26,9 +26,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.ui.panels.ConnectMondrianPanel;
-import org.pentaho.pat.client.ui.panels.ConnectXmlaPanel;
-import org.pentaho.pat.client.ui.panels.ConnectionManagerPanel;
+import org.pentaho.pat.client.ui.panels.windows.ConnectMondrianPanel;
+import org.pentaho.pat.client.ui.panels.windows.ConnectXmlaPanel;
+import org.pentaho.pat.client.ui.panels.windows.ConnectionManagerPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
