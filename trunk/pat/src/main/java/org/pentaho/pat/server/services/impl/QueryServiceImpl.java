@@ -325,15 +325,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
 
-        NamedList<? extends Member> childmembers = null;
-        try {
-            childmembers = memberFetched.getChildMembers();
-        } catch (final Exception e) {
-            throw new OlapException(
-                    Messages.getString("Services.Query.Drill.CannotDrillPosition"), e.getLocalizedMessage()); //$NON-NLS-1$
-        }
 
-        if (childmembers != null)
+        if (memberFetched.getChildMemberCount()>0)
             if (!member.isExpanded()) {
                 // If its the left most dimension don't do anything apart from
                 // include.
@@ -358,12 +351,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     // Get the drilling member
                     MemberCell memberdrill = member;
 
-                    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
-                            queryDimension.getInclusions());
+                   
                     Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
 
-                    switch (drillType) {
-                    case POSITION:
+                   if(drillType == DrillType.MEMBER){
+                       final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
+                               queryDimension.getInclusions());
+                       queryDimension.getInclusions().remove(currentMemberSelection);
+                   }
 
                         // Test to see if there are populated cells to its left
                         while (memberdrill.getRightOf() != null) {
@@ -384,39 +379,23 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                                 selection.addContext(queryDimension2.createSelection(memberFetched2));
 
                             }
-                            // Get next member.
-                            memberdrill = memberdrill.getRightOf();
-                        }
-                        break;
-                    case MEMBER:
-                        queryDimension.getInclusions().remove(currentMemberSelection);
-                        // Test to see if there are populated cells to its left
-                        while (memberdrill.getRightOf() != null) {
-
-                            // If yes test to make sure its not name isn't null and
-                            // it hasn't just skipped back to its all member level
-                            if (memberdrill.getRightOf().getUniqueName() != null
-                                    && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
-
-                                // Get dimension to the left of the current member.
-                                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
-                                        .getRightOfDimension());
-
-                                // Get the Olap4J member.
-                                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
+                           //Shit to work out why drill on one member doesn't work
+                            else{
+                        	 QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                                         .getRightOfDimension());
+                        	final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
                                         .getRightOf(), cellSet);
-
-                                selection.addContext(queryDimension2.createSelection(memberFetched2));
-
+                        
+                        	 selection.addContext(queryDimension2.createSelection(memberFetched2));
                             }
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();
                         }
+                      
+                        
+                   
 
-                        break;
-                    default:
-                        break;
-                    }
+                      
                 }
             } else {
                 if (member.getRightOf() == null) {

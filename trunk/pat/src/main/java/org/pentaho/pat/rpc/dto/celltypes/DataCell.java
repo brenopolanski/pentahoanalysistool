@@ -18,6 +18,8 @@ package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
 
+import org.pentaho.pat.client.ui.widgets.ClickableHorizontalPanel;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -35,6 +37,28 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	String colorValue = null; // Color held as hex String
 
 	Number rawNumber = null;
+	
+	MemberCell parentColMember = null;
+	
+	public MemberCell getParentColMember() {
+	    return parentColMember;
+	}
+
+	public void setParentColMember(MemberCell parentColMember) {
+	    this.parentColMember = parentColMember;
+	}
+
+	public MemberCell getParentRowMember() {
+	    return parentRowMember;
+	}
+
+	public void setParentRowMember(MemberCell parentRowMember) {
+	    this.parentRowMember = parentRowMember;
+	}
+
+
+	MemberCell parentRowMember = null;
+	
 	public Number getRawNumber() {
 	    return rawNumber;
 	}
@@ -85,8 +109,8 @@ public class DataCell extends BaseCell implements Serializable, IsSerializable {
 	
 	@Override
 	public HorizontalPanel getLabel(){
-	    final HorizontalPanel cellPanel = new HorizontalPanel();
-	    
+	    final ClickableHorizontalPanel cellPanel = new ClickableHorizontalPanel(parentColMember, parentRowMember);
+	   
 	    final Label cellLabel = new Label(getFormattedValue());
 	    
 	    cellPanel.add(cellLabel);

@@ -111,12 +111,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         };
 
         table = new LiveTable<BaseCell[]>(tableModel, createTableDefinition());
-        table.addDoubleClickHandler(new DoubleClickHandler() {
-            public void onDoubleClick(final DoubleClickEvent event) {
-                Window.alert(event.getSource().getClass().getName());
-            }
-        });
-
+      
         layoutPanel.add(table);
         layoutPanel.layout();
 
@@ -171,9 +166,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             final int cell = i;
 
-            final HorizontalPanel cellPanel = headers[i].getLabel();
 
-            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(cellPanel) {
+            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(headers[i].getLabel()) {
                 @Override
                 public Widget getCellValue(final BaseCell[] rowValue) {
                     if (rowValue[cell] == null) {
