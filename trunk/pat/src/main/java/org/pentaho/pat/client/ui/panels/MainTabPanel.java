@@ -72,8 +72,15 @@ public class MainTabPanel extends LayoutComposite {
                 
                 if (widget instanceof OlapPanel || widget instanceof MdxPanel) {
                     MenuBar.enableSave(true);
+                    if(widget instanceof OlapPanel){
                     Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
                     Pat.setCurrConnection(((OlapPanel) widget).getConnectionId());
+                    }
+                    else{
+                	Pat.setCurrQuery(((MdxPanel) widget).getQueryId());
+                	Pat.setCurrConnection(((MdxPanel) widget).getConnectionId());
+                    }
+                    
                 } else{
                     MenuBar.enableSave(false);
                 }
