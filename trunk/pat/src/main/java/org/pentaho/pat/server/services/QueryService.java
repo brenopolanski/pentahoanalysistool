@@ -479,6 +479,7 @@ public interface QueryService extends Service {
      * @param sessioinId
      * @param string
      */
+    @Secured ({"Users"})
     public SavedQuery loadQuery(String currentUserId, String sessioinId, String string);
 
     /**
@@ -487,6 +488,7 @@ public interface QueryService extends Service {
      * @param currentUserId
      * @param sessionId
      */
+    @Secured ({"Users"})
     public Set<SavedQuery> getSavedQueries(String currentUserId, String sessionId);
 
     /**
@@ -498,7 +500,19 @@ public interface QueryService extends Service {
      * @param cubeName
      * @param newQuery
      */
+    @Secured ({"Users"})
     public String createSavedQuery(String currentUserId, String sessioinId, String connectionId, /*String cubeName,*/
-            Query newQuery)throws OlapException;;
+            Query newQuery)throws OlapException;
 	
+    /**
+     * 
+     * @param userId
+     * @param sessionId
+     * @param queryId
+     * @param flag
+     * @return
+     * @throws OlapException
+     */
+    @Secured ({"Users"})
+    public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException;
 }

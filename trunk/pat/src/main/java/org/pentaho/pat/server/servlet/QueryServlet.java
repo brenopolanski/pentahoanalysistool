@@ -310,6 +310,23 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
     
+    
+    /*
+     * (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#swapAxis(java.lang.String, java.lang.String)
+     */
+    public CellDataSet setNonEmpty(String sessionId, String queryId, boolean flag) throws RpcException{
+
+        try {
+            return this.queryService.setNonEmpty(getCurrentUserId(), sessionId, queryId, flag);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Query.CantSwapAxis"),e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSwapAxis")); //$NON-NLS-1$
+        }
+
+
+
+    }
     /*
      * (non-Javadoc)
      * @see org.pentaho.pat.rpc.IQuery#executeQuery(java.lang.String, java.lang.String)

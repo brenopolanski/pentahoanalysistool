@@ -205,4 +205,10 @@ public interface IQueryAsync {
    public void getSavedQueries(
            String sessionId,
            AsyncCallback<List<QuerySaveModel>> callback);
+   
+   public void setNonEmpty(
+	   String sessionId, 
+	   String queryId, 
+	   boolean flag,
+	   AsyncCallback<CellDataSet> callback); 
 }
