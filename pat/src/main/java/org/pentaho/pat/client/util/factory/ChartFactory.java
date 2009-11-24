@@ -470,7 +470,7 @@ public class ChartFactory {
 
                         });
            
-                        MessageBox.info("Clicked Slice", slice.getLabel()); //$NON-NLS-1$
+                       
                     }
 
                 });
