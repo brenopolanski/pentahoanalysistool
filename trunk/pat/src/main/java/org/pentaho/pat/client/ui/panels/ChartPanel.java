@@ -34,12 +34,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
-import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
-import org.pentaho.pat.client.util.factory.ChartFactory;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.charts.ChartFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -55,7 +52,7 @@ import com.rednels.ofcgwt.client.model.Legend.Position;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class ChartPanel extends LayoutComposite implements IQueryListener {
+public class ChartPanel extends LayoutComposite {
 
     /**
      * Chart Type Enum.
@@ -93,7 +90,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      * Chart Panel Constructor.
      */
     public ChartPanel() {
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
+        //GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
         ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
@@ -165,13 +162,13 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryExecuted(java.lang.String,
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
-    public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()) {
+    public void onQueryExecuted(final CellDataSet matrix) {
+       
             this.matrix = matrix;
             chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
             
             this.layout();
-        }
+        
     }
 
     /**

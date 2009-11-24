@@ -58,7 +58,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements IQueryListener {
 
-    ChartPanel OFCPanel = new ChartPanel();
+    ChartPanel ofcPanel = new ChartPanel();
     
     OlapTable olapTable;
 
@@ -118,7 +118,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
         
-        fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
         
         
         
@@ -136,27 +136,27 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     public void chartPosition(Region chartPos){
                 
-        OFCPanel.removeFromParent();
+        ofcPanel.removeFromParent();
         switch(chartPos){
         case WEST:
-            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
             break;
         case EAST:
-            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.EAST, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 50, 200));
             break;
         case NORTH:
-            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.NORTH, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 50, 200));
             break;
         case SOUTH:
-            fillLayoutPanel.add(OFCPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
             break;
         case CENTER:
             
          default:
-             OFCPanel.removeFromParent();
+             ofcPanel.removeFromParent();
         }
-        WidgetHelper.invalidate(OFCPanel);
-        WidgetHelper.layout(OFCPanel);
+        WidgetHelper.invalidate(ofcPanel);
+        WidgetHelper.layout(ofcPanel);
     }
     /*
      * (non-Javadoc)
@@ -182,6 +182,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             baseLayoutPanel.layout();
             if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
                 olapTable.setData(matrix);
+                ofcPanel.onQueryExecuted(matrix);
             }
         }
     }
