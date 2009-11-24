@@ -25,13 +25,17 @@ import java.util.Map;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.style.Color;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.ChartPanel;
 import org.pentaho.pat.client.ui.panels.ChartPanel.ChartType;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.rednels.ofcgwt.client.event.ChartClickEvent;
 import com.rednels.ofcgwt.client.event.ChartClickHandler;
 import com.rednels.ofcgwt.client.model.ChartData;
@@ -69,13 +73,15 @@ public class ChartFactory {
      *            The CellDataSet from the current query.
      * @param chartTitle
      *            The chart title.
+     * @param chartPanel 
+     * @param pos2 
      * @return A ChartData object.
      */
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
-            Map<String, Object> chartOptions) {
+	    Map<String, Object> chartOptions, ChartPanel chartPanel) {
         switch (chartType) {
         case PIE:
-            return getPieChartData(matrix, chartTitle, chartOptions);
+            return getPieChartData(matrix, chartTitle, chartOptions, chartPanel);
         case LINE:
             return getLineChartData(matrix, chartTitle, chartOptions);
         case BAR:
@@ -86,18 +92,18 @@ public class ChartFactory {
     }
 
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
-            Position legendPosition, Map<String, Object> chartOptions) {
+            Position legendPosition, Map<String, Object> chartOptions, ChartPanel chartPanel) {
 
-        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions);
+        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions, chartPanel);
 
         return cd;
 
     }
 
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
-            Position legendPosition) {
+            Position legendPosition, ChartPanel chartPanel) {
         Map<String, Object> chartOptions = null;
-        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions);
+        ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions, chartPanel);
 
         return cd;
 
@@ -383,7 +389,7 @@ public class ChartFactory {
     }
 
     private ChartData getPieChartData(final CellDataSet matrix, final String chartTitle,
-            Map<String, Object> chartOptions) {
+            Map<String, Object> chartOptions, final ChartPanel chartPanel) {
 
         matrix.getCellSetHeaders();
         final PatTableModel patTableModel = new PatTableModel(matrix);
@@ -423,20 +429,46 @@ public class ChartFactory {
             Number cellValue = null;
 	    if(((DataCell)cell[rowColCount]).getRawNumber() != null){
             	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+            	
+            	final int row = rc;
 	    	List<String> path = ((MemberCell) cell[rc]).getMemberPath();
 	    	String label =""; //$NON-NLS-1$
 	    	for(int j=0; j<path.size(); j++){
 	    	    label+=path.get(j);
+	    	    if(j!=path.size()-1)
+	    		label+=",";
 	    	}
                 final Slice slice = new Slice((cellValue.floatValue()), label);
 
                 slice.addChartClickHandler(new ChartClickHandler() {
 
                     public void onClick(final ChartClickEvent event) {
-                        
-                        String label = slice.getLabel();
-                        
-           
+                                               
+                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, ((MemberCell) cell[row]), new AsyncCallback<Object>(){
+
+                            public void onFailure(Throwable arg0) {
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
+                            }
+
+                            public void onSuccess(Object arg0) {
+                                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                                    public void onFailure(Throwable arg0) {
+
+                                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
+
+                                    }
+
+                                    public void onSuccess(CellDataSet arg0) {
+                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                                chartPanel, Pat.getCurrQuery(), arg0);                        
+
+                                    }
+
+                                });
+                            }
+
+                        });
            
                         MessageBox.info("Clicked Slice", slice.getLabel()); //$NON-NLS-1$
                     }

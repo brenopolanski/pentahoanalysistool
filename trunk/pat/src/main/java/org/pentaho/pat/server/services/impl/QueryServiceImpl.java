@@ -381,12 +381,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             }
                            //Shit to work out why drill on one member doesn't work
                             else{
-                        	 QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                        /*	 QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
                                          .getRightOfDimension());
                         	final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
                                         .getRightOf(), cellSet);
                         
-                        	 selection.addContext(queryDimension2.createSelection(memberFetched2));
+                        	 selection.addContext(queryDimension2.createSelection(memberFetched2));*/
                             }
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();

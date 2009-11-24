@@ -168,7 +168,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
     public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()) {
             this.matrix = matrix;
-            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
             
             this.layout();
         }
@@ -245,7 +245,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
      * 
      */
     public void updateChart() {
-        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
         chartLayoutPanel.add(chart);
         this.layout();
     }
@@ -266,7 +266,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
                 ct = ChartType.PIE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
 
             }
 
@@ -278,7 +278,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
         barButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 ct = ChartType.BAR;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
             }
         });
 
@@ -289,7 +289,7 @@ public class ChartPanel extends LayoutComposite implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
                 ct = ChartType.LINE;
-                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap));
+                chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
             }
         });
 

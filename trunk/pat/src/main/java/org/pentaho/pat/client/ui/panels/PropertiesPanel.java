@@ -177,11 +177,18 @@ public class PropertiesPanel extends LayoutComposite {
 
 		    public void onFailure(Throwable arg0) {
 			
+			MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set non empty");
 			
 		    }
 
 		    public void onSuccess(CellDataSet arg0) {
 			
+			if(checkButton4.isChecked()){
+			    checkButton4.setText("Show Blank Cells");
+			}
+			else{
+			    checkButton4.setText(ConstantFactory.getInstance().hideBlankCells());
+			}
 			 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                  PropertiesPanel.this, Pat.getCurrQuery(), arg0);
 		    }
