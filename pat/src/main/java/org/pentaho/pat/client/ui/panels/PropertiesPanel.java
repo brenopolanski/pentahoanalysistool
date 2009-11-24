@@ -18,7 +18,7 @@
  *
  */
 
-package org.pentaho.pat.client.ui.panels.windows;
+package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -32,10 +32,6 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.DataPanel;
-import org.pentaho.pat.client.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.ui.panels.MdxPanel;
-import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -173,7 +169,28 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ToolButton checkButton4 = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
         checkButton4.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton4.setEnabled(false);
+        checkButton4.addClickHandler(new ClickHandler(){
+
+	    public void onClick(ClickEvent arg0) {
+		
+		ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(), checkButton4.isChecked(), new AsyncCallback<CellDataSet>(){
+
+		    public void onFailure(Throwable arg0) {
+			
+			
+		    }
+
+		    public void onSuccess(CellDataSet arg0) {
+			
+			 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                 PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+		    }
+		    
+		});
+		
+	    }
+            
+        });
 
         final ToolButton checkButton5 = new ToolButton(ConstantFactory.getInstance().pivot());
         checkButton5.setStyle(ToolButtonStyle.CHECKBOX);

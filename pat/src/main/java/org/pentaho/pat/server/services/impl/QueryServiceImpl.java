@@ -807,4 +807,15 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     }
 
+    public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException{
+	this.sessionService.validateSession(userId, sessionId);
+	
+	 final Query q = this.getQuery(userId, sessionId, queryId);
+	 
+	 q.getAxis(Axis.COLUMNS).setNonEmpty(flag);
+	 q.getAxis(Axis.ROWS).setNonEmpty(flag);
+	 q.getAxis(Axis.FILTER).setNonEmpty(flag);
+	 return executeQuery(userId, sessionId, queryId);
+    }
+    
 }
