@@ -114,7 +114,7 @@ public class LineChartType {
                 
                 
                 if(((DataCell)cell[rowColCount]).getRawNumber()!=null){
-            	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+            	cellValue = ((DataCell) cell[rowColCount+i]).getRawNumber();
                 }
                 else{
                     cellValue = 0;

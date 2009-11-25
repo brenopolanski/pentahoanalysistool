@@ -66,7 +66,7 @@ public class ChartFactory {
             return line.getLineChartData(matrix, chartTitle, chartOptions, chartPanel, pos);
         case BAR:
             BarChartType bar = new BarChartType();
-            return bar.getBarChartData(matrix, chartTitle, chartOptions, pos);
+            return bar.getBarChartData(matrix, chartTitle, chartOptions, pos, chartPanel);
         default:
             return null;
         }
