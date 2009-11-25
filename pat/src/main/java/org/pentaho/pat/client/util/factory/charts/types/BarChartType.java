@@ -1,18 +1,27 @@
 package org.pentaho.pat.client.util.factory.charts.types;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.ChartPanel;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.factory.charts.axis.ChartAxis;
 import org.pentaho.pat.client.util.factory.charts.util.ChartUtils;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.rednels.ofcgwt.client.event.ChartClickEvent;
 import com.rednels.ofcgwt.client.event.ChartClickHandler;
 import com.rednels.ofcgwt.client.model.ChartData;
@@ -38,7 +47,7 @@ public class BarChartType {
          * @return A Chart Data object.
          */
         public ChartData getBarChartData(final CellDataSet matrix, final String chartTitle,
-                Map<String, Object> chartOptions, Position pos) {
+                Map<String, Object> chartOptions, Position pos, final ChartPanel chartPanel) {
     
             matrix.getCellSetHeaders();
             final PatTableModel patTableModel = new PatTableModel(matrix);
@@ -71,21 +80,32 @@ public class BarChartType {
             else{
                 bchart2 = new BarChart();
             }
-            // TODO Allow user defined tooltips.
-            bchart2.setTooltip("$#val#"); //$NON-NLS-1$
     
             if (pos != null) {
                 cd.setLegend(new Legend(pos, true));
             }
             final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
-            final Label[] labels = new Label[data.size()];
+            int dataColCount = data.get(0).length-rowColCount;
+            final List<Label> labels = new ArrayList<Label>();
+            final MemberCell[] memberCellLabelList = new MemberCell[data.size()];
             for (int i = 0; i < data.size(); i++) {
                 final BaseCell[] cell = data.get(i);
-                int rc = 0;
-                while (cell[rc].getRawValue() == null)
-                    rc++;
-                labels[i] = new Label(cell[rc].getRawValue().toString(), 45);
-    
+                
+                List<String> path = ((MemberCell) cell[rowColCount-1]).getMemberPath();
+                StringBuffer buf = new StringBuffer();
+                for(int j=0; j<path.size(); j++){
+                  buf.append(path.get(j));
+                  if(j!=path.size()-1){
+            	  buf.append(",");
+                  }
+                }
+                String label = buf.toString();
+                
+                memberCellLabelList[i] = (MemberCell) cell[rowColCount-1];
+                
+                for (int j =0; j<dataColCount;j++){
+                labels.add(new Label(label, 45));
+                }
             }
     
             xa.addLabels(labels);
@@ -93,13 +113,20 @@ public class BarChartType {
             Float maxval = 0.0f;
             Float minval = 0.0f;
             Number cellValue = null;
+            
             for (int i = 0; i < data.size(); i++) {
                 final BaseCell[] cell = data.get(i);
-                int rc = 0;
-                while (cell[rc].getRawValue() == null)
-                    rc++;
-                if(((DataCell)cell[rowColCount]).getRawNumber()!=null){
-            	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+                final int row = i;
+  
+                
+                // TODO Allow user defined tooltips.
+                bchart2.setTooltip("$#val#"); //$NON-NLS-1$
+
+    
+                for(int j=rowColCount; j<cell.length; j++){
+                    
+                if(((DataCell)cell[j]).getRawNumber()!=null){
+            	cellValue = ((DataCell) cell[j]).getRawNumber();
                 }
                 else{
             	cellValue = 0;
@@ -110,18 +137,46 @@ public class BarChartType {
                     bar.addChartClickHandler(new ChartClickHandler() {
     
                         public void onClick(final ChartClickEvent event) {
-                            // TODO Allow chart drilling.
-                            MessageBox.info("Clicked Bar", bar.getColour()); //$NON-NLS-1$
+                            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, memberCellLabelList[row], new AsyncCallback<Object>(){
+
+                                public void onFailure(Throwable arg0) {
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
+                                }
+
+                                public void onSuccess(Object arg0) {
+                                    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                                        public void onFailure(Throwable arg0) {
+
+                                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
+
+                                        }
+
+                                        public void onSuccess(CellDataSet arg0) {
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                                    chartPanel, Pat.getCurrQuery(), arg0);                        
+
+                                        }
+
+                                    });
+                                }
+
+                            });
+
                         }
     
                     });
-                    bchart2.addBars(bar);
+                    
                     if (cellValue.floatValue() > maxval)
                         maxval =(cellValue.floatValue());
                     if (cellValue.floatValue() < minval)
                         minval =(cellValue.floatValue());
+                    bchart2.addBars(bar);
                 }
-    
+                
+                }
+               
+                
             }
             if(!chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
             ya.setMax(maxval);
@@ -129,7 +184,7 @@ public class BarChartType {
             if(!chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
                 ya.setMin(minval);
                 
-            
+             
             cd.addElements(bchart2);
             return cd;
         }

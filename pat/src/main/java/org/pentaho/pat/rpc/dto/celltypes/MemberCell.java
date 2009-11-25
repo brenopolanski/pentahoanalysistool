@@ -33,12 +33,13 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -193,57 +194,64 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     @Override
     public HorizontalPanel getLabel(){
         final CellLabelPanel cellPanel = new CellLabelPanel(MemberCell.this);
-        
+        /**
+         * NON IMAGE BUNDLE IMAGES TO GET AROUND AND IE BUG
+         */
         if(this.getRawValue()!=null){
-        final Image cellButton = Pat.IMAGES.dimbrowser().createImage();
-        cellButton.addClickHandler(new ClickHandler() {
-            
-            public void onClick(final ClickEvent arg0) {
-                DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
+        
+        final Image cellButton = new Image(){
+public void onBrowserEvent(Event event){
+    if (DOM.eventGetType(event) == Event.ONCLICK) { 
+	DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
+    }
             }
-
-        });
-
-        ClickHandler drillClick = new ClickHandler() {
-
-            public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
-
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
-                    }
-
-                    public void onSuccess(Object arg0) {
-                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-                            public void onFailure(Throwable arg0) {
-
-                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
-
-                            }
-
-                            public void onSuccess(CellDataSet arg0) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        cellPanel, Pat.getCurrQuery(), arg0);                        
-
-                            }
-
-                        });
-                    }
-
-                });
-            }
-
         };
+        
+        cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png");
+        
+
         
         Image drillButton = null;
         if((MemberCell.this).getChildMemberCount()>0){
-            drillButton = Pat.IMAGES.drill().createImage();
-            drillButton.addClickHandler(drillClick);
+           drillButton = new Image(){
+               
+        	public void onBrowserEvent(Event event){
+        	    if (DOM.eventGetType(event) == Event.ONCLICK) { 
+        		 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
+
+        	                    public void onFailure(Throwable arg0) {
+        	                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
+        	                    }
+
+        	                    public void onSuccess(Object arg0) {
+        	                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+        	                            public void onFailure(Throwable arg0) {
+
+        	                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
+
+        	                            }
+
+        	                            public void onSuccess(CellDataSet arg0) {
+        	                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+        	                                        cellPanel, Pat.getCurrQuery(), arg0);                        
+
+        	                            }
+
+        	                        });
+        	                    }
+
+        	                });
+        	    }
+        	            }
+        	        };
+        	        
+        	        drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png");
+        	       
         }
         final Label cellLabel = new Label(getFormattedValue());
 
-        cellLabel.addClickHandler(drillClick);
+       
         cellLabel.addMouseOverHandler(new MouseOverHandler() {
 
             public void onMouseOver(MouseOverEvent arg0) {
@@ -265,7 +273,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
 
             public void onMouseOut(MouseOutEvent arg0) {
                 if(!getRawValue().equals("")){ //$NON-NLS-1$
-                    dimbrowserTimer.schedule(400);
+                    dimbrowserTimer.schedule(800);
                 }
 
                 
