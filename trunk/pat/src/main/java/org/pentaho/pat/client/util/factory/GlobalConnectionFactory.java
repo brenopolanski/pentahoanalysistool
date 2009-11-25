@@ -25,7 +25,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class GlobalConnectionFactory {
 
-public static QueryChangeListeners qcl;
+protected static QueryChangeListeners qcl;
 	
 	public static QueryChangeListeners getQueryInstance(){
 		if (qcl == null){

@@ -54,8 +54,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapTable extends LayoutComposite implements IQueryListener {
 
-    Image cross = Pat.IMAGES.cross().createImage();
-
     private CellDataSet olapData;
     
     private int offset;

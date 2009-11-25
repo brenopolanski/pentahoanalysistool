@@ -98,7 +98,7 @@ public class Application extends Viewport {
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
-        Application.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
+        tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
 
         // Setup the main layout widget
         if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {

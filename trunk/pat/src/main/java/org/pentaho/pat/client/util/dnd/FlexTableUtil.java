@@ -137,7 +137,7 @@ public class FlexTableUtil {
 
                                                         public void onSuccess(final StringTree memberTree) {
 
-                                                            new String(memberTree.getValue());
+                                                            //new String(memberTree.getValue());
                                                             final ArrayList<String> names = new ArrayList<String>();
                                                             names.add(memberTree.getChildren().get(0).getValue());
                                                             ServiceFactory.getQueryInstance().createSelection(
