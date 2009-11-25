@@ -127,13 +127,16 @@ public class DimensionMenu extends LayoutComposite {
                     listBox.setWidget(row, column, item);
                     break;
                 case 1:
-                    String path = ""; //$NON-NLS-1$
+                    StringBuffer buf = new StringBuffer();
                     for (int i=0;i<item.getFullPath().length;i++) {
-                        path+=item.getFullPath()[i];
-                        if((i+1)<item.getFullPath().length) {
-                            path+="->"; //$NON-NLS-1$
-                        }
+                	buf.append(item.getFullPath()[i]);
+                	if((i+1)<item.getFullPath().length){
+                	    buf.append("->");    
+                	}
+                      
                     }
+                    String path = buf.toString();
+
                     listBox.setText(row, column, path);
                     break;
                 default:
@@ -162,7 +165,7 @@ public class DimensionMenu extends LayoutComposite {
 
         sortComboBox.addChangeHandler(new ChangeHandler() {
             public void onChange(final ChangeEvent arg0) {
-                String scb = new String();
+                String scb;
                 switch (sortComboBox.getSelectedIndex()) {
                 case 0:
                     scb = "ASC"; //$NON-NLS-1$

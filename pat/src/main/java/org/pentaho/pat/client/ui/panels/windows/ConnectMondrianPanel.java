@@ -110,13 +110,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend
      */
-    private final String SCHEMA_START = "[SCHEMA_START]"; //$NON-NLS-1$
+    private final static String SCHEMA_START = "[SCHEMA_START]"; //$NON-NLS-1$
 
     /**
      * Custom end tag for recognizing the returned schema data from the backend. Has to match the one defined in the
      * backend.
      */
-    private final String SCHEMA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
+    private final static String SCHEMA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
 
     /** Textbox for connection name. */
     private final TextBox nameTextBox;

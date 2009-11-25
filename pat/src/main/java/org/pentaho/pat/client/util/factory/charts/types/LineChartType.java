@@ -70,13 +70,17 @@ public class LineChartType {
             while (cell[rc].getRawValue() == null)
                 rc++;
            
-            String label =""; //$NON-NLS-1$
             List<String> path = ((MemberCell) cell[rc]).getMemberPath();
+            StringBuffer buf = new StringBuffer();
             for(int j=0; j<path.size(); j++){
-	    	    label+=path.get(j);
-	    	    if(j!=path.size()-1)
-	    		label+=",";
-	    	}
+              buf.append(path.get(j));
+              if(j!=path.size()-1){
+        	  buf.append(",");
+              }
+            }
+            String label = buf.toString();
+
+         
             
             memberCellLabelList[i] = (MemberCell) cell[rc];
             labels[i] = new Label(label, 45);

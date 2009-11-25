@@ -47,10 +47,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private Widget positioner = null;
 
     /** Target Row. */
-    private final int targetRow = 0;
+    private final static int targetRow = 0;
 
     /** Target Row. */
-    private final int targetCol = 0;
+    private final static int targetCol = 0;
 
     /** The Drop Axis. */
     private org.pentaho.pat.rpc.dto.IAxis targetAxis;

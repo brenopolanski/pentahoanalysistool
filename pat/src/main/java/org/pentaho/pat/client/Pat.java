@@ -66,7 +66,7 @@ public class Pat implements EntryPoint {
     /**
      * The current style theme.
      */
-    public static String CUR_THEME = IGuiConstants.STYLE_THEMES[0];
+    public final static String CUR_THEME = IGuiConstants.STYLE_THEMES[0];
 
     /**
      * The base style name.

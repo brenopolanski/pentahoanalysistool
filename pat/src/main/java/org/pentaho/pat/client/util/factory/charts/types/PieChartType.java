@@ -75,12 +75,15 @@ public class PieChartType {
             	
             	final int row = rc;
 	    	List<String> path = ((MemberCell) cell[rc]).getMemberPath();
-	    	String label =""; //$NON-NLS-1$
-	    	for(int j=0; j<path.size(); j++){
-	    	    label+=path.get(j);
-	    	    if(j!=path.size()-1)
-	    		label+=",";
-	    	}
+	    
+	    	 StringBuffer buf = new StringBuffer();
+	            for(int j=0; j<path.size(); j++){
+	              buf.append(path.get(j));
+	              if(j!=path.size()-1){
+	        	  buf.append(",");
+	              }
+	            }
+	            String label = buf.toString();
                 final Slice slice = new Slice((cellValue.floatValue()), label);
 
                 slice.addChartClickHandler(new ChartClickHandler() {

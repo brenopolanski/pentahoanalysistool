@@ -67,9 +67,9 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  */
 public class ConnectionManagerPanel extends LayoutComposite {
 
-    private final int preferredWidth = 284;
+    private final static int preferredWidth = 284;
 
-    private final int preferredHeight = 384;
+    private final static int preferredHeight = 384;
 
     private static ListBox<ConnectionItem> listBox;
 
