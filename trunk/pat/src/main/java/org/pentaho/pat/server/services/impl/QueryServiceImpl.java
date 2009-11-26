@@ -331,14 +331,24 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 // If its the left most dimension don't do anything apart from
                 // include.
                 if (member.getRightOf() == null) {
-                    final Selection selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
-                            .getInclusions());
-                    queryDimension.getInclusions().remove(selection);
+                    final Selection selection;
                     switch (drillType) {
                     case POSITION:
+                	       selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                                      .getInclusions());
+                              queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         break;
                     case MEMBER:
+                        if (member.getParentMember()!=null){
+                        selection = OlapUtil.findSelection(member.getParentMember(),
+                                queryDimension.getInclusions());
+                        }
+                        else{
+                 	   selection = OlapUtil.findSelection(member.getUniqueName(),
+                                    queryDimension.getInclusions());
+                        }
+                        queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         break;
                     default:
@@ -352,14 +362,22 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     MemberCell memberdrill = member;
 
                    
-                    Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                    
 
                    if(drillType == DrillType.MEMBER){
-                       final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
+                       final Selection currentMemberSelection ;
+                       if (member.getParentMember()!=null){
+                       currentMemberSelection = OlapUtil.findSelection(member.getParentMember(),
                                queryDimension.getInclusions());
+                       }
+                       else{
+                	   currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
+                                   queryDimension.getInclusions());
+                       }
                        queryDimension.getInclusions().remove(currentMemberSelection);
                    }
-
+                   else{
+                   Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
                         while (memberdrill.getRightOf() != null) {
 
@@ -379,15 +397,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                                 selection.addContext(queryDimension2.createSelection(memberFetched2));
 
                             }
-                           //Shit to work out why drill on one member doesn't work
-                            else{
-                        /*	 QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
-                                         .getRightOfDimension());
-                        	final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
-                                        .getRightOf(), cellSet);
-                        
-                        	 selection.addContext(queryDimension2.createSelection(memberFetched2));*/
-                            }
+                          
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();
                         }
@@ -395,7 +405,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         
                    
 
-                      
+                   }
                 }
             } else {
                 if (member.getRightOf() == null) {

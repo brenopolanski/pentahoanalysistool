@@ -217,7 +217,7 @@ public void onBrowserEvent(Event event){
                
         	public void onBrowserEvent(Event event){
         	    if (DOM.eventGetType(event) == Event.ONCLICK) { 
-        		 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
+        		 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.MEMBER, MemberCell.this, new AsyncCallback<Object>(){
 
         	                    public void onFailure(Throwable arg0) {
         	                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
