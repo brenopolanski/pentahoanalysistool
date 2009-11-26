@@ -25,7 +25,6 @@ import java.util.Map;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
-import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -96,8 +95,6 @@ public class ChartPanel extends LayoutComposite {
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
         layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
-        final WidgetWrapper wr = new WidgetWrapper(chart);
-        chartLayoutPanel.add(wr);
         this.getLayoutPanel().add(layoutPanel);
 
     }
