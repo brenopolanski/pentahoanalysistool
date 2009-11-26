@@ -158,6 +158,7 @@ public class PropertiesPanel extends LayoutComposite {
         final ToolButton checkButton1 = new ToolButton(ConstantFactory.getInstance().showParent());
         checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
         checkButton1.setEnabled(false);
+        checkButton1.setChecked(true);
 
         final ToolButton checkButton2 = new ToolButton(ConstantFactory.getInstance().showFilters());
         checkButton2.setStyle(ToolButtonStyle.CHECKBOX);
@@ -236,8 +237,8 @@ public class PropertiesPanel extends LayoutComposite {
         };
 
         final PopupMenu menuBtnMenu = new PopupMenu();
-        menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), cmd1);
-        menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), cmd1);
+        menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
+        menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
         menuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
         menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
         menuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));

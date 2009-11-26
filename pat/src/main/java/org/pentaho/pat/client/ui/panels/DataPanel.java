@@ -137,6 +137,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     public void chartPosition(Region chartPos){
                 
         ofcPanel.removeFromParent();
+        if(chartPos!=null){
+            if(!olapTable.isAttached()){
+        	fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
+            }
         switch(chartPos){
         case WEST:
             fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
@@ -151,12 +155,18 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
             break;
         case CENTER:
+            olapTable.removeFromParent();
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.CENTER));
             
          default:
-             ofcPanel.removeFromParent();
+            
         }
-        WidgetHelper.invalidate(ofcPanel);
-        WidgetHelper.layout(ofcPanel);
+        }
+        else{
+            ofcPanel.removeFromParent();
+        }
+        WidgetHelper.invalidate(fillLayoutPanel);
+        WidgetHelper.layout(fillLayoutPanel);
     }
     /*
      * (non-Javadoc)
