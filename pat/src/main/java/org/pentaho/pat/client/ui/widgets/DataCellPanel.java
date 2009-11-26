@@ -33,7 +33,7 @@ public class DataCellPanel extends HorizontalPanel {
 	super.onBrowserEvent(e);
 	
 	if(DOM.eventGetType(e)== Event.ONDBLCLICK){
-	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.MEMBER, pcm, new AsyncCallback<Object>(){
+	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), pcm, new AsyncCallback<Object>(){
 
 		public void onFailure(Throwable arg0) {
 		    // TODO Auto-generated method stub
@@ -41,7 +41,7 @@ public class DataCellPanel extends HorizontalPanel {
 		}
 
 		public void onSuccess(Object arg0) {
-		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.MEMBER, prm, new AsyncCallback<Object>(){
+		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), prm, new AsyncCallback<Object>(){
 
 		    public void onFailure(Throwable arg0) {
 			MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));

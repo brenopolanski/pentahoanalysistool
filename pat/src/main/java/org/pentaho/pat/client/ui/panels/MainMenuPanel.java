@@ -44,7 +44,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MainMenuPanel extends LayoutComposite {
 
-    private final LayoutPanel rootPanel = getLayoutPanel();
+    private transient final LayoutPanel rootPanel = getLayoutPanel();
 
     /**
      * 
@@ -52,7 +52,7 @@ public class MainMenuPanel extends LayoutComposite {
      * @param dPanel 
      *
      */
-    public MainMenuPanel(DataPanel dPanel) {
+    public MainMenuPanel(final DataPanel dPanel) {
         super();
         rootPanel.setLayout(new BorderLayout());
         rootPanel.addStyleName("pat-MainMenu"); //$NON-NLS-1$
