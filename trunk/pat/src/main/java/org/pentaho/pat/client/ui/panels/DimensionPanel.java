@@ -53,15 +53,15 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class DimensionPanel extends LayoutComposite {
 
-    private final DimensionDropWidget dimDropUnused;
+    private transient final DimensionDropWidget dimDropUnused;
 
-    private final DimensionDropWidget dimDropRow;
+    private transient final DimensionDropWidget dimDropRow;
 
-    private final DimensionDropWidget dimDropCol;
+    private transient final DimensionDropWidget dimDropCol;
 
-    private final DimensionDropWidget dimDropFilter;
+    private transient final DimensionDropWidget dimDropFilter;
 
-    private FlexTableRowDragController tableRowDragController = Application.tableRowDragController;
+    private transient final FlexTableRowDragController tRDragController = Application.tableRowDragController;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 
@@ -71,7 +71,7 @@ public class DimensionPanel extends LayoutComposite {
      * @return tableRowDragController
      */
     public FlexTableRowDragController getTableRowDragController() {
-        return tableRowDragController;
+        return tRDragController;
     }
 
     /**
@@ -79,6 +79,7 @@ public class DimensionPanel extends LayoutComposite {
      * 
      */
     public DimensionPanel() {
+	super();
         //this.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
 
         final LayoutPanel rootPanel = getLayoutPanel();
@@ -88,10 +89,10 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
-        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), IAxis.UNUSED, tableRowDragController);
-        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS, tableRowDragController);
-        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), IAxis.COLUMNS, tableRowDragController);
-        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), IAxis.FILTER, tableRowDragController);
+        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), IAxis.UNUSED, tRDragController);
+        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS, tRDragController);
+        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), IAxis.COLUMNS, tRDragController);
+        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), IAxis.FILTER, tRDragController);
 
         mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));

@@ -339,7 +339,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                               queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         break;
-                    case MEMBER:
+                    case REPLACE:
                         if (member.getParentMember()!=null){
                         selection = OlapUtil.findSelection(member.getParentMember(),
                                 queryDimension.getInclusions());
@@ -364,7 +364,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                    
                     
 
-                   if(drillType == DrillType.MEMBER){
+                   if(drillType == DrillType.REPLACE){
                        final Selection currentMemberSelection ;
                        if (member.getParentMember()!=null){
                        currentMemberSelection = OlapUtil.findSelection(member.getParentMember(),

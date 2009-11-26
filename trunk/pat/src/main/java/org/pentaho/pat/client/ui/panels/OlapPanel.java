@@ -51,17 +51,17 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class OlapPanel extends DataWidget {
 
-    private String panelName = null;
+    private transient String panelName = null;
 
-    private String cubeName = null;
+    private transient String cubeName = null;
 
-    private CubeItem cubeItem = null;
+    private transient CubeItem cubeItem = null;
 
-    private String connectionId = null;
+    private transient String connectionId = null;
 
-    private String queryId = null;
+    private transient String queryId = null;
 
-    private LayoutPanel baselayoutPanel;
+    private transient LayoutPanel baselayoutPanel;
 
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.

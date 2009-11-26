@@ -100,8 +100,6 @@ public class Application extends Viewport {
 
         tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
 
-        // Setup the main layout widget
-        if (Pat.getApplicationState().getMode().isShowOnlyTable() == false) {
 
             // Add the main menu
             if (Pat.getApplicationState().getMode().isShowMenu()) {
@@ -117,12 +115,7 @@ public class Application extends Viewport {
 
             mainTabPanel = new MainTabPanel();
             rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
-        }
 
-        else {
-            //TODO Disabled until new OlapTable implemented
-            //rootPanel.add(new OlapTable(), new BoxLayoutData(FillStyle.BOTH));
-        }
     }
 
     /*

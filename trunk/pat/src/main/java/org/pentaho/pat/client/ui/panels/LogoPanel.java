@@ -38,11 +38,11 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class LogoPanel extends LayoutComposite {
 
-    private final static String LOGOPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
+    private final static String LPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
 
-    private final LayoutPanel rootPanel = getLayoutPanel();
+    private transient final LayoutPanel rootPanel = getLayoutPanel();
 
-    static Label throbberLabel = new Label(); 
+    private static Label throbberLabel = new Label(); 
     /**
      * 
      * Sets the spinner spinning, or hides it.
@@ -51,11 +51,12 @@ public class LogoPanel extends LayoutComposite {
      */
     public static void spinWheel(final boolean spin) {
  
-        if (spin)
+        if (spin){
             throbberLabel.setVisible(true);
-        
-        else
+        }
+        else{
             throbberLabel.setVisible(false);
+        }
     }
 
     /**
@@ -63,9 +64,9 @@ public class LogoPanel extends LayoutComposite {
      */
     public LogoPanel() {
 
+	super();
 
-
-        this.setStylePrimaryName(LOGOPANEL_CSS_STYLE);
+        this.setStylePrimaryName(LPANEL_CSS_STYLE);
 
         final Grid logoGrid = new Grid(1,2);
         throbberLabel.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$

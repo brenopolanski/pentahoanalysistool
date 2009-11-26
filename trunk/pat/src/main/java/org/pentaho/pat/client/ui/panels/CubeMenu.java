@@ -56,7 +56,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class CubeMenu extends LayoutComposite {
 
     /** The main menu. */
-    private final Tree cubeTree;
+    private transient final Tree cubeTree;
 
     /**
      * CubeMenu Constructor.
@@ -145,8 +145,9 @@ public class CubeMenu extends LayoutComposite {
                         }
 
                         public void onSuccess(final CubeItem[] o) {
-                            for (final CubeItem element2 : o)
+                            for (final CubeItem element2 : o){
                                 cubesList.addItem(new CubeTreeItem(connection, element2));
+                            }
                             cubesList.setState(true);
                         }
                     });

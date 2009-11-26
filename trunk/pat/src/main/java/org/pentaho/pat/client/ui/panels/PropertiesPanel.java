@@ -38,6 +38,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.DrillType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -55,9 +56,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PropertiesPanel extends LayoutComposite {
 
-    public class LayoutCommand implements Command {
+    private class LayoutCommand implements Command {
 
-        private final Region region;
+        private final transient Region region;
 
         public LayoutCommand(final Region region) {
             this.region = region;
@@ -74,8 +75,28 @@ public class PropertiesPanel extends LayoutComposite {
         }
 
     }
+    
+    private class DrillCommand implements Command {
+	
+	private final transient DrillType drillType;
 
-    private final DataPanel dataPanel;
+        public DrillCommand(final DrillType drillType) {
+            this.drillType = drillType;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        public void execute() {
+            Pat.setDrillType(drillType);
+
+        }
+
+    }
+    
+    private final transient DataPanel dataPanel;
 
     /**
      * PropertiesPanel Constructor.
@@ -84,6 +105,7 @@ public class PropertiesPanel extends LayoutComposite {
      * 
      */
     public PropertiesPanel(final DataPanel dPanel) {
+	super();
         this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -155,40 +177,40 @@ public class PropertiesPanel extends LayoutComposite {
         });
         mdxButton.setEnabled(true);
 
-        final ToolButton checkButton1 = new ToolButton(ConstantFactory.getInstance().showParent());
-        checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton1.setEnabled(false);
-        checkButton1.setChecked(true);
+        final ToolButton showParentButton = new ToolButton(ConstantFactory.getInstance().showParent());
+        showParentButton.setStyle(ToolButtonStyle.CHECKBOX);
+        showParentButton.setEnabled(false);
+        showParentButton.setChecked(true);
 
-        final ToolButton checkButton2 = new ToolButton(ConstantFactory.getInstance().showFilters());
-        checkButton2.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton2.setEnabled(false);
+        final ToolButton showFiltersButton = new ToolButton(ConstantFactory.getInstance().showFilters());
+        showFiltersButton.setStyle(ToolButtonStyle.CHECKBOX);
+        showFiltersButton.setEnabled(false);
 
-        final ToolButton checkButton3 = new ToolButton(ConstantFactory.getInstance().showProperties());
-        checkButton3.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton3.setEnabled(false);
+        final ToolButton showPropsButton = new ToolButton(ConstantFactory.getInstance().showProperties());
+        showPropsButton.setStyle(ToolButtonStyle.CHECKBOX);
+        showPropsButton.setEnabled(false);
 
-        final ToolButton checkButton4 = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
-        checkButton4.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton4.addClickHandler(new ClickHandler(){
+        final ToolButton hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
+        hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
+        hideBlanksButton.addClickHandler(new ClickHandler(){
 
-	    public void onClick(ClickEvent arg0) {
+	    public void onClick(final ClickEvent arg0) {
 		
-		ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(), checkButton4.isChecked(), new AsyncCallback<CellDataSet>(){
+		ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(), hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>(){
 
-		    public void onFailure(Throwable arg0) {
+		    public void onFailure(final Throwable arg0) {
 			
 			MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set non empty");
 			
 		    }
 
-		    public void onSuccess(CellDataSet arg0) {
+		    public void onSuccess(final CellDataSet arg0) {
 			
-			if(checkButton4.isChecked()){
-			    checkButton4.setText("Show Blank Cells");
+			if(hideBlanksButton.isChecked()){
+			    hideBlanksButton.setText("Show Blank Cells");
 			}
 			else{
-			    checkButton4.setText(ConstantFactory.getInstance().hideBlankCells());
+			    hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
 			}
 			 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                  PropertiesPanel.this, Pat.getCurrQuery(), arg0);
@@ -200,9 +222,9 @@ public class PropertiesPanel extends LayoutComposite {
             
         });
 
-        final ToolButton checkButton5 = new ToolButton(ConstantFactory.getInstance().pivot());
-        checkButton5.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton5.addClickHandler(new ClickHandler() {
+        final ToolButton pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
+        pivotButton.setStyle(ToolButtonStyle.CHECKBOX);
+        pivotButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(),
@@ -225,38 +247,40 @@ public class PropertiesPanel extends LayoutComposite {
 
             }
         });
-        checkButton5.setEnabled(true);
+        pivotButton.setEnabled(true);
 
-        final ToolButton menuButton = new ToolButton(ConstantFactory.getInstance().layout());
-        menuButton.setStyle(ToolButtonStyle.MENU);
+        final ToolButton layoutMenuButton = new ToolButton(ConstantFactory.getInstance().layout());
+        layoutMenuButton.setStyle(ToolButtonStyle.MENU);
 
-        final Command cmd1 = new Command() {
-            public void execute() {
+        final PopupMenu layoutMenuBtnMenu = new PopupMenu();
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
+        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().right(), new LayoutCommand(Region.EAST));
 
-            }
-        };
+        layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
-        final PopupMenu menuBtnMenu = new PopupMenu();
-        menuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
-        menuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
-        menuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
-        menuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
-        menuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
-        menuBtnMenu.addItem(ConstantFactory.getInstance().right(), new LayoutCommand(Region.EAST));
+        final ToolButton drillMenuButton = new ToolButton("Drill");
+        drillMenuButton.setStyle(ToolButtonStyle.MENU);
 
-        menuButton.setMenu(menuBtnMenu);
+        final PopupMenu drillMenuBtnMenu = new PopupMenu();
+        drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillPosition(), new DrillCommand(DrillType.POSITION));
+        drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillReplace(), new DrillCommand(DrillType.REPLACE));
 
-        final ToolButton checkButton6 = new ToolButton(ConstantFactory.getInstance().drillThrough());
-        checkButton6.setStyle(ToolButtonStyle.CHECKBOX);
-        checkButton6.setEnabled(false);
+        final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
+        drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
+        drillThruButton.setEnabled(false);
 
-        mainPanel.add(menuButton);
+        mainPanel.add(layoutMenuButton);
+        mainPanel.add(drillMenuButton);
         mainPanel.add(mdxButton);
-        mainPanel.add(checkButton1);
-        mainPanel.add(checkButton2);
-        mainPanel.add(checkButton3);
-        mainPanel.add(checkButton4);
-        mainPanel.add(checkButton5);
+        mainPanel.add(showParentButton);
+        mainPanel.add(showFiltersButton);
+        mainPanel.add(showPropsButton);
+        mainPanel.add(hideBlanksButton);
+        mainPanel.add(pivotButton);
 
         rootPanel.add(mainPanel);
 

@@ -58,24 +58,25 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements IQueryListener {
 
-    ChartPanel ofcPanel = new ChartPanel();
+    private final transient ChartPanel ofcPanel = new ChartPanel();
     
-    OlapTable olapTable;
+    private final transient OlapTable olapTable;
 
-    LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final transient LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
 
-    final LayoutPanel baseLayoutPanel = getLayoutPanel();
+    private final transient LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-    final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final transient LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
 
-    private String queryId;
+    private final String queryId;
 
     /**
      *DataPanel Constructor.
      * @param query 
      * 
      */
-    public DataPanel(String query) {
+    public DataPanel(final String query) {
+	super();
         this.queryId = query;
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
 
@@ -134,7 +135,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     }
 
-    public void chartPosition(Region chartPos){
+    public void chartPosition(final Region chartPos){
                 
         ofcPanel.removeFromParent();
         if(chartPos!=null){

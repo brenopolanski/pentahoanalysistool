@@ -49,9 +49,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MenuBar extends LayoutComposite {
 
-    private final LayoutPanel rootPanel = getLayoutPanel();
+    private transient final LayoutPanel rootPanel = getLayoutPanel();
 
-    private final static ToolButton saveButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+    private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
             .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
 
     /**
@@ -126,17 +126,17 @@ public class MenuBar extends LayoutComposite {
     private void addSaveButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
-        saveButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        SAVEBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(saveButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        saveButton.addClickHandler(new ClickHandler() {
+        DOM.setStyleAttribute(SAVEBUTTON.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        SAVEBUTTON.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 SaveWindow.display();
             }
         });
-        saveButton.setEnabled(false);
-        rootPanel.add(saveButton, new BoxLayoutData(FillStyle.VERTICAL));
+        SAVEBUTTON.setEnabled(false);
+        rootPanel.add(SAVEBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
     private void addLoadButton() {
@@ -157,7 +157,7 @@ public class MenuBar extends LayoutComposite {
         rootPanel.add(loadButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
-    public static void enableSave(Boolean enabled){
-        saveButton.setEnabled(enabled);
+    public static void enableSave(final Boolean enabled){
+        SAVEBUTTON.setEnabled(enabled);
     }
 }

@@ -36,6 +36,7 @@ import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.DrillType;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -76,7 +77,7 @@ public class Pat implements EntryPoint {
     /**
      * The {@link Application}.
      */
-    private final Application app;
+    private final transient Application app;
 
     /**
      * Global State.
@@ -90,13 +91,15 @@ public class Pat implements EntryPoint {
     private static CubeItem currCube = null;
 
     private static String currCubeName;
+
+    private static DrillType currDrillType;
     
     public static String getCurrConnection() {
         return currConnection;
     }
 
 
-    public static void setCurrConnection(String currConnection) {
+    public final static void setCurrConnection(String currConnection) {
         Pat.currConnection = currConnection;
     }
 
@@ -147,8 +150,10 @@ public class Pat implements EntryPoint {
      */
     private static String getCurrentReferenceStyleName(final String prefix) {
         String gwtRef = prefix + "-Reference-" + CUR_THEME; //$NON-NLS-1$
-        if (LocaleInfo.getCurrentLocale().isRTL())
+        if (LocaleInfo.getCurrentLocale().isRTL()){
             gwtRef += "-rtl"; //$NON-NLS-1$
+        }
+        
         return gwtRef;
     }
 
@@ -213,25 +218,26 @@ public class Pat implements EntryPoint {
                     // should have
                     // nothing to remove.
                     if (!href.contains(gwtStyleSheet) && !href.contains(gwtMosStyleSheet)
-                            && !href.contains(scStyleSheet))
+                            && !href.contains(scStyleSheet)){
                         toRemove.add(elem);
+                    }
                 }
             }
         }
 
         // Return if we already have the correct style sheets
-        if (styleSheetsFound && toRemove.isEmpty())
+        if (styleSheetsFound && toRemove.isEmpty()){
             return;
-
+        }
         // Detach the app while we manipulate the styles to avoid rendering
         // issues
         // RootPanel.get().remove(app);
         app.removeFromParent();
 
         // Remove the old style sheets
-        for (final Element elem : toRemove)
+        for (final Element elem : toRemove){
             headElem.removeChild(elem);
-
+        }
         // Load the GWT theme style sheet
         final String modulePath = GWT.getModuleBaseURL();
         final Command callback = new Command() {
@@ -271,7 +277,7 @@ public class Pat implements EntryPoint {
      * Sets the SESSION_ID.
      */
     private void assignSessionID(final String session) {
-        if (session == null)
+        if (session == null){
             ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
                 public void onFailure(final Throwable exception) {
                     MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -282,8 +288,10 @@ public class Pat implements EntryPoint {
                     applicationState.setSession(sessionId);
                 }
             });
-        else
+        }
+        else{
             applicationState.setSession(session);
+        }
     }
 
     /**
@@ -292,10 +300,12 @@ public class Pat implements EntryPoint {
     private void parseInitialStateFromParameter() {
         final Location loadURL = WindowUtils.getLocation();
         final State.Mode mode = State.Mode.getModeByParameter(loadURL.getParameter("MODE")); //$NON-NLS-1$
-        if (mode == null)
+        if (mode == null){
             applicationState.setMode(State.Mode.DEFAULT);
-        else
+        }
+        else{
             applicationState.setMode(mode);
+        }
         final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
         assignSessionID(_sessionParam);
     }
@@ -306,7 +316,7 @@ public class Pat implements EntryPoint {
      *
      * @param cubeName
      */
-    public static void setCurrCubeName(String cubeName) {
+    public final static void setCurrCubeName(final String cubeName) {
     
         currCubeName = cubeName;
         
@@ -317,13 +327,24 @@ public class Pat implements EntryPoint {
         return currCubeName;
     }
     
-    public static void setCurrCube(CubeItem cube) {
+    public final static void setCurrCube(final CubeItem cube) {
         
         currCube = cube;
     }
     
     public static CubeItem getCurrCube(){
      return currCube;
+    }
+
+
+    public final static void setDrillType(final DrillType drillType) {
+	currDrillType = drillType;
+	
+    }
+    
+    public static DrillType getCurrDrillType(){
+	return currDrillType;
+	
     }
 
 }

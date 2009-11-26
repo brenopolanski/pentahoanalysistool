@@ -49,7 +49,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MainTabPanel extends LayoutComposite {
 
-    private final static DecoratedTabLayoutPanel contentWrapper = new DecoratedTabLayoutPanel();
+    private final static DecoratedTabLayoutPanel CONTENTWRAPPER = new DecoratedTabLayoutPanel();
 
     private static int counter = 0;
 
@@ -62,13 +62,13 @@ public class MainTabPanel extends LayoutComposite {
         final LayoutPanel rootLayoutPanel = getLayoutPanel();
         // FIXME remove that and use style
         DOM.setStyleAttribute(rootLayoutPanel.getElement(),"background", "white");  //$NON-NLS-1$//$NON-NLS-2$
-        DOM.setStyleAttribute(contentWrapper.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(CONTENTWRAPPER.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        contentWrapper.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
-        contentWrapper.addSelectionHandler(new SelectionHandler<Integer>() {
+        CONTENTWRAPPER.addStyleName("pat-content-wrapper"); //$NON-NLS-1$
+        CONTENTWRAPPER.addSelectionHandler(new SelectionHandler<Integer>() {
             public void onSelection(final SelectionEvent<Integer> selectEvent) {
-                contentWrapper.getWidget(selectEvent.getSelectedItem());
-                final Widget widget = contentWrapper.getWidget(selectEvent.getSelectedItem());
+                CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
+                final Widget widget = CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
                 
                 if (widget instanceof OlapPanel || widget instanceof MdxPanel) {
                     MenuBar.enableSave(true);
@@ -88,11 +88,11 @@ public class MainTabPanel extends LayoutComposite {
             }
         });
 
-        rootLayoutPanel.add(contentWrapper);
+        rootLayoutPanel.add(CONTENTWRAPPER);
     }
 
     public static Widget getSelectedWidget() {
-        return contentWrapper.getWidget(contentWrapper.getSelectedTab());
+        return CONTENTWRAPPER.getWidget(CONTENTWRAPPER.getSelectedTab());
     }
     /**
      * Adds a new Tab to the contentPanel.
@@ -105,27 +105,28 @@ public class MainTabPanel extends LayoutComposite {
         boolean isWelcomePanel = false;
         if (content != null) {
 
-            final Iterator<Widget> iter = contentWrapper.iterator();
-            while (iter.hasNext())
+            final Iterator<Widget> iter = CONTENTWRAPPER.iterator();
+            while (iter.hasNext()){
                 if (iter.next() instanceof WelcomePanel) {
                     isWelcomePanel = true;
                 }
-
-            if (!isWelcomePanel) {
-                contentWrapper.add(content, tabName);
+            }
+            if (isWelcomePanel) {
+                if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE)){
+                    CONTENTWRAPPER.add(content, tabName);
+                }
+                else{
+                    CONTENTWRAPPER.add(content, tabCloseLabel(content, tabName, counter));
+                }
+                CONTENTWRAPPER.selectTab(counter);
                 counter++;
-                contentWrapper.layout();
+                CONTENTWRAPPER.layout();                
             }
 
             else {
-                if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE))
-                    contentWrapper.add(content, tabName);
-                else
-                    contentWrapper.add(content, tabCloseLabel(content, tabName, counter));
-                contentWrapper.selectTab(counter);
+                CONTENTWRAPPER.add(content, tabName);
                 counter++;
-                contentWrapper.layout();
-
+                CONTENTWRAPPER.layout();
             }
         }
     }
@@ -148,23 +149,23 @@ public class MainTabPanel extends LayoutComposite {
      * 
      * @param widget
      * @param string
-     * @param index
+     * @param idx
      * @return a closeable tab for a tab panel.
      */
-    private static Widget tabCloseLabel(final Widget widget, final String string, final int index) {
+    private static Widget tabCloseLabel(final Widget widget, final String string, final int idx) {
         final HorizontalPanel hPanel = new HorizontalPanel();
         final TextLabel label = new TextLabel(string);
         DOM.setStyleAttribute(label.getElement(), "whiteSpace", "nowrap"); //$NON-NLS-1$ //$NON-NLS-2$
         final ImageButton closeBtn = new ImageButton(Pat.IMAGES.windowButtonClose());
         closeBtn.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                final int widgetIndex = contentWrapper.getWidgetIndex(widget);
-                if (widgetIndex == contentWrapper.getSelectedTab()) {
-                    contentWrapper.remove(widgetIndex);
-                    contentWrapper.selectTab(widgetIndex - 1);
+                final int widgetIndex = CONTENTWRAPPER.getWidgetIndex(widget);
+                if (widgetIndex == CONTENTWRAPPER.getSelectedTab()) {
+                    CONTENTWRAPPER.remove(widgetIndex);
+                    CONTENTWRAPPER.selectTab(widgetIndex - 1);
                 } else {
-                    contentWrapper.remove(widgetIndex);
-                    contentWrapper.layout();
+                    CONTENTWRAPPER.remove(widgetIndex);
+                    CONTENTWRAPPER.layout();
                 }
                 /*
                  * if (contentWrapper.getWidgetCount() == 1 || contentWrapper.getWidgetCount() == 0) { if

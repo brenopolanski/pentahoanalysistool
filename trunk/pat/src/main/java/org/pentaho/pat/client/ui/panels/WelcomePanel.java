@@ -48,6 +48,7 @@ public class WelcomePanel extends DataWidget {
      * 
      */
     public WelcomePanel() {
+	super();
         initializeWidget();
     }
 
@@ -105,9 +106,9 @@ public class WelcomePanel extends DataWidget {
      * @return layoutPanel
      */
     public final Widget onInitialize() {
-        BoxLayout test = new BoxLayout();
-        test.setOrientation(Orientation.VERTICAL);
-        final LayoutPanel layoutPanel = new LayoutPanel(test);
+        final BoxLayout boxLayout = new BoxLayout();
+        boxLayout.setOrientation(Orientation.VERTICAL);
+        final LayoutPanel layoutPanel = new LayoutPanel(boxLayout);
         // FIXME remove that and use style
         DOM.setStyleAttribute(layoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);

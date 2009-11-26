@@ -188,8 +188,8 @@ public class ChartPanel extends LayoutComposite {
      * @param ct
      *            the ct to set
      */
-    public void setCt(final ChartType ct) {
-        this.ct = ct;
+    public void setCt(final ChartType chartType) {
+        this.ct = chartType;
     }
 
     /**
