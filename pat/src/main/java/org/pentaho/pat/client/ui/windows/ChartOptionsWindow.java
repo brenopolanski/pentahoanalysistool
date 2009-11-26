@@ -44,13 +44,13 @@ public class ChartOptionsWindow extends WindowPanel {
 
     private static final String TITLE = ConstantFactory.getInstance().chartOptions();
     
-    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
     
-    private final static ChartOptionsPanel chartOptionsPanel = new ChartOptionsPanel();
+    private final static ChartOptionsPanel CHRTOPTIONSPANEL = new ChartOptionsPanel();
 
-    private final static ChartOptionsWindow cow = new ChartOptionsWindow();
+    private final static ChartOptionsWindow COW = new ChartOptionsWindow();
     
-    private static ChartPanel cp;
+    private static ChartPanel chrtPanel;
     
     /**
      * 
@@ -58,14 +58,14 @@ public class ChartOptionsWindow extends WindowPanel {
      * @param chartPanel 
      *
      */
-    public static void display(ChartPanel chartPanel) {
-        cp = chartPanel;
-        chartOptionsPanel.setChartTitleTextBox(cp.getChartTitle());
-        chartOptionsPanel.setxAxisTextBox(cp.getxAxisLabel());
-        chartOptionsPanel.setyAxisTextBox(cp.getyAxisLabel());
-        cow.setSize("550px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-        cow.showModal(false);
-        cow.layout();
+    public static void display(final ChartPanel chartPanel) {
+        chrtPanel = chartPanel;
+        CHRTOPTIONSPANEL.setChartTitleTextBox(chrtPanel.getChartTitle());
+        CHRTOPTIONSPANEL.setxAxisTextBox(chrtPanel.getxAxisLabel());
+        CHRTOPTIONSPANEL.setyAxisTextBox(chrtPanel.getyAxisLabel());
+        COW.setSize("550px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        COW.showModal(false);
+        COW.layout();
     }
 
     /**
@@ -75,28 +75,28 @@ public class ChartOptionsWindow extends WindowPanel {
      */
     public ChartOptionsWindow(){
         super(TITLE);
-        windowContentpanel.add(chartOptionsPanel, new BoxLayoutData(FillStyle.BOTH));
-        this.setWidget(windowContentpanel);
+        winContentpanel.add(CHRTOPTIONSPANEL, new BoxLayoutData(FillStyle.BOTH));
+        this.setWidget(winContentpanel);
         
-        Button okButton = new Button(ConstantFactory.getInstance().ok());
+        final Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler(){
 
-            public void onClick(ClickEvent arg0) {
-                cp.setChartTitle(chartOptionsPanel.getChartTitleTextBox());
-                cp.setxAxisLabel(chartOptionsPanel.getxAxisTextBox());
-                cp.setyAxisLabel(chartOptionsPanel.getyAxisTextBox());
-                cp.setPos(chartOptionsPanel.getPos());
-                cp.setOptionsMap(chartOptionsPanel.getOptionsMap());
-                cp.updateChart();
-                cow.hide();
+            public void onClick(final ClickEvent arg0) {
+                chrtPanel.setChartTitle(CHRTOPTIONSPANEL.getChartTitleTextBox());
+                chrtPanel.setxAxisLabel(CHRTOPTIONSPANEL.getxAxisTextBox());
+                chrtPanel.setyAxisLabel(CHRTOPTIONSPANEL.getyAxisTextBox());
+                chrtPanel.setPos(CHRTOPTIONSPANEL.getPos());
+                chrtPanel.setOptionsMap(CHRTOPTIONSPANEL.getOptionsMap());
+                chrtPanel.updateChart();
+                COW.hide();
             }
             
         });
-        Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         cancelButton.addClickHandler(new ClickHandler(){
 
-            public void onClick(ClickEvent arg0) {
-               cow.hide();
+            public void onClick(final ClickEvent arg0) {
+               COW.hide();
             }
             
         });

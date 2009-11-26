@@ -28,7 +28,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Paul Stoellberger
  * 
  */
-public class MdxPanel extends DataWidget implements IQueryListener {
+public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     private String panelName = null;
 

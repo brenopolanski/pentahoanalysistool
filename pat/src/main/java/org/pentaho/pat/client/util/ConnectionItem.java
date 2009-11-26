@@ -32,34 +32,38 @@ package org.pentaho.pat.client.util;
 public class ConnectionItem {
     private String name;
 
-    private final String id;
+    private transient final String connId;
 
-    private Boolean isConnected = false;
+    private transient Boolean connected = false;
 
-    public ConnectionItem(final String id, final String name, final boolean isConnected) {
+    public ConnectionItem(final String connId, final String name, final boolean isConnected) {
         this.name = name;
-        this.id = id;
-        this.isConnected = isConnected;
+        this.connId = connId;
+        this.connected = isConnected;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj){
             return true;
-        if (obj == null)
+        }
+        if (obj == null){
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()){
             return false;
+        }
+            
 
         final ConnectionItem other = (ConnectionItem) obj;
-        if (!id.equals(other.id))
+        if (!connId.equals(other.connId)){
             return false;
-        
+        }
         return true;
     }
     
     public String getId() {
-        return id;
+        return connId;
     }
 
     public String getName() {
@@ -67,11 +71,11 @@ public class ConnectionItem {
     }
 
     public boolean isConnected() {
-        return isConnected;
+        return connected;
     }
 
     public void setConnected(final Boolean isConnected) {
-        this.isConnected = isConnected;
+        this.connected = isConnected;
     }
 
     public void setName(final String name) {

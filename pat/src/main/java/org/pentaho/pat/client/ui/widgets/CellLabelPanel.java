@@ -19,10 +19,10 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  *
  */
 public class CellLabelPanel extends HorizontalPanel {
-    MemberCell mc = null;
-    public CellLabelPanel(MemberCell mc){
+    private transient MemberCell memCell = null;
+    public CellLabelPanel(final MemberCell memCell){
         super();
-        this.mc = mc;
+        this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
     }
     
@@ -50,7 +50,7 @@ public class CellLabelPanel extends HorizontalPanel {
      * @return the mc
      */
     public MemberCell getMc() {
-        return mc;
+        return memCell;
     }
 
 }

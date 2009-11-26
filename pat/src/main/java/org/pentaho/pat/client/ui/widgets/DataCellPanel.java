@@ -7,7 +7,6 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.user.client.DOM;
@@ -18,10 +17,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class DataCellPanel extends HorizontalPanel {
 
     
-    private MemberCell pcm;
-    private MemberCell prm;
+    private transient final MemberCell pcm;
+    private transient final MemberCell prm;
 
-    public DataCellPanel(MemberCell parentColMember, MemberCell parentRowMember){
+    public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember){
 	super();
 	sinkEvents(Event.ONDBLCLICK);
 	pcm = parentColMember;
@@ -29,34 +28,34 @@ public class DataCellPanel extends HorizontalPanel {
     }
     
     @Override
-    public void onBrowserEvent(Event e){
-	super.onBrowserEvent(e);
+    public void onBrowserEvent(final Event event){
+	super.onBrowserEvent(event);
 	
-	if(DOM.eventGetType(e)== Event.ONDBLCLICK){
+	if(DOM.eventGetType(event)== Event.ONDBLCLICK){
 	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), pcm, new AsyncCallback<Object>(){
 
-		public void onFailure(Throwable arg0) {
+		public void onFailure(final Throwable arg0) {
 		    // TODO Auto-generated method stub
 		    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
 		}
 
-		public void onSuccess(Object arg0) {
+		public void onSuccess(final Object arg0) {
 		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), prm, new AsyncCallback<Object>(){
 
-		    public void onFailure(Throwable arg0) {
+		    public void onFailure(final Throwable arg0) {
 			MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
 			
 		    }
 
-		    public void onSuccess(Object arg0) {
+		    public void onSuccess(final Object arg0) {
 			ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
-			    public void onFailure(Throwable arg0) {
+			    public void onFailure(final Throwable arg0) {
 				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
 				
 			    }
 
-			    public void onSuccess(CellDataSet arg0) {
+			    public void onSuccess(final CellDataSet arg0) {
 				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
 		                                DataCellPanel.this, Pat.getCurrQuery(), arg0);
 				

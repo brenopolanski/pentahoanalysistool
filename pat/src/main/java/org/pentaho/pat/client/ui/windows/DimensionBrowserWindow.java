@@ -52,22 +52,22 @@ public class DimensionBrowserWindow extends WindowPanel {
     /** The Window Title. */
     private final static String TITLE = ConstantFactory.getInstance().titleDimensionBrowser();
 
-    private static DimensionMenu dimensionMenuPanel = new DimensionMenu();
+    private static DimensionMenu dimMenuPanel = new DimensionMenu();
 
-    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private final static DimensionBrowserWindow dbw = new DimensionBrowserWindow();
+    private final static DimensionBrowserWindow DBW = new DimensionBrowserWindow();
 
     public static void displayDimension(final String queryId, final String dimension) {
-        dimensionMenuPanel.loadMembers(queryId, dimension);
+        dimMenuPanel.loadMembers(queryId, dimension);
         display();
     }
 
     private static void display() {
-        dbw.setSize("650px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-        dbw.showModal(false);
+        DBW.setSize("650px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DBW.showModal(false);
         // dbw.show();
-        dbw.layout();
+        DBW.layout();
     }
 
     /**
@@ -75,7 +75,7 @@ public class DimensionBrowserWindow extends WindowPanel {
      */
     public DimensionBrowserWindow() {
         super(TITLE);
-        windowContentpanel.add(dimensionMenuPanel, new BoxLayoutData(FillStyle.BOTH));
+        winContentpanel.add(dimMenuPanel, new BoxLayoutData(FillStyle.BOTH));
         final LayoutPanel buttons = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         final Button updateQueryButton = new Button(ConstantFactory.getInstance().ok());
         final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
@@ -98,9 +98,9 @@ public class DimensionBrowserWindow extends WindowPanel {
                 DimensionBrowserWindow.this.hide();
             }
         });
-        windowContentpanel.add(buttons);
+        winContentpanel.add(buttons);
 
-        this.setWidget(windowContentpanel);
+        this.setWidget(winContentpanel);
 
         this.layout();
 
@@ -131,7 +131,7 @@ public class DimensionBrowserWindow extends WindowPanel {
     }
 
     public static DimensionMenu getDimensionMenuPanel() {
-        return dimensionMenuPanel;
+        return dimMenuPanel;
     }
     
     

@@ -44,24 +44,24 @@ public class LoadWindow extends WindowPanel {
 
     private static final String LOAD_TITLE = ConstantFactory.getInstance().load();
 
-    private final static LoadMenuPanel loadMenuPanel = new LoadMenuPanel();
+    private final static LoadMenuPanel LOADMENUPANEL = new LoadMenuPanel();
 
-    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private final static LoadWindow cbw = new LoadWindow();
+    private final static LoadWindow CBW = new LoadWindow();
 
     public static void display() {
-        cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-        loadMenuPanel.loadSavedQueries();
-        cbw.showModal(false);
-        cbw.layout();
+        CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOADMENUPANEL.loadSavedQueries();
+        CBW.showModal(false);
+        CBW.layout();
     }
 
     public LoadWindow() {
         super(LOAD_TITLE);
 
-        windowContentpanel.add(loadMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        this.setWidget(windowContentpanel);
+        winContentpanel.add(LOADMENUPANEL, new BoxLayoutData(FillStyle.BOTH));
+        this.setWidget(winContentpanel);
         this.setFooter(buttonBar());
         this.layout();
     }
@@ -72,8 +72,8 @@ public class LoadWindow extends WindowPanel {
 
             public void onClick(final ClickEvent arg0) {
 
-                loadMenuPanel.load();
-                cbw.hide();
+                LOADMENUPANEL.load();
+                CBW.hide();
             }
 
         });
@@ -81,7 +81,7 @@ public class LoadWindow extends WindowPanel {
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                cbw.hide();
+                CBW.hide();
 
             }
 

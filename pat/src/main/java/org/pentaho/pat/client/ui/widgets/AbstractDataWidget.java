@@ -27,17 +27,17 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
  * called, which happens the first time the widget is added to the page. The data in the source and css tabs are loaded
  * using RPC call to the server.
  */
-public abstract class DataWidget extends LayoutComposite {
+public abstract class AbstractDataWidget extends LayoutComposite {
 
     /** The default style name. */
-    protected static final String DEFAULT_STYLE_NAME = "Pat-ContentWidget"; //$NON-NLS-1$
+    protected static final String DEF_STYLE_NAME = "Pat-ContentWidget"; //$NON-NLS-1$
 
     /**
      * Constructor.
      */
-    public DataWidget() {
-
-        setStyleName(DEFAULT_STYLE_NAME);
+    public AbstractDataWidget() {
+        super();
+        setStyleName(DEF_STYLE_NAME);
     }
 
     /**
@@ -53,8 +53,8 @@ public abstract class DataWidget extends LayoutComposite {
      * @return the id
      */
     public final String getId() {
-        final String s = this.getClass().getName();
-        return s.substring(s.lastIndexOf('.') + 1, s.length());
+        final String idStr = this.getClass().getName();
+        return idStr.substring(idStr.lastIndexOf('.') + 1, idStr.length());
     }
 
     /**

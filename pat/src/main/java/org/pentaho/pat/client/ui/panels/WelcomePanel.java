@@ -22,7 +22,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @since
  * @author Paul Stoellberger
  */
-public class WelcomePanel extends DataWidget {
+public class WelcomePanel extends AbstractDataWidget {
 
     /** Name. */
     private String name;

@@ -55,21 +55,22 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
 
-    private final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
+    private transient final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
 
-    private final static LayoutPanel mainContentpanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+    private final static LayoutPanel MAINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
-    private final static LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final static LayoutPanel WINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private final static ConnectionManagerWindow connectionManagerWindow = new ConnectionManagerWindow();
+    private final static ConnectionManagerWindow CONNMANGRWINDOW = new ConnectionManagerWindow();
 
     /** A Tab Layout Panel. */
-    private final static TabLayoutPanel tabPanel = new TabLayoutPanel();
+    private final static TabLayoutPanel TABPANEL = new TabLayoutPanel();
 
     public static void closeTabs() {
-        for (final int i = 0; i < tabPanel.getWidgetCount();)
-            tabPanel.remove(i);
-        windowContentpanel.remove(tabPanel);
+        for (int i = 0; i < TABPANEL.getWidgetCount();){
+            TABPANEL.remove(i);
+        }
+        WINCONTENTPANEL.remove(TABPANEL);
         refreshWindow();
     }
 
@@ -77,29 +78,30 @@ public class ConnectionManagerWindow extends WindowPanel {
         refreshWindow();
     }
 
-    public static void display(final CubeConnection cc) {
-        if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian)
+    public static void display(final CubeConnection cubeConn) {
+        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.Mondrian){
             // TODO uncomment when implemented
             // connectMondrian = new ConnectMondrianPanel(cc);
-            tabPanel.selectTab(0);
-
-        if (cc.getConnectionType() == CubeConnection.ConnectionType.XMLA)
+            TABPANEL.selectTab(0);
+        }
+        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.XMLA){
             // TODO uncomment when implemented
             // connectXmla = new ConnectXmlaPanel(cc)
-            tabPanel.selectTab(1);
+            TABPANEL.selectTab(1);
+        }
         display();
     }
 
     public static void showNewConnection() {
         // TODO add when implemented
         // ConnectionManagerPanel.refresh();
-        if (tabPanel.getWidgetCount() == 0) {
+        if (TABPANEL.getWidgetCount() == 0) {
             connectMondrian = new ConnectMondrianPanel();
             connectXmla = new ConnectXmlaPanel();
-            tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-            tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-            tabPanel.selectTab(0);
-            windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
+            TABPANEL.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+            TABPANEL.add(connectXmla, ConstantFactory.getInstance().xmla());
+            TABPANEL.selectTab(0);
+            WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
             refreshWindow();
         }
     }
@@ -113,10 +115,10 @@ public class ConnectionManagerWindow extends WindowPanel {
         //
         // if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
         // connectionManagerWindow.setPixelSize(preferredWidth, 356);
-        connectionManagerWindow.invalidate();
+        CONNMANGRWINDOW.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
-        connectionManagerWindow.showModal();
-        connectionManagerWindow.layout();
+        CONNMANGRWINDOW.showModal();
+        CONNMANGRWINDOW.layout();
     }
 
     /**
@@ -132,9 +134,9 @@ public class ConnectionManagerWindow extends WindowPanel {
 
             }
         });
-        windowContentpanel.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
-        mainContentpanel.add(windowContentpanel, new BoxLayoutData(FillStyle.BOTH));
-        mainContentpanel.add(cmCancelButton);
+        WINCONTENTPANEL.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
+        MAINCONTENTPANEL.add(WINCONTENTPANEL, new BoxLayoutData(FillStyle.BOTH));
+        MAINCONTENTPANEL.add(cmCancelButton);
         // connectMondrian = new ConnectMondrianPanel();
         // connectXmla = new ConnectXmlaPanel();
         // tabPanel.setPadding(5);
@@ -143,7 +145,7 @@ public class ConnectionManagerWindow extends WindowPanel {
         // tabPanel.selectTab(0);
         // windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
         // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
-        this.setWidget(mainContentpanel);
+        this.setWidget(MAINCONTENTPANEL);
         this.layout();
 
     }

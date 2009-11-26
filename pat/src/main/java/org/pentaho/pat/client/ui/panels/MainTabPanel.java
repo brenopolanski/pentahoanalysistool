@@ -29,7 +29,7 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.TextLabel;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.State;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -100,7 +100,7 @@ public class MainTabPanel extends LayoutComposite {
      * @param content
      * @param tabName
      */
-    public static void addContent(final DataWidget content, final String tabName) {
+    public static void addContent(final AbstractDataWidget content, final String tabName) {
 
         boolean isWelcomePanel = false;
         if (content != null) {
@@ -137,7 +137,7 @@ public class MainTabPanel extends LayoutComposite {
      *
      * @param content
      */
-    public static void displayContentWidget(final DataWidget content) {
+    public static void displayContentWidget(final AbstractDataWidget content) {
         if (content != null) {
             addContent(content, content.getName());
         }
