@@ -143,7 +143,7 @@ public class CellModeMenu extends PopupMenu {
     public class SortOrderCommand implements Command {
 
         /** The selection mode. */
-        private final String sortOrder;
+        private transient final String sortOrder;
 
         /**
          * The Constructor.
@@ -209,10 +209,11 @@ public class CellModeMenu extends PopupMenu {
     }
 
     public CellModeMenu() {
+        super();
         init();
     }
 
-    public void init() {
+    private void init() {
         this.setAutoOpen(true);
         this.addItem(new MenuItem(ConstantFactory.getInstance().sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
         this.addItem(new MenuItem(ConstantFactory.getInstance().sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
