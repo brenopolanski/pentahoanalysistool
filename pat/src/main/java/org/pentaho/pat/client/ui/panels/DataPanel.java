@@ -143,16 +143,16 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             }
         switch(chartPos){
         case WEST:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
             break;
         case EAST:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 0, 1000));
             break;
         case NORTH:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 0, 1000));
             break;
         case SOUTH:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 50, 200));
+            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 0, 1000));
             break;
         case CENTER:
             olapTable.removeFromParent();

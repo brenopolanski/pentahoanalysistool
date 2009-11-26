@@ -67,6 +67,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
     final LayoutPanel layoutPanel = getLayoutPanel();
 
+    
     public OlapTable() {
         super();
         this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
