@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.core.client.DOM;
-import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 
 import com.google.gwt.user.client.ui.FlexTable;
 
@@ -34,7 +33,7 @@ import com.google.gwt.user.client.ui.FlexTable;
  */
 public class DimensionFlexTable extends FlexTable {
 
-    private Boolean horizontal = false;
+    private transient Boolean horizontal = false;
 
     private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
 
@@ -43,18 +42,18 @@ public class DimensionFlexTable extends FlexTable {
      * 
      */
     public DimensionFlexTable() {
-        // TODO Auto-generated constructor stub
+        super();
 
     }
 
-    public DimensionFlexTable(final FlexTableRowDragController tableRowDragController, final Boolean orientation) {
+    public DimensionFlexTable(final Boolean orientation) {
+       super();
         addStyleName(TABLE_CSS_NAME);
         // FIXME remove that and use style
         DOM.setStyleAttribute(getElement(),"background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
 
         horizontal = orientation;
 
-        // clearDimensionTable();
     }
 
     /**

@@ -44,25 +44,25 @@ public class SaveWindow extends WindowPanel {
 
     private static final String SAVE_TITLE = ConstantFactory.getInstance().save();
 
-    private final static SaveMenuPanel saveMenuPanel = new SaveMenuPanel();
+    private final static SaveMenuPanel SAVEMENUPANEL = new SaveMenuPanel();
 
-    private final LayoutPanel windowContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private final static SaveWindow cbw = new SaveWindow();
+    private final static SaveWindow CBW = new SaveWindow();
 
     public static void display() {
-        cbw.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
-        saveMenuPanel.loadSavedQueries();
-        cbw.showModal(false);
+        CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        SAVEMENUPANEL.loadSavedQueries();
+        CBW.showModal(false);
         
-        cbw.layout();
+        CBW.layout();
     }
 
     public SaveWindow() {
         super(SAVE_TITLE);
 
-        windowContentpanel.add(saveMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        this.setWidget(windowContentpanel);
+        winContentpanel.add(SAVEMENUPANEL, new BoxLayoutData(FillStyle.BOTH));
+        this.setWidget(winContentpanel);
         this.setFooter(buttonBar());
         this.layout();
     }
@@ -73,8 +73,8 @@ public class SaveWindow extends WindowPanel {
 
             public void onClick(final ClickEvent arg0) {
 
-                saveMenuPanel.save();
-                cbw.hide();
+                SAVEMENUPANEL.save();
+                CBW.hide();
             }
 
         });
@@ -82,7 +82,7 @@ public class SaveWindow extends WindowPanel {
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                cbw.hide();
+                CBW.hide();
 
             }
 

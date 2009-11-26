@@ -43,15 +43,15 @@ public class CubeTreeItem extends HorizontalPanel {
         CONNECTION, CUBE
     }
 
-    private CubeConnection connection;
+    private transient CubeConnection connection;
 
-    private CubeItem cube;
+    private transient CubeItem cube;
 
-    private AbstractImagePrototype itemImage;
+    private transient AbstractImagePrototype itemImage;
 
-    private String itemName;
+    private transient String itemName;
 
-    private ItemType type;
+    private transient ItemType type;
 
     /**
      * Represents a cube item
@@ -59,17 +59,18 @@ public class CubeTreeItem extends HorizontalPanel {
      * @param cube - Name of the Cube
      */
     public CubeTreeItem(final CubeConnection connection, final CubeItem cube) {
+        super();
         if (connection != null) {
             this.connection = connection;
             this.cube = cube;
-            if (cube != null) {
-                this.itemImage = Pat.IMAGES.cube();
-                this.itemName = "<b>" + this.cube.getName() + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
-                this.type = ItemType.CUBE;
-            } else {
+            if (cube == null) {
                 this.itemImage = Pat.IMAGES.database();
                 this.itemName = this.connection.getName();
                 this.type = ItemType.CONNECTION;
+            } else {
+                this.itemImage = Pat.IMAGES.cube();
+                this.itemName = "<b>" + this.cube.getName() + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
+                this.type = ItemType.CUBE;
             }
 
             this.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));

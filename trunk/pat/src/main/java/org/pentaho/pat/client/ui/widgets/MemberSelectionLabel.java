@@ -40,10 +40,10 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class MemberSelectionLabel extends HorizontalPanel {
 
     /** PatImages ImageBundle. */
-    private ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
+    private transient ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
 
     /** Label. */
-    private Label label = new Label();
+    private transient final Label label = new Label();
 
     /** Image. */
     private Image image;
@@ -89,7 +89,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * 
      * @param full path
      */
-    public void setFullPath(String[] fullpath) {
+    public void setFullPath(final String[] fullpath) {
         fullPath = fullpath;
     }
 
@@ -149,11 +149,13 @@ public class MemberSelectionLabel extends HorizontalPanel {
      *            the image
      */
     public final void setImage(final Image image) {
-        if (this.image != null)
+        if (this.image != null){
             this.remove(this.image);
+        }
         this.image = image;
-        if (this.image != null)
+        if (this.image != null){
             this.add(this.image);
+        }
     }
 
     public Image getImage() {
@@ -188,14 +190,18 @@ public class MemberSelectionLabel extends HorizontalPanel {
 
     public final void setSelectionMode(final String mode) {
         Image selectionImage = null;
-        if (mode.equals("MEMBER")) //$NON-NLS-1$
+        if (mode.equals("MEMBER")){ //$NON-NLS-1$
             selectionImage = selectionImageBundle.memberSelectIcon().createImage();
-        else if (mode.equals("CHILDREN")) //$NON-NLS-1$
+        }
+        else if (mode.equals("CHILDREN")){ //$NON-NLS-1$
             selectionImage = selectionImageBundle.childrenSelectIcon().createImage();
-        else if (mode.equals("INCLUDE_CHILDREN")) //$NON-NLS-1$
+        }
+        else if (mode.equals("INCLUDE_CHILDREN")){ //$NON-NLS-1$
             selectionImage = selectionImageBundle.includeChildrenSelectIcon().createImage();
-        else if (mode.equals("SIBLINGS")) //$NON-NLS-1$
+        }
+        else if (mode.equals("SIBLINGS")){ //$NON-NLS-1$
             selectionImage = selectionImageBundle.siblingsSelectIcon().createImage();
+        }
 
         if (selectionImage != null) {
             setImage(selectionImage);
@@ -212,7 +218,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
         label.setText(text);
     }
 
-    public void setDimension(String dimension) {
+    public void setDimension(final String dimension) {
         this.dimension = dimension;
     }
 

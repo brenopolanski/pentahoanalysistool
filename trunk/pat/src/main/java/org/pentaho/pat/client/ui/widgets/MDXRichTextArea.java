@@ -30,10 +30,10 @@ import com.google.gwt.user.client.ui.RichTextArea;
  */
 public class MDXRichTextArea extends RichTextArea {
 
-    String keyWordsStartsNewLine = "(case)|(from)|(select)|(member)|(set)|(where)"; //$NON-NLS-1$
-    String keyWordStartsOnNewLine = "(select)|(where)|(with)|(from)|(non)|(member)"; //$NON-NLS-1$
-    String keyWordsBlue = "(axis)|(as)|(columns?,?)|(from)|(member)|(on)|(rows?,?)|(select)|(where)|(with)"; //$NON-NLS-1$
-    String KeyWordsFunction = "(AND)|(Abs)|(Acos)|(Acosh)|(AddCalculatedMembers)|(Aggregate)" + //$NON-NLS-1$
+    private transient String kWrdStrtNewLine = "(case)|(from)|(select)|(member)|(set)|(where)"; //$NON-NLS-1$
+    private transient String kWrdStrtOnNewLine = "(select)|(where)|(with)|(from)|(non)|(member)"; //$NON-NLS-1$
+    private transient String kWrdBlue = "(axis)|(as)|(columns?,?)|(from)|(member)|(on)|(rows?,?)|(select)|(where)|(with)"; //$NON-NLS-1$
+    private transient String kWrdFunction = "(AND)|(Abs)|(Acos)|(Acosh)|(AddCalculatedMembers)|(Aggregate)" + //$NON-NLS-1$
         "(AllMembers)|(Ancestor)|(Asc)|(AscB)|(AscW)|(Ascendants)|(Asin)|(Asinh)|(Atan2)|(Atanh)|(Atn)|(Avg)|" + //$NON-NLS-1$
         "(BottomCount)|(BottomPercent)|(BottomSum)|(CBool)|(CByte)|(CDate)|(CDbl)|(CInt)|(Cache)|(CalculatedChild)|" + //$NON-NLS-1$
         "(Caption)|(Cast)|(Children)|(Chr)|(ChrB)|(ChrW)|(ClosingPeriod)|(CoalesceEmpty)|(Correlation)|(Cos)|" + //$NON-NLS-1$
@@ -55,27 +55,24 @@ public class MDXRichTextArea extends RichTextArea {
         "(Timer)|(ToggleDrillState)|(TopCount)|(TopPercent)|(TopSum)|(Trim)|(TupleToStr)|(TypeName)|(UCase)|" + //$NON-NLS-1$
         "(Union)|(UniqueName)|(Val)|(ValidMeasure)|(Value)|(Var)|(VarP)|(Variance)|(VarianceP)|(VisualTotals)|" + //$NON-NLS-1$
         "(Weekday)|(WeekdayName)|(Wtd)|(XOR)|(Year)|(Ytd)|(_CaseMatch)|(_CaseTest)"; //$NON-NLS-1$
-    String startBlue = " <span style=\"color: blue;\">";//note starting space is important! //$NON-NLS-1$
-    String startGreen = " <span style=\"color: green;\">"; //$NON-NLS-1$
-    String endColor = " </span>"; //$NON-NLS-1$
-    String startIndent = " <div style=\"margin-left: 10px;\">"; //$NON-NLS-1$
-    String endIndent = " </div>"; //$NON-NLS-1$
-    String afterThisKeywordNewLine = "(column?s? )"; //$NON-NLS-1$
-    public MDXRichTextArea() {
-        super();
-    }
+    private transient String startBlue = " <span style=\"color: blue;\">";//note starting space is important! //$NON-NLS-1$
+    private transient String startGreen = " <span style=\"color: green;\">"; //$NON-NLS-1$
+    private transient String endColor = " </span>"; //$NON-NLS-1$
+    private transient String startIndent = " <div style=\"margin-left: 10px;\">"; //$NON-NLS-1$
+    private transient String endIndent = " </div>"; //$NON-NLS-1$
+    private transient String aftrThisKwrdNewLine = "(column?s? )"; //$NON-NLS-1$
 
  /**
 JAVADOC this will set the text of the MDXRichTextArea, and insert some fancy formatting.
 */
 
     @Override
-    public void setText(String text) {
+    public void setText(final String text) {
         super.setText(text);
         formatMDX();
     }
 
-    private boolean nextBraceClose(int start, String[] pieces) {
+    private boolean nextBraceClose(final int start, final String[] pieces) {
         for (int i = start + 1; i < pieces.length; i++) {
             if (pieces[i].contains(")")) { //$NON-NLS-1$
                 return true;
@@ -87,7 +84,7 @@ JAVADOC this will set the text of the MDXRichTextArea, and insert some fancy for
         return false;
     }
 
-    private boolean nextBraceOpen(int start, String[] mdx) {
+    private boolean nextBraceOpen(final int start, final String[] mdx) {
         for (int i = start + 1; i < mdx.length; i++) {
             if (mdx[i].contains("(")) { //$NON-NLS-1$
                 return true;
@@ -99,18 +96,19 @@ JAVADOC this will set the text of the MDXRichTextArea, and insert some fancy for
         return false;
     }
 
-    private String addSpaces(String s) {
-        s = s.replaceAll("\\(", " ( "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll("\\)", " ) "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll("\\{", " { "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll("\\}", " } "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll("(\r\n)", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll("[\r\n\t\f]", " "); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll(",", ", "); //$NON-NLS-1$ //$NON-NLS-2$
-        return s;
+    private String addSpaces(final String str) {
+        String newStr = str;
+        newStr = newStr.replaceAll("\\(", " ( "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll("\\)", " ) "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll("\\{", " { "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll("\\}", " } "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll("(\r\n)", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll("[\r\n\t\f]", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        newStr = newStr.replaceAll(",", ", "); //$NON-NLS-1$ //$NON-NLS-2$
+        return newStr;
     }
 
-    void unFormatMdx() {
+    private void unFormatMdx() {
         this.setHTML(this.getHTML().replaceAll("<br>", " ")); //$NON-NLS-1$ //$NON-NLS-2$
         this.setHTML(this.getText());
     }
@@ -131,66 +129,66 @@ public void formatMDX() {
 
         String[] pieces = MdxString.split(" ");     // string[] cut into pieces //$NON-NLS-1$
 
-        StringBuffer formattedMDXStringBuffer = new StringBuffer(); // this is where the formatted string goes
+        StringBuffer frmtMDXStrBuf = new StringBuffer(); // this is where the formatted string goes
         boolean indent = false;
         String testString = null;
         for (int i = 0; i < pieces.length; i++) {
             testString = pieces[i].toLowerCase();
-            if (testString.toLowerCase().matches(keyWordStartsOnNewLine.toLowerCase())) {
-                if (indent) {
-                    formattedMDXStringBuffer.append("<br> " + endIndent); //$NON-NLS-1$
+            if (testString.toLowerCase().matches(kWrdStrtOnNewLine.toLowerCase())&& indent) {
+                
+                    frmtMDXStrBuf.append("<br> " + endIndent); //$NON-NLS-1$
                     indent = false;
-                }
+                
             }
-            if (pieces[i].toLowerCase().matches(KeyWordsFunction.toLowerCase())) {
+            if (pieces[i].toLowerCase().matches(kWrdFunction.toLowerCase())) {
                 pieces[i] = startGreen + pieces[i] + endColor;
             }
-            if (pieces[i].toLowerCase().matches(keyWordsBlue.toLowerCase())) {
+            if (pieces[i].toLowerCase().matches(kWrdBlue.toLowerCase())) {
                 pieces[i] = startBlue + pieces[i].toUpperCase() + endColor;
             }
 
-            formattedMDXStringBuffer.append(pieces[i]);
-            if (testString.matches(afterThisKeywordNewLine.toLowerCase())) {
-                formattedMDXStringBuffer.append("<br>"); //$NON-NLS-1$
+            frmtMDXStrBuf.append(pieces[i]);
+            if (testString.matches(aftrThisKwrdNewLine.toLowerCase())) {
+                frmtMDXStrBuf.append("<br>"); //$NON-NLS-1$
             }
 
             try {
-                if (pieces.length > i) {
-                    if (!pieces[i + 1].matches("[\\.\\]\\)\\[,]")) { //$NON-NLS-1$
-                        formattedMDXStringBuffer.append(" "); //$NON-NLS-1$
-                    }
+                if (pieces.length > i && !pieces[i + 1].matches("[\\.\\]\\)\\[,]")) {
+                    
+                        frmtMDXStrBuf.append(" "); //$NON-NLS-1$
+                    
                 }
             }
             catch (Exception e) { // catch index out of bounds
             }
             // handle indent in nested functions
-            if (pieces[i].contains("(")) { //$NON-NLS-1$
-                if (nextBraceOpen(i, pieces)) {
-                    formattedMDXStringBuffer.append("<br> " + startIndent); //$NON-NLS-1$
-                }
+            if (pieces[i].contains("(") && nextBraceOpen(i, pieces)) { //$NON-NLS-1$
+                
+                    frmtMDXStrBuf.append("<br> " + startIndent); //$NON-NLS-1$
+                
             }
-            if (pieces[i].contains(")")) { //$NON-NLS-1$
-                if (nextBraceClose(i, pieces)) {
-                    formattedMDXStringBuffer.append("<br> " + endIndent); //$NON-NLS-1$
+            if (pieces[i].contains(")") && nextBraceClose(i, pieces)) { //$NON-NLS-1$
+                
+                    frmtMDXStrBuf.append("<br> " + endIndent); //$NON-NLS-1$
 
-                }
+                
             }
-            if (testString.matches(keyWordsStartsNewLine)) {
-                formattedMDXStringBuffer.append("<br> " + startIndent); //$NON-NLS-1$
+            if (testString.matches(kWrdStrtNewLine)) {
+                frmtMDXStrBuf.append("<br> " + startIndent); //$NON-NLS-1$
                 indent = true;
             }
         } //endfor
 
         // put return after columns and rows keywords
-        int place = formattedMDXStringBuffer.indexOf("COLUMNS," + endColor); //$NON-NLS-1$
+        int place = frmtMDXStrBuf.indexOf("COLUMNS," + endColor); //$NON-NLS-1$
         if (place > 0) {
-            formattedMDXStringBuffer.insert(place + 8 + endColor.length(), "<br> "); //$NON-NLS-1$
+            frmtMDXStrBuf.insert(place + 8 + endColor.length(), "<br> "); //$NON-NLS-1$
         }
-        place = formattedMDXStringBuffer.indexOf("ROWS," + endColor); //$NON-NLS-1$
+        place = frmtMDXStrBuf.indexOf("ROWS," + endColor); //$NON-NLS-1$
         if (place > 0) {
-            formattedMDXStringBuffer.insert(place + 5 + endColor.length(), "<br> "); //$NON-NLS-1$
+            frmtMDXStrBuf.insert(place + 5 + endColor.length(), "<br> "); //$NON-NLS-1$
         }
-        String formatted = formattedMDXStringBuffer.toString();
+        final String formatted = frmtMDXStrBuf.toString();
         this.setEnabled(true);
         this.setHTML(formatted);
     }

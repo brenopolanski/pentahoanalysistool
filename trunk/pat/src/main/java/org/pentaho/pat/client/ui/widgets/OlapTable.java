@@ -53,19 +53,19 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapTable extends LayoutComposite implements IQueryListener {
 
-    private CellDataSet olapData;
+    private transient CellDataSet olapData;
     
-    private int offset;
+    private transient int offset;
 
-    PatTableModel patTableModel;
+    private transient PatTableModel patTableModel;
 
-    TableModel<BaseCell[]> tableModel;
+    private transient TableModel<BaseCell[]> tableModel;
 
-    LiveTable<BaseCell[]> table;
+    private transient LiveTable<BaseCell[]> table;
 
     
 
-    final LayoutPanel layoutPanel = getLayoutPanel();
+    private final LayoutPanel layoutPanel = getLayoutPanel();
 
     
     public OlapTable() {
@@ -98,8 +98,9 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 final int numRows = Math.min(request.getNumRows(), data.size() - request.getStartRow());
 
                 final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
-                for (int i = 0, n = numRows; i < n; i++)
+                for (int i = 0, n = numRows; i < n; i++){
                     list.add(data.get(request.getStartRow() + i));
+                }
                 final SerializableResponse response = new SerializableResponse(list);
                 callback.onRowsReady(request, response);
             }
@@ -124,8 +125,9 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      * Fire when the query is executed.
      */
     public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
-        if (Pat.getApplicationState().getMode().isShowOnlyTable())
+        if (Pat.getApplicationState().getMode().isShowOnlyTable()){
             setData(olapData);
+        }
     }
 
     /**
@@ -155,10 +157,10 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
         for (int i = 0; i < olapData.getWidth(); i++) {
             final BaseCell[] headers = colData.get(offset - 1);
-            // work in progress
-            if (offset > 1)
+            //TODO work in progress
+            if (offset > 1){
                 group = colData.get(offset - 2);
-
+            }
             final int cell = i;
 
 
@@ -166,23 +168,23 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 @Override
                 public Widget getCellValue(final BaseCell[] rowValue) {
                     if (rowValue[cell] == null) {
-                        final Label testLabel = new Label(""); //$NON-NLS-1$
-                        return testLabel;
+                        return new Label(""); //$NON-NLS-1$
                     } else {
 
-                        final HorizontalPanel cellPanel = rowValue[cell].getLabel();
-                        return cellPanel;
+                        return rowValue[cell].getLabel();
                     }
                 }                
             };
 
             if (group != null) {
                 HorizontalPanel groupPanel = null;
-                if (group[i].getFormattedValue() != null) {
+                if (group[i].getFormattedValue() == null) {
+                    colDef0.setHeader(1, groupPanel);
+                } else{
                     groupPanel = group[i].getLabel();
                     colDef0.setHeader(1, groupPanel);
-                } else
-                    colDef0.setHeader(1, groupPanel);
+                }
+                    
             }
 
             colDef0.setHeaderTruncatable(false);

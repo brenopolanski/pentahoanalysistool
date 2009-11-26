@@ -20,9 +20,10 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class LabelTextBox extends LayoutComposite {
 
-    Label textBoxLabel = new Label();
-    TextBox textBox = new TextBox();
+    private transient Label textBoxLabel = new Label();
+    private transient TextBox textBox = new TextBox();
     public LabelTextBox(){
+        super();
         this.getLayoutPanel().setLayout(new BoxLayout(Orientation.HORIZONTAL));
         
         this.getLayoutPanel().add(textBoxLabel);
@@ -41,7 +42,7 @@ public class LabelTextBox extends LayoutComposite {
      *TODO JAVADOC
      * @param textBoxLabel the textBoxLabel to set
      */
-    public void setTextBoxLabelText(String textBoxLabelText) {
+    public void setTextBoxLabelText(final String textBoxLabelText) {
         this.textBoxLabel.setText(textBoxLabelText);
     }
     /**
@@ -56,7 +57,7 @@ public class LabelTextBox extends LayoutComposite {
      *TODO JAVADOC
      * @param textBox the textBox to set
      */
-    public void setTextBoxText(String textBoxText) {
+    public void setTextBoxText(final String textBoxText) {
         this.textBox.setText(textBoxText);
     }
 }

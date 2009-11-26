@@ -30,7 +30,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.widgets.DataWidget;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -49,7 +49,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class OlapPanel extends DataWidget {
+public class OlapPanel extends AbstractDataWidget {
 
     private transient String panelName = null;
 
