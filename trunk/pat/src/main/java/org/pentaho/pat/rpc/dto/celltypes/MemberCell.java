@@ -195,7 +195,7 @@ public class MemberCell extends BaseCell implements Serializable, IsSerializable
     public HorizontalPanel getLabel(){
         final CellLabelPanel cellPanel = new CellLabelPanel(MemberCell.this);
         /**
-         * NON IMAGE BUNDLE IMAGES TO GET AROUND AND IE BUG
+         * NON IMAGE BUNDLE IMAGES TO GET AROUND AN IE BUG
          */
         if(this.getRawValue()!=null){
         
@@ -217,7 +217,7 @@ public void onBrowserEvent(Event event){
                
         	public void onBrowserEvent(Event event){
         	    if (DOM.eventGetType(event) == Event.ONCLICK) { 
-        		 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.MEMBER, MemberCell.this, new AsyncCallback<Object>(){
+        		 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>(){
 
         	                    public void onFailure(Throwable arg0) {
         	                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
@@ -246,8 +246,13 @@ public void onBrowserEvent(Event event){
         	            }
         	        };
         	        
-        	        drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png");
-        	       
+        	        if(isExpanded()){
+        	        drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png");
+        	        }
+        	        else{
+        	            drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png");
+        	        }
+        	            
         }
         final Label cellLabel = new Label(getFormattedValue());
 
