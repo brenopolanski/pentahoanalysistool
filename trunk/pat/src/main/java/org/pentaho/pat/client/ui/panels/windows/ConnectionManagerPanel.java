@@ -67,17 +67,17 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  */
 public class ConnectionManagerPanel extends LayoutComposite {
 
-    private final static int preferredWidth = 284;
+    private final static int PREFERREDWIDTH = 284;
 
-    private final static int preferredHeight = 384;
+    private final static int PREFERREDHEIGHT = 384;
 
     private static ListBox<ConnectionItem> listBox;
 
-    private ToolBar toolBar;
+    private transient ToolBar toolBar;
 
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
-    private static final DefaultListModel<ConnectionItem> ciModel = new DefaultListModel<ConnectionItem>();
+    private static final DefaultListModel<ConnectionItem> CIMODEL = new DefaultListModel<ConnectionItem>();
 
     public ConnectionManagerPanel() {
         super();
@@ -89,7 +89,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(preferredWidth, preferredHeight);
+        return new Dimension(PREFERREDWIDTH, PREFERREDHEIGHT);
     }
 
 
@@ -97,16 +97,16 @@ public class ConnectionManagerPanel extends LayoutComposite {
         final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
         cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
             public void renderCell(final ListBox<ConnectionItem> cListBox, final int row, final int column,final ConnectionItem item) {
-                switch (column) {
-                case 0:
-                    cListBox.setWidget(row, column, createRichListBoxCell(item, cListBox));
-                    break;
-                default:
+                if(column==0) {
+                
+                    cListBox.setWidget(row, column, createRichListBoxCell(item));
+                }
+                 else{
                     throw new RuntimeException(MessageFactory.getInstance().unexpectedError());
                 }
             }
         });
-        cListBox.setModel(ciModel);
+        cListBox.setModel(CIMODEL);
         // FIXME remove that and use style
         DOM.setStyleAttribute(cListBox.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -166,7 +166,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                 }
 
                             });
-                            ciModel.remove(linkedListBox.getSelectedIndex());
+                            CIMODEL.remove(linkedListBox.getSelectedIndex());
                         }
                     }
                 });
@@ -191,14 +191,14 @@ public class ConnectionManagerPanel extends LayoutComposite {
         return toolBar;
     }
 
-    public static void addConnection(final ConnectionItem ci) {
-        ciModel.add(ci);
+    public static void addConnection(final ConnectionItem connItem) {
+        CIMODEL.add(connItem);
     }
 
     public static void refreshConnectionList() {
 
         final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
-        ciModel.clear();
+        CIMODEL.clear();
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
                 MessageBox
@@ -233,8 +233,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                     }
                                 }
 
-                                for (final ConnectionItem cItem : cList)
-                                    ciModel.add(cItem);
+                                for (final ConnectionItem cItem : cList){
+                                    CIMODEL.add(cItem);
+                                }
                                 refreshMe();
                             }
                         });
@@ -251,7 +252,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         listBox.layout();
     }
 
-    public void setupConnectionList() {
+    private void setupConnectionList() {
         listBox = createListBox();
 
         if (Pat.getApplicationState().getMode().isManageConnections()) {
@@ -261,7 +262,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
     }
 
-    private Widget createRichListBoxCell(final ConnectionItem item, final ListBox<ConnectionItem> linkedListBox) {
+    private Widget createRichListBoxCell(final ConnectionItem item) {
         final FlexTable table = new FlexTable();
         final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
@@ -272,11 +273,12 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
         // table.setStyleName("RichListBoxCell");
         Image cImage;
-        if (item.isConnected())
+        if (item.isConnected()){
             cImage = Pat.IMAGES.connect().createImage();
-        else
+        }
+        else{
             cImage = Pat.IMAGES.disconnect().createImage();
-
+        }
         final CustomButton cButton = new CustomButton(cImage) {
             @Override
             protected void onClick() {

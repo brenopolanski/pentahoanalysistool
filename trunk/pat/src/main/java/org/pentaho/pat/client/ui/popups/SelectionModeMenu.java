@@ -85,7 +85,7 @@ public class SelectionModeMenu extends PopupMenu {
     public class SelectionModeCommand implements Command {
 
         /** The selection mode. */
-        private int selectionMode = -1;
+        private transient int selectionMode = -1;
 
         /**
          * The Constructor.
@@ -164,10 +164,11 @@ public class SelectionModeMenu extends PopupMenu {
     }
 
     public SelectionModeMenu() {
+        super();
         init();
     }
 
-    public void init() {
+    private void init() {
         this.setAutoOpen(true);
         this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));

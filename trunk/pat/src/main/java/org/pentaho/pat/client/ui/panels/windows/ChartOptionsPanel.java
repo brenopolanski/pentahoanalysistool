@@ -61,31 +61,31 @@ import com.rednels.ofcgwt.client.model.elements.dot.Star;
  */
 public class ChartOptionsPanel extends LayoutComposite {
 
-    private WindowPanel basic;
+    private transient WindowPanel basic;
 
-    private TextBox chartTitleTextBox = new TextBox();
+    private transient TextBox chartTitleTextBox = new TextBox();
 
-    private TextBox xAxisTextBox = new TextBox();
+    private transient TextBox xAxisTextBox = new TextBox();
 
-    private TextBox yAxisTextBox = new TextBox();
+    private transient TextBox yAxisTextBox = new TextBox();
 
-    private TextBox bgColorTextBox = new TextBox();
+    private transient TextBox bgColorTextBox = new TextBox();
 
     private Position pos;
 
-    private BarStyle bs = BarStyle.NORMAL;
+    private transient BarStyle brStyle = BarStyle.NORMAL;
     
-    private BaseDot bd;
+    private transient BaseDot bd;
 
-    private ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
+    private transient ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
 
-    private ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
+    private transient ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
 
     private Map<String, Object> optionsMap = new HashMap<String, Object>();
 
     private TextBox yaxisColorTextBox = new TextBox();
 
-    private TextBox yAxisGridColorTextBox = new TextBox();
+    private transient TextBox yAxisGridColorTextBox = new TextBox();
 
     private TextBox yAxisMinTextBox = new TextBox();
 
@@ -93,7 +93,7 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private TextBox xaxisColorTextBox = new TextBox();
 
-    private TextBox xaxisGridColorTextBox = new TextBox();
+    private transient TextBox xaxisGridColorTextBox = new TextBox();
 
     private TextBox xaxisMinTextBox = new TextBox();
 
@@ -105,6 +105,7 @@ public class ChartOptionsPanel extends LayoutComposite {
      * 
      */
     public ChartOptionsPanel() {
+        super();
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
 
         tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
@@ -123,15 +124,15 @@ public class ChartOptionsPanel extends LayoutComposite {
         createBasicWindowPanel();
         bgColorTextBox.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
+            public void onClick(final ClickEvent arg0) {
 
                 basic.showModal(false);
 
             }
 
         });
-        LayoutPanel generalOptionsPanel = new LayoutPanel();
-        FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+       final LayoutPanel generalOptionsPanel = new LayoutPanel();
+        final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
                         + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
@@ -140,7 +141,7 @@ public class ChartOptionsPanel extends LayoutComposite {
         legendTopButton.setStyle(ToolButtonStyle.RADIO);
         legendTopButton.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
+            public void onClick(final ClickEvent arg0) {
                 pos = Position.TOP;
 
             }
@@ -152,14 +153,14 @@ public class ChartOptionsPanel extends LayoutComposite {
         legendRightButton.setChecked(true);
         legendRightButton.addClickHandler(new ClickHandler() {
 
-            public void onClick(ClickEvent arg0) {
+            public void onClick(final ClickEvent arg0) {
                 pos = Position.RIGHT;
 
             }
 
         });
 
-        PanelBuilder builder = new PanelBuilder(layout);
+        final PanelBuilder builder = new PanelBuilder(layout);
 
         builder.addSeparator(ConstantFactory.getInstance().titles());
 
@@ -237,9 +238,9 @@ public class ChartOptionsPanel extends LayoutComposite {
      */
     private LayoutPanel barOptionsPanel() {
 
-        LayoutPanel barOptionsPanel = new LayoutPanel();
+        final LayoutPanel barOptionsPanel = new LayoutPanel();
 
-        FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
+        final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
                         + "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " //$NON-NLS-1$
@@ -254,18 +255,18 @@ public class ChartOptionsPanel extends LayoutComposite {
         model.add(ConstantFactory.getInstance().threed());
 
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
-            public void onRowSelection(RowSelectionEvent event) {
+            public void onRowSelection(final RowSelectionEvent event) {
                 int index = listBox.getSelectedIndex();
                 if (index != -1) {
                     switch (listBox.getSelectedIndex()) {
                     case 0:
-                        setBs(BarStyle.GLASS);
+                        brStyle = BarStyle.GLASS;
                         break;
                     case 1:
-                        setBs(BarStyle.NORMAL);
+                        brStyle = BarStyle.NORMAL;
                         break;
                     case 2:
-                        setBs(BarStyle.THREED);
+                        brStyle = BarStyle.THREED;
                         break;
                     default:
                         throw new RuntimeException("Should not happen"); //$NON-NLS-1$
@@ -314,7 +315,7 @@ public class ChartOptionsPanel extends LayoutComposite {
         model.add(ConstantFactory.getInstance().star());
 
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
-            public void onRowSelection(RowSelectionEvent event) {
+            public void onRowSelection(final RowSelectionEvent event) {
                 int index = listBox.getSelectedIndex();
                 if (index != -1) {
                     switch (listBox.getSelectedIndex()) {
@@ -454,8 +455,8 @@ public class ChartOptionsPanel extends LayoutComposite {
         basic = new WindowPanel(ConstantFactory.getInstance().backgroundColor()); 
         basic.setSize("500px", "500px"); //$NON-NLS-1$ //$NON-NLS-2$
         basic.setAnimationEnabled(true);
-        ColorPicker cp = new ColorPicker();
-        basic.setWidget(cp);
+        ColorPicker colorPick = new ColorPicker();
+        basic.setWidget(colorPick);
 
         basic.getHeader().add(Caption.IMAGES.window().createImage());
 
@@ -470,11 +471,11 @@ public class ChartOptionsPanel extends LayoutComposite {
      * 
      *TODO JAVADOC
      * 
-     * @param bs
+     * @param brStyle
      *            the bs to set
      */
-    public void setBs(BarStyle bs) {
-        this.bs = bs;
+    public void setBs(BarStyle brStyle) {
+        this.brStyle = brStyle;
     }
 
     /**
@@ -483,14 +484,14 @@ public class ChartOptionsPanel extends LayoutComposite {
      * @return the bs
      */
     public BarStyle getBs() {
-        return bs;
+        return brStyle;
     }
 
     /**
      * 
      *TODO JAVADOC
      * 
-     * @param bs
+     * @param brStyle
      *            the bs to set
      */
     public void setBd(BaseDot bd) {
@@ -524,33 +525,33 @@ public class ChartOptionsPanel extends LayoutComposite {
      */
     public Map<String, Object> getOptionsMap() {
         optionsMap = new HashMap<String, Object>();
-        optionsMap.put("barStyle", bs); //$NON-NLS-1$
+        optionsMap.put("barStyle", brStyle); //$NON-NLS-1$
         optionsMap.put("dotStyle", bd); //$NON-NLS-1$
         
-        if(yaxisColorTextBox.getText().length()>0)
+        if(yaxisColorTextBox.getText().length()>0){
         optionsMap.put("yaxisColor", yaxisColorTextBox.getText()); //$NON-NLS-1$
-        
-        if(yAxisGridColorTextBox.getText().length()>0)
+        }
+        if(yAxisGridColorTextBox.getText().length()>0){
         optionsMap.put("yaxisGridColor", yAxisGridColorTextBox.getText()); //$NON-NLS-1$
-        
-        if(yAxisMinTextBox.getText().length()>0)
+        }
+        if(yAxisMinTextBox.getText().length()>0){
         optionsMap.put("yaxisMin", yAxisMinTextBox.getText()); //$NON-NLS-1$
-        
-        if(yAxisMaxTextBox.getText().length()>0)
+        }
+        if(yAxisMaxTextBox.getText().length()>0){
         optionsMap.put("yaxisMax", yAxisMaxTextBox.getText()); //$NON-NLS-1$
-        
-        if(xaxisColorTextBox.getText().length()>0)
+        }
+        if(xaxisColorTextBox.getText().length()>0){
         optionsMap.put("xaxisColor", xaxisColorTextBox.getText()); //$NON-NLS-1$
-        
-        if(xaxisGridColorTextBox.getText().length()>0)
+        }
+        if(xaxisGridColorTextBox.getText().length()>0){
         optionsMap.put("xaxisGridColor", xaxisGridColorTextBox.getText()); //$NON-NLS-1$
-        
-        if(xaxisMinTextBox.getText().length()>0)
+        }
+        if(xaxisMinTextBox.getText().length()>0){
         optionsMap.put("xaxisMin", xaxisMinTextBox.getText()); //$NON-NLS-1$
-        
-        if(xaxisMaxTextBox.getText().length()>0)
+        }
+        if(xaxisMaxTextBox.getText().length()>0){
         optionsMap.put("xaxisMax", xaxisMaxTextBox.getText()); //$NON-NLS-1$
-        
+        }
         return optionsMap;
     }
 
