@@ -94,7 +94,9 @@ public class ChartPanel extends LayoutComposite {
         ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
+        chartLayoutPanel.add(chart);
         layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
+        
         this.getLayoutPanel().add(layoutPanel);
 
     }
