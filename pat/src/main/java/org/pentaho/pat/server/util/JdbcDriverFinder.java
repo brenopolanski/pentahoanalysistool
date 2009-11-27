@@ -44,49 +44,53 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
 
     private List<String> jdbcDriverPath = null;
 
-    private List<File> jdbcDriverDirectory = new ArrayList<File>();
+    private final List<File> jdbcDriverDirectory = new ArrayList<File>();
 
     private ResourceLoader resourceLoader = null;
 
     private boolean preLoad = true;
 
-    public void setPreLoad(boolean preLoad) {
+    public void setPreLoad(final boolean preLoad) {
         this.preLoad = preLoad;
     }
 
-    protected Logger log = Logger.getLogger(this.getClass());
+    protected static final Logger LOG = Logger.getLogger(JdbcDriverFinder.class);
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(jdbcDriverPath);
         Assert.notNull(resourceLoader);
 
         for (String currentPath : this.jdbcDriverPath) {
-            Resource res = resourceLoader.getResource(currentPath);
+            final Resource res = resourceLoader.getResource(currentPath);
 
-            if (res == null || !res.exists())
+            if (res == null || !res.exists()) {
                 continue;
+            }
 
-            File currentFile = res.getFile();
+            final File currentFile = res.getFile();
 
-            if (!currentFile.isDirectory() || !currentFile.canRead())
+            if (!currentFile.isDirectory() || !currentFile.canRead()) {
                 continue;
+            }
 
             this.jdbcDriverDirectory.add(currentFile);
 
-            if (preLoad)
+            if (preLoad) {
                 registerDrivers();
+            }
         }
-        if (this.jdbcDriverDirectory.size() == 0)
-            log.warn(Messages.getString("Util.JdbcDriverFinder.NoDriversInPath")); //$NON-NLS-1$
+        if (this.jdbcDriverDirectory.size() == 0) {
+            LOG.warn(Messages.getString("Util.JdbcDriverFinder.NoDriversInPath")); //$NON-NLS-1$
+        }
     }
 
-    public void setResourceLoader(ResourceLoader resourceLoader) {
+    public void setResourceLoader(final ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
     public void registerDrivers() {
 
-        long timeMil = System.currentTimeMillis();
+        final long timeMil = System.currentTimeMillis();
 
         if ((timeMil - this.lastCall) > interval) {
             this.scan(timeMil);
@@ -101,42 +105,42 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
         }
     }
 
-    private void scan(long timeMil) {
+    private void scan(final long timeMil) {
 
-        FilenameFilter libs = new FilenameFilter() {
+        final FilenameFilter libs = new FilenameFilter() {
 
-            public boolean accept(File dir, String pathname) {
+            public boolean accept(final File dir, final String pathname) {
                 return pathname.endsWith("jar") || pathname.endsWith("zip"); //$NON-NLS-1$//$NON-NLS-2$
             }
 
         };
 
-        ResolverUtil<Driver> resolver = new ResolverUtil<Driver>();
+        final ResolverUtil<Driver> resolver = new ResolverUtil<Driver>();
 
-        for (File directory : this.jdbcDriverDirectory)
+        for (File directory : this.jdbcDriverDirectory) {
             for (File lib : directory.listFiles(libs)) {
                 try {
                     resolver.loadImplementationsInJar("", lib.toURI().toURL(), //$NON-NLS-1$
                             new ResolverUtil.IsA(Driver.class));
                 } catch (MalformedURLException e) {
-                    log.trace(e);
+                    LOG.trace(e);
                     continue;
                 }
             }
-
+        }
         List<String> drivers = new ArrayList<String>();
-        for (Class<? extends Driver> cd : resolver.getClasses())
+        for (Class<? extends Driver> cd : resolver.getClasses()) {
             drivers.add(cd.getName());
-
+        }
         this.lastCall = timeMil;
         this.drivers = drivers;
     }
 
-    public void setJdbcDriverPath(List<String> jdbcDriverPathList) {
+    public void setJdbcDriverPath(final List<String> jdbcDriverPathList) {
         this.jdbcDriverPath = jdbcDriverPathList;
     }
 
-    public void setCacheTimeout(Long timeoutDelay) {
+    public void setCacheTimeout(final Long timeoutDelay) {
         this.interval = timeoutDelay;
     }
 }

@@ -16,9 +16,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class DataCellPanel extends HorizontalPanel {
 
-    private  final MemberCell pcm;
+    private final MemberCell pcm;
 
-    private  final MemberCell prm;
+    private final MemberCell prm;
 
     public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember) {
         super();

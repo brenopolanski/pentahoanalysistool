@@ -59,15 +59,15 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
 
     protected String xmlaPasswordParameter = "XMLA_PASSWORD"; //$NON-NLS-1$
 
-    public void simpleXmla(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-            throws Exception {
-        StringBuilder redirect = new StringBuilder(redirectTarget);
+    public void simpleXmla(final HttpServletRequest request, final HttpServletResponse response,
+            final HttpSession session) throws Exception {
+        final StringBuilder redirect = new StringBuilder(redirectTarget);
 
         // Validate url.
-        String xmlaUrl = request.getParameter(xmlaUrlParameter);
-        if (!this.verifyXmlaUrl(xmlaUrl))
+        final String xmlaUrl = request.getParameter(xmlaUrlParameter);
+        if (!this.verifyXmlaUrl(xmlaUrl)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "A valid XMLA service URL is required."); //$NON-NLS-1$
-
+        }
         // Validate MDX
         // String mdxQuery = request.getParameter(mdxQueryParameter);
         // if (mdxQuery==null
@@ -77,15 +77,15 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         // }
 
         // These two are optional. No need to validate.
-        String xmlaUsername = request.getParameter(xmlaUsernameParameter);
-        String xmlaPassword = request.getParameter(xmlaPasswordParameter);
+        final String xmlaUsername = request.getParameter(xmlaUsernameParameter);
+        final String xmlaPassword = request.getParameter(xmlaPasswordParameter);
 
         // Create a new session.
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        String sessionId = this.sessionService.createNewSession(userId);
+        final String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        final String sessionId = this.sessionService.createNewSession(userId);
 
         // Build the URL
-        String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl); //$NON-NLS-1$
+        final String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl); //$NON-NLS-1$
 
         // Establish the connection
         ((SessionServiceImpl) this.sessionService).createConnection(userId, sessionId,
@@ -99,17 +99,17 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         response.sendRedirect(request.getContextPath().concat(redirect.toString()));
     }
 
-    private boolean verifyXmlaUrl(String xmlaUrl) {
-        if (xmlaUrl == null)
+    private final boolean verifyXmlaUrl(final String xmlaUrl) {
+        if (xmlaUrl == null) {
             return false;
-
+        }
         try {
-            URL url = new URL(xmlaUrl);
+            final URL url = new URL(xmlaUrl);
             // TODO support connection timeout.
-            URLConnection connection = url.openConnection();
+            final URLConnection connection = url.openConnection();
             if (connection instanceof HttpURLConnection) {
                 HttpURLConnection.setFollowRedirects(true);
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                final HttpURLConnection httpConnection = (HttpURLConnection) connection;
                 httpConnection.connect();
                 return true;
             } else {
@@ -121,31 +121,31 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         }
     }
 
-    public void setRedirectTarget(String redirectTarget) {
+    public void setRedirectTarget(final String redirectTarget) {
         this.redirectTarget = redirectTarget;
     }
 
-    public void setXmlaUrlParameter(String xmlaUrlParameter) {
+    public void setXmlaUrlParameter(final String xmlaUrlParameter) {
         this.xmlaUrlParameter = xmlaUrlParameter;
     }
 
-    public void setXmlaUsernameParameter(String xmlaUsernameParameter) {
+    public void setXmlaUsernameParameter(final String xmlaUsernameParameter) {
         this.xmlaUsernameParameter = xmlaUsernameParameter;
     }
 
-    public void setXmlaPasswordParameter(String xmlaPasswordParameter) {
+    public void setXmlaPasswordParameter(final String xmlaPasswordParameter) {
         this.xmlaPasswordParameter = xmlaPasswordParameter;
     }
 
-    public void setSessionService(SessionService sessionService) {
+    public void setSessionService(final SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
-    public void setQueryService(QueryService queryService) {
+    public void setQueryService(final QueryService queryService) {
         this.queryService = queryService;
     }
 
-    public void setDiscoveryService(DiscoveryService discoveryService) {
+    public void setDiscoveryService(final DiscoveryService discoveryService) {
         this.discoveryService = discoveryService;
     }
 
@@ -155,6 +155,6 @@ public class PentahoServlet implements InitializingBean, ServletContextAware {
         Assert.notNull(this.discoveryService);
     }
 
-    public void setServletContext(ServletContext servletContext) {
+    public void setServletContext(final ServletContext servletContext) {
     }
 }

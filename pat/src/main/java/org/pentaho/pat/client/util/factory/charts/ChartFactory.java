@@ -51,12 +51,12 @@ public class ChartFactory {
      *            The CellDataSet from the current query.
      * @param chartTitle
      *            The chart title.
-     * @param chartPanel 
-     * @param pos2 
+     * @param chartPanel
+     * @param pos2
      * @return A ChartData object.
      */
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
-	    Map<String, Object> chartOptions, ChartPanel chartPanel) {
+            Map<String, Object> chartOptions, ChartPanel chartPanel) {
         switch (chartType) {
         case PIE:
             PieChartType pie = new PieChartType();
@@ -74,7 +74,7 @@ public class ChartFactory {
 
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
             Position legendPosition, Map<String, Object> chartOptions, ChartPanel chartPanel) {
-	pos = legendPosition;
+        pos = legendPosition;
         ChartData cd = getChart(chartType, matrix, chartTitle, chartOptions, chartPanel);
 
         return cd;
@@ -90,11 +90,4 @@ public class ChartFactory {
 
     }
 
-
-
-  
-
-  
- 
- 
 }

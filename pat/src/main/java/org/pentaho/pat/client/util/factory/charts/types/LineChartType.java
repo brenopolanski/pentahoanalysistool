@@ -53,10 +53,9 @@ public class LineChartType {
         final XAxis xa = ca.createXAxis(chartOptions);
 
         YAxis ya = ca.createYAxis(chartOptions);
-       cd.setXAxis(xa);
+        cd.setXAxis(xa);
         cd.setYAxis(ya);
 
-        
         if (pos != null) {
             cd.setLegend(new Legend(pos, true));
         }
@@ -69,19 +68,17 @@ public class LineChartType {
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
-           
+
             List<String> path = ((MemberCell) cell[rc]).getMemberPath();
             StringBuffer buf = new StringBuffer();
-            for(int j=0; j<path.size(); j++){
-              buf.append(path.get(j));
-              if(j!=path.size()-1){
-        	  buf.append(",");
-              }
+            for (int j = 0; j < path.size(); j++) {
+                buf.append(path.get(j));
+                if (j != path.size() - 1) {
+                    buf.append(",");
+                }
             }
             String label = buf.toString();
 
-         
-            
             memberCellLabelList[i] = (MemberCell) cell[rc];
             labels[i] = new Label(label, 45);
 
@@ -95,28 +92,25 @@ public class LineChartType {
         for (int i = 0; i < patTableModel.getColumnCount() - rowColCount; i++) {
 
             final LineChart lc2 = new LineChart();
-            if(chartOptions.containsKey("dotStyle")) //$NON-NLS-1$
-            lc2.setDotStyle((BaseDot) chartOptions.get("dotStyle")); //$NON-NLS-1$
+            if (chartOptions.containsKey("dotStyle")) //$NON-NLS-1$
+                lc2.setDotStyle((BaseDot) chartOptions.get("dotStyle")); //$NON-NLS-1$
             lc2.setColour(ChartUtils.getRandomColor());
             lc2.setTooltip("#x_label#"); //$NON-NLS-1$
             for (int j = 0; j < data.size(); j++) {
                 final AbstractBaseCell[] cell = data.get(j);
                 final int row = j;
-                
-                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null){
+
+                if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null) {
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue().toString());
-                     
-                }
-                else{
+
+                } else {
                     lc2.setText(dataColHeaders[patTableModel.getOffset() - 2][actualRow].getRawValue().toString());
-                 
+
                 }
-                
-                
-                if(((DataCell)cell[rowColCount]).getRawNumber()!=null){
-            	cellValue = ((DataCell) cell[rowColCount+i]).getRawNumber();
-                }
-                else{
+
+                if (((DataCell) cell[rowColCount]).getRawNumber() != null) {
+                    cellValue = ((DataCell) cell[rowColCount + i]).getRawNumber();
+                } else {
                     cellValue = 0;
                 }
                 {
@@ -124,54 +118,59 @@ public class LineChartType {
                     dot.addChartClickHandler(new ChartClickHandler() {
 
                         public void onClick(final ChartClickEvent event) {
-                            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, memberCellLabelList[row], new AsyncCallback<Object>(){
-
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
-                                }
-
-                                public void onSuccess(Object arg0) {
-                                    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    DrillType.POSITION, memberCellLabelList[row], new AsyncCallback<Object>() {
 
                                         public void onFailure(Throwable arg0) {
-
-                                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
-
+                                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedDrill(arg0.getLocalizedMessage()));
                                         }
 
-                                        public void onSuccess(CellDataSet arg0) {
-                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                                    chartPanel, Pat.getCurrQuery(), arg0);                        
+                                        public void onSuccess(Object arg0) {
+                                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
+                                                    Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 
+                                                        public void onFailure(Throwable arg0) {
+
+                                                            MessageBox.alert(ConstantFactory.getInstance().error(),
+                                                                    MessageFactory.getInstance().failedQuery(
+                                                                            arg0.getLocalizedMessage()));
+
+                                                        }
+
+                                                        public void onSuccess(CellDataSet arg0) {
+                                                            GlobalConnectionFactory.getQueryInstance()
+                                                                    .getQueryListeners().fireQueryExecuted(chartPanel,
+                                                                            Pat.getCurrQuery(), arg0);
+
+                                                        }
+
+                                                    });
                                         }
 
                                     });
-                                }
-
-                            });
                         }
 
                     });
                     lc2.addDots(dot);
                     if (cellValue.floatValue() > maxval)
-                        maxval =(cellValue.floatValue());
+                        maxval = (cellValue.floatValue());
                     if (cellValue.floatValue() < minval)
-                        minval =(cellValue.floatValue());
+                        minval = (cellValue.floatValue());
                 }
 
             }
-            
-            if(!chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
-            ya.setMax(maxval);
-            
-            if(!chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
-            ya.setMin(minval);
-            
+
+            if (!chartOptions.containsKey("yaxisMax")) //$NON-NLS-1$
+                ya.setMax(maxval);
+
+            if (!chartOptions.containsKey("yaxisMin")) //$NON-NLS-1$
+                ya.setMin(minval);
+
             cd.addElements(lc2);
             actualRow++;
         }
 
-        
         return cd;
     }
 

@@ -34,11 +34,11 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
     private static final long serialVersionUID = 1L;
 
     /** The color value. */
-    private  String colorValue = null; // Color held as hex String
+    private String colorValue = null; // Color held as hex String
 
-    private  Number rawNumber = null;
+    private Number rawNumber = null;
 
-    private  MemberCell parentColMember = null;
+    private MemberCell parentColMember = null;
 
     public MemberCell getParentColMember() {
         return parentColMember;
@@ -56,7 +56,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         this.parentRowMember = parentRowMember;
     }
 
-    private  MemberCell parentRowMember = null;
+    private MemberCell parentRowMember = null;
 
     public Number getRawNumber() {
         return rawNumber;

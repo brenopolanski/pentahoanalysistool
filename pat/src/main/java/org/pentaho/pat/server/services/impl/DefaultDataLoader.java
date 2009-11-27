@@ -37,32 +37,32 @@ public class DefaultDataLoader implements InitializingBean {
 
     private boolean loadDefaultData = false;
 
-    private  Logger log = Logger.getLogger(this.getClass());
+    private static final Logger LOG = Logger.getLogger(DefaultDataLoader.class);
 
     public void afterPropertiesSet() throws Exception {
         if (this.loadDefaultData) {
             assert userManager != null;
             assert groupManager != null;
             // Test if data is already present
-            if (userManager.getDefaultUsers().size() > 0)
+            if (userManager.getDefaultUsers().size() > 0) {
                 return;
-
-            log.info(Messages.getString("Services.DefaultDataLoader.Loading")); //$NON-NLS-1$
+            }
+            LOG.info(Messages.getString("Services.DefaultDataLoader.Loading")); //$NON-NLS-1$
 
             // Create default user
-            User admin = new User();
+            final User admin = new User();
             admin.setUsername("admin"); //$NON-NLS-1$
             admin.setPassword("admin"); //$NON-NLS-1$
             admin.setEnabled(true);
 
             // Create default group
-            Group administrators = new Group();
+            final Group administrators = new Group();
             administrators.setName("Administrators"); //$NON-NLS-1$
-            Group users = new Group();
+            final Group users = new Group();
             users.setName("Users"); //$NON-NLS-1$
 
             // Create default connection
-            SavedConnection sc = new SavedConnection();
+            final SavedConnection sc = new SavedConnection();
             sc.setName("Local Pentaho XML/A"); //$NON-NLS-1$
             sc.setType(ConnectionType.XMLA);
             sc.setUrl("http://localhost:8080/pentaho/Xmla"); //$NON-NLS-1$
@@ -84,19 +84,19 @@ public class DefaultDataLoader implements InitializingBean {
             groupManager.updateDefaultGroup(administrators);
             groupManager.updateDefaultGroup(users);
 
-            log.info(Messages.getString("Services.DefaultDataLoader.Done")); //$NON-NLS-1$
+            LOG.info(Messages.getString("Services.DefaultDataLoader.Done")); //$NON-NLS-1$
         }
     }
 
-    public void setUserManager(UserManager userManager) {
+    public void setUserManager(final UserManager userManager) {
         this.userManager = userManager;
     }
 
-    public void setLoadDefaultData(boolean loadDefaultData) {
+    public void setLoadDefaultData(final boolean loadDefaultData) {
         this.loadDefaultData = loadDefaultData;
     }
 
-    public void setGroupManager(GroupManager groupManager) {
+    public void setGroupManager(final GroupManager groupManager) {
         this.groupManager = groupManager;
     }
 }

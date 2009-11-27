@@ -55,19 +55,19 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
-    private  String panelName = null;
+    private String panelName = null;
 
-    private  String cube = null;
+    private String cube = null;
 
-    private  CubeItem cubeItem = null;
+    private CubeItem cubeItem = null;
 
     private String connectionId = null;
 
-    private  String queryId = null;
+    private String queryId = null;
 
-    private  OlapTable olapTable = null;
+    private OlapTable olapTable = null;
 
-    private  final MDXRichTextArea mdxArea = new MDXRichTextArea();;
+    private final MDXRichTextArea mdxArea = new MDXRichTextArea();;
 
     public MdxPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.

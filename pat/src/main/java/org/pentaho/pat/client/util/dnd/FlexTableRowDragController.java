@@ -38,13 +38,13 @@ public class FlexTableRowDragController extends PickupDragController {
     private static final String DRAG_CSS_PROXY = "dragProxy"; //$NON-NLS-1$
 
     /** The flextable. */
-    private  DimensionFlexTable draggableTable;
+    private DimensionFlexTable draggableTable;
 
     /** The source row. */
-    private  int dragRow;
+    private int dragRow;
 
     /** The source row. */
-    private  int dragCol;
+    private int dragCol;
 
     /**
      * Constructor.

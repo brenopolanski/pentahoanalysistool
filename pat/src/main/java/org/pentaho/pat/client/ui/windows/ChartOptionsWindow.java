@@ -44,7 +44,7 @@ public class ChartOptionsWindow extends WindowPanel {
 
     private static final String TITLE = ConstantFactory.getInstance().chartOptions();
 
-    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static ChartOptionsPanel CHRTOPTIONSPANEL = new ChartOptionsPanel();
 

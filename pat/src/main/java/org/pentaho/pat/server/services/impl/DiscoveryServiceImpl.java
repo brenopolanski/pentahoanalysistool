@@ -58,11 +58,11 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
     private JdbcDriverFinder driverFinder = null;
 
-    public void setSessionService(SessionService sessionService) {
+    public void setSessionService(final SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
-    public void setQueryService(QueryService queryService) {
+    public void setQueryService(final QueryService queryService) {
         this.queryService = queryService;
     }
 
@@ -77,8 +77,8 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
         // An enumeration is a very unpractical thing, so let's convert it to a List.
         // We can't even know it's size... what a shameful object.
-        Enumeration<Driver> driversEnum = DriverManager.getDrivers();
-        List<String> drivers = new ArrayList<String>();
+        final Enumeration<Driver> driversEnum = DriverManager.getDrivers();
+        final List<String> drivers = new ArrayList<String>();
         while (driversEnum.hasMoreElements()) {
             drivers.add(driversEnum.nextElement().getClass().getName());
         }
@@ -86,17 +86,18 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return drivers;
     }
 
-    public List<CubeItem> getCubes(String userId, String sessionId, String connectionId) throws OlapException {
+    public List<CubeItem> getCubes(final String userId, final String sessionId, final String connectionId)
+            throws OlapException {
 
         this.sessionService.validateSession(userId, sessionId);
 
-        List<CubeItem> list = new ArrayList<CubeItem>();
+        final List<CubeItem> list = new ArrayList<CubeItem>();
 
-        OlapConnection conn = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
+        final OlapConnection conn = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
 
-        if (conn == null)
+        if (conn == null) {
             return list;
-
+        }
         // OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
         // try {
         // ResultSet cubesResult = olapDbMeta.getCubes(conn.getCatalog(), null, null);
@@ -109,7 +110,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         // e.printStackTrace();
         // }
 
-        NamedList<Catalog> catalogs = conn.getCatalogs();
+        final NamedList<Catalog> catalogs = conn.getCatalogs();
         for (int k = 0; k < catalogs.size(); k++) {
             NamedList<Schema> schemas = catalogs.get(k).getSchemas();
             for (int j = 0; j < schemas.size(); j++) {
@@ -137,9 +138,9 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
         Axis targetAxis = null;
-        if (axis != null)
+        if (axis != null) {
             targetAxis = axis;
-
+        }
         List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
         List<String> dimNames = new ArrayList<String>();
         for (QueryDimension dim : dimList) {

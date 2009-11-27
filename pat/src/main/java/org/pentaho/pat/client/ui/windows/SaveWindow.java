@@ -46,7 +46,7 @@ public class SaveWindow extends WindowPanel {
 
     private final static SaveMenuPanel SAVEMENUPANEL = new SaveMenuPanel();
 
-    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static SaveWindow CBW = new SaveWindow();
 

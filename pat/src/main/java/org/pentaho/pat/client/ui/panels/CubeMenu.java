@@ -56,7 +56,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class CubeMenu extends LayoutComposite {
 
     /** The main menu. */
-    private  final Tree cubeTree;
+    private final Tree cubeTree;
 
     /**
      * CubeMenu Constructor.

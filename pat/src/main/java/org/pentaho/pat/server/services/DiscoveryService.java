@@ -53,7 +53,7 @@ public interface DiscoveryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public List<String> getDimensions(String userId, String sessionId, String queryId, Axis.Standard axis)
+    List<String> getDimensions(String userId, String sessionId, String queryId, Axis.Standard axis)
             throws OlapException;
 
     /**
@@ -69,10 +69,10 @@ public interface DiscoveryService extends Service {
      * @return A list of cubes.
      */
     @Secured( {"Users"})
-    public List<CubeItem> getCubes(String userId, String sessionId, String connectionId) throws OlapException;
+    List<CubeItem> getCubes(String userId, String sessionId, String connectionId) throws OlapException;
 
     @Secured( {"Users"})
-    public Cube getCube(String userId, String sessionId, String connectionId, String cubeName) throws OlapException;
+    Cube getCube(String userId, String sessionId, String connectionId, String cubeName) throws OlapException;
 
     /**
      * Returns a tree representation of the members included in a given dimension. The representation only includes
@@ -91,8 +91,7 @@ public interface DiscoveryService extends Service {
      *             If anything goes sour.
      */
     @Secured( {"Users"})
-    public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
-            throws OlapException;
+    StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      * Scans and updates if necessary the current Java classloader for registered JDBC drivers.
@@ -100,5 +99,5 @@ public interface DiscoveryService extends Service {
      * @return A list of JDBC driver class names.
      */
     @Secured( {"Users"})
-    public List<String> getDrivers();
+    List<String> getDrivers();
 }

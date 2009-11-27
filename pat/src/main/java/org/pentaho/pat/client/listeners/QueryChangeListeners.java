@@ -33,7 +33,7 @@ import org.pentaho.pat.client.events.ISourcesQueryEvents;
 public class QueryChangeListeners implements ISourcesQueryEvents {
     /** ConnectionListenerCollection Object. */
 
-    private  final QueryListenerCollection queryListeners = new QueryListenerCollection();
+    private final QueryListenerCollection queryListeners = new QueryListenerCollection();
 
     /*
      * (non-Javadoc)

@@ -36,9 +36,9 @@ public class StyleSheetLoader {
      * greater than 0px.
      */
     private static class StyleTesterTimer extends Timer {
-        private  final Command callback;
+        private final Command callback;
 
-        private  final Label refWidget;
+        private final Label refWidget;
 
         /**
          * Create a new {@link StyleTesterTimer}.

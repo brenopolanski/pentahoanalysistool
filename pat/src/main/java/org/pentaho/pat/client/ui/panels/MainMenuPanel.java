@@ -44,7 +44,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MainMenuPanel extends LayoutComposite {
 
-    private  final LayoutPanel rootPanel = getLayoutPanel();
+    private final LayoutPanel rootPanel = getLayoutPanel();
 
     /**
      * 

@@ -53,15 +53,15 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapTable extends LayoutComposite implements IQueryListener {
 
-    private  CellDataSet olapData;
+    private CellDataSet olapData;
 
-    private  int offset;
+    private int offset;
 
-    private  PatTableModel patTableModel;
+    private PatTableModel patTableModel;
 
-    private  LiveTable<AbstractBaseCell[]> table;
+    private LiveTable<AbstractBaseCell[]> table;
 
-    private  final LayoutPanel layoutPanel = getLayoutPanel();
+    private final LayoutPanel layoutPanel = getLayoutPanel();
 
     public OlapTable() {
         super();

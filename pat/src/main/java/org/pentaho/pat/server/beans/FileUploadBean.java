@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 public final class FileUploadBean {
-    private final  Log log = LogFactory.getLog(getClass());
+    private static final Log LOG = LogFactory.getLog(FileUploadBean.class);
 
     private MultipartFile file;
 
@@ -35,14 +35,14 @@ public final class FileUploadBean {
     public void setFile(final MultipartFile _file) {
         file = _file;
 
-        log.debug(String.format("files: %s", file)); //$NON-NLS-1$
+        LOG.debug(String.format("files: %s", file)); //$NON-NLS-1$
     }
 
     /**
      * @return file
      */
     public MultipartFile getFile() {
-        log.debug(String.format("files: %s", file)); //$NON-NLS-1$
+        LOG.debug(String.format("files: %s", file)); //$NON-NLS-1$
 
         return file;
     }

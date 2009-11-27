@@ -31,9 +31,9 @@ package org.pentaho.pat.client.util;
 public class ConnectionItem {
     private String name;
 
-    private  final String connId;
+    private final String connId;
 
-    private  Boolean connected = false;
+    private Boolean connected = false;
 
     public ConnectionItem(final String connId, final String name, final boolean isConnected) {
         this.name = name;

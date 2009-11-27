@@ -50,8 +50,9 @@ public class PatCellSetFormatter {
          */
         AxisInfo(final int ordinalCount) {
             ordinalInfos = new ArrayList<AxisOrdinalInfo>(ordinalCount);
-            for (int i = 0; i < ordinalCount; i++)
+            for (int i = 0; i < ordinalCount; i++) {
                 ordinalInfos.add(new AxisOrdinalInfo());
+            }
         }
 
         /**
@@ -62,8 +63,9 @@ public class PatCellSetFormatter {
          */
         public int getWidth() {
             int width = 0;
-            for (final AxisOrdinalInfo info : ordinalInfos)
+            for (final AxisOrdinalInfo info : ordinalInfos) {
                 width += info.getWidth();
+            }
             return width;
         }
     }
@@ -72,9 +74,9 @@ public class PatCellSetFormatter {
      * Description of a particular hierarchy mapped to an axis.
      */
     private static class AxisOrdinalInfo {
-        int minDepth = 1;
+        private int minDepth = 1;
 
-        int maxDepth = 0;
+        private int maxDepth = 0;
 
         /**
          * Returns the number of matrix columns required to display this hierarchy.
@@ -90,8 +92,9 @@ public class PatCellSetFormatter {
      */
     public static String getValueString(final String formattedValue) {
         final String[] values = formattedValue.split("\\|"); //$NON-NLS-1$
-        if (values.length > 1)
+        if (values.length > 1) {
             return values[1];
+        }
         return values[0];
     }
 
@@ -139,28 +142,23 @@ public class PatCellSetFormatter {
 
     private Matrix matrix;
 
-    /**
-     * Creates a PatCellSetFormatter.
-     */
-    public PatCellSetFormatter() {
-
-    }
-
     public Matrix format(final CellSet cellSet) {
         // Compute how many rows are required to display the columns axis.
         final CellSetAxis columnsAxis;
-        if (cellSet.getAxes().size() > 0)
+        if (cellSet.getAxes().size() > 0) {
             columnsAxis = cellSet.getAxes().get(0);
-        else
+        } else {
             columnsAxis = null;
+        }
         final AxisInfo columnsAxisInfo = computeAxisInfo(columnsAxis);
 
         // Compute how many columns are required to display the rows axis.
         final CellSetAxis rowsAxis;
-        if (cellSet.getAxes().size() > 1)
+        if (cellSet.getAxes().size() > 1) {
             rowsAxis = cellSet.getAxes().get(1);
-        else
+        } else {
             rowsAxis = null;
+        }
         final AxisInfo rowsAxisInfo = computeAxisInfo(rowsAxis);
 
         if (cellSet.getAxes().size() > 2) {
@@ -169,10 +167,12 @@ public class PatCellSetFormatter {
                 final CellSetAxis cellSetAxis = cellSet.getAxes().get(i);
                 dimensions[i - 2] = cellSetAxis.getPositions().size();
             }
-            for (final int[] pageCoords : CoordinateIterator.iterate(dimensions))
+            for (final int[] pageCoords : CoordinateIterator.iterate(dimensions)) {
                 matrix = formatPage(cellSet, pageCoords, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
-        } else
+            }
+        } else {
             matrix = formatPage(cellSet, new int[] {}, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
+        }
 
         return matrix;
     }
@@ -185,8 +185,9 @@ public class PatCellSetFormatter {
      * @return Description of axis
      */
     private AxisInfo computeAxisInfo(final CellSetAxis axis) {
-        if (axis == null)
+        if (axis == null) {
             return new AxisInfo(0);
+        }
         final AxisInfo axisInfo = new AxisInfo(axis.getAxisMetaData().getHierarchies().size());
         int p = -1;
         for (final Position position : axis.getPositions()) {
@@ -196,8 +197,9 @@ public class PatCellSetFormatter {
                 ++k;
                 final AxisOrdinalInfo axisOrdinalInfo = axisInfo.ordinalInfos.get(k);
                 final int topDepth = member.isAll() ? member.getDepth() : member.getHierarchy().hasAll() ? 1 : 0;
-                if (axisOrdinalInfo.minDepth > topDepth || p == 0)
+                if (axisOrdinalInfo.minDepth > topDepth || p == 0) {
                     axisOrdinalInfo.minDepth = topDepth;
+                }
                 axisOrdinalInfo.maxDepth = Math.max(axisOrdinalInfo.maxDepth, member.getDepth());
             }
         }
@@ -235,12 +237,12 @@ public class PatCellSetFormatter {
                 yOffset + (rowsAxis == null ? 1 : rowsAxis.getPositions().size()));
 
         // Populate corner
-        for (int x = 0; x < xOffsset; x++)
+        for (int x = 0; x < xOffsset; x++) {
             for (int y = 0; y < yOffset; y++) {
                 final MemberCell memberInfo = new MemberCell(false, x > 0);
                 matrix.set(x, y, memberInfo);
             }
-
+        }
         // Populate matrix with cells representing axes
         // noinspection SuspiciousNameCombination
         populateAxis(matrix, columnsAxis, columnsAxisInfo, true, xOffsset);
@@ -258,7 +260,7 @@ public class PatCellSetFormatter {
             final DataCell cellInfo = new DataCell(true, false);
 
             for (int z = 0; z < matrix.getMatrixHeight(); z++) {
-                AbstractBaseCell headerCell = matrix.get(x, z);
+                final AbstractBaseCell headerCell = matrix.get(x, z);
 
                 if (headerCell instanceof MemberCell && ((MemberCell) headerCell).getUniqueName() != null) {
                 } else {
@@ -268,7 +270,7 @@ public class PatCellSetFormatter {
             }
 
             for (int z = 0; z < matrix.getMatrixWidth(); z++) {
-                AbstractBaseCell headerCell = matrix.get(z, y);
+                final AbstractBaseCell headerCell = matrix.get(z, y);
                 if (headerCell instanceof MemberCell && ((MemberCell) headerCell).getUniqueName() != null) {
 
                 } else {

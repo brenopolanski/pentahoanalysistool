@@ -51,23 +51,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DimensionDropWidget extends LayoutComposite implements IQueryListener {
 
-    private  final Standard dimAxis;
+    private final Standard dimAxis;
 
-    private  final LayoutPanel baseLayoutPanel;
+    private final LayoutPanel baseLayoutPanel;
 
-    private  DimensionFlexTable dimensionTable;
+    private DimensionFlexTable dimensionTable;
 
-    private  CaptionLayoutPanel captLayoutPanel;
+    private CaptionLayoutPanel captLayoutPanel;
 
-    private  Boolean horizontal = false;
+    private Boolean horizontal = false;
 
-    private  FlexTableRowDropController fTblRowDropCont;
+    private FlexTableRowDropController fTblRowDropCont;
 
-    private  final String query;
+    private final String query;
 
-    private  final Label spacerLabel = new Label(""); //$NON-NLS-1$
+    private final Label spacerLabel = new Label(""); //$NON-NLS-1$
 
-    private  final FlexTableRowDragController tblRowDragCont;
+    private final FlexTableRowDragController tblRowDragCont;
 
     private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 

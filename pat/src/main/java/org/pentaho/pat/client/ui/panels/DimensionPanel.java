@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class DimensionPanel extends LayoutComposite {
 
-    private  final FlexTableRowDragController tRDragController = Application.tblRowDrgCont;
+    private final FlexTableRowDragController tRDragController = Application.tblRowDrgCont;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 

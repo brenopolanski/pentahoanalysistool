@@ -85,7 +85,7 @@ public class SelectionModeMenu extends PopupMenu {
     public class SelectionModeCommand implements Command {
 
         /** The selection mode. */
-        private  int selectionMode = -1;
+        private int selectionMode = -1;
 
         /**
          * The Constructor.
@@ -182,7 +182,7 @@ public class SelectionModeMenu extends PopupMenu {
 
     public final String setSelectionMode(final int selectionMode) {
         String selection = ""; //$NON-NLS-1$
-        switch (selectionMode) { 
+        switch (selectionMode) {
         case 0:
             selection = "MEMBER"; //$NON-NLS-1$
             break;

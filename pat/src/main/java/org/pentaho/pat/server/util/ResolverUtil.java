@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ResolverUtil<T> {
 
-    private static final Log log = LogFactory.getLog("pat"); //$NON-NLS-1$
+    private static final Log LOG = LogFactory.getLog("pat"); //$NON-NLS-1$
 
     public static interface Test {
 
@@ -45,14 +45,14 @@ public class ResolverUtil<T> {
 
     public static class IsA implements Test {
 
-        private Class<?> parent;
+        private final Class<?> parent;
 
-        public IsA(Class<?> parentType) {
+        public IsA(final Class<?> parentType) {
             super();
             this.parent = parentType;
         }
 
-        public boolean matches(Class<?> type) {
+        public boolean matches(final Class<?> type) {
             return type != null && parent.isAssignableFrom(type);
         }
 
@@ -64,14 +64,14 @@ public class ResolverUtil<T> {
 
     public static class NameEndsWith implements Test {
 
-        private String suffix;
+        private final String suffix;
 
-        public NameEndsWith(String suffix) {
+        public NameEndsWith(final String suffix) {
             super();
             this.suffix = suffix;
         }
 
-        public boolean matches(Class<?> type) {
+        public boolean matches(final Class<?> type) {
             return type != null && type.getName().endsWith(suffix);
         }
 
@@ -83,9 +83,9 @@ public class ResolverUtil<T> {
 
     public static class AnnotatedWith implements Test {
 
-        private Class<? extends Annotation> annotation;
+        private final Class<? extends Annotation> annotation;
 
-        public AnnotatedWith(Class<? extends Annotation> annotation) {
+        public AnnotatedWith(final Class<? extends Annotation> annotation) {
             super();
             this.annotation = annotation;
         }
@@ -100,7 +100,7 @@ public class ResolverUtil<T> {
         }
     }
 
-    private Set<Class<? extends T>> matches = new HashSet<Class<? extends T>>();
+    private final Set<Class<? extends T>> matches = new HashSet<Class<? extends T>>();
 
     private ClassLoader classloader;
 
@@ -121,35 +121,39 @@ public class ResolverUtil<T> {
     }
 
     public void findImplementations(Class<?> parent, String... packageNames) {
-        if (packageNames == null)
+        if (packageNames == null) {
             return;
-        Test test = new IsA(parent);
+        }
+        final Test test = new IsA(parent);
         for (String pkg : packageNames) {
             findInPackage(pkg, test);
         }
     }
 
     public void findSuffix(String suffix, String... packageNames) {
-        if (packageNames == null)
+        if (packageNames == null) {
             return;
-        Test test = new NameEndsWith(suffix);
+        }
+        final Test test = new NameEndsWith(suffix);
         for (String pkg : packageNames) {
             findInPackage(pkg, test);
         }
     }
 
     public void findAnnotated(Class<? extends Annotation> annotation, String... packageNames) {
-        if (packageNames == null)
+        if (packageNames == null) {
             return;
-        Test test = new AnnotatedWith(annotation);
+        }
+        final Test test = new AnnotatedWith(annotation);
         for (String pkg : packageNames) {
             findInPackage(pkg, test);
         }
     }
 
     public void find(Test[] test, String... packageNames) {
-        if (packageNames == null)
+        if (packageNames == null) {
             return;
+        }
         for (String pkg : packageNames) {
             findInPackage(pkg, test);
         }
@@ -161,12 +165,12 @@ public class ResolverUtil<T> {
 
     public void findInPackage(String packageName, Test... tests) {
         packageName = packageName.replace('.', '/');
-        ClassLoader loader = getClassLoader();
+        final ClassLoader loader = getClassLoader();
         Enumeration<URL> urls;
         try {
             urls = loader.getResources(packageName);
         } catch (IOException ioe) {
-            log.trace("Could not read package: " + packageName, ioe); //$NON-NLS-1$
+            LOG.trace("Could not read package: " + packageName, ioe); //$NON-NLS-1$
             return;
         }
         while (urls.hasMoreElements()) {
@@ -176,15 +180,16 @@ public class ResolverUtil<T> {
 
                 if (urlPath.indexOf('!') > 0) {
                     urlPath = urlPath.substring(0, urlPath.indexOf('!'));
-                    if (urlPath.startsWith("jar:")) //$NON-NLS-1$
+                    if (urlPath.startsWith("jar:")) { //$NON-NLS-1$
                         urlPath = urlPath.substring(4);
+                    }
                     eurl = new URL(urlPath);
                 }
-                log.trace("Scanning for classes in [" + urlPath //$NON-NLS-1$
+                LOG.trace("Scanning for classes in [" + urlPath //$NON-NLS-1$
                         + "] matching criteria: " + tests); //$NON-NLS-1$
 
                 // is it a file?
-                File file = new File(URLDecoder.decode(eurl.getFile(), "UTF-8")); //$NON-NLS-1$
+                final File file = new File(URLDecoder.decode(eurl.getFile(), "UTF-8")); //$NON-NLS-1$
                 // File file = new File(eurl.getFile());
                 if (file.exists() && file.isDirectory()) {
                     loadImplementationsInDirectory(packageName, file, tests);
@@ -192,9 +197,9 @@ public class ResolverUtil<T> {
                     loadImplementationsInJar(packageName, eurl, tests);
                 }
             } catch (IOException e) {
-                log.trace("could not read entries", e); //$NON-NLS-1$
+                LOG.trace("could not read entries", e); //$NON-NLS-1$
             } catch (URISyntaxException se) {
-                log.trace("could not read entries", se); //$NON-NLS-1$
+                LOG.trace("could not read entries", se); //$NON-NLS-1$
             }
         }
     }
@@ -226,7 +231,7 @@ public class ResolverUtil<T> {
                 }
             }
         } catch (IOException ioe) {
-            log.trace("Could not search jar file \\\'" + jarfile //$NON-NLS-1$
+            LOG.trace("Could not search jar file \\\'" + jarfile //$NON-NLS-1$
                     + "\\\' for classes matching criteria: " + tests //$NON-NLS-1$
                     + " due to an IOException", ioe); //$NON-NLS-1$
         } finally {
@@ -250,8 +255,8 @@ public class ResolverUtil<T> {
             for (Test test : tests) {
                 if (test.matches(type)) {
                     matches.add((Class<T>) type);
-                    if (log.isDebugEnabled()) {
-                        log.info("Found JDBC driver :" + type.getName()); //$NON-NLS-1$
+                    if (LOG.isDebugEnabled()) {
+                        LOG.info("Found JDBC driver :" + type.getName()); //$NON-NLS-1$
                     }
                 }
             }

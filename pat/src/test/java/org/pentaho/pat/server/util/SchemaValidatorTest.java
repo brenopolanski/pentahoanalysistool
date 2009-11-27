@@ -16,13 +16,13 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 
 		initTest();
 		
-		String result = SchemaValidator.validateAgainstXsd(this.schema);
+		String result = AbstractSchemaValidator.validateAgainstXsd(this.schema);
 		assertNull(result,result);
 
-		result = SchemaValidator.validateAgainstXsd(this.schema+"ERROR STUFF"); //$NON-NLS-1$
+		result = AbstractSchemaValidator.validateAgainstXsd(this.schema+"ERROR STUFF"); //$NON-NLS-1$
 		assertEquals("Invalid XML file : Content is not allowed in trailing section.",result); //$NON-NLS-1$
 		
-		result = SchemaValidator.validateAgainstXsd(
+		result = AbstractSchemaValidator.validateAgainstXsd(
 			this.schema.replace(
 				"<Dimension name=\"Positions\">",  //$NON-NLS-1$
 				"<Dimension name=\"Positions\" someRandomAttribute=\"whatever\">")); //$NON-NLS-1$
@@ -33,7 +33,7 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 
 	private void initTest() {
 		initTestContext();
-		if (schema==null)
+		if (schema==null){
 			try {
 				this.schema=readFileAsString(new File(
 					SchemaValidatorTest.class.getResource("SampleData.mondrian.xml").toURI())); //$NON-NLS-1$
@@ -42,21 +42,23 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		if(schema==null)
+		}
+		if(schema==null){
 			fail("Unable to read the test schema file."); //$NON-NLS-1$
+		}
 	}
 
 	private void finishTest() {
 	}
 
-	private static String readFileAsString(File file)
+	private static String readFileAsString(final File file)
 			throws java.io.IOException {
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		final StringBuffer fileData = new StringBuffer(1000);
+		final BufferedReader reader = new BufferedReader(new FileReader(file));
 		char[] buf = new char[1024];
 		int numRead = 0;
 		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
+			final String readData = String.valueOf(buf, 0, numRead);
 			fileData.append(readData);
 			buf = new char[1024];
 		}

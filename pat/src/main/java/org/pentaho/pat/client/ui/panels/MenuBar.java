@@ -49,7 +49,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MenuBar extends LayoutComposite {
 
-    private  final LayoutPanel rootPanel = getLayoutPanel();
+    private final LayoutPanel rootPanel = getLayoutPanel();
 
     private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
             ConstantFactory.getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));

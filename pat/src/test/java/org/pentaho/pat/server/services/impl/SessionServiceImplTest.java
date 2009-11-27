@@ -180,7 +180,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         
         // Test the saving of a connection.
         SavedConnection conn = new SavedConnection("2222-2222-2222-2222"); //$NON-NLS-1$
-        conn.setType(ConnectionType.Mondrian);
+        conn.setType(ConnectionType.MONDRIAN);
         conn.setDriverClassName("driver_name"); //$NON-NLS-1$
         conn.setUrl("url"); //$NON-NLS-1$
         conn.setUsername("username"); //$NON-NLS-1$

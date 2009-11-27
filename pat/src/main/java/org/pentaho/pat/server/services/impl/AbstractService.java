@@ -30,7 +30,7 @@ public abstract class AbstractService implements InitializingBean {
         return userManager;
     }
 
-    public void setUserManager(UserManager userManager) {
+    public void setUserManager(final UserManager userManager) {
         this.userManager = userManager;
     }
 

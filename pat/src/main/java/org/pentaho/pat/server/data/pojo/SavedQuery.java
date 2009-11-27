@@ -59,7 +59,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         this(null);
     }
 
-    public SavedQuery(String uuid) {
+    public SavedQuery(final String uuid) {
         if (uuid == null) {
             this.id = UUID.randomUUID().toString();
         } else {
@@ -72,7 +72,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -80,7 +80,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -88,7 +88,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         return xml;
     }
 
-    public void setXml(String xml) {
+    public void setXml(final String xml) {
         this.xml = xml;
     }
 
@@ -96,7 +96,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 

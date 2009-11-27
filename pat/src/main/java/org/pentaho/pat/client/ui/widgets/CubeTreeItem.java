@@ -43,15 +43,15 @@ public class CubeTreeItem extends HorizontalPanel {
         CONNECTION, CUBE
     }
 
-    private  CubeConnection connection;
+    private CubeConnection connection;
 
-    private  CubeItem cube;
+    private CubeItem cube;
 
-    private  AbstractImagePrototype itemImage;
+    private AbstractImagePrototype itemImage;
 
-    private  String itemName;
+    private String itemName;
 
-    private  ItemType type;
+    private ItemType type;
 
     /**
      * Represents a cube item

@@ -40,7 +40,7 @@ public class LogoPanel extends LayoutComposite {
 
     private final static String LPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
 
-    private  final LayoutPanel rootPanel = getLayoutPanel();
+    private final LayoutPanel rootPanel = getLayoutPanel();
 
     private static Label throbberLabel = new Label();
 

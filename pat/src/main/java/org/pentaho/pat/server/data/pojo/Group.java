@@ -66,7 +66,7 @@ public class Group {
      * 
      * @param name
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -87,7 +87,7 @@ public class Group {
      * @param members
      *            The new list of members of this group.
      */
-    public void setMembers(Collection<User> members) {
+    public void setMembers(final Collection<User> members) {
         this.members = members;
     }
 }

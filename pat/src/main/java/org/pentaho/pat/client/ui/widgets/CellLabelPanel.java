@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  * 
  */
 public class CellLabelPanel extends HorizontalPanel {
-    private  MemberCell memCell = null;
+    private MemberCell memCell = null;
 
     public CellLabelPanel(final MemberCell memCell) {
         super();

@@ -40,10 +40,10 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class MemberSelectionLabel extends HorizontalPanel {
 
     /** PatImages ImageBundle. */
-    private  ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
+    private ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
 
     /** Label. */
-    private  final Label label = new Label();
+    private final Label label = new Label();
 
     /** Image. */
     private Image image;
@@ -127,7 +127,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
     @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
-        switch (DOM.eventGetType(event)) { 
+        switch (DOM.eventGetType(event)) {
         case Event.ONCONTEXTMENU:
             break;
         case Event.ONCLICK:

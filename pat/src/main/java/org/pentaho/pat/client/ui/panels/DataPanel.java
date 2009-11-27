@@ -58,17 +58,17 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements IQueryListener {
 
-    private final  ChartPanel ofcPanel = new ChartPanel();
+    private final ChartPanel ofcPanel = new ChartPanel();
 
-    private final  OlapTable olapTable;
+    private final OlapTable olapTable;
 
-    private final  LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
 
-    private final  LayoutPanel baseLayoutPanel = getLayoutPanel();
+    private final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-    private final  LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
 
-    private final  String queryId;
+    private final String queryId;
 
     /**
      *DataPanel Constructor.

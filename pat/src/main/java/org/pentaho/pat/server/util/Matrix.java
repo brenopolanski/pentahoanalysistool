@@ -49,7 +49,7 @@ public class Matrix {
      * @param height
      *            Height of matrix
      */
-    public Matrix(int width, int height) {
+    public Matrix(final int width, final int height) {
         this.width = width;
         this.height = height;
     }
@@ -68,7 +68,7 @@ public class Matrix {
      * @param sameAsPrev
      *            Whether value is the same as the previous value. If true, some formats separators between cells
      */
-    public void set(int x, int y, DataCell cell) {
+    public void set(final int x, final int y, final DataCell cell) {
         map.put(Arrays.asList(x, y), cell);
         assert x >= 0 && x < width : x;
         assert y >= 0 && y < height : y;
@@ -88,7 +88,7 @@ public class Matrix {
      * @param sameAsPrev
      *            Whether value is the same as the previous value. If true, some formats separators between cells
      */
-    public void set(int x, int y, MemberCell value) {
+    public void set(final int x, final int y, final MemberCell value) {
         map.put(Arrays.asList(x, y), value);
         assert x >= 0 && x < width : x;
         assert y >= 0 && y < height : y;
@@ -103,7 +103,7 @@ public class Matrix {
      *            Y coordinate
      * @return Cell
      */
-    public AbstractBaseCell get(int x, int y) {
+    public AbstractBaseCell get(final int x, final int y) {
         return map.get(Arrays.asList(x, y));
     }
 
@@ -140,7 +140,7 @@ public class Matrix {
      * 
      * @param offset
      */
-    public void setOffset(int offset) {
+    public void setOffset(final int offset) {
         // TODO Auto-generated method stub
         this.offset = offset;
     }

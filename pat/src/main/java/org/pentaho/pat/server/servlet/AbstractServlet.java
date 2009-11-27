@@ -48,7 +48,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
 
     protected static ApplicationContext applicationContext;
 
-    private Logger log = Logger.getLogger(AbstractServlet.class);
+    private static final Logger LOG = Logger.getLogger(AbstractServlet.class);
 
     private final String[] contextFiles = {"./src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
             "./src/main/webapp/WEB-INF/pat-securityContext.xml" //$NON-NLS-1$
@@ -67,7 +67,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
             applicationContext = ContextLoader.getCurrentWebApplicationContext();
 
             if (applicationContext == null) {
-                log.info(Messages.getString("Servlet.AbstractServlet.StandAlone")); //$NON-NLS-1$
+                LOG.info(Messages.getString("Servlet.AbstractServlet.StandAlone")); //$NON-NLS-1$
 
                 // This happens if we launch PAT without a web context, like in the
                 // GWT shell for example. We'll initialize the context manually.
@@ -84,10 +84,10 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
 
     private static void initSecurityTokens() {
         if (standaloneAuth == null && standaloneMode) {
-            UserManager userManager = (UserManager) applicationContext.getBean("userManager"); //$NON-NLS-1$
-            User user = userManager.getUser("admin"); //$NON-NLS-1$
+            final UserManager userManager = (UserManager) applicationContext.getBean("userManager"); //$NON-NLS-1$
+            final User user = userManager.getUser("admin"); //$NON-NLS-1$
 
-            GrantedAuthority userAuths[] = {new GrantedAuthorityImpl("Users"), //$NON-NLS-1$
+            final GrantedAuthority userAuths[] = {new GrantedAuthorityImpl("Users"), //$NON-NLS-1$
                     new GrantedAuthorityImpl("Administrators") //$NON-NLS-1$
             };
 
@@ -104,9 +104,9 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
      * @return The current user name.
      */
     public static String getCurrentUserId() {
-        if (standaloneMode)
+        if (standaloneMode) {
             SecurityContextHolder.getContext().setAuthentication(standaloneAuth);
-
+        }
         return SecurityContextHolder.getContext().getAuthentication().getName();
 
     }
@@ -118,15 +118,15 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
      * @param applicationContext
      *            The application context to use.
      */
-    public static void setApplicationContext(ApplicationContext applicationContext) {
+    public static void setApplicationContext(final ApplicationContext applicationContext) {
         AbstractServlet.applicationContext = applicationContext;
         standaloneMode = true;
         initSecurityTokens();
         initDone = true;
     }
 
-    protected void doUnexpectedFailure(Throwable e) {
-        log.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"), e); //$NON-NLS-1$
+    protected void doUnexpectedFailure(final Throwable e) {
+        LOG.error(Messages.getString("Servlet.AbstractServlet.RpcCallException"), e); //$NON-NLS-1$
         super.doUnexpectedFailure((e instanceof RpcException) ? e : new RpcException(e.getMessage(), e));
     }
 

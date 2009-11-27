@@ -24,7 +24,7 @@ import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
  */
 public class PatTableModel {
 
-    private  CellDataSet olapMatrix = null;
+    private CellDataSet olapMatrix = null;
 
     /**
      * 
