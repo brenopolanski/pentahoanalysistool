@@ -60,7 +60,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -69,7 +69,7 @@ public class User {
         return groups;
     }
 
-    public void setGroups(Collection<Group> groups) {
+    public void setGroups(final Collection<Group> groups) {
         this.groups = groups;
     }
 
@@ -81,7 +81,7 @@ public class User {
         return savedConnections;
     }
 
-    public void setSavedConnections(Set<SavedConnection> savedConnections) {
+    public void setSavedConnections(final Set<SavedConnection> savedConnections) {
         this.savedConnections = savedConnections;
     }
 
@@ -93,7 +93,7 @@ public class User {
         return savedQueries;
     }
 
-    public void setSavedQueries(Set<SavedQuery> savedQueries) {
+    public void setSavedQueries(final Set<SavedQuery> savedQueries) {
         this.savedQueries = savedQueries;
     }
 
@@ -101,7 +101,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 

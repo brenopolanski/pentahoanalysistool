@@ -60,7 +60,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
     private MemberCell rightOf = null;
 
-    private  String uniqueName;
+    private String uniqueName;
 
     private int childMemberCount;
 

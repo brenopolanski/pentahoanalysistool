@@ -61,17 +61,17 @@ public class SaveMenuPanel extends LayoutComposite {
 
     /**
      */
-    private  final TextBox textBox;
+    private final TextBox textBox;
 
-    private  DefaultListModel<QuerySaveModel> model;
+    private DefaultListModel<QuerySaveModel> model;
 
-    private  final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
-    private  LabelTextBox ltb = new LabelTextBox();
+    private LabelTextBox ltb = new LabelTextBox();
 
     /**
      */
-    private  FilterProxyListModel<QuerySaveModel, String> filterModel;
+    private FilterProxyListModel<QuerySaveModel, String> filterModel;
 
     private final Timer filterTimer = new Timer() {
         @Override

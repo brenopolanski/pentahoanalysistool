@@ -23,24 +23,24 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConnectionType implements Serializable {
+public final class ConnectionType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
+    private final String name;
 
     public static final ConnectionType XMLA = new ConnectionType("XMLA"); //$NON-NLS-1$
 
-    public static final ConnectionType Mondrian = new ConnectionType("Mondrian"); //$NON-NLS-1$
+    public static final ConnectionType MONDRIAN = new ConnectionType("Mondrian"); //$NON-NLS-1$
 
     private static final Map<String, ConnectionType> INSTANCES = new HashMap<String, ConnectionType>();
 
     static {
         INSTANCES.put(XMLA.toString(), XMLA);
-        INSTANCES.put(Mondrian.toString(), Mondrian);
+        INSTANCES.put(MONDRIAN.toString(), MONDRIAN);
     }
 
-    private ConnectionType(String name) {
+    private ConnectionType(final String name) {
         this.name = name;
     }
 
@@ -52,7 +52,7 @@ public class ConnectionType implements Serializable {
         return getInstance(name);
     }
 
-    public static ConnectionType getInstance(String name) {
+    public static ConnectionType getInstance(final String name) {
         return (ConnectionType) INSTANCES.get(name);
     }
 }

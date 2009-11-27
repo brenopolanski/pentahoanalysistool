@@ -31,7 +31,6 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
-import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.util.MdxQuery;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.springframework.security.annotation.Secured;
@@ -59,8 +58,7 @@ public interface QueryService extends Service {
      *             If creating the query fails.
      */
     @Secured( {"Users"})
-    public String createNewQuery(String userId, String sessionId, String connectionId, String cubeName)
-            throws OlapException;
+    String createNewQuery(String userId, String sessionId, String connectionId, String cubeName) throws OlapException;
 
     /**
      * 
@@ -72,7 +70,7 @@ public interface QueryService extends Service {
      * @return
      */
     @Secured( {"Users"})
-    public Query getQuery(String userId, String sessionId, String queryId);
+    Query getQuery(String userId, String sessionId, String queryId);
 
     /**
      * Returns a list of the currently created queries inside a given session.
@@ -84,7 +82,7 @@ public interface QueryService extends Service {
      * @return A list of query names.
      */
     @Secured( {"Users"})
-    public List<String> getQueries(String userId, String sessionId);
+    List<String> getQueries(String userId, String sessionId);
 
     /**
      * Releases and closes a query inside a given session.
@@ -97,7 +95,7 @@ public interface QueryService extends Service {
      *            The unique id of the query to close and release.
      */
     @Secured( {"Users"})
-    public void releaseQuery(String userId, String sessionId, String queryId);
+    void releaseQuery(String userId, String sessionId, String queryId);
 
     /**
      * Moves a dimension from an axis to another. You must first specify onto which query to perform the operation via
@@ -113,7 +111,7 @@ public interface QueryService extends Service {
      *            The name of the dimension to move.
      */
     @Secured( {"Users"})
-    public void moveDimension(String userId, String sessionId, String queryId, Axis.Standard axis, String dimensionName);
+    void moveDimension(String userId, String sessionId, String queryId, Axis.Standard axis, String dimensionName);
 
     /**
      * Creates a selection of members on a given dimension. You must first specify onto which query to perform the
@@ -133,7 +131,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void createSelection(String userId, String sessionId, String queryId, String dimensionName,
+    void createSelection(String userId, String sessionId, String queryId, String dimensionName,
             List<String> memberNames, Selection.Operator selectionType) throws OlapException;
 
     /**
@@ -154,8 +152,8 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void createExclusion(String userId, String sessionId, String queryId, String dimensionName,
-            List<String> memberNames) throws OlapException;
+    void createExclusion(String userId, String sessionId, String queryId, String dimensionName, List<String> memberNames)
+            throws OlapException;
 
     /**
      * Unselects members from a dimension inside a query. You must first specify onto which query to perform the
@@ -171,8 +169,7 @@ public interface QueryService extends Service {
      *            A list of member names to deselect.
      */
     @Secured( {"Users"})
-    public void clearSelection(String userId, String sessionId, String queryId, String dimensionName,
-            List<String> memberNames);
+    void clearSelection(String userId, String sessionId, String queryId, String dimensionName, List<String> memberNames);
 
     /**
      * Unselects members from a dimension inside a query. You must first specify onto which query to perform the
@@ -188,7 +185,7 @@ public interface QueryService extends Service {
      *            A list of member names to deselect.
      */
     @Secured( {"Users"})
-    public void clearExclusion(String userId, String sessionId, String queryId, String dimensionName);
+    void clearExclusion(String userId, String sessionId, String queryId, String dimensionName);
 
     /**
      * Executes a query. You must first specify onto which query to perform the operation via Session.setCurrentQuery().
@@ -202,7 +199,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public CellDataSet executeQuery(String userId, String sessionId, String queryId) throws OlapException;
+    CellDataSet executeQuery(String userId, String sessionId, String queryId) throws OlapException;
 
     /**
      * Returns the MDX coresponding to a query.
@@ -218,7 +215,7 @@ public interface QueryService extends Service {
      *             If something turns sour.
      */
     @Secured( {"Users"})
-    public String getMdxForQuery(String userId, String sessionId, String queryId) throws OlapException;
+    String getMdxForQuery(String userId, String sessionId, String queryId) throws OlapException;
 
     /**
      * 
@@ -237,8 +234,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public String[][] getSelection(String userId, String sessionId, String queryId, String dimensionName)
-            throws OlapException;
+    String[][] getSelection(String userId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      * Swaps the axis that the dimensions are on and then executes the query.
@@ -254,7 +250,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public CellDataSet swapAxis(String userId, String sessionId, String queryId) throws OlapException;
+    CellDataSet swapAxis(String userId, String sessionId, String queryId) throws OlapException;
 
     /**
      * 
@@ -274,7 +270,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void setSortOrder(String userId, String sessionId, String queryId, String dimensionName, SortOrder sortOrder)
+    void setSortOrder(String userId, String sessionId, String queryId, String dimensionName, SortOrder sortOrder)
             throws OlapException;
 
     /**
@@ -293,8 +289,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void clearSortOrder(String userId, String sessionId, String queryId, String dimensionName)
-            throws OlapException;
+    void clearSortOrder(String userId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      * 
@@ -313,8 +308,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public String getSortOrder(String userId, String sessionId, String queryId, String dimensionName)
-            throws OlapException;
+    String getSortOrder(String userId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      * 
@@ -333,7 +327,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void setHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName,
+    void setHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName,
             HierarchizeMode hierachizeMode) throws OlapException;
 
     /**
@@ -353,7 +347,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public String getHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName)
+    String getHierarchizeMode(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException;
 
     /**
@@ -373,7 +367,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void drillPosition(String userId, String sessionId, String queryId, DrillType drillType, MemberCell member)
+    void drillPosition(String userId, String sessionId, String queryId, DrillType drillType, MemberCell member)
             throws OlapException;
 
     /**
@@ -386,7 +380,7 @@ public interface QueryService extends Service {
      * @param queryName
      */
     @Secured( {"Users"})
-    public void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
+    void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
 
     /**
      * Creates a new mdx query for a given session.
@@ -402,7 +396,7 @@ public interface QueryService extends Service {
      *             If creating the query fails.
      */
     @Secured( {"Users"})
-    public String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName)
+    String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName)
             throws OlapException;
 
     /**
@@ -421,7 +415,7 @@ public interface QueryService extends Service {
      *             If creating the query fails.
      */
     @Secured( {"Users"})
-    public String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName, String mdx)
+    String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName, String mdx)
             throws OlapException;
 
     /**
@@ -434,7 +428,7 @@ public interface QueryService extends Service {
      * @return
      */
     @Secured( {"Users"})
-    public MdxQuery getMdxQuery(String userId, String sessionId, String queryId);
+    MdxQuery getMdxQuery(String userId, String sessionId, String queryId);
 
     /**
      * Returns a list of the currently created mdx queries inside a given session.
@@ -446,7 +440,7 @@ public interface QueryService extends Service {
      * @return A list of query names.
      */
     @Secured( {"Users"})
-    public List<String> getMdxQueries(String userId, String sessionId);
+    List<String> getMdxQueries(String userId, String sessionId);
 
     /**
      * Executes a temporary volatile mdx query. You must first create a connection via Session.createConnection()
@@ -465,8 +459,7 @@ public interface QueryService extends Service {
      */
     @Secured( {"Users"})
     @Deprecated
-    public CellDataSet executeMdxQuery(String userId, String sessionId, String connectionId, String mdx)
-            throws OlapException;
+    CellDataSet executeMdxQuery(String userId, String sessionId, String connectionId, String mdx) throws OlapException;
 
     /**
      * Executes a mdx query. You must first create a connection via Session.createConnection()
@@ -484,7 +477,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public CellDataSet executeMdxQuery(String userId, String sessionId, String mdxQueryId) throws OlapException;
+    CellDataSet executeMdxQuery(String userId, String sessionId, String mdxQueryId) throws OlapException;
 
     /**
      * Sets a mdx query. You must first create a connection via Session.createConnection() You must first create a mdx
@@ -503,7 +496,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    public void setMdxQuery(String userId, String sessionId, String mdxQueryId, String mdx) throws OlapException;
+    void setMdxQuery(String userId, String sessionId, String mdxQueryId, String mdx) throws OlapException;
 
     /**
      * Releases and closes a mdx query inside a given session.
@@ -516,7 +509,7 @@ public interface QueryService extends Service {
      *            The unique id of the query to close and release.
      */
     @Secured( {"Users"})
-    public void releaseMdxQuery(final String userId, final String sessionId, final String mdxQueryId);
+    void releaseMdxQuery(final String userId, final String sessionId, final String mdxQueryId);
 
     /**
      *TODO JAVADOC
@@ -526,7 +519,7 @@ public interface QueryService extends Service {
      * @param string
      */
     @Secured( {"Users"})
-    public SavedQuery loadQuery(String currentUserId, String sessioinId, String string);
+    SavedQuery loadQuery(String currentUserId, String sessioinId, String string);
 
     /**
      *TODO JAVADOC
@@ -535,7 +528,7 @@ public interface QueryService extends Service {
      * @param sessionId
      */
     @Secured( {"Users"})
-    public Set<SavedQuery> getSavedQueries(String currentUserId, String sessionId);
+    Set<SavedQuery> getSavedQueries(String currentUserId, String sessionId);
 
     /**
      *TODO JAVADOC
@@ -547,7 +540,7 @@ public interface QueryService extends Service {
      * @param newQuery
      */
     @Secured( {"Users"})
-    public String createSavedQuery(String currentUserId, String sessioinId, String connectionId, /* String cubeName, */
+    String createSavedQuery(String currentUserId, String sessioinId, String connectionId, /* String cubeName, */
     Query newQuery) throws OlapException;
 
     /**
@@ -560,5 +553,5 @@ public interface QueryService extends Service {
      * @throws OlapException
      */
     @Secured( {"Users"})
-    public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException;
+    CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException;
 }

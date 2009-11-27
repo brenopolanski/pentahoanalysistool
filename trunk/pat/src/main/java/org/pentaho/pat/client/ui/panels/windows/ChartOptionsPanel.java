@@ -61,43 +61,43 @@ import com.rednels.ofcgwt.client.model.elements.dot.Star;
  */
 public class ChartOptionsPanel extends LayoutComposite {
 
-    private  WindowPanel basic;
+    private WindowPanel basic;
 
-    private  final TextBox chartTitleTextBox = new TextBox();
+    private final TextBox chartTitleTextBox = new TextBox();
 
-    private  final TextBox xAxisTextBox = new TextBox();
+    private final TextBox xAxisTextBox = new TextBox();
 
-    private  final TextBox yAxisTextBox = new TextBox();
+    private final TextBox yAxisTextBox = new TextBox();
 
-    private  final TextBox bgColorTextBox = new TextBox();
+    private final TextBox bgColorTextBox = new TextBox();
 
     private Position pos;
 
-    private  BarStyle brStyle = BarStyle.NORMAL;
+    private BarStyle brStyle = BarStyle.NORMAL;
 
-    private  BaseDot bDot;
+    private BaseDot bDot;
 
-    private  final ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
+    private final ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
 
-    private  final ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
+    private final ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
 
-    private  Map<String, Object> optionsMap = new HashMap<String, Object>();
+    private Map<String, Object> optionsMap = new HashMap<String, Object>();
 
-    private  final TextBox yaxisColorTextBox = new TextBox();
+    private final TextBox yaxisColorTextBox = new TextBox();
 
-    private  final TextBox yAxisGridColorTextBox = new TextBox();
+    private final TextBox yAxisGridColorTextBox = new TextBox();
 
-    private  final TextBox yAxisMinTextBox = new TextBox();
+    private final TextBox yAxisMinTextBox = new TextBox();
 
-    private  final TextBox yAxisMaxTextBox = new TextBox();
+    private final TextBox yAxisMaxTextBox = new TextBox();
 
-    private  final TextBox xaxisColorTextBox = new TextBox();
+    private final TextBox xaxisColorTextBox = new TextBox();
 
-    private  final TextBox xaxisGridColorTextBox = new TextBox();
+    private final TextBox xaxisGridColorTextBox = new TextBox();
 
-    private  final TextBox xaxisMinTextBox = new TextBox();
+    private final TextBox xaxisMinTextBox = new TextBox();
 
-    private  final TextBox xaxisMaxTextBox = new TextBox();
+    private final TextBox xaxisMaxTextBox = new TextBox();
 
     /**
      * 

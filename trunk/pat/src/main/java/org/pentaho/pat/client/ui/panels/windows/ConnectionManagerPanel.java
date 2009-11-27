@@ -73,7 +73,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     private static ListBox<ConnectionItem> listBox;
 
-    private  ToolBar toolBar;
+    private ToolBar toolBar;
 
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 

@@ -45,7 +45,7 @@ public interface SessionService extends Service {
      * @throws SecurityException
      *             If either the userId or the sessionId are invalid.
      */
-    public void validateSession(String userId, String sessionId) throws SecurityException;
+    void validateSession(String userId, String sessionId) throws SecurityException;
 
     /**
      * Validates that this userId exists.
@@ -55,7 +55,7 @@ public interface SessionService extends Service {
      * @throws SecurityException
      *             If this user doesn't exist.
      */
-    public void validateUser(String userId) throws SecurityException;
+    void validateUser(String userId) throws SecurityException;
 
     /**
      * Creates a new session space.
@@ -65,7 +65,7 @@ public interface SessionService extends Service {
      * @return The session unique ID.
      */
     @Secured( {"Users"})
-    public String createNewSession(String userId);
+    String createNewSession(String userId);
 
     /**
      * Closes and deletes a session.
@@ -76,7 +76,7 @@ public interface SessionService extends Service {
      *            The session id we want to close.
      */
     @Secured( {"Users"})
-    public void releaseSession(String userId, String sessionId);
+    void releaseSession(String userId, String sessionId);
 
     /**
      * Accesses a session object directly.
@@ -88,7 +88,7 @@ public interface SessionService extends Service {
      * @return The session object, null if none found.
      */
     @Secured( {"Administrators"})
-    public Session getSession(String userId, String sessionId);
+    Session getSession(String userId, String sessionId);
 
     /**
      * Stores an object in the user session space for later use.
@@ -103,7 +103,7 @@ public interface SessionService extends Service {
      *            The object to store into the session space.
      */
     @Secured( {"Users"})
-    public void saveUserSessionVariable(String userId, String sessionId, String key, Object value);
+    void saveUserSessionVariable(String userId, String sessionId, String key, Object value);
 
     /**
      * Retreives a session variable object.
@@ -117,7 +117,7 @@ public interface SessionService extends Service {
      * @return The stored object, null if none found.
      */
     @Secured( {"Users"})
-    public Object getUserSessionVariable(String userId, String sessionId, String key);
+    Object getUserSessionVariable(String userId, String sessionId, String key);
 
     /**
      * Removes a session variable object from the session space.
@@ -130,7 +130,7 @@ public interface SessionService extends Service {
      *            The key under which the variable is stored.
      */
     @Secured( {"Users"})
-    public void deleteUserSessionVariable(String userId, String sessionId, String key);
+    void deleteUserSessionVariable(String userId, String sessionId, String key);
 
     /**
      * Establishes a connection according to the supplied parameters.
@@ -145,11 +145,11 @@ public interface SessionService extends Service {
      *             If the connection fails.
      */
     @Secured( {"Users"})
-    public void connect(String userId, String sessionId, String connectionId) throws OlapException;
+    void connect(String userId, String sessionId, String connectionId) throws OlapException;
 
     @Secured( {"Users"})
-    public String createConnection(String userId, String sessionId, String driverName, String connectStr,
-            String username, String password) throws OlapException;
+    String createConnection(String userId, String sessionId, String driverName, String connectStr, String username,
+            String password) throws OlapException;
 
     /**
      * Establishes a connection according to the supplied parameters.
@@ -164,7 +164,7 @@ public interface SessionService extends Service {
      *             If the connection fails.
      */
     @Secured( {"Users"})
-    public void connect(String userId, String sessionId, SavedConnection sc) throws OlapException;
+    void connect(String userId, String sessionId, SavedConnection sc) throws OlapException;
 
     /**
      * Returns the underlying OlapConnection for a given connection UUID. The connection needs to be activated prior to
@@ -179,7 +179,7 @@ public interface SessionService extends Service {
      * @return The olapConnection object. Null if none are found.
      */
     @Secured( {"Users"})
-    public OlapConnection getNativeConnection(String userId, String sessionId, String connectionId);
+    OlapConnection getNativeConnection(String userId, String sessionId, String connectionId);
 
     /**
      * Closes a connection.
@@ -192,7 +192,7 @@ public interface SessionService extends Service {
      *            The connection UUID
      */
     @Secured( {"Users"})
-    public void disconnect(String userId, String sessionId, String connectionId);
+    void disconnect(String userId, String sessionId, String connectionId);
 
     /**
      * Retreives a saved connection.
@@ -205,7 +205,7 @@ public interface SessionService extends Service {
      */
     @Secured( {"Users"})
     @Transactional(readOnly = true)
-    public SavedConnection getConnection(String userId, String connectionId);
+    SavedConnection getConnection(String userId, String connectionId);
 
     /**
      * Returns a list of saved connections associated to a user.
@@ -216,7 +216,7 @@ public interface SessionService extends Service {
      */
     @Secured( {"Users"})
     @Transactional(readOnly = true)
-    public List<SavedConnection> getConnections(String userId);
+    List<SavedConnection> getConnections(String userId);
 
     /**
      * Returns a list of currently active connections associated to a user.
@@ -229,7 +229,7 @@ public interface SessionService extends Service {
      */
     @Secured( {"Users"})
     @Transactional(readOnly = true)
-    public List<SavedConnection> getActiveConnections(String userId, String sessionId);
+    List<SavedConnection> getActiveConnections(String userId, String sessionId);
 
     /**
      * Saves a connection in a user account.
@@ -241,7 +241,7 @@ public interface SessionService extends Service {
      */
     @Secured( {"Users"})
     @Transactional(readOnly = false)
-    public void saveConnection(String userId, SavedConnection connection);
+    void saveConnection(String userId, SavedConnection connection);
 
     /**
      * Deletes a saved connection from a user account.
@@ -253,5 +253,5 @@ public interface SessionService extends Service {
      */
     @Secured( {"Users"})
     @Transactional(readOnly = false)
-    public void deleteConnection(String userId, String connectionId);
+    void deleteConnection(String userId, String connectionId);
 }

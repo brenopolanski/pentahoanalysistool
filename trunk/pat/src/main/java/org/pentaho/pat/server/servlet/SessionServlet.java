@@ -38,67 +38,69 @@ public class SessionServlet extends AbstractServlet implements ISession {
 
     private static final long serialVersionUID = 1L;
 
-    private  Logger log = Logger.getLogger(SessionServlet.class);
+    private static final Logger LOG = Logger.getLogger(SessionServlet.class);
 
-    private  SessionService sessionService;
+    private SessionService sessionService;
 
     public void init() throws ServletException {
         super.init();
         sessionService = (SessionService) applicationContext.getBean("sessionService"); //$NON-NLS-1$
-        if (sessionService == null)
+        if (sessionService == null) {
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
+        }
     }
 
-    public void connect(String sessionId, String connectionId) throws RpcException {
+    public void connect(final String sessionId, final String connectionId) throws RpcException {
         try {
             this.sessionService.connect(getCurrentUserId(), sessionId, connectionId);
         } catch (OlapException e) {
-            log.error(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
+            LOG.error(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
         }
     }
 
-    public CubeConnection getConnection(String sessionId, String connectionName) throws RpcException {
-        SavedConnection savedConn = this.sessionService.getConnection(getCurrentUserId(), connectionName);
+    public CubeConnection getConnection(final String sessionId, final String connectionName) throws RpcException {
+        final SavedConnection savedConn = this.sessionService.getConnection(getCurrentUserId(), connectionName);
         return savedConn == null ? null : this.convert(savedConn);
     }
 
-    public String saveConnection(String sessionId, CubeConnection connection) throws RpcException {
+    public String saveConnection(final String sessionId, final CubeConnection connection) throws RpcException {
         try {
-            SavedConnection sc = this.convert(connection);
+            final SavedConnection sc = this.convert(connection);
             this.sessionService.saveConnection(getCurrentUserId(), sc);
             return sc.getId();
         } catch (Exception e) {
-            log.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"), e); //$NON-NLS-1$
+            LOG.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"), e); //$NON-NLS-1$
         }
     }
 
-    public CubeConnection[] getConnections(String sessionId) throws RpcException {
-        List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
+    public CubeConnection[] getConnections(final String sessionId) throws RpcException {
+        final List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
         CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
-        for (int cpt = 0; cpt < savedConnections.size(); cpt++)
+        for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
             cubeConnections[cpt] = convert(savedConnections.get(cpt));
+        }
         return cubeConnections;
     }
 
-    public CubeConnection[] getActiveConnections(String sessionId) throws RpcException {
-        List<CubeConnection> connections = new ArrayList<CubeConnection>();
+    public CubeConnection[] getActiveConnections(final String sessionId) throws RpcException {
+        final List<CubeConnection> connections = new ArrayList<CubeConnection>();
         for (SavedConnection connection : this.sessionService.getActiveConnections(getCurrentUserId(), sessionId)) {
             connections.add(convert(connection));
         }
         return connections.toArray(new CubeConnection[connections.size()]);
     }
 
-    public void deleteConnection(String sessionId, String connectionName) throws RpcException {
+    public void deleteConnection(final String sessionId, final String connectionName) throws RpcException {
         this.sessionService.deleteConnection(getCurrentUserId(), connectionName);
     }
 
-    public void disconnect(String sessionId, String connectionId) throws RpcException {
+    public void disconnect(final String sessionId, final String connectionId) throws RpcException {
         sessionService.disconnect(getCurrentUserId(), sessionId, connectionId);
     }
 
-    public void closeSession(String sessionId) throws RpcException {
+    public void closeSession(final String sessionId) throws RpcException {
         sessionService.releaseSession(getCurrentUserId(), sessionId);
     }
 
@@ -106,9 +108,9 @@ public class SessionServlet extends AbstractServlet implements ISession {
         return sessionService.createNewSession(getCurrentUserId());
     }
 
-    private CubeConnection convert(SavedConnection sc) {
+    private CubeConnection convert(final SavedConnection sc) {
 
-        CubeConnection cc = new CubeConnection();
+        final CubeConnection cc = new CubeConnection();
         cc.setName(sc.getName());
         cc.setDriverClassName(sc.getDriverClassName());
         cc.setConnectionType(ConnectionType.valueOf(sc.getType().toString()));
@@ -122,9 +124,9 @@ public class SessionServlet extends AbstractServlet implements ISession {
         return cc;
     }
 
-    private SavedConnection convert(CubeConnection cc) {
+    private SavedConnection convert(final CubeConnection cc) {
 
-        SavedConnection sc = new SavedConnection(cc.getId());
+        final SavedConnection sc = new SavedConnection(cc.getId());
 
         sc.setName(cc.getName());
         sc.setDriverClassName(cc.getDriverClassName());

@@ -62,17 +62,17 @@ public class LoadMenuPanel extends LayoutComposite {
 
     /**
      */
-    private  final TextBox textBox = new TextBox();
+    private final TextBox textBox = new TextBox();
 
-    private  DefaultListModel<QuerySaveModel> model;
+    private DefaultListModel<QuerySaveModel> model;
 
-    private  final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
     /**
      */
-    private  FilterProxyListModel<QuerySaveModel, String> filterModel;
+    private FilterProxyListModel<QuerySaveModel, String> filterModel;
 
-    private  final Timer filterTimer = new Timer() {
+    private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
             filterModel.filter(textBox.getText());

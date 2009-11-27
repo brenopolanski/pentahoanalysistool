@@ -33,25 +33,26 @@ import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
-public abstract class SchemaValidator implements ErrorHandler {
+public abstract class AbstractSchemaValidator implements ErrorHandler {
 
-    public static String validateAgainstXsd(String xml) {
+    public static String validateAgainstXsd(final String xml) {
 
         try {
             // build an XSD-aware SchemaFactory
-            SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
+            final SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
 
             // get the custom xsd schema describing the required format for my XML files.
-            Schema schemaXSD = factory.newSchema(new File(SchemaValidator.class.getResource("mondrian.xsd").toURI())); //$NON-NLS-1$
+            final Schema schemaXSD = factory.newSchema(new File(AbstractSchemaValidator.class.getResource(
+                    "mondrian.xsd").toURI())); //$NON-NLS-1$
 
             // Create a Validator capable of validating XML files according to my custom schema.
-            Validator validator = schemaXSD.newValidator();
+            final Validator validator = schemaXSD.newValidator();
 
             // Get a parser capable of parsing vanilla XML into a DOM tree
-            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            final DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
             // parse the XML purely as XML and get a DOM tree represenation.
-            Document document = parser.parse(new ByteArrayInputStream(xml.getBytes()));
+            final Document document = parser.parse(new ByteArrayInputStream(xml.getBytes()));
 
             // parse the XML DOM tree againts the stricter XSD schema
             validator.validate(new DOMSource(document));

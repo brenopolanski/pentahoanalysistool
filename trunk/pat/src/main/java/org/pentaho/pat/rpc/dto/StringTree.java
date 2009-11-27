@@ -12,6 +12,7 @@ public class StringTree implements Serializable, IsSerializable {
     String value;
 
     List<StringTree> children;
+
     StringTree parent;
 
     public StringTree() {

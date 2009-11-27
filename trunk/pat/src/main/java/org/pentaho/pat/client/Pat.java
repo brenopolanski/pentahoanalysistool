@@ -79,7 +79,7 @@ public class Pat implements EntryPoint {
     /**
      * The {@link Application}.
      */
-    private final  Application app;
+    private final Application app;
 
     /**
      * Global State.

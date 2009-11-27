@@ -42,9 +42,9 @@ import org.pentaho.pat.server.messages.Messages;
 
 public class OlapUtil {
 
-    private static ArrayList<String> cellSetIndex = new ArrayList<String>();
+    private static List<String> cellSetIndex = new ArrayList<String>();
 
-    private static ArrayList<CellSet> cellSetItems = new ArrayList<CellSet>();
+    private static List<CellSet> cellSetItems = new ArrayList<CellSet>();
 
     /**
      * 
@@ -56,9 +56,9 @@ public class OlapUtil {
      */
 
     public static CellDataSet cellSet2Matrix(final CellSet cellSet) {
-        if (cellSet == null)
+        if (cellSet == null) {
             return null;
-
+        }
         final PatCellSetFormatter pcsf = new PatCellSetFormatter();
 
         final Matrix matrix = pcsf.format(cellSet);
@@ -69,18 +69,20 @@ public class OlapUtil {
                 .getMatrixWidth()];
         for (int y = matrix.getOffset(); y < matrix.getMatrixHeight(); y++) {
 
-            for (int x = 0; x < matrix.getMatrixWidth(); x++)
+            for (int x = 0; x < matrix.getMatrixWidth(); x++) {
                 bodyvalues[z][x] = matrix.get(x, y);
+            }
             z++;
         }
 
         cds.setCellSetBody(bodyvalues);
 
         final AbstractBaseCell[][] headervalues = new AbstractBaseCell[matrix.getOffset()][matrix.getMatrixWidth()];
-        for (int y = 0; y < matrix.getOffset(); y++)
-            for (int x = 0; x < matrix.getMatrixWidth(); x++)
+        for (int y = 0; y < matrix.getOffset(); y++) {
+            for (int x = 0; x < matrix.getMatrixWidth(); x++) {
                 headervalues[y][x] = matrix.get(x, y);
-
+            }
+        }
         cds.setCellSetHeaders(headervalues);
         cds.setOffset(matrix.getOffset());
         return cds;
@@ -101,11 +103,13 @@ public class OlapUtil {
         StringTree found = null;
         for (int i = 0; i < parent.getChildren().size() && found == null; i++) {
             final StringTree targetNode = parent.getChildren().get(i);
-            if (targetNode.getValue().equals(srchString))
+            if (targetNode.getValue().equals(srchString)) {
                 found = targetNode;
+            }
         }
-        if (found == null)
+        if (found == null) {
             found = new StringTree(srchString, parent);
+        }
         return found;
     }
 
@@ -115,9 +119,11 @@ public class OlapUtil {
      * @return null
      */
     public static Selection findSelection(final String path, final List<Selection> selections) {
-        for (final Selection selection : selections)
-            if (selection.getName().equals(path))
+        for (final Selection selection : selections) {
+            if (selection.getName().equals(path)) {
                 return selection;
+            }
+        }
         return null;
     }
 
@@ -128,9 +134,11 @@ public class OlapUtil {
      */
     public static Selection findSelection(final String path, final List<Selection> selections,
             final Selection.Operator oper) {
-        for (final Selection selection : selections)
-            if (selection.getName().equals(path) && selection.getOperator().equals(oper))
+        for (final Selection selection : selections) {
+            if (selection.getName().equals(path) && selection.getOperator().equals(oper)) {
                 return selection;
+            }
+        }
         return null;
     }
 
@@ -181,34 +189,37 @@ public class OlapUtil {
             for (int i = 2; i < values.length; i++)
                 if (values[i].startsWith("style")) { //$NON-NLS-1$
                     final String colorString = values[i].split("=")[1]; //$NON-NLS-1$
-                    if (colorString.equalsIgnoreCase("black"))//$NON-NLS-1$
+                    if (colorString.equalsIgnoreCase("black")) {//$NON-NLS-1$
                         color = "#000000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("blue"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("blue")) {//$NON-NLS-1$
                         color = "#0000FF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("cyan"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("cyan")) {//$NON-NLS-1$
+
                         color = "#00FFFF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("dark-gray"))//$NON-NLS-1$
+
+                    } else if (colorString.equalsIgnoreCase("dark-gray")) {//$NON-NLS-1$
                         color = "#A9A9A9"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("gray"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("gray")) {//$NON-NLS-1$
                         color = "#808080"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("green"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("green")) {//$NON-NLS-1$
                         color = "#008000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("light-gray"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("light-gray")) {//$NON-NLS-1$
                         color = "#D3D3D3"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("magenta"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("magenta")) {//$NON-NLS-1$
                         color = "#FF00FF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("orange"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("orange")) {//$NON-NLS-1$
                         color = "#FFA500"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("pink"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("pink")) {//$NON-NLS-1$
                         color = "#FFC0CB"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("red"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("red")) {//$NON-NLS-1$
                         color = "#FF0000"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("white"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("white")) {//$NON-NLS-1$
                         color = "#FFFFFF"; //$NON-NLS-1$
-                    else if (colorString.equalsIgnoreCase("yellow"))//$NON-NLS-1$
+                    } else if (colorString.equalsIgnoreCase("yellow")) {//$NON-NLS-1$
                         color = "#FFFF00"; //$NON-NLS-1$
-                    else
+                    } else {
                         color = colorString;
+                    }
                 }
 
         return color;
@@ -247,8 +258,8 @@ public class OlapUtil {
                 memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }
             if (memberOut == null) {
-                String membername = member.getUniqueName().substring(1, member.getUniqueName().length() - 1);
-                String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
+                final String membername = member.getUniqueName().substring(1, member.getUniqueName().length() - 1);
+                final String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
 
                 memberOut = cube.lookupMember(memberNames);
 
@@ -291,8 +302,9 @@ public class OlapUtil {
      */
     public static String getValueString(final String formattedValue) {
         final String[] values = formattedValue.split("\\|"); //$NON-NLS-1$
-        if (values.length > 1)
+        if (values.length > 1) {
             return values[1];
+        }
         return values[0];
     }
 
@@ -303,8 +315,9 @@ public class OlapUtil {
      */
     public static String normalizeMemberNames(final String[] memberNames) {
         final StringBuffer buffer = new StringBuffer();
-        for (final String name : memberNames)
+        for (final String name : memberNames) {
             buffer.append("[").append(name).append("]."); //$NON-NLS-1$ //$NON-NLS-2$
+        }
         if (buffer.length() > 0)
             buffer.deleteCharAt(buffer.length() - 1); // Remove the last "."
 

@@ -155,11 +155,11 @@ public abstract class AbstractFailBox extends WindowPanel {
 
     private Widget widget;
 
-    private  final LayoutPanel buttonPanel = new LayoutPanel();
+    private final LayoutPanel buttonPanel = new LayoutPanel();
 
     private Image image;
 
-    private  WidgetWrapper imageWrapper;
+    private WidgetWrapper imageWrapper;
 
     public AbstractFailBox() {
         this(DEFAULT_TYPE, null);

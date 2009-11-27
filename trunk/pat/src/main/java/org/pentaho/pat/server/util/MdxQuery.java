@@ -47,14 +47,14 @@ public class MdxQuery {
         return id;
     }
 
-    public MdxQuery(String id, OlapConnection connection, String catalogName) {
+    public MdxQuery(final String id, final OlapConnection connection, final String catalogName) {
         this.connection = connection;
         this.catalogName = catalogName;
         this.mdx = null;
         this.id = id;
     }
 
-    public MdxQuery(String id, OlapConnection connection, String catalogName, String mdx) {
+    public MdxQuery(final String id, final OlapConnection connection, final String catalogName, final String mdx) {
         this.connection = connection;
         this.catalogName = catalogName;
         this.mdx = mdx;
@@ -73,7 +73,7 @@ public class MdxQuery {
         return mdx;
     }
 
-    public void setMdx(String mdx) {
+    public void setMdx(final String mdx) {
         this.mdx = mdx;
     }
 
@@ -81,7 +81,7 @@ public class MdxQuery {
         return catalogName;
     }
 
-    public void setCatalogName(String catalogName) {
+    public void setCatalogName(final String catalogName) {
         this.catalogName = catalogName;
     }
 
@@ -96,9 +96,9 @@ public class MdxQuery {
         }
 
         stmt = connection.createStatement();
-        if (mdx != null && mdx.length() > 0)
+        if (mdx != null && mdx.length() > 0) {
             return stmt.executeOlapQuery(mdx);
-
+        }
         throw new OlapException("Can't execute blank or empty query");
     }
 

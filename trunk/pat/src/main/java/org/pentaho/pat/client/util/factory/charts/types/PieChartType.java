@@ -30,7 +30,6 @@ import com.rednels.ofcgwt.client.model.elements.PieChart.Slice;
 
 public class PieChartType {
 
-    
     public ChartData getPieChartData(final CellDataSet matrix, final String chartTitle,
             Map<String, Object> chartOptions, final ChartPanel chartPanel, Position pos) {
 
@@ -59,7 +58,8 @@ public class PieChartType {
         // TODO Allow user defined tooltips.
         pie.setTooltip("#label# $#val#<br>#percent#"); //$NON-NLS-1$
         pie.setGradientFill(true);
-        pie.setColours(ChartUtils.getRandomColor(), ChartUtils.getRandomColor(), ChartUtils.getRandomColor(), ChartUtils.getRandomColor(), ChartUtils.getRandomColor());
+        pie.setColours(ChartUtils.getRandomColor(), ChartUtils.getRandomColor(), ChartUtils.getRandomColor(),
+                ChartUtils.getRandomColor(), ChartUtils.getRandomColor());
         pie.setAnimateOnShow(true);
         pie.setAnimation(new PieChart.PieBounceAnimation(30));
 
@@ -70,53 +70,59 @@ public class PieChartType {
             while (cell[rc].getRawValue() == null)
                 rc++;
             Number cellValue = null;
-	    if(((DataCell)cell[rowColCount]).getRawNumber() != null){
-            	cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
-            	
-            	final int row = rc;
-	    	List<String> path = ((MemberCell) cell[rc]).getMemberPath();
-	    
-	    	 StringBuffer buf = new StringBuffer();
-	            for(int j=0; j<path.size(); j++){
-	              buf.append(path.get(j));
-	              if(j!=path.size()-1){
-	        	  buf.append(",");
-	              }
-	            }
-	            String label = buf.toString();
+            if (((DataCell) cell[rowColCount]).getRawNumber() != null) {
+                cellValue = ((DataCell) cell[rowColCount]).getRawNumber();
+
+                final int row = rc;
+                List<String> path = ((MemberCell) cell[rc]).getMemberPath();
+
+                StringBuffer buf = new StringBuffer();
+                for (int j = 0; j < path.size(); j++) {
+                    buf.append(path.get(j));
+                    if (j != path.size() - 1) {
+                        buf.append(",");
+                    }
+                }
+                String label = buf.toString();
                 final Slice slice = new Slice((cellValue.floatValue()), label);
 
                 slice.addChartClickHandler(new ChartClickHandler() {
 
                     public void onClick(final ChartClickEvent event) {
-                                               
-                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), DrillType.POSITION, ((MemberCell) cell[row]), new AsyncCallback<Object>(){
 
-                            public void onFailure(Throwable arg0) {
-                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
-                            }
-
-                            public void onSuccess(Object arg0) {
-                                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+                                DrillType.POSITION, ((MemberCell) cell[row]), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
-
-                                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));    
-
+                                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                                .getInstance().failedDrill(arg0.getLocalizedMessage()));
                                     }
 
-                                    public void onSuccess(CellDataSet arg0) {
-                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                                chartPanel, Pat.getCurrQuery(), arg0);                        
+                                    public void onSuccess(Object arg0) {
+                                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
+                                                Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 
+                                                    public void onFailure(Throwable arg0) {
+
+                                                        MessageBox.alert(ConstantFactory.getInstance().error(),
+                                                                MessageFactory.getInstance().failedQuery(
+                                                                        arg0.getLocalizedMessage()));
+
+                                                    }
+
+                                                    public void onSuccess(CellDataSet arg0) {
+                                                        GlobalConnectionFactory
+                                                                .getQueryInstance()
+                                                                .getQueryListeners()
+                                                                .fireQueryExecuted(chartPanel, Pat.getCurrQuery(), arg0);
+
+                                                    }
+
+                                                });
                                     }
 
                                 });
-                            }
 
-                        });
-           
-                       
                     }
 
                 });
@@ -127,5 +133,4 @@ public class PieChartType {
         return cd;
     }
 
-    
 }

@@ -34,9 +34,9 @@ public abstract class AbstractBaseCell implements Serializable, IsSerializable {
     /** The raw value. */
     private String rawValue;
 
-    public  boolean right = false;
+    public boolean right = false;
 
-    public  boolean sameAsPrev = false;
+    public boolean sameAsPrev = false;
 
     private String parentDimension = null;
 

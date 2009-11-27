@@ -27,7 +27,7 @@ public class RpcException extends Exception implements IsSerializable, Serializa
 
     private static final long serialVersionUID = 1L;
 
-    private  String message = null;
+    private String message = null;
 
     public RpcException() {
         super();

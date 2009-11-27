@@ -145,7 +145,7 @@ public class CellModeMenu extends PopupMenu {
     public class SortOrderCommand implements Command {
 
         /** The selection mode. */
-        private  final String sortOrder;
+        private final String sortOrder;
 
         /**
          * The Constructor.

@@ -43,7 +43,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("url", conn.getUrl()); //$NON-NLS-1$
         assertEquals("password", conn.getPassword()); //$NON-NLS-1$
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
-        assertEquals(ConnectionType.Mondrian, conn.getType());
+        assertEquals(ConnectionType.MONDRIAN, conn.getType());
 
         finishTest();
     }
@@ -142,7 +142,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         this.userManager.createUser(user);
         
         SavedConnection conn = new SavedConnection("2222-2222-2222-2222"); //$NON-NLS-1$
-        conn.setType(ConnectionType.Mondrian);
+        conn.setType(ConnectionType.MONDRIAN);
         conn.setDriverClassName("driver_name"); //$NON-NLS-1$
         conn.setUrl("url"); //$NON-NLS-1$
         conn.setUsername("username"); //$NON-NLS-1$
@@ -166,7 +166,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("url", conn.getUrl()); //$NON-NLS-1$
         assertEquals("password", conn.getPassword()); //$NON-NLS-1$
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
-        assertEquals(ConnectionType.Mondrian, conn.getType());
+        assertEquals(ConnectionType.MONDRIAN, conn.getType());
         
         String[][] currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
@@ -227,7 +227,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         User user = this.userManager.getUser(userId);
         assertEquals(1, user.getSavedConnections().size());
         SavedConnection conn = new SavedConnection("2222-2222-2222-2222"); //$NON-NLS-1$
-        conn.setType(ConnectionType.Mondrian);
+        conn.setType(ConnectionType.MONDRIAN);
         conn.setDriverClassName("driver_name"); //$NON-NLS-1$
         conn.setUrl("url"); //$NON-NLS-1$
         conn.setUsername("username"); //$NON-NLS-1$

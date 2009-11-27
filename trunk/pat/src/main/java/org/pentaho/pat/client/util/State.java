@@ -125,7 +125,7 @@ public class State {
 
     private Mode mode = null;
 
-    private  String sessionId = null;
+    private String sessionId = null;
 
     private boolean connected = false;
 

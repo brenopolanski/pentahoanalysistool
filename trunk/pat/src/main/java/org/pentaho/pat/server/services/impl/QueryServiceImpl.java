@@ -156,9 +156,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
                 member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
 
-                if (member == null)
+                if (member == null) {
                     // We failed to find the member.
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                }
             }
         }
 
@@ -178,9 +179,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         this.sessionService.validateSession(userId, sessionId);
 
-        if (cubeName == null)
+        if (cubeName == null) {
             throw new OlapException(Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
-
+        }
         final Cube cube = this.getCube4Guid(userId, sessionId, connectionId, cubeName);
         final String generatedId = String.valueOf(UUID.randomUUID());
         Query newQuery;
@@ -202,15 +203,15 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang .String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
-    public String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName)
-            throws OlapException {
+    public String createNewMdxQuery(final String userId, final String sessionId, final String connectionId,
+            final String catalogName) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
-        if (connection == null)
+        if (connection == null) {
             throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
-
+        }
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
         newMdxQuery = new MdxQuery(generatedId, connection, catalogName);
@@ -226,15 +227,15 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createNewMdxQuery(java.lang .String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String)
      */
-    public String createNewMdxQuery(String userId, String sessionId, String connectionId, String catalogName, String mdx)
-            throws OlapException {
+    public String createNewMdxQuery(final String userId, final String sessionId, final String connectionId,
+            final String catalogName, final String mdx) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
 
-        if (connection == null)
+        if (connection == null) {
             throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
-
+        }
         final String generatedId = String.valueOf(UUID.randomUUID());
         MdxQuery newMdxQuery;
         newMdxQuery = new MdxQuery(generatedId, connection, catalogName, mdx);
@@ -254,9 +255,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public void setMdxQuery(String userId, String sessionId, String mdxQueryId, String mdx) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final MdxQuery mdxQuery = this.getMdxQuery(userId, sessionId, mdxQueryId);
-        if (mdxQuery == null)
+        if (mdxQuery == null) {
             throw new OlapException(Messages.getString("Servlet.Query.CantSetMdx")); //$NON-NLS-1$
-
+        }
         mdxQuery.setMdx(mdx);
         sessionService.getSession(userId, sessionId).getMdxQueries().remove(mdxQueryId);
         sessionService.getSession(userId, sessionId).getMdxQueries().put(mdxQueryId, mdxQuery);
@@ -299,9 +300,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
                 member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
 
-                if (member == null)
+                if (member == null) {
                     // We failed to find the member.
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                }
             }
         }
 
@@ -368,7 +370,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         }
                         queryDimension.getInclusions().remove(currentMemberSelection);
                     } else {
-                        Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
                         while (memberdrill.getRightOf() != null) {
 
@@ -378,7 +380,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                                     && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
 
                                 // Get dimension to the left of the current member.
-                                QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                                final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
                                         .getRightOfDimension());
 
                                 // Get the Olap4J member.
@@ -431,8 +433,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final List<String> names = new ArrayList<String>();
         final Set<Entry<String, MdxQuery>> entries = sessionService.getSession(userId, sessionId).getMdxQueries()
                 .entrySet();
-        for (final Entry<String, MdxQuery> entry : entries)
+        for (final Entry<String, MdxQuery> entry : entries) {
             names.add(entry.getKey());
+        }
         return names;
     }
 
@@ -547,8 +550,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         sessionService.validateSession(userId, sessionId);
         final List<String> names = new ArrayList<String>();
         final Set<Entry<String, Query>> entries = sessionService.getSession(userId, sessionId).getQueries().entrySet();
-        for (final Entry<String, Query> entry : entries)
+        for (final Entry<String, Query> entry : entries) {
             names.add(entry.getKey());
+        }
         return names;
     }
 
@@ -686,10 +690,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query q = this.getQuery(userId, sessionId, queryId);
-        if (q == null)
+        if (q == null) {
             throw new OlapException(Messages.getString("Services.Query.NoSuchQuery")); //$NON-NLS-1$
-        else
+        } else {
             q.swapAxes();
+        }
 
         return executeQuery(userId, sessionId, queryId);
 
@@ -753,7 +758,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public void saveQuery(String userId, String sessionId, SavedQuery queryId) {
         this.sessionService.validateSession(userId, sessionId);
 
-        User user = this.userManager.getUser(userId);
+        final User user = this.userManager.getUser(userId);
         user.getSavedQueries().add(queryId);
         this.userManager.updateUser(user);
     }
@@ -777,7 +782,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public Set<SavedQuery> getSavedQueries(String userId, String sessionId) {
         this.sessionService.validateSession(userId, sessionId);
 
-        User user = this.userManager.getUser(userId);
+        final User user = this.userManager.getUser(userId);
 
         return user.getSavedQueries();
     }

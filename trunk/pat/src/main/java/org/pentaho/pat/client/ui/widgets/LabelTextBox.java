@@ -20,9 +20,9 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class LabelTextBox extends LayoutComposite {
 
-    private  final Label textBoxLabel = new Label();
+    private final Label textBoxLabel = new Label();
 
-    private  final TextBox textBox = new TextBox();
+    private final TextBox textBox = new TextBox();
 
     public LabelTextBox() {
         super();

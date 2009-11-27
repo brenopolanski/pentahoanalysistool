@@ -62,24 +62,24 @@ public class ConnectXmlaPanel extends LayoutComposite {
     private static final Integer WIDTH = 620;
 
     /** Textbox for connection name. */
-    private  final TextBox nameTextBox;
+    private final TextBox nameTextBox;
 
     /** Url Textbox. */
-    private  final TextBox urlTextBox;
+    private final TextBox urlTextBox;
 
-    private  final TextBox catalogTextBox;
+    private final TextBox catalogTextBox;
 
     /** User Textbox. */
-    private  final TextBox userTextBox;
+    private final TextBox userTextBox;
 
     /** Password Textbox. */
-    private  final PasswordTextBox passwordTextBox;
+    private final PasswordTextBox passwordTextBox;
 
     /** Connect button. */
-    private  final Button connectButton;
+    private final Button connectButton;
 
     /** Cancel button. */
-    private  final Button cancelButton;
+    private final Button cancelButton;
 
     /**
      * ConnectXmlaPanel Constructor.

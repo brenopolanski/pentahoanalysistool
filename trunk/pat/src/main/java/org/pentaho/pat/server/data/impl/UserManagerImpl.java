@@ -37,11 +37,11 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class UserManagerImpl extends AbstractManager implements UserManager, InitializingBean {
 
-    public void deleteUser(String userId) {
+    public void deleteUser(final String userId) {
         // Since group is the owner of the relation, we delete the user
         // from the groups first.
-        User user = getUser(userId);
-        Collection<Group> groups = user.getGroups();
+        final User user = getUser(userId);
+        final Collection<Group> groups = user.getGroups();
 
         for (Group group : groups) {
             group.getMembers().remove(user);
@@ -62,34 +62,35 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
 
     @SuppressWarnings("unchecked")
     public User getUser(final String userId) {
-        List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
+        final List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         return users.isEmpty() ? null : users.get(0);
     }
 
-    public void createUser(User user) {
+    public void createUser(final User user) {
         getHibernateTemplate().save(user);
     }
 
-    public void createDefaultUser(User user) {
+    public void createDefaultUser(final User user) {
         this.createUser(user);
     }
 
-    public void updateUser(User user) {
+    public void updateUser(final User user) {
         getHibernateTemplate().update(user);
     }
 
-    public void updateDefaultUser(User user) {
+    public void updateDefaultUser(final User user) {
         this.updateUser(user);
     }
 
     @SuppressWarnings("unchecked")
     public SavedConnection getSavedConnection(String userId, String connectionId) {
-        List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
+        final List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         if (users.size() == 1) {
-            Set<SavedConnection> sc = users.get(0).getSavedConnections();
+            final Set<SavedConnection> sc = users.get(0).getSavedConnections();
             for (SavedConnection conn : sc)
-                if (conn.getId().equals(connectionId))
+                if (conn.getId().equals(connectionId)) {
                     return conn;
+                }
         }
         return null;
     }
@@ -102,10 +103,11 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
     public SavedQuery getSavedQuery(String userId, String queryName) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         if (users.size() == 1) {
-            Set<SavedQuery> sc = users.get(0).getSavedQueries();
+            final Set<SavedQuery> sc = users.get(0).getSavedQueries();
             for (SavedQuery conn : sc)
-                if (conn.getId().equals(queryName))
+                if (conn.getId().equals(queryName)) {
                     return conn;
+                }
         }
         return null;
 

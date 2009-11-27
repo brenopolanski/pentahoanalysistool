@@ -82,7 +82,7 @@ public class Application extends Viewport {
 
     private static MainTabPanel mainTabPanel = null;
 
-    private  MenuBar menuBar = null;
+    private MenuBar menuBar = null;
 
     public static FlexTableRowDragController tblRowDrgCont;
 

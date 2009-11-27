@@ -71,30 +71,29 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class DimensionMenu extends LayoutComposite {
 
     /** The main menu. */
-    private  final Tree dimensionTree;
+    private final Tree dimensionTree;
 
-    private  Label dimensionLabel;
+    private Label dimensionLabel;
 
-    private  final ComboBox<String> sortComboBox = new ComboBox<String>();
+    private final ComboBox<String> sortComboBox = new ComboBox<String>();
 
-    private  final DefaultComboBoxModel<String> sortModeModel = (DefaultComboBoxModel<String>) sortComboBox
-            .getModel();
+    private final DefaultComboBoxModel<String> sortModeModel = (DefaultComboBoxModel<String>) sortComboBox.getModel();
 
     // private final ComboBox<String> hierarchyComboBox = new ComboBox<String>();
 
     // private final DefaultComboBoxModel<String> hierarchyModeModel = (DefaultComboBoxModel<String>)
     // hierarchyComboBox.getModel();
 
-    private  final DefaultListModel<MemberSelectionLabel> memberListBoxModel = new DefaultListModel<MemberSelectionLabel>();
+    private final DefaultListModel<MemberSelectionLabel> memberListBoxModel = new DefaultListModel<MemberSelectionLabel>();
 
-    private  final ListBox<MemberSelectionLabel> memberListBox = new ListBox<MemberSelectionLabel>(
-            new String[] {ConstantFactory.getInstance().member(), ConstantFactory.getInstance().path()});
+    private final ListBox<MemberSelectionLabel> memberListBox = new ListBox<MemberSelectionLabel>(new String[] {
+            ConstantFactory.getInstance().member(), ConstantFactory.getInstance().path()});
 
-    private  FilterProxyListModel<MemberSelectionLabel, String> filterModel;
+    private FilterProxyListModel<MemberSelectionLabel, String> filterModel;
 
-    private  final TextBox filterbox = new TextBox();
+    private final TextBox filterbox = new TextBox();
 
-    private  final Timer filterTimer = new Timer() {
+    private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
             filterModel.filter(filterbox.getText());
@@ -279,136 +278,143 @@ public class DimensionMenu extends LayoutComposite {
      *            - Dimension of interest
      */
     public final void loadMembers(final String queryId, final String dimensionId) {
-        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
-                new AsyncCallback<StringTree>() {
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+            ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
+                    new AsyncCallback<StringTree>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        dimensionTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedMemberFetch(arg0.getLocalizedMessage()));
-                    }
+                        public void onFailure(final Throwable arg0) {
+                            dimensionTree.clear();
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedMemberFetch(arg0.getLocalizedMessage()));
+                        }
 
-                    public void onSuccess(final StringTree labels) {
-                        dimensionTree.clear();
-                        dimensionLabel = new Label(labels.getValue());
+                        public void onSuccess(final StringTree labels) {
+                            dimensionTree.clear();
+                            dimensionLabel = new Label(labels.getValue());
 
-                        final TreeItem parent = dimensionTree.addItem(dimensionLabel);
+                            final TreeItem parent = dimensionTree.addItem(dimensionLabel);
 
-                        ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                dimensionLabel.getText(), new AsyncCallback<String[][]>() {
+                            ServiceFactory.getQueryInstance().getSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    dimensionLabel.getText(), new AsyncCallback<String[][]>() {
 
-                                    public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                                .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
 
-                                    }
+                                        }
 
-                                    public void onSuccess(final String[][] selectionlist) {
+                                        public void onSuccess(final String[][] selectionlist) {
 
-                                        ServiceFactory.getQueryInstance().getSortOrder(Pat.getSessionID(),
-                                                Pat.getCurrQuery(), dimensionId, new AsyncCallback<String>() {
+                                            ServiceFactory.getQueryInstance().getSortOrder(Pat.getSessionID(),
+                                                    Pat.getCurrQuery(), dimensionId, new AsyncCallback<String>() {
 
-                                                    public void onFailure(final Throwable arg0) {
-                                                        MessageBox.error(ConstantFactory.getInstance().error(),
-                                                                MessageFactory.getInstance().failedGetSort());
+                                                        public void onFailure(final Throwable arg0) {
+                                                            MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                    MessageFactory.getInstance().failedGetSort());
 
-                                                    }
+                                                        }
 
-                                                    public void onSuccess(final String arg0) {
-                                                        for (int i = 0; i < sortComboBox.getItemCount(); i++)
-                                                            if (arg0 == null) {
-                                                                DimensionMenu.this.sortModeModel.setSelectedItem(null);
-
-                                                            } else {
-                                                                if ("ASC".equals(arg0)) { //$NON-NLS-1$
+                                                        public void onSuccess(final String arg0) {
+                                                            for (int i = 0; i < sortComboBox.getItemCount(); i++)
+                                                                if (arg0 == null) {
                                                                     DimensionMenu.this.sortModeModel
-                                                                            .setSelectedItem(ConstantFactory
-                                                                                    .getInstance().sortAscending());
-                                                                    break;
-                                                                } else if ("DESC".equals(arg0)) { //$NON-NLS-1$
-                                                                    DimensionMenu.this.sortModeModel
-                                                                            .setSelectedItem(ConstantFactory
-                                                                                    .getInstance().sortDescending());
-                                                                    break;
-                                                                } else if ("BASC".equals(arg0)) { //$NON-NLS-1$
-                                                                    DimensionMenu.this.sortModeModel
-                                                                            .setSelectedItem(ConstantFactory
-                                                                                    .getInstance().sortBreakAscending());
-                                                                    break;
-                                                                } else if ("BDESC".equals(arg0)) { //$NON-NLS-1$
-                                                                    DimensionMenu.this.sortModeModel
-                                                                            .setSelectedItem(ConstantFactory
-                                                                                    .getInstance()
-                                                                                    .sortBreakDescending());
-                                                                    break;
+                                                                            .setSelectedItem(null);
+
+                                                                } else {
+                                                                    if ("ASC".equals(arg0)) { //$NON-NLS-1$
+                                                                        DimensionMenu.this.sortModeModel
+                                                                                .setSelectedItem(ConstantFactory
+                                                                                        .getInstance().sortAscending());
+                                                                        break;
+                                                                    } else if ("DESC".equals(arg0)) { //$NON-NLS-1$
+                                                                        DimensionMenu.this.sortModeModel
+                                                                                .setSelectedItem(ConstantFactory
+                                                                                        .getInstance().sortDescending());
+                                                                        break;
+                                                                    } else if ("BASC".equals(arg0)) { //$NON-NLS-1$
+                                                                        DimensionMenu.this.sortModeModel
+                                                                                .setSelectedItem(ConstantFactory
+                                                                                        .getInstance()
+                                                                                        .sortBreakAscending());
+                                                                        break;
+                                                                    } else if ("BDESC".equals(arg0)) { //$NON-NLS-1$
+                                                                        DimensionMenu.this.sortModeModel
+                                                                                .setSelectedItem(ConstantFactory
+                                                                                        .getInstance()
+                                                                                        .sortBreakDescending());
+                                                                        break;
+                                                                    }
                                                                 }
-                                                            }
 
-                                                        DimensionMenu.this.sortModeModel.getSelectedItem();
+                                                            DimensionMenu.this.sortModeModel.getSelectedItem();
 
-                                                        ServiceFactory.getQueryInstance().getHierarchizeMode(
-                                                                Pat.getSessionID(), Pat.getCurrQuery(), dimensionId,
-                                                                new AsyncCallback<String>() {
+                                                            ServiceFactory.getQueryInstance().getHierarchizeMode(
+                                                                    Pat.getSessionID(), Pat.getCurrQuery(),
+                                                                    dimensionId, new AsyncCallback<String>() {
 
-                                                                    public void onFailure(final Throwable arg0) {
-                                                                        // TODO Auto-generated method stub
+                                                                        public void onFailure(final Throwable arg0) {
+                                                                            // TODO Auto-generated method stub
 
-                                                                    }
+                                                                        }
 
-                                                                    public void onSuccess(final String arg0) {
-                                                                        /*
-                                                                         * for (int i = 0; i < hierarchyComboBox
-                                                                         * .getItemCount(); i++) if
-                                                                         * (hierarchyComboBox.getModel().getElementAt(i)
-                                                                         * .equals(arg0)){
-                                                                         * DimensionMenu.this.hierarchyModeModel
-                                                                         * .setSelectedItem(arg0);
-                                                                         * DimensionMenu.this.hierarchyModeModel
-                                                                         * .getSelectedItem(); break; } else
-                                                                         * DimensionMenu
-                                                                         * .this.hierarchyModeModel.setSelectedItem
-                                                                         * (null);
-                                                                         */
-                                                                        memberListBoxModel.clear();
-                                                                        addDimensionTreeItem(labels, parent,
-                                                                                selectionlist, dimensionLabel.getText());
-                                                                        // TODO why do i have to do it here and not in
-                                                                        // the constructor?
-                                                                        filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(
-                                                                                memberListBoxModel);
-                                                                        filterModel
-                                                                                .setModelFilter(new Filter<MemberSelectionLabel, String>() {
-                                                                                    public boolean select(
-                                                                                            final MemberSelectionLabel element,
-                                                                                            final String filter) {
-                                                                                        if (filter == null
-                                                                                                || filter.length() == 0) {
-                                                                                            return true;
+                                                                        public void onSuccess(final String arg0) {
+                                                                            /*
+                                                                             * for (int i = 0; i < hierarchyComboBox
+                                                                             * .getItemCount(); i++) if
+                                                                             * (hierarchyComboBox
+                                                                             * .getModel().getElementAt(i)
+                                                                             * .equals(arg0)){
+                                                                             * DimensionMenu.this.hierarchyModeModel
+                                                                             * .setSelectedItem(arg0);
+                                                                             * DimensionMenu.this.hierarchyModeModel
+                                                                             * .getSelectedItem(); break; } else
+                                                                             * DimensionMenu
+                                                                             * .this.hierarchyModeModel.setSelectedItem
+                                                                             * (null);
+                                                                             */
+                                                                            memberListBoxModel.clear();
+                                                                            addDimensionTreeItem(labels, parent,
+                                                                                    selectionlist, dimensionLabel
+                                                                                            .getText());
+                                                                            // TODO why do i have to do it here and not
+                                                                            // in
+                                                                            // the constructor?
+                                                                            filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(
+                                                                                    memberListBoxModel);
+                                                                            filterModel
+                                                                                    .setModelFilter(new Filter<MemberSelectionLabel, String>() {
+                                                                                        public boolean select(
+                                                                                                final MemberSelectionLabel element,
+                                                                                                final String filter) {
+                                                                                            if (filter == null
+                                                                                                    || filter.length() == 0) {
+                                                                                                return true;
+                                                                                            }
+                                                                                            return element
+                                                                                                    .getText()
+                                                                                                    .toUpperCase()
+                                                                                                    .contains(
+                                                                                                            filter
+                                                                                                                    .toUpperCase());
                                                                                         }
-                                                                                        return element
-                                                                                                .getText()
-                                                                                                .toUpperCase()
-                                                                                                .contains(
-                                                                                                        filter
-                                                                                                                .toUpperCase());
-                                                                                    }
-                                                                                });
-                                                                        memberListBox.setModel(filterModel);
+                                                                                    });
+                                                                            memberListBox.setModel(filterModel);
 
-                                                                    }
+                                                                        }
 
-                                                                });
+                                                                    });
 
-                                                    }
+                                                        }
 
-                                                });
+                                                    });
 
-                                    }
+                                        }
 
-                                });
-                    }
+                                    });
+                        }
 
-                });
+                    });
+        }
     }
 
     /**

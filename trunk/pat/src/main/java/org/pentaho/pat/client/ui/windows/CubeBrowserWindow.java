@@ -52,13 +52,13 @@ public class CubeBrowserWindow extends WindowPanel {
 
     private final static CubeMenu CUBEMENUPANEL = new CubeMenu();
 
-    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static ToolButton QMQUERYBUTTON = new ToolButton(ConstantFactory.getInstance().newQuery());
 
     private final static ToolButton MDXQUERYBUTTON = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
 
-    private  final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
+    private final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
 
     private final static CubeBrowserWindow CBW = new CubeBrowserWindow();
 

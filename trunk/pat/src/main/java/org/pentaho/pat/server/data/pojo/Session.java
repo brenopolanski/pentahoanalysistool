@@ -46,7 +46,7 @@ public class Session {
 
     private Map<String, MdxQuery> mdxQueries = new ConcurrentHashMap<String, MdxQuery>();
 
-    public Session(String id) {
+    public Session(final String id) {
         this.id = id;
     }
 
@@ -54,9 +54,10 @@ public class Session {
 
         for (Entry<String, OlapConnection> entry : this.connections.entrySet()) {
             try {
-                OlapConnection conn = entry.getValue();
-                if (!conn.isClosed())
+                final OlapConnection conn = entry.getValue();
+                if (!conn.isClosed()) {
                     conn.close();
+                }
             } catch (SQLException e) {
                 // nothing here.
             }
@@ -76,7 +77,7 @@ public class Session {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -84,20 +85,20 @@ public class Session {
         return variables;
     }
 
-    public void setVariables(Map<String, Object> variables) {
+    public void setVariables(final Map<String, Object> variables) {
         this.variables = variables;
     }
 
-    public OlapConnection getConnection(String connectionId) {
+    public OlapConnection getConnection(final String connectionId) {
         return connections.get(connectionId);
     }
 
-    public void putConnection(String connectionId, OlapConnection connection) {
+    public void putConnection(final String connectionId, final OlapConnection connection) {
         this.connections.put(connectionId, connection);
     }
 
     public void closeConnection(String connectionId) {
-        OlapConnection conn = this.connections.get(connectionId);
+        final OlapConnection conn = this.connections.get(connectionId);
         try {
             if (!conn.isClosed()) {
                 conn.close();
@@ -108,7 +109,7 @@ public class Session {
     }
 
     public List<String> getActiveConnectionsId() {
-        List<String> conns = new ArrayList<String>();
+        final List<String> conns = new ArrayList<String>();
         conns.addAll(this.connections.keySet());
         return conns;
     }

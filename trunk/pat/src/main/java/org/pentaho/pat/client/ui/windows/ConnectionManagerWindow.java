@@ -55,7 +55,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
 
-    private  final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
+    private final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
 
     private final static LayoutPanel MAINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 

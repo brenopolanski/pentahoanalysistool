@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.FlexTable;
  */
 public class DimensionFlexTable extends FlexTable {
 
-    private  Boolean horizontal = false;
+    private Boolean horizontal = false;
 
     private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
 

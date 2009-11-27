@@ -51,9 +51,9 @@ import org.springframework.util.Assert;
  */
 public class SessionServiceImpl extends AbstractService implements SessionService {
 
-    Logger log = Logger.getLogger(this.getClass());
+    private static final Logger LOG = Logger.getLogger(SessionServiceImpl.class);
 
-    private Map<String, Map<String, Session>> sessions = new ConcurrentHashMap<String, Map<String, Session>>();;
+    private final Map<String, Map<String, Session>> sessions = new ConcurrentHashMap<String, Map<String, Session>>();;
 
     private DiscoveryService discoveryService = null;
 
@@ -61,73 +61,76 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         Assert.notNull(this.discoveryService);
     }
 
-    public String createNewSession(String userId) {
+    public String createNewSession(final String userId) {
         this.validateUser(userId);
 
-        String generatedId = String.valueOf(UUID.randomUUID());
+        final String generatedId = String.valueOf(UUID.randomUUID());
 
-        if (!sessions.containsKey(userId))
+        if (!sessions.containsKey(userId)) {
             sessions.put(userId, new ConcurrentHashMap<String, Session>());
+        }
 
         sessions.get(userId).put(generatedId, new Session(generatedId));
 
         return generatedId;
     }
 
-    public void releaseSession(String userId, String sessionId) {
+    public void releaseSession(final String userId, final String sessionId) {
         this.validateSession(userId, sessionId);
         this.disconnect(userId, sessionId);
         sessions.get(userId).get(sessionId).destroy();
         sessions.get(userId).remove(sessionId);
 
-        if (sessions.get(userId).size() == 0)
+        if (sessions.get(userId).size() == 0) {
             sessions.remove(userId);
+        }
     }
 
-    public Session getSession(String userId, String sessionId) {
+    public Session getSession(final String userId, final String sessionId) {
         this.validateSession(userId, sessionId);
         return sessions.get(userId).get(sessionId);
     }
 
-    public void deleteUserSessionVariable(String userId, String sessionId, String key) {
+    public void deleteUserSessionVariable(final String userId, final String sessionId, final String key) {
         this.validateSession(userId, sessionId);
         sessions.get(userId).get(sessionId).getVariables().remove(key);
     }
 
-    public void saveUserSessionVariable(String userId, String sessionId, String key, Object value) {
+    public void saveUserSessionVariable(final String userId, final String sessionId, final String key,
+            final Object value) {
         this.validateSession(userId, sessionId);
         sessions.get(userId).get(sessionId).getVariables().put(key, value);
     }
 
-    public Object getUserSessionVariable(String userId, String sessionId, String key) {
+    public Object getUserSessionVariable(final String userId, final String sessionId, final String key) {
         this.validateSession(userId, sessionId);
         return sessions.get(userId).get(sessionId).getVariables().get(key);
     }
 
-    public void connect(String userId, String sessionId, String connectionId) throws OlapException {
+    public void connect(final String userId, final String sessionId, final String connectionId) throws OlapException {
         this.validateSession(userId, sessionId);
-        SavedConnection sc = getConnection(userId, connectionId);
+        final SavedConnection sc = getConnection(userId, connectionId);
         if (sc == null) {
             throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
         }
         this.connect(userId, sessionId, sc);
     }
 
-    public void connect(String userId, String sessionId, SavedConnection sc) throws OlapException {
+    public void connect(final String userId, final String sessionId, final SavedConnection sc) throws OlapException {
         this.validateSession(userId, sessionId);
 
         OlapConnection connection;
         String olap4jUrl = null;
         String olap4jDriver = null;
 
-        if (sc.getType() == ConnectionType.Mondrian) {
+        if (sc.getType() == ConnectionType.MONDRIAN) {
             File schema;
             try {
                 // First, we need to create a temporary file for Mondrian
                 schema = File.createTempFile(String.valueOf(UUID.randomUUID()), ""); //$NON-NLS-1$
                 schema.deleteOnExit();
-                FileWriter fw = new FileWriter(schema);
-                BufferedWriter bw = new BufferedWriter(fw);
+                final FileWriter fw = new FileWriter(schema);
+                final BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(sc.getSchemaData());
                 bw.close();
                 fw.close();
@@ -163,17 +166,20 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
             // Init the olap4j driver, in case JVM < 6
             Class.forName(olap4jDriver);
 
-            if (sc.getType().equals(ConnectionType.Mondrian) || (sc.getUsername() == null && sc.getPassword() == null)) {
+            if (sc.getType().equals(ConnectionType.MONDRIAN) || (sc.getUsername() == null && sc.getPassword() == null)) {
                 connection = (OlapConnection) DriverManager.getConnection(olap4jUrl);
             } else {
                 connection = (OlapConnection) DriverManager
                         .getConnection(olap4jUrl, sc.getUsername(), sc.getPassword());
             }
-            OlapWrapper wrapper = connection;
+            final OlapWrapper wrapper = connection;
 
-            OlapConnection olapConnection = wrapper.unwrap(OlapConnection.class);
+            final OlapConnection olapConnection = wrapper.unwrap(OlapConnection.class);
 
-            if (olapConnection != null) {
+            if (olapConnection == null) {
+                sessions.get(userId).get(sessionId).closeConnection(sc.getId());
+                throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
+            } else {
 
                 sessions.get(userId).get(sessionId).putConnection(sc.getId(), olapConnection);
 
@@ -181,47 +187,48 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 // credentials are ok or whatever. We'll test it.
                 this.discoveryService.getCubes(userId, sessionId, sc.getId());
 
-            } else {
-                sessions.get(userId).get(sessionId).closeConnection(sc.getId());
-                throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
             }
 
         } catch (ClassNotFoundException e) {
-            log.error(e);
+            LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (SQLException e) {
-            log.error(e);
+            LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (RuntimeException e) {
             // The XMLA driver wraps some exceptions in Runtime stuff.
             // That's on the FIX ME list but not fixed yet... c(T-T)b
-            if (e.getCause() instanceof OlapException)
+            if (e.getCause() instanceof OlapException) {
                 throw (OlapException) e.getCause();
-            else
+            } else {
                 throw e;
+            }
         }
     }
 
-    public String createConnection(String userId, String sessionId, String driverName, String connectStr,
-            String username, String password) throws OlapException {
+    public String createConnection(final String userId, final String sessionId, final String driverName,
+            final String connectStr, final String username, final String password) throws OlapException {
         this.validateSession(userId, sessionId);
 
         OlapConnection connection;
-        String connectionId = UUID.randomUUID().toString();
+        final String connectionId = UUID.randomUUID().toString();
 
         try {
             Class.forName(driverName);
 
-            if (username == null && password == null)
+            if (username == null && password == null) {
                 connection = (OlapConnection) DriverManager.getConnection(connectStr);
-            else
+            } else {
                 connection = (OlapConnection) DriverManager.getConnection(connectStr, username, password);
+            }
 
-            OlapWrapper wrapper = connection;
+            final OlapWrapper wrapper = connection;
 
-            OlapConnection olapConnection = wrapper.unwrap(OlapConnection.class);
+            final OlapConnection olapConnection = wrapper.unwrap(OlapConnection.class);
 
-            if (olapConnection != null) {
+            if (olapConnection == null) {
+                throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
+            } else {
 
                 sessions.get(userId).get(sessionId).putConnection(connectionId, olapConnection);
 
@@ -230,27 +237,27 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 this.discoveryService.getCubes(userId, sessionId, connectionId);
 
                 return connectionId;
-            } else {
-                throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
+
             }
 
         } catch (ClassNotFoundException e) {
-            log.error(e);
+            LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (SQLException e) {
-            log.error(e);
+            LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (RuntimeException e) {
             // The XMLA driver wraps some exceptions in Runtime stuff.
             // That's on the FIX ME list but not fixed yet... c(T-T)b
-            if (e.getCause() instanceof OlapException)
+            if (e.getCause() instanceof OlapException) {
                 throw (OlapException) e.getCause();
-            else
+            } else {
                 throw e;
+            }
         }
     }
 
-    public OlapConnection getNativeConnection(String userId, String sessionId, String connectionId) {
+    public OlapConnection getNativeConnection(final String userId, final String sessionId, final String connectionId) {
         this.validateSession(userId, sessionId);
         return sessions.get(userId).get(sessionId).getConnection(connectionId);
     }
@@ -258,38 +265,38 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
     /*
      * Closes all active connections.
      */
-    private void disconnect(String userId, String sessionId) {
+    private void disconnect(final String userId, final String sessionId) {
         for (String connId : this.getSession(userId, sessionId).getActiveConnectionsId()) {
             this.disconnect(userId, sessionId, connId);
         }
     }
 
-    public void disconnect(String userId, String sessionId, String connectionId) {
+    public void disconnect(final String userId, final String sessionId, final String connectionId) {
         this.validateSession(userId, sessionId);
         sessions.get(userId).get(sessionId).closeConnection(connectionId);
     }
 
-    public SavedConnection getConnection(String userId, String connectionId) {
+    public SavedConnection getConnection(final String userId, final String connectionId) {
         this.validateUser(userId);
         return this.userManager.getSavedConnection(userId, connectionId);
     }
 
-    public void saveConnection(String userId, SavedConnection connection) {
+    public void saveConnection(final String userId, final SavedConnection connection) {
         this.validateUser(userId);
-        User user = this.userManager.getUser(userId);
+        final User user = this.userManager.getUser(userId);
         user.getSavedConnections().add(connection);
         this.userManager.updateUser(user);
     }
 
-    public List<SavedConnection> getConnections(String userId) {
+    public List<SavedConnection> getConnections(final String userId) {
         this.validateUser(userId);
-        List<SavedConnection> connections = new ArrayList<SavedConnection>();
+        final List<SavedConnection> connections = new ArrayList<SavedConnection>();
         User user = this.userManager.getUser(userId);
         connections.addAll(user.getSavedConnections());
         return connections;
     }
 
-    public List<SavedConnection> getActiveConnections(String userId, String sessionId) {
+    public List<SavedConnection> getActiveConnections(final String userId, final String sessionId) {
         this.validateSession(userId, sessionId);
         List<SavedConnection> conns = new ArrayList<SavedConnection>();
         for (String connectionId : this.getSession(userId, sessionId).getActiveConnectionsId()) {
@@ -298,7 +305,7 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         return conns;
     }
 
-    public void deleteConnection(String userId, String connectionName) {
+    public void deleteConnection(final String userId, final String connectionName) {
         this.validateUser(userId);
         User user = this.userManager.getUser(userId);
         SavedConnection conn = getConnection(userId, connectionName);
@@ -306,7 +313,7 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         this.userManager.updateUser(user);
     }
 
-    public void setDiscoveryService(DiscoveryService discoveryService) {
+    public void setDiscoveryService(final DiscoveryService discoveryService) {
         this.discoveryService = discoveryService;
     }
 
@@ -319,16 +326,18 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         return sessions;
     }
 
-    public void validateSession(String userId, String sessionId) throws SecurityException {
+    public void validateSession(final String userId, final String sessionId) throws SecurityException {
         this.validateUser(userId);
-        if (!sessions.containsKey(userId) || !sessions.get(userId).containsKey(sessionId))
+        if (!sessions.containsKey(userId) || !sessions.get(userId).containsKey(sessionId)) {
             throw new SecurityException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+        }
     }
 
-    public void validateUser(String userId) throws SecurityException {
+    public void validateUser(final String userId) throws SecurityException {
         User user = this.userManager.getUser(userId);
-        if (user == null)
+        if (user == null) {
             throw new SecurityException(Messages.getString("Services.InvalidSessionOrUserId")); //$NON-NLS-1$
+        }
     }
 
 }

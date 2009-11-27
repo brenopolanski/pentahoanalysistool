@@ -80,7 +80,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         this(null);
     }
 
-    public SavedConnection(String uuid) {
+    public SavedConnection(final String uuid) {
         if (uuid == null) {
             this.id = UUID.randomUUID().toString();
         } else {
@@ -93,7 +93,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -101,7 +101,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -109,7 +109,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         return driverClassName;
     }
 
-    public void setDriverClassName(String driverClassName) {
+    public void setDriverClassName(final String driverClassName) {
         this.driverClassName = driverClassName;
     }
 
@@ -117,7 +117,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 
@@ -161,13 +161,14 @@ public class SavedConnection implements Comparable<SavedConnection> {
         this.schemaData = schemaData;
     }
 
-    public int compareTo(SavedConnection o) {
+    public int compareTo(final SavedConnection o) {
         return this.getName().compareTo(o.getName());
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof SavedConnection))
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof SavedConnection)) {
             return false;
+        }
         return this.getId().equals(((SavedConnection) obj).getId());
     }
 }

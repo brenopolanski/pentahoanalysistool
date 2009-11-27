@@ -89,14 +89,14 @@ public class ChartPanel extends LayoutComposite {
      * Chart Panel Constructor.
      */
     public ChartPanel() {
-        //GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
+        // GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
 
         ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());
         chartLayoutPanel.add(chart);
         layoutPanel.add(chartLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
-        
+
         this.getLayoutPanel().add(layoutPanel);
 
     }
@@ -162,12 +162,12 @@ public class ChartPanel extends LayoutComposite {
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(final CellDataSet matrix) {
-       
-            this.matrix = matrix;
-            chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
-            
-            this.layout();
-        
+
+        this.matrix = matrix;
+        chart.setChartData(cf.getChart(ct, matrix, chartTitle, pos, optionsMap, ChartPanel.this));
+
+        this.layout();
+
     }
 
     /**

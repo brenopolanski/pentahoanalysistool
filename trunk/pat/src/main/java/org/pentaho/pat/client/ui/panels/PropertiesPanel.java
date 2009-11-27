@@ -58,7 +58,7 @@ public class PropertiesPanel extends LayoutComposite {
 
     private class LayoutCommand implements Command {
 
-        private final  Region region;
+        private final Region region;
 
         public LayoutCommand(final Region region) {
             this.region = region;
@@ -78,7 +78,7 @@ public class PropertiesPanel extends LayoutComposite {
 
     private class DrillCommand implements Command {
 
-        private final  DrillType drillType;
+        private final DrillType drillType;
 
         public DrillCommand(final DrillType drillType) {
             this.drillType = drillType;
@@ -96,7 +96,7 @@ public class PropertiesPanel extends LayoutComposite {
 
     }
 
-    private final  DataPanel dataPanel;
+    private final DataPanel dataPanel;
 
     /**
      * PropertiesPanel Constructor.
@@ -265,10 +265,13 @@ public class PropertiesPanel extends LayoutComposite {
         final ToolButton drillMenuButton = new ToolButton("Drill");
         drillMenuButton.setStyle(ToolButtonStyle.MENU);
 
+        
         final PopupMenu drillMenuBtnMenu = new PopupMenu();
         drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillPosition(), new DrillCommand(DrillType.POSITION));
         drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillReplace(), new DrillCommand(DrillType.REPLACE));
 
+        drillMenuButton.setMenu(drillMenuBtnMenu);
+        
         final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
