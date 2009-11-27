@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.FlexTable;
  */
 public class DimensionFlexTable extends FlexTable {
 
-    private transient Boolean horizontal = false;
+    private  Boolean horizontal = false;
 
     private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
 
@@ -47,10 +47,10 @@ public class DimensionFlexTable extends FlexTable {
     }
 
     public DimensionFlexTable(final Boolean orientation) {
-       super();
+        super();
         addStyleName(TABLE_CSS_NAME);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(getElement(),"background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(getElement(), "background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
 
         horizontal = orientation;
 

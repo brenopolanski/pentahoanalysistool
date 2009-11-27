@@ -55,7 +55,7 @@ public interface IGuiConstants extends Constants {
      * @return
      */
     String dimensionFetchFail();
-    
+
     /**
      *TODO JAVADOC
      * 
@@ -175,14 +175,13 @@ public interface IGuiConstants extends Constants {
      */
     String username();
 
-
     /**
      *TODO JAVADOC
      * 
      * @return
      */
     String catalog();
-    
+
     /**
      *TODO JAVADOC
      * 
@@ -218,31 +217,35 @@ public interface IGuiConstants extends Constants {
      */
     String dimensions();
 
-    /**     *TODO JAVADOC
+    /**
+     * *TODO JAVADOC
      * 
      * @return
      */
     String unused();
 
-    /**     *TODO JAVADOC
+    /**
+     * *TODO JAVADOC
      * 
      * @return
      */
     String rows();
 
-    /**     *TODO JAVADOC
+    /**
+     * *TODO JAVADOC
      * 
      * @return
      */
     String columns();
 
-    /**     *TODO JAVADOC
+    /**
+     * *TODO JAVADOC
      * 
      * @return
      */
     String filter();
 
-    /**     
+    /**
      *TODO JAVADOC
      * 
      * @return
@@ -252,537 +255,529 @@ public interface IGuiConstants extends Constants {
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String member();
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String children();
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String includeChildren();
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String siblings();
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String clearSelections();
-    
-    
-
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String cancel();
 
-
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String executeQuery();
 
-   
-   
-
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String connections();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String cubes();
 
- 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String drillThrough();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String drillReplace();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String drillMember();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String drillPosition();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String pivot();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String hideBlankCells();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String showProperties();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String showFilters();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String showParent();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String ancestors();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String descendants();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String close();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String titleCubeBrowser();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String newQuery();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String newMdxQuery();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String titleDimensionBrowser();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String ok();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortDescending();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortBreakAscending();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortBreakDescending();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortFailed();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String hierarchizeFailed();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String path();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String pre();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String post();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String chartOptions();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String pieChart();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String barChart();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String lineChart();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String showMDX();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String mdx();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String grid();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String chart();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String top();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String bottom();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String left();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String right();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String load();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String shouldnthappen();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String layout();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String errorDetail();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String off();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String generalOptions();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String barChartOptions();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String glass();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String normal();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String threed();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String titles();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String chartTitle();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String xaxisLabel();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String yaxisLabel();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String legend();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String backgroundColor();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String barStyle();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String yaxisColor();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String yaxisGridColor();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String yaxisMin();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String yaxisMax();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String xaxisColor();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String xaxisGridColor();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String xaxisMin();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String xaxisMax();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String star();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String hollow();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String lineChartOptions();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String dotStyle();
@@ -791,33 +786,30 @@ public interface IGuiConstants extends Constants {
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortAZ();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String sortZA();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String exclude();
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String clearExclusions();
 
-    
-
-   
 }

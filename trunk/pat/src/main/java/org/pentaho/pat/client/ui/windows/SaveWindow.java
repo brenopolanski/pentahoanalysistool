@@ -46,7 +46,7 @@ public class SaveWindow extends WindowPanel {
 
     private final static SaveMenuPanel SAVEMENUPANEL = new SaveMenuPanel();
 
-    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static SaveWindow CBW = new SaveWindow();
 
@@ -54,7 +54,7 @@ public class SaveWindow extends WindowPanel {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         SAVEMENUPANEL.loadSavedQueries();
         CBW.showModal(false);
-        
+
         CBW.layout();
     }
 

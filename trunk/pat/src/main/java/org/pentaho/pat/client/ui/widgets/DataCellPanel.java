@@ -16,60 +16,69 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class DataCellPanel extends HorizontalPanel {
 
-    
-    private transient final MemberCell pcm;
-    private transient final MemberCell prm;
+    private  final MemberCell pcm;
 
-    public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember){
-	super();
-	sinkEvents(Event.ONDBLCLICK);
-	pcm = parentColMember;
-	prm = parentRowMember;
+    private  final MemberCell prm;
+
+    public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember) {
+        super();
+        sinkEvents(Event.ONDBLCLICK);
+        pcm = parentColMember;
+        prm = parentRowMember;
     }
-    
+
     @Override
-    public void onBrowserEvent(final Event event){
-	super.onBrowserEvent(event);
-	
-	if(DOM.eventGetType(event)== Event.ONDBLCLICK){
-	    ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), pcm, new AsyncCallback<Object>(){
+    public void onBrowserEvent(final Event event) {
+        super.onBrowserEvent(event);
 
-		public void onFailure(final Throwable arg0) {
-		    // TODO Auto-generated method stub
-		    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
-		}
+        if (DOM.eventGetType(event) == Event.ONDBLCLICK) {
+            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+                    Pat.getCurrDrillType(), pcm, new AsyncCallback<Object>() {
 
-		public void onSuccess(final Object arg0) {
-		   ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(), Pat.getCurrDrillType(), prm, new AsyncCallback<Object>(){
+                        public void onFailure(final Throwable arg0) {
+                            // TODO Auto-generated method stub
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedDrill(arg0.getLocalizedMessage()));
+                        }
 
-		    public void onFailure(final Throwable arg0) {
-			MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrill(arg0.getLocalizedMessage()));
-			
-		    }
+                        public void onSuccess(final Object arg0) {
+                            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    Pat.getCurrDrillType(), prm, new AsyncCallback<Object>() {
 
-		    public void onSuccess(final Object arg0) {
-			ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                                        public void onFailure(final Throwable arg0) {
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedDrill(arg0.getLocalizedMessage()));
 
-			    public void onFailure(final Throwable arg0) {
-				MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
-				
-			    }
+                                        }
 
-			    public void onSuccess(final CellDataSet arg0) {
-				 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-		                                DataCellPanel.this, Pat.getCurrQuery(), arg0);
-				
-			    }
-			    
-			});
-			
-		    }
-		       
-		   });
-		    
-		}
-		
-	    });
-	}
+                                        public void onSuccess(final Object arg0) {
+                                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
+                                                    Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
+
+                                                        public void onFailure(final Throwable arg0) {
+                                                            MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                    MessageFactory.getInstance().failedQuery(
+                                                                            arg0.getLocalizedMessage()));
+
+                                                        }
+
+                                                        public void onSuccess(final CellDataSet arg0) {
+                                                            GlobalConnectionFactory.getQueryInstance()
+                                                                    .getQueryListeners().fireQueryExecuted(
+                                                                            DataCellPanel.this, Pat.getCurrQuery(),
+                                                                            arg0);
+
+                                                        }
+
+                                                    });
+
+                                        }
+
+                                    });
+
+                        }
+
+                    });
+        }
     }
 }

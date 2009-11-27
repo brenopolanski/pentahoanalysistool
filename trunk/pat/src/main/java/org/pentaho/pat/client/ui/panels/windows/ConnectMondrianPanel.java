@@ -81,30 +81,30 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
     // Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
     public static native String decode(final String data) /*-{
-                                                          
-                                                          var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-                                                          var out = "", c1, c2, c3, e1, e2, e3, e4;
-                                                          
-                                                          for (var i = 0; i < data.length; ) {
-                                                          e1 = tab.indexOf(data.charAt(i++));
-                                                          e2 = tab.indexOf(data.charAt(i++));
-                                                          e3 = tab.indexOf(data.charAt(i++));
-                                                          e4 = tab.indexOf(data.charAt(i++));
-                                                          c1 = (e1 << 2) + (e2 >> 4);
-                                                          c2 = ((e2 & 15) << 4) + (e3 >> 2);
-                                                          c3 = ((e3 & 3) << 6) + e4;
-                                                          out += String.fromCharCode(c1);
-                                                          
-                                                          if (e3 != 64)
-                                                          out += String.fromCharCode(c2);
-                                                          
-                                                          if (e4 != 64)
-                                                          out += String.fromCharCode(c3);
-                                                          }
-                                                          
-                                                          return out;
-                                                          
-                                                          }-*/;
+                                                             
+                                                             var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+                                                             var out = "", c1, c2, c3, e1, e2, e3, e4;
+                                                             
+                                                             for (var i = 0; i < data.length; ) {
+                                                             e1 = tab.indexOf(data.charAt(i++));
+                                                             e2 = tab.indexOf(data.charAt(i++));
+                                                             e3 = tab.indexOf(data.charAt(i++));
+                                                             e4 = tab.indexOf(data.charAt(i++));
+                                                             c1 = (e1 << 2) + (e2 >> 4);
+                                                             c2 = ((e2 & 15) << 4) + (e3 >> 2);
+                                                             c3 = ((e3 & 3) << 6) + e4;
+                                                             out += String.fromCharCode(c1);
+                                                             
+                                                             if (e3 != 64)
+                                                             out += String.fromCharCode(c2);
+                                                             
+                                                             if (e4 != 64)
+                                                             out += String.fromCharCode(c3);
+                                                             }
+                                                             
+                                                             return out;
+                                                             
+                                                             }-*/;
 
     /**
      * Custom start tag for recognizing the returned schema data from the backend. Has to match the one defined in the
@@ -119,34 +119,34 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private final static String SCHEMA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
 
     /** Textbox for connection name. */
-    private final TextBox nameTextBox;
+    private  final TextBox nameTextBox;
 
     /** Listbox for drivers. */
-    private final ListBox driverListBox;
+    private  final ListBox driverListBox;
 
     /** Textbox for url. */
-    private final TextBox urlTextBox;
+    private  final TextBox urlTextBox;
 
     /** Textbox for user. */
-    private final TextBox userTextBox;
+    private  final TextBox userTextBox;
 
     /** Textbox for Password. */
-    private final PasswordTextBox passwordTextBox;
+    private  final PasswordTextBox passwordTextBox;
 
     /** File upload widget. */
-    private final FileUpload fileUpload;
+    private  final FileUpload fileUpload;
 
     /** Schema upload button. */
-    private final Button uploadButton;
+    private  final Button uploadButton;
 
     /** Connect button. */
-    private final Button connectButton;
+    private  final Button connectButton;
 
     /** Cancel button. */
-    private final Button cancelButton;
+    private  final Button cancelButton;
 
     /** Schema uploaded data. **/
-    private String schemaData;
+    private  String schemaData;
 
     /**
      * ConnectMondrianPanel Constructor.
@@ -189,12 +189,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
             public void onSuccess(final String[] arg0) {
 
-                if (arg0 != null && arg0.length > 0)
-                    for (final String element2 : arg0)
+                if (arg0 != null && arg0.length > 0) {
+                    for (final String element2 : arg0) {
                         listBox.addItem(element2);
-                else
+                    }
+                } else {
                     MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                             .noJdbcDriverFound());
+                }
             }
         });
         return listBox;
@@ -206,20 +208,22 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * @return the cube connection
      */
     private CubeConnection getCubeConnection() {
-        final CubeConnection cc = new CubeConnection(ConnectionType.Mondrian);
-        cc.setName(nameTextBox.getText());
-        cc.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
-        cc.setUrl(urlTextBox.getText());
-        if (userTextBox.getText() != null && userTextBox.getText().length() > 0)
-            cc.setUsername(userTextBox.getText());
-        else
-            cc.setUsername(null);
-        if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0)
-            cc.setPassword(passwordTextBox.getText());
-        else
-            cc.setPassword(null);
-        cc.setSchemaData(schemaData);
-        return cc;
+        final CubeConnection cubeConn = new CubeConnection(ConnectionType.Mondrian);
+        cubeConn.setName(nameTextBox.getText());
+        cubeConn.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
+        cubeConn.setUrl(urlTextBox.getText());
+        if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
+            cubeConn.setUsername(userTextBox.getText());
+        } else {
+            cubeConn.setUsername(null);
+        }
+        if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
+            cubeConn.setPassword(passwordTextBox.getText());
+        } else {
+            cubeConn.setPassword(null);
+        }
+        cubeConn.setSchemaData(schemaData);
+        return cubeConn;
     }
 
     /**
@@ -244,12 +248,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         // TODO remove this later
                         MessageBox.info(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance()
                                 .success());
-                    } else
+                    } else {
                         MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                                 .fileUploadFailed());
-                } else
+                    }
+                } else {
                     MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                             .checkErrorLog());
+                }
             }
         });
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
@@ -274,11 +280,12 @@ public class ConnectMondrianPanel extends LayoutComposite {
         uploadButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final String filename = fileUpload.getFilename();
-                if (filename == null || filename.length() == 0)
+                if (filename == null || filename.length() == 0) {
                     MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                             .fileUploadNoFile());
-                else
+                } else {
                     formPanel.submit();
+                }
             }
         });
 
@@ -294,7 +301,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                 connectButton.setEnabled(true);
                             }
 
-                            public void onSuccess(final String o) {
+                            public void onSuccess(final String object) {
                                 connectButton.setEnabled(true);
                                 // TODO refresh or close?
                                 ConnectionManagerWindow.closeTabs();

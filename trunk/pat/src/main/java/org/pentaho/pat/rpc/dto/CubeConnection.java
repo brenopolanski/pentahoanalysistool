@@ -32,109 +32,108 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Paul Stoellberger
  */
 
-public class CubeConnection implements Serializable,IsSerializable {
-	
-	
-	private static final long serialVersionUID = 1L;
+public class CubeConnection implements Serializable, IsSerializable {
 
-	private String id = null;
-	
-	private String name = null;
-	
-	private String driverClassName = null;
-	
-	private String url = null;
-	
-	private String catalog = null;
-	
-	private String username = null;
-	
-	private String password = null;
-	
-	private ConnectionType connectionType = null;
+    private static final long serialVersionUID = 1L;
 
-	private String schemaData = null;
+    private String id = null;
 
-	public enum ConnectionType implements IsSerializable {
-		XMLA, Mondrian
-	}
-	
-	
-	public CubeConnection(ConnectionType cType) {
-		connectionType = cType;
-	}
-	
-	public CubeConnection() {
-	}
-	
-	
-	public String getName() {
-		return name;
-	}
+    private String name = null;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String driverClassName = null;
 
-	public String getDriverClassName() {
-		return driverClassName;
-	}
+    private String url = null;
 
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
-	}
+    private String catalog = null;
 
-	public String getUrl() {
-		return url;
-	}
+    private String username = null;
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    private String password = null;
 
-	public String getUsername() {
-		return username;
-	}
+    private ConnectionType connectionType = null;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    private String schemaData = null;
 
-	public String getPassword() {
-		return password;
-	}
+    public enum ConnectionType implements IsSerializable {
+        XMLA, Mondrian
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public ConnectionType getConnectionType() {
-		return connectionType;
-	}
-	public void setConnectionType(ConnectionType connectionType) {
-		this.connectionType = connectionType;
-	}
+    public CubeConnection(final ConnectionType cType) {
+        connectionType = cType;
+    }
 
-	public String getCatalog() {
-		return catalog;
-	}
+    public CubeConnection() {
+    }
 
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getDriverClassName() {
+        return driverClassName;
+    }
+
+    public void setDriverClassName(final String driverClassName) {
+        this.driverClassName = driverClassName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(final String url) {
+        this.url = url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public ConnectionType getConnectionType() {
+        return connectionType;
+    }
+
+    public void setConnectionType(final ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(final String catalog) {
+        this.catalog = catalog;
+    }
 
     public String getSchemaData() {
         return schemaData;
     }
 
-    public void setSchemaData(String schemaData) {
+    public void setSchemaData(final String schemaData) {
         this.schemaData = schemaData;
     }
-    
+
     public String getId() {
         return id;
     }
-    
-    public void setId(String id) {
+
+    public void setId(final String id) {
         this.id = id;
     }
 }

@@ -26,27 +26,27 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class RpcException extends Exception implements IsSerializable, Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    private String message = null;
-    
+
+    private  String message = null;
+
     public RpcException() {
         super();
     }
-    
-    public RpcException(String message) {
+
+    public RpcException(final String message) {
         super(message);
         this.message = message;
     }
-    
-    public RpcException(String message, Throwable cause) {
-        super(message,cause);
+
+    public RpcException(final String message, final Throwable cause) {
+        super(message, cause);
         this.message = message;
     }
-    
-    public RpcException(Throwable cause) {
+
+    public RpcException(final Throwable cause) {
         super(cause);
     }
-    
+
     @Override
     public String getMessage() {
         return this.message;

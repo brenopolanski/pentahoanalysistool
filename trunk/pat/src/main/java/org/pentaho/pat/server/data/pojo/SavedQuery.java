@@ -14,16 +14,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.pentaho.pat.rpc.dto.CubeItem;
 
-
-
 /**
  *TODO JAVADOC
- *
+ * 
  * @author bugg
- *
+ * 
  */
 @Entity
-@Table(name="QUERIES")
+@Table(name = "QUERIES")
 public class SavedQuery implements Comparable<SavedQuery> {
 
     /**
@@ -31,34 +29,32 @@ public class SavedQuery implements Comparable<SavedQuery> {
      */
     @Basic
     private String id;
-    
+
     /**
      * The name of this connection.
      */
     @Basic
     private String name;
-    
+
     @Basic
     private String xml;
-    
+
     @Basic
     private String username;
 
     @Basic
     private String connectionId;
-    
-    @Basic 
+
+    @Basic
     private String cubeName;
-    
+
     @Basic
     private Date updatedDate;
-    
+
     @Basic
-    @Type(
-        type = "org.pentaho.pat.rpc.dto.CubeItem"
-    )
+    @Type(type = "org.pentaho.pat.rpc.dto.CubeItem")
     private CubeItem cube;
-    
+
     public SavedQuery() {
         this(null);
     }
@@ -70,16 +66,16 @@ public class SavedQuery implements Comparable<SavedQuery> {
             this.id = uuid;
         }
     }
-    
+
     @Id
     public String getId() {
         return this.id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -88,11 +84,11 @@ public class SavedQuery implements Comparable<SavedQuery> {
         this.name = name;
     }
 
-    public String getXml(){
+    public String getXml() {
         return xml;
     }
-    
-    public void setXml(String xml){
+
+    public void setXml(String xml) {
         this.xml = xml;
     }
 
@@ -105,9 +101,11 @@ public class SavedQuery implements Comparable<SavedQuery> {
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param connectionId the connectionId to set
+     * 
+     * @param connectionId
+     *            the connectionId to set
      */
     public void setConnectionId(String connectionId) {
         this.connectionId = connectionId;
@@ -115,13 +113,16 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     /**
      *TODO JAVADOC
+     * 
      * @return the connectionId
      */
     public String getConnectionId() {
         return connectionId;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(SavedQuery arg0) {
@@ -131,6 +132,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     /**
      *TODO JAVADOC
+     * 
      * @return the cubeName
      */
     public String getCubeName() {
@@ -138,9 +140,11 @@ public class SavedQuery implements Comparable<SavedQuery> {
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param cubeName the cubeName to set
+     * 
+     * @param cubeName
+     *            the cubeName to set
      */
     public void setCubeName(String cubeName) {
         this.cubeName = cubeName;
@@ -148,22 +152,24 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @param cube
      */
     public void setCube(CubeItem cube) {
         this.cube = cube;
-        
+
     }
-    
-    public CubeItem getCube(){
+
+    public CubeItem getCube() {
         return cube;
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param updatedDate the updatedDate to set
+     * 
+     * @param updatedDate
+     *            the updatedDate to set
      */
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
@@ -171,6 +177,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     /**
      *TODO JAVADOC
+     * 
      * @return the updatedDate
      */
     public Date getUpdatedDate() {

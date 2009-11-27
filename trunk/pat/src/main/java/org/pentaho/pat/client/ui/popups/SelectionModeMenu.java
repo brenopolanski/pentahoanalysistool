@@ -66,18 +66,18 @@ public class SelectionModeMenu extends PopupMenu {
 
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
                     dimSelections, new AsyncCallback<Object>() {
-                public void onFailure(final Throwable caught) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                            .noSelectionCleared(caught.getLocalizedMessage()));
+                        public void onFailure(final Throwable caught) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .noSelectionCleared(caught.getLocalizedMessage()));
 
-                }
+                        }
 
-                public void onSuccess(final Object result) {
-                    targetLabel.setSelectionMode(CLEAR);
-                    DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, CLEAR);
+                        public void onSuccess(final Object result) {
+                            targetLabel.setSelectionMode(CLEAR);
+                            DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, CLEAR);
 
-                }
-            });
+                        }
+                    });
             SelectionModeMenu.this.hide();
         }
     }
@@ -85,7 +85,7 @@ public class SelectionModeMenu extends PopupMenu {
     public class SelectionModeCommand implements Command {
 
         /** The selection mode. */
-        private transient int selectionMode = -1;
+        private  int selectionMode = -1;
 
         /**
          * The Constructor.
@@ -115,19 +115,19 @@ public class SelectionModeMenu extends PopupMenu {
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
                     dimSelections, selection, new AsyncCallback<Object>() {
 
-                public void onFailure(final Throwable arg0) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                            .noSelectionSet(arg0.getLocalizedMessage()));
+                        public void onFailure(final Throwable arg0) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .noSelectionSet(arg0.getLocalizedMessage()));
 
-                }
+                        }
 
-                public void onSuccess(final Object arg0) {
-                    targetLabel.setSelectionMode(selectionMode);
-                    DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
+                        public void onSuccess(final Object arg0) {
+                            targetLabel.setSelectionMode(selectionMode);
+                            DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
 
-                }
+                        }
 
-            });
+                    });
 
             SelectionModeMenu.this.hide();
         }

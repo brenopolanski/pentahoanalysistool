@@ -32,43 +32,41 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Paul Stoellberger
  */
 
-public class CubeItem implements Serializable,IsSerializable {
-	
-	
-	private static final long serialVersionUID = 2L;
+public class CubeItem implements Serializable, IsSerializable {
 
-	private String name = null;
-	
-	private String catalog = null;
-	
-	private String schema = null;
+    private static final long serialVersionUID = 2L;
 
-	public CubeItem(String name, String catalog, String schema) {
-	    this.name = name;
-	    this.catalog = catalog;
-	    this.schema = schema;
-	}
-	
-	public CubeItem()  {
-	    
-	}
-	
-	
-	public String getName() {
-		return name;
-	}
+    private String name = null;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String catalog = null;
 
-	public String getCatalog() {
-		return catalog;
-	}
+    private String schema = null;
 
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
-	}
+    public CubeItem(final String name, final String catalog, final String schema) {
+        this.name = name;
+        this.catalog = catalog;
+        this.schema = schema;
+    }
+
+    public CubeItem() {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(final String catalog) {
+        this.catalog = catalog;
+    }
 
     public String getSchema() {
         return schema;
@@ -77,5 +75,5 @@ public class CubeItem implements Serializable,IsSerializable {
     public void setSchema(String schema) {
         this.schema = schema;
     }
-    
+
 }

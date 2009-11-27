@@ -55,31 +55,24 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
-    private String panelName = null;
+    private  String panelName = null;
 
-    private String catalog = null;
+    private  String cube = null;
 
-    private String cube = null;
-    
-    private CubeItem cubeItem = null;
+    private  CubeItem cubeItem = null;
 
     private String connectionId = null;
 
-    private String queryId = null;
+    private  String queryId = null;
 
-    private OlapTable olapTable = null;
+    private  OlapTable olapTable = null;
 
-    private MDXRichTextArea mdxArea = new MDXRichTextArea();;
-
-    private LayoutPanel baselayoutPanel;
-
-    private Button executeButton;
+    private  final MDXRichTextArea mdxArea = new MDXRichTextArea();;
 
     public MdxPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
         super();
-     
-       
+
     }
 
     /**
@@ -89,106 +82,100 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     public MdxPanel(final CubeItem cube, final String connection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
-        panelName = ConstantFactory.getInstance().mdx()+ " : " + cube.getName() ;  //$NON-NLS-1$
+        panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
 
         GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
 
         this.cubeItem = cube;
         this.cube = cube.getName();
         this.connectionId = connection;
-        this.catalog = cube.getCatalog();
-        
+        final String catalog = cube.getCatalog();
 
         ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,
                 new AsyncCallback<String>() {
 
-            public void onFailure(final Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCreateQuery(arg0.getLocalizedMessage()));
-                LogoPanel.spinWheel(false);
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedCreateQuery(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
 
-            }
+                    }
 
-            public void onSuccess(final String query) {
-                queryId = query;
-                Pat.setCurrQuery(query);
-                Pat.setCurrConnection(connectionId);
-                
-                initializeWidget();
-                LogoPanel.spinWheel(false);
-     
-            }
-        });
+                    public void onSuccess(final String query) {
+                        queryId = query;
+                        Pat.setCurrQuery(query);
+                        Pat.setCurrConnection(connectionId);
+
+                        initializeWidget();
+                        LogoPanel.spinWheel(false);
+
+                    }
+                });
 
     }
-    
+
     public MdxPanel(final CubeItem cube, final String connection, final String mdx) {
-        this(cube,connection);
+        this(cube, connection);
         this.mdxArea.setText(mdx);
     }
-        
+
     protected void initializeWidget() {
 
-        baselayoutPanel = new LayoutPanel();
-
+        final LayoutPanel baselayoutPanel = new LayoutPanel();
 
         LogoPanel.spinWheel(true);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(baselayoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-
-
+        DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         mdxArea.setWidth("100%"); //$NON-NLS-1$
         mdxArea.setHeight("150px"); //$NON-NLS-1$
-        ScrollPanel spMdx = new ScrollPanel(mdxArea);
+        final ScrollPanel spMdx = new ScrollPanel(mdxArea);
         centerPanel.add(spMdx, new BoxLayoutData(FillStyle.HORIZONTAL));
 
-        executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 
         centerPanel.add(executeButton);
 
         olapTable = new OlapTable();
-        centerPanel.add(olapTable,new BoxLayoutData(FillStyle.BOTH));
-
+        centerPanel.add(olapTable, new BoxLayoutData(FillStyle.BOTH));
 
         baselayoutPanel.add(centerPanel);
-        
+
         getLayoutPanel().add(baselayoutPanel);
         LogoPanel.spinWheel(false);
-
-
 
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 mdxArea.formatMDX();
-                ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId,mdxArea.getText(), new AsyncCallback<Object>() {
-
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedQuery(arg0.getLocalizedMessage()));
-                    }
-
-                    public void onSuccess(Object arg0) {
-                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(), Pat.getCurrQuery(),
-                                new AsyncCallback<CellDataSet>() {
+                ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdxArea.getText(),
+                        new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                         .failedQuery(arg0.getLocalizedMessage()));
                             }
 
-                            public void onSuccess(final CellDataSet result1) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        MdxPanel.this, Pat.getCurrQuery(), result1);
+                            public void onSuccess(final Object arg0) {
+                                ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(),
+                                        Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
+
+                                            public void onFailure(final Throwable arg0) {
+                                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                        .getInstance().failedQuery(arg0.getLocalizedMessage()));
+                                            }
+
+                                            public void onSuccess(final CellDataSet result1) {
+                                                GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                        .fireQueryExecuted(MdxPanel.this, Pat.getCurrQuery(), result1);
+                                            }
+
+                                        });
                             }
 
                         });
-                    }
-
-                });
-
 
             }
 
@@ -199,7 +186,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     public CubeItem getCubeItem() {
         return cubeItem;
     }
-    
+
     public String getCube() {
         return cube;
     }
@@ -224,7 +211,6 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         return panelName;
     }
 
-
     /**
      *TODO JAVADOC
      * 
@@ -241,7 +227,8 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(arg0.getLocalizedMessage()));
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(
+                        arg0.getLocalizedMessage()));
                 LogoPanel.spinWheel(false);
             }
 
@@ -269,7 +256,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         return connectionId;
     }
 
-    public void setConnectionId(String connectionId) {
+    public void setConnectionId(final String connectionId) {
         this.connectionId = connectionId;
     }
 
@@ -279,24 +266,19 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
      */
 
-
-    public void onQueryChange(Widget sender) {
+    public void onQueryChange(final Widget sender) {
         // TODO Auto-generated method stub
 
     }
 
-    public void onQueryExecuted(String queryId, CellDataSet matrix) {
-        if (this.queryId.equals(queryId))
-        {
-            
-            if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
-                olapTable.setData(matrix);
-            }
+    public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
+        if (this.queryId.equals(queryId) && Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()
+                && this.isAttached()) {
+
+            olapTable.setData(matrix);
+
         }
 
     }
-    
-    
-
 
 }

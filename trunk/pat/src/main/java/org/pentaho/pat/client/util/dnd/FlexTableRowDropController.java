@@ -47,13 +47,13 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     private Widget positioner = null;
 
     /** Target Row. */
-    private final static int targetRow = 0;
+    private final static int TARGETROW = 0;
 
     /** Target Row. */
-    private final static int targetCol = 0;
+    private final static int TARGETCOL = 0;
 
     /** The Drop Axis. */
-    private org.pentaho.pat.rpc.dto.IAxis targetAxis;
+    private  org.pentaho.pat.rpc.dto.IAxis targetAxis;
 
     /**
      * Constructor.
@@ -96,7 +96,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(),
-                targetRow + 1, trDragController.getDragCol(), targetCol + 1, targetAxis);
+                TARGETROW + 1, trDragController.getDragCol(), TARGETCOL + 1, targetAxis);
         super.onDrop(context);
     }
 
@@ -152,11 +152,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        final Widget w = flexTable.getWidget(targetRow, 0);
+        final Widget w = flexTable.getWidget(TARGETROW, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
-        context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
-                + (w.getOffsetHeight()));
+        context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (w.getOffsetHeight()));
     }
 
     @Override

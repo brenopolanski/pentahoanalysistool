@@ -8,35 +8,40 @@ import java.util.Date;
 
 /**
  *TODO JAVADOC
- *
+ * 
  * @author bugg
- *
+ * 
  */
-public class QuerySaveModel implements Serializable{
+public class QuerySaveModel implements Serializable {
 
     /**
      *TODO JAVADOC
      */
     private static final long serialVersionUID = 1L;
+
     private String name;
+
     private String connection;
+
     private Date savedDate;
+
     private String id;
+
     private CubeItem cube;
+
     private String cubeName;
-    
+
     @SuppressWarnings("unused")
     private QuerySaveModel() {
-        
+
     }
-    
- /*   public QuerySaveModel(String id, String name, String connection, Date savedDate) {
-        this.name = name;
-        this.connection = connection;
-        this.id = id;
-        this.savedDate = savedDate;
-    }*/
-    public QuerySaveModel(String id, String name, String connection, CubeItem cube, String cubeName, Date updatedDate) {
+
+    /*
+     * public QuerySaveModel(String id, String name, String connection, Date savedDate) { this.name = name;
+     * this.connection = connection; this.id = id; this.savedDate = savedDate; }
+     */
+    public QuerySaveModel(final String id, final String name, final String connection, final CubeItem cube,
+            final String cubeName, final Date updatedDate) {
         this.name = name;
         this.connection = connection;
         this.id = id;
@@ -44,8 +49,10 @@ public class QuerySaveModel implements Serializable{
         this.cubeName = cubeName;
         this.savedDate = updatedDate;
     }
+
     /**
      *TODO JAVADOC
+     * 
      * @return the name
      */
     public String getName() {
@@ -53,16 +60,19 @@ public class QuerySaveModel implements Serializable{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param name the name to set
+     * 
+     * @param name
+     *            the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the connection
      */
     public String getConnection() {
@@ -70,16 +80,19 @@ public class QuerySaveModel implements Serializable{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param connection the connection to set
+     * 
+     * @param connection
+     *            the connection to set
      */
-    public void setConnection(String connection) {
+    public void setConnection(final String connection) {
         this.connection = connection;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the savedDate
      */
     public Date getSavedDate() {
@@ -87,30 +100,35 @@ public class QuerySaveModel implements Serializable{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param savedDate the savedDate to set
+     * 
+     * @param savedDate
+     *            the savedDate to set
      */
-    public void setSavedDate(Date savedDate) {
+    public void setSavedDate(final Date savedDate) {
         this.savedDate = savedDate;
     }
-    
+
     @Override
     public String toString() {
-      return getName() + " " + getConnection() + " " + getSavedDate();  //$NON-NLS-1$//$NON-NLS-2$
+        return getName() + " " + getConnection() + " " + getSavedDate(); //$NON-NLS-1$//$NON-NLS-2$
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param id the id to set
+     * 
+     * @param id
+     *            the id to set
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the id
      */
     public String getId() {
@@ -118,16 +136,19 @@ public class QuerySaveModel implements Serializable{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param cube the cube to set
+     * 
+     * @param cube
+     *            the cube to set
      */
-    public void setCube(CubeItem cube) {
+    public void setCube(final CubeItem cube) {
         this.cube = cube;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the cube
      */
     public CubeItem getCube() {
@@ -135,16 +156,19 @@ public class QuerySaveModel implements Serializable{
     }
 
     /**
-     *
+     * 
      *TODO JAVADOC
-     * @param cubeName the cubeName to set
+     * 
+     * @param cubeName
+     *            the cubeName to set
      */
-    public void setCubeName(String cubeName) {
+    public void setCubeName(final String cubeName) {
         this.cubeName = cubeName;
     }
 
     /**
      *TODO JAVADOC
+     * 
      * @return the cubeName
      */
     public String getCubeName() {

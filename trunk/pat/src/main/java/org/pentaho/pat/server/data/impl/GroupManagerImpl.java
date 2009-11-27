@@ -27,7 +27,7 @@ public class GroupManagerImpl extends AbstractManager implements GroupManager {
     public void createGroup(Group group) {
         getHibernateTemplate().save(group);
     }
-    
+
     public void createDefaultGroup(Group group) {
         this.createGroup(group);
     }
@@ -35,7 +35,7 @@ public class GroupManagerImpl extends AbstractManager implements GroupManager {
     public void updateGroup(Group group) {
         getHibernateTemplate().update(group);
     }
-    
+
     public void updateDefaultGroup(Group group) {
         this.updateGroup(group);
     }

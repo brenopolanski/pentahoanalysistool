@@ -20,7 +20,6 @@
 
 package org.pentaho.pat.client.util;
 
-
 /**
  * Connection Item
  * 
@@ -32,9 +31,9 @@ package org.pentaho.pat.client.util;
 public class ConnectionItem {
     private String name;
 
-    private transient final String connId;
+    private  final String connId;
 
-    private transient Boolean connected = false;
+    private  Boolean connected = false;
 
     public ConnectionItem(final String connId, final String name, final boolean isConnected) {
         this.name = name;
@@ -44,24 +43,23 @@ public class ConnectionItem {
 
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj){
+        if (this == obj) {
             return true;
         }
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()){
+        if (getClass() != obj.getClass()) {
             return false;
         }
-            
 
         final ConnectionItem other = (ConnectionItem) obj;
-        if (!connId.equals(other.connId)){
+        if (!connId.equals(other.connId)) {
             return false;
         }
         return true;
     }
-    
+
     public String getId() {
         return connId;
     }

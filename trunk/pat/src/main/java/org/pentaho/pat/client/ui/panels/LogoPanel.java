@@ -40,43 +40,43 @@ public class LogoPanel extends LayoutComposite {
 
     private final static String LPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
 
-    private transient final LayoutPanel rootPanel = getLayoutPanel();
+    private  final LayoutPanel rootPanel = getLayoutPanel();
 
-    private static Label throbberLabel = new Label(); 
+    private static Label throbberLabel = new Label();
+
     /**
      * 
      * Sets the spinner spinning, or hides it.
-     *
+     * 
      * @param spin
      */
     public static void spinWheel(final boolean spin) {
- 
-        if (spin){
+
+        if (spin) {
             throbberLabel.setVisible(true);
-        }
-        else{
+        } else {
             throbberLabel.setVisible(false);
         }
     }
 
     /**
-     *  Logo Panel Constructor.
+     * Logo Panel Constructor.
      */
     public LogoPanel() {
 
-	super();
+        super();
 
         this.setStylePrimaryName(LPANEL_CSS_STYLE);
 
-        final Grid logoGrid = new Grid(1,2);
+        final Grid logoGrid = new Grid(1, 2);
         throbberLabel.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
-        throbberLabel.addStyleName("throbber");  //$NON-NLS-1$
+        throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
         throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
         throbberLabel.setPixelSize(100, 100);
-        
+
         final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
         logoGrid.setWidget(0, 1, throbberLabel);
-        
+
         logoGrid.setWidget(0, 0, patlogo);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);

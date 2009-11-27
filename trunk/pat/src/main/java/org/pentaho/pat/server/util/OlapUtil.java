@@ -36,7 +36,7 @@ import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.StringTree;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.server.messages.Messages;
 
@@ -65,7 +65,7 @@ public class OlapUtil {
         final CellDataSet cds = new CellDataSet(matrix.getMatrixWidth(), matrix.getMatrixHeight());
 
         int z = 0;
-        final BaseCell[][] bodyvalues = new BaseCell[matrix.getMatrixHeight() - matrix.getOffset()][matrix
+        final AbstractBaseCell[][] bodyvalues = new AbstractBaseCell[matrix.getMatrixHeight() - matrix.getOffset()][matrix
                 .getMatrixWidth()];
         for (int y = matrix.getOffset(); y < matrix.getMatrixHeight(); y++) {
 
@@ -76,7 +76,7 @@ public class OlapUtil {
 
         cds.setCellSetBody(bodyvalues);
 
-        final BaseCell[][] headervalues = new BaseCell[matrix.getOffset()][matrix.getMatrixWidth()];
+        final AbstractBaseCell[][] headervalues = new AbstractBaseCell[matrix.getOffset()][matrix.getMatrixWidth()];
         for (int y = 0; y < matrix.getOffset(); y++)
             for (int x = 0; x < matrix.getMatrixWidth(); x++)
                 headervalues[y][x] = matrix.get(x, y);
@@ -126,13 +126,14 @@ public class OlapUtil {
      * @param selections
      * @return null
      */
-    public static Selection findSelection(final String path, final List<Selection> selections, final Selection.Operator oper) {
+    public static Selection findSelection(final String path, final List<Selection> selections,
+            final Selection.Operator oper) {
         for (final Selection selection : selections)
             if (selection.getName().equals(path) && selection.getOperator().equals(oper))
                 return selection;
         return null;
     }
-    
+
     /**
      * @param path
      * @param dim
@@ -165,7 +166,7 @@ public class OlapUtil {
             cellSetIndex.remove(index);
             cellSetItems.remove(index);
         }
-        
+
     }
 
     /**
@@ -228,27 +229,26 @@ public class OlapUtil {
      * @return
      */
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
-            final CellSet cellSet) throws OlapException{
+            final CellSet cellSet) throws OlapException {
 
         // FIXME this method doesn't seem to be correct at all, member and memberout swapped?
         final Cube cube = query.getCube();
-        Member memberOut=null;
-        if(member.getRawValue()!=null)
-         memberOut = cube.lookupMember(member.getRawValue().toString());
+        Member memberOut = null;
+        if (member.getRawValue() != null)
+            memberOut = cube.lookupMember(member.getRawValue().toString());
 
         if (memberOut == null) {
             // Let's try with only the dimension name in front.
-            if(member.getRawValue()!=null){
-            final List<String> dimPlusMemberNames = new ArrayList<String>();
-            dimPlusMemberNames.add(dimension.getName());
+            if (member.getRawValue() != null) {
+                final List<String> dimPlusMemberNames = new ArrayList<String>();
+                dimPlusMemberNames.add(dimension.getName());
 
-            
-            dimPlusMemberNames.add(member.getRawValue().toString());
-            memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
+                dimPlusMemberNames.add(member.getRawValue().toString());
+                memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }
             if (memberOut == null) {
-        	String membername = member.getUniqueName().substring(1, member.getUniqueName().length()-1);
-        	      String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
+                String membername = member.getUniqueName().substring(1, member.getUniqueName().length() - 1);
+                String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
 
                 memberOut = cube.lookupMember(memberNames);
 
@@ -256,11 +256,11 @@ public class OlapUtil {
                     // We failed to find the member.
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
             }
-        
+
         }
- 
+
         return memberOut;
-      
+
     }
 
     /**

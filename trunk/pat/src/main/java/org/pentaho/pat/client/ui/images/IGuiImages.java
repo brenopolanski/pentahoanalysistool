@@ -26,60 +26,60 @@ import com.google.gwt.user.client.ui.ImageBundle;
 /**
  * Pat Images.
  * 
- * @created Apr 23, 2009 
+ * @created Apr 23, 2009
  * @author tom(at)wamonline.org.uk
  */
-public interface IGuiImages extends ImageBundle{
+public interface IGuiImages extends ImageBundle {
 
-	/**
-	 * Chart Image.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	AbstractImagePrototype chart();
+    /**
+     * Chart Image.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype chart();
 
-	/**
-	 * Cube Image.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	AbstractImagePrototype cube();
+    /**
+     * Cube Image.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype cube();
 
-	/**
-	 * 
-	 *Close Tab Image
-	 *
-	 * @return the abstract image prototype
-	 */
-	AbstractImagePrototype closeButton();
-	
-	AbstractImagePrototype database();
-	
-	AbstractImagePrototype databases();
-	
-	AbstractImagePrototype help_index();
-	
-	AbstractImagePrototype add();
-	
-	AbstractImagePrototype cross();
-	
-	AbstractImagePrototype connect();
-	
-	AbstractImagePrototype disconnect();
-	
-	AbstractImagePrototype windowButtonClose();
-	
-	AbstractImagePrototype database_add();
-	
-	AbstractImagePrototype database_delete();
-	
-	AbstractImagePrototype database_edit();
-	
-	AbstractImagePrototype pat_orange_banner();
-	
-	AbstractImagePrototype drill();
-	
-	AbstractImagePrototype drill2();
-	
-	AbstractImagePrototype dimbrowser();
+    /**
+     * 
+     *Close Tab Image
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype closeButton();
+
+    AbstractImagePrototype database();
+
+    AbstractImagePrototype databases();
+
+    AbstractImagePrototype help_index();
+
+    AbstractImagePrototype add();
+
+    AbstractImagePrototype cross();
+
+    AbstractImagePrototype connect();
+
+    AbstractImagePrototype disconnect();
+
+    AbstractImagePrototype windowButtonClose();
+
+    AbstractImagePrototype database_add();
+
+    AbstractImagePrototype database_delete();
+
+    AbstractImagePrototype database_edit();
+
+    AbstractImagePrototype pat_orange_banner();
+
+    AbstractImagePrototype drill();
+
+    AbstractImagePrototype drill2();
+
+    AbstractImagePrototype dimbrowser();
 }

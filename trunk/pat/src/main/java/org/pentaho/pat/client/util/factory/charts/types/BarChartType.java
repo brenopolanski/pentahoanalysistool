@@ -17,7 +17,7 @@ import org.pentaho.pat.client.util.factory.charts.util.ChartUtils;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -51,7 +51,7 @@ public class BarChartType {
     
             matrix.getCellSetHeaders();
             final PatTableModel patTableModel = new PatTableModel(matrix);
-            final BaseCell[][] rowData = patTableModel.getRowData();
+            final AbstractBaseCell[][] rowData = patTableModel.getRowData();
             int rowColCount = 0;
             for (int i = 0; i < patTableModel.getColumnCount(); i++)
                 if (rowData[0][i] instanceof MemberCell)
@@ -84,12 +84,12 @@ public class BarChartType {
             if (pos != null) {
                 cd.setLegend(new Legend(pos, true));
             }
-            final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+            final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel.getRowData());
             int dataColCount = data.get(0).length-rowColCount;
             final List<Label> labels = new ArrayList<Label>();
             final MemberCell[] memberCellLabelList = new MemberCell[data.size()];
             for (int i = 0; i < data.size(); i++) {
-                final BaseCell[] cell = data.get(i);
+                final AbstractBaseCell[] cell = data.get(i);
                 
                 List<String> path = ((MemberCell) cell[rowColCount-1]).getMemberPath();
                 StringBuffer buf = new StringBuffer();
@@ -115,7 +115,7 @@ public class BarChartType {
             Number cellValue = null;
             
             for (int i = 0; i < data.size(); i++) {
-                final BaseCell[] cell = data.get(i);
+                final AbstractBaseCell[] cell = data.get(i);
                 final int row = i;
   
                 

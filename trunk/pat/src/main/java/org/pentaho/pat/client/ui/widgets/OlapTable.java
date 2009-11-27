@@ -32,7 +32,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.table.PatColDef;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
@@ -53,21 +53,16 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OlapTable extends LayoutComposite implements IQueryListener {
 
-    private transient CellDataSet olapData;
-    
-    private transient int offset;
+    private  CellDataSet olapData;
 
-    private transient PatTableModel patTableModel;
+    private  int offset;
 
-    private transient TableModel<BaseCell[]> tableModel;
+    private  PatTableModel patTableModel;
 
-    private transient LiveTable<BaseCell[]> table;
+    private  LiveTable<AbstractBaseCell[]> table;
 
-    
+    private  final LayoutPanel layoutPanel = getLayoutPanel();
 
-    private final LayoutPanel layoutPanel = getLayoutPanel();
-
-    
     public OlapTable() {
         super();
         this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
@@ -83,10 +78,10 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         // Not sure what the effect of this is, but at least something is happening now. Not just frozen
         layoutPanel.clear();
         patTableModel = new PatTableModel(olapData);
-        final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+        final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         offset = patTableModel.getOffset();
 
-        tableModel = new IterableTableModel<BaseCell[]>(data) {
+        final TableModel<AbstractBaseCell[]> tableModel = new IterableTableModel<AbstractBaseCell[]>(data) {
             @Override
             public int getRowCount() {
                 return data.size();
@@ -94,11 +89,11 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
             @SuppressWarnings("unchecked")
             @Override
-            public void requestRows(final Request request, final Callback<BaseCell[]> callback) {
+            public void requestRows(final Request request, final Callback<AbstractBaseCell[]> callback) {
                 final int numRows = Math.min(request.getNumRows(), data.size() - request.getStartRow());
 
-                final List<BaseCell[]> list = new ArrayList<BaseCell[]>();
-                for (int i = 0, n = numRows; i < n; i++){
+                final List<AbstractBaseCell[]> list = new ArrayList<AbstractBaseCell[]>();
+                for (int i = 0, n = numRows; i < n; i++) {
                     list.add(data.get(request.getStartRow() + i));
                 }
                 final SerializableResponse response = new SerializableResponse(list);
@@ -106,8 +101,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
             }
         };
 
-        table = new LiveTable<BaseCell[]>(tableModel, createTableDefinition());
-      
+        table = new LiveTable<AbstractBaseCell[]>(tableModel, createTableDefinition());
+
         layoutPanel.add(table);
         layoutPanel.layout();
 
@@ -117,7 +112,9 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      * Fire on query changing.
      */
     public void onQueryChange(final Widget sender) {
-
+        /**
+         * Fired on query change.
+         */
 
     }
 
@@ -125,7 +122,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      * Fire when the query is executed.
      */
     public void onQueryExecuted(final String queryId, final CellDataSet olapData) {
-        if (Pat.getApplicationState().getMode().isShowOnlyTable()){
+        if (Pat.getApplicationState().getMode().isShowOnlyTable()) {
             setData(olapData);
         }
     }
@@ -145,46 +142,45 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         this.layout();
     }
 
-
     /**
      * Create the Live Table Column Definitions.
      * 
      * @return tableDef
      */
-    private TableDefinition<BaseCell[]> createTableDefinition() {
-        BaseCell[] group = null;
-        final DefaultTableDefinition<BaseCell[]> tableDef = new DefaultTableDefinition<BaseCell[]>();
-        final List<BaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
+    private TableDefinition<AbstractBaseCell[]> createTableDefinition() {
+        AbstractBaseCell[] group = null;
+        final DefaultTableDefinition<AbstractBaseCell[]> tableDef = new DefaultTableDefinition<AbstractBaseCell[]>();
+        final List<AbstractBaseCell[]> colData = Arrays.asList(patTableModel.getColumnHeaders());
         for (int i = 0; i < olapData.getWidth(); i++) {
-            final BaseCell[] headers = colData.get(offset - 1);
-            //TODO work in progress
-            if (offset > 1){
+            final AbstractBaseCell[] headers = colData.get(offset - 1);
+            // TODO work in progress
+            if (offset > 1) {
                 group = colData.get(offset - 2);
             }
             final int cell = i;
 
-
-            final PatColDef<BaseCell[], Widget> colDef0 = new PatColDef<BaseCell[], Widget>(headers[i].getLabel()) {
+            final PatColDef<AbstractBaseCell[], Widget> colDef0 = new PatColDef<AbstractBaseCell[], Widget>(headers[i]
+                    .getLabel()) {
                 @Override
-                public Widget getCellValue(final BaseCell[] rowValue) {
+                public Widget getCellValue(final AbstractBaseCell[] rowValue) {
                     if (rowValue[cell] == null) {
                         return new Label(""); //$NON-NLS-1$
                     } else {
 
                         return rowValue[cell].getLabel();
                     }
-                }                
+                }
             };
 
             if (group != null) {
                 HorizontalPanel groupPanel = null;
                 if (group[i].getFormattedValue() == null) {
                     colDef0.setHeader(1, groupPanel);
-                } else{
+                } else {
                     groupPanel = group[i].getLabel();
                     colDef0.setHeader(1, groupPanel);
                 }
-                    
+
             }
 
             colDef0.setHeaderTruncatable(false);

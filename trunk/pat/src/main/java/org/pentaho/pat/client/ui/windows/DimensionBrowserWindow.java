@@ -54,7 +54,7 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     private static DimensionMenu dimMenuPanel = new DimensionMenu();
 
-    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static DimensionBrowserWindow DBW = new DimensionBrowserWindow();
 
@@ -133,7 +133,5 @@ public class DimensionBrowserWindow extends WindowPanel {
     public static DimensionMenu getDimensionMenuPanel() {
         return dimMenuPanel;
     }
-    
-    
 
 }

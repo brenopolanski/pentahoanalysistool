@@ -47,141 +47,117 @@ import org.springframework.util.Assert;
 
 /**
  * Simple service implementation as a Spring bean.
+ * 
  * @author Luc Boudreau
  */
-public class DiscoveryServiceImpl extends AbstractService 
-	implements DiscoveryService
-{
+public class DiscoveryServiceImpl extends AbstractService implements DiscoveryService {
 
-	private SessionService sessionService = null;
-	
-	private QueryService queryService = null;
-	
-	private JdbcDriverFinder driverFinder = null;
+    private SessionService sessionService = null;
 
+    private QueryService queryService = null;
 
-	
-	public void setSessionService(SessionService sessionService) {
-		this.sessionService = sessionService;
-	}
-	
-	
-	
-	public void setQueryService(QueryService queryService) {
+    private JdbcDriverFinder driverFinder = null;
+
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+
+    public void setQueryService(QueryService queryService) {
         this.queryService = queryService;
     }
 
-
-
     public void afterPropertiesSet() throws Exception {
-		Assert.notNull(sessionService);
-		Assert.notNull(queryService);
-		Assert.notNull(driverFinder);
-	}
-	
-	
-	public List<String> getDrivers() 
-	{
-		this.driverFinder.registerDrivers();
-		
-		// An enumeration is a very unpractical thing, so let's convert it to a List.
-		// We can't even know it's size... what a shameful object.
-		Enumeration<Driver> driversEnum = DriverManager.getDrivers();
-		List<String> drivers = new ArrayList<String>();
-		while (driversEnum.hasMoreElements()) 
-			{ drivers.add(driversEnum.nextElement().getClass().getName()); }
-		
-		return drivers;
-	}
-	
-	
-	public List<CubeItem> getCubes(String userId, String sessionId, String connectionId) 
-	    throws OlapException
-	{
+        Assert.notNull(sessionService);
+        Assert.notNull(queryService);
+        Assert.notNull(driverFinder);
+    }
 
-	    this.sessionService.validateSession(userId, sessionId);
-	    
+    public List<String> getDrivers() {
+        this.driverFinder.registerDrivers();
+
+        // An enumeration is a very unpractical thing, so let's convert it to a List.
+        // We can't even know it's size... what a shameful object.
+        Enumeration<Driver> driversEnum = DriverManager.getDrivers();
+        List<String> drivers = new ArrayList<String>();
+        while (driversEnum.hasMoreElements()) {
+            drivers.add(driversEnum.nextElement().getClass().getName());
+        }
+
+        return drivers;
+    }
+
+    public List<CubeItem> getCubes(String userId, String sessionId, String connectionId) throws OlapException {
+
+        this.sessionService.validateSession(userId, sessionId);
+
         List<CubeItem> list = new ArrayList<CubeItem>();
 
-        OlapConnection conn = 
-            this.sessionService.getNativeConnection(userId, sessionId, connectionId);
+        OlapConnection conn = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
 
         if (conn == null)
             return list;
 
-//        OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
-//        try {
-//        ResultSet cubesResult = olapDbMeta.getCubes(conn.getCatalog(), null, null);
-//        
-//            while(cubesResult.next()) {
-//
-//                list.add(cubesResult.getString("CUBE_NAME"));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        // OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
+        // try {
+        // ResultSet cubesResult = olapDbMeta.getCubes(conn.getCatalog(), null, null);
+        //        
+        // while(cubesResult.next()) {
+        //
+        // list.add(cubesResult.getString("CUBE_NAME"));
+        // }
+        // } catch (SQLException e) {
+        // e.printStackTrace();
+        // }
 
         NamedList<Catalog> catalogs = conn.getCatalogs();
-        for(int k = 0; k < catalogs.size();k++) {
+        for (int k = 0; k < catalogs.size(); k++) {
             NamedList<Schema> schemas = catalogs.get(k).getSchemas();
-            for(int j = 0; j < schemas.size();j++) {
+            for (int j = 0; j < schemas.size(); j++) {
                 NamedList<Cube> cubes = schemas.get(j).getCubes();
-                
-        
+
                 for (int i = 0; i < cubes.size(); i++) {
-                    list.add(new CubeItem(cubes.get(i).getName(), cubes.get(i).getSchema().getCatalog().getName()
-                            , cubes.get(i).getSchema().getName()));
+                    list.add(new CubeItem(cubes.get(i).getName(), cubes.get(i).getSchema().getCatalog().getName(),
+                            cubes.get(i).getSchema().getName()));
                 }
             }
         }
         return list;
     }
 
-	
-	public Cube getCube(
-	        String userId, 
-	        String sessionId,
-	        String connectionId,
-	        String cubeName) throws OlapException 
-	{
-	    this.sessionService.validateSession(userId, sessionId);
-	    OlapConnection conn = this.sessionService.getNativeConnection(userId,sessionId,connectionId);
-		return conn.getSchema().getCubes().get(cubeName);
-	}
-	
-	
-	public List<String> getDimensions(String userId, String sessionId, 
-            String queryId, Axis.Standard axis) throws OlapException
-	{
-	    this.sessionService.validateSession(userId, sessionId);
-	    
-		Query query = this.queryService.getQuery(userId, sessionId, queryId);
-		
-		Axis targetAxis = null;
-		if (axis!=null)
-			targetAxis=axis;
-		
-	    List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
-	    List<String> dimNames = new ArrayList<String>();
-	    for (QueryDimension dim : dimList) {
-	      dimNames.add(dim.getName());
-	    }
-	    return dimNames;
-	}
+    public Cube getCube(String userId, String sessionId, String connectionId, String cubeName) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+        OlapConnection conn = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
+        return conn.getSchema().getCubes().get(cubeName);
+    }
 
-	public StringTree getMembers(String userId, String sessionId,
-            String queryId, String dimensionName) throws OlapException 
-    {
-	    this.sessionService.validateSession(userId, sessionId);
+    public List<String> getDimensions(String userId, String sessionId, String queryId, Axis.Standard axis)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
-        Query query = 
-            this.queryService.getQuery(userId, sessionId, queryId);
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+        Axis targetAxis = null;
+        if (axis != null)
+            targetAxis = axis;
+
+        List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
+        List<String> dimNames = new ArrayList<String>();
+        for (QueryDimension dim : dimList) {
+            dimNames.add(dim.getName());
+        }
+        return dimNames;
+    }
+
+    public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
         List<String> uniqueNameList = new ArrayList<String>();
 
         // FIXME Only uses the first hierarchy for now.
-        NamedList<Level> levels = query.getDimension(dimensionName)
-                .getDimension().getHierarchies().get(0).getLevels();
+        NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
 
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
@@ -194,18 +170,15 @@ public class DiscoveryServiceImpl extends AbstractService
         for (int i = 0; i < uniqueNameList.size(); i++) {
             String[] memberNames = uniqueNameList.get(i).split("\\]\\.\\["); //$NON-NLS-1$
             for (int j = 0; j < memberNames.length; j++) { // Trim off the
-                                                           // brackets
-                memberNames[j] = memberNames[j]
-                  .replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-                  .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                // brackets
+                memberNames[j] = memberNames[j].replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                        .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
             }
             result = OlapUtil.parseMembers(memberNames, result);
         }
 
         return result;
     }
-
-
 
     public void setDriverFinder(JdbcDriverFinder driverFinder) {
         this.driverFinder = driverFinder;

@@ -182,8 +182,6 @@ package org.pentaho.pat.client.util.colorpicker;
  * DAMAGE.
  */
 
-
-
 import org.pentaho.pat.client.util.colorpicker.images.ColorPickerImageBundle;
 
 import com.google.gwt.user.client.DOM;
@@ -199,271 +197,294 @@ import com.google.gwt.user.client.Window;
 /**
  * Implements the SliderBar control.
  */
-public final class SliderBar extends HTML implements EventPreview
-{
-	private ColorPickerImageBundle cpImageBundle;
-	private Image colorA;
-	private Image colorB;
-	private Image colorC;
-	private Image colorD;
-	private Image slider;
-	private ColorPicker parent = null;
-	private boolean captureMouse = false;
+public final class SliderBar extends HTML implements EventPreview {
+    private ColorPickerImageBundle cpImageBundle;
 
-	// enum
-	public static final int Saturation = 1;
-	public static final int Brightness = 2;
-	public static final int Hue = 3;
-	public static final int Red = 4;
-	public static final int Green = 5;
-	public static final int Blue = 6;
+    private Image colorA;
 
-	public static final int BarA = 1;
-	public static final int BarB = 2;
-	public static final int BarC = 3;
-	public static final int BarD = 4;
+    private Image colorB;
 
-	/***
-	 * Initialize the SliderMap -- default mode is Saturation.
-	 */
-	public SliderBar(ColorPicker parent)
-	{
-		super();
+    private Image colorC;
 
-		this.parent = parent;
+    private Image colorD;
 
-		setWidth("40px"); //$NON-NLS-1$
-		setHeight("256px"); //$NON-NLS-1$
+    private Image slider;
 
-		cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
+    private ColorPicker parent = null;
 
-		colorA = cpImageBundle.bar_white().createImage();
-		colorB = cpImageBundle.bar_white().createImage();
-		colorC = cpImageBundle.bar_white().createImage();
-		colorD = cpImageBundle.bar_saturation().createImage();
-		slider = cpImageBundle.rangearrows().createImage();
+    private boolean captureMouse = false;
 
-		DOM.appendChild(getElement(), colorA.getElement());
-		DOM.appendChild(getElement(), colorB.getElement());
-		DOM.appendChild(getElement(), colorC.getElement());
-		DOM.appendChild(getElement(), colorD.getElement());
-		DOM.appendChild(getElement(), slider.getElement());
+    // enum
+    public static final int Saturation = 1;
 
-		DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorA.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorB.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorC.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorD.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    public static final int Brightness = 2;
 
-	/***
-	 * This method is called when a widget is attached to the browser's document.
-	 */
-	public void onAttach()
-	{
-		super.onAttach();
+    public static final int Hue = 3;
 
-		DOM.setStyleAttribute(colorA.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorA.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorA.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorB.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorB.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorB.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorC.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorC.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorC.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorD.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorD.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorD.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    public static final int Red = 4;
 
-	/**
-	 * Set overlay's opacity.
-	 * @param alpha An opacity percentage, between 100 (fully opaque) and 0 (invisible).
-	 * @param layer which bar to change opacity for, 1-4
-	 */
-	public void setLayerOpacity(int alpha, int layer)
-	{
-		if (alpha >= 0 && alpha <= 100 && isAttached())
-		{
-			Element colorbar;
+    public static final int Green = 5;
 
-			switch (layer)
-			{
-				case BarA:
-					colorbar = colorA.getElement();
-					break;
-				case BarB:
-					colorbar = colorB.getElement();
-					break;
-				case BarC:
-					colorbar = colorC.getElement();
-					break;
-				case BarD:
-					colorbar = colorD.getElement();
-					break;
-				default:
-					return;
-			}
+    public static final int Blue = 6;
 
-			TransparencyImpl.setTransparency(colorbar, alpha);
-		}
-	}
+    public static final int BarA = 1;
 
-	/**
-	 * Sets the color of a particular layer
-	 * @param color Hexadecimal notation of RGB to change the layer's color
-	 * @param layer Which layer to affect
-	 */
-	public void setLayerColor(String color, int layer)
-	{
-		Element colorbar;
+    public static final int BarB = 2;
 
-		switch (layer)
-		{
-			case BarA:
-				colorbar = colorA.getElement();
-				break;
-			case BarB:
-				colorbar = colorB.getElement();
-				break;
-			case BarC:
-				colorbar = colorC.getElement();
-				break;
-			case BarD:
-				colorbar = colorD.getElement();
-				break;
-			default:
-				return;
-		}
+    public static final int BarC = 3;
 
-		TransparencyImpl.setBackgroundColor(colorbar, color);
-	}
+    public static final int BarD = 4;
 
-	/**
-	 * Sets the slider's position on the y-axis.
-	 * @param y Position along the y-axis to set the slider's position to.
-	 */
-	public void setSliderPosition(int y)
-	{
-		if (y < 0) y = 0;
-		if (y > 256) y = 256;
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    /***
+     * Initialize the SliderMap -- default mode is Saturation.
+     */
+    public SliderBar(ColorPicker parent) {
+        super();
 
-	/**
-	 * Sets the color selection mode
-	 * @param mode Can be one of: ColorBar.Saturation, ColorBar.Hue, ColorBar.Brightness, ColorBar.Red, ColorBar.Green, ColorBar.Blue, ColorBar.Red.
-	 */
-	public void setColorSelectMode(int mode)
-	{
-		if (!isAttached()) { return; }
+        this.parent = parent;
 
-		switch (mode)
-		{
-			case Saturation:
-				cpImageBundle.bar_white().applyTo(colorA);
-				cpImageBundle.bar_white().applyTo(colorB);
-				cpImageBundle.bar_white().applyTo(colorC);
-				cpImageBundle.bar_saturation().applyTo(colorD);
-			break;
+        setWidth("40px"); //$NON-NLS-1$
+        setHeight("256px"); //$NON-NLS-1$
 
-			case Brightness:
-				cpImageBundle.bar_white().applyTo(colorA);
-				cpImageBundle.bar_white().applyTo(colorB);
-				cpImageBundle.bar_white().applyTo(colorC);
-				cpImageBundle.bar_brightness().applyTo(colorD);
-			break;
+        cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
 
-			case Hue:
-				cpImageBundle.bar_white().applyTo(colorA);
-				cpImageBundle.bar_white().applyTo(colorB);
-				cpImageBundle.bar_white().applyTo(colorC);
-				cpImageBundle.bar_hue().applyTo(colorD);
-			break;
+        colorA = cpImageBundle.bar_white().createImage();
+        colorB = cpImageBundle.bar_white().createImage();
+        colorC = cpImageBundle.bar_white().createImage();
+        colorD = cpImageBundle.bar_saturation().createImage();
+        slider = cpImageBundle.rangearrows().createImage();
 
-			case Red:
-				cpImageBundle.bar_red_tl().applyTo(colorA);
-				cpImageBundle.bar_red_tr().applyTo(colorB);
-				cpImageBundle.bar_red_br().applyTo(colorC);
-				cpImageBundle.bar_red_bl().applyTo(colorD);
-			break;
+        DOM.appendChild(getElement(), colorA.getElement());
+        DOM.appendChild(getElement(), colorB.getElement());
+        DOM.appendChild(getElement(), colorC.getElement());
+        DOM.appendChild(getElement(), colorD.getElement());
+        DOM.appendChild(getElement(), slider.getElement());
 
-			case Green:
-				cpImageBundle.bar_green_tl().applyTo(colorA);
-				cpImageBundle.bar_green_tr().applyTo(colorB);
-				cpImageBundle.bar_green_br().applyTo(colorC);
-				cpImageBundle.bar_green_bl().applyTo(colorD);
-			break;
+        DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorA.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorB.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorC.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorD.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-			case Blue:
-				cpImageBundle.bar_blue_tl().applyTo(colorA);
-				cpImageBundle.bar_blue_tr().applyTo(colorB);
-				cpImageBundle.bar_blue_br().applyTo(colorC);
-				cpImageBundle.bar_blue_bl().applyTo(colorD);
-			break;
-		}
-	}
+    /***
+     * This method is called when a widget is attached to the browser's document.
+     */
+    public void onAttach() {
+        super.onAttach();
 
-	/**
-	 * Fired whenever a browser event is received.
-	 * @param event Event to process
-	 */
-	public void onBrowserEvent(Event event)
-	{
-		switch (DOM.eventGetType(event))
-		{
-			case Event.ONMOUSEDOWN:
-				captureMouse = true;
-				DOM.addEventPreview(this);
-				mouseEvent(event);
-			break;
-		}
-	}
+        DOM.setStyleAttribute(colorA.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorA.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorA.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorB.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorB.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorB.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorC.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorC.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorC.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorD.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorD.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorD.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-	/**
-	 * Called when a browser event occurs and this event preview is on top of the preview stack.
-	 * @param event Event to process
-	 * @return boolean false to cancel the event.
-	 */
-	public boolean onEventPreview(Event event)
-	{
-		switch (DOM.eventGetType(event))
-		{
-			case Event.ONMOUSEUP:
-				captureMouse = false;
-				DOM.removeEventPreview(this);
-			break;
+    /**
+     * Set overlay's opacity.
+     * 
+     * @param alpha
+     *            An opacity percentage, between 100 (fully opaque) and 0 (invisible).
+     * @param layer
+     *            which bar to change opacity for, 1-4
+     */
+    public void setLayerOpacity(int alpha, int layer) {
+        if (alpha >= 0 && alpha <= 100 && isAttached()) {
+            Element colorbar;
 
-			case Event.ONMOUSEMOVE:
-				if (captureMouse)
-				{
-					mouseEvent(event);
-					return false;
-				}
-			break;
-		}
-		return true;
-	}
+            switch (layer) {
+            case BarA:
+                colorbar = colorA.getElement();
+                break;
+            case BarB:
+                colorbar = colorB.getElement();
+                break;
+            case BarC:
+                colorbar = colorC.getElement();
+                break;
+            case BarD:
+                colorbar = colorD.getElement();
+                break;
+            default:
+                return;
+            }
 
-	/**
-	 * Called to process a mouse event.
-	 * @param event Event to process
-	 */
-	private void mouseEvent(Event event)
-	{
-		DOM.eventPreventDefault(event);
+            TransparencyImpl.setTransparency(colorbar, alpha);
+        }
+    }
 
-		int y = DOM.eventGetClientY(event) - getAbsoluteTop();
+    /**
+     * Sets the color of a particular layer
+     * 
+     * @param color
+     *            Hexadecimal notation of RGB to change the layer's color
+     * @param layer
+     *            Which layer to affect
+     */
+    public void setLayerColor(String color, int layer) {
+        Element colorbar;
 
-		if (y < 0) y = 0;
-		if (y > 256) y = 256;
+        switch (layer) {
+        case BarA:
+            colorbar = colorA.getElement();
+            break;
+        case BarB:
+            colorbar = colorB.getElement();
+            break;
+        case BarC:
+            colorbar = colorC.getElement();
+            break;
+        case BarD:
+            colorbar = colorD.getElement();
+            break;
+        default:
+            return;
+        }
 
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+        TransparencyImpl.setBackgroundColor(colorbar, color);
+    }
 
-		if (parent != null) { parent.onBarSelected(y); }
-	}
+    /**
+     * Sets the slider's position on the y-axis.
+     * 
+     * @param y
+     *            Position along the y-axis to set the slider's position to.
+     */
+    public void setSliderPosition(int y) {
+        if (y < 0)
+            y = 0;
+        if (y > 256)
+            y = 256;
+        DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Sets the color selection mode
+     * 
+     * @param mode
+     *            Can be one of: ColorBar.Saturation, ColorBar.Hue, ColorBar.Brightness, ColorBar.Red, ColorBar.Green,
+     *            ColorBar.Blue, ColorBar.Red.
+     */
+    public void setColorSelectMode(int mode) {
+        if (!isAttached()) {
+            return;
+        }
+
+        switch (mode) {
+        case Saturation:
+            cpImageBundle.bar_white().applyTo(colorA);
+            cpImageBundle.bar_white().applyTo(colorB);
+            cpImageBundle.bar_white().applyTo(colorC);
+            cpImageBundle.bar_saturation().applyTo(colorD);
+            break;
+
+        case Brightness:
+            cpImageBundle.bar_white().applyTo(colorA);
+            cpImageBundle.bar_white().applyTo(colorB);
+            cpImageBundle.bar_white().applyTo(colorC);
+            cpImageBundle.bar_brightness().applyTo(colorD);
+            break;
+
+        case Hue:
+            cpImageBundle.bar_white().applyTo(colorA);
+            cpImageBundle.bar_white().applyTo(colorB);
+            cpImageBundle.bar_white().applyTo(colorC);
+            cpImageBundle.bar_hue().applyTo(colorD);
+            break;
+
+        case Red:
+            cpImageBundle.bar_red_tl().applyTo(colorA);
+            cpImageBundle.bar_red_tr().applyTo(colorB);
+            cpImageBundle.bar_red_br().applyTo(colorC);
+            cpImageBundle.bar_red_bl().applyTo(colorD);
+            break;
+
+        case Green:
+            cpImageBundle.bar_green_tl().applyTo(colorA);
+            cpImageBundle.bar_green_tr().applyTo(colorB);
+            cpImageBundle.bar_green_br().applyTo(colorC);
+            cpImageBundle.bar_green_bl().applyTo(colorD);
+            break;
+
+        case Blue:
+            cpImageBundle.bar_blue_tl().applyTo(colorA);
+            cpImageBundle.bar_blue_tr().applyTo(colorB);
+            cpImageBundle.bar_blue_br().applyTo(colorC);
+            cpImageBundle.bar_blue_bl().applyTo(colorD);
+            break;
+        }
+    }
+
+    /**
+     * Fired whenever a browser event is received.
+     * 
+     * @param event
+     *            Event to process
+     */
+    public void onBrowserEvent(Event event) {
+        switch (DOM.eventGetType(event)) {
+        case Event.ONMOUSEDOWN:
+            captureMouse = true;
+            DOM.addEventPreview(this);
+            mouseEvent(event);
+            break;
+        }
+    }
+
+    /**
+     * Called when a browser event occurs and this event preview is on top of the preview stack.
+     * 
+     * @param event
+     *            Event to process
+     * @return boolean false to cancel the event.
+     */
+    public boolean onEventPreview(Event event) {
+        switch (DOM.eventGetType(event)) {
+        case Event.ONMOUSEUP:
+            captureMouse = false;
+            DOM.removeEventPreview(this);
+            break;
+
+        case Event.ONMOUSEMOVE:
+            if (captureMouse) {
+                mouseEvent(event);
+                return false;
+            }
+            break;
+        }
+        return true;
+    }
+
+    /**
+     * Called to process a mouse event.
+     * 
+     * @param event
+     *            Event to process
+     */
+    private void mouseEvent(Event event) {
+        DOM.eventPreventDefault(event);
+
+        int y = DOM.eventGetClientY(event) - getAbsoluteTop();
+
+        if (y < 0)
+            y = 0;
+        if (y > 256)
+            y = 256;
+
+        DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (parent != null) {
+            parent.onBarSelected(y);
+        }
+    }
 }

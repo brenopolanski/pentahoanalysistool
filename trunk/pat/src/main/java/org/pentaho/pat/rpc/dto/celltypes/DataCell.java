@@ -29,95 +29,94 @@ import com.google.gwt.user.client.ui.Label;
  * 
  * @author wseyler
  */
-public class DataCell extends BaseCell implements Serializable, IsSerializable {
+public class DataCell extends AbstractBaseCell implements Serializable, IsSerializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/** The color value. */
-	String colorValue = null; // Color held as hex String
+    /** The color value. */
+    private  String colorValue = null; // Color held as hex String
 
-	Number rawNumber = null;
-	
-	MemberCell parentColMember = null;
-	
-	public MemberCell getParentColMember() {
-	    return parentColMember;
-	}
+    private  Number rawNumber = null;
 
-	public void setParentColMember(MemberCell parentColMember) {
-	    this.parentColMember = parentColMember;
-	}
+    private  MemberCell parentColMember = null;
 
-	public MemberCell getParentRowMember() {
-	    return parentRowMember;
-	}
+    public MemberCell getParentColMember() {
+        return parentColMember;
+    }
 
-	public void setParentRowMember(MemberCell parentRowMember) {
-	    this.parentRowMember = parentRowMember;
-	}
+    public void setParentColMember(final MemberCell parentColMember) {
+        this.parentColMember = parentColMember;
+    }
 
+    public MemberCell getParentRowMember() {
+        return parentRowMember;
+    }
 
-	MemberCell parentRowMember = null;
-	
-	public Number getRawNumber() {
-	    return rawNumber;
-	}
+    public void setParentRowMember(final MemberCell parentRowMember) {
+        this.parentRowMember = parentRowMember;
+    }
 
-	public void setRawNumber(Number rawNumber) {
-	    this.rawNumber = rawNumber;
-	}
+    private  MemberCell parentRowMember = null;
 
-	/**
-	 * 
-	 * Blank constructor for serialization purposes, don't use it.
-	 * 
-	 */
-	public DataCell() {
-	}
+    public Number getRawNumber() {
+        return rawNumber;
+    }
 
-	/**
-	 * 
-	 * Construct a Data Cell containing olap data.
-	 * 
-	 * @param b
-	 * @param c
-	 */
-	public DataCell(final boolean b, final boolean c) {
-		this.right = b;
-		this.sameAsPrev = c;
-	}
+    public void setRawNumber(final Number rawNumber) {
+        this.rawNumber = rawNumber;
+    }
 
-	/**
-	 * Gets the color value.
-	 * 
-	 * @return the color value
-	 */
-	public String getColorValue() {
-		return colorValue;
-	}
+    /**
+     * 
+     * Blank constructor for serialization purposes, don't use it.
+     * 
+     */
+    public DataCell() {
+    }
 
-	/**
-	 * Sets the color value.
-	 * 
-	 * @param colorValue
-	 *            the new color value
-	 */
-	public void setColorValue(final String colorValue) {
-		this.colorValue = colorValue;
-	}
+    /**
+     * 
+     * Construct a Data Cell containing olap data.
+     * 
+     * @param b
+     * @param c
+     */
+    public DataCell(final boolean b, final boolean c) {
+        super();
+        this.right = b;
+        this.sameAsPrev = c;
+    }
 
-	
-	@Override
-	public HorizontalPanel getLabel(){
-	    final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember);
-	   
-	    final Label cellLabel = new Label(getFormattedValue());
-	    
-	    cellPanel.add(cellLabel);
+    /**
+     * Gets the color value.
+     * 
+     * @return the color value
+     */
+    public String getColorValue() {
+        return colorValue;
+    }
+
+    /**
+     * Sets the color value.
+     * 
+     * @param colorValue
+     *            the new color value
+     */
+    public void setColorValue(final String colorValue) {
+        this.colorValue = colorValue;
+    }
+
+    @Override
+    public HorizontalPanel getLabel() {
+        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember);
+
+        final Label cellLabel = new Label(getFormattedValue());
+
+        cellPanel.add(cellLabel);
 
         cellPanel.setWidth("100%"); //$NON-NLS-1$
 
         return cellPanel;
-	    
-	}
+
+    }
 }

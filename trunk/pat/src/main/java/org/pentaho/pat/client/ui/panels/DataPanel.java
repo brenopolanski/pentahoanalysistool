@@ -58,25 +58,26 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DataPanel extends LayoutComposite implements IQueryListener {
 
-    private final transient ChartPanel ofcPanel = new ChartPanel();
-    
-    private final transient OlapTable olapTable;
+    private final  ChartPanel ofcPanel = new ChartPanel();
 
-    private final transient LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final  OlapTable olapTable;
 
-    private final transient LayoutPanel baseLayoutPanel = getLayoutPanel();
+    private final  LayoutPanel fillLayoutPanel = new LayoutPanel(new BorderLayout());
 
-    private final transient LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final  LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-    private final String queryId;
+    private final  LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+
+    private final  String queryId;
 
     /**
      *DataPanel Constructor.
-     * @param query 
+     * 
+     * @param query
      * 
      */
     public DataPanel(final String query) {
-	super();
+        super();
         this.queryId = query;
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
 
@@ -89,86 +90,83 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
                 ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
                         new AsyncCallback<CellDataSet>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedQuery(arg0.getLocalizedMessage()));
-                    }
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedQuery(arg0.getLocalizedMessage()));
+                            }
 
-                    public void onSuccess(final CellDataSet result1) {
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                DataPanel.this, Pat.getCurrQuery(), result1);
-                    }
+                            public void onSuccess(final CellDataSet result1) {
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        DataPanel.this, Pat.getCurrQuery(), result1);
+                            }
 
-                });
+                        });
 
             }
 
         });
 
         final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                IAxis.COLUMNS, true, Application.tableRowDragController);
-        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS,
-                false, Application.tableRowDragController);
+                IAxis.COLUMNS, true, Application.tblRowDrgCont);
+        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
+                IAxis.ROWS, false, Application.tblRowDrgCont);
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
         olapTable = new OlapTable();
         final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
         buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
         buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
-        
+
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
-        
         fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
-        
-        
-        
+
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(baseLayoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(mainLayoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-
+        DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
     }
 
-    public void chartPosition(final Region chartPos){
-                
+    public void chartPosition(final Region chartPos) {
+
         ofcPanel.removeFromParent();
-        if(chartPos!=null){
-            if(!olapTable.isAttached()){
-        	fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
-            }
-        switch(chartPos){
-        case WEST:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
-            break;
-        case EAST:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 0, 1000));
-            break;
-        case NORTH:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 0, 1000));
-            break;
-        case SOUTH:
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 0, 1000));
-            break;
-        case CENTER:
-            olapTable.removeFromParent();
-            fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.CENTER));
-            
-         default:
-            
-        }
-        }
-        else{
+        if (chartPos == null) {
+
             ofcPanel.removeFromParent();
+        } else {
+            if (!olapTable.isAttached()) {
+                fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
+            }
+            switch (chartPos) {
+            case WEST:
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
+                break;
+            case EAST:
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 0, 1000));
+                break;
+            case NORTH:
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 0, 1000));
+                break;
+            case SOUTH:
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 0, 1000));
+                break;
+            case CENTER:
+                olapTable.removeFromParent();
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.CENTER));
+
+            default:
+
+            }
         }
         WidgetHelper.invalidate(fillLayoutPanel);
         WidgetHelper.layout(fillLayoutPanel);
     }
+
     /*
      * (non-Javadoc)
      * 
@@ -186,8 +184,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
-        if (query.equals(queryId))
-        {
+        if (query.equals(queryId)) {
             baseLayoutPanel.remove(mainLayoutPanel);
             baseLayoutPanel.add(fillLayoutPanel);
             baseLayoutPanel.layout();

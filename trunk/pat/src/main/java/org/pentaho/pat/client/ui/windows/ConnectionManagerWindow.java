@@ -55,7 +55,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
 
-    private transient final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
+    private  final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
 
     private final static LayoutPanel MAINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
@@ -67,7 +67,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     private final static TabLayoutPanel TABPANEL = new TabLayoutPanel();
 
     public static void closeTabs() {
-        for (int i = 0; i < TABPANEL.getWidgetCount();){
+        for (final int i = 0; i < TABPANEL.getWidgetCount();) {
             TABPANEL.remove(i);
         }
         WINCONTENTPANEL.remove(TABPANEL);
@@ -79,12 +79,12 @@ public class ConnectionManagerWindow extends WindowPanel {
     }
 
     public static void display(final CubeConnection cubeConn) {
-        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.Mondrian){
+        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
             // TODO uncomment when implemented
             // connectMondrian = new ConnectMondrianPanel(cc);
             TABPANEL.selectTab(0);
         }
-        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.XMLA){
+        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
             // TODO uncomment when implemented
             // connectXmla = new ConnectXmlaPanel(cc)
             TABPANEL.selectTab(1);

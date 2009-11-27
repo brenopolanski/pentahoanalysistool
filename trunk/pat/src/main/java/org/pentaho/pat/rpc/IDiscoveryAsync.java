@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.rpc;
 
-
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -28,15 +27,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Defines discovery operations methods.
+ * 
  * @author Luc Boudreau
  */
 public interface IDiscoveryAsync {
-	
-	public void getDrivers(AsyncCallback<String[]> callback);
 
-	public void getDimensions(String sessionId, String queryId, IAxis axis, AsyncCallback<String []> callback);
-	
-	public void getCubes(String sessionId, String connectionId, AsyncCallback<CubeItem []> callback);
-	
-	public void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
+    void getDrivers(AsyncCallback<String[]> callback);
+
+    void getDimensions(String sessionId, String queryId, IAxis axis, AsyncCallback<String[]> callback);
+
+    void getCubes(String sessionId, String connectionId, AsyncCallback<CubeItem[]> callback);
+
+    void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
 }

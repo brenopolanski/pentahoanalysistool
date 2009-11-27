@@ -31,7 +31,7 @@ import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -257,36 +257,32 @@ public class PatCellSetFormatter {
                 y += coordList.get(1);
             final DataCell cellInfo = new DataCell(true, false);
 
-            
-            
-            for (int z =0; z<matrix.getMatrixHeight(); z++){
-        	BaseCell headerCell = matrix.get(x, z);
-        	
-        	if(headerCell instanceof MemberCell&& ((MemberCell) headerCell).getUniqueName()!=null){
-        	}
-        	else{
-        	    cellInfo.setParentColMember((MemberCell) matrix.get(x, z-1));
-        	    break;
-        	}
-            }
-            
-            for (int z =0; z<matrix.getMatrixWidth(); z++){
-        	BaseCell headerCell = matrix.get(z, y);
-        	if(headerCell instanceof MemberCell&& ((MemberCell) headerCell).getUniqueName()!=null){
+            for (int z = 0; z < matrix.getMatrixHeight(); z++) {
+                AbstractBaseCell headerCell = matrix.get(x, z);
 
-        	}
-        	else{
-        	    cellInfo.setParentRowMember((MemberCell) matrix.get(z-1, y));
-        	    break;
-        	}
+                if (headerCell instanceof MemberCell && ((MemberCell) headerCell).getUniqueName() != null) {
+                } else {
+                    cellInfo.setParentColMember((MemberCell) matrix.get(x, z - 1));
+                    break;
+                }
             }
-            
+
+            for (int z = 0; z < matrix.getMatrixWidth(); z++) {
+                AbstractBaseCell headerCell = matrix.get(z, y);
+                if (headerCell instanceof MemberCell && ((MemberCell) headerCell).getUniqueName() != null) {
+
+                } else {
+                    cellInfo.setParentRowMember((MemberCell) matrix.get(z - 1, y));
+                    break;
+                }
+            }
+
             if (cell.getValue() != null)
                 if (cell.getValue() instanceof Number)
                     cellInfo.setRawNumber((Number) cell.getValue());
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
-            
+
             if (cellValue.length() < 1) {
                 final Number value = (Number) cell.getValue();
                 if (value == null || value.doubleValue() < 1.23457E08)

@@ -49,10 +49,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MenuBar extends LayoutComposite {
 
-    private transient final LayoutPanel rootPanel = getLayoutPanel();
+    private  final LayoutPanel rootPanel = getLayoutPanel();
 
-    private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-            .getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
+    private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
+            ConstantFactory.getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
 
     /**
      * Initializes the Menu Bar contents
@@ -73,7 +73,7 @@ public class MenuBar extends LayoutComposite {
     /**
      * 
      * Adds a Connections button which controls the connection window.
-     *
+     * 
      */
     private void addConnectionsButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
@@ -82,9 +82,7 @@ public class MenuBar extends LayoutComposite {
                 ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
         connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(connectionButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        
+        DOM.setStyleAttribute(connectionButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         connectionButton.addClickHandler(new ClickHandler() {
 
@@ -94,11 +92,11 @@ public class MenuBar extends LayoutComposite {
         });
         rootPanel.add(connectionButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
-    
+
     /**
      * 
      * Adds a button which generates the cube browser.
-     *
+     * 
      */
     private void addCubesButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
@@ -107,7 +105,7 @@ public class MenuBar extends LayoutComposite {
                 .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
         cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(cubeButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(cubeButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         cubeButton.addClickHandler(new ClickHandler() {
 
@@ -121,14 +119,14 @@ public class MenuBar extends LayoutComposite {
     /**
      * 
      * Adds a currently unusable save button.
-     *
+     * 
      */
     private void addSaveButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
         SAVEBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(SAVEBUTTON.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(SAVEBUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         SAVEBUTTON.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -146,7 +144,7 @@ public class MenuBar extends LayoutComposite {
                 .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
         loadButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(loadButton.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(loadButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         loadButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -157,7 +155,7 @@ public class MenuBar extends LayoutComposite {
         rootPanel.add(loadButton, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
-    public static void enableSave(final Boolean enabled){
+    public static void enableSave(final Boolean enabled) {
         SAVEBUTTON.setEnabled(enabled);
     }
 }

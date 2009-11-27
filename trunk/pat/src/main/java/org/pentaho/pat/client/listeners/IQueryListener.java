@@ -25,17 +25,15 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
  * The Interface ConnectionListener.
  * 
  * @author tom(at)wamonline.org.uk
  */
 public interface IQueryListener extends EventListener {
-	
-	public void onQueryChange(Widget sender);
-	
-	public void onQueryExecuted(String queryId, CellDataSet matrix);
 
-	
+    void onQueryChange(Widget sender);
+
+    void onQueryExecuted(String queryId, CellDataSet matrix);
+
 }

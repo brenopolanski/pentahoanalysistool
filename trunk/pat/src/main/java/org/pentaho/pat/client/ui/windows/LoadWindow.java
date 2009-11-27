@@ -46,7 +46,7 @@ public class LoadWindow extends WindowPanel {
 
     private final static LoadMenuPanel LOADMENUPANEL = new LoadMenuPanel();
 
-    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final static LoadWindow CBW = new LoadWindow();
 

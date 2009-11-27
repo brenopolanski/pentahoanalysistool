@@ -62,24 +62,24 @@ public class ConnectXmlaPanel extends LayoutComposite {
     private static final Integer WIDTH = 620;
 
     /** Textbox for connection name. */
-    private final TextBox nameTextBox;
+    private  final TextBox nameTextBox;
 
     /** Url Textbox. */
-    private final TextBox urlTextBox;
+    private  final TextBox urlTextBox;
 
-     private final TextBox catalogTextBox;
-    
-     /** User Textbox. */
-    private final TextBox userTextBox;
+    private  final TextBox catalogTextBox;
+
+    /** User Textbox. */
+    private  final TextBox userTextBox;
 
     /** Password Textbox. */
-    private final PasswordTextBox passwordTextBox;
+    private  final PasswordTextBox passwordTextBox;
 
     /** Connect button. */
-    private final Button connectButton;
+    private  final Button connectButton;
 
     /** Cancel button. */
-    private final Button cancelButton;
+    private  final Button cancelButton;
 
     /**
      * ConnectXmlaPanel Constructor.
@@ -92,7 +92,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
-        catalogTextBox =  new TextBox();
+        catalogTextBox = new TextBox();
         init();
     }
 
@@ -107,21 +107,24 @@ public class ConnectXmlaPanel extends LayoutComposite {
      * @return the cube connection
      */
     private CubeConnection getCubeConnection() {
-        final CubeConnection cc = new CubeConnection(ConnectionType.XMLA);
-        cc.setName(nameTextBox.getText());
-        cc.setUrl(urlTextBox.getText());
-        if (userTextBox.getText() != null && userTextBox.getText().length() > 0)
-            cc.setUsername(userTextBox.getText());
-        else
-            cc.setUsername(null);
-        if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0)
-            cc.setPassword(passwordTextBox.getText());
-        else
-            cc.setPassword(null);
+        final CubeConnection cubeConn = new CubeConnection(ConnectionType.XMLA);
+        cubeConn.setName(nameTextBox.getText());
+        cubeConn.setUrl(urlTextBox.getText());
+        if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
+            cubeConn.setUsername(userTextBox.getText());
+        } else {
+            cubeConn.setUsername(null);
+        }
+        if (passwordTextBox.getText() != null && passwordTextBox.getText().length() > 0) {
+            cubeConn.setPassword(passwordTextBox.getText());
+        } else {
+            cubeConn.setPassword(null);
+        }
 
-        if (catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0)
-            cc.setCatalog(catalogTextBox.getText());
-        return cc;
+        if (catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0) {
+            cubeConn.setCatalog(catalogTextBox.getText());
+        }
+        return cubeConn;
     }
 
     /**
@@ -143,7 +146,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
         builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
         builder.add(catalogTextBox, CellConstraints.xyw(3, 7, 5));
-        
+
         connectButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 connectButton.setEnabled(false);
@@ -155,7 +158,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
                                 connectButton.setEnabled(true);
                             }
 
-                            public void onSuccess(final String o) {
+                            public void onSuccess(final String object) {
                                 connectButton.setEnabled(true);
                                 ConnectionManagerWindow.closeTabs();
                             }

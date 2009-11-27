@@ -47,9 +47,9 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
     private List<File> jdbcDriverDirectory = new ArrayList<File>();
 
     private ResourceLoader resourceLoader = null;
-    
+
     private boolean preLoad = true;
-    
+
     public void setPreLoad(boolean preLoad) {
         this.preLoad = preLoad;
     }
@@ -60,26 +60,23 @@ public class JdbcDriverFinder implements InitializingBean, ResourceLoaderAware {
         Assert.notNull(jdbcDriverPath);
         Assert.notNull(resourceLoader);
 
-        for (String currentPath : this.jdbcDriverPath)
-        {
+        for (String currentPath : this.jdbcDriverPath) {
             Resource res = resourceLoader.getResource(currentPath);
 
-            if (res == null || 
-                !res.exists())
+            if (res == null || !res.exists())
                 continue;
 
             File currentFile = res.getFile();
 
-            if (!currentFile.isDirectory()
-                    || !currentFile.canRead())
+            if (!currentFile.isDirectory() || !currentFile.canRead())
                 continue;
-            
+
             this.jdbcDriverDirectory.add(currentFile);
-            
+
             if (preLoad)
                 registerDrivers();
         }
-        if (this.jdbcDriverDirectory.size()==0)
+        if (this.jdbcDriverDirectory.size() == 0)
             log.warn(Messages.getString("Util.JdbcDriverFinder.NoDriversInPath")); //$NON-NLS-1$
     }
 

@@ -30,7 +30,9 @@ public class ConnectionType implements Serializable {
     private String name;
 
     public static final ConnectionType XMLA = new ConnectionType("XMLA"); //$NON-NLS-1$
+
     public static final ConnectionType Mondrian = new ConnectionType("Mondrian"); //$NON-NLS-1$
+
     private static final Map<String, ConnectionType> INSTANCES = new HashMap<String, ConnectionType>();
 
     static {
@@ -39,7 +41,7 @@ public class ConnectionType implements Serializable {
     }
 
     private ConnectionType(String name) {
-        this.name=name;
+        this.name = name;
     }
 
     public String toString() {
@@ -51,6 +53,6 @@ public class ConnectionType implements Serializable {
     }
 
     public static ConnectionType getInstance(String name) {
-        return (ConnectionType)INSTANCES.get(name);
+        return (ConnectionType) INSTANCES.get(name);
     }
 }

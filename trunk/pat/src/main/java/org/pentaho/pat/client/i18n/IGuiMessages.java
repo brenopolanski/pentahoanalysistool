@@ -114,78 +114,76 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @param arg0
      * @return
      */
     String failedConnection(String arg0);
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @param arg0
      * @return
      */
     String failedActiveConnection(String arg0);
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @param arg0
      * @return
      */
     String failedDisconnection(String arg0);
 
-
-
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedDeleteConnection(String arg0);
-    
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedLoadConnection(String arg0);
-    
+
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedQuery(String arg0);
+
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedGetSelection(String arg0);
-    
+
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedDeleteQuery(String arg0);
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedCreateQuery(String arg0);
-    
+
     /**
      * 
      *TODO JAVADOC
-     *
+     * 
      * @param arg0
      * @return
      */
@@ -193,7 +191,7 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedGetSort();
@@ -203,24 +201,25 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String unexpectedError();
-    
+
     /**
      * 
-     * @param item - Name of the item to delete
+     * @param item
+     *            - Name of the item to delete
      * @return
      */
     String confirmDelete(String item);
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedOpenQuery(String arg0);
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @param localizedMessage
      * @return
      */
@@ -228,14 +227,14 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @return
      */
     String failedSaveQuery(String arg0);
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @param localizedMessage
      * @return
      */
@@ -243,7 +242,7 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
 
     /**
      *TODO JAVADOC
-     *
+     * 
      * @param localizedMessage
      * @return
      */
