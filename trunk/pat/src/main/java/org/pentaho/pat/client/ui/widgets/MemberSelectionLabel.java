@@ -127,7 +127,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
     @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
-        switch (DOM.eventGetType(event)) { // NOPMD by bugg on 20/04/09 20:16
+        switch (DOM.eventGetType(event)) { 
         case Event.ONCONTEXTMENU:
             break;
         case Event.ONCLICK:
