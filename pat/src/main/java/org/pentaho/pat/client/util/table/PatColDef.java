@@ -28,29 +28,31 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  *TODO JAVADOC
- *
+ * 
  * @author bugg
- *
+ * 
  */
-public class PatColDef<RowType, ColType> extends
-        AbstractColumnDefinition<RowType, ColType> implements HasHorizontalAlignment {
-    
+public class PatColDef<RowType, ColType> extends AbstractColumnDefinition<RowType, ColType> implements
+        HasHorizontalAlignment {
+
     /**
      * Construct a new {@link DefaultColumnDefinition}.
      * 
-     * @param header the name of the column.
+     * @param header
+     *            the name of the column.
      */
-    public PatColDef(Widget header) {
+    public PatColDef(final Widget header) {
+        super();
         setHeader(0, header);
     }
 
     @Override
-    public void setCellValue(RowType rowValue, ColType cellValue) {
+    public void setCellValue(final RowType rowValue, final ColType cellValue) {
         // Ignore
     }
 
     @Override
-    public ColType getCellValue(RowType rowValue) {
+    public ColType getCellValue(final RowType rowValue) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -60,8 +62,8 @@ public class PatColDef<RowType, ColType> extends
         return null;
     }
 
-    public void setHorizontalAlignment(HorizontalAlignmentConstant align) {
+    public void setHorizontalAlignment(final HorizontalAlignmentConstant align) {
         // TODO Auto-generated method stub
-        
+
     }
 }

@@ -40,87 +40,85 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
-public class FileUploadController extends AbstractCommandController implements
-		ResourceLoaderAware, InitializingBean, ApplicationContextAware {
-	
-	private static final String DATA_START = "[SCHEMA_START]"; //$NON-NLS-1$
-	private static final String DATA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
-	
-	Logger log = Logger.getLogger(this.getClass());
+public class FileUploadController extends AbstractCommandController implements ResourceLoaderAware, InitializingBean,
+        ApplicationContextAware {
 
-	private String basedir = null;
-	private File schemaDirectory = null;
-	private ResourceLoader resourceLoader;
+    private static final String DATA_START = "[SCHEMA_START]"; //$NON-NLS-1$
 
-	public void setBasedir(String basedir) {
-		this.basedir = basedir;
-	}
+    private static final String DATA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
 
-	public void setResourceLoader(ResourceLoader resourceLoader) {
-		this.resourceLoader = resourceLoader;
-	}
+    Logger log = Logger.getLogger(this.getClass());
 
-	public void afterPropertiesSet() throws Exception {
-		
-		Assert.notNull(this.resourceLoader);
-		Assert.notNull(this.basedir);
-		
-		try {
-			this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
-			if (!this.schemaDirectory.isDirectory()) {
-				if (!this.schemaDirectory.mkdir()) {
-					throw new Exception();
-				}
-			}
-		} catch (Exception e) {
-			log.warn(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory"));//$NON-NLS-1$
-			try {
-				File tempDirectory = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
-				this.schemaDirectory = new File(tempDirectory,basedir);
-				if (!this.schemaDirectory.isDirectory()) {
-					if (!this.schemaDirectory.mkdir()) {
-						throw new Exception();
-					}
-				}
-			} catch (Exception e2) {
-			    log.error(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2"),e); //$NON-NLS-1$
-				throw new RuntimeException(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2")); //$NON-NLS-1$
-			}
-		}
-	}
+    private String basedir = null;
 
-	protected ModelAndView handle(HttpServletRequest request,
-			HttpServletResponse response, Object command, BindException errors)
-			throws Exception 
-	{
-	    FileUploadBean fileUploadBean = (FileUploadBean) command;
+    private File schemaDirectory = null;
 
-		try 
-		{
-		    MultipartFile files = fileUploadBean.getFile();
-//		    String schemaData = new String(files.getBytes());
+    private ResourceLoader resourceLoader;
 
-		    // Send a confirmation message to the client
-			response.setContentType("text/plain"); //$NON-NLS-1$
-			response.getWriter().print(DATA_START + (new String(Base64Coder.encode(files.getBytes()))) + DATA_END);
-			response.setStatus(HttpServletResponse.SC_OK);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}
+    public void setBasedir(String basedir) {
+        this.basedir = basedir;
+    }
 
-		// return the result to the client
-		response.getWriter().flush();
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
-		return null;
-	}
+    public void afterPropertiesSet() throws Exception {
 
-	// this method is overriding, and specify how spring convert multipart into
-	// a byte array that binds to our command class
-	protected void initBinder(HttpServletRequest request,
-			ServletRequestDataBinder binder) throws Exception {
-		binder.registerCustomEditor(byte[].class,
-				new ByteArrayMultipartFileEditor());
-		super.initBinder(request, binder);
-	}
+        Assert.notNull(this.resourceLoader);
+        Assert.notNull(this.basedir);
+
+        try {
+            this.schemaDirectory = resourceLoader.getResource(basedir).getFile();
+            if (!this.schemaDirectory.isDirectory()) {
+                if (!this.schemaDirectory.mkdir()) {
+                    throw new Exception();
+                }
+            }
+        } catch (Exception e) {
+            log.warn(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory"));//$NON-NLS-1$
+            try {
+                File tempDirectory = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+                this.schemaDirectory = new File(tempDirectory, basedir);
+                if (!this.schemaDirectory.isDirectory()) {
+                    if (!this.schemaDirectory.mkdir()) {
+                        throw new Exception();
+                    }
+                }
+            } catch (Exception e2) {
+                log.error(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2"), e); //$NON-NLS-1$
+                throw new RuntimeException(Messages.getString("Servlet.FileUpload.CantCreateTempDirectory2")); //$NON-NLS-1$
+            }
+        }
+    }
+
+    protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object command,
+            BindException errors) throws Exception {
+        FileUploadBean fileUploadBean = (FileUploadBean) command;
+
+        try {
+            MultipartFile files = fileUploadBean.getFile();
+            // String schemaData = new String(files.getBytes());
+
+            // Send a confirmation message to the client
+            response.setContentType("text/plain"); //$NON-NLS-1$
+            response.getWriter().print(DATA_START + (new String(Base64Coder.encode(files.getBytes()))) + DATA_END);
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        // return the result to the client
+        response.getWriter().flush();
+
+        return null;
+    }
+
+    // this method is overriding, and specify how spring convert multipart into
+    // a byte array that binds to our command class
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+        super.initBinder(request, binder);
+    }
 }

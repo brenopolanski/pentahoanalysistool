@@ -62,17 +62,17 @@ public class LoadMenuPanel extends LayoutComposite {
 
     /**
      */
-    private final TextBox textBox;
+    private  final TextBox textBox = new TextBox();
 
-    DefaultListModel<QuerySaveModel> model;
+    private  DefaultListModel<QuerySaveModel> model;
 
-    final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private  final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
     /**
      */
-    private FilterProxyListModel<QuerySaveModel, String> filterModel;
+    private  FilterProxyListModel<QuerySaveModel, String> filterModel;
 
-    private final Timer filterTimer = new Timer() {
+    private  final Timer filterTimer = new Timer() {
         @Override
         public void run() {
             filterModel.filter(textBox.getText());
@@ -80,10 +80,10 @@ public class LoadMenuPanel extends LayoutComposite {
     };
 
     public LoadMenuPanel() {
+        super();
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
 
-        textBox = new TextBox();
         textBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
@@ -97,16 +97,15 @@ public class LoadMenuPanel extends LayoutComposite {
 
     }
 
-    public ListBox<?> createListBox() {
+    private ListBox<?> createListBox() {
 
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
             public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
                     final QuerySaveModel item) {
-                switch (column) {
-                case 0:
+                if (column == 0) {
+
                     listBox.setWidget(row, column, createRichListBoxCell(item));
-                    break;
-                default:
+                } else {
                     throw new RuntimeException(ConstantFactory.getInstance().shouldnthappen());
                 }
             }
@@ -118,8 +117,9 @@ public class LoadMenuPanel extends LayoutComposite {
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {
             public boolean select(final QuerySaveModel element, final String filter) {
                 final String regexp = ".*" + filter + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                if (regexp == null || regexp.length() == 0)
+                if (regexp == null || regexp.length() == 0) {
                     return true;
+                }
                 return element.getName().matches(regexp);
             }
         });
@@ -158,8 +158,9 @@ public class LoadMenuPanel extends LayoutComposite {
                         listBox.setModel(model);
                         if (arg0 != null) {
                             model.clear();
-                            for (int i = 0; i < arg0.size(); i++)
+                            for (int i = 0; i < arg0.size(); i++) {
                                 model.add(arg0.get(i));
+                            }
                             listBox.setModel(filterModel);
 
                         }

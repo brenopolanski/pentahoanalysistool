@@ -38,69 +38,58 @@ import org.pentaho.pat.server.services.DiscoveryService;
  * This is an implementation of the discovery RPC servlet.
  * 
  * @author Luc Boudreau
- *
+ * 
  */
 public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private transient DiscoveryService discoveryService;
+    private  DiscoveryService discoveryService;
 
-	private transient Logger log = Logger.getLogger(DiscoveryServlet.class);
+    private  Logger log = Logger.getLogger(DiscoveryServlet.class);
 
-	public void init() throws ServletException {
-		super.init();
-		discoveryService = (DiscoveryService)applicationContext.getBean("discoveryService"); //$NON-NLS-1$
-		if (discoveryService==null)
+    public void init() throws ServletException {
+        super.init();
+        discoveryService = (DiscoveryService) applicationContext.getBean("discoveryService"); //$NON-NLS-1$
+        if (discoveryService == null)
             throw new ServletException(Messages.getString("Servlet.DiscoveryServiceNotFound")); //$NON-NLS-1$
-	}
-	
-	public CubeItem[] getCubes(String sessionId, String connectionId) throws RpcException
-	{
-		List<CubeItem> list;
+    }
+
+    public CubeItem[] getCubes(String sessionId, String connectionId) throws RpcException {
+        List<CubeItem> list;
         try {
             list = this.discoveryService.getCubes(getCurrentUserId(), sessionId, connectionId);
         } catch (OlapException e) {
-            log.error(Messages.getString("Servlet.Discovery.CantGenerateCubesList"),e); //$NON-NLS-1$
+            log.error(Messages.getString("Servlet.Discovery.CantGenerateCubesList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateCubesList")); //$NON-NLS-1$
-        } 
-		return list.toArray(new CubeItem[list.size()]);
-	}
+        }
+        return list.toArray(new CubeItem[list.size()]);
+    }
 
-	public String [] getDimensions(
-            String sessionId, 
-            String queryId, 
-            IAxis axis) throws RpcException
-	{
-		List<String> dimensionsList;
-		try {
-			dimensionsList = this.discoveryService.getDimensions(
-			    getCurrentUserId(), 
-			    sessionId,
-			    queryId,
-			    (axis.equals(IAxis.UNUSED))?null:org.olap4j.Axis.Standard.valueOf(axis.name()));
-			return dimensionsList.toArray(new String[dimensionsList.size()]);
-		} catch (OlapException e) {
-		    log.error(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"),e); //$NON-NLS-1$
-		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList")); //$NON-NLS-1$
-		}
-		
-		
-	}
+    public String[] getDimensions(String sessionId, String queryId, IAxis axis) throws RpcException {
+        List<String> dimensionsList;
+        try {
+            dimensionsList = this.discoveryService.getDimensions(getCurrentUserId(), sessionId, queryId, (axis
+                    .equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()));
+            return dimensionsList.toArray(new String[dimensionsList.size()]);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList")); //$NON-NLS-1$
+        }
 
-	public StringTree getMembers(String sessionId, String queryId, String dimensionName) throws RpcException
-	{
-		try {
-			return this.discoveryService.getMembers(getCurrentUserId(), sessionId, queryId, dimensionName);
-		} catch (OlapException e) {
-		    log.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"),e); //$NON-NLS-1$
-		    throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
-		}
-	}
-	
-	public String[] getDrivers() throws RpcException
-	{
-	    List<String> driverNames = this.discoveryService.getDrivers();
-		return driverNames.toArray(new String[driverNames.size()]);
-	}
+    }
+
+    public StringTree getMembers(String sessionId, String queryId, String dimensionName) throws RpcException {
+        try {
+            return this.discoveryService.getMembers(getCurrentUserId(), sessionId, queryId, dimensionName);
+        } catch (OlapException e) {
+            log.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+    }
+
+    public String[] getDrivers() throws RpcException {
+        List<String> driverNames = this.discoveryService.getDrivers();
+        return driverNames.toArray(new String[driverNames.size()]);
+    }
 }

@@ -26,40 +26,41 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
 
-
 /**
  * Helper Class for mdx query pairing with a connection
- * @created Oct 16, 2009 
+ * 
+ * @created Oct 16, 2009
  * @since 0.5.1
  * @author Paul Stoellberger
  * 
  */
 public class MdxQuery {
     private OlapConnection connection = null;
+
     private String catalogName = null;
 
     private String mdx = null;
-    private String id = null;
 
+    private String id = null;
 
     public String getId() {
         return id;
     }
 
-    public MdxQuery(String id,OlapConnection connection, String catalogName) {
+    public MdxQuery(String id, OlapConnection connection, String catalogName) {
         this.connection = connection;
         this.catalogName = catalogName;
         this.mdx = null;
         this.id = id;
     }
-    
-    public MdxQuery(String id,OlapConnection connection, String catalogName, String mdx) {
+
+    public MdxQuery(String id, OlapConnection connection, String catalogName, String mdx) {
         this.connection = connection;
         this.catalogName = catalogName;
         this.mdx = mdx;
         this.id = id;
     }
-    
+
     public OlapConnection getconnection() {
         return connection;
     }
@@ -84,7 +85,7 @@ public class MdxQuery {
         this.catalogName = catalogName;
     }
 
-    public CellSet execute() throws OlapException{
+    public CellSet execute() throws OlapException {
         OlapStatement stmt;
         try {
             if (this.catalogName != null) {
@@ -95,11 +96,10 @@ public class MdxQuery {
         }
 
         stmt = connection.createStatement();
-        if (mdx != null && mdx.length() > 0 ) 
+        if (mdx != null && mdx.length() > 0)
             return stmt.executeOlapQuery(mdx);
-        
+
         throw new OlapException("Can't execute blank or empty query");
     }
 
 }
-

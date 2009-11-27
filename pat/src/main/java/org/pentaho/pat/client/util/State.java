@@ -37,11 +37,11 @@ public class State {
         ONECUBE("ONECUBE", false, false, false, false, true, false, true, false, true), //$NON-NLS-1$
         OLAPTABLE("OLAPTABLE", false, false, false, true, false, false, false, false, false); //$NON-NLS-1$
         public static Mode getModeByParameter(final String param) {
-            for (final Mode s : values()){
-                if (s.getParam().equals(param)){
-                    return s;   
+            for (final Mode s : values()) {
+                if (s.getParam().equals(param)) {
+                    return s;
                 }
-                 
+
             }
             return null;
         }
@@ -125,7 +125,7 @@ public class State {
 
     private Mode mode = null;
 
-    private transient String sessionId = null;
+    private  String sessionId = null;
 
     private boolean connected = false;
 

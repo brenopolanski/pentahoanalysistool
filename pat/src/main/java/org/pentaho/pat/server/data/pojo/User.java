@@ -36,67 +36,59 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
-
 @Entity
-@Table(name="USERS")
+@Table(name = "USERS")
 public class User {
-	
+
     @Basic
     private String username = null;
-    
+
     @Basic
     private String password = null;
-    
+
     @Basic
     private boolean enabled = true;
-	
+
     private Collection<Group> groups = new HashSet<Group>();
-	
+
     private Set<SavedConnection> savedConnections = new HashSet<SavedConnection>();
-	
+
     private Set<SavedQuery> savedQueries = new HashSet<SavedQuery>();
-    
-	@Id
-	public String getUsername() {
-		return username;
-	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @Id
+    public String getUsername() {
+        return username;
+    }
 
-	@ManyToMany(
-	    targetEntity=Group.class,
-	    fetch=FetchType.EAGER,
-	    mappedBy="members")
-	public Collection<Group> getGroups() {
-		return groups;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setGroups(Collection<Group> groups) {
-		this.groups = groups;
-	}
+    @ManyToMany(targetEntity = Group.class, fetch = FetchType.EAGER, mappedBy = "members")
+    public Collection<Group> getGroups() {
+        return groups;
+    }
 
-	@OneToMany(fetch=FetchType.EAGER,targetEntity=SavedConnection.class,cascade=CascadeType.ALL)
-	@JoinTable(
-	    name="USERS_CONNECTIONS",
-	    joinColumns=@JoinColumn(name="user_id",table="USERS",referencedColumnName="username"),
-	    inverseJoinColumns=@JoinColumn(name="connection_id",table="CONNECTIONS",referencedColumnName="id"))
-	@Cascade({org.hibernate.annotations.CascadeType.ALL,org.hibernate.annotations.CascadeType.DELETE_ORPHAN,org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	public Set<SavedConnection> getSavedConnections() {
-		return savedConnections;
-	}
+    public void setGroups(Collection<Group> groups) {
+        this.groups = groups;
+    }
 
-	public void setSavedConnections(Set<SavedConnection> savedConnections) {
-		this.savedConnections = savedConnections;
-	}
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = SavedConnection.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_CONNECTIONS", joinColumns = @JoinColumn(name = "user_id", table = "USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "connection_id", table = "CONNECTIONS", referencedColumnName = "id"))
+    @Cascade( {org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
+            org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    public Set<SavedConnection> getSavedConnections() {
+        return savedConnections;
+    }
 
-	@OneToMany(fetch=FetchType.EAGER,targetEntity=SavedQuery.class,cascade=CascadeType.ALL)
-    @JoinTable(
-        name="USERS_QUERIES",
-        joinColumns=@JoinColumn(name="user_id",table="USERS",referencedColumnName="username"),
-        inverseJoinColumns=@JoinColumn(name="query_id",table="QUERIES",referencedColumnName="id"))
-    @Cascade({org.hibernate.annotations.CascadeType.ALL,org.hibernate.annotations.CascadeType.DELETE_ORPHAN,org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    public void setSavedConnections(Set<SavedConnection> savedConnections) {
+        this.savedConnections = savedConnections;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = SavedQuery.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_QUERIES", joinColumns = @JoinColumn(name = "user_id", table = "USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "query_id", table = "QUERIES", referencedColumnName = "id"))
+    @Cascade( {org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
+            org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     public Set<SavedQuery> getSavedQueries() {
         return savedQueries;
     }
@@ -120,6 +112,5 @@ public class User {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-	
-	
+
 }

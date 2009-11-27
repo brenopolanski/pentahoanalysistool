@@ -16,7 +16,7 @@ import org.pentaho.pat.client.util.factory.charts.util.ChartUtils;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -38,7 +38,7 @@ public class LineChartType {
             Map<String, Object> chartOptions, final ChartPanel chartPanel, Position pos) {
 
         final PatTableModel patTableModel = new PatTableModel(matrix);
-        final BaseCell[][] rowData = patTableModel.getRowData();
+        final AbstractBaseCell[][] rowData = patTableModel.getRowData();
         int rowColCount = 0;
         for (int i = 0; i < patTableModel.getColumnCount(); i++)
             if (rowData[0][i] instanceof MemberCell)
@@ -60,12 +60,12 @@ public class LineChartType {
         if (pos != null) {
             cd.setLegend(new Legend(pos, true));
         }
-        final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
-        final BaseCell[][] dataColHeaders = patTableModel.getColumnHeaders();
+        final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+        final AbstractBaseCell[][] dataColHeaders = patTableModel.getColumnHeaders();
         final Label[] labels = new Label[data.size()];
         final MemberCell[] memberCellLabelList = new MemberCell[data.size()];
         for (int i = 0; i < data.size(); i++) {
-            final BaseCell[] cell = data.get(i);
+            final AbstractBaseCell[] cell = data.get(i);
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;
@@ -100,7 +100,7 @@ public class LineChartType {
             lc2.setColour(ChartUtils.getRandomColor());
             lc2.setTooltip("#x_label#"); //$NON-NLS-1$
             for (int j = 0; j < data.size(); j++) {
-                final BaseCell[] cell = data.get(j);
+                final AbstractBaseCell[] cell = data.get(j);
                 final int row = j;
                 
                 if (dataColHeaders[patTableModel.getOffset() - 1][actualRow].getRawValue() != null){

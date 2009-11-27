@@ -39,14 +39,13 @@ import com.google.gwt.user.client.ui.TreeImages;
  * <p>
  * The Application wrapper that includes a menu bar, title and content.
  * </p>
- * <h3>CSS Style Rules</h3> <ul class="css"> <li>.Application { Applied to the
- * entire Application }</li> <li>.Application-top { The top portion of the
- * Application }</li> <li>.Application-title { The title widget }</li> <li>
- * .Application-links { The main external links }</li> <li>.Application-options
- * { The options widget }</li> <li>.Application-menu { The main menu }</li> <li>
+ * <h3>CSS Style Rules</h3> <ul class="css"> <li>.Application { Applied to the entire Application }</li> <li>
+ * .Application-top { The top portion of the Application }</li> <li>.Application-title { The title widget }</li> <li>
+ * .Application-links { The main external links }</li> <li>.Application-options { The options widget }</li> <li>
+ * .Application-menu { The main menu }</li> <li>
  * .Application-content-wrapper { The element around the content }</li> </ul>
- *
- * @created Apr 23, 2009 
+ * 
+ * @created Apr 23, 2009
  * @since 0.3
  * @author Tom Barber
  * 
@@ -60,7 +59,7 @@ public class Application extends Viewport {
 
         /**
          * An image indicating a leaf.
-         *
+         * 
          * @return a prototype of this image
          */
         @Resource("noimage.png")
@@ -74,7 +73,7 @@ public class Application extends Viewport {
 
         /**
          * Fired when a menu item is selected.
-         *
+         * 
          * @param item
          *            the item that was selected
          */
@@ -83,54 +82,53 @@ public class Application extends Viewport {
 
     private static MainTabPanel mainTabPanel = null;
 
-    private MenuBar menuBar = null;
+    private  MenuBar menuBar = null;
 
-    public static FlexTableRowDragController tableRowDragController;
+    public static FlexTableRowDragController tblRowDrgCont;
 
     private static LayoutPanel rootPanel;
+
     /**
      * Constructor.
      */
 
     public Application() {
         super();
-        
+
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
-        tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
+        tblRowDrgCont = new FlexTableRowDragController(Application.getMainPanel());
 
+        // Add the main menu
+        if (Pat.getApplicationState().getMode().isShowMenu()) {
 
-            // Add the main menu
-            if (Pat.getApplicationState().getMode().isShowMenu()) {
+            menuBar = new MenuBar();
+            rootPanel.add(menuBar, new BoxLayoutData(FillStyle.HORIZONTAL));
+        }
 
-                menuBar = new MenuBar();
-                rootPanel.add(menuBar,new BoxLayoutData(FillStyle.HORIZONTAL));
-            }
+        if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
+            MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+        }
 
-
-            if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
-                MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
-            }
-
-            mainTabPanel = new MainTabPanel();
-            rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
+        mainTabPanel = new MainTabPanel();
+        rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
 
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.gwt.mosaic.ui.client.Viewport#getWidget()
      */
     /**
      * Gets the widget.
-     *
+     * 
      * @return the widget.
      */
     @Override
     protected final LayoutPanel getWidget() {
-        return (LayoutPanel)super.getWidget();
+        return (LayoutPanel) super.getWidget();
     }
 
     // TODO remove if not needed
@@ -138,15 +136,13 @@ public class Application extends Viewport {
         return mainTabPanel;
     }
 
-
     /**
      * Gets the main panel.
-     *
+     * 
      * @return the bottom panel
      */
     public static LayoutPanel getMainPanel() {
         return rootPanel;
     }
-
 
 }

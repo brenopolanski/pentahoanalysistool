@@ -34,62 +34,65 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FlexTableRowDragController extends PickupDragController {
 
-	/** CSS tag. */
-	private static final String DRAG_CSS_PROXY = "dragProxy"; //$NON-NLS-1$
+    /** CSS tag. */
+    private static final String DRAG_CSS_PROXY = "dragProxy"; //$NON-NLS-1$
 
-	/** The flextable. */
-	private DimensionFlexTable draggableTable;
+    /** The flextable. */
+    private  DimensionFlexTable draggableTable;
 
-	/** The source row. */
-	private int dragRow;
+    /** The source row. */
+    private  int dragRow;
 
-	/** The source row. */
-    private int dragCol;
+    /** The source row. */
+    private  int dragCol;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param boundaryPanel the boundary panel
-	 */
-	public FlexTableRowDragController(final AbsolutePanel boundaryPanel) {
-		super(boundaryPanel, false);
-		setBehaviorDragProxy(true);
-		setBehaviorMultipleSelection(false);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param boundaryPanel
+     *            the boundary panel
+     */
+    public FlexTableRowDragController(final AbsolutePanel boundaryPanel) {
+        super(boundaryPanel, false);
+        setBehaviorDragProxy(true);
+        setBehaviorMultipleSelection(false);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#dragEnd()
-	 */
-	/**
-	 * Fire on drag end.
-	 */
-	@Override
-	public void dragEnd() {
-		super.dragEnd();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.allen_sauer.gwt.dnd.client.PickupDragController#dragEnd()
+     */
+    /**
+     * Fire on drag end.
+     */
+    @Override
+    public void dragEnd() {
+        super.dragEnd();
 
-		// cleanup
-		draggableTable = null;
-	}
+        // cleanup
+        draggableTable = null;
+    }
 
-	/**
-	 * get the source table.
-	 * 
-	 * @return the draggable table
-	 */
-	DimensionFlexTable getDraggableTable() {
-		return draggableTable;
-	}
+    /**
+     * get the source table.
+     * 
+     * @return the draggable table
+     */
+    DimensionFlexTable getDraggableTable() {
+        return draggableTable;
+    }
 
-	/**
-	 * Get the source row.
-	 * 
-	 * @return the drag row
-	 */
-	int getDragRow() {
-		return dragRow;
-	}
+    /**
+     * Get the source row.
+     * 
+     * @return the drag row
+     */
+    int getDragRow() {
+        return dragRow;
+    }
 
-	/**
+    /**
      * Get the source column.
      * 
      * @return the drag row
@@ -97,32 +100,36 @@ public class FlexTableRowDragController extends PickupDragController {
     int getDragCol() {
         return dragCol;
     }
-    
-	/**
-	 * Get the Widget Row.
-	 * 
-	 * @param widget the widget
-	 * @param table the table
-	 * 
-	 * @return the widget row
-	 */
-	private int getWidgetRow(final Widget widget, final DimensionFlexTable table) {
-		for (int row = 0; row < table.getRowCount(); row++) {
-			for (int col = 0; col < table.getCellCount(row); col++) {
-				final Widget w = table.getWidget(row, col);
-				if (w == widget) {
-					return row;
-				}
-			}
-		}
-		throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
-	}
 
     /**
      * Get the Widget Row.
      * 
-     * @param widget the widget
-     * @param table the table
+     * @param widget
+     *            the widget
+     * @param table
+     *            the table
+     * 
+     * @return the widget row
+     */
+    private int getWidgetRow(final Widget widget, final DimensionFlexTable table) {
+        for (int row = 0; row < table.getRowCount(); row++) {
+            for (int col = 0; col < table.getCellCount(row); col++) {
+                final Widget w = table.getWidget(row, col);
+                if (w.equals(widget)) {
+                    return row;
+                }
+            }
+        }
+        throw new RuntimeException("Unable to determine widget row"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
+    }
+
+    /**
+     * Get the Widget Row.
+     * 
+     * @param widget
+     *            the widget
+     * @param table
+     *            the table
      * 
      * @return the widget row
      */
@@ -130,7 +137,7 @@ public class FlexTableRowDragController extends PickupDragController {
         for (int row = 0; row < table.getRowCount(); row++) {
             for (int col = 0; col < table.getCellCount(row); col++) {
                 final Widget w = table.getWidget(row, col);
-                if (w == widget) {
+                if (w.equals(widget)) {
                     return col;
                 }
             }
@@ -138,61 +145,74 @@ public class FlexTableRowDragController extends PickupDragController {
         throw new RuntimeException("Unable to determine widget col"); //$NON-NLS-1$ // NOPMD by bugg on 20/04/09 20:17
     }
 
-	
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.AbsolutePanel, boolean)
-	 */
-	/**
-	 *  Boundary Controller
-	 *  @param boundaryPanel the boundaryPanel
-	 *  @param allowDroppingOnBoundaryPanel boolean to allow drops
-	 *  
-	 *  @return the BoundaryDropContoller
-	 */
-	@Override
-	protected BoundaryDropController newBoundaryDropController(final AbsolutePanel boundaryPanel, final boolean allowDroppingOnBoundaryPanel) {
-		if (allowDroppingOnBoundaryPanel) {
-			throw new IllegalArgumentException();
-		}
-		return super.newBoundaryDropController(boundaryPanel, allowDroppingOnBoundaryPanel);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @seecom.allen_sauer.gwt.dnd.client.PickupDragController#newBoundaryDropController(com.google.gwt.user.client.ui.
+     * AbsolutePanel, boolean)
+     */
+    /**
+     * Boundary Controller
+     * 
+     * @param boundaryPanel
+     *            the boundaryPanel
+     * @param allowDroppingOnBoundaryPanel
+     *            boolean to allow drops
+     * 
+     * @return the BoundaryDropContoller
+     */
+    @Override
+    protected BoundaryDropController newBoundaryDropController(final AbsolutePanel boundaryPanel,
+            final boolean allowDroppingOnBoundaryPanel) {
+        if (allowDroppingOnBoundaryPanel) {
+            throw new IllegalArgumentException();
+        }
+        return super.newBoundaryDropController(boundaryPanel, allowDroppingOnBoundaryPanel);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newDragProxy(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
-	/**
-	 * New Drag Proxy
-	 * @param context the context
-	 * 
-	 * @return the proxy widget
-	 */
-	@Override
-	protected Widget newDragProxy(final DragContext context) {
-		DimensionFlexTable proxy;
-		proxy = new DimensionFlexTable();
-		proxy.addStyleName(DRAG_CSS_PROXY);
-		draggableTable = (DimensionFlexTable) context.draggable.getParent();
-		dragRow = getWidgetRow(context.draggable, draggableTable);
-		dragCol = getWidgetCol(context.draggable, draggableTable);
-		FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
-		return proxy;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.allen_sauer.gwt.dnd.client.PickupDragController#newDragProxy(com.allen_sauer.gwt.dnd.client.DragContext)
+     */
+    /**
+     * New Drag Proxy
+     * 
+     * @param context
+     *            the context
+     * 
+     * @return the proxy widget
+     */
+    @Override
+    protected Widget newDragProxy(final DragContext context) {
+        DimensionFlexTable proxy;
+        proxy = new DimensionFlexTable();
+        proxy.addStyleName(DRAG_CSS_PROXY);
+        draggableTable = (DimensionFlexTable) context.draggable.getParent();
+        dragRow = getWidgetRow(context.draggable, draggableTable);
+        dragCol = getWidgetCol(context.draggable, draggableTable);
+        FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
+        return proxy;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
-	 */
-	/**
-	 * The proxy drag behaviour
-	 * 
-	 * @param dragProxyEnabled boolean indicator
-	 */
-	@Override
-	public void setBehaviorDragProxy(final boolean dragProxyEnabled) {
-		if (!dragProxyEnabled) {
-			// TODO implement drag proxy behavior
-			throw new IllegalArgumentException();
-		}
-		super.setBehaviorDragProxy(dragProxyEnabled);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
+     */
+    /**
+     * The proxy drag behaviour
+     * 
+     * @param dragProxyEnabled
+     *            boolean indicator
+     */
+    @Override
+    public void setBehaviorDragProxy(final boolean dragProxyEnabled) {
+        if (!dragProxyEnabled) {
+            // TODO implement drag proxy behavior
+            throw new IllegalArgumentException();
+        }
+        super.setBehaviorDragProxy(dragProxyEnabled);
+    }
 
 }

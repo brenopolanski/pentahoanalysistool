@@ -95,16 +95,16 @@ public class FlexTableUtil {
         LogoPanel.spinWheel(true);
         final int sRow = sourceRow;
         final int sCol = sourceCol;
-        if (sourceTable != targetTable) {
-            if (!sourceTable.getHorizontal())
-                // if (sourceTable.equals(targetTable) && sRow >= targetRow)
-                // sRow++;
-                targetTable.insertRow(targetTable.getRowCount());
-            else
+        if (!sourceTable.equals(targetTable)) {
+            if (sourceTable.getHorizontal()) {
                 // if (sourceTable.equals(targetTable) && sCol >= targetCol)
                 // sCol++;
                 targetTable.insertCell(0, targetTable.getCellCount(0));
-
+            } else {
+                // if (sourceTable.equals(targetTable) && sRow >= targetRow)
+                // sRow++;
+                targetTable.insertRow(targetTable.getRowCount());
+            }
             final Widget w = sourceTable.getWidget(sRow, sCol);
             ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                     w.getElement().getInnerText().trim(), new AsyncCallback<Object>() {
@@ -137,7 +137,7 @@ public class FlexTableUtil {
 
                                                         public void onSuccess(final StringTree memberTree) {
 
-                                                            //new String(memberTree.getValue());
+                                                            // new String(memberTree.getValue());
                                                             final ArrayList<String> names = new ArrayList<String>();
                                                             names.add(memberTree.getChildren().get(0).getValue());
                                                             ServiceFactory.getQueryInstance().createSelection(
@@ -160,21 +160,8 @@ public class FlexTableUtil {
 
                                                                         public void onSuccess(final Object arg0) {
 
-                                                                            if (!targetTable.getHorizontal()) {
-                                                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
-                                                                                spacerLabel
-                                                                                        .setStylePrimaryName(TABLE_CSS_SPACER);
-                                                                                targetTable
-                                                                                        .getCellFormatter()
-                                                                                        .setVerticalAlignment(
-                                                                                                targetTable
-                                                                                                        .getRowCount(),
-                                                                                                0,
-                                                                                                HasVerticalAlignment.ALIGN_TOP);
-                                                                                targetTable.setWidget(targetTable
-                                                                                        .getRowCount(), 0, spacerLabel);
+                                                                            if (targetTable.getHorizontal()) {
 
-                                                                            } else {
                                                                                 final Label spacerLabel = new Label(""); //$NON-NLS-1$
                                                                                 spacerLabel
                                                                                         .setStylePrimaryName(TABLE_CSS_SPACER);
@@ -195,6 +182,19 @@ public class FlexTableUtil {
                                                                                 targetTable.setWidget(0, targetTable
                                                                                         .getCellCount(0), spacerLabel);
 
+                                                                            } else {
+                                                                                final Label spacerLabel = new Label(""); //$NON-NLS-1$
+                                                                                spacerLabel
+                                                                                        .setStylePrimaryName(TABLE_CSS_SPACER);
+                                                                                targetTable
+                                                                                        .getCellFormatter()
+                                                                                        .setVerticalAlignment(
+                                                                                                targetTable
+                                                                                                        .getRowCount(),
+                                                                                                0,
+                                                                                                HasVerticalAlignment.ALIGN_TOP);
+                                                                                targetTable.setWidget(targetTable
+                                                                                        .getRowCount(), 0, spacerLabel);
                                                                             }
                                                                             GlobalConnectionFactory.getQueryInstance()
                                                                                     .getQueryListeners()

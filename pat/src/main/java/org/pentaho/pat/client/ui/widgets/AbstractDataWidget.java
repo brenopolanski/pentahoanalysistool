@@ -71,6 +71,5 @@ public abstract class AbstractDataWidget extends LayoutComposite {
      * @return the widget
      */
     protected abstract void initializeWidget();
-    
 
 }

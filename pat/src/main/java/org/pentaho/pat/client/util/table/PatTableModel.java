@@ -13,97 +13,91 @@
 package org.pentaho.pat.client.util.table;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 
 /**
  * 
- * Creates the needed components of an olap table model 
- * for the PAT Live Table.
- *
+ * Creates the needed components of an olap table model for the PAT Live Table.
+ * 
  * @author tom (at) wamonline.org.uk
- *
+ * 
  */
 public class PatTableModel {
 
-	CellDataSet olapMatrix = null;
+    private  CellDataSet olapMatrix = null;
 
-	/**
-	 * 
-	 * Constructor.
-	 *
-	 * @param olapMatrix
-	 */
-	public PatTableModel(final CellDataSet olapMatrix) {
-		this.olapMatrix = olapMatrix;
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param olapMatrix
+     */
+    public PatTableModel(final CellDataSet olapMatrix) {
+        this.olapMatrix = olapMatrix;
 
-	}
+    }
 
-	/**
-	 * 
-	 *Get the number of columns in the dataset.
-	 * 
-	 * @return olapData.getCellData().getAcrossCount();
-	 */
-	public int getColumnCount() {
-		return olapMatrix.getWidth();
-	}
+    /**
+     * 
+     *Get the number of columns in the dataset.
+     * 
+     * @return olapData.getCellData().getAcrossCount();
+     */
+    public int getColumnCount() {
+        return olapMatrix.getWidth();
+    }
 
-	/**
-	 * 
-	 * Returns the column headers for the current dataset.
-	 *
-	 * @return values
-	 */
-	public BaseCell[][] getColumnHeaders() {
-		/*final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()];
-		for (int y = 0; y < getOffset(); y++) {
-			for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
-				values[y][x] = olapMatrix.get(x, y);
-			}
-		}*/
-		return olapMatrix.getCellSetHeaders();
+    /**
+     * 
+     * Returns the column headers for the current dataset.
+     * 
+     * @return values
+     */
+    public AbstractBaseCell[][] getColumnHeaders() {
+        /*
+         * final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight()][olapMatrix.getMatrixWidth()]; for (int
+         * y = 0; y < getOffset(); y++) { for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) { values[y][x] =
+         * olapMatrix.get(x, y); } }
+         */
+        return olapMatrix.getCellSetHeaders();
 
-	}
+    }
 
-	/**
-	 * 
-	 * Return the column header offset.
-	 *
-	 * @return offset
-	 */
-	public int getOffset() {
-		return olapMatrix.getOffset();
-	}
+    /**
+     * 
+     * Return the column header offset.
+     * 
+     * @return offset
+     */
+    public int getOffset() {
+        return olapMatrix.getOffset();
+    }
 
-	/**
-	 * 
-	 * Get the amount of data rows
-	 * 
-	 * @return olapData.getCellData().getDownCount();
-	 */
-	public int getRowCount() {
-		return olapMatrix.getHeight();
-	}
+    /**
+     * 
+     * Get the amount of data rows
+     * 
+     * @return olapData.getCellData().getDownCount();
+     */
+    public int getRowCount() {
+        return olapMatrix.getHeight();
+    }
 
-	/**
-	 * 
-	 * Return the current dataset's row data.
-	 *
-	 * @return values
-	 */
-	public BaseCell[][] getRowData() {
-		/*int z = 0;
-		final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight() - getOffset() + 2][olapMatrix.getMatrixWidth()];
-		for (int y = getOffset(); y < olapMatrix.getMatrixHeight(); y++) {
+    /**
+     * 
+     * Return the current dataset's row data.
+     * 
+     * @return values
+     */
+    public AbstractBaseCell[][] getRowData() {
+        /*
+         * int z = 0; final BaseCell[][] values = new BaseCell[olapMatrix.getMatrixHeight() - getOffset() +
+         * 2][olapMatrix.getMatrixWidth()]; for (int y = getOffset(); y < olapMatrix.getMatrixHeight(); y++) {
+         * 
+         * for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) { values[z][x] = olapMatrix.get(x, y); } z++; }
+         */
 
-			for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) {
-				values[z][x] = olapMatrix.get(x, y);
-			}
-			z++;
-		}*/
-	    
-	    
-		return olapMatrix.getCellSetBody();
-	}
+        return olapMatrix.getCellSetBody();
+    }
 
 }

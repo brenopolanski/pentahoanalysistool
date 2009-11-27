@@ -12,25 +12,24 @@
  */
 package org.pentaho.pat.client.util.factory;
 
-
 import org.pentaho.pat.client.listeners.QueryChangeListeners;
 
 import com.google.gwt.core.client.GWT;
 
 /**
- * Create Global Connection Factory to store connection listeners 
- *
+ * Create Global Connection Factory to store connection listeners
+ * 
  * @author tom(at)wamonline.org.uk
- *
+ * 
  */
 public class GlobalConnectionFactory {
 
-protected static QueryChangeListeners qcl;
-	
-	public static QueryChangeListeners getQueryInstance(){
-		if (qcl == null){
-			qcl = (QueryChangeListeners) GWT.create(QueryChangeListeners.class);
-		}
-		return qcl;
-	}
+    protected static QueryChangeListeners qcl;
+
+    public static QueryChangeListeners getQueryInstance() {
+        if (qcl == null) {
+            qcl = (QueryChangeListeners) GWT.create(QueryChangeListeners.class);
+        }
+        return qcl;
+    }
 }

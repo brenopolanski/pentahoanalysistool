@@ -30,14 +30,14 @@ import org.pentaho.pat.server.messages.Messages;
 import org.springframework.beans.factory.InitializingBean;
 
 public class DefaultDataLoader implements InitializingBean {
-    
+
     private UserManager userManager = null;
-    
+
     private GroupManager groupManager = null;
 
     private boolean loadDefaultData = false;
 
-    private transient Logger log = Logger.getLogger(this.getClass());
+    private  Logger log = Logger.getLogger(this.getClass());
 
     public void afterPropertiesSet() throws Exception {
         if (this.loadDefaultData) {
@@ -95,7 +95,7 @@ public class DefaultDataLoader implements InitializingBean {
     public void setLoadDefaultData(boolean loadDefaultData) {
         this.loadDefaultData = loadDefaultData;
     }
-    
+
     public void setGroupManager(GroupManager groupManager) {
         this.groupManager = groupManager;
     }

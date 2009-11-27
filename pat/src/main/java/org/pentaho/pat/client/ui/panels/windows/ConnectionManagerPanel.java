@@ -41,7 +41,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
-import org.pentaho.pat.client.ui.windows.FailBox;
+import org.pentaho.pat.client.ui.windows.AbstractFailBox;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -73,7 +73,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     private static ListBox<ConnectionItem> listBox;
 
-    private transient ToolBar toolBar;
+    private  ToolBar toolBar;
 
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
@@ -92,23 +92,22 @@ public class ConnectionManagerPanel extends LayoutComposite {
         return new Dimension(PREFERREDWIDTH, PREFERREDHEIGHT);
     }
 
-
     private ListBox<ConnectionItem> createListBox() {
         final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
         cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
-            public void renderCell(final ListBox<ConnectionItem> cListBox, final int row, final int column,final ConnectionItem item) {
-                if(column==0) {
-                
+            public void renderCell(final ListBox<ConnectionItem> cListBox, final int row, final int column,
+                    final ConnectionItem item) {
+                if (column == 0) {
+
                     cListBox.setWidget(row, column, createRichListBoxCell(item));
-                }
-                 else{
+                } else {
                     throw new RuntimeException(MessageFactory.getInstance().unexpectedError());
                 }
             }
         });
         cListBox.setModel(CIMODEL);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(cListBox.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(cListBox.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         return cListBox;
     }
@@ -133,43 +132,44 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 }
                 final ConnectionItem item = linkedListBox.getItem(linkedListBox.getSelectedIndex());
                 MessageBox.confirm("ListBox Remove", //$NON-NLS-1$
-                        MessageFactory.getInstance().confirmDelete(item.getName()),
-                        new ConfirmationCallback() { 
-                    public void onResult(final boolean result) {
-                        if (result) {
-                            ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
-                                    new AsyncCallback<Object>() {
-
-                                public void onFailure(final Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(),
-                                            MessageFactory.getInstance().failedDisconnection(arg0.getLocalizedMessage()));
-
-                                }
-
-                                public void onSuccess(final Object arg0) {
-                                    ServiceFactory.getSessionInstance().deleteConnection(
-                                            Pat.getSessionID(), item.getId(),
+                        MessageFactory.getInstance().confirmDelete(item.getName()), new ConfirmationCallback() {
+                            public void onResult(final boolean result) {
+                                if (result) {
+                                    ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
                                             new AsyncCallback<Object>() {
 
                                                 public void onFailure(final Throwable arg0) {
-                                                    MessageBox.alert(ConstantFactory.getInstance()
-                                                            .error(), MessageFactory.getInstance()
-                                                            .failedDeleteConnection(arg0.getLocalizedMessage()));
+                                                    MessageBox.alert(ConstantFactory.getInstance().error(),
+                                                            MessageFactory.getInstance().failedDisconnection(
+                                                                    arg0.getLocalizedMessage()));
 
                                                 }
 
                                                 public void onSuccess(final Object arg0) {
-                                                    refreshConnectionList();
+                                                    ServiceFactory.getSessionInstance().deleteConnection(
+                                                            Pat.getSessionID(), item.getId(),
+                                                            new AsyncCallback<Object>() {
+
+                                                                public void onFailure(final Throwable arg0) {
+                                                                    MessageBox.alert(ConstantFactory.getInstance()
+                                                                            .error(), MessageFactory.getInstance()
+                                                                            .failedDeleteConnection(
+                                                                                    arg0.getLocalizedMessage()));
+
+                                                                }
+
+                                                                public void onSuccess(final Object arg0) {
+                                                                    refreshConnectionList();
+                                                                }
+
+                                                            });
                                                 }
 
                                             });
+                                    CIMODEL.remove(linkedListBox.getSelectedIndex());
                                 }
-
-                            });
-                            CIMODEL.remove(linkedListBox.getSelectedIndex());
-                        }
-                    }
-                });
+                            }
+                        });
             };
         }));
 
@@ -201,8 +201,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
         CIMODEL.clear();
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
-                MessageBox
-                .alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(arg0.getLocalizedMessage()));
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(
+                        arg0.getLocalizedMessage()));
 
             }
 
@@ -222,18 +222,18 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                             public void onSuccess(final CubeConnection[] ccArray2) {
                                 for (final CubeConnection element2 : ccArray2) {
-                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
+                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2
+                                            .getName(), false);
 
-                                    if(cList.contains(newCi)) {
+                                    if (cList.contains(newCi)) {
                                         cList.get(cList.indexOf(newCi)).setConnected(true);
-                                    }
-                                    else {
+                                    } else {
                                         newCi.setConnected(true);
                                         cList.add(newCi);
                                     }
                                 }
 
-                                for (final ConnectionItem cItem : cList){
+                                for (final ConnectionItem cItem : cList) {
                                     CIMODEL.add(cItem);
                                 }
                                 refreshMe();
@@ -273,10 +273,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
         // table.setStyleName("RichListBoxCell");
         Image cImage;
-        if (item.isConnected()){
+        if (item.isConnected()) {
             cImage = Pat.IMAGES.connect().createImage();
-        }
-        else{
+        } else {
             cImage = Pat.IMAGES.disconnect().createImage();
         }
         final CustomButton cButton = new CustomButton(cImage) {
@@ -288,38 +287,40 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
                             new AsyncCallback<Object>() {
 
-                        public void onFailure(final Throwable arg0) {
-                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
-                                    .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
-                            LogoPanel.spinWheel(false);
-                        }
+                                public void onFailure(final Throwable arg0) {
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                            .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
+                                    LogoPanel.spinWheel(false);
+                                }
 
-                        public void onSuccess(final Object arg0) {
-                            refreshConnectionList();
-                            LogoPanel.spinWheel(false);
-                        }
+                                public void onSuccess(final Object arg0) {
+                                    refreshConnectionList();
+                                    LogoPanel.spinWheel(false);
+                                }
 
-                    });
-                }
-                else {
+                            });
+                } else {
                     ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
                             new AsyncCallback<Object>() {
 
-                        public void onFailure(final Throwable arg0) {
-                            LogoPanel.spinWheel(false);
-                            FailBox.alert(ConstantFactory.getInstance().error(), "There has been an error regarding the Connection. " +
-                            		"Please contact the system administrator", MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage())); //$NON-NLS-1$
-                        }
+                                public void onFailure(final Throwable arg0) {
+                                    LogoPanel.spinWheel(false);
+                                    AbstractFailBox
+                                            .alert(
+                                                    ConstantFactory.getInstance().error(),
+                                                    "There has been an error regarding the Connection. "
+                                                            + "Please contact the system administrator", MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage())); //$NON-NLS-1$
+                                }
 
-                        public void onSuccess(final Object arg0) {
-                            LogoPanel.spinWheel(false);
-                            refreshConnectionList();
-                        }
+                                public void onSuccess(final Object arg0) {
+                                    LogoPanel.spinWheel(false);
+                                    refreshConnectionList();
+                                }
 
-                    });
+                            });
                 }
-            //    final int index = linkedListBox.getSelectedIndex();
-//                ciModel.set(index, item);
+                // final int index = linkedListBox.getSelectedIndex();
+                // ciModel.set(index, item);
 
             };
         };

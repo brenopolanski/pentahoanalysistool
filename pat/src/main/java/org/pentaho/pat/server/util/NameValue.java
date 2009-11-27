@@ -23,32 +23,34 @@ import java.io.Serializable;
 
 public class NameValue implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private String value;
+    private static final long serialVersionUID = 1L;
 
-	public NameValue() {
-	}
+    private String name;
 
-	public NameValue(String name, String value) {
-		this.name = name;
-		this.value = value;
-	}
+    private String value;
 
-	public String getName() {
-		return name;
-	}
+    public NameValue() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public NameValue(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
 }

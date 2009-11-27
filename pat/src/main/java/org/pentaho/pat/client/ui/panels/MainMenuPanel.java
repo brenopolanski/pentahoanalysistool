@@ -44,39 +44,40 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class MainMenuPanel extends LayoutComposite {
 
-    private transient final LayoutPanel rootPanel = getLayoutPanel();
+    private  final LayoutPanel rootPanel = getLayoutPanel();
 
     /**
      * 
      * MainMenuPanel Constructor.
-     * @param dPanel 
-     *
+     * 
+     * @param dPanel
+     * 
      */
     public MainMenuPanel(final DataPanel dPanel) {
         super();
         rootPanel.setLayout(new BorderLayout());
         rootPanel.addStyleName("pat-MainMenu"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(rootPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(rootPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final DimensionPanel dimPanel = new DimensionPanel();
         // FIXME remove that and use style
-        DOM.setStyleAttribute(dimPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(dimPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final PropertiesPanel propertiesPanel = new PropertiesPanel(dPanel);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(propertiesPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(propertiesPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().dimensions());
         // FIXME remove that and use style
-        DOM.setStyleAttribute(centerPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(centerPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         centerPanel.add(dimPanel);
         rootPanel.add(centerPanel);
 
         final CaptionLayoutPanel southPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().properties());
         // FIXME remove that and use style
-        DOM.setStyleAttribute(southPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(southPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
         southPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);

@@ -38,75 +38,78 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * This controller is meant to recieve redirects from Pentaho
- * User Console and do the necessary preparations on PAT
- * so a user can create analysis views.
+ * This controller is meant to recieve redirects from Pentaho User Console and do the necessary preparations on PAT so a
+ * user can create analysis views.
+ * 
  * @author Luc Boudreau
  */
 public class PentahoServlet implements InitializingBean, ServletContextAware {
 
     protected SessionService sessionService = null;
+
     protected QueryService queryService = null;
+
     protected DiscoveryService discoveryService = null;
-    
-    protected String redirectTarget =         "/pat/Pat.jsp"; //$NON-NLS-1$
-    protected String xmlaUrlParameter =       "XMLA_URL"; //$NON-NLS-1$
-    protected String xmlaUsernameParameter =  "XMLA_USERNAME"; //$NON-NLS-1$
-    protected String xmlaPasswordParameter =  "XMLA_PASSWORD"; //$NON-NLS-1$
-    public void simpleXmla(HttpServletRequest request, HttpServletResponse response, 
-        HttpSession session) throws Exception 
-    {
+
+    protected String redirectTarget = "/pat/Pat.jsp"; //$NON-NLS-1$
+
+    protected String xmlaUrlParameter = "XMLA_URL"; //$NON-NLS-1$
+
+    protected String xmlaUsernameParameter = "XMLA_USERNAME"; //$NON-NLS-1$
+
+    protected String xmlaPasswordParameter = "XMLA_PASSWORD"; //$NON-NLS-1$
+
+    public void simpleXmla(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws Exception {
         StringBuilder redirect = new StringBuilder(redirectTarget);
-        
+
         // Validate url.
         String xmlaUrl = request.getParameter(xmlaUrlParameter);
         if (!this.verifyXmlaUrl(xmlaUrl))
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, 
-                "A valid XMLA service URL is required."); //$NON-NLS-1$
-        
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "A valid XMLA service URL is required."); //$NON-NLS-1$
+
         // Validate MDX
-//        String mdxQuery = request.getParameter(mdxQueryParameter);
-//        if (mdxQuery==null
-//            || mdxQuery.length()<1) {
-//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, 
-//                "A valid MDX query is required.");
-//        }
-        
+        // String mdxQuery = request.getParameter(mdxQueryParameter);
+        // if (mdxQuery==null
+        // || mdxQuery.length()<1) {
+        // response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+        // "A valid MDX query is required.");
+        // }
+
         // These two are optional. No need to validate.
         String xmlaUsername = request.getParameter(xmlaUsernameParameter);
         String xmlaPassword = request.getParameter(xmlaPasswordParameter);
-        
+
         // Create a new session.
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         String sessionId = this.sessionService.createNewSession(userId);
-        
+
         // Build the URL
         String olap4jUrl = "jdbc:xmla:Server=".concat(xmlaUrl); //$NON-NLS-1$
-        
+
         // Establish the connection
-        ((SessionServiceImpl)this.sessionService).createConnection(userId, sessionId, 
-            "org.olap4j.driver.xmla.XmlaOlap4jDriver", olap4jUrl, xmlaUsername, xmlaPassword); //$NON-NLS-1$
-        
+        ((SessionServiceImpl) this.sessionService).createConnection(userId, sessionId,
+                "org.olap4j.driver.xmla.XmlaOlap4jDriver", olap4jUrl, xmlaUsername, xmlaPassword); //$NON-NLS-1$
+
         // Build the redirect URL
         redirect.append("?MODE=BISERVERPUC"); //$NON-NLS-1$
         redirect.append("&SESSION=").append(sessionId); //$NON-NLS-1$
-        
+
         // Send the redirect HTTP message
         response.sendRedirect(request.getContextPath().concat(redirect.toString()));
     }
 
-    private boolean verifyXmlaUrl(String xmlaUrl) 
-    {
-        if (xmlaUrl==null) return false;
-        
+    private boolean verifyXmlaUrl(String xmlaUrl) {
+        if (xmlaUrl == null)
+            return false;
+
         try {
             URL url = new URL(xmlaUrl);
             // TODO support connection timeout.
             URLConnection connection = url.openConnection();
-            if (connection instanceof HttpURLConnection) 
-            {
+            if (connection instanceof HttpURLConnection) {
                 HttpURLConnection.setFollowRedirects(true);
-                HttpURLConnection httpConnection = (HttpURLConnection)connection;
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
                 httpConnection.connect();
                 return true;
             } else {

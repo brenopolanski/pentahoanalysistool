@@ -31,28 +31,26 @@ import org.pentaho.pat.server.data.pojo.User;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * This is a UserManager implementation that supports Hibernate as it's backend
- * data provider.
+ * This is a UserManager implementation that supports Hibernate as it's backend data provider.
+ * 
  * @author Luc Boudreau
  */
 public class UserManagerImpl extends AbstractManager implements UserManager, InitializingBean {
 
-    public void deleteUser(String userId) 
-    {
+    public void deleteUser(String userId) {
         // Since group is the owner of the relation, we delete the user
         // from the groups first.
         User user = getUser(userId);
         Collection<Group> groups = user.getGroups();
-        
-        for (Group group : groups)
-        {
+
+        for (Group group : groups) {
             group.getMembers().remove(user);
             getHibernateTemplate().update(group);
         }
-        
+
         getHibernateTemplate().delete(user);
-	}
-    
+    }
+
     @SuppressWarnings("unchecked")
     public List<User> getUsers() {
         return getHibernateTemplate().find("from User"); //$NON-NLS-1$
@@ -61,25 +59,25 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
     public List<User> getDefaultUsers() {
         return this.getUsers();
     }
-    
-	@SuppressWarnings("unchecked")
-    public User getUser(final String userId)
-	{
-	    List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
-	    return users.isEmpty()?null:users.get(0);
-	}
-	public void createUser(User user) {
-		getHibernateTemplate().save(user);
-	}
-	
-	public void createDefaultUser(User user) {
+
+    @SuppressWarnings("unchecked")
+    public User getUser(final String userId) {
+        List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    public void createUser(User user) {
+        getHibernateTemplate().save(user);
+    }
+
+    public void createDefaultUser(User user) {
         this.createUser(user);
     }
-	
+
     public void updateUser(User user) {
         getHibernateTemplate().update(user);
     }
-    
+
     public void updateDefaultUser(User user) {
         this.updateUser(user);
     }
@@ -87,8 +85,7 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
     @SuppressWarnings("unchecked")
     public SavedConnection getSavedConnection(String userId, String connectionId) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
-        if (users.size()==1)
-        {
+        if (users.size() == 1) {
             Set<SavedConnection> sc = users.get(0).getSavedConnections();
             for (SavedConnection conn : sc)
                 if (conn.getId().equals(connectionId))
@@ -97,13 +94,14 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.pentaho.pat.server.data.UserManager#getSavedQuery(java.lang.String, java.lang.String)
      */
     public SavedQuery getSavedQuery(String userId, String queryName) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
-        if (users.size()==1)
-        {
+        if (users.size() == 1) {
             Set<SavedQuery> sc = users.get(0).getSavedQueries();
             for (SavedQuery conn : sc)
                 if (conn.getId().equals(queryName))

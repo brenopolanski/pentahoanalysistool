@@ -36,27 +36,28 @@ import com.google.gwt.user.client.ui.Button;
 
 /**
  * Allows users to adjust chart options.
- *
+ * 
  * @author tom(at)wamonline.org.uk
- *
+ * 
  */
 public class ChartOptionsWindow extends WindowPanel {
 
     private static final String TITLE = ConstantFactory.getInstance().chartOptions();
-    
-    private transient final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-    
+
+    private  final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
     private final static ChartOptionsPanel CHRTOPTIONSPANEL = new ChartOptionsPanel();
 
     private final static ChartOptionsWindow COW = new ChartOptionsWindow();
-    
+
     private static ChartPanel chrtPanel;
-    
+
     /**
      * 
      * Dislay the window.
-     * @param chartPanel 
-     *
+     * 
+     * @param chartPanel
+     * 
      */
     public static void display(final ChartPanel chartPanel) {
         chrtPanel = chartPanel;
@@ -71,15 +72,15 @@ public class ChartOptionsWindow extends WindowPanel {
     /**
      * 
      * Chart Options Window Constructor.
-     *
+     * 
      */
-    public ChartOptionsWindow(){
+    public ChartOptionsWindow() {
         super(TITLE);
         winContentpanel.add(CHRTOPTIONSPANEL, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(winContentpanel);
-        
+
         final Button okButton = new Button(ConstantFactory.getInstance().ok());
-        okButton.addClickHandler(new ClickHandler(){
+        okButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 chrtPanel.setChartTitle(CHRTOPTIONSPANEL.getChartTitleTextBox());
@@ -90,21 +91,20 @@ public class ChartOptionsWindow extends WindowPanel {
                 chrtPanel.updateChart();
                 COW.hide();
             }
-            
+
         });
         final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
-        cancelButton.addClickHandler(new ClickHandler(){
+        cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-               COW.hide();
+                COW.hide();
             }
-            
+
         });
-        final LayoutPanel buttonBar = ButtonBarFactory.buildOKCancelBar(
-                okButton, cancelButton);
-            buttonBar.setPadding(5);
+        final LayoutPanel buttonBar = ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);
+        buttonBar.setPadding(5);
         this.setFooter(buttonBar);
         this.layout();
     }
-    
+
 }

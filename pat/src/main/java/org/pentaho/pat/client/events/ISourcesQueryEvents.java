@@ -26,23 +26,24 @@ import org.pentaho.pat.client.listeners.IQueryListener;
  * {@link org.pentaho.pat.client.listeners.IQueryListener} interface.
  * 
  * @created Jun 9, 2009
- * @since 0.2 
+ * @since 0.2
  * @author Tom Barber
-
  */
 public interface ISourcesQueryEvents {
 
-	/**
-	 * Adds a listener interface to receive query events.
-	 * 
-	 * @param listener the listener interface to add
-	 */
-	void addQueryListener(IQueryListener listener);
+    /**
+     * Adds a listener interface to receive query events.
+     * 
+     * @param listener
+     *            the listener interface to add
+     */
+    void addQueryListener(IQueryListener listener);
 
-	/**
-	 * Removes a previously added listener interface.
-	 * 
-	 * @param listener the listener interface to remove
-	 */
-	void removeQueryListener(IQueryListener listener);
+    /**
+     * Removes a previously added listener interface.
+     * 
+     * @param listener
+     *            the listener interface to remove
+     */
+    void removeQueryListener(IQueryListener listener);
 }

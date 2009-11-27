@@ -24,13 +24,13 @@ import org.springframework.security.annotation.Secured;
 
 public interface GroupManager {
 
-    @Secured ({"Administrators"})
+    @Secured( {"Administrators"})
     public void createGroup(Group group);
-    
+
     public void createDefaultGroup(Group group);
 
-    @Secured ({"Administrators"})
+    @Secured( {"Administrators"})
     public void updateGroup(Group group);
-    
+
     public void updateDefaultGroup(Group group);
 }

@@ -18,7 +18,6 @@
  *
  */
 
-
 package org.pentaho.pat.client.ui.images;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -31,32 +30,32 @@ import com.google.gwt.user.client.ui.ImageBundle;
  * @author tom(at)wamonline.org.uk
  */
 public interface ISelectionModeImageBundle extends ImageBundle {
-	
-	/**
-	 * Children select icon.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	public AbstractImagePrototype childrenSelectIcon();
-	
-	/**
-	 * Include children select icon.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	public AbstractImagePrototype includeChildrenSelectIcon();
-	
-	/**
-	 * Member select icon.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	public AbstractImagePrototype memberSelectIcon();
-	
-	/**
-	 * Siblings select icon.
-	 * 
-	 * @return the abstract image prototype
-	 */
-	public AbstractImagePrototype siblingsSelectIcon();
+
+    /**
+     * Children select icon.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype childrenSelectIcon();
+
+    /**
+     * Include children select icon.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype includeChildrenSelectIcon();
+
+    /**
+     * Member select icon.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype memberSelectIcon();
+
+    /**
+     * Siblings select icon.
+     * 
+     * @return the abstract image prototype
+     */
+    AbstractImagePrototype siblingsSelectIcon();
 }

@@ -48,7 +48,7 @@ public class WelcomePanel extends AbstractDataWidget {
      * 
      */
     public WelcomePanel() {
-	super();
+        super();
         initializeWidget();
     }
 
@@ -110,12 +110,12 @@ public class WelcomePanel extends AbstractDataWidget {
         boxLayout.setOrientation(Orientation.VERTICAL);
         final LayoutPanel layoutPanel = new LayoutPanel(boxLayout);
         // FIXME remove that and use style
-        DOM.setStyleAttribute(layoutPanel.getElement(),"background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        ((BoxLayout)layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
+        DOM.setStyleAttribute(layoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
         final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
         final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
-        ((BoxLayout)buttonBar.getLayout()).setAlignment(Alignment.CENTER);
+        ((BoxLayout) buttonBar.getLayout()).setAlignment(Alignment.CENTER);
         buttonBar.setWidgetSpacing(20);
         final ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.help_index(),
                 ConstantFactory.getInstance().wiki(), ButtonLabelType.TEXT_ON_BOTTOM), new ClickHandler() {
@@ -126,10 +126,9 @@ public class WelcomePanel extends AbstractDataWidget {
 
         buttonBar.add(patwikiBtn);
 
-
         layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.HORIZONTAL));
 
-        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0,-1.0));        
+        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0, -1.0));
 
         return layoutPanel;
     }
@@ -137,7 +136,7 @@ public class WelcomePanel extends AbstractDataWidget {
     /**
      * 
      * Set the panel name.
-     *
+     * 
      * @param name
      */
     public void setName(final String name) {
@@ -147,6 +146,6 @@ public class WelcomePanel extends AbstractDataWidget {
     @Override
     protected void initializeWidget() {
         getLayoutPanel().add(onInitialize());
-        
+
     }
 }

@@ -182,8 +182,6 @@ package org.pentaho.pat.client.util.colorpicker;
  * DAMAGE.
  */
 
-
-
 import org.pentaho.pat.client.util.colorpicker.images.ColorPickerImageBundle;
 
 import com.google.gwt.user.client.DOM;
@@ -199,217 +197,240 @@ import com.google.gwt.user.client.Window;
 /**
  * Implements the SliderMap control.
  */
-public final class SliderMap extends HTML implements EventPreview
-{
-	private ColorPickerImageBundle cpImageBundle;
-	private Image colorUnderlay;
-	private Image colorOverlay;
-	private Image slider;
-	private ColorPicker parent = null;
-	private boolean captureMouse = false;
+public final class SliderMap extends HTML implements EventPreview {
+    private ColorPickerImageBundle cpImageBundle;
 
-	// enum
-	public static final int Saturation = 1;
-	public static final int Brightness = 2;
-	public static final int Hue = 3;
-	public static final int Red = 4;
-	public static final int Green = 5;
-	public static final int Blue = 6;
+    private Image colorUnderlay;
 
-	/***
-	 * Initialize the SliderMap -- default mode is Saturation.
-	 */
-	public SliderMap(ColorPicker parent)
-	{
-		super();
+    private Image colorOverlay;
 
-		this.parent = parent;
+    private Image slider;
 
-		setWidth("256px"); //$NON-NLS-1$
-		setHeight("256px"); //$NON-NLS-1$
+    private ColorPicker parent = null;
 
-		cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
+    private boolean captureMouse = false;
 
-		colorUnderlay = cpImageBundle.map_saturation().createImage();
-		colorOverlay = cpImageBundle.map_saturation_overlay().createImage();
-		slider = cpImageBundle.mappoint().createImage();
+    // enum
+    public static final int Saturation = 1;
 
-		DOM.appendChild(getElement(), colorUnderlay.getElement());
-		DOM.appendChild(getElement(), colorOverlay.getElement());
-		DOM.appendChild(getElement(), slider.getElement());
+    public static final int Brightness = 2;
 
-		DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorOverlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    public static final int Hue = 3;
 
-	/***
-	 * This method is called when a widget is attached to the browser's document.
-	 */
-	public void onAttach()
-	{
-		super.onAttach();
+    public static final int Red = 4;
 
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorOverlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorOverlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(colorOverlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
-		setOverlayOpacity(100);
-	}
+    public static final int Green = 5;
 
-	/**
-	 * Set overlay layer's opacity.
-	 * @param alpha An opacity percentage, between 100 (fully opaque) and 0 (invisible).
-	 */
-	public void setOverlayOpacity(int alpha)
-	{
-		if (alpha >= 0 && alpha <= 100 && isAttached())
-		{
-			TransparencyImpl.setTransparency(colorOverlay.getElement(), alpha);
-		}
-	}
+    public static final int Blue = 6;
 
-	/**
-	 * Sets the underlay's layer color.
-	 * @param color Hexadecimal representation of RGB.
-	 */
-	public void setUnderlayColor(String color)
-	{
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
-	}
+    /***
+     * Initialize the SliderMap -- default mode is Saturation.
+     */
+    public SliderMap(ColorPicker parent) {
+        super();
 
-	/**
-	 * Sets the overlay layer's color.
-	 * @param color Hexadecimal representation of RGB.
-	 */
-	public void setOverlayColor(String color)
-	{
-		DOM.setStyleAttribute(colorOverlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
-	}
+        this.parent = parent;
 
-	/**
-	 * Sets the slider's position along the x-axis and y-axis.
-	 * @param x position along the x-axis [0-256]
-	 * @param y position along the y-axis [0-256]
-	 */
-	public void setSliderPosition(int x, int y)
-	{
-		if (x < 0) x = 0;
-		if (y < 0) y = 0;
-		if (x > 256) x = 256;
-		if (y > 256) y = 256;
-		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+        setWidth("256px"); //$NON-NLS-1$
+        setHeight("256px"); //$NON-NLS-1$
 
-	/***
-	 * Sets the color selection mode
-	 * @param mode Saturation
-	 */
-	public void setColorSelectMode(int mode)
-	{
-		if (!isAttached()) { return; }
+        cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
 
-		switch (mode)
-		{
-			case Saturation:
-				cpImageBundle.map_saturation().applyTo(colorUnderlay);
-				cpImageBundle.map_saturation_overlay().applyTo(colorOverlay);
-			break;
+        colorUnderlay = cpImageBundle.map_saturation().createImage();
+        colorOverlay = cpImageBundle.map_saturation_overlay().createImage();
+        slider = cpImageBundle.mappoint().createImage();
 
-			case Brightness:
-				cpImageBundle.map_white().applyTo(colorUnderlay);
-				cpImageBundle.map_brightness().applyTo(colorOverlay);
-			break;
+        DOM.appendChild(getElement(), colorUnderlay.getElement());
+        DOM.appendChild(getElement(), colorOverlay.getElement());
+        DOM.appendChild(getElement(), slider.getElement());
 
-			case Hue:
-				cpImageBundle.map_white().applyTo(colorUnderlay);
-				cpImageBundle.map_hue().applyTo(colorOverlay);
-				setOverlayOpacity(100);
-			break;
+        DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorUnderlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorOverlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-			case Red:
-				cpImageBundle.map_red_max().applyTo(colorOverlay);
-				cpImageBundle.map_red_min().applyTo(colorUnderlay);
-			break;
+    /***
+     * This method is called when a widget is attached to the browser's document.
+     */
+    public void onAttach() {
+        super.onAttach();
 
-			case Green:
-				cpImageBundle.map_green_max().applyTo(colorOverlay);
-				cpImageBundle.map_green_min().applyTo(colorUnderlay);
-			break;
+        DOM.setStyleAttribute(colorUnderlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorUnderlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorUnderlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorOverlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorOverlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(colorOverlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+        setOverlayOpacity(100);
+    }
 
-			case Blue:
-				cpImageBundle.map_blue_max().applyTo(colorOverlay);
-				cpImageBundle.map_blue_min().applyTo(colorUnderlay);
-			break;
-		}
-	}
+    /**
+     * Set overlay layer's opacity.
+     * 
+     * @param alpha
+     *            An opacity percentage, between 100 (fully opaque) and 0 (invisible).
+     */
+    public void setOverlayOpacity(int alpha) {
+        if (alpha >= 0 && alpha <= 100 && isAttached()) {
+            TransparencyImpl.setTransparency(colorOverlay.getElement(), alpha);
+        }
+    }
 
-	/**
-	 * Fired whenever a browser event is received.
-	 * @param event Event to process
-	 */
-	public void onBrowserEvent(Event event)
-	{
-		switch (DOM.eventGetType(event))
-		{
-			case Event.ONMOUSEDOWN:
-				captureMouse = true;
-				DOM.addEventPreview(this);
-				mouseEvent(event);
-			break;
-		}
-	}
+    /**
+     * Sets the underlay's layer color.
+     * 
+     * @param color
+     *            Hexadecimal representation of RGB.
+     */
+    public void setUnderlayColor(String color) {
+        DOM.setStyleAttribute(colorUnderlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
+    }
 
-	/**
-	 * Called when a browser event occurs and this event preview is on top of the preview stack.
-	 * @param event Event to process
-	 * @return boolean false to cancel the event.
-	 */
-	public boolean onEventPreview(Event event)
-	{
-		switch (DOM.eventGetType(event))
-		{
-			case Event.ONMOUSEUP:
-				captureMouse = false;
-				DOM.removeEventPreview(this);
-			break;
+    /**
+     * Sets the overlay layer's color.
+     * 
+     * @param color
+     *            Hexadecimal representation of RGB.
+     */
+    public void setOverlayColor(String color) {
+        DOM.setStyleAttribute(colorOverlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
+    }
 
-			case Event.ONMOUSEMOVE:
-				if (captureMouse)
-				{
-					mouseEvent(event);
-					return false;
-				}
-			break;
-		}
-		return true;
-	}
+    /**
+     * Sets the slider's position along the x-axis and y-axis.
+     * 
+     * @param x
+     *            position along the x-axis [0-256]
+     * @param y
+     *            position along the y-axis [0-256]
+     */
+    public void setSliderPosition(int x, int y) {
+        if (x < 0)
+            x = 0;
+        if (y < 0)
+            y = 0;
+        if (x > 256)
+            x = 256;
+        if (y > 256)
+            y = 256;
+        DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-	/**
-	 * Called to process a mouse event.
-	 * @param event Event to process
-	 */
-	private void mouseEvent(Event event)
-	{
-		DOM.eventPreventDefault(event);
+    /***
+     * Sets the color selection mode
+     * 
+     * @param mode
+     *            Saturation
+     */
+    public void setColorSelectMode(int mode) {
+        if (!isAttached()) {
+            return;
+        }
 
-		int x = DOM.eventGetClientX(event) - colorUnderlay.getAbsoluteLeft();
-		int y = DOM.eventGetClientY(event) - colorUnderlay.getAbsoluteTop();
+        switch (mode) {
+        case Saturation:
+            cpImageBundle.map_saturation().applyTo(colorUnderlay);
+            cpImageBundle.map_saturation_overlay().applyTo(colorOverlay);
+            break;
 
-		if (x < 0) x = 0;
-		if (x > 256) x = 256;
-		if (y < 0) y = 0;
-		if (y > 256) y = 256;
+        case Brightness:
+            cpImageBundle.map_white().applyTo(colorUnderlay);
+            cpImageBundle.map_brightness().applyTo(colorOverlay);
+            break;
 
-		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+        case Hue:
+            cpImageBundle.map_white().applyTo(colorUnderlay);
+            cpImageBundle.map_hue().applyTo(colorOverlay);
+            setOverlayOpacity(100);
+            break;
 
-		if (parent != null) { parent.onMapSelected(x,y); }
-	}
+        case Red:
+            cpImageBundle.map_red_max().applyTo(colorOverlay);
+            cpImageBundle.map_red_min().applyTo(colorUnderlay);
+            break;
+
+        case Green:
+            cpImageBundle.map_green_max().applyTo(colorOverlay);
+            cpImageBundle.map_green_min().applyTo(colorUnderlay);
+            break;
+
+        case Blue:
+            cpImageBundle.map_blue_max().applyTo(colorOverlay);
+            cpImageBundle.map_blue_min().applyTo(colorUnderlay);
+            break;
+        }
+    }
+
+    /**
+     * Fired whenever a browser event is received.
+     * 
+     * @param event
+     *            Event to process
+     */
+    public void onBrowserEvent(Event event) {
+        switch (DOM.eventGetType(event)) {
+        case Event.ONMOUSEDOWN:
+            captureMouse = true;
+            DOM.addEventPreview(this);
+            mouseEvent(event);
+            break;
+        }
+    }
+
+    /**
+     * Called when a browser event occurs and this event preview is on top of the preview stack.
+     * 
+     * @param event
+     *            Event to process
+     * @return boolean false to cancel the event.
+     */
+    public boolean onEventPreview(Event event) {
+        switch (DOM.eventGetType(event)) {
+        case Event.ONMOUSEUP:
+            captureMouse = false;
+            DOM.removeEventPreview(this);
+            break;
+
+        case Event.ONMOUSEMOVE:
+            if (captureMouse) {
+                mouseEvent(event);
+                return false;
+            }
+            break;
+        }
+        return true;
+    }
+
+    /**
+     * Called to process a mouse event.
+     * 
+     * @param event
+     *            Event to process
+     */
+    private void mouseEvent(Event event) {
+        DOM.eventPreventDefault(event);
+
+        int x = DOM.eventGetClientX(event) - colorUnderlay.getAbsoluteLeft();
+        int y = DOM.eventGetClientY(event) - colorUnderlay.getAbsoluteTop();
+
+        if (x < 0)
+            x = 0;
+        if (x > 256)
+            x = 256;
+        if (y < 0)
+            y = 0;
+        if (y > 256)
+            y = 256;
+
+        DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (parent != null) {
+            parent.onMapSelected(x, y);
+        }
+    }
 }

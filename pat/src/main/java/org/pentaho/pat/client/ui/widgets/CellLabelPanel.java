@@ -14,18 +14,19 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
  *TODO JAVADOC
- *
+ * 
  * @author bugg
- *
+ * 
  */
 public class CellLabelPanel extends HorizontalPanel {
-    private transient MemberCell memCell = null;
-    public CellLabelPanel(final MemberCell memCell){
+    private  MemberCell memCell = null;
+
+    public CellLabelPanel(final MemberCell memCell) {
         super();
         this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
     }
-    
+
     @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
@@ -47,6 +48,7 @@ public class CellLabelPanel extends HorizontalPanel {
 
     /**
      *TODO JAVADOC
+     * 
      * @return the mc
      */
     public MemberCell getMc() {

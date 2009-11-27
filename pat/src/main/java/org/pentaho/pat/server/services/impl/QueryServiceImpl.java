@@ -325,8 +325,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
 
-
-        if (memberFetched.getChildMemberCount()>0)
+        if (memberFetched.getChildMemberCount() > 0)
             if (!member.isExpanded()) {
                 // If its the left most dimension don't do anything apart from
                 // include.
@@ -334,19 +333,16 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     final Selection selection;
                     switch (drillType) {
                     case POSITION:
-                	       selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
-                                      .getInclusions());
-                              queryDimension.getInclusions().remove(selection);
+                        selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+                        queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         break;
                     case REPLACE:
-                        if (member.getParentMember()!=null){
-                        selection = OlapUtil.findSelection(member.getParentMember(),
-                                queryDimension.getInclusions());
-                        }
-                        else{
-                 	   selection = OlapUtil.findSelection(member.getUniqueName(),
-                                    queryDimension.getInclusions());
+                        if (member.getParentMember() != null) {
+                            selection = OlapUtil
+                                    .findSelection(member.getParentMember(), queryDimension.getInclusions());
+                        } else {
+                            selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
                         }
                         queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
@@ -361,23 +357,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     // Get the drilling member
                     MemberCell memberdrill = member;
 
-                   
-                    
-
-                   if(drillType == DrillType.REPLACE){
-                       final Selection currentMemberSelection ;
-                       if (member.getParentMember()!=null){
-                       currentMemberSelection = OlapUtil.findSelection(member.getParentMember(),
-                               queryDimension.getInclusions());
-                       }
-                       else{
-                	   currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
-                                   queryDimension.getInclusions());
-                       }
-                       queryDimension.getInclusions().remove(currentMemberSelection);
-                   }
-                   else{
-                   Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                    if (drillType == DrillType.REPLACE) {
+                        final Selection currentMemberSelection;
+                        if (member.getParentMember() != null) {
+                            currentMemberSelection = OlapUtil.findSelection(member.getParentMember(), queryDimension
+                                    .getInclusions());
+                        } else {
+                            currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
+                                    .getInclusions());
+                        }
+                        queryDimension.getInclusions().remove(currentMemberSelection);
+                    } else {
+                        Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
                         while (memberdrill.getRightOf() != null) {
 
@@ -397,15 +388,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                                 selection.addContext(queryDimension2.createSelection(memberFetched2));
 
                             }
-                          
+
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();
                         }
-                      
-                        
-                   
 
-                   }
+                    }
                 }
             } else {
                 if (member.getRightOf() == null) {
@@ -817,15 +805,15 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     }
 
-    public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException{
-	this.sessionService.validateSession(userId, sessionId);
-	
-	 final Query q = this.getQuery(userId, sessionId, queryId);
-	 
-	 q.getAxis(Axis.COLUMNS).setNonEmpty(flag);
-	 q.getAxis(Axis.ROWS).setNonEmpty(flag);
-	 q.getAxis(Axis.FILTER).setNonEmpty(flag);
-	 return executeQuery(userId, sessionId, queryId);
+    public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final Query q = this.getQuery(userId, sessionId, queryId);
+
+        q.getAxis(Axis.COLUMNS).setNonEmpty(flag);
+        q.getAxis(Axis.ROWS).setNonEmpty(flag);
+        q.getAxis(Axis.FILTER).setNonEmpty(flag);
+        return executeQuery(userId, sessionId, queryId);
     }
-    
+
 }

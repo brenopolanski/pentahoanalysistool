@@ -31,10 +31,11 @@ import org.hibernate.annotations.Type;
 
 /**
  * A connection saved by a user for future reuse.
+ * 
  * @author Luc Boudreau
  */
 @Entity
-@Table(name="CONNECTIONS")
+@Table(name = "CONNECTIONS")
 public class SavedConnection implements Comparable<SavedConnection> {
 
     /**
@@ -42,40 +43,38 @@ public class SavedConnection implements Comparable<SavedConnection> {
      */
     @Basic
     private String id;
-    
+
     /**
      * The name of this connection.
      */
     @Basic
-	private String name;
-	
+    private String name;
+
     /**
-     * Name of the 
+     * Name of the
      */
     @Basic
-	private String driverClassName;
-	
+    private String driverClassName;
+
     @Basic
-	private String url;
-	
+    private String url;
+
     @Basic
-	private String username;
-	
+    private String username;
+
     @Basic
-	private String password;
+    private String password;
 
     @Basic
     private String catalog;
-    
+
     @Basic
-    @Type(
-        type = "org.pentaho.pat.server.data.pojo.ConnectionType"
-    )
+    @Type(type = "org.pentaho.pat.server.data.pojo.ConnectionType")
     private ConnectionType type;
-    
-    @Column(nullable=true)
-    @Type(type="text")
-    private String schemaData=null;
+
+    @Column(nullable = true)
+    @Type(type = "text")
+    private String schemaData = null;
 
     public SavedConnection() {
         this(null);
@@ -88,41 +87,41 @@ public class SavedConnection implements Comparable<SavedConnection> {
             this.id = uuid;
         }
     }
-    
+
     @Id
     public String getId() {
         return this.id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
-    
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDriverClassName() {
-		return driverClassName;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
-	}
+    public String getDriverClassName() {
+        return driverClassName;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getCatalog() {
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getCatalog() {
         return catalog;
     }
 
@@ -131,20 +130,20 @@ public class SavedConnection implements Comparable<SavedConnection> {
     }
 
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public ConnectionType getType() {
         return type;
@@ -155,7 +154,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
     }
 
     public String getSchemaData() {
-        return schemaData==null?"":schemaData; //$NON-NLS-1$
+        return schemaData == null ? "" : schemaData; //$NON-NLS-1$
     }
 
     public void setSchemaData(String schemaData) {
@@ -165,10 +164,10 @@ public class SavedConnection implements Comparable<SavedConnection> {
     public int compareTo(SavedConnection o) {
         return this.getName().compareTo(o.getName());
     }
-    
+
     public boolean equals(Object obj) {
         if (!(obj instanceof SavedConnection))
             return false;
-        return this.getId().equals(((SavedConnection)obj).getId());
+        return this.getId().equals(((SavedConnection) obj).getId());
     }
 }

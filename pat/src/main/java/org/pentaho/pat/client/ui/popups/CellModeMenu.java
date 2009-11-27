@@ -74,7 +74,8 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {
@@ -121,7 +122,8 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {
@@ -143,7 +145,7 @@ public class CellModeMenu extends PopupMenu {
     public class SortOrderCommand implements Command {
 
         /** The selection mode. */
-        private transient final String sortOrder;
+        private  final String sortOrder;
 
         /**
          * The Constructor.
@@ -171,7 +173,8 @@ public class CellModeMenu extends PopupMenu {
 
                         public void onFailure(final Throwable arg0) {
 
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSetSortOrder(arg0.getLocalizedMessage()));
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedSetSortOrder(arg0.getLocalizedMessage()));
                         }
 
                         public void onSuccess(final Object arg0) {
@@ -179,7 +182,8 @@ public class CellModeMenu extends PopupMenu {
                                     new AsyncCallback<CellDataSet>() {
 
                                         public void onFailure(final Throwable arg0) {
-                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedQuery(arg0.getLocalizedMessage()));
+                                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                    .getInstance().failedQuery(arg0.getLocalizedMessage()));
                                         }
 
                                         public void onSuccess(final CellDataSet arg0) {

@@ -53,15 +53,7 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class DimensionPanel extends LayoutComposite {
 
-    private transient final DimensionDropWidget dimDropUnused;
-
-    private transient final DimensionDropWidget dimDropRow;
-
-    private transient final DimensionDropWidget dimDropCol;
-
-    private transient final DimensionDropWidget dimDropFilter;
-
-    private transient final FlexTableRowDragController tRDragController = Application.tableRowDragController;
+    private  final FlexTableRowDragController tRDragController = Application.tblRowDrgCont;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 
@@ -79,8 +71,8 @@ public class DimensionPanel extends LayoutComposite {
      * 
      */
     public DimensionPanel() {
-	super();
-        //this.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
+        super();
+        // this.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
 
         final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -89,10 +81,14 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
-        dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(), IAxis.UNUSED, tRDragController);
-        dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(), IAxis.ROWS, tRDragController);
-        dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(), IAxis.COLUMNS, tRDragController);
-        dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(), IAxis.FILTER, tRDragController);
+        final DimensionDropWidget dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(),
+                IAxis.UNUSED, tRDragController);
+        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
+                IAxis.ROWS, tRDragController);
+        final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
+                IAxis.COLUMNS, tRDragController);
+        final DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
+                IAxis.FILTER, tRDragController);
 
         mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
@@ -106,24 +102,23 @@ public class DimensionPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
                         new AsyncCallback<CellDataSet>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedQuery(arg0.getLocalizedMessage()));
-                    }
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedQuery(arg0.getLocalizedMessage()));
+                            }
 
-                    public void onSuccess(final CellDataSet result1) {
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                DimensionPanel.this, Pat.getCurrQuery(), result1);
-                    }
+                            public void onSuccess(final CellDataSet result1) {
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        DimensionPanel.this, Pat.getCurrQuery(), result1);
+                            }
 
-                });
+                        });
 
             }
 
         });
         mainPanel.add(executeButton);
         rootPanel.add(mainPanel);
-        
 
     }
 

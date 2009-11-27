@@ -61,17 +61,17 @@ public class SaveMenuPanel extends LayoutComposite {
 
     /**
      */
-    private final TextBox textBox;
+    private  final TextBox textBox;
 
-    DefaultListModel<QuerySaveModel> model;
+    private  DefaultListModel<QuerySaveModel> model;
 
-    final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private  final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
-    LabelTextBox ltb = new LabelTextBox();
+    private  LabelTextBox ltb = new LabelTextBox();
 
     /**
      */
-    private FilterProxyListModel<QuerySaveModel, String> filterModel;
+    private  FilterProxyListModel<QuerySaveModel, String> filterModel;
 
     private final Timer filterTimer = new Timer() {
         @Override
@@ -81,6 +81,7 @@ public class SaveMenuPanel extends LayoutComposite {
     };
 
     public SaveMenuPanel() {
+        super();
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
 
@@ -96,7 +97,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
         ltb.setTextBoxLabelText(ConstantFactory.getInstance().save());
         layoutPanel.add(ltb);
-        
+
         this.getLayoutPanel().add(layoutPanel);
 
     }
@@ -106,11 +107,9 @@ public class SaveMenuPanel extends LayoutComposite {
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
             public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
                     final QuerySaveModel item) {
-                switch (column) {
-                case 0:
+                if (column == 0) {
                     listBox.setWidget(row, column, createRichListBoxCell(item));
-                    break;
-                default:
+                } else {
                     throw new RuntimeException(ConstantFactory.getInstance().shouldnthappen());
                 }
             }
@@ -122,8 +121,9 @@ public class SaveMenuPanel extends LayoutComposite {
         filterModel.setModelFilter(new Filter<QuerySaveModel, String>() {
             public boolean select(final QuerySaveModel element, final String filter) {
                 final String regexp = ".*" + filter + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                if (regexp == null || regexp.length() == 0)
+                if (regexp == null || regexp.length() == 0) {
                     return true;
+                }
                 return element.getName().matches(regexp);
             }
         });
@@ -144,8 +144,9 @@ public class SaveMenuPanel extends LayoutComposite {
                         listBox.setModel(model);
                         if (arg0 != null) {
                             model.clear();
-                            for (int i = 0; i < arg0.size(); i++)
+                            for (int i = 0; i < arg0.size(); i++) {
                                 model.add(arg0.get(i));
+                            }
                             listBox.setModel(filterModel);
 
                         }
@@ -154,7 +155,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
     }
 
-    public void save() { 
+    public void save() {
         ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(),
                 Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 

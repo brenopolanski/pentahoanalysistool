@@ -58,7 +58,7 @@ public class PropertiesPanel extends LayoutComposite {
 
     private class LayoutCommand implements Command {
 
-        private final transient Region region;
+        private final  Region region;
 
         public LayoutCommand(final Region region) {
             this.region = region;
@@ -75,10 +75,10 @@ public class PropertiesPanel extends LayoutComposite {
         }
 
     }
-    
+
     private class DrillCommand implements Command {
-	
-	private final transient DrillType drillType;
+
+        private final  DrillType drillType;
 
         public DrillCommand(final DrillType drillType) {
             this.drillType = drillType;
@@ -95,8 +95,8 @@ public class PropertiesPanel extends LayoutComposite {
         }
 
     }
-    
-    private final transient DataPanel dataPanel;
+
+    private final  DataPanel dataPanel;
 
     /**
      * PropertiesPanel Constructor.
@@ -105,7 +105,7 @@ public class PropertiesPanel extends LayoutComposite {
      * 
      */
     public PropertiesPanel(final DataPanel dPanel) {
-	super();
+        super();
         this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -126,7 +126,7 @@ public class PropertiesPanel extends LayoutComposite {
 
                             public void onSuccess(final String mdx) {
                                 // TODO localize + externalize strings + extract show mdx window
-                                final WindowPanel wp = new WindowPanel(ConstantFactory.getInstance().mdx());
+                                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
                                 final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                                 wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                                 final MDXRichTextArea mdxArea = new MDXRichTextArea();
@@ -137,7 +137,7 @@ public class PropertiesPanel extends LayoutComposite {
                                 final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
                                 closeBtn.addClickHandler(new ClickHandler() {
                                     public void onClick(final ClickEvent arg0) {
-                                        wp.hide();
+                                        winPanel.hide();
                                     }
 
                                 });
@@ -146,14 +146,14 @@ public class PropertiesPanel extends LayoutComposite {
                                     public void onClick(final ClickEvent arg0) {
 
                                         final Widget widget = MainTabPanel.getSelectedWidget();
-                                        if (widget != null && widget instanceof OlapPanel) {
+                                        if (widget instanceof OlapPanel) {
                                             ((OlapPanel) widget).getCubeItem();
                                             final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
                                                     Pat.getCurrConnection(), mdxArea.getText());
                                             MainTabPanel.displayContentWidget(mdxpanel);
                                         }
 
-                                        wp.hide();
+                                        winPanel.hide();
 
                                     }
                                 });
@@ -163,11 +163,11 @@ public class PropertiesPanel extends LayoutComposite {
                                 wpButtonPanel.add(closeBtn);
                                 wpLayoutPanel.add(wpButtonPanel);
                                 wpLayoutPanel.layout();
-                                wp.add(wpLayoutPanel);
-                                wp.layout();
-                                wp.pack();
-                                wp.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
-                                wp.center();
+                                winPanel.add(wpLayoutPanel);
+                                winPanel.layout();
+                                winPanel.pack();
+                                winPanel.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+                                winPanel.center();
 
                             }
 
@@ -192,34 +192,34 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ToolButton hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
-        hideBlanksButton.addClickHandler(new ClickHandler(){
+        hideBlanksButton.addClickHandler(new ClickHandler() {
 
-	    public void onClick(final ClickEvent arg0) {
-		
-		ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(), hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>(){
+            public void onClick(final ClickEvent arg0) {
 
-		    public void onFailure(final Throwable arg0) {
-			
-			MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set non empty");
-			
-		    }
+                ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(),
+                        hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>() {
 
-		    public void onSuccess(final CellDataSet arg0) {
-			
-			if(hideBlanksButton.isChecked()){
-			    hideBlanksButton.setText("Show Blank Cells");
-			}
-			else{
-			    hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
-			}
-			 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                 PropertiesPanel.this, Pat.getCurrQuery(), arg0);
-		    }
-		    
-		});
-		
-	    }
-            
+                            public void onFailure(final Throwable arg0) {
+
+                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set non empty");
+
+                            }
+
+                            public void onSuccess(final CellDataSet arg0) {
+
+                                if (hideBlanksButton.isChecked()) {
+                                    hideBlanksButton.setText("Show Blank Cells");
+                                } else {
+                                    hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
+                                }
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                            }
+
+                        });
+
+            }
+
         });
 
         final ToolButton pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());

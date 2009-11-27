@@ -24,10 +24,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-
-public final class FileUploadBean 
-{
-    private final transient Log log = LogFactory.getLog(getClass());
+public final class FileUploadBean {
+    private final  Log log = LogFactory.getLog(getClass());
 
     private MultipartFile file;
 

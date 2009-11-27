@@ -56,11 +56,11 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class CubeMenu extends LayoutComposite {
 
     /** The main menu. */
-    private transient final Tree cubeTree;
+    private  final Tree cubeTree;
 
     /**
      * CubeMenu Constructor.
-     *
+     * 
      */
     public CubeMenu() {
         super();
@@ -101,7 +101,8 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedActiveConnection(arg0.getLocalizedMessage()));
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedActiveConnection(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final CubeConnection[] connections) {
@@ -112,22 +113,24 @@ public class CubeMenu extends LayoutComposite {
 
     /**
      * Loads all cubes of the given connection
+     * 
      * @param connectionId
      */
     public final void loadCubes(final String connectionId) {
         ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), connectionId,
                 new AsyncCallback<CubeConnection>() {
 
-            public void onFailure(final Throwable arg0) {
-                cubeTree.clear();
-                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedCubeList(arg0.getLocalizedMessage()));
-            }
+                    public void onFailure(final Throwable arg0) {
+                        cubeTree.clear();
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedCubeList(arg0.getLocalizedMessage()));
+                    }
 
-            public void onSuccess(final CubeConnection connection) {
-                final CubeConnection[] connections = new CubeConnection[] {connection};
-                refreshCubeMenu(connections);
-            }
-        });
+                    public void onSuccess(final CubeConnection connection) {
+                        final CubeConnection[] connections = new CubeConnection[] {connection};
+                        refreshCubeMenu(connections);
+                    }
+                });
     }
 
     /**
@@ -144,8 +147,8 @@ public class CubeMenu extends LayoutComposite {
                                     .failedCubeList(arg0.getLocalizedMessage()));
                         }
 
-                        public void onSuccess(final CubeItem[] o) {
-                            for (final CubeItem element2 : o){
+                        public void onSuccess(final CubeItem[] cubeItm) {
+                            for (final CubeItem element2 : cubeItm) {
                                 cubesList.addItem(new CubeTreeItem(connection, element2));
                             }
                             cubesList.setState(true);

@@ -51,23 +51,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DimensionDropWidget extends LayoutComposite implements IQueryListener {
 
-    private transient final Standard dimAxis;
+    private  final Standard dimAxis;
 
-    private transient final LayoutPanel baseLayoutPanel;
+    private  final LayoutPanel baseLayoutPanel;
 
-    private transient DimensionFlexTable dimensionTable;
+    private  DimensionFlexTable dimensionTable;
 
-    private transient CaptionLayoutPanel captLayoutPanel;
+    private  CaptionLayoutPanel captLayoutPanel;
 
-    private transient Boolean horizontal = false;
+    private  Boolean horizontal = false;
 
-    private transient FlexTableRowDropController fTblRowDropCont;
+    private  FlexTableRowDropController fTblRowDropCont;
 
-    private transient final String query;
+    private  final String query;
 
-    private transient final Label spacerLabel = new Label(""); //$NON-NLS-1$
+    private  final Label spacerLabel = new Label(""); //$NON-NLS-1$
 
-    private transient final FlexTableRowDragController tblRowDragCont;
+    private  final FlexTableRowDragController tblRowDragCont;
 
     private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 
@@ -79,14 +79,16 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     /**
      *TODO JAVADOC
-     * @param tblRowDragCont 
+     * 
+     * @param tblRowDragCont
      * 
      * @param unused
      * @param string
-     *  
+     * 
      */
-    public DimensionDropWidget(final String labelText, final Standard targetAxis, final FlexTableRowDragController tblRowDragCont) {
-       super();
+    public DimensionDropWidget(final String labelText, final Standard targetAxis,
+            final FlexTableRowDragController tblRowDragCont) {
+        super();
         this.tblRowDragCont = tblRowDragCont;
         this.dimAxis = targetAxis;
         query = Pat.getCurrQuery();
@@ -97,7 +99,8 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     }
 
-    public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation, final FlexTableRowDragController tblRowDragCont) {
+    public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
+            final FlexTableRowDragController tblRowDragCont) {
         super();
         horizontal = orientation;
         this.dimAxis = targetAxis;
@@ -171,8 +174,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      */
     public void onQueryChange(final Widget sender) {
         // TODO Auto-generated method stub
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query))
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query)) {
             populateDimensionTable(dimAxis);
+        }
     }
 
     /*
@@ -216,8 +220,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                         HasVerticalAlignment.ALIGN_TOP);
                                 dimensionTable.getCellFormatter().removeStyleName(0, row, TABLE_DROP_ENDCELL);
                                 dimensionTable.getCellFormatter().setStylePrimaryName(0, row, TABLE_DRAG_CELL);
-                                if (row == arg0.length - 1 && arg0.length - 1 > 0)
+                                if (row == arg0.length - 1 && arg0.length - 1 > 0) {
                                     dimensionTable.getCellFormatter().addStyleName(0, row, TABLE_DROP_ENDCELL);
+                                }
                             } else {
                                 dimensionTable.setWidget(row, 0, handle);
                                 dimensionTable.getCellFormatter().setVerticalAlignment(row, 0,

@@ -15,7 +15,7 @@ import org.pentaho.pat.client.util.factory.charts.util.ChartUtils;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.DrillType;
-import org.pentaho.pat.rpc.dto.celltypes.BaseCell;
+import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -36,7 +36,7 @@ public class PieChartType {
 
         matrix.getCellSetHeaders();
         final PatTableModel patTableModel = new PatTableModel(matrix);
-        final BaseCell[][] rowData = patTableModel.getRowData();
+        final AbstractBaseCell[][] rowData = patTableModel.getRowData();
         int rowColCount = 0;
         for (int i = 0; i < patTableModel.getColumnCount(); i++)
             if (rowData[0][i] instanceof MemberCell)
@@ -63,9 +63,9 @@ public class PieChartType {
         pie.setAnimateOnShow(true);
         pie.setAnimation(new PieChart.PieBounceAnimation(30));
 
-        final List<BaseCell[]> data = Arrays.asList(patTableModel.getRowData());
+        final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel.getRowData());
         for (int i = 0; i < data.size(); i++) {
-            final BaseCell[] cell = data.get(i);
+            final AbstractBaseCell[] cell = data.get(i);
             int rc = 0;
             while (cell[rc].getRawValue() == null)
                 rc++;

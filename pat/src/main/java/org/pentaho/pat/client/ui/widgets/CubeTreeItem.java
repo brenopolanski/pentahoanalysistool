@@ -43,20 +43,23 @@ public class CubeTreeItem extends HorizontalPanel {
         CONNECTION, CUBE
     }
 
-    private transient CubeConnection connection;
+    private  CubeConnection connection;
 
-    private transient CubeItem cube;
+    private  CubeItem cube;
 
-    private transient AbstractImagePrototype itemImage;
+    private  AbstractImagePrototype itemImage;
 
-    private transient String itemName;
+    private  String itemName;
 
-    private transient ItemType type;
+    private  ItemType type;
 
     /**
      * Represents a cube item
-     * @param connection - Connection the cube belongs to
-     * @param cube - Name of the Cube
+     * 
+     * @param connection
+     *            - Connection the cube belongs to
+     * @param cube
+     *            - Name of the Cube
      */
     public CubeTreeItem(final CubeConnection connection, final CubeItem cube) {
         super();
@@ -93,14 +96,15 @@ public class CubeTreeItem extends HorizontalPanel {
     public String getCatalogName() {
         return this.cube.getCatalog();
     }
-    
+
     public String getSchemaName() {
         return this.cube.getSchema();
     }
+
     public ItemType getType() {
         return this.type;
     }
-    
+
     public CubeItem getCubeItem() {
         return this.cube;
     }
