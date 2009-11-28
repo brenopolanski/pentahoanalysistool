@@ -190,12 +190,15 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
             }
 
         } catch (ClassNotFoundException e) {
+            sessions.get(userId).get(sessionId).closeConnection(sc.getId());
             LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (SQLException e) {
+            sessions.get(userId).get(sessionId).closeConnection(sc.getId());
             LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (RuntimeException e) {
+            sessions.get(userId).get(sessionId).closeConnection(sc.getId());
             // The XMLA driver wraps some exceptions in Runtime stuff.
             // That's on the FIX ME list but not fixed yet... c(T-T)b
             if (e.getCause() instanceof OlapException) {
@@ -204,6 +207,7 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 throw e;
             }
         }
+        
     }
 
     public String createConnection(final String userId, final String sessionId, final String driverName,
