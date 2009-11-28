@@ -117,6 +117,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * backend.
      */
     private final static String SCHEMA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
+    
+    private static final String VALIDATION_START = "[VALIDATION_START]"; //$NON-NLS-1$
+
+    private static final String VALIDATION_END = "[/VALIDATION_END]"; //$NON-NLS-1$
 
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
@@ -239,6 +243,16 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
             public void onSubmitComplete(final SubmitCompleteEvent arg0) {
                 if (arg0 != null && arg0.getResults() != null && arg0.getResults().length() > 0) {
+                    if (arg0.getResults().contains(VALIDATION_START)) {
+                        final String tmp = arg0.getResults().substring(
+                                arg0.getResults().indexOf(VALIDATION_START) + VALIDATION_START.length(),
+                                arg0.getResults().indexOf(VALIDATION_END));
+                        if(tmp != null && tmp.length() > 0) {
+                            // TODO use error / warning custom messagebox for this 
+                            MessageBox.info(ConstantFactory.getInstance().warning(), MessageFactory.getInstance()
+                                    .schemaFileInvalid() + "<br>" + tmp);
+                        }
+                    }
                     if (arg0.getResults().contains(SCHEMA_START)) {
                         final String tmp = arg0.getResults().substring(
                                 arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),

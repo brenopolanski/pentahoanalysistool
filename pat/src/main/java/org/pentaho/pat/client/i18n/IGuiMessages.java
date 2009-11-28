@@ -247,4 +247,12 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      * @return
      */
     String failedSetSortOrder(String localizedMessage);
+    
+    /**
+     *TODO JAVADOC
+     * 
+     * @return
+     */
+    String schemaFileInvalid();
+
 }

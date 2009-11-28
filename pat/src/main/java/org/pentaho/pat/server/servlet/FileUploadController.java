@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.pentaho.pat.server.beans.FileUploadBean;
 import org.pentaho.pat.server.messages.Messages;
+import org.pentaho.pat.server.util.AbstractSchemaValidator;
 import org.pentaho.pat.server.util.Base64Coder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContextAware;
@@ -46,6 +47,10 @@ public class FileUploadController extends AbstractCommandController implements R
     private static final String DATA_START = "[SCHEMA_START]"; //$NON-NLS-1$
 
     private static final String DATA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
+
+    private static final String VALIDATION_START = "[VALIDATION_START]"; //$NON-NLS-1$
+
+    private static final String VALIDATION_END = "[/VALIDATION_END]"; //$NON-NLS-1$
 
     private static final Logger LOG = Logger.getLogger(FileUploadController.class);
 
@@ -98,10 +103,18 @@ public class FileUploadController extends AbstractCommandController implements R
 
         try {
             final MultipartFile files = fileUploadBean.getFile();
-            // String schemaData = new String(files.getBytes());
-
-            // Send a confirmation message to the client
+            String schemaData = new String(files.getBytes());
+            String validationResult = AbstractSchemaValidator.validateAgainstXsd(schemaData);
             response.setContentType("text/plain"); //$NON-NLS-1$
+            
+            if (validationResult == null)
+            {
+                validationResult = "";
+            }
+                
+            response.getWriter().print(VALIDATION_START + validationResult + VALIDATION_END);
+            // Send a confirmation message to the client
+            
             response.getWriter().print(DATA_START + (new String(Base64Coder.encode(files.getBytes()))) + DATA_END);
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
