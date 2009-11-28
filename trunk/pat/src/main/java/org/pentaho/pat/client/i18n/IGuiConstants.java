@@ -812,4 +812,12 @@ public interface IGuiConstants extends Constants {
      */
     String clearExclusions();
 
+    /**
+     *TODO JAVADOC
+     * 
+     * @return
+     */
+    String warning();
+    
+
 }
