@@ -31,7 +31,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -44,8 +43,9 @@ import org.pentaho.pat.rpc.dto.DrillType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -100,6 +100,18 @@ public class PropertiesPanel extends LayoutComposite {
 
     private final DataPanel dataPanel;
 
+    /** Form element name of the file component. */
+    private static final String FORM_NAME_QUERY = "query"; //$NON-NLS-1$
+
+    /** Encoding type for the Connection form. */
+    private static final String FORM_ENCODING = "form-data"; //$NON-NLS-1$
+
+    /** Submit method of the Connection form. */
+    private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
+
+    /** Defines the action of the form. */
+    private static final String FORM_ACTION = "export"; //$NON-NLS-1$
+
     /**
      * PropertiesPanel Constructor.
      * 
@@ -114,13 +126,22 @@ public class PropertiesPanel extends LayoutComposite {
         final LayoutPanel mainPanel = new LayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        final ToolButton exportButton = new ToolButton("Export");
-        exportButton.addClickHandler(new ClickHandler() {
+        
+        final FormPanel formPanel = new FormPanel();
+        formPanel.setAction(FORM_ACTION);
+        formPanel.setMethod(FORM_METHOD);
+        formPanel.setEncoding(FORM_ENCODING);
 
+        Hidden curQuery = new Hidden(FORM_NAME_QUERY);
+        curQuery.setName(FORM_NAME_QUERY);
+        curQuery.setValue(Pat.getCurrQuery());
+        final ToolButton exportButton = new ToolButton("Export");
+        
+        formPanel.add(curQuery);
+        
+        exportButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
-                final String patLocation = "http://" + WindowUtils.getLocation().getHost()+ "/pat/export";
-                Window.open(patLocation, "_blank", null);
-                Window.open("http://localhost:8888/pat/export", "_blank", null);
+                formPanel.submit();
             }
         });
 
@@ -289,6 +310,7 @@ public class PropertiesPanel extends LayoutComposite {
         drillThruButton.setEnabled(false);
 
         mainPanel.add(exportButton);
+        mainPanel.add(formPanel);
         mainPanel.add(layoutMenuButton);
         mainPanel.add(drillMenuButton);
         mainPanel.add(mdxButton);
