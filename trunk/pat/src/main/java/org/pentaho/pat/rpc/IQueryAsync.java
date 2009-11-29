@@ -96,11 +96,13 @@ public interface IQueryAsync {
     void executeMdxQuery(String sessionId, String mdxQueryId, AsyncCallback<CellDataSet> callback);
 
     void setMdxQuery(String sessionId, String mdxQueryId, String mdx, AsyncCallback<Object> callback);
+    
+    void getMdxQuery(String sessionId, String mdxQueryId, AsyncCallback<String> callback);
 
     void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cubeItem,
             String cubeName, AsyncCallback<Object> callback);
 
-    void loadQuery(String sessionID, String currQuery, AsyncCallback<String> asyncCallback);
+    void loadQuery(String sessionID, String currQuery, AsyncCallback<String[]> asyncCallback);
 
     void getSavedQueries(String sessionId, AsyncCallback<List<QuerySaveModel>> callback);
 

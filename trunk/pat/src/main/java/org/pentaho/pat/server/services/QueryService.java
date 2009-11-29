@@ -544,6 +544,19 @@ public interface QueryService extends Service {
     Query newQuery) throws OlapException;
 
     /**
+     *TODO JAVADOC
+     * 
+     * @param currentUserId
+     * @param sessioinId
+     * @param connectionId
+     * @param cubeName
+     * @param newMdxQuery
+     */
+    @Secured( {"Users"})
+    String createSavedQuery(String currentUserId, String sessioinId, String connectionId, /* String cubeName, */
+    MdxQuery newMdxQuery) throws OlapException;
+    
+    /**
      * 
      * @param userId
      * @param sessionId

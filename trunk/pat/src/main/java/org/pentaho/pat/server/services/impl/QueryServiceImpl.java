@@ -809,6 +809,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return generatedId;
 
     }
+    
+    public String createSavedQuery(String userId, String sessionId, String connectionId, /* String cubeName, */
+            MdxQuery newMdxQuery) throws OlapException {
+                this.sessionService.validateSession(userId, sessionId);
+
+                final String generatedId = String.valueOf(UUID.randomUUID());
+
+                sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
+
+                return generatedId;
+
+            }
 
     public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);

@@ -35,6 +35,15 @@ public class SavedQuery implements Comparable<SavedQuery> {
      */
     @Basic
     private String name;
+    
+    @Basic
+    private String queryType;
+    
+    @Basic
+    public final String MDX = "mdx";
+    
+    @Basic
+    public final String QM = "qm";
 
     @Basic
     private String xml;
@@ -182,5 +191,17 @@ public class SavedQuery implements Comparable<SavedQuery> {
      */
     public Date getUpdatedDate() {
         return updatedDate;
+    }
+
+    public String getQueryType() {
+        return queryType;
+    }
+
+    public boolean setQueryType(String queryType) {
+        if (queryType == MDX || queryType == QM) {
+            this.queryType = queryType;
+            return true;
+        }
+        return false;
     }
 }
