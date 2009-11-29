@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Luc Boudreau
+ * Copyright (C) 2009 Paul Stoellberger
  *
  * This program is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -43,11 +43,21 @@ import org.apache.log4j.Logger;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
+import org.pentaho.pat.server.beans.QueryExportBean;
+import org.pentaho.pat.server.util.OlapUtil;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
-public class ExportController extends AbstractCommandController  {
+/**
+ *  Controller for exporting a Query
+ * 
+ * @created Nov 29, 2009
+ * @since 0.5.1
+ * @author Paul Stoellberger
+ */
+public class ExportController extends AbstractCommandController  implements InitializingBean {
 
 
     private static final Logger LOG = Logger.getLogger(ExportController.class);
@@ -67,41 +77,51 @@ public class ExportController extends AbstractCommandController  {
     
     protected ModelAndView handle(final HttpServletRequest request, final HttpServletResponse response,
             final Object command, final BindException errors) throws Exception {
+        final QueryExportBean queryExportBean = (QueryExportBean) command;
         
         try {
+            exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryExportBean.getQuery()));
             if (exportResult != null) {
                 response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
-                response.setHeader("filename", "pat-export.xls");
+                response.setHeader("filename", "export.xls");
                 this.outputStream = response.getOutputStream();
                 PatTableModel table = new PatTableModel(exportResult);
-                AbstractBaseCell[][] ab = table.getRowData();
-               
-                String[][] result = new String[ab.length][];
-                for (int x = 0; x<ab.length;x++) {
+                AbstractBaseCell[][] rowData = table.getRowData();
+                AbstractBaseCell[][] rowHeader = table.getColumnHeaders();
+                
+                String[][] result = new String[rowHeader.length + rowData.length][];
+                for (int x = 0; x<rowHeader.length;x++) {
                     List<String> cols = new ArrayList<String>();
-                    for(int y = 0; y < ab[x].length;y++) {
-                        cols.add(ab[x][y].getFormattedValue()); 
+                    for(int y = 0; y < rowHeader[x].length;y++) {
+                        cols.add(rowHeader[x][y].getFormattedValue()); 
                     }
                     result[x]= cols.toArray(new String[cols.size()]);
                     
                 }
-                System.out.println("export");
+                for (int x = 0; x<rowData.length ;x++) {
+                    int xTarget = rowHeader.length + x;
+                    List<String> cols = new ArrayList<String>();
+                    for(int y = 0; y < rowData[x].length;y++) {
+                        cols.add(rowData[x][y].getFormattedValue()); 
+                    }
+                    result[xTarget]= cols.toArray(new String[cols.size()]);
+                    
+                }
+               
                 export(result);
                                           
-                
+                response.setStatus(HttpServletResponse.SC_OK);
+                outputStream.flush();
+                outputStream.close();
+
             }
-            
-//            response.getWriter().print(DATA_START + (new String(Base64Coder.encode(files.getBytes()))) + DATA_END);
-            response.setStatus(HttpServletResponse.SC_OK);
+            else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
         } catch (Exception e) {
             LOG.error(e.getMessage());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-
-        // return the result to the client
-//        response.getWriter().flush();
-        outputStream.flush();
-        outputStream.close();
 
         return null;
     }
@@ -127,8 +147,9 @@ public class ExportController extends AbstractCommandController  {
                         for(int j = 0; j < vs.length ; j++){
                                 cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
                                 String value = vs[j];
-                                if(value == null)
-                                    value ="";
+                                if(value == null || value == "null") 
+                                    value="";
+                                    
                                 if(isDouble(value)){
                                         Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),csn);
                                         sheet.addCell(number);
@@ -163,20 +184,20 @@ private void setCellsStyles() throws WriteException {
         
         cs = new WritableCellFormat();
         cs.setBorder(Border.ALL, BorderLineStyle.THIN);
-        cs.setShrinkToFit(true);
+        //cs.setShrinkToFit(true);
         csn = new WritableCellFormat(new NumberFormat("###,###,###.###"));
         csn.setBorder(Border.ALL, BorderLineStyle.THIN);
-        csn.setShrinkToFit(true);
+        //csn.setShrinkToFit(true);
         
         hcs = new WritableCellFormat();
         hcs.setBorder(Border.ALL, BorderLineStyle.THIN);
         hcs.setBackground(Colour.GRAY_50);
-        hcs.setShrinkToFit(true);
+        //hcs.setShrinkToFit(true);
         
         rcs = new WritableCellFormat();
         rcs.setBorder(Border.ALL, BorderLineStyle.THIN);
         rcs.setBackground(Colour.GRAY_25);
-        rcs.setShrinkToFit(true);
+        //rcs.setShrinkToFit(true);
 
 }
 
@@ -191,6 +212,11 @@ public boolean isDouble(String obj){
             return false;
     }
     return true;
+}
+
+public void afterPropertiesSet() throws Exception {
+    // TODO Auto-generated method stub
+    
 }
 
 

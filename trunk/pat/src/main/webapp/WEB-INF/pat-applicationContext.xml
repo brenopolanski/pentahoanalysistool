@@ -37,7 +37,7 @@
   
 	<bean id="exportController"
     class="org.pentaho.pat.server.servlet.ExportController">
-           <property name="commandClass" value="org.pentaho.pat.server.beans.FileUploadBean"/>
+           <property name="commandClass" value="org.pentaho.pat.server.beans.QueryExportBean"/>
   </bean>
   
   <bean id="multipartResolver" 
