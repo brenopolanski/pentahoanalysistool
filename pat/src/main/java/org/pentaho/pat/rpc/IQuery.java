@@ -369,6 +369,9 @@ public interface IQuery extends RemoteService {
     CellDataSet executeMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
 
     @Secured( {"Users"})
+    String getMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
+    
+    @Secured( {"Users"})
     void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
 
     @Secured( {"Users"})
@@ -376,7 +379,7 @@ public interface IQuery extends RemoteService {
             String cubeName) throws RpcException;
 
     @Secured( {"Users"})
-    String loadQuery(String sessioinId, String queryId) throws RpcException;
+    String[] loadQuery(String sessioinId, String queryId) throws RpcException;
 
     @Secured( {"Users"})
     List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;

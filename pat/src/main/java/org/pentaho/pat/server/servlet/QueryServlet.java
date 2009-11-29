@@ -44,6 +44,7 @@ import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
+import org.pentaho.pat.server.util.MdxQuery;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -441,6 +442,18 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+
+    public String getMdxQuery(final String sessionId, final String mdxQueryId) throws RpcException {
+
+            MdxQuery mq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
+            if (mq != null) {
+                return mq.getMdx();
+            }
+        
+            LOG.error("can't get mdx query"); //$NON-NLS-1$
+            throw new RpcException("can't get mdx query"); //$NON-NLS-1$
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -466,9 +479,19 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final String connectionId, final CubeItem cube, final String cubeName) throws RpcException {
         try {
             final Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
-
-            final SavedQuery sc = this.convert(qm, queryName, connectionId, cube, cubeName);
-            this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
+            final MdxQuery mdxq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, queryId);
+            SavedQuery sc = null;
+            if (qm != null) {
+                sc = this.convert((Object)qm, queryName, connectionId, cube, cubeName);
+                sc.setQueryType(sc.QM);
+            }
+            else if (mdxq != null) {
+                sc = this.convert((Object)mdxq,queryName, connectionId, cube, cubeName);
+                sc.setQueryType(sc.MDX);
+            }
+            if (sc != null ) {
+                this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
+            }
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.QuerySaveError"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.QuerySaveError"), e); //$NON-NLS-1$
@@ -486,7 +509,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @param cubeName
      * @return
      */
-    private SavedQuery convert(final Query cc, final String queryName, final String connectionId, final CubeItem cube,
+    private SavedQuery convert(final Object cc, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
         final XStream xstream = new XStream();
 
@@ -534,7 +557,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * 
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
-    public String loadQuery(final String sessioinId, final String queryId) throws RpcException {
+    public String[] loadQuery(final String sessioinId, final String queryId) throws RpcException {
         try {
             // Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
 
@@ -542,12 +565,21 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
             final XStream xstream = new XStream();
 
-            final Query newQuery = (Query) xstream.fromXML(sc.getXml());
-            return this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(), /*
-                                                                                                             * sc.getCubeName
-                                                                                                             * (),
-                                                                                                             */
-            newQuery);
+            Object oQuery = xstream.fromXML(sc.getXml());
+            String[] createdQuery = new String[2];
+            if (oQuery instanceof Query) {
+                final Query newQuery = (Query) oQuery; 
+                createdQuery[0] = this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, 
+                        sc.getConnectionId(), /* sc.getCubeName(), */ newQuery);
+                
+            }
+            if (oQuery instanceof MdxQuery) {
+                final MdxQuery newMdxQuery = (MdxQuery) oQuery;
+                createdQuery[0] = this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(),newMdxQuery);
+            }
+            createdQuery[1] = sc.getQueryType();
+            return createdQuery;
+            
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$
