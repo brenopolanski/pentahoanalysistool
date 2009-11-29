@@ -161,10 +161,15 @@
           </div>
           <div class="right">
             <ul>
+            
               <li><label>Username:</label></li>
-              <li><input type="text" name="j_username" value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' /></li>
+              <!--
+              	Use default username / password until we have a proper security system 
+              	<li><input type="text" name="j_username" value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' /></li>  
+              -->
+              <li><input type="text" name="j_username" value='admin' /></li> 
               <li><label>Password:</label></li>
-              <li><input type="password" name="j_password" value="" /></li>
+              <li><input type="password" name="j_password" value="admin" /></li>
  
         
             </ul>
