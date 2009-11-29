@@ -320,7 +320,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     public CellDataSet executeQuery(final String sessionId, final String queryId) throws RpcException {
         try {
-            return this.queryService.executeQuery(getCurrentUserId(), sessionId, queryId);
+            CellDataSet cd = this.queryService.executeQuery(getCurrentUserId(), sessionId, queryId);
+            // TODO remove this later
+            ExportController.exportResult = cd;
+            return cd;
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
