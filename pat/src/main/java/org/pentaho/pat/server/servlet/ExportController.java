@@ -145,13 +145,16 @@ public class ExportController extends AbstractCommandController  implements Init
                 for(int i =  0; i < resultSet.length; i++){
                         String[] vs = resultSet[i];
                         for(int j = 0; j < vs.length ; j++){
-                                cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
+                                //cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
+                                cf = (i % 2 != 0 ? hcs : rcs);
                                 String value = vs[j];
                                 if(value == null || value == "null") 
                                     value="";
                                     
                                 if(isDouble(value)){
-                                        Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),csn);
+                                    WritableCellFormat vf = csn;
+                                    vf.setBackground(cf.getBackgroundColour());
+                                        Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),vf);
                                         sheet.addCell(number);
                                 }
                                 else{
