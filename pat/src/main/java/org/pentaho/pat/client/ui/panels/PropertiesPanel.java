@@ -31,6 +31,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -43,6 +44,7 @@ import org.pentaho.pat.rpc.dto.DrillType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -112,6 +114,16 @@ public class PropertiesPanel extends LayoutComposite {
         final LayoutPanel mainPanel = new LayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        final ToolButton exportButton = new ToolButton("Export");
+        exportButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                final String patLocation = "http://" + WindowUtils.getLocation().getHost()+ "/pat/export";
+                Window.open(patLocation, "_blank", null);
+                Window.open("http://localhost:8888/pat/export", "_blank", null);
+            }
+        });
+
         final ToolButton mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
         mdxButton.addClickHandler(new ClickHandler() {
 
@@ -276,6 +288,7 @@ public class PropertiesPanel extends LayoutComposite {
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
 
+        mainPanel.add(exportButton);
         mainPanel.add(layoutMenuButton);
         mainPanel.add(drillMenuButton);
         mainPanel.add(mdxButton);

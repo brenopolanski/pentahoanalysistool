@@ -9,6 +9,7 @@
 		<property name="mappings">
 			<props>
         <prop key="/pat/schemaupload">fileUploadController</prop>
+        <prop key="/pat/export">exportController</prop>
         <prop key="/pentaho/*.do">pentahoIntegrationController</prop>
 			</props>
 		</property>

@@ -158,9 +158,9 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             case CENTER:
                 olapTable.removeFromParent();
                 fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.CENTER));
-
+                break;
             default:
-
+                break;
             }
         }
         WidgetHelper.invalidate(fillLayoutPanel);
