@@ -19,6 +19,11 @@
  */
 package org.pentaho.pat.server.servlet;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -512,7 +517,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     private SavedQuery convert(final Object cc, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
         final XStream xstream = new XStream();
-
+        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+        xstream.alias("query", org.olap4j.query.Query.class);
+        xstream.alias("axis", org.olap4j.query.QueryAxis.class);
+        xstream.alias("axisstandard", org.olap4j.Axis.Standard.class);
+        xstream.alias("querydimension", org.olap4j.query.QueryDimension.class);
+        xstream.alias("selection", org.olap4j.query.Selection.class);
+        xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
         final String xml = xstream.toXML(cc);
         final SavedQuery sc = new SavedQuery(cc.toString());
         sc.setCubeName(cubeName);
@@ -522,6 +533,17 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         sc.setXml(xml);
         sc.setConnectionId(connectionId);
         sc.setUpdatedDate(new Date());
+        
+        
+        String file = "file.txt";
+        try{
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(xml);
+                out.close();
+        }catch(IOException ex){
+                ex.printStackTrace();
+        }
+
         return sc;
     }
 
@@ -565,6 +587,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
             final XStream xstream = new XStream();
 
+            xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+            xstream.alias("query", org.olap4j.query.Query.class);
+            xstream.alias("axis", org.olap4j.query.QueryAxis.class);
+            xstream.alias("axisstandard", org.olap4j.Axis.Standard.class);
+            xstream.alias("querydimension", org.olap4j.query.QueryDimension.class);
+            xstream.alias("selection", org.olap4j.query.Selection.class);
+            xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
             Object oQuery = xstream.fromXML(sc.getXml());
             String[] createdQuery = new String[2];
             if (oQuery instanceof Query) {
