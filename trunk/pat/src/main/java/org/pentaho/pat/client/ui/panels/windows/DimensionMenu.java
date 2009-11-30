@@ -278,7 +278,7 @@ public class DimensionMenu extends LayoutComposite {
      *            - Dimension of interest
      */
     public final void loadMembers(final String queryId, final String dimensionId) {
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+        
             ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
                     new AsyncCallback<StringTree>() {
 
@@ -415,7 +415,7 @@ public class DimensionMenu extends LayoutComposite {
 
                     });
         }
-    }
+    
 
     /**
      * Adds children {@link StringTree} to a given parent in the Tree
