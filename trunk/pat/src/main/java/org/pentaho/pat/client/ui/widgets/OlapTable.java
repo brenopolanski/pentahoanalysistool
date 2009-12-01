@@ -65,7 +65,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
     public OlapTable() {
         super();
-        this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
+        
         GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapTable.this);
     }
 
