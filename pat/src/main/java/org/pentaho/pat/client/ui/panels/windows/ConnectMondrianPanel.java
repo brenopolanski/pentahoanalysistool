@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.infopanel.InfoPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -264,7 +265,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         connectButton.setEnabled(true);
                         // TODO remove this later
                         
-                        successPanel.show();
+                        Application.showInfoPanel(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success());
                     } else {
                         MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                                 .fileUploadFailed());
