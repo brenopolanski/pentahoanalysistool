@@ -20,6 +20,7 @@
 
 package org.pentaho.pat.client;
 
+import org.gwt.mosaic.ui.client.InfoPanel;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -57,6 +58,7 @@ public class Application extends Viewport {
      */
     public interface ApplicationImages extends TreeImages {
 
+	public static final InfoPanel INFOPANEL = new InfoPanel();
         /**
          * An image indicating a leaf.
          * 
@@ -145,4 +147,7 @@ public class Application extends Viewport {
         return rootPanel;
     }
 
+    public static void showInfoPanel(String title, String content){
+	InfoPanel.show(title, content);
+    }
 }
