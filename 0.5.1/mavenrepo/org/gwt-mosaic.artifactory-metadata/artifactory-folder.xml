@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/gwt-mosaic/gwt-mosaic</path>
+  </repoPath>
+  <name>gwt-mosaic</name>
+  <created>1235746901528</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1235746901528</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>

@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/olap4j/olap4j/0.9.7/olap4j-0.9.7.pom</path>
+  </repoPath>
+  <name>olap4j-0.9.7.pom</name>
+  <created>1229555738437</created>
+  <lastModified>1229555738000</lastModified>
+  <size>248</size>
+  <mimeType>application/x-maven-pom+xml</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229555738447</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>208a7e734445a57cb55dadce4d1f0569</actual>
+        </checksum>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>2e8569c2be389d7f0f9e28bca9dc08fa74e401b0</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

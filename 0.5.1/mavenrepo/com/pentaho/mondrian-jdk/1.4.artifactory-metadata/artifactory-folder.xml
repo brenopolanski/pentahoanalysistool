@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/pentaho/mondrian-jdk/1.4</path>
+  </repoPath>
+  <name>1.4</name>
+  <created>1229627513779</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229627513757</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>

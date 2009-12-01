@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/gwt-mosaic/gwt-mosaic/0.1.8/gwt-mosaic-0.1.8.pom</path>
+  </repoPath>
+  <name>gwt-mosaic-0.1.8.pom</name>
+  <created>1235746902009</created>
+  <lastModified>1235746902000</lastModified>
+  <size>258</size>
+  <mimeType>application/x-maven-pom+xml</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1235746902015</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>029442a29ccda1d9027fe7f9c52b0926</actual>
+        </checksum>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>9b81828b2e965a65e382bcb347332a623942dfb0</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

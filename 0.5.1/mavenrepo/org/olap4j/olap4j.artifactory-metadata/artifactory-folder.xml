@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/olap4j/olap4j</path>
+  </repoPath>
+  <name>olap4j</name>
+  <created>1229555738180</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229555738180</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>
