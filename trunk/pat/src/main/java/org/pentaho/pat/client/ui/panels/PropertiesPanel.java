@@ -23,6 +23,7 @@ package org.pentaho.pat.client.ui.panels;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
@@ -31,6 +32,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -123,7 +125,7 @@ public class PropertiesPanel extends LayoutComposite {
         this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
 
-        final LayoutPanel mainPanel = new LayoutPanel();
+        final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         
@@ -309,16 +311,16 @@ public class PropertiesPanel extends LayoutComposite {
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
 
-        mainPanel.add(exportButton);
-        mainPanel.add(formPanel);
-        mainPanel.add(layoutMenuButton);
-        mainPanel.add(drillMenuButton);
-        mainPanel.add(mdxButton);
-        mainPanel.add(showParentButton);
-        mainPanel.add(showFiltersButton);
-        mainPanel.add(showPropsButton);
-        mainPanel.add(hideBlanksButton);
-        mainPanel.add(pivotButton);
+        mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(showParentButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(showFiltersButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(showPropsButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
 
         rootPanel.add(mainPanel);
 
