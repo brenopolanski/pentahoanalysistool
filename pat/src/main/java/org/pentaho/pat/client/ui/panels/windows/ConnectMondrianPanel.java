@@ -25,7 +25,6 @@ import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.infopanel.InfoPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
@@ -60,7 +59,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 
 public class ConnectMondrianPanel extends LayoutComposite {
     
-    private static final InfoPanel successPanel = new InfoPanel(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success(), true);
+    
     
     /** Form element name of the file component. */
     private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$

@@ -9,7 +9,7 @@
 	<artifactId>pat</artifactId>
 	<packaging>war</packaging>
 	<name>Pentaho Analysis Tool</name>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.1</version>
 	<url>http://code.google.com/p/pentahoanalysistool/</url>
 	<properties>
 		<gwt.module.alias>pat</gwt.module.alias>
