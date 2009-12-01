@@ -89,8 +89,8 @@ public class ChartPanel extends LayoutComposite {
      * Chart Panel Constructor.
      */
     public ChartPanel() {
-        // GlobalConnectionFactory.getQueryInstance().addQueryListener(ChartPanel.this);
-
+	super();
+	this.setSize("100%", "100%"); //$NON-NLS-1$//$NON-NLS-2$
         ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
         ((BoxLayout) layoutPanel.getLayout()).setOrientation(Orientation.VERTICAL);
         layoutPanel.add(createBtnLayoutPanel());

@@ -289,7 +289,7 @@ public class PropertiesPanel extends LayoutComposite {
 
         final PopupMenu layoutMenuBtnMenu = new PopupMenu();
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
+       // layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));

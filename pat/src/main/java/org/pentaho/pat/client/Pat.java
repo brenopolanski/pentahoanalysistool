@@ -94,7 +94,7 @@ public class Pat implements EntryPoint {
 
     private static String currCubeName;
 
-    private static DrillType currDrillType;
+    private static DrillType currDrillType = DrillType.POSITION;
 
     public static String getCurrConnection() {
         return currConnection;

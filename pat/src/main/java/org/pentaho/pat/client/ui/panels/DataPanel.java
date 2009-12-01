@@ -119,7 +119,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
-        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 50, 200));
+        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
 
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
@@ -138,10 +138,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (chartPos == null) {
 
             ofcPanel.removeFromParent();
-        } else {
             if (!olapTable.isAttached()) {
                 fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
             }
+        } else {
             switch (chartPos) {
             case WEST:
                 fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
@@ -162,7 +162,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             default:
                 break;
             }
+            if (!olapTable.isAttached() && chartPos != Region.CENTER) {
+                fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
+            }
         }
+
+        
         WidgetHelper.invalidate(fillLayoutPanel);
         WidgetHelper.layout(fillLayoutPanel);
     }
