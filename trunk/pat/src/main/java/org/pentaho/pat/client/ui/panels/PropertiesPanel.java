@@ -132,7 +132,7 @@ public class PropertiesPanel extends LayoutComposite {
         final FormPanel formPanel = new FormPanel();
         formPanel.setAction(FORM_ACTION);
         formPanel.setMethod(FORM_METHOD);
-        formPanel.setEncoding(FORM_ENCODING);
+        //formPanel.setEncoding(FORM_ENCODING);
 
         Hidden curQuery = new Hidden(FORM_NAME_QUERY);
         curQuery.setName(FORM_NAME_QUERY);
