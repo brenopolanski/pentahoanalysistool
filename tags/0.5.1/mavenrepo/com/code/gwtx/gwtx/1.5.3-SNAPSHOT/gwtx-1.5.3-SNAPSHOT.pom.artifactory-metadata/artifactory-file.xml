@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/google/code/gwtx/gwtx/1.5.3-SNAPSHOT/gwtx-1.5.3-SNAPSHOT.pom</path>
+  </repoPath>
+  <name>gwtx-1.5.3-SNAPSHOT.pom</name>
+  <created>1236113067549</created>
+  <lastModified>1236113067000</lastModified>
+  <size>3460</size>
+  <mimeType>application/x-maven-pom+xml</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1236113067590</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>5936ce046ec656e4546035243cb501a9</actual>
+        </checksum>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>1bfb75374ffb40dbec360b90f3645a3f01dc49a5</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>org/gwt-beans-binding/gwt-beans-binding/0.2.3/gwt-beans-binding-0.2.3.jar</path>
+  </repoPath>
+  <name>gwt-beans-binding-0.2.3.jar</name>
+  <created>1235747432584</created>
+  <lastModified>1235747418000</lastModified>
+  <size>188215</size>
+  <mimeType>application/zip</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1235747432632</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>1b3faf057972af232158cd20e289a1a8</actual>
+        </checksum>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>d0ef8ec2062ea324ab31e22f69a582af402c01b9</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>

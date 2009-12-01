@@ -1,0 +1,14 @@
+<artifactory-folder>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/gwtext/gwtext/2.0.6</path>
+  </repoPath>
+  <name>2.0.6</name>
+  <created>1229633762583</created>
+  <lastModified>0</lastModified>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1229633762577</lastUpdated>
+  </additionalInfo>
+</artifactory-folder>

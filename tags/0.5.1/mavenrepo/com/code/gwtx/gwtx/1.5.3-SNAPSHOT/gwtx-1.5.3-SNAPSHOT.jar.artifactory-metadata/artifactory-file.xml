@@ -1,0 +1,30 @@
+<artifactory-file>
+  <repoPath>
+    <repoKey>libs-releases-local</repoKey>
+    <path>com/google/code/gwtx/gwtx/1.5.3-SNAPSHOT/gwtx-1.5.3-SNAPSHOT.jar</path>
+  </repoPath>
+  <name>gwtx-1.5.3-SNAPSHOT.jar</name>
+  <created>1236113067313</created>
+  <lastModified>1236113058000</lastModified>
+  <size>253459</size>
+  <mimeType>application/zip</mimeType>
+  <additionalInfo>
+    <createdBy>admin</createdBy>
+    <modifiedBy>admin</modifiedBy>
+    <lastUpdated>1236113067463</lastUpdated>
+    <checksumsInfo>
+      <checksums>
+        <checksum>
+          <type>sha1</type>
+          <original>NO_ORIG</original>
+          <actual>0f50e9a7dbc4197d06bb8726fb7a291a21e78f36</actual>
+        </checksum>
+        <checksum>
+          <type>md5</type>
+          <original>NO_ORIG</original>
+          <actual>103d90d6e777bb81bdc71b18eafd846e</actual>
+        </checksum>
+      </checksums>
+    </checksumsInfo>
+  </additionalInfo>
+</artifactory-file>
