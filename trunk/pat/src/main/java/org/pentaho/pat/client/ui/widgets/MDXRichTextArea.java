@@ -98,6 +98,15 @@ public class MDXRichTextArea extends RichTextArea {
         formatMDX();
     }
 
+    @Override
+    public String getText(){
+        this.setHTML(this.getHTML().replaceAll("&nbsp;", " "));
+        return super.getText();
+        // typing spaces into the mdx box generated some &nbsp;
+        // characters removed here
+    };
+
+
     private boolean nextBraceClose(final int start, final String[] pieces) {
         for (int i = start + 1; i < pieces.length; i++) {
             if (pieces[i].contains(")")) { //$NON-NLS-1$
