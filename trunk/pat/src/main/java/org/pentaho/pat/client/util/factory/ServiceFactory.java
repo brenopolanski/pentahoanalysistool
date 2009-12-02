@@ -12,6 +12,7 @@
  */
 package org.pentaho.pat.client.util.factory;
 
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.IDiscoveryAsync;
 import org.pentaho.pat.rpc.IQuery;
@@ -49,7 +50,7 @@ public class ServiceFactory {
         if (dService == null) {
             dService = (IDiscoveryAsync) GWT.create(IDiscovery.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) dService;
-            final String moduleRelativeURL = GWT.getModuleBaseURL() + "discovery.rpc"; //$NON-NLS-1$
+            final String moduleRelativeURL = Pat.getBaseUrl() + "discovery.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);
         }
         return dService;
@@ -64,7 +65,7 @@ public class ServiceFactory {
         if (qService == null) {
             qService = (IQueryAsync) GWT.create(IQuery.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) qService;
-            final String moduleRelativeURL = GWT.getModuleBaseURL() + "query.rpc"; //$NON-NLS-1$
+            final String moduleRelativeURL = Pat.getBaseUrl()  + "query.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);
         }
         return qService;
@@ -79,7 +80,7 @@ public class ServiceFactory {
         if (sService == null) {
             sService = (ISessionAsync) GWT.create(ISession.class);
             final ServiceDefTarget endpoint = (ServiceDefTarget) sService;
-            final String moduleRelativeURL = GWT.getModuleBaseURL() + "session.rpc"; //$NON-NLS-1$
+            final String moduleRelativeURL = Pat.getBaseUrl()  + "session.rpc"; //$NON-NLS-1$
             endpoint.setServiceEntryPoint(moduleRelativeURL);
         }
         return sService;

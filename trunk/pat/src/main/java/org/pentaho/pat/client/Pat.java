@@ -292,6 +292,33 @@ public class Pat implements EntryPoint {
         }
     }
 
+    /** 
+     * This hackery has to be done so we get to the /pentaho context where our 
+     * servlets lives (/pentaho/...).  If we don't parse out the plugin-related
+     * parts of the module url,  the GWT client code will wrongly POST to /pentaho/content/pat-res/pat/servlet.
+     * 
+     * @return the true URL to the rpc service
+     */
+    public static String getBaseUrl() {
+      String moduleUrl = GWT.getModuleBaseURL();
+      
+      //
+      //Set the base url appropriately based on the context in which we are running this client
+      //
+      if(moduleUrl.indexOf("content") > -1) {
+        //we are running the client in the context of a BI Server plugin, so 
+        //point the request to the GWT rpc proxy servlet
+        String baseUrl = moduleUrl.substring(0, moduleUrl.indexOf("content"));
+        //NOTE: the dispatch URL ("gechoService") must match the bean id for 
+        //this service object in your plugin.xml.  "gwtrpc" is the servlet 
+        //that handles plugin gwt rpc requests in the BI Server.
+        return  baseUrl + "gwtrpc/";
+      }
+      //we are running this client in hosted mode, so point to the servlet 
+      //defined in war/WEB-INF/web.xml
+      return moduleUrl;
+    }
+
     /**
      * Parses possible Parameters and sets initial State.
      */
