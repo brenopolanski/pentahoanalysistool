@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
+import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -42,7 +43,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -67,7 +67,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     private OlapTable olapTable = null;
 
-    private final TextArea mdxArea = new TextArea();
+    private final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
     public MdxPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
@@ -150,7 +150,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
                 
-                //mdxArea.formatMDX();
+                mdxArea.formatMDX();
                 ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdxArea.getText(),
                         new AsyncCallback<Object>() {
 
