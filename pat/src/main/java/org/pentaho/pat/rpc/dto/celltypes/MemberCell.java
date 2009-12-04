@@ -221,7 +221,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                     public void onBrowserEvent(Event event) {
                         if (DOM.eventGetType(event) == Event.ONCLICK) {
                             ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    DrillType.POSITION, MemberCell.this, new AsyncCallback<Object>() {
+                                    Pat.getCurrDrillType(), MemberCell.this, new AsyncCallback<Object>() {
 
                                         public void onFailure(Throwable arg0) {
                                             MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
