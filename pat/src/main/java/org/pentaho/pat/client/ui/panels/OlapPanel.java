@@ -30,16 +30,20 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *Creates a query tab panel for the selected cube and connection.
@@ -49,7 +53,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class OlapPanel extends AbstractDataWidget {
+public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     private String panelName = null;
 
@@ -63,9 +67,12 @@ public class OlapPanel extends AbstractDataWidget {
 
     private LayoutPanel baselayoutPanel;
 
+    private final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+    
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
         super();
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
     }
 
     /**
@@ -76,7 +83,7 @@ public class OlapPanel extends AbstractDataWidget {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = cube.getName();
-
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
         cubeItem = cube;
         cubeName = cube.getName();
         connectionId = connection;
@@ -220,7 +227,7 @@ public class OlapPanel extends AbstractDataWidget {
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final LayoutPanel centerPanel = new LayoutPanel();
-        final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+        
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
 
@@ -244,6 +251,18 @@ public class OlapPanel extends AbstractDataWidget {
 
         getLayoutPanel().add(baselayoutPanel);
         LogoPanel.spinWheel(false);
+    }
+
+    public void onQueryChange(Widget sender) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    public void onQueryExecuted(String queryId, CellDataSet matrix) {
+	if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+	baselayoutPanel.setCollapsed(westPanel, true);
+	baselayoutPanel.layout();
+	}
     }
 
 }

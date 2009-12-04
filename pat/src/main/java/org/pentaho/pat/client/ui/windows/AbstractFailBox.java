@@ -60,6 +60,15 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class AbstractFailBox extends WindowPanel {
 
+    private Widget widget;
+
+    private final LayoutPanel buttonPanel = new LayoutPanel();
+
+    private Image image;
+
+    private WidgetWrapper imageWrapper;
+
+    
     public interface ConfirmationCallback {
         void onResult(boolean result);
     }
@@ -153,14 +162,7 @@ public abstract class AbstractFailBox extends WindowPanel {
         alert(MessageBoxType.ERROR, caption, message, error);
     }
 
-    private Widget widget;
-
-    private final LayoutPanel buttonPanel = new LayoutPanel();
-
-    private Image image;
-
-    private WidgetWrapper imageWrapper;
-
+  
     public AbstractFailBox() {
         this(DEFAULT_TYPE, null);
     }
@@ -294,6 +296,7 @@ public abstract class AbstractFailBox extends WindowPanel {
         if (padding > -1) {
             layoutPanel.setPadding(padding);
         }
+        
         if (!widget.equals(w)) {
             if (widget != null) {
                 layoutPanel.remove(widget);
