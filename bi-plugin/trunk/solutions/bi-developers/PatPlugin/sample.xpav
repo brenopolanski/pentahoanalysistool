@@ -5,7 +5,7 @@
 		description="Launch PAT with a sample Mondrian cube and sample data."
 		icon="pat-icon.png"/>
 		
-	<app-connection>http://localhost:8080/pat/pentaho/simpleXmla.do</app-connection>
+	<app-connection>http://localhost:8080/pentaho/content/pat</app-connection>
 	
 	<xmla-provider
 		scope="use-local"

@@ -45,113 +45,142 @@ import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 public class PatContentGenerator extends SimpleContentGenerator {
 
 
-  private static final long serialVersionUID = -9180003935693305152L;
+    private static final long serialVersionUID = -9180003935693305152L;
 
-  public static final String xmlaUrlParameter =       "XMLA_URL";
-  public static final String xmlaUsernameParameter =  "XMLA_USERNAME";
-  public static final String xmlaPasswordParameter =  "XMLA_PASSWORD";
-  
-  ArrayList <String> problemMessages = new ArrayList<String>();
+    public static final String xmlaUrlParameter =       "XMLA_URL";
+    public static final String xmlaUsernameParameter =  "XMLA_USERNAME";
+    public static final String xmlaPasswordParameter =  "XMLA_PASSWORD";
 
-  @Override
-  public void createContent() throws Exception {
+    ArrayList <String> problemMessages = new ArrayList<String>();
 
-    if( outputHandler == null ) {
-      error( "No output handler" ); //$NON-NLS-1$
-      throw new InvalidParameterException( "No output handler" );  //$NON-NLS-1$
-    }
-    
-    // Get the .xpav content file from the repository, then grab the application info and
-    // parameters needed to launch PAT...
-    IParameterProvider requestParams = parameterProviders.get( IParameterProvider.SCOPE_REQUEST );
-    String solution = requestParams.getStringParameter("solution", null); //$NON-NLS-1$
-    String path = requestParams.getStringParameter("path", null); //$NON-NLS-1$
-    String action = requestParams.getStringParameter("action", null); //$NON-NLS-1$
-    String fullPath = ActionInfo.buildSolutionPath(solution, path, action);
-    ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, userSession);
+    @Override
+    public void createContent() throws Exception {
 
-    
-    String url = null;
-    if (repository.resourceExists(fullPath)) {
-      Document doc = repository.getResourceAsDocument(fullPath);
-      url = getLaunchURL(doc);
-    }
-    
-    if (null==url){
-      // Something bad happened... send error messages back to the client.
-      super.createContent();
-    }else{
-      // Someday, we'll do something smarter here, but for now, we just redirect to PAT, then leave 
-      // it alone to do it's thing.
-      outputHandler.setOutput("redirect", url);
-    }
-  }
+        if( outputHandler == null ) {
+            error( "No output handler" ); //$NON-NLS-1$
+            throw new InvalidParameterException( "No output handler" );  //$NON-NLS-1$
+        }
 
-  @Override
-  public void createContent(OutputStream out) throws Exception {
+        // Get the .xpav content file from the repository, then grab the application info and
+        // parameters needed to launch PAT...
+        IParameterProvider requestParams = parameterProviders.get( IParameterProvider.SCOPE_REQUEST );
+        String solution = requestParams.getStringParameter("solution", null); //$NON-NLS-1$
+        String path = requestParams.getStringParameter("path", null); //$NON-NLS-1$
+        String action = requestParams.getStringParameter("action", null); //$NON-NLS-1$
+        String fullPath = ActionInfo.buildSolutionPath(solution, path, action);
+        ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-    StringBuilder html = new StringBuilder();
-    html.append("<html>");
-    html.append("<h3>Pentaho Analysis Tool failed to launch. Hopefully some of the messages provided below will prove useful in figuring out why.</h3>");
-    html.append("<ol>");
-    for (String  message : problemMessages) {
-      html.append("<li>").append(message).append("</li>");
-    }
-    html.append("</ol>");
-    html.append("</html>");
-    out.write(html.toString().getBytes(LocaleHelper.getSystemEncoding()));
-   
-  }
 
-  private String getLaunchURL(Document doc)throws Exception{
-    
-    //TODO Provide a model for Pentaho Analysis View content so that we are not parsing raw 
-    //     XML in the business logic.
-    
-    // REQUIRED: the XML/A url and the PAT application url
-    
-    String appConnection = XmlDom4JHelper.getNodeText( "/pav/app-connection", doc, null);
-    if (null==appConnection){
-      problemMessages.add("Invalid analysis view content. The application connection must be defined. Double check the xml in your .xpav file for errors.");
-    }
-  
-    String xmlaConnection = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@url", doc, null);
-    if (null==xmlaConnection){
-      problemMessages.add("Invalid analysis view content. The XML/A connection must be defined.  Double check the xml in your .xpav file for errors.");
-    }
-    
-    if ((xmlaConnection != null) && (xmlaConnection.trim().length()>0)){
-      try {
-        xmlaConnection = URLEncoder.encode(xmlaConnection, LocaleHelper.getSystemEncoding());
-      } catch (Exception e) {
-        problemMessages.add("Encountered encoding problem encoding " + xmlaConnection);
-      }
-    }
-    
-    if (problemMessages.size()>0){
-      return null;
+        String url = null;
+        if (repository.resourceExists(fullPath)) {
+            Document doc = repository.getResourceAsDocument(fullPath);
+            url = getLaunchURL(doc);
+        }
+
+        if (null==url){
+            // Something bad happened... send error messages back to the client.
+            super.createContent();
+        }else{
+            // Someday, we'll do something smarter here, but for now, we just redirect to PAT, then leave 
+            // it alone to do it's thing.
+            outputHandler.setOutput("redirect", url);
+        }
     }
 
-    // OPTIONAL: credentials for XML/A provider... very very prototype...
-    
-    String xmlaUser = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@username", doc, "");
-    String xmlaPassword = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@password", doc, "");
-    String url = appConnection.concat("?")
-                              .concat(xmlaUrlParameter).concat("=").concat(xmlaConnection);
-    if ((xmlaUser!=null) &&(xmlaPassword!=null)){   
-      url = url.concat("&").concat(xmlaUsernameParameter).concat("=").concat(xmlaUser).concat("&")
-               .concat(xmlaPasswordParameter).concat("=").concat(xmlaPassword);
+    @Override
+    public void createContent(OutputStream out) throws Exception {
+        //      outputHandler.setOutput("redirect", "http://localhost:8080/pentaho/content/pat/pat-res/pat.html");
+        //    
+        //    StringBuilder html = new StringBuilder();
+        //    html.append("<html>");
+        //    html.append("<h3>Pentaho Analysis Tool failed to launch. Hopefully some of the messages provided below will prove useful in figuring out why.</h3>");
+        //    html.append("<ol>");
+        //    for (String  message : problemMessages) {
+        //      html.append("<li>").append(message).append("</li>");
+        //    }
+        //    html.append("</ol>");
+        //    html.append("</html>");
+        //    out.write(html.toString().getBytes(LocaleHelper.getSystemEncoding()));
+
+        try {
+            StringBuilder html = new StringBuilder();
+            html.append("<html>");
+            html.append("<head>");
+
+            html.append("<meta name='gwt:module' content='org.pentaho.pat.Pat'/>");
+            html.append("     <meta name=\"gwt:property\" content=\"locale=<%= request.getLocale() %>\">");
+            html.append("</head>");
+            html.append("<body>");
+            html.append("<script language=\"javascript\" src=\"/pentaho/content/pat-res/pat/pat.nocache.js\"></script>");
+            html.append("<iframe src=\"javascript:''\" id=\"__gwt_historyFrame\" tabIndex='-1' style=\"position: absolute; width: 0; height: 0; border: 0\"></iframe>");
+            html.append("<div id=\"splash\" style=\"height:100%;width:100%;\">");
+            html.append("<table width=\"100%\" height=\"90%\">");
+            html.append("<tr>");
+            html.append("<td width=\"100%\" height=\"100%\" align=\"center\" valign=\"middle\">");
+            html.append("<div id=\"splash_loading\" alttext=\"Error\">Loading</div>");
+            html.append("</td>");
+            html.append("</tr>");
+            html.append("</table>");
+            html.append("</div>");
+            html.append("</body>");
+            html.append("</html>");
+            out.write(html.toString().getBytes(LocaleHelper.getSystemEncoding()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
-    
-    return url;
-  }
 
-  public String getMimeType() {
-    return "text/html";
-  }
+    private String getLaunchURL(Document doc)throws Exception{
 
-  public Log getLogger() {
-    return LogFactory.getLog(PatContentGenerator.class);
-  }
+        //TODO Provide a model for Pentaho Analysis View content so that we are not parsing raw 
+        //     XML in the business logic.
+
+        // REQUIRED: the XML/A url and the PAT application url
+
+        String appConnection = XmlDom4JHelper.getNodeText( "/pav/app-connection", doc, null);
+        if (null==appConnection){
+            problemMessages.add("Invalid analysis view content. The application connection must be defined. Double check the xml in your .xpav file for errors.");
+        }
+
+        String xmlaConnection = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@url", doc, null);
+        if (null==xmlaConnection){
+            problemMessages.add("Invalid analysis view content. The XML/A connection must be defined.  Double check the xml in your .xpav file for errors.");
+        }
+
+        if ((xmlaConnection != null) && (xmlaConnection.trim().length()>0)){
+            try {
+                xmlaConnection = URLEncoder.encode(xmlaConnection, LocaleHelper.getSystemEncoding());
+            } catch (Exception e) {
+                problemMessages.add("Encountered encoding problem encoding " + xmlaConnection);
+            }
+        }
+
+        if (problemMessages.size()>0){
+            return null;
+        }
+
+        // OPTIONAL: credentials for XML/A provider... very very prototype...
+
+        String xmlaUser = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@username", doc, "");
+        String xmlaPassword = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@password", doc, "");
+        String url = appConnection; //.concat("?").concat(xmlaUrlParameter).concat("=").concat(xmlaConnection);
+        //    if ((xmlaUser!=null) &&(xmlaPassword!=null)){   
+        //      url = url.concat("&").concat(xmlaUsernameParameter).concat("=").concat(xmlaUser).concat("&")
+        //               .concat(xmlaPasswordParameter).concat("=").concat(xmlaPassword);
+        //    }
+
+        return url;
+    }
+
+    public String getMimeType() {
+        return "text/html";
+    }
+
+    public Log getLogger() {
+        return LogFactory.getLog(PatContentGenerator.class);
+    }
 
 }

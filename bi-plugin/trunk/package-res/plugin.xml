@@ -2,6 +2,12 @@
 
 <plugin title="Pentaho Analysis Tool Plugin">
   
+    <webservice id="session.rpc" type="gwt" class="org.pentaho.pat.server.servlet.SessionServlet"/>
+    <webservice id="query.rpc" type="gwt" class="org.pentaho.pat.server.servlet.QueryServlet"/>
+    <webservice id="discovery.rpc" type="gwt" class="org.pentaho.pat.server.servlet.DiscoveryServlet"/>
+    <lifecycle-listener class="org.pentaho.pat.PatLifeCycleListener"/>
+
+    
     <content-type type="xpav" mime-type="text/html">
     <title>Pentaho Analysis View</title>
     <description>Pentaho analysis view definition file</description>

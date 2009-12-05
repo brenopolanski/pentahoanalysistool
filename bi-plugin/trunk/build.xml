@@ -23,9 +23,16 @@
       <include name="*.jar" />
     </fileset>
     <fileset dir="${pentaho.lib.dir}">
-      <include name="pentaho-bi-platform-*.jar" />
+      <include name="*.jar" />
     </fileset>
+  	<fileset dir="${pentaho.lib.dir}/../../../../lib">
+  	      <include name="*.jar" />
+  	    </fileset>
+  		
 	<dirset dir="${pentaho.classes.dir}" />
+  	<dirset dir="${maven.repo.dir}" >
+  		<include name="*.jar" />
+  		</dirset>
   </path>
   
   <!-- Copy all jars over to the plugin zip, 
