@@ -16,6 +16,7 @@
       <list>
         <value>/WEB-INF/application.properties</value>
         <value>/src/main/webapp/WEB-INF/application.properties</value>
+        <value>application.properties</value>
       </list>
     </property>
   </bean>
@@ -119,7 +120,7 @@
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
-    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    <property name="configLocation" value="classpath:pat-hibernate.cfg.xml"/>
     <property name="dataSource" ref="dataSource"/>
   </bean>
   

@@ -27,6 +27,7 @@ import org.pentaho.pat.server.data.UserManager;
 import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -63,16 +64,20 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
     public void init() throws ServletException {
         super.init();
 
+        
         if (!initDone) {
-            applicationContext = ContextLoader.getCurrentWebApplicationContext();
-
+            if (!standaloneMode) {
+                applicationContext = ContextLoader.getCurrentWebApplicationContext();
+            }
+            
             if (applicationContext == null) {
                 LOG.info(Messages.getString("Servlet.AbstractServlet.StandAlone")); //$NON-NLS-1$
 
                 // This happens if we launch PAT without a web context, like in the
                 // GWT shell for example. We'll initialize the context manually.
-                applicationContext = new FileSystemXmlApplicationContext(contextFiles);
-
+                // applicationContext = new FileSystemXmlApplicationContext(contextFiles);
+                applicationContext = new ClassPathXmlApplicationContext("pat-applicationContext.xml");
+                
                 standaloneMode = true;
 
                 initSecurityTokens();
@@ -132,5 +137,9 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
 
     public boolean isStandalone() {
         return standaloneMode;
+    }
+    
+    public void setStandalone(boolean flag) {
+        standaloneMode = flag;
     }
 }
