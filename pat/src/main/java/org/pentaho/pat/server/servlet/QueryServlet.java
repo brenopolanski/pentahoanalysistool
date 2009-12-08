@@ -559,7 +559,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 final SavedQuery element = (SavedQuery) it.next();
 
                 results.add(new QuerySaveModel(element.getId(), element.getName(), element.getConnectionId(), element
-                        .getCube(), element.getCubeName(), element.getUpdatedDate()));
+                        .getCube(), element.getCubeName(), element.getUpdatedDate(), element.getQueryType()));
 
             }
 
@@ -575,11 +575,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * 
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
-    public String[] loadQuery(final String sessioinId, final String queryId) throws RpcException {
+    public QuerySaveModel loadQuery(final String sessionId, final String queryId) throws RpcException {
         try {
-            // Query qm = this.queryService.getQuery(getCurrentUserId(), sessioinId, queryId);
 
-            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessioinId, queryId);
+            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessionId, queryId);
 
             final XStream xstream = new XStream();
 
@@ -591,19 +590,18 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
             xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
             Object oQuery = xstream.fromXML(sc.getXml());
-            String[] createdQuery = new String[2];
+            String createdQueryId = null;
             if (oQuery instanceof Query) {
-                final Query newQuery = (Query) oQuery; 
-                createdQuery[0] = this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, 
-                        sc.getConnectionId(), /* sc.getCubeName(), */ newQuery);
+                createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, 
+                        sc.getConnectionId(), (Query) oQuery);
                 
             }
             if (oQuery instanceof MdxQuery) {
-                final MdxQuery newMdxQuery = (MdxQuery) oQuery;
-                createdQuery[0] = this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(),newMdxQuery);
+                createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, sc.getConnectionId(),(MdxQuery) oQuery);
             }
-            createdQuery[1] = sc.getQueryType().toString();
-            return createdQuery;
+            
+            
+            return new QuerySaveModel(createdQueryId, sc.getName(), sc.getConnectionId(), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
             
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$

@@ -379,7 +379,7 @@ public interface IQuery extends RemoteService {
             String cubeName) throws RpcException;
 
     @Secured( {"Users"})
-    String[] loadQuery(String sessioinId, String queryId) throws RpcException;
+    QuerySaveModel loadQuery(String sessioinId, String queryId) throws RpcException;
 
     @Secured( {"Users"})
     List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;
