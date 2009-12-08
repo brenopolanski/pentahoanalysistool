@@ -35,10 +35,11 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
+import org.pentaho.pat.rpc.dto.enums.QueryType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.messages.Messages;
@@ -483,11 +484,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             SavedQuery sc = null;
             if (qm != null) {
                 sc = this.convert((Object)qm, queryName, connectionId, cube, cubeName);
-                sc.setQueryType(sc.QM);
+                sc.setQueryType(QueryType.QM);
             }
             else if (mdxq != null) {
                 sc = this.convert((Object)mdxq,queryName, connectionId, cube, cubeName);
-                sc.setQueryType(sc.MDX);
+                sc.setQueryType(QueryType.MDX);
             }
             if (sc != null ) {
                 this.queryService.saveQuery(getCurrentUserId(), sessionId, sc);
@@ -601,7 +602,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 final MdxQuery newMdxQuery = (MdxQuery) oQuery;
                 createdQuery[0] = this.queryService.createSavedQuery(getCurrentUserId(), sessioinId, sc.getConnectionId(),newMdxQuery);
             }
-            createdQuery[1] = sc.getQueryType();
+            createdQuery[1] = sc.getQueryType().toString();
             return createdQuery;
             
         } catch (Exception e) {
