@@ -72,7 +72,7 @@ public class ExportController extends AbstractCommandController  implements Init
     private ServletOutputStream outputStream;
 
 
-    public static final String extensionFile = ".xls";
+    public static final String extensionFile = ".xls"; //$NON-NLS-1$
 
     
     protected ModelAndView handle(final HttpServletRequest request, final HttpServletResponse response,
@@ -83,7 +83,7 @@ public class ExportController extends AbstractCommandController  implements Init
             exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryExportBean.getQuery()));
             if (exportResult != null) {
                 response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
-                response.setHeader("filename", "export.xls");
+                response.setHeader("filename", "export.xls"); //$NON-NLS-1$ //$NON-NLS-2$
                 this.outputStream = response.getOutputStream();
                 PatTableModel table = new PatTableModel(exportResult);
                 AbstractBaseCell[][] rowData = table.getRowData();
@@ -134,7 +134,7 @@ public class ExportController extends AbstractCommandController  implements Init
         try {
  
                 wb = Workbook.createWorkbook(outputStream);
-                WritableSheet sheet = wb.createSheet("Sheet", 0);
+                WritableSheet sheet = wb.createSheet("Sheet", 0); //$NON-NLS-1$
                 setCellsStyles();
                 WritableCellFormat cf;
                 
@@ -148,8 +148,8 @@ public class ExportController extends AbstractCommandController  implements Init
                                 //cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
                                 cf = (i % 2 != 0 ? hcs : rcs);
                                 String value = vs[j];
-                                if(value == null || value == "null") 
-                                    value="";
+                                if(value == null || value == "null")  //$NON-NLS-1$
+                                    value=""; //$NON-NLS-1$
                                     
                                 if(isDouble(value)){
                                     WritableCellFormat vf = csn;
@@ -170,7 +170,7 @@ public class ExportController extends AbstractCommandController  implements Init
         } catch (IOException e) {
                 LOG.error( "IO ERROR" );
         } catch (WriteException e) {
-                LOG.error( "WRITE ERROR");
+                LOG.error( "WRITE ERROR"); 
         } catch (Exception e) {
                 LOG.error( ("Error writing Excel Export") );
         }
@@ -178,7 +178,7 @@ public class ExportController extends AbstractCommandController  implements Init
             try {
                 wb.close();
                 } catch (Exception e){
-                        logger.error( "IO ERROR");
+                        logger.error( "IO ERROR"); //$NON-NLS-1$
                 }
         }
 }
@@ -188,7 +188,7 @@ private void setCellsStyles() throws WriteException {
         cs = new WritableCellFormat();
         cs.setBorder(Border.ALL, BorderLineStyle.THIN);
         //cs.setShrinkToFit(true);
-        csn = new WritableCellFormat(new NumberFormat("###,###,###.###"));
+        csn = new WritableCellFormat(new NumberFormat("###,###,###.###")); //$NON-NLS-1$
         csn.setBorder(Border.ALL, BorderLineStyle.THIN);
         //csn.setShrinkToFit(true);
         

@@ -132,7 +132,7 @@ public class DimensionMenu extends LayoutComposite {
                     for (int i = 0; i < item.getFullPath().length; i++) {
                         buf.append(item.getFullPath()[i]);
                         if ((i + 1) < item.getFullPath().length) {
-                            buf.append("->");
+                            buf.append("->"); //$NON-NLS-1$
                         }
 
                     }

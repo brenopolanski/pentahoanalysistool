@@ -818,6 +818,27 @@ public interface IGuiConstants extends Constants {
      * @return
      */
     String warning();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String export();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String drillStyle();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String showBlankCells();
     
 
 }

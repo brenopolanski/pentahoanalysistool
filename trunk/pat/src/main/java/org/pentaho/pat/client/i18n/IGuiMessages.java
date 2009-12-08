@@ -255,4 +255,11 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String schemaFileInvalid();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String failedNonEmpty();
+
 }
