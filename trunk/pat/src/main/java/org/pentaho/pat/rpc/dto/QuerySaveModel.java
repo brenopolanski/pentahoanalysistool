@@ -6,6 +6,8 @@ package org.pentaho.pat.rpc.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.pentaho.pat.rpc.dto.enums.QueryType;
+
 /**
  *TODO JAVADOC
  * 
@@ -31,6 +33,8 @@ public class QuerySaveModel implements Serializable {
 
     private String cubeName;
 
+    private QueryType queryType;
+    
     @SuppressWarnings("unused")
     private QuerySaveModel() {
 
@@ -41,13 +45,14 @@ public class QuerySaveModel implements Serializable {
      * this.connection = connection; this.id = id; this.savedDate = savedDate; }
      */
     public QuerySaveModel(final String id, final String name, final String connection, final CubeItem cube,
-            final String cubeName, final Date updatedDate) {
+            final String cubeName, final Date updatedDate, final QueryType queryType) {
         this.name = name;
         this.connection = connection;
         this.id = id;
         this.cube = cube;
         this.cubeName = cubeName;
         this.savedDate = updatedDate;
+        this.setQueryType(queryType);
     }
 
     /**
@@ -173,6 +178,23 @@ public class QuerySaveModel implements Serializable {
      */
     public String getCubeName() {
         return cubeName;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param queryType the queryType to set
+     */
+    public void setQueryType(QueryType queryType) {
+        this.queryType = queryType;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the queryType
+     */
+    public QueryType getQueryType() {
+        return queryType;
     }
 
 }

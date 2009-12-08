@@ -102,7 +102,7 @@ public interface IQueryAsync {
     void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cubeItem,
             String cubeName, AsyncCallback<Object> callback);
 
-    void loadQuery(String sessionID, String currQuery, AsyncCallback<String[]> asyncCallback);
+    void loadQuery(String sessionID, String currQuery, AsyncCallback<QuerySaveModel> asyncCallback);
 
     void getSavedQueries(String sessionId, AsyncCallback<List<QuerySaveModel>> callback);
 

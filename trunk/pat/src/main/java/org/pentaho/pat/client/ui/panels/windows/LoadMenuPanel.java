@@ -42,6 +42,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.enums.QueryType;
 
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
@@ -80,9 +81,7 @@ public class LoadMenuPanel extends LayoutComposite {
         }
     };
 
-    public final String MDX = "mdx"; //$NON-NLS-1$
 
-    public final String QM = "qm"; //$NON-NLS-1$
 
 
     public LoadMenuPanel() {
@@ -135,20 +134,20 @@ public class LoadMenuPanel extends LayoutComposite {
 
     public void load() {
         ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
-                listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<String[]>() {
+                listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<QuerySaveModel>() {
 
                     public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                 .failedOpenQuery(arg0.getLocalizedMessage()));
                     }
 
-                    public void onSuccess(final String[] arg0) {
-                        if (arg0[1].equals(QM)) {
-                            final OlapPanel olapPanel = new OlapPanel(arg0[0], listBox.getItem(listBox.getSelectedIndex()));
+                    public void onSuccess(final QuerySaveModel arg0) {
+                        if (arg0.getQueryType().equals(QueryType.QM)) {
+                            final OlapPanel olapPanel = new OlapPanel(arg0.getId(), listBox.getItem(listBox.getSelectedIndex()));
                             MainTabPanel.displayContentWidget(olapPanel);
                         }
-                        if (arg0[1].equals(MDX)) {
-                            ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0[0], new AsyncCallback<String>() {
+                        if (arg0.getQueryType().equals(QueryType.MDX)) {
+                            ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0.getId(), new AsyncCallback<String>() {
 
                                 public void onFailure(Throwable arg0) {
                                     MessageBox.alert(ConstantFactory.getInstance().error(), "Error loading mdx query");
