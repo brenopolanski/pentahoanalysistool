@@ -80,9 +80,9 @@ public class LoadMenuPanel extends LayoutComposite {
         }
     };
 
-    public final String MDX = "mdx";
+    public final String MDX = "mdx"; //$NON-NLS-1$
 
-    public final String QM = "qm";
+    public final String QM = "qm"; //$NON-NLS-1$
 
 
     public LoadMenuPanel() {

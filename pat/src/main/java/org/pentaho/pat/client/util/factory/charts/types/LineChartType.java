@@ -74,7 +74,7 @@ public class LineChartType {
             for (int j = 0; j < path.size(); j++) {
                 buf.append(path.get(j));
                 if (j != path.size() - 1) {
-                    buf.append(",");
+                    buf.append(","); //$NON-NLS-1$
                 }
             }
             String label = buf.toString();

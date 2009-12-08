@@ -137,7 +137,7 @@ public class PropertiesPanel extends LayoutComposite {
         Hidden curQuery = new Hidden(FORM_NAME_QUERY);
         curQuery.setName(FORM_NAME_QUERY);
         curQuery.setValue(Pat.getCurrQuery());
-        final ToolButton exportButton = new ToolButton("Export");
+        final ToolButton exportButton = new ToolButton(ConstantFactory.getInstance().export());
         
         formPanel.add(curQuery);
         
@@ -236,14 +236,14 @@ public class PropertiesPanel extends LayoutComposite {
 
                             public void onFailure(final Throwable arg0) {
 
-                                MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set non empty");
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedNonEmpty());
 
                             }
 
                             public void onSuccess(final CellDataSet arg0) {
 
                                 if (hideBlanksButton.isChecked()) {
-                                    hideBlanksButton.setText("Show Blank Cells");
+                                    hideBlanksButton.setText(ConstantFactory.getInstance().showBlankCells());
                                 } else {
                                     hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
                                 }
@@ -297,7 +297,7 @@ public class PropertiesPanel extends LayoutComposite {
 
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
-        final ToolButton drillMenuButton = new ToolButton("Drill");
+        final ToolButton drillMenuButton = new ToolButton(ConstantFactory.getInstance().drillStyle());
         drillMenuButton.setStyle(ToolButtonStyle.MENU);
 
         

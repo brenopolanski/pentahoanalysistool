@@ -253,7 +253,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         if(tmp != null && tmp.length() > 0) {
                             // TODO use error / warning custom messagebox for this 
                             MessageBox.info(ConstantFactory.getInstance().warning(), MessageFactory.getInstance()
-                                    .schemaFileInvalid() + "<br>" + tmp);
+                                    .schemaFileInvalid() + "<br>" + tmp); //$NON-NLS-1$
                         }
                     }
                     if (arg0.getResults().contains(SCHEMA_START)) {

@@ -31,8 +31,6 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.DrillType;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -212,7 +210,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                 }
             };
 
-            cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png");
+            cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png"); //$NON-NLS-1$
 
             Image drillButton = null;
             if ((MemberCell.this).getChildMemberCount() > 0) {
@@ -256,9 +254,9 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                 };
 
                 if (isExpanded()) {
-                    drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png");
+                    drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
                 } else {
-                    drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png");
+                    drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
                 }
 
             }

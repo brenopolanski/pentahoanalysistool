@@ -40,10 +40,10 @@ public class SavedQuery implements Comparable<SavedQuery> {
     private String queryType;
     
     @Basic
-    public final String MDX = "mdx";
+    public final String MDX = "mdx"; //$NON-NLS-1$
     
     @Basic
-    public final String QM = "qm";
+    public final String QM = "qm"; //$NON-NLS-1$
 
     @Basic
     private String xml;

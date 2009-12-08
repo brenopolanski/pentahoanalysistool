@@ -37,40 +37,40 @@ public class MDXRichTextArea extends RichTextArea {
     private String kWrdBlue = "(axis)|(as)|(columns?,?)|(from)|(member)|(on)|(rows?,?)|(select)|(where)|(with)"; //$NON-NLS-1$
 
     private String kWrdFunction = "(AND)|(Abs)|(Acos)|(Acosh)|(AddCalculatedMembers)|(Aggregate)" + //$NON-NLS-1$
-            "(AllMembers)|(Ancestor)|(Asc)|(AscB)|(AscW)|(Ascendants)|(Asin)|(Asinh)|(Atan2)|(Atanh)|(Atn)|(Avg)|"
-            + //$NON-NLS-1$
-            "(BottomCount)|(BottomPercent)|(BottomSum)|(CBool)|(CByte)|(CDate)|(CDbl)|(CInt)|(Cache)|(CalculatedChild)|"
-            + //$NON-NLS-1$
-            "(Caption)|(Cast)|(Children)|(Chr)|(ChrB)|(ChrW)|(ClosingPeriod)|(CoalesceEmpty)|(Correlation)|(Cos)|"
-            + //$NON-NLS-1$
-            "(Cosh)|(Count)|(Cousin)|(Covariance)|(CovarianceN)|(Crossjoin)|(CurrentDateMember)|(CurrentDateString)|"
-            + //$NON-NLS-1$
-            "(CurrentMember)|(DDB)|(DataMember)|(Date)|(DateAdd)|(DateDiff)|(DatePart)|(DateSerial)|(DateValue)|"
-            + //$NON-NLS-1$
-            "(Day)|(DefaultMember)|(Degrees)|(Descendants)|(Dimension)|(Dimensions)|(Distinct)|(DrilldownLevel)|"
-            + //$NON-NLS-1$
-            "(DrilldownLevelBottom)|(DrilldownLevelTop)|(DrilldownMember)|(Except)|(Exists)|(Exp)|(Extract)|(FV)|"
-            + //$NON-NLS-1$
-            "(Filter)|(FirstChild)|(FirstQ)|(FirstSibling)|(Fix)|(Format)|(FormatCurrency)|(FormatDateTime)|(FormatNumber)|"
-            + //$NON-NLS-1$
-            "(FormatPercent)|(Generate)|(Head)|(Hex)|(Hierarchize)|(Hierarchy)|(Hour)|(IIf)|(IPmt)|(IRR)|(IS)|(EMPTY)|"
-            + //$NON-NLS-1$
-            "(NULL)|(InStr)|(InStrRev)|(Int)|(Intersect)|(IsDate)|(IsEmpty)|(Item)|(LCase)|(LTrim)|(Lag)|(LastChild)|"
-            + //$NON-NLS-1$
-            "(LastPeriods)|(LastSibling)|(Lead)|(Left)|(Len)|(Level)|(Levels)|(LinRegIntercept)|(LinRegPoint)|(LinRegR2)|"
-            + //$NON-NLS-1$
-            "(LinRegSlope)|(LinRegVariance)|(Log)|(Log10)|(MIRR)|(Max)|(Median)|(Members)|(Mid)|(Min)|(Minute)|(Month)|"
-            + //$NON-NLS-1$
-            "(MonthName)|(Mtd)|(NON)|(NOT)|(NPV)|(NPer)|(Name)|(NextMember)|(NonEmptyCrossJoin)|(Now)|(Order)|(Ordinal)|(OR)|"
-            + //$NON-NLS-1$
-            "(Oct)|(OpeningPeriod)|(PPmt)|(PV)|(ParallelPeriod)|(ParamRef)|(Parameter)|(Parent)|(Percentile)|(PeriodsToDate)|"
-            + //$NON-NLS-1$
-            "(Pi)|(Pmt)|(Power)|(PrevMember)|(Properties)|(Qtd)|(RTrim)|(Radians)|(Rank)|(Rate)|(Replace)|(Right)|"
-            + //$NON-NLS-1$
-            "(Round)|(SLN)|(SYD)|(Second)|(SetToStr)|(Sgn)|(Siblings)|(Sin)|(Sinh)|(Space)|(Sqr)|(SqrtPi)|(Stddev)|"
-            + //$NON-NLS-1$
-            "(Stddev?P?)|(Stdev?P?)|(StdevP)|(Str)|(StrComp)|(StrReverse)|(StrToMember)|(StrToSet)|(StrToTuple)|(String)|"
-            + //$NON-NLS-1$
+            "(AllMembers)|(Ancestor)|(Asc)|(AscB)|(AscW)|(Ascendants)|(Asin)|(Asinh)|(Atan2)|(Atanh)|(Atn)|(Avg)|" //$NON-NLS-1$
+            + 
+            "(BottomCount)|(BottomPercent)|(BottomSum)|(CBool)|(CByte)|(CDate)|(CDbl)|(CInt)|(Cache)|(CalculatedChild)|" //$NON-NLS-1$
+            + 
+            "(Caption)|(Cast)|(Children)|(Chr)|(ChrB)|(ChrW)|(ClosingPeriod)|(CoalesceEmpty)|(Correlation)|(Cos)|" //$NON-NLS-1$
+            + 
+            "(Cosh)|(Count)|(Cousin)|(Covariance)|(CovarianceN)|(Crossjoin)|(CurrentDateMember)|(CurrentDateString)|" //$NON-NLS-1$
+            + 
+            "(CurrentMember)|(DDB)|(DataMember)|(Date)|(DateAdd)|(DateDiff)|(DatePart)|(DateSerial)|(DateValue)|" //$NON-NLS-1$
+            + 
+            "(Day)|(DefaultMember)|(Degrees)|(Descendants)|(Dimension)|(Dimensions)|(Distinct)|(DrilldownLevel)|" //$NON-NLS-1$
+            + 
+            "(DrilldownLevelBottom)|(DrilldownLevelTop)|(DrilldownMember)|(Except)|(Exists)|(Exp)|(Extract)|(FV)|" //$NON-NLS-1$
+            + 
+            "(Filter)|(FirstChild)|(FirstQ)|(FirstSibling)|(Fix)|(Format)|(FormatCurrency)|(FormatDateTime)|(FormatNumber)|" //$NON-NLS-1$
+            + 
+            "(FormatPercent)|(Generate)|(Head)|(Hex)|(Hierarchize)|(Hierarchy)|(Hour)|(IIf)|(IPmt)|(IRR)|(IS)|(EMPTY)|" //$NON-NLS-1$
+            + 
+            "(NULL)|(InStr)|(InStrRev)|(Int)|(Intersect)|(IsDate)|(IsEmpty)|(Item)|(LCase)|(LTrim)|(Lag)|(LastChild)|" //$NON-NLS-1$
+            + 
+            "(LastPeriods)|(LastSibling)|(Lead)|(Left)|(Len)|(Level)|(Levels)|(LinRegIntercept)|(LinRegPoint)|(LinRegR2)|" //$NON-NLS-1$
+            + 
+            "(LinRegSlope)|(LinRegVariance)|(Log)|(Log10)|(MIRR)|(Max)|(Median)|(Members)|(Mid)|(Min)|(Minute)|(Month)|" //$NON-NLS-1$
+            + 
+            "(MonthName)|(Mtd)|(NON)|(NOT)|(NPV)|(NPer)|(Name)|(NextMember)|(NonEmptyCrossJoin)|(Now)|(Order)|(Ordinal)|(OR)|" //$NON-NLS-1$
+            + 
+            "(Oct)|(OpeningPeriod)|(PPmt)|(PV)|(ParallelPeriod)|(ParamRef)|(Parameter)|(Parent)|(Percentile)|(PeriodsToDate)|" //$NON-NLS-1$
+            + 
+            "(Pi)|(Pmt)|(Power)|(PrevMember)|(Properties)|(Qtd)|(RTrim)|(Radians)|(Rank)|(Rate)|(Replace)|(Right)|" //$NON-NLS-1$
+            + 
+            "(Round)|(SLN)|(SYD)|(Second)|(SetToStr)|(Sgn)|(Siblings)|(Sin)|(Sinh)|(Space)|(Sqr)|(SqrtPi)|(Stddev)|" //$NON-NLS-1$
+            + 
+            "(Stddev?P?)|(Stdev?P?)|(StdevP)|(Str)|(StrComp)|(StrReverse)|(StrToMember)|(StrToSet)|(StrToTuple)|(String)|" //$NON-NLS-1$
+            + 
             "(StripCalculatedMembers)|(Subset)|(Sum)|(Tail)|(Tan)|(Tanh)|(ThirdQ)|(Time)|(TimeSerial)|(TimeValue)|" + //$NON-NLS-1$
             "(Timer)|(ToggleDrillState)|(TopCount)|(TopPercent)|(TopSum)|(Trim)|(TupleToStr)|(TypeName)|(UCase)|" + //$NON-NLS-1$
             "(Union)|(UniqueName)|(Val)|(ValidMeasure)|(Value)|(Var)|(VarP)|(Variance)|(VarianceP)|(VisualTotals)|" + //$NON-NLS-1$
@@ -100,7 +100,7 @@ public class MDXRichTextArea extends RichTextArea {
 
     @Override
     public String getText(){
-        this.setHTML(this.getHTML().replaceAll("&nbsp;", " "));
+        this.setHTML(this.getHTML().replaceAll("&nbsp;", " ")); //$NON-NLS-1$ //$NON-NLS-2$
         return super.getText();
         // typing spaces into the mdx box generated some &nbsp;
         // characters removed here
@@ -188,7 +188,7 @@ public class MDXRichTextArea extends RichTextArea {
             }
 
             try {
-                if (pieces.length > i && !pieces[i + 1].matches("[\\.\\]\\)\\[,]")) {
+                if (pieces.length > i && !pieces[i + 1].matches("[\\.\\]\\)\\[,]")) { //$NON-NLS-1$
 
                     frmtMDXStrBuf.append(" "); //$NON-NLS-1$
 

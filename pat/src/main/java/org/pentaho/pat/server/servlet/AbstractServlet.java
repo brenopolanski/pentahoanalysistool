@@ -28,7 +28,6 @@ import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
@@ -76,7 +75,7 @@ public abstract class AbstractServlet extends RemoteServiceServlet {
                 // This happens if we launch PAT without a web context, like in the
                 // GWT shell for example. We'll initialize the context manually.
                 // applicationContext = new FileSystemXmlApplicationContext(contextFiles);
-                applicationContext = new ClassPathXmlApplicationContext("pat-applicationContext.xml");
+                applicationContext = new ClassPathXmlApplicationContext("pat-applicationContext.xml"); //$NON-NLS-1$
                 
                 standaloneMode = true;
 

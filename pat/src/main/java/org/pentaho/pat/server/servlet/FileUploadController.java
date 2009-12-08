@@ -109,7 +109,7 @@ public class FileUploadController extends AbstractCommandController implements R
             
             if (validationResult == null)
             {
-                validationResult = "";
+                validationResult = ""; //$NON-NLS-1$
             }
                 
             response.getWriter().print(VALIDATION_START + validationResult + VALIDATION_END);
