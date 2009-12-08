@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.enums.QueryType;
 
 /**
  *TODO JAVADOC
@@ -37,14 +38,8 @@ public class SavedQuery implements Comparable<SavedQuery> {
     private String name;
     
     @Basic
-    private String queryType;
+    private QueryType queryType;
     
-    @Basic
-    public final String MDX = "mdx"; //$NON-NLS-1$
-    
-    @Basic
-    public final String QM = "qm"; //$NON-NLS-1$
-
     @Basic
     private String xml;
 
@@ -193,15 +188,11 @@ public class SavedQuery implements Comparable<SavedQuery> {
         return updatedDate;
     }
 
-    public String getQueryType() {
+    public QueryType getQueryType() {
         return queryType;
     }
 
-    public boolean setQueryType(String queryType) {
-        if (queryType == MDX || queryType == QM) {
-            this.queryType = queryType;
-            return true;
-        }
-        return false;
+    public void setQueryType(QueryType qm) {
+       queryType = qm;
     }
 }

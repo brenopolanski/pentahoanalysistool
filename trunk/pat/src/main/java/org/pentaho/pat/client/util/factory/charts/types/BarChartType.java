@@ -16,10 +16,10 @@ import org.pentaho.pat.client.util.factory.charts.axis.ChartAxis;
 import org.pentaho.pat.client.util.factory.charts.util.ChartUtils;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.DrillType;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.rednels.ofcgwt.client.event.ChartClickEvent;
