@@ -4,6 +4,13 @@ border-color: white;
 background-color:#99bbe8;
 }
 
+.dropFlextable2{
+border : 1px;
+border-color: blue;
+background-color:red;
+width: 100%;
+}
+
 .spacer-label {
  
 }

@@ -33,6 +33,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.IAxis.Standard;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -208,6 +209,33 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                     public void onSuccess(final String[] arg0) {
                         clearDimensionTable();
                         for (int row = 0; row < arg0.length; row++) {
+                            if(arg0[row].equals("Measures")){
+                        	final MeasureFlexTable mft = new MeasureFlexTable();
+                        	mft.addStyleName("pat-dropTable");
+                        	mft.clear();
+                        	//mft.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+                        	
+
+                        	ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(), 
+                        		"Measures", new AsyncCallback<StringTree>(){
+
+					    public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						
+					    }
+
+					    public void onSuccess(StringTree arg0) {
+						for(int i=0; i< arg0.getChildren().size();i++){
+						final Label handle = new Label(arg0.getChildren().get(i).getValue());
+						mft.setWidget(i, 0, handle);
+						}
+					    }
+                        	    
+                        	});
+                        	mft.setHeight("100px");
+                        	dimensionTable.setWidget(0, row, mft);
+                            }
+                            else{
                             final Label handle = new Label(arg0[row]);
                             handle.setStylePrimaryName(TABLE_DRAG_WIDGET);
                             tblRowDragCont.makeDraggable(handle);
@@ -230,9 +258,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                 dimensionTable.getCellFormatter().setStylePrimaryName(row, 0, TABLE_DRAG_CELL);
                             }
 
-                            refreshTable();
+                            
                         }
-
+                        }
+                        refreshTable();
                     }
                 });
     }
