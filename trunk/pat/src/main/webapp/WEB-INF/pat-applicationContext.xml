@@ -16,7 +16,7 @@
       <list>
         <value>/WEB-INF/application.properties</value>
         <value>/src/main/webapp/WEB-INF/application.properties</value>
-        <value>application.properties</value>
+        <value>classpath:application.properties</value>
       </list>
     </property>
   </bean>
