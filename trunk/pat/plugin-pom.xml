@@ -16,7 +16,7 @@
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<pat.plugin.output.dir>${basedir}/target/pat-plugin</pat.plugin.output.dir>
-		<gwt.output.directory>${pat.plugin.output.dir}/pat-res</gwt.output.directory>
+		<gwt.output.directory>${pat.plugin.output.dir}/resources</gwt.output.directory>
 		<gwtVersion>1.7.1</gwtVersion>
 		<spring.version>2.5.6</spring.version>
 		<spring.security.version>2.0.4</spring.security.version>
