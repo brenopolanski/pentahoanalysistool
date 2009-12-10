@@ -43,29 +43,22 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 String appContextUrl = contextUrl.toString();
                 ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] { appContextUrl }, false);
                 
-//                applicationContext.setClassLoader(pluginClassloader);
-//                applicationContext.setConfigLocation(appContextUrl);
-//                applicationContext.refresh();
+                applicationContext.setClassLoader(pluginClassloader);
+                applicationContext.setConfigLocation(appContextUrl);
+                applicationContext.refresh();
                 
             
-            try {
-                
-                ((SessionServlet)targetSessionBean).setStandalone(true);
-                SessionServlet.setApplicationContext(applicationContext);
-                ((SessionServlet)targetSessionBean).init();
-                
-                ((QueryServlet)targetQueryBean).setStandalone(true);
-                ((QueryServlet)targetQueryBean).init();
-                QueryServlet.setApplicationContext(applicationContext);
-                
-                ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
-                ((DiscoveryServlet)targetDiscoveryBean).init();
-                DiscoveryServlet.setApplicationContext(applicationContext);
-                
-            } catch (ServletException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            ((SessionServlet)targetSessionBean).setStandalone(true);
+            SessionServlet.setApplicationContext(applicationContext);
+//                ((SessionServlet)targetSessionBean).init();
+            
+            ((QueryServlet)targetQueryBean).setStandalone(true);
+//                ((QueryServlet)targetQueryBean).init();
+            QueryServlet.setApplicationContext(applicationContext);
+            
+            ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
+//                ((DiscoveryServlet)targetDiscoveryBean).init();
+            DiscoveryServlet.setApplicationContext(applicationContext);
             }
             else
             {
