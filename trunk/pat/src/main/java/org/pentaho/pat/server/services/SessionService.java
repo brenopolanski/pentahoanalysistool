@@ -23,8 +23,10 @@ import java.util.List;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
+import org.olap4j.Scenario;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
+import org.pentaho.pat.server.messages.Messages;
 import org.springframework.security.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -254,4 +256,7 @@ public interface SessionService extends Service {
     @Secured( {"Users"})
     @Transactional(readOnly = false)
     void deleteConnection(String userId, String connectionId);
+    
+    @Secured( {"Users"})
+    String createNewScenario(String userId, String sessionId, String connectionId)throws OlapException;
 }

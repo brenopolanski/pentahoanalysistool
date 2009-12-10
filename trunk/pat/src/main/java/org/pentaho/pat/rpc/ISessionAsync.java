@@ -20,6 +20,7 @@
 package org.pentaho.pat.rpc;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -48,5 +49,6 @@ public interface ISessionAsync {
     void saveConnection(String sessionId, CubeConnection connection, AsyncCallback<String> callback);
 
     void deleteConnection(String sessionId, String connectionId, AsyncCallback callback);
-
+    
+    void createNewScenario(String sessionId, String connectionId, AsyncCallback<String> callback);
 }

@@ -386,4 +386,8 @@ public interface IQuery extends RemoteService {
 
     @Secured( {"Users"})
     CellDataSet setNonEmpty(String sessionId, String queryId, boolean flag) throws RpcException;
+    
+    @Secured( {"Users"})
+    CellDataSet alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
+	    String newCellValue)throws RpcException;
 }

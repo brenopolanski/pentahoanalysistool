@@ -567,4 +567,8 @@ public interface QueryService extends Service {
      */
     @Secured( {"Users"})
     CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException;
+    
+    @Secured( {"Users"})
+    CellDataSet alterCell(final String userId, final String queryId, final String sessionId, final String scenarioId, final String connectionId, 
+	    final String newCellValue) throws OlapException;
 }

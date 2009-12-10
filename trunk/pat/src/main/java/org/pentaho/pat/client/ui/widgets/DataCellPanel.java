@@ -19,12 +19,15 @@ public class DataCellPanel extends HorizontalPanel {
     private final MemberCell pcm;
 
     private final MemberCell prm;
+    
+    private Number cellNum;
 
-    public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember) {
+    public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember, Number rawNumber) {
         super();
         sinkEvents(Event.ONDBLCLICK);
         pcm = parentColMember;
         prm = parentRowMember;
+        cellNum = rawNumber;
     }
 
     @Override
@@ -80,5 +83,13 @@ public class DataCellPanel extends HorizontalPanel {
 
                     });
         }
+    }
+
+    public Number getCellNum() {
+	return cellNum;
+    }
+    
+    public void setCellNum(Number num) {
+	this.cellNum = num;
     }
 }

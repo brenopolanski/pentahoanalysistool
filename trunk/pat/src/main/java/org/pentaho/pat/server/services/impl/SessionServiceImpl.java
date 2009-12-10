@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapWrapper;
+import org.olap4j.Scenario;
 import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
@@ -210,6 +211,23 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         
     }
 
+    public String createNewScenario(final String userId, final String sessionId, final String connectionId) throws OlapException{
+	this.validateSession(userId, sessionId);
+	final OlapConnection connection = getNativeConnection(userId, sessionId, connectionId);
+
+        if (connection == null) {
+            throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
+        }
+        
+        Scenario scenario = connection.createScenario();
+        
+        connection.setScenario(scenario);
+        
+        return UUID.randomUUID().toString();
+        
+        
+    }
+    
     public String createConnection(final String userId, final String sessionId, final String driverName,
             final String connectStr, final String username, final String password) throws OlapException {
         this.validateSession(userId, sessionId);

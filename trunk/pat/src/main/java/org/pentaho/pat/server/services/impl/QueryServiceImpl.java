@@ -24,17 +24,21 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import org.olap4j.AllocationPolicy;
 import org.olap4j.Axis;
+import org.olap4j.Cell;
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.Scenario;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
@@ -221,6 +225,27 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return generatedId;
     }
 
+    public CellDataSet alterCell(final String userId,  final String sessionId, final String queryId, final String connectionId,final String scenarioId,  
+	    final String newCellValue){
+	
+        this.sessionService.validateSession(userId, sessionId);
+
+        final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+        
+        connection.setScenario(connection.getScenario());
+	
+	
+	CellSet cellData= OlapUtil.getCellSet(queryId);
+	final Cell cell = cellData.getCell(Arrays.asList(0, 1));
+        
+            cell.setValue(123.00, AllocationPolicy.EQUAL_ALLOCATION);
+            
+
+	
+            return OlapUtil.cellSet2Matrix(cellData);
+	
+    }
+ 
     /*
      * (non-Javadoc)
      * 
@@ -714,7 +739,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     private Cube getCube4Guid(final String userId, final String sessionId, final String connectionId,
             final String cubeName) throws OlapException {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
-
+        
         Cube cube = null;
         final NamedList<Catalog> catalogs = connection.getCatalogs();
         for (int k = 0; k < catalogs.size(); k++) {

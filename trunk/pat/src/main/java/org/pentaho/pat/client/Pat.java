@@ -93,6 +93,8 @@ public class Pat implements EntryPoint {
     private static CubeItem currCube = null;
 
     private static String currCubeName;
+    
+    private static String currScenario;
 
     private static DrillType currDrillType = DrillType.POSITION;
 
@@ -367,6 +369,15 @@ public class Pat implements EntryPoint {
     public static DrillType getCurrDrillType() {
         return currDrillType;
 
+    }
+
+    public static void setCurrScenario(String scenario) {
+	currScenario = scenario;
+	
+    }
+    
+    public static String getCurrScenario(){
+	return currScenario;
     }
 
 }
