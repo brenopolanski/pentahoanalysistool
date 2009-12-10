@@ -23,6 +23,7 @@ package org.pentaho.pat.client.util.table;
 import org.gwt.mosaic.ui.client.table.DefaultColumnDefinition;
 
 import com.google.gwt.gen2.table.client.AbstractColumnDefinition;
+import com.google.gwt.gen2.table.client.TextCellEditor;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -66,4 +67,6 @@ public class PatColDef<RowType, ColType> extends AbstractColumnDefinition<RowTyp
         // TODO Auto-generated method stub
 
     }
+
+    
 }

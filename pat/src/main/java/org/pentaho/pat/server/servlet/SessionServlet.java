@@ -108,6 +108,15 @@ public class SessionServlet extends AbstractServlet implements ISession {
         return sessionService.createNewSession(getCurrentUserId());
     }
 
+    public String createNewScenario(String sessionId, String connectionId)throws RpcException{
+	try {
+	    return sessionService.createNewScenario(getCurrentUserId(), sessionId, connectionId);
+	} catch (OlapException e) {
+	    LOG.error(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.SchemaFileSystemAccessError"), e); //$NON-NLS-1$
+            //TODO FIX
+	}
+    }
     private CubeConnection convert(final SavedConnection sc) {
 
         final CubeConnection cc = new CubeConnection();
@@ -139,5 +148,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
 
         return sc;
     }
+    
+    
 
 }

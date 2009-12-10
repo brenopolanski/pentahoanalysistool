@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.rpc;
 
+import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -146,5 +147,9 @@ public interface ISession extends RemoteService {
      * @throws RpcException
      *             If anything goes sour.
      */
+    @Secured( {"Users"})
     void deleteConnection(String sessionId, String connectionId) throws RpcException;
+    
+    @Secured( {"Users"})
+    String createNewScenario(String sessionId, String connectionId)throws RpcException;
 }

@@ -27,6 +27,7 @@
     <DimensionUsage name="Region" source="Region"/>
     <DimensionUsage name="Department" source="Department" />
     <DimensionUsage name="Positions" source="Positions" />
+
     <Measure name="Actual" column="ACTUAL" aggregator="sum" formatString="#,###.00"/>
     <Measure name="Budget" column="BUDGET" aggregator="sum" formatString="#,###.00"/>
     <Measure name="Variance" column="VARIANCE" aggregator="sum" formatString="#,###.00"/>

@@ -257,6 +257,23 @@ public class PropertiesPanel extends LayoutComposite {
 
         });
 
+        final ToolButton createScenarioButton = new ToolButton("Create Scenario");
+        createScenarioButton.setStyle(ToolButtonStyle.CHECKBOX);
+        createScenarioButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                ServiceFactory.getSessionInstance().createNewScenario(Pat.getSessionID(), Pat.getCurrConnection(), new AsyncCallback<String>(){
+                    public void onFailure(final Throwable arg0){
+                	MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set scenario");
+                    }
+                    
+                    public void onSuccess(String scenario){
+                	createScenarioButton.setText(scenario);
+                	Pat.setCurrScenario(scenario);
+                    }
+                });
+            }
+        });
         final ToolButton pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
         pivotButton.setStyle(ToolButtonStyle.CHECKBOX);
         pivotButton.addClickHandler(new ClickHandler() {
@@ -321,7 +338,7 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.add(showPropsButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-
+        mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
 
     }

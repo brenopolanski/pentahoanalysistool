@@ -27,7 +27,6 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -107,4 +106,7 @@ public interface IQueryAsync {
     void getSavedQueries(String sessionId, AsyncCallback<List<QuerySaveModel>> callback);
 
     void setNonEmpty(String sessionId, String queryId, boolean flag, AsyncCallback<CellDataSet> callback);
+    
+    void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
+	    String newCellValue, AsyncCallback<CellDataSet> callback);
 }

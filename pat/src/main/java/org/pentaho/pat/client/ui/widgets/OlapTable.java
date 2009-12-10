@@ -34,14 +34,19 @@ import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 
+import com.google.gwt.gen2.table.client.CellEditor;
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;
+import com.google.gwt.gen2.table.client.RadioCellEditor;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
+import com.google.gwt.gen2.table.client.TextCellEditor;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -186,7 +191,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
 		    if (group != null) {
 			HorizontalPanel groupPanel = null;
-			if (group[i].getFormattedValue() == null) {
+			if (group[i].getFormattedValue() == null || group[i].sameAsPrev) {
 			    colDef0.setHeader(j, groupPanel);
 			} else {
 			    groupPanel = group[i].getLabel();
@@ -195,10 +200,20 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 		    }
 		}
 	    }
-	    colDef0.setHeaderTruncatable(false);
-	    colDef0.setColumnSortable(false);
-	    colDef0.setColumnTruncatable(false);
-	    tableDef.addColumnDefinition(colDef0);
+	    
+//	    CellEditor cellEditor = new DataCellEditor();
+	    
+
+//		colDef0.setCellEditor(cellEditor);
+		colDef0.setHeaderTruncatable(false);
+		    colDef0.setColumnSortable(false);
+		    colDef0.setColumnTruncatable(false);
+		tableDef.addColumnDefinition(colDef0);
+		
+		
+		
+	    
+	    
 	}
 	return tableDef;
     }

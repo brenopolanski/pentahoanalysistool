@@ -108,7 +108,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     @Override
     public HorizontalPanel getLabel() {
-        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember);
+        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber);
 
         final Label cellLabel = new Label(getFormattedValue());
 
