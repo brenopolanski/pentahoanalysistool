@@ -141,9 +141,9 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
 
             olap4jDriver = "mondrian.olap4j.MondrianOlap4jDriver"; //$NON-NLS-1$
             olap4jUrl = "jdbc:mondrian:" //$NON-NLS-1$
-            .concat("Jdbc=").concat(sc.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
-                    .concat("JdbcDrivers=").concat(sc.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
-                    .concat("Catalog=").concat(schema.getAbsolutePath()); //$NON-NLS-1$
+                .concat("Jdbc=").concat(sc.getUrl()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
+                .concat("JdbcDrivers=").concat(sc.getDriverClassName()).concat(";") //$NON-NLS-1$ //$NON-NLS-2$
+                .concat("Catalog=").concat(schema.getAbsolutePath()); //$NON-NLS-1$
 
             if (sc.getUsername() != null) {
                 olap4jUrl = olap4jUrl.concat(";").concat("JdbcUser=").concat(sc.getUsername()).concat(";"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -171,14 +171,19 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 connection = (OlapConnection) DriverManager.getConnection(olap4jUrl);
             } else {
                 connection = (OlapConnection) DriverManager
-                        .getConnection(olap4jUrl, sc.getUsername(), sc.getPassword());
+                .getConnection(olap4jUrl, sc.getUsername(), sc.getPassword());
             }
             final OlapWrapper wrapper = connection;
 
             final OlapConnection olapConnection = wrapper.unwrap(OlapConnection.class);
 
             if (olapConnection == null) {
-                sessions.get(userId).get(sessionId).closeConnection(sc.getId());
+                try {
+                    sessions.get(userId).get(sessionId).closeConnection(sc.getId());
+                }
+                catch (Exception e) {
+                    throw new OlapException(Messages.getString("Services.Session.NullConnection"),e); //$NON-NLS-1$
+                }
                 throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
             } else {
 
@@ -195,7 +200,8 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
             LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (SQLException e) {
-            sessions.get(userId).get(sessionId).closeConnection(sc.getId());
+            //            No idea why we want to close the connection
+            //            sessions.get(userId).get(sessionId).closeConnection(sc.getId());
             LOG.error(e);
             throw new OlapException(e.getMessage(), e);
         } catch (RuntimeException e) {
@@ -214,22 +220,22 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
     }
 
     public String createNewScenario(final String userId, final String sessionId, final String connectionId) throws OlapException{
-	this.validateSession(userId, sessionId);
-	final OlapConnection connection = getNativeConnection(userId, sessionId, connectionId);
+        this.validateSession(userId, sessionId);
+        final OlapConnection connection = getNativeConnection(userId, sessionId, connectionId);
 
         if (connection == null) {
             throw new OlapException(Messages.getString("Services.Session.NoSuchConnectionId")); //$NON-NLS-1$
         }
-        
+
         Scenario scenario = connection.createScenario();
-        
+
         connection.setScenario(scenario);
-        
+
         return UUID.randomUUID().toString();
-        
-        
+
+
     }
-    
+
     public String createConnection(final String userId, final String sessionId, final String driverName,
             final String connectStr, final String username, final String password) throws OlapException {
         this.validateSession(userId, sessionId);

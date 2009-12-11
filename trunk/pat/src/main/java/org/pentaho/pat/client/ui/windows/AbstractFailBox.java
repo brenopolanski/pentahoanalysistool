@@ -68,7 +68,7 @@ public abstract class AbstractFailBox extends WindowPanel {
 
     private WidgetWrapper imageWrapper;
 
-    
+
     public interface ConfirmationCallback {
         void onResult(boolean result);
     }
@@ -162,7 +162,7 @@ public abstract class AbstractFailBox extends WindowPanel {
         alert(MessageBoxType.ERROR, caption, message, error);
     }
 
-  
+
     public AbstractFailBox() {
         this(DEFAULT_TYPE, null);
     }
@@ -296,11 +296,12 @@ public abstract class AbstractFailBox extends WindowPanel {
         if (padding > -1) {
             layoutPanel.setPadding(padding);
         }
-        
-        if (!widget.equals(w)) {
-            if (widget != null) {
+        if (widget != null) {
+            if (!widget.equals(w)) {
                 layoutPanel.remove(widget);
             }
+        }
+        if (w != null) {
             widget = w;
             layoutPanel.add(widget);
         }

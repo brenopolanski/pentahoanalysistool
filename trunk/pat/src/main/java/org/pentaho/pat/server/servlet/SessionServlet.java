@@ -45,7 +45,6 @@ public class SessionServlet extends AbstractServlet implements ISession {
     public void init() throws ServletException {
         super.init();
         sessionService = (SessionService) applicationContext.getBean("sessionService"); //$NON-NLS-1$
-        System.out.println("session init complete: " + sessionService.toString());
         if (sessionService == null) {
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
         }
@@ -56,7 +55,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
             this.sessionService.connect(getCurrentUserId(), sessionId, connectionId);
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed")); //$NON-NLS-1$
         }
     }
 
