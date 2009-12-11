@@ -120,15 +120,15 @@ public class UserManagerImplTest extends AbstractManagerTest {
     public void testCreateSavedConnection() throws Exception 
     {
         String[][] expectedConnections = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", null, "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         };
         String[][] expectedMemberships = new String[][] {
                 {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
                 {"new_user","2222-2222-2222-2222"} //$NON-NLS-1$ //$NON-NLS-2$
         };
         String[][] expectedConnections2 = new String[][] {
-                {"1111-1111-1111-1111",  "driver_name", "administrator_connection", "password", null, "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"1111-1111-1111-1111",  "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         };
         String[][] expectedMemberships2 = new String[][] {
                 {"admin","1111-1111-1111-1111"} //$NON-NLS-1$ //$NON-NLS-2$
@@ -168,10 +168,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
         assertEquals(ConnectionType.MONDRIAN, conn.getType());
         
-        String[][] currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
-        String[][] currentMemberships = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
         // Test if we remove a saved connection
@@ -190,10 +190,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
             if (connCheckup.getId().equals(connId))
                 fail();
         
-        currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
-        currentMemberships = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships2, currentMemberships);
         
         finishTest();
@@ -202,15 +202,15 @@ public class UserManagerImplTest extends AbstractManagerTest {
     public void testSavedConnectionUpdateBug() throws Exception
     {
         String[][] expectedConnections = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         };
         String[][] expectedMemberships = new String[][] {
                 {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
                 {"admin","2222-2222-2222-2222"} //$NON-NLS-1$ //$NON-NLS-2$
         };
         String[][] expectedConnections2 = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", null, "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         };
         String[][] expectedMemberships2 = new String[][] {
                 {"admin","1111-1111-1111-1111"} //$NON-NLS-1$ //$NON-NLS-2$
@@ -218,10 +218,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
         String userId = "admin"; //$NON-NLS-1$
         initTest();
         
-        String[][] currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username  from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
-        String[][] currentMemberships = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships2, currentMemberships);
         
         User user = this.userManager.getUser(userId);
@@ -236,10 +236,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
         user.getSavedConnections().add(conn);
         this.userManager.updateUser(user);
         
-        currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
-        currentMemberships = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
         runOnDatasource("select top 50 this_.username as username1_2_, groups2_.user_id as user2_4_, group3_.name as group1_4_, group3_.name as name2_0_, savedconne4_.user_id as user1_5_, savedconne5_.name as connection2_5_, savedconne5_.name as name0_1_, savedconne5_.driverClassName as driverCl2_0_1_, savedconne5_.password as password0_1_, savedconne5_.schemadata as schema0_1_, savedconne5_.type as type0_1_, savedconne5_.url as url0_1_, savedconne5_.username as username0_1_ from users this_ left outer join groups_users groups2_ on this_.username=groups2_.user_id left outer join groups group3_ on groups2_.group_id=group3_.name left outer join users_connections savedconne4_ on this_.username=savedconne4_.user_id left outer join connections savedconne5_ on savedconne4_.connection_id=savedconne5_.name where this_.username = 'admin'"); //$NON-NLS-1$
