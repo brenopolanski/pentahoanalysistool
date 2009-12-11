@@ -201,7 +201,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 		}
 	    }
 	    
-//	    CellEditor cellEditor = new DataCellEditor();
+	  //  CellEditor cellEditor = new DataCellEditor();
 	    
 
 //		colDef0.setCellEditor(cellEditor);

@@ -38,6 +38,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.PreparedOlapStatement;
 import org.olap4j.Scenario;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
@@ -50,6 +51,7 @@ import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
+import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
@@ -198,6 +200,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         sessionService.getSession(userId, sessionId).getQueries().put(generatedId, newQuery);
 
+        
+       
+        
         return generatedId;
     }
 
@@ -225,24 +230,37 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return generatedId;
     }
 
-    public CellDataSet alterCell(final String userId,  final String sessionId, final String queryId, final String connectionId,final String scenarioId,  
+    public void alterCell(final String userId,  final String sessionId, final String queryId, final String connectionId,final String scenarioId,  
 	    final String newCellValue){
 	
         this.sessionService.validateSession(userId, sessionId);
 
-        final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        query.getAxes().get(Axis.FILTER).getDimensions().add(query.getDimension("Scenario"));
+        List selection = new ArrayList();
+        selection.add("0");
+        try {
+	    createSelection(userId, sessionId, queryId, "Scenario", selection, Operator.MEMBER);
+	} catch (OlapException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	   try {
+		executeQuery(userId, sessionId, queryId);
+	    } catch (OlapException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
         
-        connection.setScenario(connection.getScenario());
-	
+        //final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+        
 	
 	CellSet cellData= OlapUtil.getCellSet(queryId);
-	final Cell cell = cellData.getCell(Arrays.asList(0, 1));
+        
+	final Cell cell = cellData.getCell(Arrays.asList(0, 0));
         
             cell.setValue(123.00, AllocationPolicy.EQUAL_ALLOCATION);
-            
 
-	
-            return OlapUtil.cellSet2Matrix(cellData);
 	
     }
  

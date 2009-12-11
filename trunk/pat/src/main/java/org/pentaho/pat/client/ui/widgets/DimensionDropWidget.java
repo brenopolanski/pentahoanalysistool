@@ -209,7 +209,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                     public void onSuccess(final String[] arg0) {
                         clearDimensionTable();
                         for (int row = 0; row < arg0.length; row++) {
-                            if(arg0[row].equals("Measures")){
+                           /* if(arg0[row].equals("Measures")){
                         	final MeasureFlexTable mft = new MeasureFlexTable();
                         	mft.addStyleName("pat-dropTable");
                         	mft.clear();
@@ -235,7 +235,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                         	mft.setHeight("100px");
                         	dimensionTable.setWidget(0, row, mft);
                             }
-                            else{
+                            else{*/
                             final Label handle = new Label(arg0[row]);
                             handle.setStylePrimaryName(TABLE_DRAG_WIDGET);
                             tblRowDragCont.makeDraggable(handle);
@@ -260,7 +260,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
                             
                         }
-                        }
+                        //}
                         refreshTable();
                     }
                 });
