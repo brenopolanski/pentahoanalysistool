@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin title="Pentaho Analysis Tool Plugin">
+<plugin title="Pentaho Analysis Tool Plugin" loader="overriding">
   
     <webservice id="session.rpc" type="gwt" class="org.pentaho.pat.server.servlet.SessionServlet"/>
     <webservice id="query.rpc" type="gwt" class="org.pentaho.pat.server.servlet.QueryServlet"/>

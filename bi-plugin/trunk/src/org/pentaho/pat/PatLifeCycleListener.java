@@ -18,11 +18,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
-    
-    
+
+
     public void init() throws PluginLifecycleException {
-        
-        
+
+
     }
 
     public void loaded() throws PluginLifecycleException {
@@ -30,35 +30,41 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
         IServiceManager serviceManager = PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
         try {
             Object targetSessionBean = serviceManager.getServiceBean("gwt","session.rpc");
+
+
             Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
             Object targetDiscoveryBean = serviceManager.getServiceBean("gwt","discovery.rpc");
             IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
             ClassLoader pluginClassloader = pluginManager.getClassLoader("Pentaho Analysis Tool Plugin");
             if (pluginClassloader == null)
                 throw new ServiceException("plugin classloader can't be loaded");
-            
+
             URL contextUrl = pluginClassloader.getResource("pat-applicationContext.xml");
-            
+
             if ( contextUrl!= null ) {
                 String appContextUrl = contextUrl.toString();
+
                 ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] { appContextUrl }, false);
-                
+                System.out.println("########## CLASSLOADER:" + PatLifeCycleListener.class.getClassLoader().toString());
+
                 applicationContext.setClassLoader(pluginClassloader);
                 applicationContext.setConfigLocation(appContextUrl);
                 applicationContext.refresh();
+
+
+                ((SessionServlet)targetSessionBean).setStandalone(true);
+                SessionServlet.setApplicationContext(applicationContext);
+                ((SessionServlet)targetSessionBean).init();
+
+                ((QueryServlet)targetQueryBean).setStandalone(true);
+                QueryServlet.setApplicationContext(applicationContext);
+                ((QueryServlet)targetQueryBean).init();
+
+
+                ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
+                DiscoveryServlet.setApplicationContext(applicationContext);
+                ((DiscoveryServlet)targetDiscoveryBean).init();
                 
-            
-            ((SessionServlet)targetSessionBean).setStandalone(true);
-            SessionServlet.setApplicationContext(applicationContext);
-//                ((SessionServlet)targetSessionBean).init();
-            
-            ((QueryServlet)targetQueryBean).setStandalone(true);
-//                ((QueryServlet)targetQueryBean).init();
-            QueryServlet.setApplicationContext(applicationContext);
-            
-            ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
-//                ((DiscoveryServlet)targetDiscoveryBean).init();
-            DiscoveryServlet.setApplicationContext(applicationContext);
             }
             else
             {
@@ -67,13 +73,16 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
         } catch (ServiceException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
+        } catch (ServletException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
 
         // TODO Auto-generated method stub
 
