@@ -45,6 +45,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
     public void init() throws ServletException {
         super.init();
         sessionService = (SessionService) applicationContext.getBean("sessionService"); //$NON-NLS-1$
+        System.out.println("session init complete: " + sessionService.toString());
         if (sessionService == null) {
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
         }
@@ -53,15 +54,20 @@ public class SessionServlet extends AbstractServlet implements ISession {
     public void connect(final String sessionId, final String connectionId) throws RpcException {
         try {
             this.sessionService.connect(getCurrentUserId(), sessionId, connectionId);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.ConnectionFailed"), e); //$NON-NLS-1$
         }
     }
 
     public CubeConnection getConnection(final String sessionId, final String connectionName) throws RpcException {
+        try {
         final SavedConnection savedConn = this.sessionService.getConnection(getCurrentUserId(), connectionName);
         return savedConn == null ? null : this.convert(savedConn);
+        } catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantGetSavedConnections"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Session.CantGetSavedConnections")); //$NON-NLS-1$
+        }
     }
 
     public String saveConnection(final String sessionId, final CubeConnection connection) throws RpcException {
@@ -76,36 +82,74 @@ public class SessionServlet extends AbstractServlet implements ISession {
     }
 
     public CubeConnection[] getConnections(final String sessionId) throws RpcException {
-        final List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
-        CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
-        for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
-            cubeConnections[cpt] = convert(savedConnections.get(cpt));
+        try {
+            final List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
+            CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
+            for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
+                cubeConnections[cpt] = convert(savedConnections.get(cpt));
+            }
+            return cubeConnections;
         }
-        return cubeConnections;
+        catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantGetSavedConnections"),e);
+            throw new RpcException(Messages.getString("Servlet.Session.CantGetSavedConnections"));        
+
+        }
     }
 
     public CubeConnection[] getActiveConnections(final String sessionId) throws RpcException {
-        final List<CubeConnection> connections = new ArrayList<CubeConnection>();
-        for (SavedConnection connection : this.sessionService.getActiveConnections(getCurrentUserId(), sessionId)) {
-            connections.add(convert(connection));
+        try {
+            final List<CubeConnection> connections = new ArrayList<CubeConnection>();
+            for (SavedConnection connection : this.sessionService.getActiveConnections(getCurrentUserId(), sessionId)) {
+                connections.add(convert(connection));
+            }
+            return connections.toArray(new CubeConnection[connections.size()]);
         }
-        return connections.toArray(new CubeConnection[connections.size()]);
+        catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantGetActiveConnections"),e);
+            throw new RpcException(Messages.getString("Servlet.Session.CantGetActiveConnections"));        
+        }
     }
 
     public void deleteConnection(final String sessionId, final String connectionName) throws RpcException {
-        this.sessionService.deleteConnection(getCurrentUserId(), connectionName);
+        try 
+        {
+            this.sessionService.deleteConnection(getCurrentUserId(), connectionName);
+        }
+        catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantDeleteConnection"),e);
+            throw new RpcException(Messages.getString("Servlet.Session.CantDeleteConnection"));
+        }
     }
 
     public void disconnect(final String sessionId, final String connectionId) throws RpcException {
-        sessionService.disconnect(getCurrentUserId(), sessionId, connectionId);
+        try {
+            sessionService.disconnect(getCurrentUserId(), sessionId, connectionId);
+        }
+        catch (Exception e) {
+            LOG.error(Messages.getString("Services.Session.ConnectionCloseException"),e);
+            throw new RpcException(Messages.getString("Services.Session.ConnectionCloseException"));
+        }
     }
 
     public void closeSession(final String sessionId) throws RpcException {
-        sessionService.releaseSession(getCurrentUserId(), sessionId);
+        try {
+            sessionService.releaseSession(getCurrentUserId(), sessionId);
+        }
+        catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantCloseSession"),e);
+            throw new RpcException(Messages.getString("Servlet.Session.CantCloseSession"));
+        }
     }
 
     public String createSession() throws RpcException {
-        return sessionService.createNewSession(getCurrentUserId());
+        try {
+            return sessionService.createNewSession(getCurrentUserId());
+        }
+        catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantCreateNewSession"),e);
+            throw new RpcException(Messages.getString("Servlet.Session.CantCreateNewSession"));
+        }
     }
 
     public String createNewScenario(String sessionId, String connectionId)throws RpcException{
