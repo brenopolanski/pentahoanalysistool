@@ -99,7 +99,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	{
 		initTest();
 		String userId = "admin"; //$NON-NLS-1$
-		String expectedMDX = "SELECT*new_line*{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions].[CTO]}, {{[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
+		String expectedMDX = "SELECT*new_line*{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions].[CTO]}, {[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Create a session.
