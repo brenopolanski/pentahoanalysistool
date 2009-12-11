@@ -66,8 +66,9 @@
 		<testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
 
 
-		<plugins> <!-- 
- 			<plugin>
+		<plugins>
+		<!-- 
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>1.1</version>
@@ -91,7 +92,8 @@
 					<output>${gwt.output.directory}/${gwt.module.alias}</output>
 					<logLevel>WARN</logLevel>
 					<style>OBF</style>
-					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m -XX:MaxPermSize=512m</extraJvmArgs>
+					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m
+						-XX:MaxPermSize=512m</extraJvmArgs>
 					<gwtVersion>${gwtVersion}</gwtVersion>
 					<debugSuspend>false</debugSuspend>
 					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
@@ -105,384 +107,228 @@
 				</configuration>
 			</plugin>
  -->
-			  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-           <artifactItem>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>${gwtVersion}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwtVersion}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>${gwtVersion}</version>
-			<classifier>${platform}</classifier>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.2.2</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-math</groupId>
-			<artifactId>commons-math</artifactId>
-			<version>1.2</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-pool</groupId>
-			<artifactId>commons-pool</artifactId>
-			<version>1.4</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-vfs</groupId>
-			<artifactId>commons-vfs</artifactId>
-			<version>1.0</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>jfree</groupId>
-			<artifactId>jcommon</artifactId>
-			<version>1.0.12</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<!--  for excel export -->
-		<artifactItem>		
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.olap4j</groupId>
-			<artifactId>olap4j</artifactId>
-			<version>0.9.8-SNAPSHOT-FIX-DRILL</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>2.6.0</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>pentaho</groupId>
-			<artifactId>mondrian</artifactId>
-			<version>3.1.1.12929</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>javacup</groupId>
-			<artifactId>javacup</artifactId>
-			<version>10k</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>gwt-dnd</groupId>
-			<artifactId>gwt-dnd</artifactId>
-			<version>2.6.5</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>com.google.code</groupId>
-			<artifactId>gwt-beans-binding</artifactId>
-			<version>0.2.3</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>net.sourceforge.jexcelapi</groupId>
+									<artifactId>jxl</artifactId>
+									<version>2.6</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.olap4j</groupId>
+									<artifactId>olap4j</artifactId>
+									<version>0.9.8-SNAPSHOT-FIX-DRILL</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>gwt-dnd</groupId>
+									<artifactId>gwt-dnd</artifactId>
+									<version>2.6.5</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.google.code</groupId>
+									<artifactId>gwt-beans-binding</artifactId>
+									<version>0.2.3</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 
-		<artifactItem>
-			<groupId>com.google.code.gwtx</groupId>
-			<artifactId>gwtx</artifactId>
-			<version>1.5-20081912</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>gwt-mosaic</groupId>
-			<artifactId>gwt-mosaic</artifactId>
-			<version>0.3.0-rc1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>net.sf.gwt-widget</groupId>
-			<artifactId>gwt-widgets</artifactId>
-			<version>0.2.0</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>eigenbase</groupId>
-			<artifactId>eigenbase-properties</artifactId>
-			<version>1.1.0.10924</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>eigenbase</groupId>
-			<artifactId>eigenbase-resgen</artifactId>
-			<version>1.3.0.11873</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>eigenbase</groupId>
-			<artifactId>eigenbase-xom</artifactId>
-			<version>1.3.0.11999</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>net.sf.gwt-widget</groupId>
-			<artifactId>gwt-sl</artifactId>
-			<version>0.1.5</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		
+								<artifactItem>
+									<groupId>com.google.code.gwtx</groupId>
+									<artifactId>gwtx</artifactId>
+									<version>1.5-20081912</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>gwt-mosaic</groupId>
+									<artifactId>gwt-mosaic</artifactId>
+									<version>0.3.0-rc1</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.sf.gwt-widget</groupId>
+									<artifactId>gwt-widgets</artifactId>
+									<version>0.2.0</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 
-		<!-- Spring modules -->
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
+								<artifactItem>
+									<groupId>net.sf.gwt-widget</groupId>
+									<artifactId>gwt-sl</artifactId>
+									<version>0.1.5</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+
+
+								<!-- Spring modules -->
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-core</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-web</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-context</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-context-support</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-beans</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-jdbc</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-webmvc</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-aop</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-orm</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-test</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-tx</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 
 
 
-		<artifactItem>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core-tiger</artifactId>
-			<version>${spring.security.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>${spring.security.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>${spring.security.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-acl</artifactId>
-			<version>${spring.security.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-core-tiger</artifactId>
+									<version>${spring.security.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-core</artifactId>
+									<version>${spring.security.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-taglibs</artifactId>
+									<version>${spring.security.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-acl</artifactId>
+									<version>${spring.security.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>javassist</groupId>
+									<artifactId>javassist</artifactId>
+									<version>3.4.GA</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>antlr</groupId>
+									<artifactId>antlr</artifactId>
+									<version>2.7.6</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-core</artifactId>
+									<version>${hibernate.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-annotations</artifactId>
+									<version>${hibernate.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-commons-annotations</artifactId>
+									<version>3.0.0.ga</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>ejb3-persistence</artifactId>
+									<version>1.0.1.GA</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.sf.ehcache</groupId>
+									<artifactId>ehcache</artifactId>
+									<version>1.6.1</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.google.gwt</groupId>
+									<artifactId>gwt-incubator-trunk-r1684</artifactId>
+									<version>trunk-r1684</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>ofcgwt</groupId>
+									<artifactId>ofcgwt</artifactId>
+									<version>2.0.1</version>
+									<type>jar</type>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+							<!-- other configurations here -->
+						</configuration>
 
+					</execution>
+				</executions>
+			</plugin>
 
-
-
-		<artifactItem>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.5.4</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.5.4</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.7</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.4.GA</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.2</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>${hibernate.version}</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-    <artifactItem>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-      <version>1.6.1</version>
-    	<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-incubator-trunk-r1684</artifactId>
-			<version>trunk-r1684</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.4</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>maven</groupId>
-			<artifactId>maven-javadoc-plugin</artifactId>
-			<version>1.9</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>ofcgwt</groupId>
-			<artifactId>ofcgwt</artifactId>
-			<version>2.0.1</version>
-			<type>jar</type>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-		<artifactItem>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3</artifactId>
-			<version>1.1.4c</version>
-			<classifier>javadoc</classifier>
-			<type>jar</type>
-			<outputDirectory>${lib.output.dir}</outputDirectory>
-		</artifactItem>
-              </artifactItems>
-              <!-- other configurations here -->
-            </configuration>
-            
-          </execution>
-        </executions>
-      </plugin>
-			
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -530,8 +376,12 @@
 								<copy todir="${gwt.output.directory}/${gwt.module.alias}">
 									<fileset dir="${basedir}/src/main/webapp/pat" />
 								</copy>
-								<copy file="${basedir}/src/main/webapp/WEB-INF/application.properties" todir="${project.build.outputDirectory}"/>
-								<copy file="${basedir}/src/main/webapp/WEB-INF/pat-applicationContext.xml" todir="${project.build.outputDirectory}"/>
+								<copy
+									file="${basedir}/src/main/webapp/WEB-INF/application.properties"
+									todir="${project.build.outputDirectory}" />
+								<copy
+									file="${basedir}/src/main/webapp/WEB-INF/pat-applicationContext.xml"
+									todir="${project.build.outputDirectory}" />
 							</tasks>
 						</configuration>
 					</execution>
@@ -543,10 +393,14 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<copy file="${basedir}/target/${project.artifactId}-${project.version}.jar" todir="${lib.output.dir}/"/>
-								<!-- <copy todir="${gwt.output.directory}">
-									<fileset dir="${basedir}/target/${project.artifactId}-${project.version}" />
-									</copy> -->
+								<copy
+									file="${basedir}/target/${project.artifactId}-${project.version}.jar"
+									todir="${lib.output.dir}/" />
+								<!--
+									<copy todir="${gwt.output.directory}"> <fileset
+									dir="${basedir}/target/${project.artifactId}-${project.version}"
+									/> </copy>
+								-->
 							</tasks>
 						</configuration>
 					</execution>
@@ -569,36 +423,36 @@
 					</artifactItems>
 				</configuration>
 			</plugin>
-			 <plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-source-plugin</artifactId>
-    			<executions>
-       				<execution>
-          			<!-- Restrict execution of source compilation to install or deploy. -->
-          			<!-- The default is package. -->
-          			<phase>install</phase>
-          			<goals>
-             			<goal>jar</goal>
-          			</goals>
-       				</execution>
-    			</executions>
- 			 </plugin>
-			
-			 <plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-javadoc-plugin</artifactId>
-    			<executions>
-       				<execution>
-          				<id>attach-javadocs</id>
-          				<!-- Restrict execution of source compilation to install -->
-          				<phase>install</phase>
-          				<goals>
-             				<goal>jar</goal>
-          				</goals>
-       				</execution>
-    			</executions>
- 			</plugin>
-			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Restrict execution of source compilation to install or deploy. -->
+						<!-- The default is package. -->
+						<phase>install</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<!-- Restrict execution of source compilation to install -->
+						<phase>install</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -861,7 +715,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 
 		<!-- Spring modules -->
 		<dependency>
@@ -982,11 +836,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-    <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-      <version>1.6.1</version>
-    </dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -1038,16 +892,16 @@
 			<version>1.1.4c</version>
 		</dependency>
 	</dependencies>
-<distributionManagement>
-   <repository>
-      <id>pat.releases</id>
-      <name>A friendly description of your release repo</name>
-      <url>scpexe://logical-analytics.co.uk/repository</url>
-   </repository>
-   <snapshotRepository>
-      <id>pat.snapshots</id>
-      <name>A friendly description of your snapshots repo</name>
-      <url>scpexe://logical-analytics.co.uk/snapshots</url>
-   </snapshotRepository>
-</distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>pat.releases</id>
+			<name>A friendly description of your release repo</name>
+			<url>scpexe://logical-analytics.co.uk/repository</url>
+		</repository>
+		<snapshotRepository>
+			<id>pat.snapshots</id>
+			<name>A friendly description of your snapshots repo</name>
+			<url>scpexe://logical-analytics.co.uk/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

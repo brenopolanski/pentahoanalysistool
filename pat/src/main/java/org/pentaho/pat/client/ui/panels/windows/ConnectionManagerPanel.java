@@ -309,7 +309,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                             .alert(
                                                     ConstantFactory.getInstance().error(),
                                                     "There has been an error regarding the Connection. "
-                                                            + "Please contact the system administrator", MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage())); //$NON-NLS-1$
+                                                            + "Please contact the system administrator", 
+                                                            MessageFactory.getInstance().failedLoadConnection(arg0.getMessage())); //$NON-NLS-1$
                                 }
 
                                 public void onSuccess(final Object arg0) {
