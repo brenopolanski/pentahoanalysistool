@@ -208,6 +208,8 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 throw e;
             }
         }
+        Scenario scenario = connection.createScenario();
+        connection.setScenario(scenario);
         
     }
 

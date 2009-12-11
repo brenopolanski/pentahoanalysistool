@@ -22,9 +22,11 @@ public class DataCellPanel extends HorizontalPanel {
     
     private Number cellNum;
 
+    
+    
     public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember, Number rawNumber) {
         super();
-        sinkEvents(Event.ONDBLCLICK);
+        sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
         pcm = parentColMember;
         prm = parentRowMember;
         cellNum = rawNumber;
@@ -82,8 +84,18 @@ public class DataCellPanel extends HorizontalPanel {
                         }
 
                     });
+            
+            
+        }
+        else if (DOM.eventGetType(event) == Event.ONCLICK) {
+            
+              NewValueWidget.display();
+              
+
         }
     }
+
+  
 
     public Number getCellNum() {
 	return cellNum;

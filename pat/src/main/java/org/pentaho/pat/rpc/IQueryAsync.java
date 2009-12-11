@@ -108,5 +108,5 @@ public interface IQueryAsync {
     void setNonEmpty(String sessionId, String queryId, boolean flag, AsyncCallback<CellDataSet> callback);
     
     void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
-	    String newCellValue, AsyncCallback<CellDataSet> callback);
+	    String newCellValue, AsyncCallback callback);
 }

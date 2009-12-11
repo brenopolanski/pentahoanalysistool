@@ -161,10 +161,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
-    public CellDataSet alterCell(final String sessionId, final String queryId, final String connectionId, final String scenarioId,  
+    public void alterCell(final String sessionId, final String queryId, final String connectionId, final String scenarioId,  
 	    final String newCellValue)throws RpcException {
 	try {
-	    return this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
+	    this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
 	} catch (OlapException e) {
 	    LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$

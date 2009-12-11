@@ -262,7 +262,35 @@ public class PropertiesPanel extends LayoutComposite {
         createScenarioButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getSessionInstance().createNewScenario(Pat.getSessionID(), Pat.getCurrConnection(), new AsyncCallback<String>(){
+        	
+        	 ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
+
+     		public void onFailure(Throwable arg0) {
+     		    // TODO Auto-generated method stub
+     		    
+     		}
+
+     		public void onSuccess(CellDataSet arg0) {
+     		    // TODO Auto-generated method stub
+     		    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+			public void onFailure(Throwable arg0) {
+			    // TODO Auto-generated method stub
+			    
+			}
+
+			public void onSuccess(CellDataSet arg0) {
+			    // TODO Auto-generated method stub
+			    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                    PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+			}
+     			
+     		    });
+     		}
+     		
+     	    });
+        	 
+                /*ServiceFactory.getSessionInstance().createNewScenario(Pat.getSessionID(), Pat.getCurrConnection(), new AsyncCallback<String>(){
                     public void onFailure(final Throwable arg0){
                 	MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set scenario");
                     }
@@ -271,7 +299,7 @@ public class PropertiesPanel extends LayoutComposite {
                 	createScenarioButton.setText(scenario);
                 	Pat.setCurrScenario(scenario);
                     }
-                });
+                });*/
             }
         });
         final ToolButton pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
