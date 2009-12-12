@@ -67,7 +67,7 @@
 
 
 		<plugins>
-		<!-- 
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -92,8 +92,7 @@
 					<output>${gwt.output.directory}/${gwt.module.alias}</output>
 					<logLevel>WARN</logLevel>
 					<style>OBF</style>
-					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m
-						-XX:MaxPermSize=512m</extraJvmArgs>
+					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m -XX:MaxPermSize=512m</extraJvmArgs>
 					<gwtVersion>${gwtVersion}</gwtVersion>
 					<debugSuspend>false</debugSuspend>
 					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
@@ -106,7 +105,7 @@
 					<hostedWebapp>${basedir}/target/gwt</hostedWebapp>
 				</configuration>
 			</plugin>
- -->
+ 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -119,6 +118,19 @@
 						</goals>
 						<configuration>
 							<artifactItems>
+								<artifactItem>
+									<groupId>ofcgwt</groupId>
+									<artifactId>ofcgwt</artifactId>
+									<version>2.0.1</version>
+									<type>jar</type>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.google.gwt</groupId>
+									<artifactId>gwt-incubator-trunk-r1684</artifactId>
+									<version>trunk-r1684</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 								<artifactItem>
 									<groupId>net.sourceforge.jexcelapi</groupId>
 									<artifactId>jxl</artifactId>
@@ -143,7 +155,6 @@
 									<version>0.2.3</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>com.google.code.gwtx</groupId>
 									<artifactId>gwtx</artifactId>
@@ -162,15 +173,54 @@
 									<version>0.2.0</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
-
 								<artifactItem>
 									<groupId>net.sf.gwt-widget</groupId>
 									<artifactId>gwt-sl</artifactId>
 									<version>0.1.5</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
-
-
+								<artifactItem>
+									<groupId>javassist</groupId>
+									<artifactId>javassist</artifactId>
+									<version>3.4.GA</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>antlr</groupId>
+									<artifactId>antlr</artifactId>
+									<version>2.7.6</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-core</artifactId>
+									<version>${hibernate.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-annotations</artifactId>
+									<version>${hibernate.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-commons-annotations</artifactId>
+									<version>3.0.0.ga</version>
+								    <outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.hibernate</groupId>
+									<artifactId>ejb3-persistence</artifactId>
+									<version>1.0.1.GA</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.sf.ehcache</groupId>
+									<artifactId>ehcache</artifactId>
+									<version>1.6.1</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 								<!-- Spring modules -->
 								<artifactItem>
 									<groupId>org.springframework</groupId>
@@ -239,9 +289,6 @@
 									<version>${spring.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
-
-
-
 								<artifactItem>
 									<groupId>org.springframework.security</groupId>
 									<artifactId>spring-security-core-tiger</artifactId>
@@ -267,60 +314,20 @@
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>javassist</groupId>
-									<artifactId>javassist</artifactId>
-									<version>3.4.GA</version>
+									<groupId>net.sourceforge.jexcelapi</groupId>
+									<artifactId>jxl</artifactId>
+									<version>2.6</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>antlr</groupId>
-									<artifactId>antlr</artifactId>
-									<version>2.7.6</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.hibernate</groupId>
-									<artifactId>hibernate-core</artifactId>
-									<version>${hibernate.version}</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.hibernate</groupId>
-									<artifactId>hibernate-annotations</artifactId>
-									<version>${hibernate.version}</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.hibernate</groupId>
-									<artifactId>hibernate-commons-annotations</artifactId>
-									<version>3.0.0.ga</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.hibernate</groupId>
-									<artifactId>ejb3-persistence</artifactId>
-									<version>1.0.1.GA</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>net.sf.ehcache</groupId>
-									<artifactId>ehcache</artifactId>
-									<version>1.6.1</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>com.google.gwt</groupId>
-									<artifactId>gwt-incubator-trunk-r1684</artifactId>
-									<version>trunk-r1684</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>ofcgwt</groupId>
-									<artifactId>ofcgwt</artifactId>
-									<version>2.0.1</version>
+									<groupId>xpp3</groupId>
+									<artifactId>xpp3</artifactId>
+									<version>1.1.4c</version>
+									<classifier>javadoc</classifier>
 									<type>jar</type>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
+									<outputDirectory>${basedir}/target/tmp</outputDirectory>
 								</artifactItem>
+
 							</artifactItems>
 							<!-- other configurations here -->
 						</configuration>
@@ -396,11 +403,11 @@
 								<copy
 									file="${basedir}/target/${project.artifactId}-${project.version}.jar"
 									todir="${lib.output.dir}/" />
-								<!--
+								
 									<copy todir="${gwt.output.directory}"> <fileset
 									dir="${basedir}/target/${project.artifactId}-${project.version}"
 									/> </copy>
-								-->
+								
 							</tasks>
 						</configuration>
 					</execution>
