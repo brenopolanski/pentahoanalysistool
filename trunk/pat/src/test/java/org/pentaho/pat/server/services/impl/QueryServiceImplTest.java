@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.mdx.ParseTreeWriter;
+import org.olap4j.mdx.SelectNode;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -81,7 +82,8 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		
 		// Verify MDX
 		Writer writer = new StringWriter();
-		query.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
+		SelectNode node = query.getSelect();
+		node.unparse(new ParseTreeWriter(new PrintWriter(writer)));
 		assertEquals(expectedMDX, writer.toString());
 		
 		// Launch query to make sure it's valid
