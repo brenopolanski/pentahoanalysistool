@@ -72,9 +72,7 @@ public class DimensionPanel extends LayoutComposite {
      */
     public DimensionPanel() {
         super();
-        // this.tableRowDragController = new FlexTableRowDragController(Application.getMainPanel());
-
-        final LayoutPanel rootPanel = getLayoutPanel();
+         final LayoutPanel rootPanel = getLayoutPanel();
 
         final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
 

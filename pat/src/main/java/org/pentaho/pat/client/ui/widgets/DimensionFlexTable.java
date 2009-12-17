@@ -20,6 +20,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.core.client.DOM;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.FlexTable;
 
@@ -35,6 +36,8 @@ public class DimensionFlexTable extends FlexTable {
 
     private Boolean horizontal = false;
 
+    private IAxis axis;
+
     private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
 
     /**
@@ -43,15 +46,20 @@ public class DimensionFlexTable extends FlexTable {
      */
     public DimensionFlexTable() {
         super();
+        addStyleName(TABLE_CSS_NAME);
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(getElement(), "background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
 
+        
     }
 
-    public DimensionFlexTable(final Boolean orientation) {
+    public DimensionFlexTable(final Boolean orientation, final IAxis axis) {
         super();
         addStyleName(TABLE_CSS_NAME);
         // FIXME remove that and use style
         DOM.setStyleAttribute(getElement(), "background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
 
+        this.setAxis(axis);
         horizontal = orientation;
 
     }
@@ -63,6 +71,14 @@ public class DimensionFlexTable extends FlexTable {
      */
     public Boolean getHorizontal() {
         return horizontal;
+    }
+
+    public void setAxis(IAxis axis) {
+	this.axis = axis;
+    }
+
+    public IAxis getAxis() {
+	return axis;
     }
 
 }

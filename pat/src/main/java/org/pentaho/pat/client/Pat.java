@@ -95,6 +95,8 @@ public class Pat implements EntryPoint {
     private static String currCubeName;
     
     private static String currScenario;
+    
+    private static String measuresAxis;
 
     private static DrillType currDrillType = DrillType.POSITION;
 
@@ -378,6 +380,14 @@ public class Pat implements EntryPoint {
     
     public static String getCurrScenario(){
 	return currScenario;
+    }
+
+    public static void setMeasuresDimension(String measuresDimension) {
+	Pat.measuresAxis = measuresDimension;
+    }
+
+    public static String getMeasuresDimension() {
+	return measuresAxis;
     }
 
 }

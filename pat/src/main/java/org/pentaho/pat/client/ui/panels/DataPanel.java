@@ -177,7 +177,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * 
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
-    public void onQueryChange(final Widget sender) {
+    public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // TODO Auto-generated method stub
 
     }
