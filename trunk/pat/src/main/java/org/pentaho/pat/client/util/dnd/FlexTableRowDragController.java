@@ -25,6 +25,7 @@ import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -185,14 +186,19 @@ public class FlexTableRowDragController extends PickupDragController {
      */
     @Override
     protected Widget newDragProxy(final DragContext context) {
-        DimensionFlexTable proxy;
-        proxy = new DimensionFlexTable();
+	if(context.draggable instanceof Label){
+        DimensionFlexTable proxy = new DimensionFlexTable();
         proxy.addStyleName(DRAG_CSS_PROXY);
         draggableTable = (DimensionFlexTable) context.draggable.getParent();
         dragRow = getWidgetRow(context.draggable, draggableTable);
         dragCol = getWidgetCol(context.draggable, draggableTable);
         FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
         return proxy;
+	}
+	else{
+	    
+	    return null;
+	}
     }
 
     /*

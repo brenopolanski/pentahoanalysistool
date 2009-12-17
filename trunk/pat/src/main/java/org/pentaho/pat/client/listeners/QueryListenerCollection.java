@@ -23,6 +23,7 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -42,10 +43,11 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
      * 
      * @param sender
      *            The sender widget of the query changed event
+     * @param iAxis 
      */
-    public void fireQueryChanged(final Widget sender) {
+    public void fireQueryChanged(final Widget sender, final int sourceRow, final IAxis sourceAxis, IAxis targetAxis) {
         for (IQueryListener listener : this) {
-            listener.onQueryChange(sender);
+            listener.onQueryChange(sender, sourceRow, sourceAxis, targetAxis);
         }
     }
 
@@ -64,4 +66,6 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
             listener.onQueryExecuted(queryId, matrix);
         }
     }
+
+
 }

@@ -37,6 +37,7 @@ import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -267,7 +268,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
      */
 
-    public void onQueryChange(final Widget sender) {
+    public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // TODO Auto-generated method stub
 
     }

@@ -22,6 +22,7 @@ package org.pentaho.pat.client.listeners;
 import java.util.EventListener;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public interface IQueryListener extends EventListener {
 
-    void onQueryChange(Widget sender);
+    void onQueryChange(Widget sender, int sourceRow, IAxis sourceAxis, IAxis targetAxis);
 
     void onQueryExecuted(String queryId, CellDataSet matrix);
 

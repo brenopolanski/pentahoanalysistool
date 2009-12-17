@@ -32,6 +32,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.table.PatColDef;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 
 import com.google.gwt.gen2.table.client.CellEditor;
@@ -125,7 +126,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     /**
      * Fire on query changing.
      */
-    public void onQueryChange(final Widget sender) {
+    public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
 	/**
 	 * Fired on query change.
 	 */

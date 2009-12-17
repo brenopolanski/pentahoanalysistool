@@ -38,6 +38,7 @@ import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -253,7 +254,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         LogoPanel.spinWheel(false);
     }
 
-    public void onQueryChange(Widget sender) {
+    public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
 	// TODO Auto-generated method stub
 	
     }
