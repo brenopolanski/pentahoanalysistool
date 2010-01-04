@@ -72,14 +72,16 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		this.queryService.moveDimension(userId, sessionId, queryId, Axis.ROWS, "Positions"); //$NON-NLS-1$
 		this.queryService.moveDimension(userId, sessionId, queryId, Axis.ROWS, "Region"); //$NON-NLS-1$
 		
+
 		// Verify the axis
 		Query query = this.queryService.getQuery(userId, sessionId, queryId);
 		assertNotNull(query);
 		assertEquals(2, query.getAxes().get(Axis.ROWS).getDimensions().size());
 		assertEquals(1, query.getAxes().get(Axis.COLUMNS).getDimensions().size());
-		assertEquals(0, query.getAxes().get(Axis.FILTER).getDimensions().size());
+		assertTrue(query.getAxes().containsKey(Axis.FILTER));
 		assertEquals("Department", query.getAxes().get(Axis.COLUMNS).getDimensions().get(0).getName()); //$NON-NLS-1$
-		
+		assertEquals("Positions", query.getAxes().get(Axis.ROWS).getDimensions().get(0).getName()); //$NON-NLS-1$
+		assertEquals("Region", query.getAxes().get(Axis.ROWS).getDimensions().get(1).getName()); //$NON-NLS-1$
 		// Verify MDX
 		Writer writer = new StringWriter();
 		SelectNode node = query.getSelect();
