@@ -159,8 +159,8 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	public void testSavedConnections() throws Exception
 	{
 	    String[][] expectedConnectionsArray = new String[][] {
-                {"1111-1111-1111-1111","driver_name", "administrator_connection", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                {"2222-2222-2222-2222","driver_name", "my_connection", "password", "", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"1111-1111-1111-1111","driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"2222-2222-2222-2222","driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         };
         String[][] expectedMembershipsArray = new String[][] {
                 {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
@@ -188,10 +188,10 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         conn.setName("my_connection"); //$NON-NLS-1$
         this.sessionService.saveConnection(userId, conn);
         
-        String[][] currentConnectionsArray = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray, currentConnectionsArray);
         
-        String[][] currentMembershipsArray = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray, currentMembershipsArray);
         
         // Verify if it's there.

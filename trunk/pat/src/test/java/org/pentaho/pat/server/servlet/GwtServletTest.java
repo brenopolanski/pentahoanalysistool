@@ -1,7 +1,12 @@
 package org.pentaho.pat.server.servlet;
 
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.messages.Messages;
 
 
 /**
@@ -45,7 +50,9 @@ public class GwtServletTest extends AbstractServletTest {
         try {
             this.sessionServlet.closeSession("fake-value"); //$NON-NLS-1$
             fail();
-        } catch(SecurityException e) {}
+        } catch(RpcException e) {
+        	assertTrue(true);
+        }
     }
     
     /**
@@ -94,10 +101,10 @@ public class GwtServletTest extends AbstractServletTest {
         CubeConnection newConnection = this.sessionServlet.getConnection(sessionId, newConnectionId);
         assertEquals(newConnectionId, newConnection.getId());
         
-        String[][] currentConnectionsArray = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray, currentConnectionsArray);
         
-        String[][] currentMembershipsArray = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray, currentMembershipsArray);
         
         // Test it
@@ -109,10 +116,10 @@ public class GwtServletTest extends AbstractServletTest {
         this.sessionServlet.deleteConnection(sessionId, newConnection.getId());
         assertNull(this.sessionServlet.getConnection(sessionId, newConnection.getId()));
         
-        currentConnectionsArray = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray2, currentConnectionsArray);
         
-        currentMembershipsArray = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray2, currentMembershipsArray);
         
         this.sessionServlet.closeSession(sessionId);
@@ -125,7 +132,7 @@ public class GwtServletTest extends AbstractServletTest {
      */
     public void testCubesDiscovery() throws Exception
     {
-        final String[] expectedCubes = new String[] {
+        final String[] expectedCubeNames = new String[] {
                 "Quadrant Analysis" //$NON-NLS-1$
         };
         initDatabase();
@@ -139,7 +146,11 @@ public class GwtServletTest extends AbstractServletTest {
         this.sessionServlet.connect(sessionId, connection.getId());
         
         // Test the cubes list
-        Assert.assertArrayEquals(expectedCubes, this.discoveryServlet.getCubes(sessionId,connection.getId()));
+        CubeItem[] cubes = this.discoveryServlet.getCubes(sessionId,connection.getId());
+        String[] actualCubeNames = new String[cubes.length];
+        for(int i=0; i<cubes.length; i++)
+        	actualCubeNames[i]=cubes[i].getName();
+        Assert.assertArrayEquals(expectedCubeNames, actualCubeNames);
         
         this.sessionServlet.closeSession(sessionId);
     }
