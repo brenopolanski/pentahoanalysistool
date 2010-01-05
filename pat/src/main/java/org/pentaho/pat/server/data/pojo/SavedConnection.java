@@ -35,7 +35,7 @@ import org.hibernate.annotations.Type;
  * @author Luc Boudreau
  */
 @Entity
-@Table(name = "CONNECTIONS")
+@Table(name = "PAT_CONNECTIONS")
 public class SavedConnection implements Comparable<SavedConnection> {
 
     /**

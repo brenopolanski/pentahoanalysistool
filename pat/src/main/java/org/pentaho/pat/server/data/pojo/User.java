@@ -37,7 +37,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "PAT_USERS")
 public class User {
 
     @Basic
@@ -74,7 +74,7 @@ public class User {
     }
 
     @OneToMany(fetch = FetchType.EAGER, targetEntity = SavedConnection.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_CONNECTIONS", joinColumns = @JoinColumn(name = "user_id", table = "USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "connection_id", table = "CONNECTIONS", referencedColumnName = "id"))
+    @JoinTable(name = "PAT_USERS_CONNECTIONS", joinColumns = @JoinColumn(name = "user_id", table = "PAT_USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "connection_id", table = "PAT_CONNECTIONS", referencedColumnName = "id"))
     @Cascade( {org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
             org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     public Set<SavedConnection> getSavedConnections() {
@@ -86,7 +86,7 @@ public class User {
     }
 
     @OneToMany(fetch = FetchType.EAGER, targetEntity = SavedQuery.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_QUERIES", joinColumns = @JoinColumn(name = "user_id", table = "USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "query_id", table = "QUERIES", referencedColumnName = "id"))
+    @JoinTable(name = "PAT_USERS_QUERIES", joinColumns = @JoinColumn(name = "user_id", table = "PAT_USERS", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "query_id", table = "PAT_QUERIES", referencedColumnName = "id"))
     @Cascade( {org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
             org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     public Set<SavedQuery> getSavedQueries() {
