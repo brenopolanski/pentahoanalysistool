@@ -22,7 +22,7 @@ import org.pentaho.pat.rpc.dto.enums.QueryType;
  * 
  */
 @Entity
-@Table(name = "QUERIES")
+@Table(name = "PAT_QUERIES")
 public class SavedQuery implements Comparable<SavedQuery> {
 
     /**

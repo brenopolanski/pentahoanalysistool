@@ -37,7 +37,7 @@ import javax.persistence.Table;
  * @author Luc Boudreau
  */
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "PAT_GROUPS")
 public class Group {
 
     /**
@@ -76,7 +76,7 @@ public class Group {
      * @return A collection of {@link User} objects.
      */
     @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "GROUPS_USERS", joinColumns = @JoinColumn(name = "group_id", table = "GROUPS", referencedColumnName = "name"), inverseJoinColumns = @JoinColumn(name = "user_id", table = "USERS", referencedColumnName = "username"))
+    @JoinTable(name = "PAT_GROUPS_USERS", joinColumns = @JoinColumn(name = "group_id", table = "PAT_GROUPS", referencedColumnName = "name"), inverseJoinColumns = @JoinColumn(name = "user_id", table = "PAT_USERS", referencedColumnName = "username"))
     public Collection<User> getMembers() {
         return members;
     }
