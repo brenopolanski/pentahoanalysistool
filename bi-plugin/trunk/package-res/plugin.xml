@@ -3,17 +3,21 @@
 <plugin title="Pentaho Analysis Tool Plugin" loader="overriding">
 
 <overlays>
-<overlay id="startup.patAnalysis"  resourcebundle="messages.properties">
+<overlay id="startup.patAnalysis"  resourcebundle="../content/pat-res/patplugin.properties">
 	<overlay id="startup.patAnalysis">
 		<toolbar id="mainToolbar">
 			<toolbarbutton id="openPat" image="content/pat-res/pat-menu-icon.gif"
 				onclick="mainToolbarHandler.openUrl('PAT','PAT','content/pat')"
-				tooltiptext="Open PAT Analysis" insertafter="newAnalysisButton" />
+				tooltiptext="${pat-plugin.tooltip}" insertafter="newAnalysisButton" />
 		</toolbar>
 	</overlay>
 </overlay>
 </overlays>
-	  
+	
+	<menu-items>
+        <menu-item id="new-pat" anchor="file-new-submenu" label="New PAT Analysis" command="content/pat" type="MENU_ITEM" how="LAST_CHILD"/>
+	</menu-items>
+    
     <webservice id="session.rpc" type="gwt" class="org.pentaho.pat.server.servlet.SessionServlet"/>
     <webservice id="query.rpc" type="gwt" class="org.pentaho.pat.server.servlet.QueryServlet"/>
     <webservice id="discovery.rpc" type="gwt" class="org.pentaho.pat.server.servlet.DiscoveryServlet"/>
@@ -43,8 +47,5 @@
       <static-path url="/pat-res" localFolder="resources"/>
     </static-paths>  
 	
-	<menu-items>
-        <menu-item id="new-pat" anchor="file-new-submenu" label="New PAT Analysis" command="content/pat" type="MENU_ITEM" how="LAST_CHILD"/>
-	</menu-items>
-  
+	
 </plugin>
