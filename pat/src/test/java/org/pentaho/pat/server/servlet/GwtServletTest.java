@@ -101,10 +101,10 @@ public class GwtServletTest extends AbstractServletTest {
         CubeConnection newConnection = this.sessionServlet.getConnection(sessionId, newConnectionId);
         assertEquals(newConnectionId, newConnection.getId());
         
-        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from connections"); //$NON-NLS-1$
+        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray, currentConnectionsArray);
         
-        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray, currentMembershipsArray);
         
         // Test it
@@ -116,10 +116,10 @@ public class GwtServletTest extends AbstractServletTest {
         this.sessionServlet.deleteConnection(sessionId, newConnection.getId());
         assertNull(this.sessionServlet.getConnection(sessionId, newConnection.getId()));
         
-        currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from connections"); //$NON-NLS-1$
+        currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, schemadata, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray2, currentConnectionsArray);
         
-        currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        currentMembershipsArray = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray2, currentMembershipsArray);
         
         this.sessionServlet.closeSession(sessionId);
