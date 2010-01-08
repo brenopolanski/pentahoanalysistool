@@ -188,10 +188,10 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         conn.setName("my_connection"); //$NON-NLS-1$
         this.sessionService.saveConnection(userId, conn);
         
-        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
+        String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray, currentConnectionsArray);
         
-        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        String[][] currentMembershipsArray = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMembershipsArray, currentMembershipsArray);
         
         // Verify if it's there.

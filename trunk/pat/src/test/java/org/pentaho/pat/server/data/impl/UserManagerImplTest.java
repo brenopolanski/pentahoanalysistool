@@ -60,7 +60,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         
         initTest();
         
-        String[][] currentGroups = runOnDatasource("select * from groups"); //$NON-NLS-1$
+        String[][] currentGroups = runOnDatasource("select * from pat_groups"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedGroups, currentGroups);
         
         User user = userManager.getUser("admin"); //$NON-NLS-1$
@@ -73,19 +73,19 @@ public class UserManagerImplTest extends AbstractManagerTest {
         user = userManager.getUser("admin"); //$NON-NLS-1$
         assertNull(user);
         
-        String[][] currentUsers = runOnDatasource("select * from users"); //$NON-NLS-1$
+        String[][] currentUsers = runOnDatasource("select * from pat_users"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedUsers, currentUsers);
         
-        String[][] currentMemberships = runOnDatasource("select * from groups_users"); //$NON-NLS-1$
+        String[][] currentMemberships = runOnDatasource("select * from pat_groups_users"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
-        currentGroups = runOnDatasource("select * from groups"); //$NON-NLS-1$
+        currentGroups = runOnDatasource("select * from pat_groups"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedGroups, currentGroups);
         
-        String[][] currentConnections = runOnDatasource("select * from connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select * from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
-        String[][] currentConnectionsAssociations = runOnDatasource("select * from users_connections"); //$NON-NLS-1$
+        String[][] currentConnectionsAssociations = runOnDatasource("select * from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsAssociations, currentConnectionsAssociations);
         
         finishTest();
@@ -111,7 +111,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("new_user", user.getUsername()); //$NON-NLS-1$
         assertEquals(user.getGroups().size(), 0);
         
-        String[][] currentUsers = runOnDatasource("select * from users"); //$NON-NLS-1$
+        String[][] currentUsers = runOnDatasource("select * from pat_users"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedUsers, currentUsers);
         
         finishTest();
@@ -168,10 +168,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
         assertEquals(ConnectionType.MONDRIAN, conn.getType());
         
-        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
-        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
         // Test if we remove a saved connection
@@ -190,10 +190,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
             if (connCheckup.getId().equals(connId))
                 fail();
         
-        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
-        currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships2, currentMemberships);
         
         finishTest();
@@ -218,10 +218,10 @@ public class UserManagerImplTest extends AbstractManagerTest {
         String userId = "admin"; //$NON-NLS-1$
         initTest();
         
-        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username  from connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username  from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
-        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        String[][] currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships2, currentMemberships);
         
         User user = this.userManager.getUser(userId);
@@ -236,13 +236,13 @@ public class UserManagerImplTest extends AbstractManagerTest {
         user.getSavedConnections().add(conn);
         this.userManager.updateUser(user);
         
-        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
-        currentMemberships = runOnDatasource("select user_id, connection_id from users_connections"); //$NON-NLS-1$
+        currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedMemberships, currentMemberships);
         
-        runOnDatasource("select top 50 this_.username as username1_2_, groups2_.user_id as user2_4_, group3_.name as group1_4_, group3_.name as name2_0_, savedconne4_.user_id as user1_5_, savedconne5_.name as connection2_5_, savedconne5_.name as name0_1_, savedconne5_.driverClassName as driverCl2_0_1_, savedconne5_.password as password0_1_, savedconne5_.schemadata as schema0_1_, savedconne5_.type as type0_1_, savedconne5_.url as url0_1_, savedconne5_.username as username0_1_ from users this_ left outer join groups_users groups2_ on this_.username=groups2_.user_id left outer join groups group3_ on groups2_.group_id=group3_.name left outer join users_connections savedconne4_ on this_.username=savedconne4_.user_id left outer join connections savedconne5_ on savedconne4_.connection_id=savedconne5_.name where this_.username = 'admin'"); //$NON-NLS-1$
+        runOnDatasource("select top 50 this_.username as username1_2_, groups2_.user_id as user2_4_, group3_.name as group1_4_, group3_.name as name2_0_, savedconne4_.user_id as user1_5_, savedconne5_.name as connection2_5_, savedconne5_.name as name0_1_, savedconne5_.driverClassName as driverCl2_0_1_, savedconne5_.password as password0_1_, savedconne5_.schemadata as schema0_1_, savedconne5_.type as type0_1_, savedconne5_.url as url0_1_, savedconne5_.username as username0_1_ from pat_users this_ left outer join pat_groups_users groups2_ on this_.username=groups2_.user_id left outer join pat_groups group3_ on groups2_.group_id=group3_.name left outer join pat_users_connections savedconne4_ on this_.username=savedconne4_.user_id left outer join pat_connections savedconne5_ on savedconne4_.connection_id=savedconne5_.name where this_.username = 'admin'"); //$NON-NLS-1$
         
         user = this.userManager.getUser(userId);
         assertEquals(2,user.getSavedConnections().size());
