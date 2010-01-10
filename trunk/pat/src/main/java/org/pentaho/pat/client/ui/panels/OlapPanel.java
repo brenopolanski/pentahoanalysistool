@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2009 Tom Barber
  *
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU General Public License as published by the Free 
- * Software Foundation; either version 2 of the License, or (at your option) 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * 
+ *
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 package org.pentaho.pat.client.ui.panels;
@@ -48,11 +48,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  *Creates a query tab panel for the selected cube and connection.
- * 
+ *
  * @created Aug 8, 2009
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
- * 
+ *
  */
 public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
@@ -69,7 +69,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     private LayoutPanel baselayoutPanel;
 
     private final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
-    
+   
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
         super();
@@ -78,7 +78,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     /**
      * OLAP Panel Constructor.
-     * 
+     *
      */
     public OlapPanel(final CubeItem cube, final String connection) {
         super();
@@ -112,9 +112,9 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     }
 
     /**
-     * 
+     *
      * OlapPanel constructor when loading a saved query model.
-     * 
+     *
      * @param query
      * @param qsm
      */
@@ -135,7 +135,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#nitializeWidgets()
      */
 
@@ -153,7 +153,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#getDescription()
      */
     @Override
@@ -163,7 +163,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#getName()
      */
     @Override
@@ -177,7 +177,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     /**
      *TODO JAVADOC
-     * 
+     *
      * @return the queryId
      */
     public String getQueryId() {
@@ -199,6 +199,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
             public void onSuccess(final Object arg0) {
                 LogoPanel.spinWheel(false);
             }
+
 
         });
 
@@ -228,7 +229,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final LayoutPanel centerPanel = new LayoutPanel();
-        
+       
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
 
@@ -245,7 +246,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
         westPanel.add(mainMenuPanel);
 
-        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, "20%", "10px", "200px", true));
+        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
         baselayoutPanel.setCollapsed(westPanel, false);
 
         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
@@ -255,15 +256,16 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     }
 
     public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
-	// TODO Auto-generated method stub
-	
+        // TODO Auto-generated method stub
+       
     }
 
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
-	if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
-	baselayoutPanel.setCollapsed(westPanel, true);
-	baselayoutPanel.layout();
-	}
+        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+        baselayoutPanel.setCollapsed(westPanel, true);
+        baselayoutPanel.layout();
+        }
     }
 
 }
+
