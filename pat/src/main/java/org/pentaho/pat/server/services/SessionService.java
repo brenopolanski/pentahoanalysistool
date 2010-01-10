@@ -23,10 +23,8 @@ import java.util.List;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
-import org.olap4j.Scenario;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.Session;
-import org.pentaho.pat.server.messages.Messages;
 import org.springframework.security.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +35,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface SessionService extends Service {
 
+    /**
+     * Validates that a user session id is valid.
+     * 
+     * @param userId
+     *            The owner of the session
+     * @param sessionId
+     *            The session unique id
+     * @throws OlapException
+     *             If the connection fails.     */
+    void bootstrapSession(String userId, String sessionId) throws OlapException;
+
+    
     /**
      * Validates that a user session id is valid.
      * 

@@ -262,4 +262,10 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String failedNonEmpty();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String validationEmpty(String fields);
 }

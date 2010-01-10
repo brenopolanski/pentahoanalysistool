@@ -68,6 +68,8 @@ public class DefaultDataLoader implements InitializingBean {
             sc.setUrl("http://localhost:8080/pentaho/Xmla"); //$NON-NLS-1$
             sc.setUsername("joe"); //$NON-NLS-1$
             sc.setPassword("password"); //$NON-NLS-1$
+            sc.setConnectOnStartup(false);
+            
             admin.getSavedConnections().add(sc);
 
             // Save

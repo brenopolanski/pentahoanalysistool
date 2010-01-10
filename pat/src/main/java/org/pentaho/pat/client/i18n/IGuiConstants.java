@@ -840,5 +840,11 @@ public interface IGuiConstants extends Constants {
      */
     String showBlankCells();
     
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String connectStartup(); 
 
 }
