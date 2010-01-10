@@ -20,6 +20,7 @@
 package org.pentaho.pat.client.util.dnd;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
@@ -27,6 +28,7 @@ import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.ui.widgets.MeasureGrid;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
+import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -44,8 +46,6 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  */
 public class FlexTableUtil {
-
-    private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 
     /**
      * Copy an entire FlexTable from one FlexTable to another. Each element is copied by creating a new {@link HTML}
@@ -93,139 +93,18 @@ public class FlexTableUtil {
         LogoPanel.spinWheel(true);
         final int sRow = sourceRow;
         final int sCol = sourceCol;
-        if (!sourceTable.equals(targetTable)) {
+        if (sourceTable.getAxis() == null || !sourceTable.getAxis().equals(targetTable.getAxis())) {
             final Widget w = sourceTable.getWidget(sRow, sCol);
-            if(w instanceof MeasureLabel){
-            if (((MeasureLabel) w).getType() == MeasureLabel.labelType.DIMENSION) {
-                ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
-                        ((MeasureLabel) w).getText().trim(), new AsyncCallback<Object>() {
-
-                            public void onFailure(Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedDimensionSet(arg0.getLocalizedMessage()));
-
-                            }
-
-                            public void onSuccess(Object arg0) {
-                                ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(),
-                                        Pat.getCurrQuery(), ((MeasureLabel) w).getText().trim(),
-                                        new AsyncCallback<StringTree>() {
-
-                                            public void onFailure(final Throwable arg0) {
-                                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                                        .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
-
-                                            }
-
-                                            public void onSuccess(final StringTree memberTree) {
-                                                final ArrayList<String> names = new ArrayList<String>();
-                                                names.add(memberTree.getChildren().get(0).getValue());
-                                                // TODO Create interface to createselection with default member w/o
-                                                // getting them all first.
-                                                ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
-                                                        Pat.getCurrQuery(), ((MeasureLabel) w).getText().trim(), names,
-                                                        "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$
-
-                                                            public void onFailure(final Throwable arg0) {
-                                                                MessageBox.error(ConstantFactory.getInstance().error(),
-                                                                        MessageFactory.getInstance().noSelectionSet(
-                                                                                arg0.getLocalizedMessage()));
-                                                            }
-
-                                                            public void onSuccess(final Object arg0) {
-
-                                                                GlobalConnectionFactory.getQueryInstance()
-                                                                        .getQueryListeners().fireQueryChanged(w,
-                                                                                sourceRow, sourceTable.getAxis(),
-                                                                                targetTable.getAxis());
-
-                                                                LogoPanel.spinWheel(false);
-
-                                                            }
-                                                        });
-                                            }
-                                        });
-
-                            }
-
-                        });
-
-            } else {
-                // TODO STOP GAP TO TEST
-                if (!Pat.getMeasuresDimension().equals(targetAxis)) {
-                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
-                            "Measures", new AsyncCallback<Object>() {
-
-                                public void onFailure(final Throwable arg0) {
-                                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                            .getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
-                                }
-
-                                public void onSuccess(final Object arg0) {
-                                    ArrayList<String> memberList = new ArrayList<String>();
-                                    memberList.add(((MeasureLabel) w).getText().trim());
-                                    ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
-                                            Pat.getCurrQuery(), "Measures", memberList, "MEMBER",
-                                            new AsyncCallback<Object>() {
-
-                                                public void onFailure(Throwable arg0) {
-                                                    // TODO Auto-generated method stub
-
-                                                }
-
-                                                public void onSuccess(Object arg0) {
-
-                                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                            .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
-                                                                    targetTable.getAxis());
-                                                    Pat.setMeasuresDimension(targetAxis);
-                                                    LogoPanel.spinWheel(false);
-                                                }
-                                            });
-                                }
-                            });
+            if (w instanceof MeasureLabel) {
+                if (((MeasureLabel) w).getType() == MeasureLabel.labelType.DIMENSION) {
+                    moveDimension(w, sourceRow, sourceTable, targetTable, targetAxis);
+                } else if (((MeasureLabel) w).getType() == MeasureLabel.labelType.MEASURE) {
+                    moveMeasure(w, sourceRow, sourceTable, targetTable, targetAxis);
                 } else {
-                    ArrayList<String> memberList = new ArrayList<String>();
-                    memberList.add(((MeasureLabel) w).getText().trim());
-                    ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                            "Measures", memberList, "MEMBER", new AsyncCallback<Object>() {
-
-                                public void onFailure(Throwable arg0) {
-                                    // TODO Auto-generated method stub
-
-                                }
-
-                                public void onSuccess(Object arg0) {
-
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
-                                            sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                    Pat.setMeasuresDimension(targetAxis);
-                                    LogoPanel.spinWheel(false);
-                                }
-                            });
+                    // Throw Error
                 }
-            }
-        }
-            else{
-                ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
-                        "Measures", new AsyncCallback<Object>() {
-
-                            public void onFailure(Throwable arg0) {
-                                
-                                
-                            }
-
-                            public void onSuccess(Object arg0) {
-                                
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w, 
-                                        sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                Pat.setMeasuresDimension(targetAxis);
-                                LogoPanel.spinWheel(false);
-                                
-                            }
-
-                });
-                
+            } else {
+                moveMeasureGrid(w, sourceRow, sourceTable, targetTable, targetAxis);
             }
         }
     }
@@ -248,4 +127,225 @@ public class FlexTableUtil {
         targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
     }
 
+    private static void moveDimension(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
+            final DimensionFlexTable targetTable, IAxis targetAxis) {
+        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                ((MeasureLabel) w).getText().trim(), new AsyncCallback<Object>() {
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedDimensionSet(arg0.getLocalizedMessage()));
+
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
+                                ((MeasureLabel) w).getText().trim(), new AsyncCallback<StringTree>() {
+
+                                    public void onFailure(final Throwable arg0) {
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
+
+                                    }
+
+                                    public void onSuccess(final StringTree memberTree) {
+                                        final ArrayList<String> names = new ArrayList<String>();
+                                        names.add(memberTree.getChildren().get(0).getValue());
+                                        // TODO Create interface to createselection with default member w/o
+                                        // getting them all first.
+                                        ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
+                                                Pat.getCurrQuery(), ((MeasureLabel) w).getText().trim(), names,
+                                                "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$
+
+                                                    public void onFailure(final Throwable arg0) {
+                                                        MessageBox.error(ConstantFactory.getInstance().error(),
+                                                                MessageFactory.getInstance().noSelectionSet(
+                                                                        arg0.getLocalizedMessage()));
+                                                    }
+
+                                                    public void onSuccess(final Object arg0) {
+                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                                .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                                                        targetTable.getAxis());
+
+                                                        LogoPanel.spinWheel(false);
+
+                                                    }
+                                                });
+                                    }
+                                });
+
+                    }
+
+                });
+
+    }
+
+    private static void moveMeasure(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
+            final DimensionFlexTable targetTable, final IAxis targetAxis) {
+
+        // If Measures is in unused Move Dimension to axis and create selection
+        if (Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !Pat.getMeasuresDimension().equals(targetAxis)) {
+            ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                    "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
+
+                        public void onFailure(final Throwable arg0) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedDimensionSet(arg0.getLocalizedMessage()));
+                        }
+
+                        public void onSuccess(final Object arg0) {
+                            ArrayList<String> memberList = new ArrayList<String>();
+                            memberList.add(((MeasureLabel) w).getText().trim());
+                            ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    "Measures", memberList, "MEMBER", //$NON-NLS-1$ //$NON-NLS-2$
+                                    new AsyncCallback<Object>() {
+
+                                        public void onFailure(Throwable arg0) {
+                                            // TODO Auto-generated method stub
+
+                                        }
+
+                                        public void onSuccess(Object arg0) {
+
+                                            GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                    .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                                            targetTable.getAxis());
+                                            Pat.setMeasuresDimension(targetAxis);
+                                            LogoPanel.spinWheel(false);
+                                        }
+                                    });
+                        }
+                    });
+        }
+        // If Measures is being dropped on unused
+        if (targetAxis.equals(IAxis.UNUSED)) {
+            ArrayList<String> memberList = new ArrayList<String>();
+            memberList.add(((MeasureLabel) w).getText().trim());
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                    "Measures", memberList, new AsyncCallback<Object>() { //$NON-NLS-1$
+
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onSuccess(Object arg0) {
+                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                            Pat.setMeasuresDimension(targetAxis);
+                            LogoPanel.spinWheel(false);
+
+                        }
+
+                    });
+        }
+
+        // Else Just adjust measures selection
+        else if (!Pat.getMeasuresDimension().equals(IAxis.UNUSED) && Pat.getMeasuresDimension().equals(targetAxis)) {
+            ArrayList<String> memberList = new ArrayList<String>();
+            memberList.add(((MeasureLabel) w).getText().trim());
+            ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                    "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
+
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onSuccess(Object arg0) {
+
+                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                            LogoPanel.spinWheel(false);
+                        }
+                    });
+        } else {
+            // Throw error you can't put shit in this box.
+
+            LogoPanel.spinWheel(false);
+        }
+
+    }
+
+    private static void moveMeasureGrid(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
+            final DimensionFlexTable targetTable, final IAxis targetAxis) {
+        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
+
+                    public void onFailure(Throwable arg0) {
+
+                    }
+
+                    public void onSuccess(Object arg0) {
+                        Widget wid = null;
+                        if (sourceTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
+                            wid = TableUtil.cloneMeasureGrid((MeasureGrid) w);
+                            List<String> memberNames = new ArrayList<String>();
+                            for (int i = 0; i < ((MeasureGrid) wid).getRows().getRowCount(); i++) {
+                                memberNames.clear();
+                                MeasureLabel ml = (MeasureLabel) ((MeasureGrid) wid).getRows().getWidget(i, 0);
+                                memberNames.add(ml.getText().trim());
+                                ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
+                                        Pat.getCurrQuery(),
+                                        "Measures", memberNames, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
+
+                                            public void onFailure(Throwable arg0) {
+                                                // TODO Auto-generated method stub
+
+                                            }
+
+                                            public void onSuccess(Object arg0) {
+                                                // TODO Auto-generated method stub
+                                            }
+
+                                        });
+
+                            }
+
+                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(wid,
+                                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                            TableUtil.clearTableRows(((MeasureGrid) w).getRows());
+                            TableUtil.insertSpacer(((MeasureGrid) w).getRows());
+                            ((MeasureGrid) w).setEmpty(true);
+                            ((MeasureGrid) w).makeNotDraggable();
+
+                        }
+
+                        else if (targetTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
+                            int location = -1;
+                            for (int j = 0; j < targetTable.getRowCount(); j++) {
+                                if (targetTable.getWidget(j, 0) instanceof MeasureGrid) {
+                                    location = j;
+                                    break;
+                                }
+
+                            }
+                            ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().getCellFormatter()
+                                    .removeStyleName(0, 0, "spacer-label");
+                            ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().removeRow(0);
+                            for (int i = 0; i < ((MeasureGrid) w).getRows().getRowCount(); i++) {
+                                ((MeasureGrid) targetTable.getWidget(location, 0))
+                                        .addRow((MeasureLabel) ((MeasureGrid) w).getRows().getWidget(i, 0));
+                            }
+                            ((MeasureGrid) targetTable.getWidget(location, 0)).makeDraggable();
+
+                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                        }
+
+                        else {
+                            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+
+                        }
+
+                        Pat.setMeasuresDimension(targetAxis);
+
+                        LogoPanel.spinWheel(false);
+                    }
+
+                });
+
+    }
 }
