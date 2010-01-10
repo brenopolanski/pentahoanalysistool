@@ -173,7 +173,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
             };
         }));
 
-        // EDIT will be disabled for some more time
+
         final ToolButton editButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_edit(), null,
                 ButtonLabelType.NO_TEXT), new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -181,13 +181,26 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
+                final ConnectionItem item = linkedListBox.getItem(linkedListBox.getSelectedIndex());
+                ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), item.getId(), new AsyncCallback<CubeConnection>() {
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().unexpectedError());
+                    }
+
+                    public void onSuccess(CubeConnection cc) {
+                        ConnectionManagerWindow.display(cc);
+                    }
+                });
+                
                 // String item = listBox.getItem(listBox.getSelectedIndex()).getName();
                 // ConnectionManagerWindow.display();
             }
         });
-        editButton.setEnabled(false);
+        //editButton.setEnabled(false);
         toolBar.add(editButton);
 
+        
         return toolBar;
     }
 
@@ -196,7 +209,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
     }
 
     public static void refreshConnectionList() {
-
+        
         final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
         CIMODEL.clear();
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {

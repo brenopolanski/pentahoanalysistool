@@ -41,6 +41,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -63,6 +64,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Width of the Panel. */
     private static final Integer WIDTH = 620;
 
+    private final Hidden idHidden;
+    
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
 
@@ -90,6 +93,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
      */
     public ConnectXmlaPanel() {
         super(new BorderLayout());
+        idHidden = new Hidden();
         saveButton = new Button(ConstantFactory.getInstance().save());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
         urlTextBox = new TextBox();
@@ -101,6 +105,21 @@ public class ConnectXmlaPanel extends LayoutComposite {
         init();
     }
 
+    public ConnectXmlaPanel(CubeConnection cc) {
+        this();
+        idHidden.setValue(cc.getId());
+        nameTextBox.setText(cc.getName());
+        urlTextBox.setText(cc.getUrl());
+        if (cc.getUsername() != null)
+            userTextBox.setText(cc.getUsername());
+        if (cc.getPassword() != null)
+            passwordTextBox.setText(cc.getPassword());
+        if (cc.getCatalog() != null)
+            catalogTextBox.setText(cc.getCatalog());
+        startupCheckbox.setValue(cc.isConnectOnStartup());
+    }
+    
+    
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(WIDTH, HEIGHT);
@@ -113,6 +132,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
      */
     private CubeConnection getCubeConnection() {
         final CubeConnection cubeConn = new CubeConnection(ConnectionType.XMLA);
+        cubeConn.setId(idHidden.getValue());
         cubeConn.setName(nameTextBox.getText());
         cubeConn.setUrl(urlTextBox.getText());
         if (userTextBox.getText() != null && userTextBox.getText().length() > 0) {
