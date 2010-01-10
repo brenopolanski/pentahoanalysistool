@@ -19,7 +19,9 @@
  */
 package org.pentaho.pat.client.util.dnd;
 
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.ui.widgets.MeasureGrid;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -162,7 +164,11 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onPreviewDrop(final DragContext context) throws VetoDragException {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         super.onPreviewDrop(context);
-        if (trDragController.getDraggableTable() == flexTable)
+        if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresDimension())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED)))
+            throw new VetoDragException();
+        else if((trDragController.getDraggableTable().getParent().getParent().getParent() instanceof MeasureGrid && ((DimensionFlexTable)trDragController.getDraggableTable().getParent().getParent().getParent().getParent()).getAxis().equals(flexTable.getAxis())))
+            throw new VetoDragException();
+        else if(trDragController.getDraggableTable() == flexTable)
             throw new VetoDragException();
     }
 
