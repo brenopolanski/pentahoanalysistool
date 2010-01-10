@@ -245,7 +245,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
         westPanel.add(mainMenuPanel);
 
-        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
+        baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, "20%", "10px", "200px", true));
         baselayoutPanel.setCollapsed(westPanel, false);
 
         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));

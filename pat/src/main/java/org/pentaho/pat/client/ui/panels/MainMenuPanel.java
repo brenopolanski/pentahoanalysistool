@@ -73,7 +73,7 @@ public class MainMenuPanel extends LayoutComposite {
         DOM.setStyleAttribute(centerPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         centerPanel.add(dimPanel);
-        rootPanel.add(centerPanel);
+        rootPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
 
         final CaptionLayoutPanel southPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().properties());
         // FIXME remove that and use style
@@ -89,8 +89,8 @@ public class MainMenuPanel extends LayoutComposite {
             }
         });
         southPanel.add(propertiesPanel);
-        rootPanel.add(southPanel, new BorderLayoutData(Region.SOUTH, 0.5, true));
-        rootPanel.setCollapsed(southPanel, true);
+        rootPanel.add(southPanel, new BorderLayoutData(Region.SOUTH, "50%", true));
+        //rootPanel.setCollapsed(southPanel, true);
 
     }
 
