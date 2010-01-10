@@ -119,10 +119,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
-        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
+        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, "50%", "0px", "1000px"));
 
-        mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
-        mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
+        mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, "20%", "50px", "200px"));
+        mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, "20%", "50px", "200px"));
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
@@ -144,16 +144,16 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         } else {
             switch (chartPos) {
             case WEST:
-                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, "50%", "0px", "1000px"));
                 break;
             case EAST:
-                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, 0.5, 0, 1000));
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.EAST, "50%", "0px", "1000px"));
                 break;
             case NORTH:
-                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, 0.5, 0, 1000));
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.NORTH, "50%", "0px", "1000px"));
                 break;
             case SOUTH:
-                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, 0.5, 0, 1000));
+                fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.SOUTH, "50%", "0px", "1000px"));
                 break;
             case CENTER:
                 olapTable.removeFromParent();

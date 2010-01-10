@@ -204,7 +204,7 @@ public class Pat implements EntryPoint {
         }
 
         // Find existing style sheets that need to be removed
-        boolean styleSheetsFound = false;
+/*        boolean styleSheetsFound = false;
         final HeadElement headElem = StyleSheetLoader.getHeadElement();
         final List<Element> toRemove = new ArrayList<Element>();
         final NodeList<Node> children = headElem.getChildNodes();
@@ -234,13 +234,16 @@ public class Pat implements EntryPoint {
         }
         // Detach the app while we manipulate the styles to avoid rendering
         // issues
-        // RootPanel.get().remove(app);
-        app.removeFromParent();
+         
+         
+         RootPanel.get().remove(app);
+       // app.removeFromParent();
 
         // Remove the old style sheets
         for (final Element elem : toRemove) {
             headElem.removeChild(elem);
         }
+        */
         // Load the GWT theme style sheet
         final String modulePath = GWT.getModuleBaseURL();
         final Command callback = new Command() {
