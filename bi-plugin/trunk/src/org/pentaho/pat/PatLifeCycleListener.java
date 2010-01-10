@@ -2,6 +2,7 @@ package org.pentaho.pat;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
@@ -9,6 +10,9 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.server.data.pojo.ConnectionType;
+import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
@@ -19,6 +23,11 @@ import org.pentaho.platform.api.engine.PluginLifecycleException;
 import org.pentaho.platform.api.engine.ServiceException;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianCatalog;
+import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianCatalogHelper;
+import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianDataSource;
+import org.pentaho.platform.web.servlet.PentahoXmlaServlet;
+import org.pentaho.reporting.engine.classic.extensions.datasources.mondrian.parser.MondrianConnectionReadHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -99,15 +108,22 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         lsfBean.setDataSource(dsBean);
                         sfBean = (SessionFactory) lsfBean.getObject();
                         
+                        
+                        
+                        
                     }
                     
                 });
                 applicationContext.refresh();
                 
+                Thread.currentThread().setContextClassLoader(pluginClassloader);
+                
+                 
                 ((SessionServlet)targetSessionBean).setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
                 ((SessionServlet)targetSessionBean).init();
-
+                
+                
                 ((QueryServlet)targetQueryBean).setStandalone(true);
                 QueryServlet.setApplicationContext(applicationContext);
                 ((QueryServlet)targetQueryBean).init();
@@ -115,6 +131,26 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
                 DiscoveryServlet.setApplicationContext(applicationContext);
                 ((DiscoveryServlet)targetDiscoveryBean).init();
+                
+                
+                List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);
+                String pentahoXmlaUrl = "";
+                if ( catalogs.size() > 0 ) {
+                    // DEBUG MSG
+                    System.out.println("PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
+                    pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
+                    CubeConnection cc = new CubeConnection();
+                    cc.setName("Automatic Pentaho XMLA");
+                    cc.setUrl(pentahoXmlaUrl);
+                    cc.setConnectionType(CubeConnection.ConnectionType.XMLA);
+                    cc.setConnectOnStartup(true);
+                    
+                    String defaultConId = ((SessionServlet)targetSessionBean).saveConnection("1234", cc);
+                    System.out.println("##### CONNECTION SAVED");
+                    
+                    
+                }
+                
 
             }
             else
