@@ -44,6 +44,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -127,6 +128,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
     private static final String VALIDATION_END = "[/VALIDATION_END]"; //$NON-NLS-1$
 
+    private final Hidden idHidden;
     /** Textbox for connection name. */
     private final TextBox nameTextBox;
 
@@ -164,7 +166,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
      */
     public ConnectMondrianPanel() {
         super(new BorderLayout());
-
+        idHidden = new Hidden();
         nameTextBox = new TextBox();
         saveButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
@@ -180,6 +182,26 @@ public class ConnectMondrianPanel extends LayoutComposite {
         init();
 
     }
+    
+    public ConnectMondrianPanel(CubeConnection cc) {
+        this();
+        idHidden.setValue(cc.getId());
+        nameTextBox.setText(cc.getName());
+        urlTextBox.setText(cc.getUrl());
+        if (cc.getUsername() != null)
+            userTextBox.setText(cc.getUsername());
+        if (cc.getPassword() != null)
+            passwordTextBox.setText(cc.getPassword());
+        if (cc.getDriverClassName() != null) {
+            for (int i=0; i < driverListBox.getItemCount(); i++) {
+                if (driverListBox.getItemText(i).equals(cc.getDriverClassName()))
+                    driverListBox.setSelectedIndex(i);
+            }
+        }
+        startupCheckbox.setValue(cc.isConnectOnStartup());
+        saveButton.setEnabled(true);
+    }
+    
 
     @Override
     public Dimension getPreferredSize() {
@@ -221,6 +243,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
      */
     private CubeConnection getCubeConnection() {
         final CubeConnection cubeConn = new CubeConnection(ConnectionType.Mondrian);
+        cubeConn.setId(idHidden.getValue());
         cubeConn.setName(nameTextBox.getText());
         cubeConn.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
         cubeConn.setUrl(urlTextBox.getText());
@@ -356,12 +379,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
     public boolean validateConnection(CubeConnection cc) {
 
-        if (cc.getDriverClassName().length() == 0 || cc.getName().length() == 0 || cc.getSchemaData().length() == 0 || cc.getUrl().length() == 0) {
+        if (cc.getDriverClassName().length() == 0 || cc.getName().length() == 0  || cc.getUrl().length() == 0) {
+            if (idHidden.getValue() == null && cc.getSchemaData().length() == 0) {
             IGuiConstants inst = ConstantFactory.getInstance();
             MessageBox.error(ConstantFactory.getInstance().error(),
                     MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.jdbcDriver()).concat(",").concat(inst.jdbcUrl())));
             return false;
-            //MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
+            }
         }
         return true;
     }

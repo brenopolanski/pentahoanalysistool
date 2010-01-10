@@ -67,34 +67,40 @@ public class ConnectionManagerWindow extends WindowPanel {
     private final static TabLayoutPanel TABPANEL = new TabLayoutPanel();
 
     public static void closeTabs() {
+        closeTabs(true);
+    }
+    public static void closeTabs(boolean refresh) {
         for (final int i = 0; i < TABPANEL.getWidgetCount();) {
             TABPANEL.remove(i);
         }
         WINCONTENTPANEL.remove(TABPANEL);
-        refreshWindow();
+        if (refresh)
+            refreshWindow();
     }
 
     public static void display() {
-        refreshWindow();
+        closeTabs();
     }
 
-    public static void display(final CubeConnection cubeConn) {
-        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
-            // TODO uncomment when implemented
-            // connectMondrian = new ConnectMondrianPanel(cc);
-            TABPANEL.selectTab(0);
+    public static void display(final CubeConnection cc) {
+        if (TABPANEL.getWidgetCount() == 0) {
+        
+        if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
+            connectMondrian = new ConnectMondrianPanel(cc);
+            TABPANEL.add(connectMondrian, ConstantFactory.getInstance().mondrian());
         }
-        if (cubeConn.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
-            // TODO uncomment when implemented
-            // connectXmla = new ConnectXmlaPanel(cc)
-            TABPANEL.selectTab(1);
+        if (cc.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
+            connectXmla = new ConnectXmlaPanel(cc);
+            TABPANEL.add(connectXmla, ConstantFactory.getInstance().xmla());
+            
         }
-        display();
+        TABPANEL.selectTab(0);
+        WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));        
+        refreshWindow();
+        }
     }
 
     public static void showNewConnection() {
-        // TODO add when implemented
-        // ConnectionManagerPanel.refresh();
         if (TABPANEL.getWidgetCount() == 0) {
             connectMondrian = new ConnectMondrianPanel();
             connectXmla = new ConnectXmlaPanel();
@@ -115,6 +121,7 @@ public class ConnectionManagerWindow extends WindowPanel {
         //
         // if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
         // connectionManagerWindow.setPixelSize(preferredWidth, 356);
+
         CONNMANGRWINDOW.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
         CONNMANGRWINDOW.showModal();
