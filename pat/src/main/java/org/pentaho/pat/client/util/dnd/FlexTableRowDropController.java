@@ -25,12 +25,8 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
-import com.allen_sauer.gwt.dnd.client.util.CoordinateLocation;
-import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.Location;
-import com.allen_sauer.gwt.dnd.client.util.LocationWidgetComparator;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
-import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -55,33 +51,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
 
     /** Target Row. */
     private final static int TARGETCOL = 0;
-    private int targetRow;
-
 
     /** The Drop Axis. */
     private org.pentaho.pat.rpc.dto.IAxis targetAxis;
 
-    private IndexedPanel flexTableRowsAsIndexPanel = new IndexedPanel() {
-
-	    public Widget getWidget(int index) {
-	      return flexTable.getWidget(index, 0);
-	    }
-
-	    public int getWidgetCount() {
-	      return flexTable.getRowCount();
-	    }
-
-	    public int getWidgetIndex(Widget child) {
-	      throw new UnsupportedOperationException();
-	    }
-
-	    public boolean remove(int index) {
-	      throw new UnsupportedOperationException();
-	    }
-	  };
-
-
-    
     /**
      * Constructor.
      * 
@@ -179,23 +152,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        targetRow = DOMUtil.findIntersect(flexTableRowsAsIndexPanel, new CoordinateLocation(
-                context.mouseX, context.mouseY), LocationWidgetComparator.BOTTOM_HALF_COMPARATOR) - 1;
-/*
-        final Widget w = flexTable.getWidget(targetRow, 0);
+        final Widget w = flexTable.getWidget(TARGETROW, 0);
         final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
         context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (w.getOffsetHeight()));
-  */      
-
-        if (flexTable.getRowCount() > 0) {
-          Widget w = flexTable.getWidget(targetRow == -1 ? 0 : targetRow, 0);
-          Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
-          Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
-          context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop()
-              + (targetRow == -1 ? 0 : w.getOffsetHeight()));
-        }
-
     }
 
     @Override

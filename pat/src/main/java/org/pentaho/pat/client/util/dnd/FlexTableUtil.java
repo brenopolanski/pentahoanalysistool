@@ -34,8 +34,6 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
-
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -90,7 +88,7 @@ public class FlexTableUtil {
      * @param targetAxis
      *            the target axis
      */
-/*    public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
+    public static void moveRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
             final int sourceRow, final int targetRow, final int sourceCol, final int targetCol, final IAxis targetAxis) {
         LogoPanel.spinWheel(true);
         final int sRow = sourceRow;

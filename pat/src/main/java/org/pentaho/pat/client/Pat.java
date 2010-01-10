@@ -36,6 +36,7 @@ import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -96,7 +97,7 @@ public class Pat implements EntryPoint {
     
     private static String currScenario;
     
-    private static String measuresAxis;
+    private static IAxis measuresAxis;
 
     private static DrillType currDrillType = DrillType.POSITION;
 
@@ -385,11 +386,11 @@ public class Pat implements EntryPoint {
 	return currScenario;
     }
 
-    public static void setMeasuresDimension(String measuresDimension) {
+    public static void setMeasuresDimension(IAxis measuresDimension) {
 	Pat.measuresAxis = measuresDimension;
     }
 
-    public static String getMeasuresDimension() {
+    public static IAxis getMeasuresDimension() {
 	return measuresAxis;
     }
 

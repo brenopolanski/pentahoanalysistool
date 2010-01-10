@@ -188,6 +188,7 @@ public class FlexTableRowDragController extends PickupDragController {
      */
     @Override
     protected Widget newDragProxy(final DragContext context) {
+
         DimensionFlexTable proxy = new DimensionFlexTable();
         proxy.addStyleName(DRAG_CSS_PROXY);
         
@@ -196,11 +197,6 @@ public class FlexTableRowDragController extends PickupDragController {
         dragCol = getWidgetCol(context.draggable, draggableTable);
         FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);
         return proxy;
-	}
-	else{
-	    
-	    return null;
-	}
     }
 
     /*

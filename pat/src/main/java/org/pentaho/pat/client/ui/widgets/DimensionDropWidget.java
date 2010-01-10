@@ -103,20 +103,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 
     }
-    
-    public DimensionDropWidget(final String labelText, final Standard targetAxis,
-            final FlexTableRowDragController tblRowDragCont, Boolean measures) {
-        super();
-        this.tblRowDragCont = tblRowDragCont;
-        this.dimAxis = targetAxis;
-        query = Pat.getCurrQuery();
-        baseLayoutPanel = getLayoutPanel();
-        init(labelText, dimAxis);
-        baseLayoutPanel.add(captLayoutPanel);
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
-        this.setMeasures(measures);
-    }
-
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
             final FlexTableRowDragController tblRowDragCont) {
         super();
