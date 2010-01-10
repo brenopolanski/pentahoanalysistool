@@ -43,6 +43,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("url", conn.getUrl()); //$NON-NLS-1$
         assertEquals("password", conn.getPassword()); //$NON-NLS-1$
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
+        assertEquals(false, conn.isConnectOnStartup()); //$NON-NLS-1$
         assertEquals(ConnectionType.MONDRIAN, conn.getType());
 
         finishTest();
@@ -120,15 +121,15 @@ public class UserManagerImplTest extends AbstractManagerTest {
     public void testCreateSavedConnection() throws Exception 
     {
         String[][] expectedConnections = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url","false", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "false","username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         };
         String[][] expectedMemberships = new String[][] {
                 {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
                 {"new_user","2222-2222-2222-2222"} //$NON-NLS-1$ //$NON-NLS-2$
         };
         String[][] expectedConnections2 = new String[][] {
-                {"1111-1111-1111-1111",  "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"1111-1111-1111-1111",  "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "false","username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         };
         String[][] expectedMemberships2 = new String[][] {
                 {"admin","1111-1111-1111-1111"} //$NON-NLS-1$ //$NON-NLS-2$
@@ -148,6 +149,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         conn.setUsername("username"); //$NON-NLS-1$
         conn.setPassword("password"); //$NON-NLS-1$
         conn.setName("my_connection"); //$NON-NLS-1$
+        conn.setConnectOnStartup(false);
         
         user.getSavedConnections().add(conn);
         
@@ -164,11 +166,12 @@ public class UserManagerImplTest extends AbstractManagerTest {
         assertEquals("my_connection", conn.getName()); //$NON-NLS-1$
         assertEquals("username", conn.getUsername()); //$NON-NLS-1$
         assertEquals("url", conn.getUrl()); //$NON-NLS-1$
+        assertEquals(false, conn.isConnectOnStartup()); //$NON-NLS-1$
         assertEquals("password", conn.getPassword()); //$NON-NLS-1$
         assertEquals("driver_name", conn.getDriverClassName()); //$NON-NLS-1$
         assertEquals(ConnectionType.MONDRIAN, conn.getType());
         
-        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, connectonstartup, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
         String[][] currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
@@ -190,7 +193,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
             if (connCheckup.getId().equals(connId))
                 fail();
         
-        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, connectonstartup, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
         currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
@@ -202,15 +205,15 @@ public class UserManagerImplTest extends AbstractManagerTest {
     public void testSavedConnectionUpdateBug() throws Exception
     {
         String[][] expectedConnections = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "false", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {"2222-2222-2222-2222", "driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "false", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
         };
         String[][] expectedMemberships = new String[][] {
                 {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
                 {"admin","2222-2222-2222-2222"} //$NON-NLS-1$ //$NON-NLS-2$
         };
         String[][] expectedConnections2 = new String[][] {
-                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                {"1111-1111-1111-1111", "driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "false", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         };
         String[][] expectedMemberships2 = new String[][] {
                 {"admin","1111-1111-1111-1111"} //$NON-NLS-1$ //$NON-NLS-2$
@@ -218,7 +221,7 @@ public class UserManagerImplTest extends AbstractManagerTest {
         String userId = "admin"; //$NON-NLS-1$
         initTest();
         
-        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username  from pat_connections"); //$NON-NLS-1$
+        String[][] currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, connectonstartup, username  from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections2, currentConnections);
         
         String[][] currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$
@@ -233,10 +236,11 @@ public class UserManagerImplTest extends AbstractManagerTest {
         conn.setUsername("username"); //$NON-NLS-1$
         conn.setPassword("password"); //$NON-NLS-1$
         conn.setName("my_connection"); //$NON-NLS-1$
+        conn.setConnectOnStartup(false);
         user.getSavedConnections().add(conn);
         this.userManager.updateUser(user);
         
-        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
+        currentConnections = runOnDatasource("select id, driverClassName, name, password, type, url, connectonstartup, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnections, currentConnections);
         
         currentMemberships = runOnDatasource("select user_id, connection_id from pat_users_connections"); //$NON-NLS-1$

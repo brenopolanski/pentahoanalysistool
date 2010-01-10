@@ -49,6 +49,15 @@ public class SessionServlet extends AbstractServlet implements ISession {
             throw new ServletException(Messages.getString("Servlet.SessionServiceNotFound")); //$NON-NLS-1$
         }
     }
+    
+    public void bootstrapSession(final String sessionId) {
+        try {
+            this.sessionService.bootstrapSession(getCurrentUserId(), sessionId);
+        } catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Session.CantBootstrapSession"), e); //$NON-NLS-1$
+
+        }
+    }
 
     public void connect(final String sessionId, final String connectionId) throws RpcException {
         try {
@@ -143,13 +152,16 @@ public class SessionServlet extends AbstractServlet implements ISession {
 
     public String createSession() throws RpcException {
         try {
-            return sessionService.createNewSession(getCurrentUserId());
+            String sessionId =  sessionService.createNewSession(getCurrentUserId());
+            bootstrapSession(sessionId);
+            return sessionId;
         }
         catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Session.CantCreateNewSession"),e);
             throw new RpcException(Messages.getString("Servlet.Session.CantCreateNewSession"));
         }
     }
+
 
     public String createNewScenario(String sessionId, String connectionId)throws RpcException{
 	try {
@@ -172,6 +184,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
         cc.setCatalog(sc.getCatalog());
         cc.setSchemaData(sc.getSchemaData());
         cc.setId(sc.getId());
+        cc.setConnectOnStartup(sc.isConnectOnStartup());
 
         return cc;
     }
@@ -188,7 +201,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
         sc.setPassword(cc.getPassword());
         sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));
         sc.setSchemaData(cc.getSchemaData());
-
+        sc.setConnectOnStartup(cc.isConnectOnStartup());
         return sc;
     }
     

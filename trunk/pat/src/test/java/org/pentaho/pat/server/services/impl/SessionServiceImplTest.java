@@ -186,6 +186,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         conn.setUsername("username"); //$NON-NLS-1$
         conn.setPassword("password"); //$NON-NLS-1$
         conn.setName("my_connection"); //$NON-NLS-1$
+        conn.setConnectOnStartup(false);
         this.sessionService.saveConnection(userId, conn);
         
         String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$

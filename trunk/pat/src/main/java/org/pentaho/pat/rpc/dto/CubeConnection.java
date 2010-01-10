@@ -53,6 +53,8 @@ public class CubeConnection implements Serializable, IsSerializable {
     private ConnectionType connectionType = null;
 
     private String schemaData = null;
+    
+    private boolean connectOnStartup = false;
 
     public enum ConnectionType implements IsSerializable {
         XMLA, Mondrian
@@ -127,6 +129,14 @@ public class CubeConnection implements Serializable, IsSerializable {
 
     public void setSchemaData(final String schemaData) {
         this.schemaData = schemaData;
+    }
+
+    public boolean isConnectOnStartup() {
+        return connectOnStartup;
+    }
+
+    public void setConnectOnStartup(boolean connectOnStartup) {
+        this.connectOnStartup = connectOnStartup;
     }
 
     public String getId() {

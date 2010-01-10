@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -40,6 +41,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -58,9 +60,9 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
  */
 
 public class ConnectMondrianPanel extends LayoutComposite {
-    
-    
-    
+
+
+
     /** Form element name of the file component. */
     private static final String FORM_NAME_FILE = "file"; //$NON-NLS-1$
 
@@ -84,10 +86,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
     // Thanks to public domain code http://www.zaharov.info/notes/3_228_0.html
     public static native String decode(final String data) /*-{
-                                                                
+
                                                                 var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
                                                                 var out = "", c1, c2, c3, e1, e2, e3, e4;
-                                                                
+
                                                                 for (var i = 0; i < data.length; ) {
                                                                 e1 = tab.indexOf(data.charAt(i++));
                                                                 e2 = tab.indexOf(data.charAt(i++));
@@ -97,16 +99,16 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                                                 c2 = ((e2 & 15) << 4) + (e3 >> 2);
                                                                 c3 = ((e3 & 3) << 6) + e4;
                                                                 out += String.fromCharCode(c1);
-                                                                
+
                                                                 if (e3 != 64)
                                                                 out += String.fromCharCode(c2);
-                                                                
+
                                                                 if (e4 != 64)
                                                                 out += String.fromCharCode(c3);
                                                                 }
-                                                                
+
                                                                 return out;
-                                                                
+
                                                                 }-*/;
 
     /**
@@ -120,7 +122,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * backend.
      */
     private final static String SCHEMA_END = "[/SCHEMA_END]"; //$NON-NLS-1$
-    
+
     private static final String VALIDATION_START = "[VALIDATION_START]"; //$NON-NLS-1$
 
     private static final String VALIDATION_END = "[/VALIDATION_END]"; //$NON-NLS-1$
@@ -146,8 +148,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
     /** Schema upload button. */
     private final Button uploadButton;
 
+    private final CheckBox startupCheckbox;
+
     /** Connect button. */
-    private final Button connectButton;
+    private final Button saveButton;
 
     /** Cancel button. */
     private final Button cancelButton;
@@ -162,7 +166,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         super(new BorderLayout());
 
         nameTextBox = new TextBox();
-        connectButton = new Button(ConstantFactory.getInstance().save());
+        saveButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
         driverListBox = createDriverListComboBox();
@@ -171,6 +175,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         passwordTextBox = new PasswordTextBox();
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
+        startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
 
         init();
 
@@ -230,6 +235,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
             cubeConn.setPassword(null);
         }
         cubeConn.setSchemaData(schemaData);
+        cubeConn.setConnectOnStartup(startupCheckbox.getValue());
         return cubeConn;
     }
 
@@ -261,9 +267,9 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                 arg0.getResults().indexOf(SCHEMA_START) + SCHEMA_START.length(),
                                 arg0.getResults().indexOf(SCHEMA_END));
                         schemaData = decode(tmp);
-                        connectButton.setEnabled(true);
+                        saveButton.setEnabled(true);
                         // TODO remove this later
-                        
+
                         Application.showInfoPanel(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success());
                     } else {
                         MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
@@ -278,7 +284,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -307,28 +313,34 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
 
         builder.add(uploadButton, CellConstraints.xyw(3, 11, 5));
-        connectButton.addClickHandler(new ClickHandler() {
-            public void onClick(final ClickEvent event) {
-                connectButton.setEnabled(false);
-                ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
-                        new AsyncCallback<String>() {
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedLoadConnection(arg0.getLocalizedMessage()));
-                                connectButton.setEnabled(true);
-                            }
+        builder.add(startupCheckbox,CellConstraints.xy(3,13));
 
-                            public void onSuccess(final String object) {
-                                connectButton.setEnabled(true);
-                                // TODO refresh or close?
-                                ConnectionManagerWindow.closeTabs();
-                            }
-                        });
+        saveButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                if (validateConnection(getCubeConnection())) {
+
+                    saveButton.setEnabled(false);
+                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                            new AsyncCallback<String>() {
+                        public void onFailure(final Throwable arg0) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedLoadConnection(arg0.getLocalizedMessage()));
+                            saveButton.setEnabled(true);
+                        }
+
+                        public void onSuccess(final String object) {
+                            saveButton.setEnabled(true);
+                            // TODO refresh or close?
+                            ConnectionManagerWindow.closeTabs();
+                        }
+                    });
+
+                }
             }
         });
 
-        connectButton.setEnabled(false);
-        builder.add(connectButton, CellConstraints.xy(3, 15));
+        saveButton.setEnabled(false);
+        builder.add(saveButton, CellConstraints.xy(3, 15));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -340,6 +352,18 @@ public class ConnectMondrianPanel extends LayoutComposite {
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);
         this.getLayoutPanel().add(formPanel);
+    }
+
+    public boolean validateConnection(CubeConnection cc) {
+
+        if (cc.getDriverClassName().length() == 0 || cc.getName().length() == 0 || cc.getSchemaData().length() == 0 || cc.getUrl().length() == 0) {
+            IGuiConstants inst = ConstantFactory.getInstance();
+            MessageBox.error(ConstantFactory.getInstance().error(),
+                    MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.jdbcDriver()).concat(",").concat(inst.jdbcUrl())));
+            return false;
+            //MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
+        }
+        return true;
     }
 
 }

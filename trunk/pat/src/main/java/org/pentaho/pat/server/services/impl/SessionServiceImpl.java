@@ -75,6 +75,17 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
 
         return generatedId;
     }
+    
+    public void bootstrapSession(final String userId, final String sessionId) throws OlapException {
+            this.validateSession(userId, sessionId);
+            final List<SavedConnection> savedConnections = getConnections(userId);
+            for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
+                if (savedConnections.get(cpt).isConnectOnStartup()) {
+                    connect(userId, sessionId, savedConnections.get(cpt));
+                }
+            }
+
+    }
 
     public void releaseSession(final String userId, final String sessionId) {
         this.validateSession(userId, sessionId);

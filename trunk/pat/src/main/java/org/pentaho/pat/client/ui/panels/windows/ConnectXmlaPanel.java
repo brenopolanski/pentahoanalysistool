@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -39,6 +40,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -75,8 +77,10 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Password Textbox. */
     private final PasswordTextBox passwordTextBox;
 
+    private final CheckBox startupCheckbox;
+
     /** Connect button. */
-    private final Button connectButton;
+    private final Button saveButton;
 
     /** Cancel button. */
     private final Button cancelButton;
@@ -86,13 +90,14 @@ public class ConnectXmlaPanel extends LayoutComposite {
      */
     public ConnectXmlaPanel() {
         super(new BorderLayout());
-        connectButton = new Button(ConstantFactory.getInstance().save());
+        saveButton = new Button(ConstantFactory.getInstance().save());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
         catalogTextBox = new TextBox();
+        startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
         init();
     }
 
@@ -124,6 +129,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         if (catalogTextBox.getText() != null && catalogTextBox.getText().length() > 0) {
             cubeConn.setCatalog(catalogTextBox.getText());
         }
+        cubeConn.setConnectOnStartup(startupCheckbox.getValue());
         return cubeConn;
     }
 
@@ -134,7 +140,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-                "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -146,27 +152,29 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
         builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
         builder.add(catalogTextBox, CellConstraints.xyw(3, 7, 5));
-
-        connectButton.addClickHandler(new ClickHandler() {
+        builder.add(startupCheckbox,CellConstraints.xy(3,9));
+        saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                connectButton.setEnabled(false);
-                ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
-                        new AsyncCallback<String>() {
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedLoadConnection(arg0.getLocalizedMessage()));
-                                connectButton.setEnabled(true);
-                            }
+                if (validateConnection(getCubeConnection())) {
+                    saveButton.setEnabled(false);
+                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                            new AsyncCallback<String>() {
+                        public void onFailure(final Throwable arg0) {
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                    .failedLoadConnection(arg0.getLocalizedMessage()));
+                            saveButton.setEnabled(true);
+                        }
 
-                            public void onSuccess(final String object) {
-                                connectButton.setEnabled(true);
-                                ConnectionManagerWindow.closeTabs();
-                            }
-                        });
+                        public void onSuccess(final String object) {
+                            saveButton.setEnabled(true);
+                            ConnectionManagerWindow.closeTabs();
+                        }
+                    });
+                }
             }
         });
 
-        builder.add(connectButton, CellConstraints.xy(3, 11));
+        builder.add(saveButton, CellConstraints.xy(3, 11));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
@@ -178,5 +186,18 @@ public class ConnectXmlaPanel extends LayoutComposite {
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);
     }
+
+    public boolean validateConnection(CubeConnection cc) {
+
+        if (cc.getName().length() == 0 || cc.getUrl().length() == 0) {
+            IGuiConstants inst = ConstantFactory.getInstance();
+            MessageBox.error(ConstantFactory.getInstance().error(),
+                    MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.xmlaUrl())));
+            return false;
+            //MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
+        }
+        return true;
+    }
+
 
 }

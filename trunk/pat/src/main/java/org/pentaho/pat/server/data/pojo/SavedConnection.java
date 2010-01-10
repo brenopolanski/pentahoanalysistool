@@ -67,6 +67,9 @@ public class SavedConnection implements Comparable<SavedConnection> {
 
     @Basic
     private String catalog;
+    
+    @Basic
+    private Boolean connectOnStartup;
 
     @Basic
     @Type(type = "org.pentaho.pat.server.data.pojo.ConnectionType")
@@ -159,6 +162,14 @@ public class SavedConnection implements Comparable<SavedConnection> {
 
     public void setSchemaData(String schemaData) {
         this.schemaData = schemaData;
+    }
+
+    public boolean isConnectOnStartup() {
+        return connectOnStartup;
+    }
+
+    public void setConnectOnStartup(boolean connectOnStartup) {
+        this.connectOnStartup = connectOnStartup;
     }
 
     public int compareTo(final SavedConnection o) {
