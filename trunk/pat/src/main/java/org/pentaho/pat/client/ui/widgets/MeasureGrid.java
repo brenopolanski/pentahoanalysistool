@@ -7,6 +7,7 @@ import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.rpc.dto.IAxis;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 
@@ -30,6 +31,7 @@ public class MeasureGrid extends FocusPanel{
         super();
         grid = new DimensionFlexTable();
         final CaptionPanel panel = new CaptionPanel("Measures");
+        DOM.setStyleAttribute(this.getElement(), "background", "yellow");
         panel.add(grid);
         this.add(panel);
     }
