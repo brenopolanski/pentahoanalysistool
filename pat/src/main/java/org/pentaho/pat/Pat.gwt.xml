@@ -56,4 +56,5 @@
   	<extend-property name="locale" values="nl"/>
   	<extend-property name="locale" values="it"/>
 	<extend-property name="locale" values="pt"/>
+	<extend-property name="locale" values="pl"/>
 </module>
