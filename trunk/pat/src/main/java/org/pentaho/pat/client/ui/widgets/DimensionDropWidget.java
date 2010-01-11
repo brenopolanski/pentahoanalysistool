@@ -159,9 +159,8 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      */
     public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // If the drop axis equals the target axis add the widget.
-        MeasureGrid mg2 = null;
-        if(sender instanceof MeasureLabel)
-        mg2 = (MeasureGrid)sender.getParent().getParent().getParent().getParent();
+
+
         if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis == targetAxis) {
             
             if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)){
@@ -209,14 +208,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             flexTableRemoveRecord(sourceRow);
             }
         }
-        else if (isAttached() && isVisible() && sourceAxis == null && mg2!=null && mg2.getCurrentAxis()!=null
-                && !(mg2.getCurrentAxis().equals(IAxis.UNUSED))){
-            for(int i = 0; i< dimensionTable.getRowCount(); i++){
-                if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
-                    flexTableRemoveRecord(i);
-                }
-            }
-        }
+        
     }
 
     private void flexTableRemoveRecord(int sourceRow) {
