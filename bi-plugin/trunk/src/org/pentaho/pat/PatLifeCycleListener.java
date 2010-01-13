@@ -139,14 +139,20 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     // DEBUG MSG
                     System.out.println("PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
                     pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
+                    pentahoXmlaUrl = "http://localhost:8080/pentaho/Xmla";
                     CubeConnection cc = new CubeConnection();
+                    cc.setId("automatic-pentaho-connection-1234");
                     cc.setName("Automatic Pentaho XMLA");
                     cc.setUrl(pentahoXmlaUrl);
                     cc.setConnectionType(CubeConnection.ConnectionType.XMLA);
                     cc.setConnectOnStartup(true);
-                    
-                    String defaultConId = ((SessionServlet)targetSessionBean).saveConnection("1234", cc);
-                    System.out.println("##### CONNECTION SAVED");
+
+                    if (((SessionServlet)targetSessionBean).getConnection("1234", cc.getId()) == null) {
+                        String defaultConId = ((SessionServlet)targetSessionBean).saveConnection("1234", cc);
+                        System.out.println("##### CONNECTION SAVED");
+                    }
+                    else
+                        System.out.println("#### automatic connection already saved");
                     
                     
                 }

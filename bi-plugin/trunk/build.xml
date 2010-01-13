@@ -32,9 +32,9 @@
 	<dirset dir="${pentaho.classes.dir}" />
   	<dirset dir="${pat.classes.dir}" />
   	    
-  	<dirset dir="${maven.repo.dir}" >
+  	<fileset dir="${maven.repo.dir}" >
   		<include name="*.jar" />
-  		</dirset>
+  		</fileset>
   </path>
   
   <!-- Copy all jars over to the plugin zip, 
