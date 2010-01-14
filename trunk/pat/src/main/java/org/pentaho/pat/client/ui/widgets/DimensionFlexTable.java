@@ -92,8 +92,14 @@ public class DimensionFlexTable extends FlexTable {
        if(b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
            this.addStyleName("validDropTarget");
        }
-       else{
+       else if(!b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
            this.removeStyleName("validDropTarget");
+       }
+       else if(b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+           this.addStyleName("invalidDropTarget");
+       }
+       else if(b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+           this.removeStyleName("invalidDropTarget");
        }
         
     }
