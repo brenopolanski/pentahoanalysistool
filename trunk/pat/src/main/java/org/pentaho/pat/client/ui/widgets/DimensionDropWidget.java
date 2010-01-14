@@ -257,7 +257,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                           dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable);
                             
                         }
-                        else
+                        else{
                         ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                                 "Measures", new AsyncCallback<StringTree>() { //$NON-NLS-1$
 
@@ -308,12 +308,12 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                                 }
                                             }
                                             refreshTable();
-                                        
+                                               
 
                                     }
                                 });
-
-                        refreshTable();
+                        }
+                        //refreshTable();
                     }
                 });
     }
