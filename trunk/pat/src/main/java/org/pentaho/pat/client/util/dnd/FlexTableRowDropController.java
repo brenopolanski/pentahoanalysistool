@@ -22,6 +22,7 @@ package org.pentaho.pat.client.util.dnd;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.ui.widgets.MeasureGrid;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -118,6 +119,10 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onEnter(final DragContext context) {
         super.onEnter(context);
         positioner = newPositioner(context);
+        if(context.draggable instanceof MeasureLabel){
+        this.flexTable.setEngaged(true);
+        }
+
     }
 
     /*
@@ -136,6 +141,9 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onLeave(final DragContext context) {
         positioner.removeFromParent();
         positioner = null;
+        if(context.draggable instanceof MeasureLabel){
+        this.flexTable.setEngaged(false);
+        }
         super.onLeave(context);
     }
 
