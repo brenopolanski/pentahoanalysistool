@@ -97,7 +97,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         baseLayoutPanel = getLayoutPanel();
         init(labelText, dimAxis);
         baseLayoutPanel.add(captLayoutPanel);
-//        GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
 
     }
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
@@ -180,7 +179,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 }
                 //Otherwise create a measure grid
                 else{
-                    MeasureGrid mg = new MeasureGrid();
+                    MeasureGrid mg = new MeasureGrid(query);
                     mg.setDragController(tblRowDragCont);
                     mg.setCurrentAxis(dimAxis);
                     mg.makeDraggable();
@@ -274,7 +273,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                             MeasureGrid measureDropWidget = null;
                                             
                                             if (index > -1) {
-                                                measureDropWidget = new MeasureGrid();
+                                                measureDropWidget = new MeasureGrid(query);
                                                 Pat.setMeasuresDimension(dimAxis);
                                                 tblRowDragCont.makeDraggable(measureDropWidget);
                                                 flexTableAddRecord(measureDropWidget, index);
@@ -313,7 +312,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                     }
                                 });
                         }
-                        //refreshTable();
                     }
                 });
     }
@@ -360,6 +358,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
 
+    
    
     
    

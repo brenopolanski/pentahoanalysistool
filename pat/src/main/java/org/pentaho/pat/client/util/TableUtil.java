@@ -64,7 +64,7 @@ public class TableUtil {
     
     public static MeasureGrid cloneMeasureGrid(MeasureGrid sender){
         MeasureGrid oldMeasureGrid = ((MeasureGrid)sender);
-        MeasureGrid mg = new MeasureGrid();
+        MeasureGrid mg = new MeasureGrid(oldMeasureGrid.getQuery());
         mg.setDragController(((MeasureGrid)sender).getDragController());
         for(int i=0; i<oldMeasureGrid.getRows().getRowCount(); i++){
             MeasureLabel oldMl = (MeasureLabel) oldMeasureGrid.getRows().getWidget(i, 0);

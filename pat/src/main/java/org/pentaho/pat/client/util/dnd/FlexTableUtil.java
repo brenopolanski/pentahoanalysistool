@@ -208,6 +208,7 @@ public class FlexTableUtil {
 
                                         public void onSuccess(Object arg0) {
 
+                                            sourceTable.removeRow(sourceRow);
                                             GlobalConnectionFactory.getQueryInstance().getQueryListeners()
                                                     .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                             targetTable.getAxis());
@@ -231,6 +232,7 @@ public class FlexTableUtil {
                         }
 
                         public void onSuccess(Object arg0) {
+                            sourceTable.removeRow(sourceRow);
                             GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
                                     sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                             Pat.setMeasuresDimension(targetAxis);
@@ -254,7 +256,7 @@ public class FlexTableUtil {
                         }
 
                         public void onSuccess(Object arg0) {
-
+                            sourceTable.removeRow(sourceRow);
                             GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
                                     sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                             LogoPanel.spinWheel(false);
@@ -265,11 +267,14 @@ public class FlexTableUtil {
 
             LogoPanel.spinWheel(false);
         }
+        
+       
 
     }
 
     private static void moveMeasureGrid(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
             final DimensionFlexTable targetTable, final IAxis targetAxis) {
+       if(Pat.getMeasuresDimension()==IAxis.UNUSED){
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                 "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
 
@@ -346,6 +351,30 @@ public class FlexTableUtil {
                     }
 
                 });
+       }
+       else if (Pat.getMeasuresDimension().equals(targetAxis)) {
+               ArrayList<String> memberList = new ArrayList<String>();
+               for(int i = 0; i< ((MeasureGrid) w).getMeasureLabels().size(); i++){
+               memberList.add(((MeasureLabel) ((MeasureGrid) w).getMeasureLabels().get(i)).getText().trim());
+               ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                       "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
 
+                           public void onFailure(Throwable arg0) {
+                               // TODO Auto-generated method stub
+
+                           }
+
+                           public void onSuccess(Object arg0) {
+
+                               GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                       sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                               LogoPanel.spinWheel(false);
+                           }
+                       });
+       }
+       }
+       else{
+           //TODO Throw error.
+       }
     }
 }

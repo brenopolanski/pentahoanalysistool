@@ -20,6 +20,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.core.client.DOM;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.FlexTable;
@@ -64,6 +65,7 @@ public class DimensionFlexTable extends FlexTable {
 
     }
 
+    
     /**
      *TODO JAVADOC
      * 
@@ -81,4 +83,20 @@ public class DimensionFlexTable extends FlexTable {
 	return axis;
     }
 
+    /**
+     *TODO JAVADOC
+     *
+     * @param b
+     */
+    public void setEngaged(boolean b) {
+       if(b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+           this.addStyleName("validDropTarget");
+       }
+       else{
+           this.removeStyleName("validDropTarget");
+       }
+        
+    }
+
+  
 }
