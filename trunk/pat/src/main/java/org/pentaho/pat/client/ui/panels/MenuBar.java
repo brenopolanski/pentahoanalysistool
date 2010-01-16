@@ -136,7 +136,7 @@ public class MenuBar extends LayoutComposite {
         SAVEBUTTON.setEnabled(false);
         rootPanel.add(SAVEBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
-
+    
     private void addLoadButton() {
         // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
         // cases)
