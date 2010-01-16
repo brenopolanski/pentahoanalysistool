@@ -845,6 +845,13 @@ public interface IGuiConstants extends Constants {
      *
      * @return
      */
-    String connectStartup(); 
+    String connectStartup();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String measures(); 
 
 }
