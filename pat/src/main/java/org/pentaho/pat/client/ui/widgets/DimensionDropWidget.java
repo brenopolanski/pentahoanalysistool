@@ -197,7 +197,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         } 
         //If the drop axis equals the source axis, remove the widget.
         else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis == sourceAxis))) {
-            if(dimAxis.equals(IAxis.UNUSED) && sender instanceof MeasureGrid){
+            if(dimAxis.equals(IAxis.UNUSED) && sender instanceof MeasureLabel){
                // tblRowDragCont.makeNotDraggable(sender);
             }else{
             flexTableRemoveRecord(sourceRow);

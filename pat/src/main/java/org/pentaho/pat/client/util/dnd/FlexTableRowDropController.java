@@ -119,7 +119,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onEnter(final DragContext context) {
         super.onEnter(context);
         positioner = newPositioner(context);
-        if(context.draggable instanceof MeasureLabel){
+        if(context.draggable instanceof MeasureLabel && ((MeasureLabel)context.draggable).getType() == MeasureLabel.labelType.MEASURE){
         this.flexTable.setEngaged(true);
         }
 

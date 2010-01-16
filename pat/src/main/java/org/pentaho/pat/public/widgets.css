@@ -24,12 +24,12 @@ height: 100%;
 
 .pat-invalidDropTarget
 {
-  background-color: green !important;
+  background-color: red !important;
 	border: 1px solid red !important;
 }
 
 .pat-validDropTarget{
-	background-color: green !important;
+	background-color: blue !important;
 	border: 1px solid blue !important;	
 }
 
@@ -39,7 +39,10 @@ border-color: white;
 background-color:white;
 }
 
+.pat-MeasureGrid{
+background-color:yellow;
 
+	}
 
 
 
