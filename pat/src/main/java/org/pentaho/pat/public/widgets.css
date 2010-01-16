@@ -1,8 +1,60 @@
-.dropFlextable{
+/* DROP TABLE CSS*/
+
+.pat-cellLabel{
+	
+	}
+	
+.pat-CubeTreeItem{
+background:transparent;	
+	}
+
+.pat-DataCellPanel{
+	
+	}
+
+.pat-DimensionDropWidget{
+	
+	}
+.pat-dragDimensionCell{
+	
+}
+.pat-dropRowEndCell {
+height: 100%;	
+}
+
+.pat-invalidDropTarget
+{
+  background-color: green !important;
+	border: 1px solid red !important;
+}
+
+.pat-validDropTarget{
+	background-color: green !important;
+	border: 1px solid blue !important;	
+}
+
+.pat-DimensionFlextable{
 border : 1px;
 border-color: white;
-background-color:#99bbe8;
+background-color:white;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .dropFlextable2{
 border : 1px;
@@ -15,19 +67,6 @@ width: 100%;
  height: 100px;
 }
 
-.invalidDropTarget
-{
-  background-color: green;
-	border: 1px solid red;
-}
-
-.validDropTarget{
-	background-color: green;
-	border: 1px solid blue;	
-}
-.dropRowEndCell {
-height: 100%;	
-}
 .dropEndCell {
   width: 100%;
 }
@@ -45,15 +84,15 @@ height: 100%;
 }
 
 
+
+
+
 .demo-table-positioner {
   z-index: 1;
   border-top: 1px solid green;
   margin-top: 1px;
 }
 
-.dragDimensionCell{
-	
-}
 
 .dragProxy{
 	background-color:#a6c5f4;

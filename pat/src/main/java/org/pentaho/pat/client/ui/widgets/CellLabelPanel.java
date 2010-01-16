@@ -21,10 +21,13 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 public class CellLabelPanel extends HorizontalPanel {
     private MemberCell memCell = null;
 
+    private final static String CELL_LABEL_PANEL = "pat-cellLabel"; //$NON-NLS-1$
+    
     public CellLabelPanel(final MemberCell memCell) {
         super();
         this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+        this.setStylePrimaryName(CELL_LABEL_PANEL);
     }
 
     @Override
