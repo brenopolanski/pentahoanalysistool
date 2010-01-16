@@ -133,8 +133,11 @@ public class LoadMenuPanel extends LayoutComposite {
     }
 
     public void load() {
+        load(listBox.getItem(listBox.getSelectedIndex()));
+    }
+    public static void load(final QuerySaveModel qsm) {
         ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
-                listBox.getItem(listBox.getSelectedIndex()).getId(), new AsyncCallback<QuerySaveModel>() {
+                qsm.getId(), new AsyncCallback<QuerySaveModel>() {
 
                     public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -143,7 +146,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
                     public void onSuccess(final QuerySaveModel arg0) {
                         if (arg0.getQueryType().equals(QueryType.QM)) {
-                            final OlapPanel olapPanel = new OlapPanel(arg0.getId(), listBox.getItem(listBox.getSelectedIndex()));
+                            final OlapPanel olapPanel = new OlapPanel(arg0.getId(), arg0);
                             MainTabPanel.displayContentWidget(olapPanel);
                         }
                         if (arg0.getQueryType().equals(QueryType.MDX)) {
@@ -155,7 +158,7 @@ public class LoadMenuPanel extends LayoutComposite {
                                 }
 
                                 public void onSuccess(String arg0) {
-                                    MdxPanel mdxPanel = new MdxPanel(listBox.getItem(listBox.getSelectedIndex()).getCube(),listBox.getItem(listBox.getSelectedIndex()).getConnection(),arg0);
+                                    MdxPanel mdxPanel = new MdxPanel(qsm.getCube(),qsm.getConnection(),arg0);
                                     MainTabPanel.displayContentWidget(mdxPanel);
 
                                 }
