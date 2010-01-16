@@ -20,31 +20,24 @@
 
 package org.pentaho.pat.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gwt.mosaic.core.client.util.DelayedRunnable;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
+import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.images.IGuiImages;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.State;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.HeadElement;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -164,9 +157,8 @@ public class Pat implements EntryPoint {
     public Pat() {
         // parse possible parameters
         parseInitialStateFromParameter();
-
+        
         app = new Application();
-
     }
 
     /*
@@ -341,7 +333,26 @@ public class Pat implements EntryPoint {
         final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
         assignSessionID(_sessionParam);
     }
+    
+    public static void saveQueryToSolution(String solution, String path, String name, String localizedFileName) {
+        MessageBox.info("SUCCESS", solution + ":" + path + ":" + name + ":" + localizedFileName);
+        
+        ServiceFactory.getQueryInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
+            public void onFailure(Throwable arg0) {
+                MessageBox.info("FALSCH", "FALSCH");
+                
+            }
+
+            public void onSuccess(Object arg0) {
+                // TODO Auto-generated method stub
+                MessageBox.info("SUCCESS", "SUCCESS");
+                
+            }
+            
+        });
+                
+    }
     /**
      *TODO JAVADOC
      * 

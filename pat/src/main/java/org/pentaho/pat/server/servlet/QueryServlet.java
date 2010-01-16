@@ -618,4 +618,15 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
 
     }
+
+    public  void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution,
+            String path, String name, String localizedFileName) throws RpcException {
+        try {
+            LOG.error("###### TEST SAVE OK" + solution + ":" + path + ":" + name + ":" + localizedFileName);
+        }
+        catch (Exception e) {
+            throw new RpcException("test");
+        }
+    }
+    
 }
