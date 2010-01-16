@@ -28,6 +28,8 @@
 	<webservice id="session.rpc" type="gwt" class="org.pentaho.pat.server.servlet.SessionServlet" />
 	<webservice id="query.rpc" type="gwt" class="org.pentaho.pat.server.servlet.QueryServlet" />
 	<webservice id="discovery.rpc" type="gwt" class="org.pentaho.pat.server.servlet.DiscoveryServlet" />
+	<webservice id="platform.rpc" type="gwt" class="org.pentaho.pat.server.servlet.PlatformServlet" />
+	
 	<lifecycle-listener class="org.pentaho.pat.plugin.PatLifeCycleListener" />
 
 

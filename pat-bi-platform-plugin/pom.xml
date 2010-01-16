@@ -99,7 +99,7 @@
 		<dependency>
 			<groupId>org.pentaho</groupId>
 			<artifactId>pat</artifactId>
-			<version>0.5.2</version>
+			<version>0.6-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

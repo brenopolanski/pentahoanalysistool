@@ -14,6 +14,7 @@ import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
+import org.pentaho.pat.server.servlet.PlatformServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 import org.pentaho.platform.api.engine.IPluginLifecycleListener;
@@ -49,6 +50,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             Object targetSessionBean = serviceManager.getServiceBean("gwt","session.rpc");
             Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
             Object targetDiscoveryBean = serviceManager.getServiceBean("gwt","discovery.rpc");
+            Object targetPlatformBean = serviceManager.getServiceBean("gwt","platform.rpc");
             
             final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
             final ClassLoader pluginClassloader = pluginManager.getClassLoader("Pentaho Analysis Tool Plugin");
@@ -117,7 +119,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 
                 Thread.currentThread().setContextClassLoader(pluginClassloader);
                 
-                 
+                
                 ((SessionServlet)targetSessionBean).setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
                 ((SessionServlet)targetSessionBean).init();
@@ -130,6 +132,10 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
                 DiscoveryServlet.setApplicationContext(applicationContext);
                 ((DiscoveryServlet)targetDiscoveryBean).init();
+                
+                ((PlatformServlet)targetPlatformBean).setStandalone(true);
+                PlatformServlet.setApplicationContext(applicationContext);
+                ((PlatformServlet)targetPlatformBean).init();
                 
                 
                 List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);

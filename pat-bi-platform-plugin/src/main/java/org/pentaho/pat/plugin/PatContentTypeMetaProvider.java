@@ -22,6 +22,7 @@ package org.pentaho.pat.plugin;
 import java.io.InputStream;
 
 import org.dom4j.Document;
+import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.platform.api.engine.IFileInfo;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.SolutionFileMetaAdapter;
@@ -41,13 +42,21 @@ public class PatContentTypeMetaProvider extends SolutionFileMetaAdapter {
       if (doc == null) {
         return null;
       }
+      PatSolutionFile patFile = PatSolutionFile.convertDocument(doc);
+      
+//
+//      String author = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@author", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
+//      String description = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@description", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
+//      String icon = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@icon", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
+//      String title = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@title", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
 
-      String author = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@author", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-      String description = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@description", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-      String icon = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@icon", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-      String title = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@title", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
+      String title = patFile.getTitle();
+      String author = patFile.getAuthor();
+      String description = patFile.getDescription();
+      String icon = patFile.getIcon();
+      
 
-
+      
       IFileInfo info = new FileInfo();
       info.setAuthor(author);
       info.setDescription(description);

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
@@ -36,10 +37,9 @@ import org.pentaho.platform.util.messages.LocaleHelper;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 /**
- * A simple content generator that redirects .xpav content to the Pentaho 
- *  Analysis Tool (http://code.google.com/p/pentahoanalysistool/).
+ * A simple content generator that redirects .xpav content to PAT 
  *
- * @author gmoran
+ * @author Paul Stoellberger
  *
  */
 public class PatContentGenerator extends SimpleContentGenerator {
@@ -47,11 +47,8 @@ public class PatContentGenerator extends SimpleContentGenerator {
 
     private static final long serialVersionUID = -9180003935693305152L;
 
-    public static final String xmlaUrlParameter =       "XMLA_URL";
-    public static final String xmlaUsernameParameter =  "XMLA_USERNAME";
-    public static final String xmlaPasswordParameter =  "XMLA_PASSWORD";
-
     ArrayList <String> problemMessages = new ArrayList<String>();
+    PatSolutionFile solutionFile = null;
 
     @Override
     public void createContent() throws Exception {
@@ -75,15 +72,23 @@ public class PatContentGenerator extends SimpleContentGenerator {
         if (repository.resourceExists(fullPath)) {
             Document doc = repository.getResourceAsDocument(fullPath);
             url = getLaunchURL(doc);
+            solutionFile = PatSolutionFile.convertDocument(doc);
+            if (solutionFile == null)
+                throw new Exception("Can not cast xpav file");
+            
+            
         }
 
         if (null==url){
             // Something bad happened... send error messages back to the client.
             super.createContent();
+            System.out.println("--------- URL == NULL");
         }else{
             // Someday, we'll do something smarter here, but for now, we just redirect to PAT, then leave 
             // it alone to do it's thing.
-            outputHandler.setOutput("redirect", url);
+            System.out.println("--------- URL == NOT NULL");
+            super.createContent();
+            //outputHandler.setOutput("redirect", url);
         }
     }
 
@@ -139,28 +144,28 @@ public class PatContentGenerator extends SimpleContentGenerator {
         //     XML in the business logic.
 
         // REQUIRED: the XML/A url and the PAT application url
-
-        String appConnection = XmlDom4JHelper.getNodeText( "/pav/app-connection", doc, null);
-        if (null==appConnection){
-            problemMessages.add("Invalid analysis view content. The application connection must be defined. Double check the xml in your .xpav file for errors.");
-        }
-
-        String xmlaConnection = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@url", doc, null);
-        if (null==xmlaConnection){
-            problemMessages.add("Invalid analysis view content. The XML/A connection must be defined.  Double check the xml in your .xpav file for errors.");
-        }
-
-        if ((xmlaConnection != null) && (xmlaConnection.trim().length()>0)){
-            try {
-                xmlaConnection = URLEncoder.encode(xmlaConnection, LocaleHelper.getSystemEncoding());
-            } catch (Exception e) {
-                problemMessages.add("Encountered encoding problem encoding " + xmlaConnection);
-            }
-        }
-
-        if (problemMessages.size()>0){
-            return null;
-        }
+//
+//        String appConnection = XmlDom4JHelper.getNodeText( "/pav/app-connection", doc, null);
+//        if (null==appConnection){
+//            problemMessages.add("Invalid analysis view content. The application connection must be defined. Double check the xml in your .xpav file for errors.");
+//        }
+//
+//        String xmlaConnection = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@url", doc, null);
+//        if (null==xmlaConnection){
+//            problemMessages.add("Invalid analysis view content. The XML/A connection must be defined.  Double check the xml in your .xpav file for errors.");
+//        }
+//
+//        if ((xmlaConnection != null) && (xmlaConnection.trim().length()>0)){
+//            try {
+//                xmlaConnection = URLEncoder.encode(xmlaConnection, LocaleHelper.getSystemEncoding());
+//            } catch (Exception e) {
+//                problemMessages.add("Encountered encoding problem encoding " + xmlaConnection);
+//            }
+//        }
+//
+//        if (problemMessages.size()>0){
+//            return null;
+//        }
 
         // OPTIONAL: credentials for XML/A provider... very very prototype...
 //
