@@ -179,7 +179,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 }
                 //Otherwise create a measure grid
                 else{
-                    MeasureGrid mg = new MeasureGrid(query);
+                    MeasureGrid mg = new MeasureGrid(query, dimAxis);
                     mg.setDragController(tblRowDragCont);
                     mg.setCurrentAxis(dimAxis);
                     mg.makeDraggable();
@@ -273,7 +273,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                             MeasureGrid measureDropWidget = null;
                                             
                                             if (index > -1) {
-                                                measureDropWidget = new MeasureGrid(query);
+                                                measureDropWidget = new MeasureGrid(query, dimAxis);
                                                 Pat.setMeasuresDimension(dimAxis);
                                                 tblRowDragCont.makeDraggable(measureDropWidget);
                                                 flexTableAddRecord(measureDropWidget, index);

@@ -36,9 +36,9 @@ public class MeasureGrid extends FocusPanel implements IQueryListener{
 
     private String query;
     
-    public MeasureGrid(String query){
+    public MeasureGrid(String query, IAxis currentAxis){
         super();
-        grid = new DimensionFlexTable();
+        grid = new DimensionFlexTable(false, currentAxis);
         final CaptionPanel panel = new CaptionPanel("Measures");
         DOM.setStyleAttribute(this.getElement(), "background", "yellow");
         panel.add(grid);
@@ -121,6 +121,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener{
      */
     public void setCurrentAxis(IAxis currentAxis) {
         this.currentAxis = currentAxis;
+        grid.setAxis(currentAxis);
     }
 
     /**

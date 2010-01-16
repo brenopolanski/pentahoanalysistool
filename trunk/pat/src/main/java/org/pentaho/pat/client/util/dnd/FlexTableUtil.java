@@ -185,7 +185,7 @@ public class FlexTableUtil {
             final DimensionFlexTable targetTable, final IAxis targetAxis) {
 
         // If Measures is in unused Move Dimension to axis and create selection
-        if (Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !Pat.getMeasuresDimension().equals(targetAxis)) {
+        if ((Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !Pat.getMeasuresDimension().equals(targetAxis)) || (targetAxis.equals(IAxis.UNUSED) && sourceTable.getRowCount()==1)) {
             ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                     "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
 
@@ -223,6 +223,7 @@ public class FlexTableUtil {
         if (targetAxis.equals(IAxis.UNUSED)) {
             ArrayList<String> memberList = new ArrayList<String>();
             memberList.add(((MeasureLabel) w).getText().trim());
+            if(sourceTable.getRowCount()>1)
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
                     "Measures", memberList, new AsyncCallback<Object>() { //$NON-NLS-1$
 
@@ -241,6 +242,7 @@ public class FlexTableUtil {
                         }
 
                     });
+            
         }
 
         // Else Just adjust measures selection
