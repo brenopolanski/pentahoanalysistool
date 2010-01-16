@@ -50,7 +50,25 @@ public class SaveWindow extends WindowPanel {
 
     private final static SaveWindow CBW = new SaveWindow();
 
-    public static void display() {
+    
+    public static native void display()
+    /*-{
+    if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
+        testo = { 
+            fileSelected:function(solution,path,name,localizedFileName) { 
+                @org.pentaho.pat.client.Pat::saveQueryToSolution(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(solution,path,name,localizedFileName);
+                alert(name);  
+            }
+        } 
+        top.openFileDialog(testo, "test","test","xpav");
+      }
+      else {
+          @org.pentaho.pat.client.ui.windows.SaveWindow::displaySaveWindow()();
+      }
+    }-*/;
+    
+    @SuppressWarnings("unused")
+    private static void displaySaveWindow() {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         SAVEMENUPANEL.loadSavedQueries();
         CBW.showModal(false);

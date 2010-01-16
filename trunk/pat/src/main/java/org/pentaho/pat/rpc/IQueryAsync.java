@@ -111,5 +111,4 @@ public interface IQueryAsync {
     void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
 	    String newCellValue, AsyncCallback callback);
     
-    void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution, String path, String name, String localizedFileName, AsyncCallback<Object> callback);
 }

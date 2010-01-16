@@ -390,7 +390,4 @@ public interface IQuery extends RemoteService {
     @Secured( {"Users"})
     void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
 	    String newCellValue)throws RpcException;
-    
-    @Secured( {"Users"})
-    void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution, String path, String name, String localizedFileName)throws RpcException;
 }
