@@ -24,7 +24,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -53,6 +52,7 @@ public class CubeTreeItem extends HorizontalPanel {
 
     private ItemType type;
 
+    private final static String CUBE_TREE_ITEM = "pat-CubeTreeItem"; //$NON-NLS-1$
     /**
      * Represents a cube item
      * 
@@ -79,8 +79,9 @@ public class CubeTreeItem extends HorizontalPanel {
             this.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));
             this.add(new HTML(this.itemName));
 
-            DOM.setStyleAttribute(this.getElement(), "background", "transparent"); //$NON-NLS-1$ //$NON-NLS-2$
+            
 
+            this.setStylePrimaryName(CUBE_TREE_ITEM);
         }
 
     }

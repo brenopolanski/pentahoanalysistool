@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.core.client.DOM;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.dto.IAxis;
 
@@ -39,27 +38,22 @@ public class DimensionFlexTable extends FlexTable {
 
     private IAxis axis;
 
-    private final static String TABLE_CSS_NAME = "dropFlexTable"; //$NON-NLS-1$
+    private final static String TABLE_CSS_NAME = "pat-DimensionFlexTable"; //$NON-NLS-1$
 
+    private final static String VALID_DROP_TARGET = "pat-validDropTarget";  //$NON-NLS-1$
+    private final static String INVALID_DROP_TARGET = "pat-invalidDropTarget";  //$NON-NLS-1$
     /**
      *TODO JAVADOC
      * 
      */
     public DimensionFlexTable() {
         super();
-        addStyleName(TABLE_CSS_NAME);
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(getElement(), "background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        
+        this.setStylePrimaryName(TABLE_CSS_NAME);        
     }
 
     public DimensionFlexTable(final Boolean orientation, final IAxis axis) {
         super();
-        addStyleName(TABLE_CSS_NAME);
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(getElement(), "background", "#EEEEEE"); //$NON-NLS-1$ //$NON-NLS-2$
-
+        this.setStylePrimaryName(TABLE_CSS_NAME);
         this.setAxis(axis);
         horizontal = orientation;
 
@@ -90,16 +84,16 @@ public class DimensionFlexTable extends FlexTable {
      */
     public void setEngaged(boolean b) {
        if(b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
-           this.addStyleName("validDropTarget");
+           this.addStyleName(VALID_DROP_TARGET);
        }
        else if(!b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
-           this.removeStyleName("validDropTarget");
+           this.removeStyleName(VALID_DROP_TARGET);
        }
        else if(b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
-           this.addStyleName("invalidDropTarget");
+           this.addStyleName(INVALID_DROP_TARGET);
        }
        else if(!b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
-           this.removeStyleName("invalidDropTarget");
+           this.removeStyleName(INVALID_DROP_TARGET);
        }
         
     }

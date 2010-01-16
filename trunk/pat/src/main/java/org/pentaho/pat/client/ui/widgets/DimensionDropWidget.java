@@ -58,9 +58,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class DimensionDropWidget extends LayoutComposite implements IQueryListener {
 
     
-    private final Standard dimAxis;
+    private IAxis dimAxis;
 
-    private final LayoutPanel baseLayoutPanel;
+    private LayoutPanel baseLayoutPanel;
 
     private DimensionFlexTable dimensionTable;
 
@@ -70,13 +70,15 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     private FlexTableRowDropController fTblRowDropCont;
 
-    private final String query;
+    private String query;
 
-    private final FlexTableRowDragController tblRowDragCont;
+    private FlexTableRowDragController tblRowDragCont;
 
-    private final static String TABLE_DROP_ROWENDCELL = "dropRowEndCell"; //$NON-NLS-1$
+    private final static String TABLE_DROP_ROWENDCELL = "pat-dropRowEndCell"; //$NON-NLS-1$
 
-    private final static String TABLE_DRAG_CELL = "dragDimensionCell"; //$NON-NLS-1$
+    private final static String TABLE_DRAG_CELL = "pat-dragDimensionCell"; //$NON-NLS-1$
+   
+    private final static String DIMENSION_DROP_WIDGET = "pat-DimensionDropWidget"; //$NON-NLS-1$
 
     private boolean empty = true;
     /**
@@ -91,26 +93,16 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     public DimensionDropWidget(final String labelText, final Standard targetAxis,
             final FlexTableRowDragController tblRowDragCont) {
         super();
-        this.tblRowDragCont = tblRowDragCont;
-        this.dimAxis = targetAxis;
-        query = Pat.getCurrQuery();
-        baseLayoutPanel = getLayoutPanel();
-        init(labelText, dimAxis);
-        baseLayoutPanel.add(captLayoutPanel);
-
+        
+        init(labelText, targetAxis, tblRowDragCont);
+        
     }
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
             final FlexTableRowDragController tblRowDragCont) {
         super();
         horizontal = orientation;
-        this.dimAxis = targetAxis;
-        query = Pat.getCurrQuery();
-        baseLayoutPanel = getLayoutPanel();
-        init(labelText, dimAxis);
-        baseLayoutPanel.add(captLayoutPanel);
-        
+        init(labelText, targetAxis, tblRowDragCont);
 
-        this.tblRowDragCont = tblRowDragCont;
         
     }
     /**
@@ -130,18 +122,22 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      * @param targetAxis
      *            the target axis
      */
-    public final void init(final String labelText, final IAxis targetAxis) {
-
+    public final void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragController tRDC) {
+        this.setStylePrimaryName(DIMENSION_DROP_WIDGET);
+        query = Pat.getCurrQuery();
+        dimAxis = targetAxis;
+        tblRowDragCont = tRDC;
         captLayoutPanel = new CaptionLayoutPanel(labelText);
         captLayoutPanel.setLayout(new BoxLayout());
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
-        // dimensionTable.addStyleName("FlexTable"); //$NON-NLS-1$
 
         captLayoutPanel.add(dimensionTable, new BoxLayoutData(FillStyle.BOTH, true));
         
         dimensionTable.clear();
         
         populateDimensionTable(dimAxis);
+        baseLayoutPanel = getLayoutPanel();
+        baseLayoutPanel.add(captLayoutPanel);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class DataCellPanel extends HorizontalPanel {
     
     private Number cellNum;
 
-    
+    private final static String DATA_CELL_PANEL = "pat-DataCellPanel"; //$NON-NLS-1$
     
     public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember, Number rawNumber) {
         super();
@@ -30,6 +30,7 @@ public class DataCellPanel extends HorizontalPanel {
         pcm = parentColMember;
         prm = parentRowMember;
         cellNum = rawNumber;
+        this.setStylePrimaryName(DATA_CELL_PANEL);
     }
 
     @Override
