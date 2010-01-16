@@ -337,7 +337,7 @@ public class Pat implements EntryPoint {
     public static void saveQueryToSolution(String solution, String path, String name, String localizedFileName) {
         MessageBox.info("SUCCESS", solution + ":" + path + ":" + name + ":" + localizedFileName);
         
-        ServiceFactory.getQueryInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+        ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
             public void onFailure(Throwable arg0) {
                 MessageBox.info("FALSCH", "FALSCH");

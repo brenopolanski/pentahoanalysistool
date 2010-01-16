@@ -15,6 +15,8 @@ package org.pentaho.pat.client.util.factory;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.IDiscoveryAsync;
+import org.pentaho.pat.rpc.IPlatform;
+import org.pentaho.pat.rpc.IPlatformAsync;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.IQueryAsync;
 import org.pentaho.pat.rpc.ISession;
@@ -40,6 +42,9 @@ public class ServiceFactory {
 
     /** The query service. */
     private static IQueryAsync qService = null;
+    
+    /** The platform service */
+    private static IPlatformAsync pService = null;
 
     /**
      * Gets the discovery instance.
@@ -84,6 +89,21 @@ public class ServiceFactory {
             endpoint.setServiceEntryPoint(moduleRelativeURL);
         }
         return sService;
+    }
+    
+    /**
+     * Gets the platform instance.
+     * 
+     * @return the platform instance
+     */
+    public static IPlatformAsync getPlatformInstance() {
+        if (pService == null) {
+            pService = (IPlatformAsync) GWT.create(IPlatform.class);
+            final ServiceDefTarget endpoint = (ServiceDefTarget) pService;
+            final String moduleRelativeURL = Pat.getBaseUrl()  + "platform.rpc"; //$NON-NLS-1$
+            endpoint.setServiceEntryPoint(moduleRelativeURL);
+        }
+        return pService;
     }
 
 }
