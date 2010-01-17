@@ -54,7 +54,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             
             final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
             final ClassLoader pluginClassloader = pluginManager.getClassLoader("Pentaho Analysis Tool Plugin");
-
+            
             // TODO improve error logging
             if (pluginClassloader == null)
                 throw new ServiceException("PAT-Plugin classloader can't be loaded");

@@ -28,9 +28,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
+import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.platform.api.engine.IParameterProvider;
+import org.pentaho.platform.api.engine.IServiceManager;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.services.solution.SimpleContentGenerator;
 import org.pentaho.platform.util.messages.LocaleHelper;
@@ -84,9 +87,10 @@ public class PatContentGenerator extends SimpleContentGenerator {
             super.createContent();
             System.out.println("--------- URL == NULL");
         }else{
-            // Someday, we'll do something smarter here, but for now, we just redirect to PAT, then leave 
-            // it alone to do it's thing.
             System.out.println("--------- URL == NOT NULL");
+            IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
+            Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
+            ((QueryServlet)targetQueryBean).addBootstrapQuery(solutionFile.getQueryId());
             super.createContent();
             //outputHandler.setOutput("redirect", url);
         }
