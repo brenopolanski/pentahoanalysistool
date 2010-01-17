@@ -24,6 +24,8 @@ public class QuerySaveModel implements Serializable {
     private String name;
 
     private String connection;
+    
+    private String queryId;
 
     private Date savedDate;
 
@@ -44,9 +46,10 @@ public class QuerySaveModel implements Serializable {
      * public QuerySaveModel(String id, String name, String connection, Date savedDate) { this.name = name;
      * this.connection = connection; this.id = id; this.savedDate = savedDate; }
      */
-    public QuerySaveModel(final String id, final String name, final String connection, final CubeItem cube,
+    public QuerySaveModel(final String id,final String queryId, final String name, final String connection, final CubeItem cube,
             final String cubeName, final Date updatedDate, final QueryType queryType) {
         this.name = name;
+        this.queryId = queryId;
         this.connection = connection;
         this.id = id;
         this.cube = cube;
@@ -195,6 +198,14 @@ public class QuerySaveModel implements Serializable {
      */
     public QueryType getQueryType() {
         return queryType;
+    }
+
+    public void setQueryId(String queryId) {
+        this.queryId = queryId;
+    }
+
+    public String getQueryId() {
+        return queryId;
     }
 
 }

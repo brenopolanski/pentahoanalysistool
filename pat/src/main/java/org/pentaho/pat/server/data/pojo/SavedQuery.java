@@ -54,6 +54,9 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     @Basic
     private Date updatedDate;
+    
+    @Basic
+    private String queryId;
 
     @Basic
     @Type(type = "org.pentaho.pat.rpc.dto.CubeItem")
@@ -194,5 +197,13 @@ public class SavedQuery implements Comparable<SavedQuery> {
 
     public void setQueryType(QueryType qm) {
        queryType = qm;
+    }
+
+    public void setQueryId(String queryId) {
+        this.queryId = queryId;
+    }
+
+    public String getQueryId() {
+        return queryId;
     }
 }
