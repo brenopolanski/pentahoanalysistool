@@ -185,7 +185,7 @@ public class QuerySaveModel implements Serializable {
      *TODO JAVADOC
      * @param queryType the queryType to set
      */
-    public void setQueryType(QueryType queryType) {
+    public void setQueryType(final QueryType queryType) {
         this.queryType = queryType;
     }
 

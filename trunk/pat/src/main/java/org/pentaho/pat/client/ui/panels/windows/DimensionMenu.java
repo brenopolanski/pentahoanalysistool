@@ -93,6 +93,8 @@ public class DimensionMenu extends LayoutComposite {
 
     private final TextBox filterbox = new TextBox();
 
+    private final static String DIMENSION_MENU = "pat-DimensionMenu"; //$NON-NLS-1$
+    
     private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
@@ -108,6 +110,7 @@ public class DimensionMenu extends LayoutComposite {
      */
     public DimensionMenu() {
         super();
+        this.setStyleName(DIMENSION_MENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 

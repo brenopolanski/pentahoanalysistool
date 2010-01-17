@@ -65,6 +65,7 @@ public class CubeConnection implements Serializable, IsSerializable {
     }
 
     public CubeConnection() {
+        super();
     }
 
     public String getName() {
@@ -135,7 +136,7 @@ public class CubeConnection implements Serializable, IsSerializable {
         return connectOnStartup;
     }
 
-    public void setConnectOnStartup(boolean connectOnStartup) {
+    public void setConnectOnStartup(final boolean connectOnStartup) {
         this.connectOnStartup = connectOnStartup;
     }
 

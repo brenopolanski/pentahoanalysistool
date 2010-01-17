@@ -43,6 +43,7 @@ public class CellDataSet implements IsSerializable, Serializable {
     private int offset;
 
     public CellDataSet() {
+        super();
     }
 
     public CellDataSet(final int width, final int height) {

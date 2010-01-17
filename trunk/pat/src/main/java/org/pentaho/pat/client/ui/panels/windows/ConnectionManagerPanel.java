@@ -79,10 +79,12 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     private static final DefaultListModel<ConnectionItem> CIMODEL = new DefaultListModel<ConnectionItem>();
 
+    private final static String CONNECTION_MANAGER_PANEL = "pat-ConnectionManagerPanel"; //$NON-NLS-1$
+    
     public ConnectionManagerPanel() {
         super();
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
-
+        this.setStyleName(CONNECTION_MANAGER_PANEL);
         setupConnectionList();
         baseLayoutPanel.add(connectionsList);
     }

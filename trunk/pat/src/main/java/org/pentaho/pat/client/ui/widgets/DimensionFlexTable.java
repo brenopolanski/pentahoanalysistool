@@ -48,12 +48,12 @@ public class DimensionFlexTable extends FlexTable {
      */
     public DimensionFlexTable() {
         super();
-        this.setStylePrimaryName(TABLE_CSS_NAME);        
+        this.setStyleName(TABLE_CSS_NAME);        
     }
 
     public DimensionFlexTable(final Boolean orientation, final IAxis axis) {
         super();
-        this.setStylePrimaryName(TABLE_CSS_NAME);
+        this.setStyleName(TABLE_CSS_NAME);
         this.setAxis(axis);
         horizontal = orientation;
 

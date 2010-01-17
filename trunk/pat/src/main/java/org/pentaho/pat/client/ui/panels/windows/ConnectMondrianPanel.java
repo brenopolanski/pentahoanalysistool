@@ -161,6 +161,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
     /** Schema uploaded data. **/
     private String schemaData;
 
+    private final static String CONNECT_MONDRIAN_PANEL = "pat-ConnectMondrianPanel"; //$NON-NLS-1$
     /**
      * ConnectMondrianPanel Constructor.
      */
@@ -178,7 +179,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
-
+        this.setStyleName(CONNECT_MONDRIAN_PANEL);
         init();
 
     }

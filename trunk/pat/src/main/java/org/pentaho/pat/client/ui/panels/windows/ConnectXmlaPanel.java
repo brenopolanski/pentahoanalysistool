@@ -88,6 +88,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
     /** Cancel button. */
     private final Button cancelButton;
 
+    private final static String CONNECT_XMLA_PANEL = "pat-ConnectXmlaPanel"; //$NON-NLS-1$
     /**
      * ConnectXmlaPanel Constructor.
      */
@@ -102,6 +103,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         passwordTextBox = new PasswordTextBox();
         catalogTextBox = new TextBox();
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
+        this.setStyleName(CONNECT_XMLA_PANEL);
         init();
     }
 
@@ -212,7 +214,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         if (cc.getName().length() == 0 || cc.getUrl().length() == 0) {
             IGuiConstants inst = ConstantFactory.getInstance();
             MessageBox.error(ConstantFactory.getInstance().error(),
-                    MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.xmlaUrl())));
+                    MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.xmlaUrl()))); //$NON-NLS-1$
             return false;
             //MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage()));
         }

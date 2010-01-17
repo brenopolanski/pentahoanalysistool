@@ -48,6 +48,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SelectionModeMenu extends PopupMenu {
 
+    public final static String SELECTION_MODE_MENU = "pat-SelectionModeMenu"; //$NON-NLS-1$
     public class SelectionModeClearCommand implements Command {
 
         /*
@@ -166,6 +167,7 @@ public class SelectionModeMenu extends PopupMenu {
     public SelectionModeMenu() {
         super();
         init();
+        this.setStyleName(SELECTION_MODE_MENU);
     }
 
     private void init() {

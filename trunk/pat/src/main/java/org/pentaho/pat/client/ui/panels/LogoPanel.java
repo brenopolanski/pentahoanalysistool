@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class LogoPanel extends LayoutComposite {
 
-    private final static String LPANEL_CSS_STYLE = "logoPanel"; //$NON-NLS-1$
+    private final static String LPANEL_CSS_STYLE = "pat-LogoPanel"; //$NON-NLS-1$
 
     private final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -66,10 +66,10 @@ public class LogoPanel extends LayoutComposite {
 
         super();
 
-        this.setStylePrimaryName(LPANEL_CSS_STYLE);
+        this.setStyleName(LPANEL_CSS_STYLE);
 
         final Grid logoGrid = new Grid(1, 2);
-        throbberLabel.setStylePrimaryName("Throbber-loading"); //$NON-NLS-1$
+        throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
         throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
         throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
         throbberLabel.setPixelSize(100, 100);

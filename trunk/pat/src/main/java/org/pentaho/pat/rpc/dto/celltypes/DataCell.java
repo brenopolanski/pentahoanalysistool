@@ -72,6 +72,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
      * 
      */
     public DataCell() {
+        super();
     }
 
     /**
@@ -81,10 +82,10 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
      * @param b
      * @param c
      */
-    public DataCell(final boolean b, final boolean c) {
+    public DataCell(final boolean right, final boolean sameAsPrev) {
         super();
-        this.right = b;
-        this.sameAsPrev = c;
+        this.right = right;
+        this.sameAsPrev = sameAsPrev;
     }
 
     /**

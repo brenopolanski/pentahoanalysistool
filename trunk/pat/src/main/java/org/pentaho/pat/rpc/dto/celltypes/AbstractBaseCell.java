@@ -46,6 +46,7 @@ public abstract class AbstractBaseCell implements Serializable, IsSerializable {
      * 
      */
     public AbstractBaseCell() {
+        super();
     }
 
     /**

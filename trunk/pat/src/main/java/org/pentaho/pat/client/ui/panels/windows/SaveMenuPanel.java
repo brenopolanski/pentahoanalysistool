@@ -69,6 +69,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
     private LabelTextBox ltb = new LabelTextBox();
 
+    private final static String SAVE_MENU_PANEL = "pat-SaveMenuPanel"; //$NON-NLS-1$
     /**
      */
     private FilterProxyListModel<QuerySaveModel, String> filterModel;
@@ -84,7 +85,7 @@ public class SaveMenuPanel extends LayoutComposite {
         super();
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
-
+        this.setStyleName(SAVE_MENU_PANEL);
         textBox = new TextBox();
         textBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {

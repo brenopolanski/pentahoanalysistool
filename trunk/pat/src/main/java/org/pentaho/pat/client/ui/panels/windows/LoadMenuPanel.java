@@ -70,6 +70,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
     private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
+    private final static String LOAD_MENU_PANEL = "pat-LoadMenuPanel"; //$NON-NLS-1$
     /**
      */
     private FilterProxyListModel<QuerySaveModel, String> filterModel;
@@ -88,7 +89,7 @@ public class LoadMenuPanel extends LayoutComposite {
         super();
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
-
+        this.setStyleName(LOAD_MENU_PANEL);
         textBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
@@ -153,7 +154,7 @@ public class LoadMenuPanel extends LayoutComposite {
                             ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0.getId(), new AsyncCallback<String>() {
 
                                 public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(), "Error loading mdx query");
+                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
 
                                 }
 

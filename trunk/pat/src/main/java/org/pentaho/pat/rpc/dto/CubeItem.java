@@ -49,14 +49,14 @@ public class CubeItem implements Serializable, IsSerializable {
     }
 
     public CubeItem() {
-
+        super();
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -72,7 +72,7 @@ public class CubeItem implements Serializable, IsSerializable {
         return schema;
     }
 
-    public void setSchema(String schema) {
+    public void setSchema(final String schema) {
         this.schema = schema;
     }
 

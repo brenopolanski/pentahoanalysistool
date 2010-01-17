@@ -30,7 +30,7 @@ public class DataCellPanel extends HorizontalPanel {
         pcm = parentColMember;
         prm = parentRowMember;
         cellNum = rawNumber;
-        this.setStylePrimaryName(DATA_CELL_PANEL);
+        this.setStyleName(DATA_CELL_PANEL);
     }
 
     @Override

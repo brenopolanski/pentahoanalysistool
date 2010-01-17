@@ -99,6 +99,7 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private final TextBox xaxisMaxTextBox = new TextBox();
 
+    private final static String CHART_OPTIONS_PANEL = "pat-ChartOptionsPanel"; //$NON-NLS-1$
     /**
      * 
      * Chart options constructor.
@@ -107,7 +108,7 @@ public class ChartOptionsPanel extends LayoutComposite {
     public ChartOptionsPanel() {
         super();
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
-
+        this.setStyleName(CHART_OPTIONS_PANEL);
         tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
         tabPanel.add(barOptionsPanel(), ConstantFactory.getInstance().barChartOptions());
         tabPanel.add(lineOptionsPanel(), ConstantFactory.getInstance().lineChartOptions());
