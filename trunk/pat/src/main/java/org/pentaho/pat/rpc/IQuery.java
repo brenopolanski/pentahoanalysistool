@@ -383,6 +383,9 @@ public interface IQuery extends RemoteService {
 
     @Secured( {"Users"})
     List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;
+    
+    @Secured( {"Users"})
+    List<QuerySaveModel> getActiveQueries(final String sessionId) throws RpcException;
 
     @Secured( {"Users"})
     CellDataSet setNonEmpty(String sessionId, String queryId, boolean flag) throws RpcException;

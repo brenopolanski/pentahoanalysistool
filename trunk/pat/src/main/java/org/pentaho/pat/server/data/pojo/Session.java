@@ -103,7 +103,7 @@ public class Session {
             if (!conn.isClosed()) {
                 conn.close();
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
         }
         this.connections.remove(connectionId);
     }

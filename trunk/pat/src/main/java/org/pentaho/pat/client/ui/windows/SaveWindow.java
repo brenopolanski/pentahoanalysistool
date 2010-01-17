@@ -57,7 +57,6 @@ public class SaveWindow extends WindowPanel {
         testo = { 
             fileSelected:function(solution,path,name,localizedFileName) { 
                 @org.pentaho.pat.client.Pat::saveQueryToSolution(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(solution,path,name,localizedFileName);
-                alert(name);  
             }
         } 
         top.openFileDialog(testo, "test","test","xpav");

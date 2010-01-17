@@ -159,6 +159,7 @@ public class Pat implements EntryPoint {
         parseInitialStateFromParameter();
         
         app = new Application();
+        assignSessionID(null);
     }
 
     /*
@@ -276,7 +277,7 @@ public class Pat implements EntryPoint {
      * Sets the SESSION_ID.
      */
     private void assignSessionID(final String session) {
-        if (session == null) {
+        if (session == null && Pat.getSessionID() == null) {
             ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
                 public void onFailure(final Throwable exception) {
                     MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -285,6 +286,8 @@ public class Pat implements EntryPoint {
 
                 public void onSuccess(final String sessionId) {
                     applicationState.setSession(sessionId);
+                    Application.setupActiveQueries();
+                    
                 }
             });
         } else {
@@ -331,28 +334,46 @@ public class Pat implements EntryPoint {
             applicationState.setMode(mode);
         }
         final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
-        assignSessionID(_sessionParam);
+        applicationState.setSession(_sessionParam);
+
     }
     
-    public static void saveQueryToSolution(String solution, String path, String name, String localizedFileName) {
-        MessageBox.info("SUCCESS", solution + ":" + path + ":" + name + ":" + localizedFileName);
-        
-        ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+    public static void saveQueryToSolution(final String solution, final String path,final String name,final String localizedFileName) {
+        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), name,
+                Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
-            public void onFailure(Throwable arg0) {
-                MessageBox.info("FALSCH", "FALSCH");
-                
-            }
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedSaveQuery(arg0.getLocalizedMessage()));
+                    }
 
-            public void onSuccess(Object arg0) {
-                // TODO Auto-generated method stub
-                MessageBox.info("SUCCESS", "SUCCESS");
-                
-            }
-            
-        });
+                    public void onSuccess(final Object arg0) {
+                        ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+
+                            public void onFailure(Throwable arg0) {
+                                MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
+                                
+                            }
+
+                            public void onSuccess(Object arg0) {
+                                MessageBox.info("Success", "File Saved");
+                                refreshSolutionRepo();
+                            }
+                            
+                        });
+
+                    }
+
+                });
+
                 
     }
+    public static native void refreshSolutionRepo()
+    /*-{
+    if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
+        top.mantle_refreshRepository();
+        }
+    }-*/;
     /**
      *TODO JAVADOC
      * 

@@ -61,6 +61,18 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     private final static Logger LOG = Logger.getLogger(QueryServlet.class);
 
+    // THIS IS DIRTY AND JUST A QUICK HACK
+    private static final List<String> bootstrapQueries = new ArrayList<String>();
+
+    public void addBootstrapQuery(String queryId) {
+        bootstrapQueries.add(queryId);
+    }
+
+    public String[] getBootstrapQueries() {
+        return (String[]) bootstrapQueries.toArray();
+    }
+
+
     public void init() throws ServletException {
         super.init();
         queryService = (QueryService) applicationContext.getBean("queryService"); //$NON-NLS-1$
@@ -79,7 +91,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#createNewQuery(java.lang.String, java.lang.String, java.lang.String)
      */
     public String createNewQuery(final String sessionId, final String connectionId, final String cubeName)
-            throws RpcException {
+    throws RpcException {
         try {
             return queryService.createNewQuery(getCurrentUserId(), sessionId, connectionId, cubeName);
         } catch (OlapException e) {
@@ -124,7 +136,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#clearExclusion(java.lang.String, java.lang.String, java.lang.String)
      */
     public void clearExclusion(final String sessionId, final String queryId, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         this.queryService.clearExclusion(getCurrentUserId(), sessionId, queryId, dimensionName);
     }
 
@@ -162,13 +174,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
 
     public void alterCell(final String sessionId, final String queryId, final String connectionId, final String scenarioId,  
-	    final String newCellValue)throws RpcException {
-	try {
-	    this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
-	} catch (OlapException e) {
-	    LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
+            final String newCellValue)throws RpcException {
+        try {
+            this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
-	}
+        }
     }
     /*
      * (non-Javadoc)
@@ -176,7 +188,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#getSelection(java.lang.String, java.lang.String, java.lang.String)
      */
     public String[][] getSelection(final String sessionId, final String queryId, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         try {
             return this.queryService.getSelection(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
@@ -193,7 +205,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * java.lang.String)
      */
     public void moveDimension(final String sessionId, final String queryId, final IAxis axis, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         this.queryService.moveDimension(getCurrentUserId(), sessionId, queryId,
                 (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), dimensionName);
     }
@@ -205,7 +217,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * java.lang.String)
      */
     public void setSortOrder(final String sessionId, final String queryId, final String dimensionName, final String sort)
-            throws RpcException {
+    throws RpcException {
         SortOrder sortValue = null;
         for (SortOrder v : SortOrder.values()) {
             if (v.name().equals(sort)) {
@@ -227,7 +239,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#clearSortOrder(java.lang.String, java.lang.String, java.lang.String)
      */
     public void clearSortOrder(final String sessionId, final String queryId, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         try {
             this.queryService.clearSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
@@ -242,7 +254,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#getSortOrder(java.lang.String, java.lang.String, java.lang.String)
      */
     public String getSortOrder(final String sessionId, final String queryId, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         try {
             return this.queryService.getSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
@@ -282,7 +294,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
 
     public String getHierarchizeMode(final String sessionId, final String queryId, final String dimensionName)
-            throws RpcException {
+    throws RpcException {
         try {
             return this.queryService.getHierarchizeMode(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
@@ -313,7 +325,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#swapAxis(java.lang.String, java.lang.String)
      */
     public CellDataSet setNonEmpty(final String sessionId, final String queryId, final boolean flag)
-            throws RpcException {
+    throws RpcException {
 
         try {
             return this.queryService.setNonEmpty(getCurrentUserId(), sessionId, queryId, flag);
@@ -363,7 +375,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#createNewMdxQuery(java.lang.String, java.lang.String, java.lang.String)
      */
     public String createNewMdxQuery(final String sessionId, final String connectionId, final String catalogName)
-            throws RpcException {
+    throws RpcException {
         try {
             return queryService.createNewMdxQuery(getCurrentUserId(), sessionId, connectionId, catalogName);
         } catch (OlapException e) {
@@ -414,7 +426,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     @Deprecated
     public CellDataSet executeMdxQuery(final String sessionId, final String connectionId, final String mdx)
-            throws RpcException {
+    throws RpcException {
         try {
             return this.queryService.executeMdxQuery(getCurrentUserId(), sessionId, connectionId, mdx);
         } catch (OlapException e) {
@@ -455,13 +467,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     public String getMdxQuery(final String sessionId, final String mdxQueryId) throws RpcException {
 
-            MdxQuery mq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
-            if (mq != null) {
-                return mq.getMdx();
-            }
-        
-            LOG.error("can't get mdx query"); //$NON-NLS-1$
-            throw new RpcException("can't get mdx query"); //$NON-NLS-1$
+        MdxQuery mq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
+        if (mq != null) {
+            return mq.getMdx();
+        }
+
+        LOG.error("can't get mdx query"); //$NON-NLS-1$
+        throw new RpcException("can't get mdx query"); //$NON-NLS-1$
     }
 
     /*
@@ -492,11 +504,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final MdxQuery mdxq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, queryId);
             SavedQuery sc = null;
             if (qm != null) {
-                sc = this.convert((Object)qm, queryName, connectionId, cube, cubeName);
+                sc = this.convert((Object)qm, queryId, queryName, connectionId, cube, cubeName);
                 sc.setQueryType(QueryType.QM);
             }
             else if (mdxq != null) {
-                sc = this.convert((Object)mdxq,queryName, connectionId, cube, cubeName);
+                sc = this.convert((Object)mdxq,queryId, queryName, connectionId, cube, cubeName);
                 sc.setQueryType(QueryType.MDX);
             }
             if (sc != null ) {
@@ -519,7 +531,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @param cubeName
      * @return
      */
-    private SavedQuery convert(final Object cc, final String queryName, final String connectionId, final CubeItem cube,
+    private SavedQuery convert(final Object cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
         final XStream xstream = new XStream();
         xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
@@ -531,6 +543,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
         final String xml = xstream.toXML(cc);
         final SavedQuery sc = new SavedQuery(cc.toString());
+        sc.setQueryId(queryId);
         sc.setCubeName(cubeName);
         sc.setCube(cube);
         sc.setName(queryName);
@@ -538,8 +551,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         sc.setXml(xml);
         sc.setConnectionId(connectionId);
         sc.setUpdatedDate(new Date());
-        
-        
+
+
         /*String file = "file.txt";
         try{
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
@@ -567,7 +580,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 // Get element
                 final SavedQuery element = (SavedQuery) it.next();
 
-                results.add(new QuerySaveModel(element.getId(), element.getName(), element.getConnectionId(), element
+                results.add(new QuerySaveModel(element.getId(), element.getQueryId(), element.getName(), element.getConnectionId(), element
                         .getCube(), element.getCubeName(), element.getUpdatedDate(), element.getQueryType()));
 
             }
@@ -577,6 +590,28 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             LOG.error(Messages.getString("Servlet.Query.GetSavedQueriesError"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.GetSavedQueriesError"), e); //$NON-NLS-1$
         }
+    }
+
+    public List<QuerySaveModel> getActiveQueries(final String sessionId) throws RpcException {
+        final List<QuerySaveModel> activeQueries = new ArrayList<QuerySaveModel>();
+        try {
+            final List<QuerySaveModel> results = getSavedQueries(sessionId);
+            for (int i=0 ; i<results.size();i++) {
+                for (int k = 0;k<bootstrapQueries.size();k++) {
+                    if(bootstrapQueries.get(k).equals(results.get(i).getQueryId())) {
+                        activeQueries.add(results.get(i));
+                    }
+                }
+            }
+            bootstrapQueries.clear();
+            return activeQueries;
+        }
+        catch (Exception e) {
+            LOG.error("Failed get Active queries", e); //$NON-NLS-1$
+            throw new RpcException("Failed get Active queries", e); //$NON-NLS-1$
+        }
+
+
     }
 
     /*
@@ -603,20 +638,20 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             if (oQuery instanceof Query) {
                 createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, 
                         sc.getConnectionId(), (Query) oQuery);
-                
+
             }
             if (oQuery instanceof MdxQuery) {
                 createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, sc.getConnectionId(),(MdxQuery) oQuery);
             }
-            
-            
-            return new QuerySaveModel(createdQueryId, sc.getName(), sc.getConnectionId(), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
-            
+
+
+            return new QuerySaveModel(createdQueryId, sc.getQueryId(), sc.getName(), sc.getConnectionId(), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
+
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$
         }
 
     }
-    
+
 }

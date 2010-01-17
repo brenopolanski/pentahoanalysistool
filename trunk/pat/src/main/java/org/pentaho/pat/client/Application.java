@@ -20,7 +20,10 @@
 
 package org.pentaho.pat.client;
 
+import java.util.List;
+
 import org.gwt.mosaic.ui.client.InfoPanel;
+import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -30,9 +33,15 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
+import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.TreeImages;
 
@@ -115,9 +124,28 @@ public class Application extends Viewport {
 
         mainTabPanel = new MainTabPanel();
         rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
-
+        
+        
     }
 
+    public static void setupActiveQueries() {
+        ServiceFactory.getQueryInstance().getActiveQueries(Pat.getSessionID(), new AsyncCallback<List<QuerySaveModel>> () {
+
+            public void onFailure(Throwable arg0) {
+                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        .failedGetQueryList(arg0.getLocalizedMessage()));
+
+            }
+
+            public void onSuccess(List<QuerySaveModel> qsmList) {
+                for (int i=0;i<qsmList.size();i++) {
+                    LoadMenuPanel.load(qsmList.get(i));
+                }
+            }
+            
+        });
+
+    }
     /*
      * (non-Javadoc)
      * 

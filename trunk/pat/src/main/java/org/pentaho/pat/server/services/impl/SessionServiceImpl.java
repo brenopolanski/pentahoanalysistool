@@ -85,7 +85,6 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                     connect(userId, sessionId, savedConnections.get(cpt));
                 }
             }
-
     }
 
     public void releaseSession(final String userId, final String sessionId) {
