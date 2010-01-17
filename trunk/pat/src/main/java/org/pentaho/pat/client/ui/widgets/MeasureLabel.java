@@ -13,18 +13,20 @@ public class MeasureLabel extends FocusPanel {
 
     private final static String TABLE_DRAG_WIDGET = "dragDimension"; //$NON-NLS-1$
 
-    FlexTableRowDragController dragController;
+    private FlexTableRowDragController dragController;
 
-    Label text = new Label();
+    private Label text = new Label();
 
     private labelType type;
 
-    public MeasureLabel(final String string, final labelType lt) {
+    private boolean draggable;
+
+    public MeasureLabel(final String string, final labelType lType) {
         super();
         text.setText(string);
         this.add(text);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
-        this.setType(lt);
+        this.setType(lType);
 
     }
 
@@ -35,18 +37,19 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final String string, final labelType lt, final FlexTableRowDragController dragController2,
+    public MeasureLabel(final String string, final labelType lType, final FlexTableRowDragController dragController2,
             boolean draggable) {
         super();
         text.setText(string);
         this.add(text);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
-        this.setType(lt);
-
+        this.setType(lType);
+        this.draggable = draggable;
         this.dragController = dragController2;
 
-        if (draggable = true)
+        if (draggable == true){
             this.makeDraggable();
+        }
     }
 
     /**

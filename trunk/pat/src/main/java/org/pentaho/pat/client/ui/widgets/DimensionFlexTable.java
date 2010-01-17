@@ -69,7 +69,7 @@ public class DimensionFlexTable extends FlexTable {
         return horizontal;
     }
 
-    public void setAxis(IAxis axis) {
+    public void setAxis(final IAxis axis) {
 	this.axis = axis;
     }
 
@@ -80,19 +80,19 @@ public class DimensionFlexTable extends FlexTable {
     /**
      *TODO JAVADOC
      *
-     * @param b
+     * @param engaged
      */
-    public void setEngaged(boolean b) {
-       if(b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+    public void setEngaged(final boolean engaged) {
+       if(engaged && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
            this.addStyleName(VALID_DROP_TARGET);
        }
-       else if(!b && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+       else if(!engaged && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
            this.removeStyleName(VALID_DROP_TARGET);
        }
-       else if(b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+       else if(engaged && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
            this.addStyleName(INVALID_DROP_TARGET);
        }
-       else if(!b && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+       else if(!engaged && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
            this.removeStyleName(INVALID_DROP_TARGET);
        }
         

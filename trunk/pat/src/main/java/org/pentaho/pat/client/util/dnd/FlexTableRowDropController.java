@@ -162,22 +162,25 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);
-        final Widget w = flexTable.getWidget(TARGETROW, 0);
-        final Location widgetLocation = new WidgetLocation(w, context.boundaryPanel);
+        final Widget widget = flexTable.getWidget(TARGETROW, 0);
+        final Location widgetLocation = new WidgetLocation(widget, context.boundaryPanel);
         final Location tableLocation = new WidgetLocation(flexTable, context.boundaryPanel);
-        context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (w.getOffsetHeight()));
+        context.boundaryPanel.add(positioner, tableLocation.getLeft(), widgetLocation.getTop() + (widget.getOffsetHeight()));
     }
 
     @Override
     public void onPreviewDrop(final DragContext context) throws VetoDragException {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         super.onPreviewDrop(context);
-        if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresDimension())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED)))
+        if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresDimension())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
             throw new VetoDragException();
-        else if((trDragController.getDraggableTable().getParent().getParent().getParent() instanceof MeasureGrid && ((DimensionFlexTable)trDragController.getDraggableTable().getParent().getParent().getParent().getParent()).getAxis().equals(flexTable.getAxis())))
+        }
+        else if((trDragController.getDraggableTable().getParent().getParent().getParent() instanceof MeasureGrid && ((DimensionFlexTable)trDragController.getDraggableTable().getParent().getParent().getParent().getParent()).getAxis().equals(flexTable.getAxis()))){
             throw new VetoDragException();
-        else if(trDragController.getDraggableTable() == flexTable)
+        }
+        else if(trDragController.getDraggableTable() == flexTable){
             throw new VetoDragException();
+        }
     }
 
     /**
@@ -188,11 +191,11 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
      * 
      * @return the widget
      */
-    Widget newPositioner(final DragContext context) {
-        final Widget p = new SimplePanel();
-        p.addStyleName(CSS_DEMO_TABLE_POSITIONER);
-        p.setPixelSize(flexTable.getOffsetWidth(), 1);
-        return p;
+    private Widget newPositioner(final DragContext context) {
+        final Widget panel = new SimplePanel();
+        panel.addStyleName(CSS_DEMO_TABLE_POSITIONER);
+        panel.setPixelSize(flexTable.getOffsetWidth(), 1);
+        return panel;
     }
 
 }

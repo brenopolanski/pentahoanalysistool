@@ -60,11 +60,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     
     private IAxis dimAxis;
 
-    private LayoutPanel baseLayoutPanel;
-
     private DimensionFlexTable dimensionTable;
-
-    private CaptionLayoutPanel captLayoutPanel;
 
     private Boolean horizontal = false;
 
@@ -127,7 +123,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         query = Pat.getCurrQuery();
         dimAxis = targetAxis;
         tblRowDragCont = tRDC;
-        captLayoutPanel = new CaptionLayoutPanel(labelText);
+        final CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
         captLayoutPanel.setLayout(new BoxLayout());
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
 
@@ -136,7 +132,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         dimensionTable.clear();
         
         populateDimensionTable(dimAxis);
-        baseLayoutPanel = getLayoutPanel();
+        final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.add(captLayoutPanel);
     }
 
@@ -152,11 +148,11 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      * 
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
-    public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
+    public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // If the drop axis equals the target axis add the widget.
 
 
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis == targetAxis) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
             
             if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)){
                 int location= -1;
@@ -169,18 +165,47 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 }
                 
                 if (location>-1){
-                    MeasureGrid mg = (MeasureGrid) dimensionTable.getWidget(location, 0);
-                    mg.addRow((MeasureLabel) sender);
-                    mg.setEmpty(false);
+                    final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+                    mGrid.addRow((MeasureLabel) sender);
+                    mGrid.setEmpty(false);
                 }
                 //Otherwise create a measure grid
                 else{
-                    MeasureGrid mg = new MeasureGrid(query, dimAxis);
-                    mg.setDragController(tblRowDragCont);
-                    mg.setCurrentAxis(dimAxis);
-                    mg.makeDraggable();
-                    mg.addRow((MeasureLabel)sender);
-                    flexTableAddRecord(mg);
+                    final MeasureGrid mGrid = new MeasureGrid(query, dimAxis);
+                    mGrid.setDragController(tblRowDragCont);
+                    mGrid.setCurrentAxis(dimAxis);
+                    mGrid.makeDraggable();
+                    mGrid.addRow((MeasureLabel)sender);
+                    flexTableAddRecord(mGrid);
+                }
+                    
+            }
+            else if (sender instanceof MeasureGrid && !dimAxis.equals(IAxis.UNUSED)){
+                int location= -1;
+                //If the dimension drop widget contains a measure grid, add it to the measure grid.
+                for(int i=0; i < dimensionTable.getRowCount(); i++){
+                    if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
+                        location = i;
+                        break;
+                    }
+                }
+                
+                if (location>-1){
+                    final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+                    for(int i =0; i<((MeasureGrid)sender).getRows().getRowCount(); i++){
+                    mGrid.addRow((MeasureLabel) ((MeasureGrid)sender).getRows().getWidget(i, 0));
+                    }
+                    mGrid.setEmpty(false);
+                    WidgetHelper.layout(mGrid);
+                }
+                //Otherwise create a measure grid
+                else{
+                    final MeasureGrid mGrid = new MeasureGrid(query, dimAxis);
+                    mGrid.setDragController(tblRowDragCont);
+                    mGrid.setCurrentAxis(dimAxis);
+                    mGrid.makeDraggable();
+                    mGrid.addRow((MeasureLabel)sender);
+                    flexTableAddRecord(mGrid);
                 }
                     
             }
@@ -196,7 +221,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             }
         } 
         //If the drop axis equals the source axis, remove the widget.
-        else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis == sourceAxis))) {
+        else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis.equals(sourceAxis)))) {
             if(dimAxis.equals(IAxis.UNUSED) && sender instanceof MeasureLabel){
                // tblRowDragCont.makeNotDraggable(sender);
             }else{
@@ -206,7 +231,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         
     }
 
-    private void flexTableRemoveRecord(int sourceRow) {
+    private void flexTableRemoveRecord(final int sourceRow) {
         dimensionTable.removeRow(sourceRow);
         if (dimensionTable.getRowCount()==0){
             dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable);
@@ -256,15 +281,15 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                         ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                                 "Measures", new AsyncCallback<StringTree>() { //$NON-NLS-1$
 
-                                    public void onFailure(Throwable arg0) {
+                                    public void onFailure(final Throwable arg0) {
                                         // TODO Auto-generated method stub
 
                                     }
 
-                                    public void onSuccess(StringTree measuresTree) {
-                                            int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
+                                    public void onSuccess(final StringTree measuresTree) {
+                                            final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
 
-                                            List<String> dimensionList = Arrays.asList(arg0);
+                                            final List<String> dimensionList = Arrays.asList(arg0);
                                             
                                             MeasureGrid measureDropWidget = null;
                                             
@@ -276,7 +301,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         
                                                 //Insert Measures
                                                 for (int i = 0; i < measuresTree.getChildren().size(); i++) {
-                                                    MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.labelType.MEASURE);
+                                                    final MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.labelType.MEASURE);
                                                     measureDropWidget.addRow(handle, i);
                                                     handle.setDragController(tblRowDragCont);
                                                     handle.makeDraggable();
@@ -318,7 +343,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     }
 
-    public void flexTableAddRecord(Widget sender) {
+    public void flexTableAddRecord(final Widget sender) {
         Widget wid = null;
         if (sender instanceof MeasureLabel){
         wid = TableUtil.cloneMeasureLabel((MeasureLabel)sender);

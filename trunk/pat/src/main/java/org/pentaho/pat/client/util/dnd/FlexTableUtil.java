@@ -286,9 +286,9 @@ public class FlexTableUtil {
                                 final List<String> memberNames = new ArrayList<String>();
                                 for (int i = 0; i < ((MeasureGrid) wid).getRows().getRowCount(); i++) {
                                     memberNames.clear();
-                                    final MeasureLabel ml = (MeasureLabel) ((MeasureGrid) wid).getRows()
+                                    final MeasureLabel measureLab = (MeasureLabel) ((MeasureGrid) wid).getRows()
                                             .getWidget(i, 0);
-                                    memberNames.add(ml.getText().trim());
+                                    memberNames.add(measureLab.getText().trim());
                                     ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
                                             Pat.getCurrQuery(),
                                             "Measures", memberNames, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
@@ -345,6 +345,7 @@ public class FlexTableUtil {
         else if (Pat.getMeasuresDimension().equals(targetAxis)) {
             final ArrayList<String> memberList = new ArrayList<String>();
             for (int i = 0; i < ((MeasureGrid) w).getMeasureLabels().size(); i++) {
+                memberList.clear();
                 memberList.add(((MeasureLabel) ((MeasureGrid) w).getMeasureLabels().get(i)).getText().trim());
                 ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
                         "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
@@ -356,12 +357,13 @@ public class FlexTableUtil {
 
                             public void onSuccess(final Object arg0) {
 
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
-                                        sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                LogoPanel.spinWheel(false);
+                               
                             }
                         });
             }
+            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                    sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+            LogoPanel.spinWheel(false);
         } else {
             // TODO Throw error.
         }

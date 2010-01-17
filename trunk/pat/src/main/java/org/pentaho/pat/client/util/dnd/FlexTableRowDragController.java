@@ -79,7 +79,7 @@ public class FlexTableRowDragController extends PickupDragController {
      * 
      * @return the draggable table
      */
-    DimensionFlexTable getDraggableTable() {
+    public DimensionFlexTable getDraggableTable() {
         return draggableTable;
     }
 
@@ -88,7 +88,7 @@ public class FlexTableRowDragController extends PickupDragController {
      * 
      * @return the drag row
      */
-    int getDragRow() {
+    public int getDragRow() {
         return dragRow;
     }
 
@@ -97,7 +97,7 @@ public class FlexTableRowDragController extends PickupDragController {
      * 
      * @return the drag row
      */
-    int getDragCol() {
+    public int getDragCol() {
         return dragCol;
     }
 
@@ -114,8 +114,8 @@ public class FlexTableRowDragController extends PickupDragController {
     private int getWidgetRow(final Widget widget, final DimensionFlexTable table) {
         for (int row = 0; row < table.getRowCount(); row++) {
             for (int col = 0; col < table.getCellCount(row); col++) {
-                final Widget w = table.getWidget(row, col);
-                if (w.equals(widget)) {
+                final Widget wid = table.getWidget(row, col);
+                if (wid.equals(widget)) {
                     return row;
                 }
             }
@@ -186,7 +186,7 @@ public class FlexTableRowDragController extends PickupDragController {
     @Override
     protected Widget newDragProxy(final DragContext context) {
 
-        DimensionFlexTable proxy = new DimensionFlexTable();
+        final DimensionFlexTable proxy = new DimensionFlexTable();
         proxy.addStyleName(DRAG_CSS_PROXY);
         
         draggableTable = (DimensionFlexTable) context.draggable.getParent();
