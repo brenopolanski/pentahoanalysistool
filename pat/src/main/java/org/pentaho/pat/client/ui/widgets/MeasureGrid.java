@@ -48,16 +48,16 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         this.query = query;
     }
 
-    public void addRow(final MeasureLabel ml) {
+    public void addRow(final MeasureLabel mLabel) {
         if (empty && grid.getRowCount() > 0)
             TableUtil.removeSpacer(grid);
-        grid.setWidget(grid.getRowCount(), 0, ml);
+        grid.setWidget(grid.getRowCount(), 0, mLabel);
     }
 
-    public void addRow(final MeasureLabel ml, final int row) {
+    public void addRow(final MeasureLabel mLabel, final int row) {
         if (empty && grid.getRowCount() > 0)
             TableUtil.removeSpacer(grid);
-        grid.setWidget(row, 0, ml);
+        grid.setWidget(row, 0, mLabel);
     }
 
     /**
@@ -128,14 +128,16 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      * org.pentaho.pat.rpc.dto.IAxis, org.pentaho.pat.rpc.dto.IAxis)
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis == targetAxis) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis)) {
             int rowcount = 0;
-            for (int i = 0; i < grid.getRowCount(); i++)
-                if (grid.getWidget(i, 0) != null)
+            for (int i = 0; i < grid.getRowCount(); i++){
+                if (grid.getWidget(i, 0) != null){
                     rowcount++;
-
-            if (rowcount == 0)
+                }
+            }
+            if (rowcount == 0){
                 this.removeFromParent();
+            }
 
         }
 
@@ -153,10 +155,12 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     public void removeRow(final int row) {
-        if (!currentAxis.equals(IAxis.UNUSED) && grid.getRowCount() > 1)
+        if (!currentAxis.equals(IAxis.UNUSED) && grid.getRowCount() > 1){
             grid.removeRow(row);
-        else
+        }
+        else{
             MeasureGrid.this.removeFromParent();
+        }
     }
 
     /**
