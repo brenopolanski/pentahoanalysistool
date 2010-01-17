@@ -42,7 +42,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         super();
         grid = new DimensionFlexTable(false, currentAxis);
         final CaptionPanel panel = new CaptionPanel(ConstantFactory.getInstance().measures());
-        this.setStylePrimaryName(MEASURE_GRID);
+        this.setStyleName(MEASURE_GRID);
         panel.add(grid);
         this.add(panel);
         this.query = query;

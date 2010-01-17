@@ -74,6 +74,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
      * 
      */
     public MemberCell() {
+        super();
     }
 
     /**
@@ -83,10 +84,10 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
      * @param b
      * @param c
      */
-    public MemberCell(final boolean b, final boolean c) {
+    public MemberCell(final boolean right, final boolean sameAsPrev) {
         super();
-        this.right = b;
-        this.sameAsPrev = c;
+        this.right = right;
+        this.sameAsPrev = sameAsPrev;
     }
 
     /**
@@ -185,7 +186,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
      * 
      * @param memberCell
      */
-    public void setRightOf(MemberCell memberCell) {
+    public void setRightOf(final MemberCell memberCell) {
         this.rightOf = memberCell;
 
     }
@@ -203,7 +204,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
         if (this.getRawValue() != null) {
 
             final Image cellButton = new Image() {
-                public void onBrowserEvent(Event event) {
+                public void onBrowserEvent(final Event event) {
                     if (DOM.eventGetType(event) == Event.ONCLICK) {
                         DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
                     }
@@ -216,7 +217,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
             if ((MemberCell.this).getChildMemberCount() > 0) {
                 drillButton = new Image() {
 
-                    public void onBrowserEvent(Event event) {
+                    public void onBrowserEvent(final Event event) {
                         if (DOM.eventGetType(event) == Event.ONCLICK) {
                             ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
                                     Pat.getCurrDrillType(), MemberCell.this, new AsyncCallback<Object>() {

@@ -44,14 +44,56 @@ background-color:yellow;
 
 	}
 
+.pat-SelectionModeMenu{
+	
+	}
+
+.pat-CellModeMenu{
+	
+	}
 
 
+.pat-SaveMenuPanel{
+	
+	}
 
+.pat-LogoPanel{
+  width: 100%;
+  align: right;
+}
 
+#throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.Throbber-loading {
+	background: url(loadinfo.gif);
+}
+.Throbber-static {
+	background: url(loadinfostatic.gif);
+}
 
+.pat-ChartOptionsPanel{
+	
+	}
+	
+.pat-ConnectionManagerPanel{
+	
+	}
+	
+.pat-ConnectMondrianPanel{
 
+}
 
-
+.pat-ConnectXmlaPanel{
+	
+}
 
 
 
@@ -142,27 +184,6 @@ width: 100%;
   padding: 5px;
 }
 
-.logoPanel{
-  width: 100%;
-  align: right;
-}
-
-#throbber {
-	width: 48px !important;
-	height: 48px !important;
-	border: none;
-}
-.throbber {
-	width: 48px !important;
-	height: 48px !important;
-	border: none;
-}
-.Throbber-loading {
-	background: url(loadinfo.gif);
-}
-.Throbber-static {
-	background: url(loadinfostatic.gif);
-}
 
 .cellButton {
 align: right;

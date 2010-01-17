@@ -27,7 +27,7 @@ public class CellLabelPanel extends HorizontalPanel {
         super();
         this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
-        this.setStylePrimaryName(CELL_LABEL_PANEL);
+        this.setStyleName(CELL_LABEL_PANEL);
     }
 
     @Override

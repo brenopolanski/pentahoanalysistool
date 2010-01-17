@@ -123,7 +123,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      *            the target axis
      */
     public final void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragController tRDC) {
-        this.setStylePrimaryName(DIMENSION_DROP_WIDGET);
+        this.setStyleName(DIMENSION_DROP_WIDGET);
         query = Pat.getCurrQuery();
         dimAxis = targetAxis;
         tblRowDragCont = tRDC;
@@ -348,7 +348,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     private void flexTableAddRecord(Widget sender, int row){
         dimensionTable.setWidget(row, 0, sender);
         dimensionTable.getCellFormatter().addStyleName(row, 0, "FlexTable-Cell"); //$NON-NLS-1$
-        dimensionTable.getCellFormatter().setStylePrimaryName(row, 0, TABLE_DRAG_CELL);
+        dimensionTable.getCellFormatter().setStyleName(row, 0, TABLE_DRAG_CELL);
         dimensionTable.getCellFormatter().setVerticalAlignment(row, 0,HasVerticalAlignment.ALIGN_TOP);
         empty = false;
     }

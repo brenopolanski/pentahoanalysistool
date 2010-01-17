@@ -48,6 +48,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class CellModeMenu extends PopupMenu {
 
+    public final static String CELL_MODE_MENU = "pat-CellModeMenu"; //$NON-NLS-1$
     public class ClearExcludeCommand implements Command {
 
         /*
@@ -215,6 +216,7 @@ public class CellModeMenu extends PopupMenu {
     public CellModeMenu() {
         super();
         init();
+        this.setStyleName(CELL_MODE_MENU);
     }
 
     private void init() {

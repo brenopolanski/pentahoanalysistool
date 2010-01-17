@@ -81,7 +81,7 @@ public class CubeTreeItem extends HorizontalPanel {
 
             
 
-            this.setStylePrimaryName(CUBE_TREE_ITEM);
+            this.setStyleName(CUBE_TREE_ITEM);
         }
 
     }
