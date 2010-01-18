@@ -854,4 +854,8 @@ public interface IGuiConstants extends Constants {
      */
     String measures(); 
 
+    String flat();
+    
+    String hierarchical();
+    
 }
