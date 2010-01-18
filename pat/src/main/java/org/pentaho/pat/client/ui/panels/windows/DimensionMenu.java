@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -117,10 +118,10 @@ public class DimensionMenu extends LayoutComposite {
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         dimensionTree = new Tree(treeImages);
         dimensionTree.setAnimationEnabled(false);
-        dimensionTree.setWidth("300px"); //$NON-NLS-1$
+//        dimensionTree.setWidth("300px"); //$NON-NLS-1$
         memberListBox.setColumnTruncatable(0, false);
         memberListBox.setColumnTruncatable(1, false);
-        memberListBox.setWidth("500px"); //$NON-NLS-1$
+//        memberListBox.setWidth("500px"); //$NON-NLS-1$
 
         memberListBox.setCellRenderer(new CellRenderer<MemberSelectionLabel>() {
             public void renderCell(final ListBox<MemberSelectionLabel> listBox, final int row, final int column,
@@ -226,7 +227,7 @@ public class DimensionMenu extends LayoutComposite {
          * 
          * });
          */
-        baseLayoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        
 
         final LayoutPanel sortLayout = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
@@ -252,10 +253,17 @@ public class DimensionMenu extends LayoutComposite {
 
         });
 
-        final LayoutPanel groupPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-        groupPanel.add(dimTreeScrollPanel, new BoxLayoutData(FillStyle.BOTH, true));
+        final LayoutPanel groupPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        groupPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         groupPanel.add(memberListBox, new BoxLayoutData(FillStyle.BOTH));
-        baseLayoutPanel.add(groupPanel, new BoxLayoutData(FillStyle.BOTH));
+        
+        TabLayoutPanel tabPanel = new TabLayoutPanel();
+        tabPanel.add(groupPanel,ConstantFactory.getInstance().flat());
+        tabPanel.add(dimTreeScrollPanel,ConstantFactory.getInstance().hierarchical());
+        tabPanel.selectTab(0);
+        
+//        groupPanel.add(dimTreeScrollPanel, new BoxLayoutData(FillStyle.BOTH, true));
+        baseLayoutPanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
 
     }
 

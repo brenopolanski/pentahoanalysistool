@@ -59,7 +59,7 @@ public class SaveWindow extends WindowPanel {
                 @org.pentaho.pat.client.Pat::saveQueryToSolution(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(solution,path,name,localizedFileName);
             }
         } 
-        top.openFileDialog(testo, "test","test","xpav");
+        top.openFileDialog(testo, "Save Analysis... ","Save","xpav");
       }
       else {
           @org.pentaho.pat.client.ui.windows.SaveWindow::displaySaveWindow()();
