@@ -106,9 +106,6 @@ public class PropertiesPanel extends LayoutComposite {
     /** Form element name of the file component. */
     private static final String FORM_NAME_QUERY = "query"; //$NON-NLS-1$
 
-    /** Encoding type for the Connection form. */
-    private static final String FORM_ENCODING = "form-data"; //$NON-NLS-1$
-
     /** Submit method of the Connection form. */
     private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
 

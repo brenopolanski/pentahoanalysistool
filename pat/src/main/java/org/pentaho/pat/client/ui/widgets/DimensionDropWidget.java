@@ -143,6 +143,73 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
     }
 
+    
+    private void doMeasureStuff(MeasureLabel sender){
+        if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)){
+            int location= -1;
+            //If the dimension drop widget contains a measure grid, add it to the measure grid.
+            for(int i=0; i < dimensionTable.getRowCount(); i++){
+                if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
+                    location = i;
+                    break;
+                }
+            }
+            
+            if (location>-1){
+                final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+                mGrid.addRow((MeasureLabel) sender);
+                mGrid.setEmpty(false);
+            }
+            //Otherwise create a measure grid
+            else{
+                final MeasureGrid mGrid = new MeasureGrid(query, dimAxis);
+                mGrid.setDragController(tblRowDragCont);
+                mGrid.setCurrentAxis(dimAxis);
+                mGrid.makeDraggable();
+                mGrid.addRow((MeasureLabel)sender);
+                flexTableAddRecord(mGrid);
+            }
+                
+        }
+        else {
+            flexTableAddRecord(sender);
+        }
+    }
+    
+    private void doMeasureStuff(MeasureGrid sender){
+        if (!dimAxis.equals(IAxis.UNUSED)){
+            int location= -1;
+            //If the dimension drop widget contains a measure grid, add it to the measure grid.
+            for(int i=0; i < dimensionTable.getRowCount(); i++){
+                if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
+                    location = i;
+                    break;
+                }
+            }
+            
+            if (location>-1){
+                final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+                for(int i =0; i<((MeasureGrid)sender).getRows().getRowCount(); i++){
+                mGrid.addRow((MeasureLabel) ((MeasureGrid)sender).getRows().getWidget(i, 0));
+                }
+                mGrid.setEmpty(false);
+                WidgetHelper.layout(mGrid);
+            }
+            //Otherwise create a measure grid
+            else{
+                
+                final MeasureGrid mGrid = TableUtil.cloneMeasureGrid(sender);
+                mGrid.setDragController(tblRowDragCont);
+                mGrid.setCurrentAxis(dimAxis);
+                mGrid.makeDraggable();
+                //mGrid.addRow((MeasureGrid)sender);
+                flexTableAddRecord(mGrid);
+            }      
+        }
+        else if(sender instanceof MeasureGrid && dimAxis.equals(IAxis.UNUSED)){
+            
+        }
+    }
     /*
      * (non-Javadoc)
      * 
@@ -153,69 +220,19 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
 
         if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
+            if (sender instanceof MeasureLabel){
+                MeasureLabel measureLab = (MeasureLabel) sender;
+                doMeasureStuff(measureLab);
+            }
+            else if(sender instanceof MeasureGrid){
+                MeasureGrid measureGrid = (MeasureGrid) sender;
+                doMeasureStuff(measureGrid);
+            }
             
-            if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)){
-                int location= -1;
-                //If the dimension drop widget contains a measure grid, add it to the measure grid.
-                for(int i=0; i < dimensionTable.getRowCount(); i++){
-                    if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
-                        location = i;
-                        break;
-                    }
-                }
-                
-                if (location>-1){
-                    final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
-                    mGrid.addRow((MeasureLabel) sender);
-                    mGrid.setEmpty(false);
-                }
-                //Otherwise create a measure grid
-                else{
-                    final MeasureGrid mGrid = new MeasureGrid(query, dimAxis);
-                    mGrid.setDragController(tblRowDragCont);
-                    mGrid.setCurrentAxis(dimAxis);
-                    mGrid.makeDraggable();
-                    mGrid.addRow((MeasureLabel)sender);
-                    flexTableAddRecord(mGrid);
-                }
-                    
-            }
-            else if (sender instanceof MeasureGrid && !dimAxis.equals(IAxis.UNUSED)){
-                int location= -1;
-                //If the dimension drop widget contains a measure grid, add it to the measure grid.
-                for(int i=0; i < dimensionTable.getRowCount(); i++){
-                    if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
-                        location = i;
-                        break;
-                    }
-                }
-                
-                if (location>-1){
-                    final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
-                    for(int i =0; i<((MeasureGrid)sender).getRows().getRowCount(); i++){
-                    mGrid.addRow((MeasureLabel) ((MeasureGrid)sender).getRows().getWidget(i, 0));
-                    }
-                    mGrid.setEmpty(false);
-                    WidgetHelper.layout(mGrid);
-                }
-                //Otherwise create a measure grid
-                else{
-                    final MeasureGrid mGrid = new MeasureGrid(query, dimAxis);
-                    mGrid.setDragController(tblRowDragCont);
-                    mGrid.setCurrentAxis(dimAxis);
-                    mGrid.makeDraggable();
-                    mGrid.addRow((MeasureLabel)sender);
-                    flexTableAddRecord(mGrid);
-                }
-                    
-            }
-            else if(sender instanceof MeasureGrid && dimAxis.equals(IAxis.UNUSED)){
-                
-            }
-            else if (sender instanceof MeasureLabel){
-                flexTableAddRecord(sender);
             
-            }
+            
+            
+            
             else{
                 flexTableAddRecord(sender);
             }
