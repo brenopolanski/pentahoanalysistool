@@ -42,6 +42,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
@@ -112,7 +113,14 @@ public class PropertiesPanel extends LayoutComposite {
     private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
 
     /** Defines the action of the form. */
-    private static final String FORM_ACTION = "export"; //$NON-NLS-1$
+    private static String FORM_ACTION = "export"; //$NON-NLS-1$
+    static {
+        if (GWT.getModuleBaseURL().indexOf("content/pat")> -1) {
+            String url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content/pat")+11) + "/export";
+            FORM_ACTION = url;
+        }
+      }
+
 
     /**
      * PropertiesPanel Constructor.

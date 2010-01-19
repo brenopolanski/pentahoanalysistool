@@ -20,6 +20,7 @@
 package org.pentaho.pat.server.servlet;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,13 +65,10 @@ public class ExportController extends AbstractCommandController  implements Init
     
     public static CellDataSet exportResult = null;
     
-    private WritableCellFormat cs;
-    private WritableCellFormat hcs;
-    private WritableCellFormat rcs;
-    private WritableCellFormat csn;
-
-    private ServletOutputStream outputStream;
-
+    private static WritableCellFormat cs;
+    private static WritableCellFormat hcs;
+    private static WritableCellFormat rcs;
+    private static WritableCellFormat csn;
 
     public static final String extensionFile = ".xls"; //$NON-NLS-1$
 
@@ -80,40 +78,11 @@ public class ExportController extends AbstractCommandController  implements Init
         final QueryExportBean queryExportBean = (QueryExportBean) command;
         
         try {
-            exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryExportBean.getQuery()));
-            if (exportResult != null) {
+            if(OlapUtil.getCellSet(queryExportBean.getQuery()) != null)  {
                 response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
                 response.setHeader("filename", "export.xls"); //$NON-NLS-1$ //$NON-NLS-2$
-                this.outputStream = response.getOutputStream();
-                PatTableModel table = new PatTableModel(exportResult);
-                AbstractBaseCell[][] rowData = table.getRowData();
-                AbstractBaseCell[][] rowHeader = table.getColumnHeaders();
-                
-                String[][] result = new String[rowHeader.length + rowData.length][];
-                for (int x = 0; x<rowHeader.length;x++) {
-                    List<String> cols = new ArrayList<String>();
-                    for(int y = 0; y < rowHeader[x].length;y++) {
-                        cols.add(rowHeader[x][y].getFormattedValue()); 
-                    }
-                    result[x]= cols.toArray(new String[cols.size()]);
-                    
-                }
-                for (int x = 0; x<rowData.length ;x++) {
-                    int xTarget = rowHeader.length + x;
-                    List<String> cols = new ArrayList<String>();
-                    for(int y = 0; y < rowData[x].length;y++) {
-                        cols.add(rowData[x][y].getFormattedValue()); 
-                    }
-                    result[xTarget]= cols.toArray(new String[cols.size()]);
-                    
-                }
-               
-                export(result);
-                                          
                 response.setStatus(HttpServletResponse.SC_OK);
-                outputStream.flush();
-                outputStream.close();
-
+                exportExcel(queryExportBean.getQuery(),response.getOutputStream());
             }
             else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -126,14 +95,55 @@ public class ExportController extends AbstractCommandController  implements Init
         return null;
     }
 
-    public void export(String[][] resultSet) {
+    public static void exportExcel(String queryId, OutputStream out) throws IOException {
+        exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryId));
+        if (exportResult != null) {
+
+            PatTableModel table = new PatTableModel(exportResult);
+            AbstractBaseCell[][] rowData = table.getRowData();
+            AbstractBaseCell[][] rowHeader = table.getColumnHeaders();
+            
+            String[][] result = new String[rowHeader.length + rowData.length][];
+            for (int x = 0; x<rowHeader.length;x++) {
+                List<String> cols = new ArrayList<String>();
+                for(int y = 0; y < rowHeader[x].length;y++) {
+                    cols.add(rowHeader[x][y].getFormattedValue()); 
+                }
+                result[x]= cols.toArray(new String[cols.size()]);
+                
+            }
+            for (int x = 0; x<rowData.length ;x++) {
+                int xTarget = rowHeader.length + x;
+                List<String> cols = new ArrayList<String>();
+                for(int y = 0; y < rowData[x].length;y++) {
+                    cols.add(rowData[x][y].getFormattedValue()); 
+                }
+                result[xTarget]= cols.toArray(new String[cols.size()]);
+                
+            }
+           
+            export(result,out);
+                                      
+
+            try {
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                throw e;
+            }
+            
+
+        }
+    }
+    public static void export(String[][] resultSet, OutputStream out) {
         
         
         WritableWorkbook  wb = null;
         
         try {
  
-                wb = Workbook.createWorkbook(outputStream);
+                wb = Workbook.createWorkbook(out);
                 WritableSheet sheet = wb.createSheet("Sheet", 0); //$NON-NLS-1$
                 setCellsStyles();
                 WritableCellFormat cf;
@@ -178,12 +188,12 @@ public class ExportController extends AbstractCommandController  implements Init
             try {
                 wb.close();
                 } catch (Exception e){
-                        logger.error( "IO ERROR"); //$NON-NLS-1$
+                        LOG.error( "IO ERROR"); //$NON-NLS-1$
                 }
         }
 }
 
-private void setCellsStyles() throws WriteException {
+private static void setCellsStyles() throws WriteException {
         
         cs = new WritableCellFormat();
         cs.setBorder(Border.ALL, BorderLineStyle.THIN);
@@ -208,7 +218,7 @@ public String getExtension() {
         return extensionFile;
 }
 
-public boolean isDouble(String obj){
+public static boolean isDouble(String obj){
     try{
             Double.parseDouble(obj);
     }catch(NumberFormatException e){
