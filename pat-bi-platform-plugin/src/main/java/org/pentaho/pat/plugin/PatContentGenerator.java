@@ -24,13 +24,19 @@ import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+import jxl.Workbook;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
+import org.pentaho.pat.server.servlet.ExportController;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IServiceManager;
+import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -70,30 +76,41 @@ public class PatContentGenerator extends SimpleContentGenerator {
         String fullPath = ActionInfo.buildSolutionPath(solution, path, action);
         ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-
-        String url = null;
         if (repository.resourceExists(fullPath)) {
             Document doc = repository.getResourceAsDocument(fullPath);
-            url = getLaunchURL(doc);
             solutionFile = PatSolutionFile.convertDocument(doc);
-            if (solutionFile == null)
+            if (solutionFile == null) {
                 throw new Exception("Can not cast xpav file");
-            
-            
-        }
-
-        if (null==url){
-            // Something bad happened... send error messages back to the client.
-            super.createContent();
-            System.out.println("--------- URL == NULL");
-        }else{
-            System.out.println("--------- URL == NOT NULL");
+            }
             IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
             Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
             ((QueryServlet)targetQueryBean).addBootstrapQuery(solutionFile.getQueryId());
             super.createContent();
-            //outputHandler.setOutput("redirect", url);
+
         }
+        else if(requestParams.getStringParameter("query", null) != null) {
+            OutputStream out = null;
+            if (outputHandler == null) {
+                throw new InvalidParameterException("ERROR NO_OUTPUT_HANDLER");  //$NON-NLS-1$
+            }
+
+            IContentItem contentItem = outputHandler.getOutputContentItem("response", "content", "", instanceId, getMimeType()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            if (contentItem == null) {
+                throw new InvalidParameterException("ERROR NO CONTENT ITEM");  //$NON-NLS-1$
+            }
+
+            out = contentItem.getOutputStream(null);
+            contentItem.setMimeType("application/vnd.ms-excel");
+            ExportController.exportExcel(requestParams.getStringParameter("query", null), out);
+        
+        }
+        else {
+            super.createContent();
+            System.out.println("--------- DEFAULT OUTPUT");   
+        }
+            //outputHandler.setOutput("redirect", url);
+
     }
 
     @Override
@@ -140,48 +157,6 @@ public class PatContentGenerator extends SimpleContentGenerator {
         }
 
 
-    }
-
-    private String getLaunchURL(Document doc)throws Exception{
-
-        //TODO Provide a model for Pentaho Analysis View content so that we are not parsing raw 
-        //     XML in the business logic.
-
-        // REQUIRED: the XML/A url and the PAT application url
-//
-//        String appConnection = XmlDom4JHelper.getNodeText( "/pav/app-connection", doc, null);
-//        if (null==appConnection){
-//            problemMessages.add("Invalid analysis view content. The application connection must be defined. Double check the xml in your .xpav file for errors.");
-//        }
-//
-//        String xmlaConnection = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@url", doc, null);
-//        if (null==xmlaConnection){
-//            problemMessages.add("Invalid analysis view content. The XML/A connection must be defined.  Double check the xml in your .xpav file for errors.");
-//        }
-//
-//        if ((xmlaConnection != null) && (xmlaConnection.trim().length()>0)){
-//            try {
-//                xmlaConnection = URLEncoder.encode(xmlaConnection, LocaleHelper.getSystemEncoding());
-//            } catch (Exception e) {
-//                problemMessages.add("Encountered encoding problem encoding " + xmlaConnection);
-//            }
-//        }
-//
-//        if (problemMessages.size()>0){
-//            return null;
-//        }
-
-        // OPTIONAL: credentials for XML/A provider... very very prototype...
-//
-//        String xmlaUser = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@username", doc, "");
-//        String xmlaPassword = XmlDom4JHelper.getNodeText( "/pav/xmla-provider/@password", doc, "");
-//        String url = appConnection; //.concat("?").concat(xmlaUrlParameter).concat("=").concat(xmlaConnection);
-        //    if ((xmlaUser!=null) &&(xmlaPassword!=null)){   
-        //      url = url.concat("&").concat(xmlaUsernameParameter).concat("=").concat(xmlaUser).concat("&")
-        //               .concat(xmlaPasswordParameter).concat("=").concat(xmlaPassword);
-        //    }
-
-        return "";
     }
 
     public String getMimeType() {

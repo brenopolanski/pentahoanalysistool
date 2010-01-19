@@ -144,7 +144,6 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     // DEBUG MSG
                     System.out.println("PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
                     pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
-                    pentahoXmlaUrl = "http://localhost:8080/pentaho/Xmla";
                     CubeConnection cc = new CubeConnection();
                     cc.setId("automatic-pentaho-connection-1234");
                     cc.setName("Automatic Pentaho XMLA");
