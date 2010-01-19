@@ -341,6 +341,8 @@ public class FlexTableUtil {
                                         location = j;
                                         break;
                                     }
+                                
+                                if(location>0){
                                 ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().getCellFormatter()
                                         .removeStyleName(0, 0, SPACER_LABEL);
                                 ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().removeRow(0);
@@ -351,6 +353,11 @@ public class FlexTableUtil {
 
                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                                }
+                                else{
+                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                            sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                                }
                             } else
                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());

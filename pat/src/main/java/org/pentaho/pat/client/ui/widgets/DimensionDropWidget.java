@@ -177,7 +177,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
     
     private void doMeasureStuff(MeasureGrid sender){
-        if (!dimAxis.equals(IAxis.UNUSED)){
+        //if (!dimAxis.equals(IAxis.UNUSED)){
             int location= -1;
             //If the dimension drop widget contains a measure grid, add it to the measure grid.
             for(int i=0; i < dimensionTable.getRowCount(); i++){
@@ -205,10 +205,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 //mGrid.addRow((MeasureGrid)sender);
                 flexTableAddRecord(mGrid);
             }      
-        }
+        /*}
         else if(sender instanceof MeasureGrid && dimAxis.equals(IAxis.UNUSED)){
             
-        }
+        }*/
     }
     /*
      * (non-Javadoc)
