@@ -27,6 +27,7 @@ import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.images.IGuiImages;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
+import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -286,6 +287,7 @@ public class Pat implements EntryPoint {
 
                 public void onSuccess(final String sessionId) {
                     applicationState.setSession(sessionId);
+                    setupPat();
                     Application.setupActiveQueries();
                     
                 }
@@ -338,6 +340,12 @@ public class Pat implements EntryPoint {
 
     }
     
+    private void setupPat() {
+        MenuBar.enableConnect(true);
+        MenuBar.enableCube(true);
+        MenuBar.enableLoad(true);
+        
+    }
     public static void saveQueryToSolution(final String solution, final String path,final String name,final String localizedFileName) {
         ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), name,
                 Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {

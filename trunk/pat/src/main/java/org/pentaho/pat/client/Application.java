@@ -115,6 +115,11 @@ public class Application extends Viewport {
         if (Pat.getApplicationState().getMode().isShowMenu()) {
 
             menuBar = new MenuBar();
+            MenuBar.enableConnect(false);
+            MenuBar.enableSave(false);
+            MenuBar.enableCube(false);
+            MenuBar.enableLoad(false);
+            
             rootPanel.add(menuBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
 

@@ -127,7 +127,7 @@ public class ExportController extends AbstractCommandController  implements Init
 
             try {
                 out.flush();
-                out.close();
+  
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 throw e;

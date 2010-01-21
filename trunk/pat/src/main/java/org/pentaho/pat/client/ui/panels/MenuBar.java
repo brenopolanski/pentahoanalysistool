@@ -53,7 +53,17 @@ public class MenuBar extends LayoutComposite {
 
     private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
             ConstantFactory.getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
+    
+    // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+    // cases)
+    final static ToolButton CONNECTIONBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
+            ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
 
+    final static ToolButton CUBEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+            .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
+
+    final static ToolButton LOADBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
+            .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
     /**
      * Initializes the Menu Bar contents
      */
@@ -76,21 +86,18 @@ public class MenuBar extends LayoutComposite {
      * 
      */
     private void addConnectionsButton() {
-        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
-        // cases)
-        final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
-                ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
-        connectionButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        CONNECTIONBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(connectionButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(CONNECTIONBUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        connectionButton.addClickHandler(new ClickHandler() {
+        CONNECTIONBUTTON.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 ConnectionManagerWindow.display();
             }
         });
-        rootPanel.add(connectionButton, new BoxLayoutData(FillStyle.VERTICAL));
+        CONNECTIONBUTTON.setEnabled(false);
+        rootPanel.add(CONNECTIONBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
     /**
@@ -99,21 +106,19 @@ public class MenuBar extends LayoutComposite {
      * 
      */
     private void addCubesButton() {
-        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
-        // cases)
-        final ToolButton cubeButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-                .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
-        cubeButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(cubeButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        cubeButton.addClickHandler(new ClickHandler() {
+        CUBEBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(CUBEBUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        CUBEBUTTON.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 CubeBrowserWindow.display();
             }
         });
-        rootPanel.add(cubeButton, new BoxLayoutData(FillStyle.VERTICAL));
+        CUBEBUTTON.setEnabled(false);
+        rootPanel.add(CUBEBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
     /**
@@ -138,24 +143,30 @@ public class MenuBar extends LayoutComposite {
     }
     
     private void addLoadButton() {
-        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
-        // cases)
-        final ToolButton loadButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-                .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
-        loadButton.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        LOADBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
         // FIXME remove that and use style
-        DOM.setStyleAttribute(loadButton.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        loadButton.addClickHandler(new ClickHandler() {
+        DOM.setStyleAttribute(LOADBUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOADBUTTON.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
                 LoadWindow.display();
             }
         });
-        loadButton.setEnabled(true);
-        rootPanel.add(loadButton, new BoxLayoutData(FillStyle.VERTICAL));
+        LOADBUTTON.setEnabled(false);
+        rootPanel.add(LOADBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
 
+    public static void enableConnect(final Boolean enabled) {
+        CONNECTIONBUTTON.setEnabled(enabled);
+    }
     public static void enableSave(final Boolean enabled) {
         SAVEBUTTON.setEnabled(enabled);
+    }
+    public static void enableLoad(final Boolean enabled) {
+        LOADBUTTON.setEnabled(enabled);
+    }
+    
+    public static void enableCube(final Boolean enabled) {
+        CUBEBUTTON.setEnabled(enabled);
     }
 }
