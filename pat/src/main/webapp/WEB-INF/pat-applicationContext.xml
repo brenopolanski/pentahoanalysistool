@@ -80,6 +80,7 @@
             <value>/WEB-INF/lib</value>
             <value>/src/main/jdbc</value>
             <value>../../../../src/main/jdbc</value>
+            <value>jdbc</value>
           </list>
         </property>
         <property name="cacheTimeout" value="600000"/>

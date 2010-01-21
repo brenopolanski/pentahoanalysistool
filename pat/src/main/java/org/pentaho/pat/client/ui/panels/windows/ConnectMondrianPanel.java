@@ -37,6 +37,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeConnection.ConnectionType;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -74,7 +75,13 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private static final String FORM_METHOD = "POST"; //$NON-NLS-1$
 
     /** Defines the action of the form. */
-    private static final String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
+    private static String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
+    static {
+        if (GWT.getModuleBaseURL().indexOf("content/pat")> -1) {
+            String url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content/pat")+11) + "/schemaupload";
+            FORM_ACTION = url;
+        }
+      }
 
     /** Height of the panel. */
     private static final Integer HEIGHT = 280;
