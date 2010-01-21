@@ -103,7 +103,7 @@ public class PatContentGenerator extends SimpleContentGenerator {
             out = contentItem.getOutputStream(null);
             contentItem.setMimeType("application/vnd.ms-excel");
             ExportController.exportExcel(requestParams.getStringParameter("query", null), out);
-        
+            
         }
         else {
             super.createContent();
@@ -115,19 +115,6 @@ public class PatContentGenerator extends SimpleContentGenerator {
 
     @Override
     public void createContent(OutputStream out) throws Exception {
-        //      outputHandler.setOutput("redirect", "http://localhost:8080/pentaho/content/pat/pat-res/pat.html");
-        //    
-        //    StringBuilder html = new StringBuilder();
-        //    html.append("<html>");
-        //    html.append("<h3>Pentaho Analysis Tool failed to launch. Hopefully some of the messages provided below will prove useful in figuring out why.</h3>");
-        //    html.append("<ol>");
-        //    for (String  message : problemMessages) {
-        //      html.append("<li>").append(message).append("</li>");
-        //    }
-        //    html.append("</ol>");
-        //    html.append("</html>");
-        //    out.write(html.toString().getBytes(LocaleHelper.getSystemEncoding()));
-
         try {
             StringBuilder html = new StringBuilder();
             html.append("<html>");
