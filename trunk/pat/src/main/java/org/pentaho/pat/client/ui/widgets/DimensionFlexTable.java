@@ -38,6 +38,8 @@ public class DimensionFlexTable extends FlexTable {
 
     private IAxis axis;
 
+    private boolean containsMeasures = false;
+    
     private final static String TABLE_CSS_NAME = "pat-DimensionFlexTable"; //$NON-NLS-1$
 
     private final static String VALID_DROP_TARGET = "pat-validDropTarget";  //$NON-NLS-1$
@@ -98,5 +100,16 @@ public class DimensionFlexTable extends FlexTable {
         
     }
 
+    /**
+     *TODO JAVADOC
+     * @return the containsMeasures
+     */
+    public boolean isContainsMeasures() {
+        return containsMeasures;
+    }
+
+    public void setContainsMeasures(boolean welldoesit){
+        containsMeasures = welldoesit;
+    }
   
 }
