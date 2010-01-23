@@ -6,6 +6,7 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.TableUtil;
@@ -42,6 +43,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     public MeasureGrid(final String query, final IAxis currentAxis) {
         super();
         grid = new DimensionFlexTable(false, currentAxis);
+        this.currentAxis=currentAxis;
         final CaptionPanel panel = new CaptionPanel(ConstantFactory.getInstance().measures());
         this.setStyleName(MEASURE_GRID);
         panel.add(grid);
@@ -149,7 +151,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
             if (rowcount == 0){
                 this.removeFromParent();
             }
-
+WidgetHelper.layout(this);
         }
 
     }
