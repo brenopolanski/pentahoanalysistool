@@ -263,7 +263,7 @@ public class FlexTableUtil {
         else if (!Pat.getMeasuresDimension().equals(IAxis.UNUSED) && Pat.getMeasuresDimension().equals(targetAxis)) {
             final ArrayList<String> memberList = new ArrayList<String>();
             memberList.add(((MeasureLabel) w).getText().trim());
-            measureCreateSelection(memberList, targetTable, sourceRow, targetTable, w);
+            measureCreateSelection(memberList, sourceTable, sourceRow, targetTable, w);
         } else
             LogoPanel.spinWheel(false);
 
@@ -281,7 +281,7 @@ public class FlexTableUtil {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        sourceTable.removeRow(sourceRow);
+                        //sourceTable.removeRow(sourceRow);
                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
