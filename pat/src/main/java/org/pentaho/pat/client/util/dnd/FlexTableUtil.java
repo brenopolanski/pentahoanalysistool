@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.QueryListenerCollection;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.ui.widgets.MeasureGrid;
@@ -165,8 +166,8 @@ public class FlexTableUtil {
                                                     }
 
                                                     public void onSuccess(final Object arg0) {
-                                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                                .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                                .clone()).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                                         targetTable.getAxis());
 
                                                         LogoPanel.spinWheel(false);
@@ -207,8 +208,8 @@ public class FlexTableUtil {
                                     public void onSuccess(final Object arg0) {
 
                                         sourceTable.removeRow(sourceRow);
-                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                .fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                .clone()).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                         targetTable.getAxis());
                                         Pat.setMeasuresDimension(targetAxis);
                                         LogoPanel.spinWheel(false);
@@ -230,10 +231,10 @@ public class FlexTableUtil {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        sourceTable.removeRow(sourceRow);
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w, sourceRow,
+                     //   sourceTable.removeRow(sourceRow);
+                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
-                        Pat.setMeasuresDimension(targetAxis);
+                       // Pat.setMeasuresDimension(targetAxis);
                         LogoPanel.spinWheel(false);
 
                     }
@@ -281,7 +282,7 @@ public class FlexTableUtil {
 
                     public void onSuccess(final Object arg0) {
                         sourceTable.removeRow(sourceRow);
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w, sourceRow,
+                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
                     }
@@ -325,7 +326,7 @@ public class FlexTableUtil {
 
                                 }
 
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(wid,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                                 TableUtil.clearTableRows(((MeasureGrid) w).getRows());
                                 TableUtil.insertSpacer(((MeasureGrid) w).getRows());
@@ -351,15 +352,15 @@ public class FlexTableUtil {
                                             .addRow((MeasureLabel) ((MeasureGrid) w).getRows().getWidget(i, 0));
                                 ((MeasureGrid) targetTable.getWidget(location, 0)).makeDraggable();
 
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                                 }
                                 else{
-                                    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                    ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                             sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                                 }
                             } else
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
 
                             Pat.setMeasuresDimension(targetAxis);
@@ -386,7 +387,7 @@ public class FlexTableUtil {
                             }
                         });
             }
-            GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w, sourceRow,
+            ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                     sourceTable.getAxis(), targetTable.getAxis());
             LogoPanel.spinWheel(false);
          
