@@ -11,6 +11,7 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
@@ -124,7 +125,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     @Override
     public void onLoad() {
-        // GlobalConnectionFactory.getQueryInstance().addQueryListener(MeasureGrid.this);
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(MeasureGrid.this);
     }
 
     /*
@@ -134,7 +135,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      * org.pentaho.pat.rpc.dto.IAxis, org.pentaho.pat.rpc.dto.IAxis)
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis)) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis)) {
             
             grid.removeRow(sourceRow);
             
