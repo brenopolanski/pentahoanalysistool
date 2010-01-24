@@ -129,6 +129,11 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     public void onLoad() {
         GlobalConnectionFactory.getQueryInstance().addQueryListener(MeasureGrid.this);
     }
+    
+    @Override
+    public void onUnload(){
+        GlobalConnectionFactory.getQueryInstance().removeQueryListener(MeasureGrid.this);
+    }
 
     /*
      * (non-Javadoc)
@@ -137,6 +142,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      * org.pentaho.pat.rpc.dto.IAxis, org.pentaho.pat.rpc.dto.IAxis)
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
+        
         if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis)) {
             
             grid.removeRow(sourceRow);
@@ -152,6 +158,13 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                 this.removeFromParent();
             }
 WidgetHelper.layout(this);
+        }
+
+        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis)) {
+        MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);    
+            addRow(measureLabel);
+            
+           WidgetHelper.layout(this);
         }
 
     }

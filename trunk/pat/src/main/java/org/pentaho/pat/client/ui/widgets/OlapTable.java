@@ -67,10 +67,18 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     public OlapTable() {
 	super();
 
-	GlobalConnectionFactory.getQueryInstance().addQueryListener(
-		OlapTable.this);
+	
     }
-
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(
+                OlapTable.this);
+    }
+    @Override
+    public void onUnload(){
+        GlobalConnectionFactory.getQueryInstance().removeQueryListener(
+                OlapTable.this);
+    }
     /**
      * 
      * Initialize the Live Table.
