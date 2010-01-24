@@ -73,9 +73,12 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
         super();
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
     }
 
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
+    }
     /**
      * OLAP Panel Constructor.
      *
@@ -84,7 +87,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = cube.getName();
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
+        
         cubeItem = cube;
         cubeName = cube.getName();
         connectionId = connection;
@@ -202,7 +205,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
 
         });
-
+        GlobalConnectionFactory.getQueryInstance().removeQueryListener(OlapPanel.this);
     }
 
     public void setConnectionId(final String connectionId) {

@@ -76,6 +76,11 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     }
 
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
+    }
+    
     /**
      * Mdx Panel Constructor.
      * 
@@ -85,7 +90,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
 
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
+        
 
         this.cubeItem = cube;
         this.cube = cube.getName();
@@ -239,7 +244,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
             }
 
         });
-
+        GlobalConnectionFactory.getQueryInstance().removeQueryListener(MdxPanel.this);
     }
 
     public void setCube(final String name) {

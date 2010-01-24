@@ -79,7 +79,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     public DataPanel(final String query) {
         super();
         this.queryId = query;
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
+        
 
         mainLayoutPanel.setPadding(0);
 
@@ -132,6 +132,15 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     }
 
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
+    }
+    
+    @Override
+    public void onUnload(){
+        GlobalConnectionFactory.getQueryInstance().removeQueryListener(DataPanel.this);   
+    }
     public void chartPosition(final Region chartPos) {
 
         ofcPanel.removeFromParent();
