@@ -143,7 +143,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
             
             grid.removeRow(sourceRow);
             
@@ -160,7 +160,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 WidgetHelper.layout(this);
         }
 
-        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureLabel) {
+        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
         MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);    
             addRow(measureLabel);
             

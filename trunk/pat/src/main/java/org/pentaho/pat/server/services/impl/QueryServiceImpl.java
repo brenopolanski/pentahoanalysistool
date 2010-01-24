@@ -41,6 +41,7 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Schema;
@@ -353,6 +354,56 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         qDim.include(selectionMode, member);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang .String, java.lang.String,
+     * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
+     */
+    public void createSelection(final String userId, final String sessionId, final String queryId,
+            final String dimensionName, final Selection.Operator selectionType)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final Cube cube = query.getCube();
+
+        NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
+        
+        Member member = levels.get(0).getMembers().get(0);
+
+        if (member == null) {
+            // Let's try with only the dimension name in front.
+            final List<String> dimPlusMemberNames = new ArrayList<String>();
+            dimPlusMemberNames.add(dimensionName);
+            //dimPlusMemberNames.addAll(memberNames);
+            member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
+
+            if (member == null) {
+                // Sometimes we need to find it in a different name format.
+                // To make sure we find the member, the first element
+                // will be sent as DimensionName.HierarchyName. Cubes which have
+                // more than one hierarchy in a given dimension will require
+                // this
+                // format anyways.
+                final List<String> completeMemberNames = new ArrayList<String>();
+              //  completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+                //completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+                member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+
+                if (member == null) {
+                    // We failed to find the member.
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                }
+            }
+        }
+
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+        qDim.include(selectionMode, member);
+    }
+
+    
     /*
      * (non-Javadoc)
      * 
