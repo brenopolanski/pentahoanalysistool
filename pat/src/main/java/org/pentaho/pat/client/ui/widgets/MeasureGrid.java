@@ -143,7 +143,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis)) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel) {
             
             grid.removeRow(sourceRow);
             
@@ -160,13 +160,21 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 WidgetHelper.layout(this);
         }
 
-        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis)) {
+        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureLabel) {
         MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);    
             addRow(measureLabel);
             
            WidgetHelper.layout(this);
         }
-
+        else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureGrid) {
+            MeasureGrid mGrid = TableUtil.cloneMeasureGrid((MeasureGrid) sender);
+            for (int i = 0; i< mGrid.getRows().getRowCount(); i++){
+            MeasureLabel measureLabel = ((MeasureLabel) mGrid.getRows().getWidget(i, 0));    
+                addRow(measureLabel);
+                
+               WidgetHelper.layout(this);
+            }
+        }
     }
 
     /*

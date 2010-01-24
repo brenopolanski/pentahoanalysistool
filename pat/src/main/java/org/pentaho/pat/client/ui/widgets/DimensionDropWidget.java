@@ -188,12 +188,12 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             }
             
             if (location>-1){
-                final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+                /*final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
                 for(int i =0; i<((MeasureGrid)sender).getRows().getRowCount(); i++){
                 mGrid.addRow((MeasureLabel) ((MeasureGrid)sender).getRows().getWidget(i, 0));
                 }
                 mGrid.setEmpty(false);
-                WidgetHelper.layout(mGrid);
+                WidgetHelper.layout(mGrid);*/
             }
             //Otherwise create a measure grid
             else{
