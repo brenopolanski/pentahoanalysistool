@@ -104,7 +104,7 @@ public class FlexTableUtil {
                 else if (((MeasureLabel) w).getType() == MeasureLabel.labelType.MEASURE)
                     moveMeasure(w, sourceRow, sourceTable, targetTable, targetAxis);
                 else {
-                    // Throw Error
+                    MessageBox.error(ConstantFactory.getInstance().error(), "Forgot to add to the list");
                 }
             } else if (w instanceof MeasureGrid)
                 moveMeasureGrid(w, sourceRow, sourceTable, targetTable, targetAxis);
@@ -141,22 +141,8 @@ public class FlexTableUtil {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                ((MeasureLabel) w).getText().trim(), new AsyncCallback<StringTree>() {
-
-                                    public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                                .getInstance().failedMemberFetch(arg0.getLocalizedMessage()));
-
-                                    }
-
-                                    public void onSuccess(final StringTree memberTree) {
-                                        final ArrayList<String> names = new ArrayList<String>();
-                                        names.add(memberTree.getChildren().get(0).getValue());
-                                        // TODO Create interface to createselection with default member w/o
-                                        // getting them all first.
                                         ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
-                                                Pat.getCurrQuery(), ((MeasureLabel) w).getText().trim(), names,
+                                                Pat.getCurrQuery(), ((MeasureLabel) w).getText().trim(),
                                                 "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$
 
                                                     public void onFailure(final Throwable arg0) {
@@ -177,9 +163,6 @@ public class FlexTableUtil {
                                     }
                                 });
 
-                    }
-
-                });
 
     }
 
