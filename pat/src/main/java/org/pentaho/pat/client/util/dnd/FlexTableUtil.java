@@ -106,7 +106,7 @@ public class FlexTableUtil {
                 else {
                     // Throw Error
                 }
-            } else
+            } else if (w instanceof MeasureGrid)
                 moveMeasureGrid(w, sourceRow, sourceTable, targetTable, targetAxis);
         }
     }
@@ -201,7 +201,8 @@ public class FlexTableUtil {
                                 new AsyncCallback<Object>() {
 
                                     public void onFailure(final Throwable arg0) {
-                                        // TODO Auto-generated method stub
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                                        LogoPanel.spinWheel(false);
 
                                     }
 
@@ -226,15 +227,14 @@ public class FlexTableUtil {
                 "Measures", memberList, new AsyncCallback<Object>() { //$NON-NLS-1$
 
                     public void onFailure(final Throwable arg0) {
-                        // TODO Auto-generated method stub
-
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
+                        
                     }
 
                     public void onSuccess(final Object arg0) {
-                     //   sourceTable.removeRow(sourceRow);
                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
-                       // Pat.setMeasuresDimension(targetAxis);
                         LogoPanel.spinWheel(false);
 
                     }
@@ -246,7 +246,8 @@ public class FlexTableUtil {
     private static void moveMeasure(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
             final DimensionFlexTable targetTable, final IAxis targetAxis) {
 
-        // If Measures is in unused Move Dimension to axis and create selection
+        // If Measures is in unused Move Dimension to axis and create selection 
+        //or if the source dimension only has one measure left
         if ((Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !Pat.getMeasuresDimension().equals(targetAxis))
                 || (targetAxis.equals(IAxis.UNUSED) && sourceTable.getRowCount() == 1)) {
             moveDimensionCreateSelection(targetAxis, w, sourceTable, sourceRow, targetTable);
@@ -265,6 +266,7 @@ public class FlexTableUtil {
             memberList.add(((MeasureLabel) w).getText().trim());
             measureCreateSelection(memberList, sourceTable, sourceRow, targetTable, w);
         } else
+            //Throw Error.
             LogoPanel.spinWheel(false);
 
     }
@@ -276,12 +278,11 @@ public class FlexTableUtil {
                 "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
 
                     public void onFailure(final Throwable arg0) {
-                        // TODO Auto-generated method stub
-
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
                     }
 
                     public void onSuccess(final Object arg0) {
-                        //sourceTable.removeRow(sourceRow);
                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
@@ -296,13 +297,14 @@ public class FlexTableUtil {
                     "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
 
                         public void onFailure(final Throwable arg0) {
-
+                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                            LogoPanel.spinWheel(false);
                         }
 
                         public void onSuccess(final Object arg0) {
-                            Widget wid = null;
+                            
                             if (sourceTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
-                                wid = TableUtil.cloneMeasureGrid((MeasureGrid) w);
+                                final Widget wid = TableUtil.cloneMeasureGrid((MeasureGrid) w);
                                 final List<String> memberNames = new ArrayList<String>();
                                 for (int i = 0; i < ((MeasureGrid) wid).getRows().getRowCount(); i++) {
                                     memberNames.clear();
@@ -314,24 +316,22 @@ public class FlexTableUtil {
                                             "Measures", memberNames, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
 
                                                 public void onFailure(final Throwable arg0) {
-                                                    // TODO Auto-generated method stub
+                                                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                                                    LogoPanel.spinWheel(false);
 
                                                 }
 
                                                 public void onSuccess(final Object arg0) {
-                                                    // TODO Auto-generated method stub
+                                                    ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
+                                                            sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                                                    
+                                                    
                                                 }
 
                                             });
 
                                 }
 
-                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
-                                        sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                /*TableUtil.clearTableRows(((MeasureGrid) w).getRows());
-                                TableUtil.insertSpacer(((MeasureGrid) w).getRows());
-                                ((MeasureGrid) w).setEmpty(true);
-                                ((MeasureGrid) w).makeNotDraggable();*/
 
                             }
 
@@ -360,18 +360,18 @@ public class FlexTableUtil {
                         "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
 
                             public void onFailure(final Throwable arg0) {
-                                // TODO Auto-generated method stub
-
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDimensionSet(arg0.getLocalizedMessage()));
+                                LogoPanel.spinWheel(false);
                             }
 
                             public void onSuccess(final Object arg0) {
-
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
+                                        sourceTable.getAxis(), targetTable.getAxis());
+                                LogoPanel.spinWheel(false);
                             }
                         });
             }
-            ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
-                    sourceTable.getAxis(), targetTable.getAxis());
-            LogoPanel.spinWheel(false);
+            
          
         }
         else {
