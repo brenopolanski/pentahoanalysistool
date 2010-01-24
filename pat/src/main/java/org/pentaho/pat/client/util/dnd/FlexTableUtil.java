@@ -35,7 +35,6 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
-import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
@@ -47,8 +46,6 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  */
 public class FlexTableUtil {
-
-    private final static String SPACER_LABEL = "spacer-label"; //$NON-NLS-1$
 
     /**
      * Copy an entire FlexTable from one FlexTable to another. Each element is copied by creating a new {@link HTML}
@@ -149,6 +146,7 @@ public class FlexTableUtil {
                                                         MessageBox.error(ConstantFactory.getInstance().error(),
                                                                 MessageFactory.getInstance().noSelectionSet(
                                                                         arg0.getLocalizedMessage()));
+                                                        LogoPanel.spinWheel(false);
                                                     }
 
                                                     public void onSuccess(final Object arg0) {
@@ -191,11 +189,11 @@ public class FlexTableUtil {
 
                                     public void onSuccess(final Object arg0) {
 
-                                        sourceTable.removeRow(sourceRow);
+                                        //sourceTable.removeRow(sourceRow);
                                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()
                                                 .clone()).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                         targetTable.getAxis());
-                                        Pat.setMeasuresDimension(targetAxis);
+                                        Pat.setMeasuresAxis(targetAxis);
                                         LogoPanel.spinWheel(false);
                                     }
                                 });
@@ -231,7 +229,7 @@ public class FlexTableUtil {
 
         // If Measures is in unused Move Dimension to axis and create selection 
         //or if the source dimension only has one measure left
-        if ((Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !Pat.getMeasuresDimension().equals(targetAxis))
+        if ((Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !Pat.getMeasuresAxis().equals(targetAxis))
                 || (targetAxis.equals(IAxis.UNUSED) && sourceTable.getRowCount() == 1)) {
             moveDimensionCreateSelection(targetAxis, w, sourceTable, sourceRow, targetTable);
         } else if (targetAxis.equals(IAxis.UNUSED)) {
@@ -244,7 +242,7 @@ public class FlexTableUtil {
         }
 
         // Else Just adjust measures selection
-        else if (!Pat.getMeasuresDimension().equals(IAxis.UNUSED) && Pat.getMeasuresDimension().equals(targetAxis)) {
+        else if (!Pat.getMeasuresAxis().equals(IAxis.UNUSED) && Pat.getMeasuresAxis().equals(targetAxis)) {
             final ArrayList<String> memberList = new ArrayList<String>();
             memberList.add(((MeasureLabel) w).getText().trim());
             measureCreateSelection(memberList, sourceTable, sourceRow, targetTable, w);
@@ -275,7 +273,9 @@ public class FlexTableUtil {
 
     private static void moveMeasureGrid(final Widget w, final int sourceRow, final DimensionFlexTable sourceTable,
             final DimensionFlexTable targetTable, final IAxis targetAxis) {
-        if (Pat.getMeasuresDimension() == IAxis.UNUSED || targetAxis.equals(IAxis.UNUSED))
+        
+        //If Current Measures Axis or the target axis is unused
+        if (Pat.getMeasuresAxis() == IAxis.UNUSED || targetAxis.equals(IAxis.UNUSED))
             ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                     "Measures", new AsyncCallback<Object>() { //$NON-NLS-1$
 
@@ -286,7 +286,7 @@ public class FlexTableUtil {
 
                         public void onSuccess(final Object arg0) {
                             
-                            if (sourceTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
+                            if (sourceTable.getAxis().equals(IAxis.UNUSED)) {
                                 final Widget wid = TableUtil.cloneMeasureGrid((MeasureGrid) w);
                                 final List<String> memberNames = new ArrayList<String>();
                                 for (int i = 0; i < ((MeasureGrid) wid).getRows().getRowCount(); i++) {
@@ -305,8 +305,6 @@ public class FlexTableUtil {
                                                 }
 
                                                 public void onSuccess(final Object arg0) {
-                                                    ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
-                                                            sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                                                     
                                                     
                                                 }
@@ -314,27 +312,47 @@ public class FlexTableUtil {
                                             });
 
                                 }
-
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
+                                        sourceRow, sourceTable.getAxis(), targetTable.getAxis());
+                    
 
                             }
 
-                            else if (targetTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
+                            else if (targetTable.getAxis().equals(IAxis.UNUSED)) {
+                                final Widget wid = TableUtil.cloneMeasureGrid((MeasureGrid) w);
+                                final List<String> memberNames = new ArrayList<String>();
+                                for (int i = 0; i < ((MeasureGrid) wid).getRows().getRowCount(); i++) {
+                                ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), 
+                                        "Measures", memberNames, new AsyncCallback<Object>(){ //$NON-NLS-1$
+
+                                            public void onFailure(Throwable arg0) {
+                                                // TODO Auto-generated method stub
+                                                
+                                            }
+
+                                            public void onSuccess(Object arg0) {
+                                                // TODO Auto-generated method stub
+                                                
+                                            }
+                                    
+                                });
                                 
+                                
+                                }
                                 ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                
                                 
                             } else
                                 ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
 
-                            Pat.setMeasuresDimension(targetAxis);
+                            Pat.setMeasuresAxis(targetAxis);
 
                             LogoPanel.spinWheel(false);
                         }
 
                     });
-        else if (Pat.getMeasuresDimension().equals(targetAxis)) {
+        else if (Pat.getMeasuresAxis().equals(targetAxis)) {
             final ArrayList<String> memberList = new ArrayList<String>();
             for (int i = 0; i < ((MeasureGrid) w).getMeasureLabels().size(); i++) {
                 memberList.clear();
@@ -348,17 +366,18 @@ public class FlexTableUtil {
                             }
 
                             public void onSuccess(final Object arg0) {
-                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
-                                        sourceTable.getAxis(), targetTable.getAxis());
-                                LogoPanel.spinWheel(false);
                             }
                         });
             }
+            ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
+                    sourceTable.getAxis(), targetTable.getAxis());
+            LogoPanel.spinWheel(false);
+
             
          
         }
         else {
-            // TODO Throw error.
+            MessageBox.error(ConstantFactory.getInstance().error(), "oops");
         }
     }
 }

@@ -37,8 +37,6 @@ public class DimensionFlexTable extends FlexTable {
     private Boolean horizontal = false;
 
     private IAxis axis;
-
-    private boolean containsMeasures = false;
     
     private final static String TABLE_CSS_NAME = "pat-DimensionFlexTable"; //$NON-NLS-1$
 
@@ -85,31 +83,19 @@ public class DimensionFlexTable extends FlexTable {
      * @param engaged
      */
     public void setEngaged(final boolean engaged) {
-       if(engaged && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+       if(engaged && (Pat.getMeasuresAxis().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
            this.addStyleName(VALID_DROP_TARGET);
        }
-       else if(!engaged && (Pat.getMeasuresDimension().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+       else if(!engaged && (Pat.getMeasuresAxis().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
            this.removeStyleName(VALID_DROP_TARGET);
        }
-       else if(engaged && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+       else if(engaged && (!Pat.getMeasuresAxis().equals(axis) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
            this.addStyleName(INVALID_DROP_TARGET);
        }
-       else if(!engaged && (!Pat.getMeasuresDimension().equals(axis) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
+       else if(!engaged && (!Pat.getMeasuresAxis().equals(axis) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
            this.removeStyleName(INVALID_DROP_TARGET);
        }
         
-    }
-
-    /**
-     *TODO JAVADOC
-     * @return the containsMeasures
-     */
-    public boolean isContainsMeasures() {
-        return containsMeasures;
-    }
-
-    public void setContainsMeasures(boolean welldoesit){
-        containsMeasures = welldoesit;
     }
   
 }

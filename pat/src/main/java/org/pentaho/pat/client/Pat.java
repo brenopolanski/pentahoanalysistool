@@ -426,11 +426,11 @@ public class Pat implements EntryPoint {
 	return currScenario;
     }
 
-    public static void setMeasuresDimension(IAxis measuresDimension) {
+    public static void setMeasuresAxis(IAxis measuresDimension) {
 	Pat.measuresAxis = measuresDimension;
     }
 
-    public static IAxis getMeasuresDimension() {
+    public static IAxis getMeasuresAxis() {
 	return measuresAxis;
     }
 

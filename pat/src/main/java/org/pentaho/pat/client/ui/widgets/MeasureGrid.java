@@ -55,9 +55,6 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         if (empty && grid.getRowCount() > 0)
             TableUtil.removeSpacer(grid);
         grid.setWidget(grid.getRowCount(), 0, mLabel);
-        
-        if(mLabel.getType().equals(MeasureLabel.labelType.MEASURE))
-            grid.setContainsMeasures(true);
     }
 
     public void addRow(final MeasureLabel mLabel, final int row) {
@@ -65,8 +62,6 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
             TableUtil.removeSpacer(grid);
         grid.setWidget(row, 0, mLabel);
         
-        if(mLabel.getType().equals(MeasureLabel.labelType.MEASURE))
-            grid.setContainsMeasures(true);
     }
 
     /**
