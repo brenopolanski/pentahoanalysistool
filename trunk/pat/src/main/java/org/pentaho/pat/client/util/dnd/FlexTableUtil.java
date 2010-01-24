@@ -328,10 +328,10 @@ public class FlexTableUtil {
 
                                 ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                TableUtil.clearTableRows(((MeasureGrid) w).getRows());
+                                /*TableUtil.clearTableRows(((MeasureGrid) w).getRows());
                                 TableUtil.insertSpacer(((MeasureGrid) w).getRows());
                                 ((MeasureGrid) w).setEmpty(true);
-                                ((MeasureGrid) w).makeNotDraggable();
+                                ((MeasureGrid) w).makeNotDraggable();*/
 
                             }
 
