@@ -336,29 +336,11 @@ public class FlexTableUtil {
                             }
 
                             else if (targetTable.getAxis().equals(IAxis.UNUSED) && w instanceof MeasureGrid) {
-                                int location = -1;
-                                for (int j = 0; j < targetTable.getRowCount(); j++)
-                                    if (targetTable.getWidget(j, 0) instanceof MeasureGrid) {
-                                        location = j;
-                                        break;
-                                    }
                                 
-                                if(location>0){
-                                ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().getCellFormatter()
-                                        .removeStyleName(0, 0, SPACER_LABEL);
-                                ((MeasureGrid) targetTable.getWidget(location, 0)).getRows().removeRow(0);
-                                for (int i = 0; i < ((MeasureGrid) w).getRows().getRowCount(); i++)
-                                    ((MeasureGrid) targetTable.getWidget(location, 0))
-                                            .addRow((MeasureLabel) ((MeasureGrid) w).getRows().getWidget(i, 0));
-                                ((MeasureGrid) targetTable.getWidget(location, 0)).makeDraggable();
-
                                 ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                }
-                                else{
-                                    ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
-                                            sourceRow, sourceTable.getAxis(), targetTable.getAxis());
-                                }
+                                
+                                
                             } else
                                 ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
