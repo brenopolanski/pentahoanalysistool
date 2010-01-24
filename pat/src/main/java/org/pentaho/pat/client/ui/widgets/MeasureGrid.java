@@ -172,8 +172,9 @@ WidgetHelper.layout(this);
             MeasureLabel measureLabel = ((MeasureLabel) mGrid.getRows().getWidget(i, 0));    
                 addRow(measureLabel);
                 
-               WidgetHelper.layout(this);
+               
             }
+            WidgetHelper.layout(this);
         }
     }
 
