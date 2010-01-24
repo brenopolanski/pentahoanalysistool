@@ -172,7 +172,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onPreviewDrop(final DragContext context) throws VetoDragException {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         super.onPreviewDrop(context);
-        if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresDimension())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresDimension().equals(IAxis.UNUSED))){
+        if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
             throw new VetoDragException();
         }
         else if((trDragController.getDraggableTable().getParent().getParent().getParent() instanceof MeasureGrid && ((DimensionFlexTable)trDragController.getDraggableTable().getParent().getParent().getParent().getParent()).getAxis().equals(flexTable.getAxis()))){
