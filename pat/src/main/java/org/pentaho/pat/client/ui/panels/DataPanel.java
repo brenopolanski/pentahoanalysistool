@@ -119,7 +119,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
 
-        fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
+        //fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
 
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
         mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));

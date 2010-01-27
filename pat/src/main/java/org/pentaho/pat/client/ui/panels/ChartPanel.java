@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -31,8 +30,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.gwt.mosaic.ui.client.util.ButtonHelper;
-import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.charts.ChartFactory;
@@ -256,8 +254,9 @@ public class ChartPanel extends LayoutComposite {
         final LayoutPanel buttonsBox = new LayoutPanel();
         buttonsBox.setLayout(new BoxLayout());
 
-        final ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
-                .dialogInformation(), ConstantFactory.getInstance().pieChart(), ButtonLabelType.TEXT_ON_TOP));
+//        final ToolButton pieButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+//                .dialogInformation(), ConstantFactory.getInstance().pieChart(), ButtonLabelType.TEXT_ON_TOP));
+        final ToolButton pieButton = new ToolButton(Pat.IMAGES.chart_pie().getHTML());
         pieButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -268,8 +267,9 @@ public class ChartPanel extends LayoutComposite {
 
         });
 
-        final ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
-                .dialogInformation(), ConstantFactory.getInstance().barChart(), ButtonLabelType.TEXT_ON_TOP));
+        final ToolButton barButton = new ToolButton(Pat.IMAGES.chart_bar().getHTML());
+//        final ToolButton barButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+//                .dialogInformation(), ConstantFactory.getInstance().barChart(), ButtonLabelType.TEXT_ON_TOP));
 
         barButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
@@ -278,8 +278,9 @@ public class ChartPanel extends LayoutComposite {
             }
         });
 
-        final ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
-                .dialogInformation(), ConstantFactory.getInstance().lineChart(), ButtonLabelType.TEXT_ON_TOP));
+        final ToolButton lineButton = new ToolButton(Pat.IMAGES.chart_line().getHTML());
+//        final ToolButton lineButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+//                .dialogInformation(), ConstantFactory.getInstance().lineChart(), ButtonLabelType.TEXT_ON_TOP));
 
         lineButton.addClickHandler(new ClickHandler() {
 
@@ -289,9 +290,10 @@ public class ChartPanel extends LayoutComposite {
             }
         });
 
-        final ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
-                .dialogInformation(), ConstantFactory.getInstance().chartOptions(), ButtonLabelType.TEXT_ON_TOP));
+//        final ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
+//                .dialogInformation(), ConstantFactory.getInstance().chartOptions(), ButtonLabelType.TEXT_ON_TOP));
 
+        final ToolButton optionsButton = new ToolButton(ConstantFactory.getInstance().chartOptions());
         optionsButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 ChartOptionsWindow.display(ChartPanel.this);

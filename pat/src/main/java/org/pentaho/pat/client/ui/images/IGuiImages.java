@@ -82,4 +82,10 @@ public interface IGuiImages extends ImageBundle {
     AbstractImagePrototype drill2();
 
     AbstractImagePrototype dimbrowser();
+    
+    AbstractImagePrototype chart_bar();
+    
+    AbstractImagePrototype chart_pie();
+    
+    AbstractImagePrototype chart_line();
 }
