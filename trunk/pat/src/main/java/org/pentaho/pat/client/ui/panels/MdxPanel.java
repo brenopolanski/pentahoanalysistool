@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -30,7 +31,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
-import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -66,7 +66,9 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     private String queryId = null;
 
-    private OlapTable olapTable = null;
+    private DataPanel olapTable = null;
+    
+    private LayoutPanel tableLayoutPanel = new LayoutPanel();
 
     private final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
@@ -126,9 +128,10 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         this.mdxArea.setText(mdx);
     }
 
+    @Override
     protected void initializeWidget() {
 
-        final LayoutPanel baselayoutPanel = new LayoutPanel();
+        final LayoutPanel baselayoutPanel = new LayoutPanel(new BorderLayout());
 
         LogoPanel.spinWheel(true);
         // FIXME remove that and use style
@@ -144,13 +147,14 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
         centerPanel.add(executeButton);
 
-        olapTable = new OlapTable();
-        centerPanel.add(olapTable, new BoxLayoutData(FillStyle.BOTH));
+        
+        olapTable = new DataPanel(queryId, DataPanel.PanelType.MDX);
+        tableLayoutPanel.add(olapTable);
+        centerPanel.add(tableLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
 
         baselayoutPanel.add(centerPanel);
 
-        getLayoutPanel().add(baselayoutPanel);
-        LogoPanel.spinWheel(false);
+        
 
         executeButton.addClickHandler(new ClickHandler() {
 
@@ -187,6 +191,9 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
             }
 
         });
+        
+        getLayoutPanel().add(baselayoutPanel);
+        LogoPanel.spinWheel(false);
 
     }
 
@@ -282,7 +289,9 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         if (this.queryId.equals(queryId) && Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()
                 && this.isAttached()) {
 
-            olapTable.setData(matrix);
+//            tableLayoutPanel.layout();
+            this.layout();
+            
 
         }
 
