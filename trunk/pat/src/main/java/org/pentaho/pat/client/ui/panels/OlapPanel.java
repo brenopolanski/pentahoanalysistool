@@ -27,8 +27,12 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
@@ -231,8 +235,8 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        final LayoutPanel centerPanel = new LayoutPanel();
-       
+        final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
 
@@ -243,8 +247,14 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
             }
         });
 
-        final DataPanel dPanel = new DataPanel(queryId);
-        centerPanel.add(dPanel);
+        
+        final DataPanel dPanel = new DataPanel(queryId, DataPanel.PanelType.QM);
+        final PropertiesPanel pPanel = new PropertiesPanel(dPanel);
+        // FIXME remove that and use style 
+        DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        centerPanel.add(pPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        centerPanel.add(dPanel,new BoxLayoutData(FillStyle.BOTH));
 
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
         westPanel.add(mainMenuPanel);

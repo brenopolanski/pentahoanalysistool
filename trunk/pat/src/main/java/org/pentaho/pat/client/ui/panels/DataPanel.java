@@ -69,6 +69,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     private final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
 
     private final String queryId;
+    
+    public static enum PanelType {
+        QM, MDX
+    }
+    
+    PanelType dPaneltype = null;
 
     /**
      *DataPanel Constructor.
@@ -76,13 +82,22 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * @param query
      *
      */
-    public DataPanel(final String query) {
+    public DataPanel(final String query, final PanelType pType) {
         super();
         this.queryId = query;
-        
+        this.dPaneltype = pType;
 
+        olapTable = new OlapTable();
+        fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (pType == PanelType.QM) {
         mainLayoutPanel.setPadding(0);
 
+//        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
+        
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
         executeButton.addClickHandler(new ClickHandler() {
 
@@ -112,13 +127,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
                 IAxis.ROWS, false, Application.tblRowDrgCont);
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
-        olapTable = new OlapTable();
+        
         final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
         buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
         buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
 
-        fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
-
+        
         //fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
 
         mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
@@ -126,10 +140,9 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
 
+        
     }
 
     @Override
@@ -199,7 +212,9 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
         if (query.equals(queryId)) {
-            baseLayoutPanel.remove(mainLayoutPanel);
+            if (mainLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(mainLayoutPanel);
+            }
             baseLayoutPanel.add(fillLayoutPanel);
             baseLayoutPanel.layout();
             if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
