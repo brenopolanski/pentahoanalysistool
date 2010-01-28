@@ -132,7 +132,7 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
-        mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        mainPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
         
         final FormPanel formPanel = new FormPanel();
         formPanel.setAction(FORM_ACTION);
@@ -217,18 +217,18 @@ public class PropertiesPanel extends LayoutComposite {
         });
         mdxButton.setEnabled(true);
 
-        final ToolButton showParentButton = new ToolButton(ConstantFactory.getInstance().showParent());
-        showParentButton.setStyle(ToolButtonStyle.CHECKBOX);
-        showParentButton.setEnabled(false);
-        showParentButton.setChecked(true);
-
-        final ToolButton showFiltersButton = new ToolButton(ConstantFactory.getInstance().showFilters());
-        showFiltersButton.setStyle(ToolButtonStyle.CHECKBOX);
-        showFiltersButton.setEnabled(false);
-
-        final ToolButton showPropsButton = new ToolButton(ConstantFactory.getInstance().showProperties());
-        showPropsButton.setStyle(ToolButtonStyle.CHECKBOX);
-        showPropsButton.setEnabled(false);
+//        final ToolButton showParentButton = new ToolButton(ConstantFactory.getInstance().showParent());
+//        showParentButton.setStyle(ToolButtonStyle.CHECKBOX);
+//        showParentButton.setEnabled(false);
+//        showParentButton.setChecked(true);
+//
+//        final ToolButton showFiltersButton = new ToolButton(ConstantFactory.getInstance().showFilters());
+//        showFiltersButton.setStyle(ToolButtonStyle.CHECKBOX);
+//        showFiltersButton.setEnabled(false);
+//
+//        final ToolButton showPropsButton = new ToolButton(ConstantFactory.getInstance().showProperties());
+//        showPropsButton.setStyle(ToolButtonStyle.CHECKBOX);
+//        showPropsButton.setEnabled(false);
 
         final ToolButton hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
@@ -362,16 +362,17 @@ public class PropertiesPanel extends LayoutComposite {
         drillThruButton.setEnabled(false);
 
         mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        
         mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(showParentButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(showFiltersButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(showPropsButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+//        mainPanel.add(showParentButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+//        mainPanel.add(showFiltersButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+//        mainPanel.add(showPropsButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
 
     }
