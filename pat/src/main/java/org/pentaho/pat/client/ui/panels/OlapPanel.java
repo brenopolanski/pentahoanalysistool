@@ -36,6 +36,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
+import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -248,8 +249,8 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         });
 
         
-        final DataPanel dPanel = new DataPanel(queryId, DataPanel.PanelType.QM);
-        final PropertiesPanel pPanel = new PropertiesPanel(dPanel);
+        final DataPanel dPanel = new DataPanel(queryId, PanelUtil.PanelType.QM);
+        final PropertiesPanel pPanel = new PropertiesPanel(dPanel, PanelUtil.PanelType.QM);
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -265,6 +266,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
 
         getLayoutPanel().add(baselayoutPanel);
+        getLayoutPanel().layout();
         LogoPanel.spinWheel(false);
     }
 

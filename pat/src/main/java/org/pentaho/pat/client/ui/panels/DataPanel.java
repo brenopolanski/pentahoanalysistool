@@ -35,6 +35,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -70,11 +71,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     private final String queryId;
     
-    public static enum PanelType {
-        QM, MDX
-    }
-    
-    PanelType dPaneltype = null;
+    PanelUtil.PanelType dPaneltype = null;
 
     /**
      *DataPanel Constructor.
@@ -82,7 +79,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * @param query
      *
      */
-    public DataPanel(final String query, final PanelType pType) {
+    public DataPanel(final String query, final PanelUtil.PanelType pType) {
         super();
         this.queryId = query;
         this.dPaneltype = pType;
@@ -93,7 +90,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if (pType == PanelType.QM) {
+        if (pType == PanelUtil.PanelType.QM) {
         mainLayoutPanel.setPadding(0);
 
 //        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
