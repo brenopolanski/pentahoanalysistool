@@ -20,7 +20,11 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
+import org.gwt.mosaic.ui.client.Caption;
+import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -127,7 +131,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         this(cube, connection);
         this.mdxArea.setText(mdx);
     }
-
+    final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
     @Override
     protected void initializeWidget() {
 
@@ -137,16 +141,46 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        
+        
+        final LayoutPanel northPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        
         mdxArea.setWidth("100%"); //$NON-NLS-1$
         mdxArea.setHeight("150px"); //$NON-NLS-1$
         final ScrollPanel spMdx = new ScrollPanel(mdxArea);
-        centerPanel.add(spMdx, new BoxLayoutData(FillStyle.HORIZONTAL));
+        northPanel.add(spMdx, new BoxLayoutData(FillStyle.HORIZONTAL));
 
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
 
-        centerPanel.add(executeButton);
+        northPanel.add(executeButton);
 
+        final CaptionLayoutPanel collapsePanel = new CaptionLayoutPanel(ConstantFactory.getInstance().mdx());
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(collapsePanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseUp());
+        collapsePanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+
+        collapseBtn.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                collapsePanel.setCollapsed(!collapsePanel.isCollapsed());
+                if (collapsePanel.isCollapsed())
+                    collapseBtn.setImage(Caption.IMAGES.toolCollapseDown().createImage());
+                else
+                    collapseBtn.setImage(Caption.IMAGES.toolCollapseUp().createImage());
+                
+                MdxPanel.this.layout();
+                
+            }
+        });
+        collapsePanel.add(northPanel);
+        
+        
+        centerPanel.add(collapsePanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+        //centerPanel.setCollapsed(collapsePanel, true);
+        //collapsePanel.setCollapsed(true);
+
+        //MessageBox.alert("test", "isC:" + collapsePanel.isCollapsed() + " parent:" + collapsePanel.getParent().toString());
         
         olapTable = new DataPanel(queryId, DataPanel.PanelType.MDX);
         tableLayoutPanel.add(olapTable);
