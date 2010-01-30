@@ -35,6 +35,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
+import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -131,7 +132,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         this(cube, connection);
         this.mdxArea.setText(mdx);
     }
-    final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+    
     @Override
     protected void initializeWidget() {
 
@@ -141,7 +142,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        
+        final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));        
         
         final LayoutPanel northPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         
@@ -155,13 +156,14 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         northPanel.add(executeButton);
 
         final CaptionLayoutPanel collapsePanel = new CaptionLayoutPanel(ConstantFactory.getInstance().mdx());
+        
         // FIXME remove that and use style
         DOM.setStyleAttribute(collapsePanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseUp());
         collapsePanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
 
-        collapseBtn.addClickHandler(new ClickHandler() {
+        ClickHandler collapseClick = new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 collapsePanel.setCollapsed(!collapsePanel.isCollapsed());
                 if (collapsePanel.isCollapsed())
@@ -172,22 +174,23 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                 MdxPanel.this.layout();
                 
             }
-        });
+        };
+        collapsePanel.getHeader().addClickHandler(collapseClick);
         collapsePanel.add(northPanel);
         
-        
         centerPanel.add(collapsePanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-        //centerPanel.setCollapsed(collapsePanel, true);
-        //collapsePanel.setCollapsed(true);
-
-        //MessageBox.alert("test", "isC:" + collapsePanel.isCollapsed() + " parent:" + collapsePanel.getParent().toString());
+                
+        olapTable = new DataPanel(queryId, PanelUtil.PanelType.MDX);
+        final PropertiesPanel propPanel = new PropertiesPanel(olapTable, PanelUtil.PanelType.MDX);
         
-        olapTable = new DataPanel(queryId, DataPanel.PanelType.MDX);
+        centerPanel.add(propPanel,new BoxLayoutData(FillStyle.HORIZONTAL));
+        
         tableLayoutPanel.add(olapTable);
         centerPanel.add(tableLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
 
+        
         baselayoutPanel.add(centerPanel);
-
+        
         
 
         executeButton.addClickHandler(new ClickHandler() {
@@ -227,6 +230,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         });
         
         getLayoutPanel().add(baselayoutPanel);
+        getLayoutPanel().layout();
         LogoPanel.spinWheel(false);
 
     }

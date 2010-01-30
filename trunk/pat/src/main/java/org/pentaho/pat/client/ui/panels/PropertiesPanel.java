@@ -35,6 +35,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
+import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -116,7 +117,7 @@ public class PropertiesPanel extends LayoutComposite {
             String url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content/pat")+11) + "/export";
             FORM_ACTION = url;
         }
-      }
+    }
 
 
     /**
@@ -125,7 +126,7 @@ public class PropertiesPanel extends LayoutComposite {
      * @param dPanel
      * 
      */
-    public PropertiesPanel(final DataPanel dPanel) {
+    public PropertiesPanel(final DataPanel dPanel, PanelUtil.PanelType pType) {
         super();
         this.dataPanel = dPanel;
         final LayoutPanel rootPanel = getLayoutPanel();
@@ -133,7 +134,7 @@ public class PropertiesPanel extends LayoutComposite {
         final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
         mainPanel.addStyleName("pat-propertiesPanel"); //$NON-NLS-1$
         mainPanel.setLayout(new BoxLayout(Orientation.HORIZONTAL));
-        
+
         final FormPanel formPanel = new FormPanel();
         formPanel.setAction(FORM_ACTION);
         formPanel.setMethod(FORM_METHOD);
@@ -142,10 +143,11 @@ public class PropertiesPanel extends LayoutComposite {
         Hidden curQuery = new Hidden(FORM_NAME_QUERY);
         curQuery.setName(FORM_NAME_QUERY);
         curQuery.setValue(Pat.getCurrQuery());
-        final ToolButton exportButton = new ToolButton(ConstantFactory.getInstance().export());
-        
         formPanel.add(curQuery);
-        
+
+        final ToolButton exportButton = new ToolButton(ConstantFactory.getInstance().export());
+
+
         exportButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 formPanel.submit();
@@ -159,76 +161,63 @@ public class PropertiesPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(),
                         new AsyncCallback<String>() {
 
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedPivot(arg0.getLocalizedMessage()));
-                            }
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedPivot(arg0.getLocalizedMessage()));
+                    }
 
-                            public void onSuccess(final String mdx) {
-                                // TODO localize + externalize strings + extract show mdx window
-                                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
-                                final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-                                wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-                                final MDXRichTextArea mdxArea = new MDXRichTextArea();
+                    public void onSuccess(final String mdx) {
+                        // TODO localize + externalize strings + extract show mdx window
+                        final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
+                        final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+                        wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+                        final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
-                                mdxArea.setText(mdx);
+                        mdxArea.setText(mdx);
 
-                                wpLayoutPanel.add(mdxArea, new BoxLayoutData(1, 0.9));
-                                final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
-                                closeBtn.addClickHandler(new ClickHandler() {
-                                    public void onClick(final ClickEvent arg0) {
-                                        winPanel.hide();
-                                    }
-
-                                });
-                                final ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
-                                mdxBtn.addClickHandler(new ClickHandler() {
-                                    public void onClick(final ClickEvent arg0) {
-
-                                        final Widget widget = MainTabPanel.getSelectedWidget();
-                                        if (widget instanceof OlapPanel) {
-                                            ((OlapPanel) widget).getCubeItem();
-                                            final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
-                                                    Pat.getCurrConnection(), mdxArea.getText());
-                                            MainTabPanel.displayContentWidget(mdxpanel);
-                                        }
-
-                                        winPanel.hide();
-
-                                    }
-                                });
-                                final LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-
-                                wpButtonPanel.add(mdxBtn);
-                                wpButtonPanel.add(closeBtn);
-                                wpLayoutPanel.add(wpButtonPanel);
-                                wpLayoutPanel.layout();
-                                winPanel.add(wpLayoutPanel);
-                                winPanel.layout();
-                                winPanel.pack();
-                                winPanel.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
-                                winPanel.center();
-
+                        wpLayoutPanel.add(mdxArea, new BoxLayoutData(1, 0.9));
+                        final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                        closeBtn.addClickHandler(new ClickHandler() {
+                            public void onClick(final ClickEvent arg0) {
+                                winPanel.hide();
                             }
 
                         });
+                        final ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
+                        mdxBtn.addClickHandler(new ClickHandler() {
+                            public void onClick(final ClickEvent arg0) {
+
+                                final Widget widget = MainTabPanel.getSelectedWidget();
+                                if (widget instanceof OlapPanel) {
+                                    ((OlapPanel) widget).getCubeItem();
+                                    final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
+                                            Pat.getCurrConnection(), mdxArea.getText());
+                                    MainTabPanel.displayContentWidget(mdxpanel);
+                                }
+
+                                winPanel.hide();
+
+                            }
+                        });
+                        final LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
+                        wpButtonPanel.add(mdxBtn);
+                        wpButtonPanel.add(closeBtn);
+                        wpLayoutPanel.add(wpButtonPanel);
+                        wpLayoutPanel.layout();
+                        winPanel.add(wpLayoutPanel);
+                        winPanel.layout();
+                        winPanel.pack();
+                        winPanel.setSize("500px", "320px"); //$NON-NLS-1$ //$NON-NLS-2$
+                        winPanel.center();
+
+                    }
+
+                });
 
             }
         });
         mdxButton.setEnabled(true);
-
-//        final ToolButton showParentButton = new ToolButton(ConstantFactory.getInstance().showParent());
-//        showParentButton.setStyle(ToolButtonStyle.CHECKBOX);
-//        showParentButton.setEnabled(false);
-//        showParentButton.setChecked(true);
-//
-//        final ToolButton showFiltersButton = new ToolButton(ConstantFactory.getInstance().showFilters());
-//        showFiltersButton.setStyle(ToolButtonStyle.CHECKBOX);
-//        showFiltersButton.setEnabled(false);
-//
-//        final ToolButton showPropsButton = new ToolButton(ConstantFactory.getInstance().showProperties());
-//        showPropsButton.setStyle(ToolButtonStyle.CHECKBOX);
-//        showPropsButton.setEnabled(false);
 
         final ToolButton hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
@@ -239,24 +228,24 @@ public class PropertiesPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(),
                         hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>() {
 
-                            public void onFailure(final Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
 
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedNonEmpty());
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedNonEmpty());
 
-                            }
+                    }
 
-                            public void onSuccess(final CellDataSet arg0) {
+                    public void onSuccess(final CellDataSet arg0) {
 
-                                if (hideBlanksButton.isChecked()) {
-                                    hideBlanksButton.setText(ConstantFactory.getInstance().showBlankCells());
-                                } else {
-                                    hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
-                                }
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
-                            }
+                        if (hideBlanksButton.isChecked()) {
+                            hideBlanksButton.setText(ConstantFactory.getInstance().showBlankCells());
+                        } else {
+                            hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
+                        }
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                    }
 
-                        });
+                });
 
             }
 
@@ -267,39 +256,39 @@ public class PropertiesPanel extends LayoutComposite {
         createScenarioButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-        	
-        	 ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
 
-     		public void onFailure(Throwable arg0) {
-     		    // TODO Auto-generated method stub
-     		    
-     		}
+                ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
 
-     		public void onSuccess(CellDataSet arg0) {
-     		    // TODO Auto-generated method stub
-     		    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                    public void onFailure(Throwable arg0) {
+                        // TODO Auto-generated method stub
 
-			public void onFailure(Throwable arg0) {
-			    // TODO Auto-generated method stub
-			    
-			}
+                    }
 
-			public void onSuccess(CellDataSet arg0) {
-			    // TODO Auto-generated method stub
-			    GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                    PropertiesPanel.this, Pat.getCurrQuery(), arg0);
-			}
-     			
-     		    });
-     		}
-     		
-     	    });
-        	 
+                    public void onSuccess(CellDataSet arg0) {
+                        // TODO Auto-generated method stub
+                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+
+                            public void onFailure(Throwable arg0) {
+                                // TODO Auto-generated method stub
+
+                            }
+
+                            public void onSuccess(CellDataSet arg0) {
+                                // TODO Auto-generated method stub
+                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                            }
+
+                        });
+                    }
+
+                });
+
                 /*ServiceFactory.getSessionInstance().createNewScenario(Pat.getSessionID(), Pat.getCurrConnection(), new AsyncCallback<String>(){
                     public void onFailure(final Throwable arg0){
                 	MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set scenario");
                     }
-                    
+
                     public void onSuccess(String scenario){
                 	createScenarioButton.setText(scenario);
                 	Pat.setCurrScenario(scenario);
@@ -315,20 +304,20 @@ public class PropertiesPanel extends LayoutComposite {
                 ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(),
                         new AsyncCallback<CellDataSet>() {
 
-                            public void onFailure(final Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
 
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedPivot(arg0.getLocalizedMessage()));
-                            }
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedPivot(arg0.getLocalizedMessage()));
+                    }
 
-                            public void onSuccess(final CellDataSet arg0) {
+                    public void onSuccess(final CellDataSet arg0) {
 
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
 
-                            }
+                    }
 
-                        });
+                });
 
             }
         });
@@ -339,7 +328,7 @@ public class PropertiesPanel extends LayoutComposite {
 
         final PopupMenu layoutMenuBtnMenu = new PopupMenu();
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
-       // layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
+        // layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
@@ -350,28 +339,26 @@ public class PropertiesPanel extends LayoutComposite {
         final ToolButton drillMenuButton = new ToolButton(ConstantFactory.getInstance().drillStyle());
         drillMenuButton.setStyle(ToolButtonStyle.MENU);
 
-        
+
         final PopupMenu drillMenuBtnMenu = new PopupMenu();
         drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillPosition(), new DrillCommand(DrillType.POSITION));
         drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillReplace(), new DrillCommand(DrillType.REPLACE));
 
         drillMenuButton.setMenu(drillMenuBtnMenu);
-        
+
         final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
 
-        mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        
+        mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
         mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-//        mainPanel.add(showParentButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-//        mainPanel.add(showFiltersButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-//        mainPanel.add(showPropsButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        if (pType == PanelUtil.PanelType.QM) {
+            mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        }
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
 
