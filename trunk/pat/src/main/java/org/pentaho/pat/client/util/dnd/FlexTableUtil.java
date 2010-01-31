@@ -151,7 +151,7 @@ public class FlexTableUtil {
 
                                                     public void onSuccess(final Object arg0) {
                                                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                                .clone()).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                                                ).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                                         targetTable.getAxis());
 
                                                         LogoPanel.spinWheel(false);
@@ -191,7 +191,7 @@ public class FlexTableUtil {
 
                                         //sourceTable.removeRow(sourceRow);
                                         ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                .clone()).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
+                                                ).fireQueryChanged(w, sourceRow, sourceTable.getAxis(),
                                                         targetTable.getAxis());
                                         Pat.setMeasuresAxis(targetAxis);
                                         LogoPanel.spinWheel(false);
@@ -214,7 +214,7 @@ public class FlexTableUtil {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
+                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
 
@@ -264,7 +264,7 @@ public class FlexTableUtil {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
+                        ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(w, sourceRow,
                                 sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
                     }
@@ -312,7 +312,7 @@ public class FlexTableUtil {
                                             });
 
                                 }
-                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(wid,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(wid,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                     
 
@@ -339,11 +339,11 @@ public class FlexTableUtil {
                                 
                                 
                                 }
-                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
                                 
                             } else
-                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w,
+                                ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(w,
                                         sourceRow, sourceTable.getAxis(), targetTable.getAxis());
 
                             Pat.setMeasuresAxis(targetAxis);
@@ -369,7 +369,7 @@ public class FlexTableUtil {
                             }
                         });
             }
-            ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners().clone()).fireQueryChanged(w, sourceRow,
+            ((QueryListenerCollection) GlobalConnectionFactory.getQueryInstance().getQueryListeners()).fireQueryChanged(w, sourceRow,
                     sourceTable.getAxis(), targetTable.getAxis());
             LogoPanel.spinWheel(false);
 
