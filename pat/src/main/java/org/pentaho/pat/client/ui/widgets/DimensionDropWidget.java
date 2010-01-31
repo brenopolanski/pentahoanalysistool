@@ -43,6 +43,8 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.IAxis.Standard;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
@@ -218,7 +220,11 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // If the drop axis equals the target axis add the widget.
 
-
+        DeferredCommand.addCommand(new Command() {
+            public void execute() {
+              
+        
+        
         if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
             if (sender instanceof MeasureLabel){
                 MeasureLabel measureLab = (MeasureLabel) sender;
@@ -246,6 +252,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             }
         }
         
+
+            }
+          });
     }
 
     private void flexTableRemoveRecord(final int sourceRow) {
