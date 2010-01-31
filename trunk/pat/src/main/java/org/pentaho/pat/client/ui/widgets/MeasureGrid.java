@@ -16,6 +16,8 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -137,6 +139,9 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      * org.pentaho.pat.rpc.dto.IAxis, org.pentaho.pat.rpc.dto.IAxis)
      */
     public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
+
+        DeferredCommand.addCommand(new Command() {
+            public void execute() {
         
         if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
             
@@ -150,16 +155,16 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                 }
             }
             if (rowcount == 0){
-                this.removeFromParent();
+                MeasureGrid.this.removeFromParent();
             }
-WidgetHelper.layout(this);
+WidgetHelper.layout(MeasureGrid.this);
         }
 
         else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
         MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);    
             addRow(measureLabel);
             
-           WidgetHelper.layout(this);
+           WidgetHelper.layout(MeasureGrid.this);
         }
         else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(targetAxis) && sender instanceof MeasureGrid) {
             MeasureGrid mGrid = TableUtil.cloneMeasureGrid((MeasureGrid) sender);
@@ -169,8 +174,10 @@ WidgetHelper.layout(this);
                 
                
             }
-            WidgetHelper.layout(this);
+            WidgetHelper.layout(MeasureGrid.this);
         }
+            }
+        });
     }
 
     /*
