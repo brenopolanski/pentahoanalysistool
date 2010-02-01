@@ -76,7 +76,7 @@ public class CubeBrowserWindow extends WindowPanel {
     }
 
     public static void enableQmQuery(final boolean enabled) {
-        QMQUERYBUTTON.setEnabled(true);
+        QMQUERYBUTTON.setEnabled(enabled);
     }
 
     private static void display(final boolean refreshCubes) {
