@@ -858,4 +858,6 @@ public interface IGuiConstants extends Constants {
     
     String hierarchical();
     
+    String logout();
+    
 }
