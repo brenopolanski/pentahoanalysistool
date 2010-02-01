@@ -74,13 +74,18 @@ public class CubeMenu extends LayoutComposite {
         cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
 
         baseLayoutPanel.add(cubeTree, new BoxLayoutData(FillStyle.BOTH));
-        loadCubes();
 
         cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
-                CubeBrowserWindow.enableQmQuery(true);
+                if (((CubeTreeItem)arg0.getSelectedItem().getWidget()).getCubeItem() != null) {
+                    CubeBrowserWindow.enableQmQuery(true);
+                }
+                else {
+                    CubeBrowserWindow.enableQmQuery(false);
+                }
+                
                 CubeBrowserWindow.enableMdxQuery(true);
             }
 
