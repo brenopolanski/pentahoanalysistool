@@ -71,7 +71,7 @@ public class CubeMenu extends LayoutComposite {
         final ApplicationImages treeImages = GWT.create(ApplicationImages.class);
         cubeTree = new Tree(treeImages);
         cubeTree.setAnimationEnabled(true);
-        cubeTree.addStyleName(Pat.DEF_STYLE_NAME + "-cubemenu"); //$NON-NLS-1$
+        cubeTree.addStyleName("pat-Tree"); //$NON-NLS-1$
 
         baseLayoutPanel.add(cubeTree, new BoxLayoutData(FillStyle.BOTH));
 
@@ -79,14 +79,16 @@ public class CubeMenu extends LayoutComposite {
 
             public void onSelection(final SelectionEvent<TreeItem> arg0) {
                 cubeTree.ensureSelectedItemVisible();
-                if (((CubeTreeItem)arg0.getSelectedItem().getWidget()).getCubeItem() != null) {
+                if (((CubeTreeItem)arg0.getSelectedItem()).getCubeItem() != null) {
                     CubeBrowserWindow.enableQmQuery(true);
+                    CubeBrowserWindow.enableMdxQuery(true);
                 }
                 else {
                     CubeBrowserWindow.enableQmQuery(false);
+                    CubeBrowserWindow.enableMdxQuery(false);
                 }
                 
-                CubeBrowserWindow.enableMdxQuery(true);
+                
             }
 
         });
@@ -144,7 +146,8 @@ public class CubeMenu extends LayoutComposite {
     private final void refreshCubeMenu(final CubeConnection[] connections) {
         cubeTree.clear();
         for (final CubeConnection connection : connections) {
-            final TreeItem cubesList = cubeTree.addItem(new CubeTreeItem(connection, null));
+            final TreeItem cubesList = new CubeTreeItem(connection, null);
+            cubeTree.addItem(cubesList);
             ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
                     new AsyncCallback<CubeItem[]>() {
                         public void onFailure(final Throwable arg0) {
