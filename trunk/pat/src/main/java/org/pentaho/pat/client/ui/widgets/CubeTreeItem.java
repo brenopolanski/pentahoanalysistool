@@ -27,6 +27,7 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TreeItem;
 
 /**
  * Widget for Cube Menu
@@ -36,7 +37,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  * @author Paul Stoellberger
  * 
  */
-public class CubeTreeItem extends HorizontalPanel {
+public class CubeTreeItem extends TreeItem {
 
     public enum ItemType {
         CONNECTION, CUBE
@@ -51,8 +52,14 @@ public class CubeTreeItem extends HorizontalPanel {
     private String itemName;
 
     private ItemType type;
+    
+    private boolean selected;
 
-    private final static String CUBE_TREE_ITEM = "pat-CubeTreeItem"; //$NON-NLS-1$
+    private HorizontalPanel widgetPanel = null;
+    
+    private final static String CUBE_TREE_ITEM = "pat-TreeItem"; //$NON-NLS-1$
+    
+    private final static String CUBE_TREE_ITEM_SELECTED = "pat-TreeItem-selected"; //$NON-NLS-1$
     /**
      * Represents a cube item
      * 
@@ -76,15 +83,27 @@ public class CubeTreeItem extends HorizontalPanel {
                 this.type = ItemType.CUBE;
             }
 
-            this.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));
-            this.add(new HTML(this.itemName));
-
+            widgetPanel = new HorizontalPanel();
+            widgetPanel.add(new WidgetWrapper(new HTML(this.itemImage.getHTML())));
+            widgetPanel.add(new HTML(this.itemName));
+            this.setWidget(widgetPanel);
             
 
             this.setStyleName(CUBE_TREE_ITEM);
         }
 
     }
+    
+    @Override
+    public void setSelected(boolean selected) {
+        if (this.selected == selected) {
+          return;
+        }
+        this.selected = selected;
+        
+        setStyleName(widgetPanel.getElement(), CUBE_TREE_ITEM_SELECTED, selected);
+      }
+    
 
     public String getConnectionId() {
         return this.connection.getId();

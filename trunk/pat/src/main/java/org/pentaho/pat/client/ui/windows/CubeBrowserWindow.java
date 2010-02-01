@@ -61,7 +61,7 @@ public class CubeBrowserWindow extends WindowPanel {
     private final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
 
     private final static CubeBrowserWindow CBW = new CubeBrowserWindow();
-
+    
     public static void display() {
         display(true);
     }
@@ -72,7 +72,7 @@ public class CubeBrowserWindow extends WindowPanel {
     }
 
     public static void enableMdxQuery(final boolean enabled) {
-        MDXQUERYBUTTON.setEnabled(true);
+        MDXQUERYBUTTON.setEnabled(enabled);
     }
 
     public static void enableQmQuery(final boolean enabled) {
@@ -98,9 +98,10 @@ public class CubeBrowserWindow extends WindowPanel {
         winContentpanel.add(CUBEMENUPANEL, new BoxLayoutData(FillStyle.BOTH));
         final LayoutPanel newQryButPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         setupQueryButtons();
-        newQryButPanel.add(QMQUERYBUTTON);
-        newQryButPanel.add(MDXQUERYBUTTON);
-        newQryButPanel.add(cancelButton);
+
+        newQryButPanel.add(QMQUERYBUTTON, new BoxLayoutData(FillStyle.HORIZONTAL));
+        newQryButPanel.add(MDXQUERYBUTTON, new BoxLayoutData(FillStyle.HORIZONTAL));
+        newQryButPanel.add(cancelButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         winContentpanel.add(newQryButPanel, new BoxLayoutData(FillStyle.VERTICAL));
         this.setWidget(winContentpanel);
         this.layout();
@@ -119,8 +120,7 @@ public class CubeBrowserWindow extends WindowPanel {
         QMQUERYBUTTON.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 if (CUBEMENUPANEL.getCubeTree().getSelectedItem() != null) {
-                    final CubeTreeItem selected = (CubeTreeItem) CUBEMENUPANEL.getCubeTree().getSelectedItem()
-                            .getWidget();
+                    final CubeTreeItem selected = (CubeTreeItem) CUBEMENUPANEL.getCubeTree().getSelectedItem();
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
                         LogoPanel.spinWheel(true);
                         final OlapPanel olappanel = new OlapPanel(selected.getCubeItem(), selected.getConnectionId());
@@ -135,8 +135,7 @@ public class CubeBrowserWindow extends WindowPanel {
         MDXQUERYBUTTON.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 if (CUBEMENUPANEL.getCubeTree().getSelectedItem() != null) {
-                    final CubeTreeItem selected = (CubeTreeItem) CUBEMENUPANEL.getCubeTree().getSelectedItem()
-                            .getWidget();
+                    final CubeTreeItem selected = (CubeTreeItem) CUBEMENUPANEL.getCubeTree().getSelectedItem();
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
                         LogoPanel.spinWheel(true);
                         final MdxPanel mdxPanel = new MdxPanel(selected.getCubeItem(), selected.getConnectionId());

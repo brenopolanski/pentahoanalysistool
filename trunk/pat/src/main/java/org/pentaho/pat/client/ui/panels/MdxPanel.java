@@ -156,9 +156,6 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         northPanel.add(executeButton);
 
         final CaptionLayoutPanel collapsePanel = new CaptionLayoutPanel(ConstantFactory.getInstance().mdx());
-        
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(collapsePanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseUp());
         collapsePanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);

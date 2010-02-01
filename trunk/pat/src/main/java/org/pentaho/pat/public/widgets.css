@@ -4,9 +4,27 @@
 	
 	}
 	
-.pat-CubeTreeItem{
-background:transparent;	
-	}
+
+.pat-Tree .pat-TreeItem-wrapper {
+  margin: 0px 0px 0px 20px;  // Indentation
+}
+
+.pat-Tree .pat-TreeItem {
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid white;
+  white-space: nowrap;
+  cursor: hand;
+  cursor: pointer;
+}
+
+.pat-Tree .pat-TreeItem-hovering {
+}
+
+.pat-Tree .pat-TreeItem-selected {
+  background: #93c2f1 url(images/bg_listgradient.gif) repeat-x;
+  border: 1px dotted #888;
+}
 
 .pat-DataCellPanel{
 	
