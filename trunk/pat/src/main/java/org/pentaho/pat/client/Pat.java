@@ -382,6 +382,15 @@ public class Pat implements EntryPoint {
         top.mantle_refreshRepository();
         }
     }-*/;
+    
+    public static Boolean isPlugin() {
+        // TODO maybe add a more secure way to check if PAT is running as plugin or standalone
+        String moduleUrl = GWT.getModuleBaseURL();
+        if(moduleUrl.indexOf("content") > -1) {
+         return true;
+        }
+        return false;
+    }
     /**
      *TODO JAVADOC
      * 

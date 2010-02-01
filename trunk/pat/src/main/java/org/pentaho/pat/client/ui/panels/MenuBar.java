@@ -38,6 +38,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 
 /**
  * Menu Bar
@@ -64,6 +65,10 @@ public class MenuBar extends LayoutComposite {
 
     final static ToolButton LOADBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
             .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
+    
+    final static ToolButton LOGOUTBUTTON = new ToolButton(ConstantFactory.getInstance().logout());
+    
+    
     /**
      * Initializes the Menu Bar contents
      */
@@ -76,6 +81,7 @@ public class MenuBar extends LayoutComposite {
         addCubesButton();
         addSaveButton();
         addLoadButton();
+        addLogoutButton();
         rootPanel.add(logoPanel, new BoxLayoutData(FillStyle.BOTH));
         rootPanel.addStyleName("pat-menuBar"); //$NON-NLS-1$
     }
@@ -154,6 +160,25 @@ public class MenuBar extends LayoutComposite {
         });
         LOADBUTTON.setEnabled(false);
         rootPanel.add(LOADBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
+    }
+    
+    private void addLogoutButton() {
+        LOGOUTBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(LOGOUTBUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGOUTBUTTON.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                if (!Pat.isPlugin()) {
+                    Window.Location.assign(Pat.getBaseUrl()+"logout");
+                }
+                
+            }
+        });
+        if (!Pat.isPlugin()) {
+            rootPanel.add(LOGOUTBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
+        }
+
     }
 
     public static void enableConnect(final Boolean enabled) {
