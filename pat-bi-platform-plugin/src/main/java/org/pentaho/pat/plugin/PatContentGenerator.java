@@ -1,32 +1,28 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the 
- * terms of the GNU General Public License, version 2 as published by the Free Software 
- * Foundation.
+ * Copyright (C) 2010 Paul Stoellberger
  *
- * You should have received a copy of the GNU General Public License along with this 
- * program; if not, you can obtain a copy at http://www.gnu.org/licenses/gpl-2.0.html 
- * or from the Free Software Foundation, Inc., 
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- *
- * Copyright 2009 Pentaho Corporation.  All rights reserved. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
  */
 
 package org.pentaho.pat.plugin;
 
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-
-import jxl.Workbook;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +39,6 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.services.solution.SimpleContentGenerator;
 import org.pentaho.platform.util.messages.LocaleHelper;
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 /**
  * A simple content generator that redirects .xpav content to PAT 
