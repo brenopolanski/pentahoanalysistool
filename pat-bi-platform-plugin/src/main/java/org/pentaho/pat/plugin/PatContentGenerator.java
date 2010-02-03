@@ -22,11 +22,11 @@ package org.pentaho.pat.plugin;
 
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.pentaho.pat.plugin.messages.Messages;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.server.servlet.ExportController;
 import org.pentaho.pat.server.servlet.QueryServlet;
@@ -50,61 +50,72 @@ public class PatContentGenerator extends SimpleContentGenerator {
 
 
     private static final long serialVersionUID = -9180003935693305152L;
+    private static final Log LOG = LogFactory.getLog(PatContentGenerator.class);
 
-    ArrayList <String> problemMessages = new ArrayList<String>();
     PatSolutionFile solutionFile = null;
 
     @Override
     public void createContent() throws Exception {
 
         if( outputHandler == null ) {
-            error( "No output handler" ); //$NON-NLS-1$
-            throw new InvalidParameterException( "No output handler" );  //$NON-NLS-1$
+            LOG.error(Messages.getString("ContentGenerator.OutputHandler.Null")); //$NON-NLS-1$
+            throw new InvalidParameterException(Messages.getString("ContentGenerator.OutputHandler.Null"));  //$NON-NLS-1$
         }
 
-        // Get the .xpav content file from the repository, then grab the application info and
-        // parameters needed to launch PAT...
         IParameterProvider requestParams = parameterProviders.get( IParameterProvider.SCOPE_REQUEST );
+        if( requestParams == null ) {
+            LOG.error(Messages.getString("ContentGenerator.Params.ProviderIsNull")); //$NON-NLS-1$
+            throw new NullPointerException(Messages.getString("ContentGenerator.Params.ProviderIsNull"));  //$NON-NLS-1$
+        }
         String solution = requestParams.getStringParameter("solution", null); //$NON-NLS-1$
         String path = requestParams.getStringParameter("path", null); //$NON-NLS-1$
         String action = requestParams.getStringParameter("action", null); //$NON-NLS-1$
         String fullPath = ActionInfo.buildSolutionPath(solution, path, action);
         ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
+        if( requestParams == null ) {
+            LOG.error(Messages.getString("ContentGenerator.RepositoryAccessFailed")); //$NON-NLS-1$
+            throw new NullPointerException(Messages.getString("ContentGenerator.RepositoryAccessFailed"));  //$NON-NLS-1$
+        }
         if (repository.resourceExists(fullPath)) {
             Document doc = repository.getResourceAsDocument(fullPath);
             solutionFile = PatSolutionFile.convertDocument(doc);
             if (solutionFile == null) {
-                throw new Exception("Can not cast xpav file");
+                LOG.error(Messages.getString("ContentGenerator.CantParseSolutionfile")); //$NON-NLS-1$
+                throw new NullPointerException(Messages.getString("ContentGenerator.CantParseSolutionfile"));  //$NON-NLS-1$
             }
-            IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
-            Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
-            ((QueryServlet)targetQueryBean).addBootstrapQuery(solutionFile.getQueryId());
-            super.createContent();
+            try {
+                IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
+                QueryServlet targetQueryBean = (QueryServlet)serviceManager.getServiceBean("gwt","query.rpc");
+                targetQueryBean.addBootstrapQuery(solutionFile.getQueryId());
+                super.createContent();
+            }
+            catch (Exception e) {
+                LOG.error(Messages.getString("ContentGenerator.CantInjectQuery")); //$NON-NLS-1$
+                throw new NullPointerException(Messages.getString("ContentGenerator.CantInjectQuery"));  //$NON-NLS-1$
+            }
 
         }
         else if(requestParams.getStringParameter("query", null) != null) {
             OutputStream out = null;
-            if (outputHandler == null) {
-                throw new InvalidParameterException("ERROR NO_OUTPUT_HANDLER");  //$NON-NLS-1$
-            }
 
             IContentItem contentItem = outputHandler.getOutputContentItem("response", "content", "", instanceId, getMimeType()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             if (contentItem == null) {
-                throw new InvalidParameterException("ERROR NO CONTENT ITEM");  //$NON-NLS-1$
+                LOG.error(Messages.getString("ContentGenerator.NoContentItem")); //$NON-NLS-1$
+                throw new NullPointerException(Messages.getString("ContentGenerator.NoContentItem"));  //$NON-NLS-1$
             }
 
             out = contentItem.getOutputStream(null);
             contentItem.setMimeType("application/vnd.ms-excel");
             ExportController.exportExcel(requestParams.getStringParameter("query", null), out);
-            
+
+            out.flush();
+            out.close();
         }
         else {
             super.createContent();
-            System.out.println("--------- DEFAULT OUTPUT");   
+            LOG.debug("PAT : CONTENT GENERATOR - DEFAULT OUTPUT");   
         }
-            //outputHandler.setOutput("redirect", url);
 
     }
 
@@ -135,7 +146,7 @@ public class PatContentGenerator extends SimpleContentGenerator {
             out.write(html.toString().getBytes(LocaleHelper.getSystemEncoding()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception(Messages.getString("ContentGenerator.GwtStartupError"),e);
         }
 
 
