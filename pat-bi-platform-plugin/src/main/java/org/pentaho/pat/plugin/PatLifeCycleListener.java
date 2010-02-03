@@ -10,6 +10,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.jfree.util.Log;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.PlatformServlet;
@@ -55,7 +56,8 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 throw new ServiceException("PAT-Plugin classloader can't be loaded");
 
             URL contextUrl = pluginClassloader.getResource("pat-applicationContext.xml");
-
+            
+            
             if ( contextUrl!= null ) {
                 String appContextUrl = contextUrl.toString();
                 final ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] { appContextUrl }, false);
@@ -69,7 +71,11 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 final Configuration pentahoHibConfig = new Configuration();
                 pentahoHibConfig.configure(new File(pentahoHibConfigPath));
 
-                URL patHibConfigUrl = pluginClassloader.getResource("pat-hibernate.cfg.xml");
+                URL patHibConfigUrl = pluginClassloader.getResource("pat-hibernate.cfg.xml");    
+                if(patHibConfigUrl == null)
+                    throw new ServiceException("Can't find PAT Hibernate Config");
+                else
+                    System.out.println("#### HIBERNATE CONFIG:" + patHibConfigUrl.toString());
                 final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
                 patHibConfig.configure(patHibConfigUrl);
 
