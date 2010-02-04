@@ -22,7 +22,10 @@ package org.pentaho.pat.plugin;
 
 import java.io.InputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.pentaho.pat.plugin.messages.Messages;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.platform.api.engine.IFileInfo;
 import org.pentaho.platform.api.engine.ISolutionFile;
@@ -32,44 +35,37 @@ import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 /**
  * Retrieve content metadata from the .xpav content file.
- * @author gmoran
- *
+ * 
+ * @author Paul Stoellberger
  */
 public class PatContentTypeMetaProvider extends SolutionFileMetaAdapter {
 
-  public IFileInfo getFileInfo(ISolutionFile solutionFile, InputStream in) {
-    try {
-      Document doc = XmlDom4JHelper.getDocFromStream(in);
-      if (doc == null) {
+    private static final Log LOG = LogFactory.getLog(PatContentTypeMetaProvider.class);
+
+    public IFileInfo getFileInfo(ISolutionFile solutionFile, InputStream in) {
+        try {
+            Document doc = XmlDom4JHelper.getDocFromStream(in);
+            if (doc == null) {
+                LOG.error(Messages.getString("ContentTypeMetaProvider.CantParseXpavFile")); //$NON-NLS-1$
+                return null;
+            }
+            PatSolutionFile patFile = PatSolutionFile.convertDocument(doc);
+
+            String title = patFile.getTitle();
+            String author = patFile.getAuthor();
+            String description = patFile.getDescription();
+            String icon = patFile.getIcon();
+
+            IFileInfo info = new FileInfo();
+            info.setAuthor(author);
+            info.setDescription(description);
+            info.setIcon(icon);
+            info.setTitle(title);
+            return info;
+
+        } catch (Exception e) {
+            LOG.error(getClass().toString(), e);
+        }
         return null;
-      }
-      PatSolutionFile patFile = PatSolutionFile.convertDocument(doc);
-      
-//
-//      String author = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@author", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-//      String description = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@description", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-//      String icon = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@icon", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-//      String title = XmlDom4JHelper.getNodeText( "/pav/fileinfo/@title", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-
-      String title = patFile.getTitle();
-      String author = patFile.getAuthor();
-      String description = patFile.getDescription();
-      String icon = patFile.getIcon();
-      
-
-      
-      IFileInfo info = new FileInfo();
-      info.setAuthor(author);
-      info.setDescription(description);
-      info.setIcon(icon);
-      info.setTitle(title);
-      return info;
-
-    } catch (Exception e) {
-      if (logger != null) {
-        logger.error(getClass().toString(), e);
-      }
-      return null;
     }
-  }
 }

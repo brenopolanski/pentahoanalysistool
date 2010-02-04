@@ -36,6 +36,7 @@ public final class Messages {
 
     private final static Log LOG = LogFactory.getLog(Messages.class);
 
+    private final static String PAT_PLUGIN = "PAT Plugin: ";
     private Messages() {
     }
 
@@ -65,9 +66,9 @@ public final class Messages {
     
     public static String getString(final String key, final String... params) {
         try {
-          return MessageFormat.format(getResourceBundle(BUNDLE_NAME).getString(key), (Object[])params);
+          return (PAT_PLUGIN + MessageFormat.format(getResourceBundle(BUNDLE_NAME).getString(key), (Object[])params));
         } catch (Exception e) {
-          return '!' + key + '!';
+          return (PAT_PLUGIN + '!' + key + '!');
         }
       }
 

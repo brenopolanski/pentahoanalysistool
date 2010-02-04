@@ -27,9 +27,12 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.pentaho.pat.plugin.messages.Messages;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.PlatformServlet;
@@ -53,6 +56,12 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
+    private static final String PAT_PLUGIN_NAME = "PAT Plugin";
+    private static final String PAT_APP_CONTEXT = "pat-applicationContext.xml";
+    private static final String PAT_HIBERNATE_CONFIG = "pat-hibernate.cfg.xml";
+
+    private final static Log LOG = LogFactory.getLog(PatLifeCycleListener.class);
+    
     public void init() throws PluginLifecycleException {
 
     }
@@ -61,40 +70,36 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
         IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
         try {
-            Object targetSessionBean = serviceManager.getServiceBean("gwt","session.rpc");
-            Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc");
-            Object targetDiscoveryBean = serviceManager.getServiceBean("gwt","discovery.rpc");
-            Object targetPlatformBean = serviceManager.getServiceBean("gwt","platform.rpc");
+            Object targetSessionBean = serviceManager.getServiceBean("gwt","session.rpc"); //$NON-NLS-1$
+            Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc"); //$NON-NLS-1$
+            Object targetDiscoveryBean = serviceManager.getServiceBean("gwt","discovery.rpc"); //$NON-NLS-1$
+            Object targetPlatformBean = serviceManager.getServiceBean("gwt","platform.rpc"); //$NON-NLS-1$
 
             final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
-            final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader("Pentaho Analysis Tool Plugin");
+            final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PAT_PLUGIN_NAME); //$NON-NLS-1$
+            final String hibernateConfigurationFile =  PentahoSystem.getSystemSetting( "hibernate/hibernate-settings.xml","settings/config-file", null);
+            final String pentahoHibConfigPath = PentahoSystem.getApplicationContext().getSolutionPath(hibernateConfigurationFile);
 
-
-            // TODO improve error logging
             if (pluginClassloader == null)
-                throw new ServiceException("PAT-Plugin classloader can't be loaded");
+                throw new ServiceException(Messages.getString("LifeCycleListener.NoPluginClassloader")); //$NON-NLS-1$
 
-            URL contextUrl = pluginClassloader.getResource("pat-applicationContext.xml");
-            
+            final URL contextUrl = pluginClassloader.getResource(PAT_APP_CONTEXT); //$NON-NLS-1$
+            final URL patHibConfigUrl = pluginClassloader.getResource(PAT_HIBERNATE_CONFIG);    
+            if(patHibConfigUrl == null)
+                throw new ServiceException("Can't find PAT Hibernate Config");
+            else
+                LOG.debug(PAT_PLUGIN_NAME + ": PAT Hibernate Config:" + patHibConfigUrl.toString());
             
             if ( contextUrl!= null ) {
                 String appContextUrl = contextUrl.toString();
                 final ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] { appContextUrl }, false);
                 applicationContext.setClassLoader(pluginClassloader);
                 applicationContext.setConfigLocation(appContextUrl);
-
                 applicationContext.setAllowBeanDefinitionOverriding(true);
 
-                String hibernateConfigurationFile =  PentahoSystem.getSystemSetting( "hibernate/hibernate-settings.xml","settings/config-file", null);
-                String pentahoHibConfigPath = PentahoSystem.getApplicationContext().getSolutionPath(hibernateConfigurationFile);
                 final Configuration pentahoHibConfig = new Configuration();
                 pentahoHibConfig.configure(new File(pentahoHibConfigPath));
-
-                URL patHibConfigUrl = pluginClassloader.getResource("pat-hibernate.cfg.xml");    
-                if(patHibConfigUrl == null)
-                    throw new ServiceException("Can't find PAT Hibernate Config");
-                else
-                    System.out.println("#### HIBERNATE CONFIG:" + patHibConfigUrl.toString());
+                
                 final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
                 patHibConfig.configure(patHibConfigUrl);
 
@@ -103,24 +108,22 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
 
                         BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");
+                        SessionFactory sfBean = (SessionFactory)factory.getBean("sessionFactory");
+                        LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
+                        lsfBean.setBeanClassLoader(pluginClassloader);
+                        
                         dsBean.setDriverClassName(pentahoHibConfig.getProperty("connection.driver_class"));
                         dsBean.setUrl(pentahoHibConfig.getProperty("connection.url"));
                         dsBean.setUsername(pentahoHibConfig.getProperty("connection.username"));
                         dsBean.setPassword(pentahoHibConfig.getProperty("connection.password"));
 
-                        SessionFactory sfBean = (SessionFactory)factory.getBean("sessionFactory");
-                        LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
-
-                        lsfBean.setBeanClassLoader(pluginClassloader);
-
                         patHibConfig.getProperties().setProperty("dialect", pentahoHibConfig.getProperty("dialect"));
                         patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
                         patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
                         patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
+                        
                         lsfBean.setConfigLocation(null);
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
-
-
                         lsfBean.setDataSource(dsBean);
                         sfBean = (SessionFactory) lsfBean.getObject();
                     }
@@ -172,17 +175,16 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             }
             else
             {
-                // TODO improve error logging
-                System.out.println("[ERROR] PAT Application Context could not be found");
+                throw new Exception(Messages.getString("LifeCycleListener.AppContextNotFound"));
             }
 
             // TODO improve error logging
         } catch (ServiceException e1) { 
-            e1.printStackTrace();
+            LOG.error(e1.getMessage(),e1);
         } catch (ServletException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(),e);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(),e);
         }
     }
 

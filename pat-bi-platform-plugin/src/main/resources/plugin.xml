@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin title="Pentaho Analysis Tool Plugin" loader="overriding">
+<plugin title="PAT Plugin" loader="overriding">
 
 	<overlays>
 		<overlay id="startup.patAnalysis" resourcebundle="../content/pat-res/patplugin.properties">
