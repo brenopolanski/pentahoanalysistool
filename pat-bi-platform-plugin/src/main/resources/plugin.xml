@@ -41,9 +41,12 @@
 		<operations>
 			<operation>
 				<id>RUN</id>
-				<command>content/pat?solution={solution}&amp;path={path}&amp;action={name}
-				</command>
+				<command>content/pat?solution={solution}&amp;path={path}&amp;action={name}&amp;MODE=BISERVERPUC</command>
 			</operation>
+			<operation>
+        		<id>NEWWINDOW</id>
+        		<command>content/pat?solution={solution}&amp;path={path}&amp;action={name}&amp;MODE=ONECUBE</command>
+        	</operation>        		
 		</operations>
 	</content-type>
 
