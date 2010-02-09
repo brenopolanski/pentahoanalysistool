@@ -276,7 +276,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     }
 
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
-        if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+        if (Pat.getCurrQuery() != null && queryId.equals(Pat.getCurrQuery()) && this.isAttached()) {
         baselayoutPanel.setCollapsed(westPanel, true);
         baselayoutPanel.layout();
         }

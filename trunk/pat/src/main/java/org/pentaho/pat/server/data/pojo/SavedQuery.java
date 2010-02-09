@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.enums.QueryType;
 
@@ -135,6 +136,25 @@ public class SavedQuery implements Comparable<SavedQuery> {
     public int compareTo(SavedQuery arg0) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final SavedQuery other = (SavedQuery) obj;
+        if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
     }
 
     /**

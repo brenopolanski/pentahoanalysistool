@@ -96,9 +96,9 @@ public class FlexTableUtil {
         if (sourceTable.getAxis() == null || !sourceTable.getAxis().equals(targetTable.getAxis())) {
             final Widget w = sourceTable.getWidget(sRow, sCol);
             if (w instanceof MeasureLabel) {
-                if (((MeasureLabel) w).getType() == MeasureLabel.labelType.DIMENSION)
+                if (((MeasureLabel) w).getType() == MeasureLabel.LabelType.DIMENSION)
                     moveDimension(w, sourceRow, sourceTable, targetTable, targetAxis);
-                else if (((MeasureLabel) w).getType() == MeasureLabel.labelType.MEASURE)
+                else if (((MeasureLabel) w).getType() == MeasureLabel.LabelType.MEASURE)
                     moveMeasure(w, sourceRow, sourceTable, targetTable, targetAxis);
                 else {
                     MessageBox.error(ConstantFactory.getInstance().error(), "Forgot to add to the list");
