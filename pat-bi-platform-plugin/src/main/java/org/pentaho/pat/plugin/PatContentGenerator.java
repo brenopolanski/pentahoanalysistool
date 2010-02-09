@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.pentaho.pat.plugin.messages.Messages;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
+import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.server.servlet.ExportController;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -72,7 +73,7 @@ public class PatContentGenerator extends SimpleContentGenerator {
         String action = requestParams.getStringParameter("action", null); //$NON-NLS-1$
         String fullPath = ActionInfo.buildSolutionPath(solution, path, action);
         ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, userSession);
-        if( requestParams == null ) {
+        if( repository == null ) {
             LOG.error(Messages.getString("ContentGenerator.RepositoryAccessFailed")); //$NON-NLS-1$
             throw new NullPointerException(Messages.getString("ContentGenerator.RepositoryAccessFailed"));  //$NON-NLS-1$
         }
@@ -114,7 +115,7 @@ public class PatContentGenerator extends SimpleContentGenerator {
         }
         else {
             super.createContent();
-            LOG.debug("PAT : CONTENT GENERATOR - DEFAULT OUTPUT");   
+            LOG.debug(PluginConfig.PAT_PLUGIN_NAME + " : CONTENT GENERATOR - DEFAULT OUTPUT");   
         }
 
     }

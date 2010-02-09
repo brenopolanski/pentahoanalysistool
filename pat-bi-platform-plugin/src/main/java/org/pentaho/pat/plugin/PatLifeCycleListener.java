@@ -33,6 +33,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.pentaho.pat.plugin.messages.Messages;
+import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.PlatformServlet;
@@ -56,11 +57,17 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
-    private static final String PAT_PLUGIN_NAME = "PAT Plugin";
+    private static final String PAT_PLUGIN_NAME = PluginConfig.PAT_PLUGIN_NAME;
     private static final String PAT_APP_CONTEXT = "pat-applicationContext.xml";
     private static final String PAT_HIBERNATE_CONFIG = "pat-hibernate.cfg.xml";
 
     private final static Log LOG = LogFactory.getLog(PatLifeCycleListener.class);
+
+    private SessionServlet sessionBean = null;
+    private QueryServlet queryBean = null;
+    private DiscoveryServlet discoveryBean = null;
+    private PlatformServlet platformBean = null;
+
     
     public void init() throws PluginLifecycleException {
 
@@ -70,20 +77,20 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
         IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
         try {
-            Object targetSessionBean = serviceManager.getServiceBean("gwt","session.rpc"); //$NON-NLS-1$
-            Object targetQueryBean = serviceManager.getServiceBean("gwt","query.rpc"); //$NON-NLS-1$
-            Object targetDiscoveryBean = serviceManager.getServiceBean("gwt","discovery.rpc"); //$NON-NLS-1$
-            Object targetPlatformBean = serviceManager.getServiceBean("gwt","platform.rpc"); //$NON-NLS-1$
+            sessionBean = (SessionServlet) serviceManager.getServiceBean("gwt","session.rpc"); //$NON-NLS-1$
+            queryBean = (QueryServlet) serviceManager.getServiceBean("gwt","query.rpc"); //$NON-NLS-1$
+            discoveryBean = (DiscoveryServlet) serviceManager.getServiceBean("gwt","discovery.rpc"); //$NON-NLS-1$
+            platformBean = (PlatformServlet) serviceManager.getServiceBean("gwt","platform.rpc"); //$NON-NLS-1$
 
             final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
-            final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PAT_PLUGIN_NAME); //$NON-NLS-1$
-            final String hibernateConfigurationFile =  PentahoSystem.getSystemSetting( "hibernate/hibernate-settings.xml","settings/config-file", null);
+            final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PAT_PLUGIN_NAME);
+            final String hibernateConfigurationFile =  PentahoSystem.getSystemSetting( "hibernate/hibernate-settings.xml","settings/config-file", null); //$NON-NLS-1$
             final String pentahoHibConfigPath = PentahoSystem.getApplicationContext().getSolutionPath(hibernateConfigurationFile);
 
             if (pluginClassloader == null)
                 throw new ServiceException(Messages.getString("LifeCycleListener.NoPluginClassloader")); //$NON-NLS-1$
 
-            final URL contextUrl = pluginClassloader.getResource(PAT_APP_CONTEXT); //$NON-NLS-1$
+            final URL contextUrl = pluginClassloader.getResource(PAT_APP_CONTEXT); 
             final URL patHibConfigUrl = pluginClassloader.getResource(PAT_HIBERNATE_CONFIG);    
             if(patHibConfigUrl == null)
                 throw new ServiceException("Can't find PAT Hibernate Config");
@@ -108,7 +115,9 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
 
                         BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");
+                        @SuppressWarnings("unused")
                         SessionFactory sfBean = (SessionFactory)factory.getBean("sessionFactory");
+                        
                         LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
                         lsfBean.setBeanClassLoader(pluginClassloader);
                         
@@ -132,53 +141,29 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 applicationContext.refresh();
                 Thread.currentThread().setContextClassLoader(pluginClassloader);
 
-                ((SessionServlet)targetSessionBean).setStandalone(true);
+                sessionBean.setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
-                ((SessionServlet)targetSessionBean).init();
+                sessionBean.init();
 
-                ((QueryServlet)targetQueryBean).setStandalone(true);
+                queryBean.setStandalone(true);
                 QueryServlet.setApplicationContext(applicationContext);
-                ((QueryServlet)targetQueryBean).init();
+                queryBean.init();
 
-                ((DiscoveryServlet)targetDiscoveryBean).setStandalone(true);
+                discoveryBean.setStandalone(true);
                 DiscoveryServlet.setApplicationContext(applicationContext);
-                ((DiscoveryServlet)targetDiscoveryBean).init();
+                discoveryBean.init();
 
-                ((PlatformServlet)targetPlatformBean).setStandalone(true);
+                platformBean.setStandalone(true);
                 PlatformServlet.setApplicationContext(applicationContext);
-                ((PlatformServlet)targetPlatformBean).init();
+                platformBean.init();
 
-                List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);
-                String pentahoXmlaUrl = "";
-                if ( catalogs.size() > 0 ) {
-                    // DEBUG MSG
-                    System.out.println("PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
-                    pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
-                    CubeConnection cc = new CubeConnection();
-                    cc.setId("automatic-pentaho-connection-1234");
-                    cc.setName("Automatic Pentaho XMLA");
-                    cc.setUrl(pentahoXmlaUrl);
-                    cc.setConnectionType(CubeConnection.ConnectionType.XMLA);
-                    cc.setConnectOnStartup(true);
-
-                    if (((SessionServlet)targetSessionBean).getConnection("1234", cc.getId()) == null) {
-                        String defaultConId = ((SessionServlet)targetSessionBean).saveConnection("1234", cc);
-                        System.out.println("##### CONNECTION SAVED");
-                    }
-                    else
-                        System.out.println("#### automatic connection already saved");
-
-
-                }
-
-
+                injectPentahoXmlaUrl();
             }
             else
             {
                 throw new Exception(Messages.getString("LifeCycleListener.AppContextNotFound"));
             }
 
-            // TODO improve error logging
         } catch (ServiceException e1) { 
             LOG.error(e1.getMessage(),e1);
         } catch (ServletException e) {
@@ -190,6 +175,31 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
     public void unLoaded() throws PluginLifecycleException {
         // TODO implement plugin unload only when needed
+    }
+    
+    private void injectPentahoXmlaUrl() throws Exception {
+        List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);
+        String pentahoXmlaUrl = "";
+        if ( catalogs.size() > 0 ) {
+            LOG.debug(PAT_PLUGIN_NAME + ": PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
+            pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
+            CubeConnection cc = new CubeConnection();
+            cc.setId("automatic-pentaho-connection-1234");
+            cc.setName("Automatic Pentaho XMLA");
+            cc.setUrl(pentahoXmlaUrl);
+            cc.setConnectionType(CubeConnection.ConnectionType.XMLA);
+            cc.setConnectOnStartup(true);
+
+            if (sessionBean.getConnection("1234", cc.getId()) == null) {
+                sessionBean.saveConnection("1234", cc);
+                LOG.debug(PAT_PLUGIN_NAME + ": Automatic Pentaho Xmla connection saved");
+            }
+            else
+                LOG.debug(PAT_PLUGIN_NAME + ": Automatic Pentaho Xmla connection was already saved");
+
+
+        }
+
     }
 
 }

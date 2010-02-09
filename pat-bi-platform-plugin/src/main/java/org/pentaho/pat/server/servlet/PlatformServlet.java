@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
+import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.IPlatform;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
@@ -44,7 +45,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
 
     private QueryService queryService;
 
-    private final static Logger LOG = Logger.getLogger(QueryServlet.class);
+    private final static Logger LOG = Logger.getLogger(PlatformServlet.class);
 
     public void init() throws ServletException {
         super.init();
@@ -61,38 +62,38 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
     public  void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution,
             String path, String name, String localizedFileName) throws RpcException {
         try {
-            String fullPath = ActionInfo.buildSolutionPath(solution, path, name);
+
+            //String fullPath = ActionInfo.buildSolutionPath(solution, path, name);
             ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
             try {
-              PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId,queryId);
-              String xml = solutionFile.toXml();
-              
-              if (!name.endsWith(".xpav")) {
-                name = name + ".xpav";
-              }
-              String base = PentahoSystem.getApplicationContext().getSolutionRootPath();
-              String parentPath = ActionInfo.buildSolutionPath(solution, path, "");
-              ISolutionFile parentFile = repository.getSolutionFile(parentPath, ISolutionRepository.ACTION_CREATE);
-              String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
-              ISolutionFile fileToSave = repository.getSolutionFile(filePath, 
-                  ISolutionRepository.ACTION_UPDATE);
-              if (fileToSave != null || (!repository.resourceExists(filePath) && parentFile != null)) {
-                repository.publish(base, '/' + parentPath, name, xml.getBytes(), true);
-              } else {
-                // ISolutionRepository.FILE_ADD_INVALID_USER_CREDENTIALS;
-                  throw new Exception("Invalid user credentials");
-              }
+                PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId,queryId);
+                String xml = solutionFile.toXml();
+
+                if (!name.endsWith(".xpav")) {
+                    name = name + ".xpav";
+                }
+                String base = PentahoSystem.getApplicationContext().getSolutionRootPath();
+                String parentPath = ActionInfo.buildSolutionPath(solution, path, "");
+                ISolutionFile parentFile = repository.getSolutionFile(parentPath, ISolutionRepository.ACTION_CREATE);
+                String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
+                ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
+
+                if (fileToSave != null || (!repository.resourceExists(filePath) && parentFile != null)) {
+                    repository.publish(base, '/' + parentPath, name, xml.getBytes(), true);
+                    LOG.debug(PluginConfig.PAT_PLUGIN_NAME + " : Published " + solution + " / " + path + " / " + name );
+                } else {
+                    throw new Exception(org.pentaho.pat.plugin.messages.Messages.getString("PlatformServlet.ErrorPublish"));
+                }
             } catch (Exception e) {
-              throw new Exception(e);
+                LOG.error(e.getMessage(),e);
+                throw new Exception(e);
             }
 
-            
-            LOG.error("###### TEST SAVE OK" + solution + ":" + path + ":" + name + ":" + localizedFileName);
         }
         catch (Exception e) {
             LOG.error("Platform Servlet Error",e);
             throw new RpcException("test");
         }
     }
-    
+
 }
