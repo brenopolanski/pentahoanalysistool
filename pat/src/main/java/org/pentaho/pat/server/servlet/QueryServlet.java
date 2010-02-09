@@ -68,8 +68,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         bootstrapQueries.add(queryId);
     }
 
-    public String[] getBootstrapQueries() {
-        return (String[]) bootstrapQueries.toArray();
+    public List<String> getBootstrapQueries() {
+        return bootstrapQueries;
     }
 
 

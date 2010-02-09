@@ -119,7 +119,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     public void onEnter(final DragContext context) {
         super.onEnter(context);
         positioner = newPositioner(context);
-        if(context.draggable instanceof MeasureLabel && ((MeasureLabel)context.draggable).getType() == MeasureLabel.labelType.MEASURE){
+        if(context.draggable instanceof MeasureLabel && ((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.MEASURE){
         this.flexTable.setEngaged(true);
         }
 
@@ -173,7 +173,7 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         super.onPreviewDrop(context);
         
-        if(flexTable.getWidget(TARGETROW, 0) instanceof MeasureLabel && ((MeasureLabel)flexTable.getWidget(TARGETROW, 0)).getType().equals(MeasureLabel.labelType.MEASURE) 
+        if(flexTable.getWidget(TARGETROW, 0) instanceof MeasureLabel && ((MeasureLabel)flexTable.getWidget(TARGETROW, 0)).getType().equals(MeasureLabel.LabelType.MEASURE) 
                 && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis()) && !flexTable.getAxis().equals(IAxis.UNUSED)){
             throw new VetoDragException();
         }

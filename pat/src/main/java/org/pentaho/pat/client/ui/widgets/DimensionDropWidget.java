@@ -59,7 +59,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DimensionDropWidget extends LayoutComposite implements IQueryListener {
 
-    
+
     private IAxis dimAxis;
 
     private DimensionFlexTable dimensionTable;
@@ -75,7 +75,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     private final static String TABLE_DROP_ROWENDCELL = "pat-dropRowEndCell"; //$NON-NLS-1$
 
     private final static String TABLE_DRAG_CELL = "pat-dragDimensionCell"; //$NON-NLS-1$
-   
+
     private final static String DIMENSION_DROP_WIDGET = "pat-DimensionDropWidget"; //$NON-NLS-1$
 
     private boolean empty = true;
@@ -91,9 +91,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     public DimensionDropWidget(final String labelText, final Standard targetAxis,
             final FlexTableRowDragController tblRowDragCont) {
         super();
-        
+
         init(labelText, targetAxis, tblRowDragCont);
-        
+
     }
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
             final FlexTableRowDragController tblRowDragCont) {
@@ -101,7 +101,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         horizontal = orientation;
         init(labelText, targetAxis, tblRowDragCont);
 
-        
+
     }
     /**
      *TODO JAVADOC
@@ -130,9 +130,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
 
         captLayoutPanel.add(dimensionTable, new BoxLayoutData(FillStyle.BOTH, true));
-        
+
         dimensionTable.clear();
-        
+
         populateDimensionTable(dimAxis);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.add(captLayoutPanel);
@@ -145,9 +145,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
     }
 
-    
-    private void doMeasureStuff(MeasureLabel sender){
-        if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)){
+
+    private void doMeasureStuff(Widget sender){
+        if (sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.LabelType.MEASURE)){
             int location= -1;
             //If the dimension drop widget contains a measure grid, add it to the measure grid.
             for(int i=0; i < dimensionTable.getRowCount(); i++){
@@ -156,7 +156,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                     break;
                 }
             }
-            
+
             if (location>-1){
                 /*final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
                 mGrid.addRow((MeasureLabel) sender);
@@ -171,45 +171,45 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 mGrid.addRow((MeasureLabel)sender);
                 flexTableAddRecord(mGrid);
             }
-                
+
         }
         else {
             flexTableAddRecord(sender);
         }
     }
-    
+
     private void doMeasureStuff(MeasureGrid sender){
         //if (!dimAxis.equals(IAxis.UNUSED)){
-            int location= -1;
-            //If the dimension drop widget contains a measure grid, add it to the measure grid.
-            for(int i=0; i < dimensionTable.getRowCount(); i++){
-                if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
-                    location = i;
-                    break;
-                }
+        int location= -1;
+        //If the dimension drop widget contains a measure grid, add it to the measure grid.
+        for(int i=0; i < dimensionTable.getRowCount(); i++){
+            if(dimensionTable.getWidget(i, 0) instanceof MeasureGrid){
+                location = i;
+                break;
             }
-            
-            if (location>-1){
-                /*final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
+        }
+
+        if (location>-1){
+            /*final MeasureGrid mGrid = (MeasureGrid) dimensionTable.getWidget(location, 0);
                 for(int i =0; i<((MeasureGrid)sender).getRows().getRowCount(); i++){
                 mGrid.addRow((MeasureLabel) ((MeasureGrid)sender).getRows().getWidget(i, 0));
                 }
                 mGrid.setEmpty(false);
                 WidgetHelper.layout(mGrid);*/
-            }
-            //Otherwise create a measure grid
-            else{
-                
-                final MeasureGrid mGrid = TableUtil.cloneMeasureGrid(sender);
-                mGrid.setDragController(tblRowDragCont);
-                mGrid.setCurrentAxis(dimAxis);
-                mGrid.makeDraggable();
-                //mGrid.addRow((MeasureGrid)sender);
-                flexTableAddRecord(mGrid);
-            }      
+        }
+        //Otherwise create a measure grid
+        else{
+
+            final MeasureGrid mGrid = TableUtil.cloneMeasureGrid(sender);
+            mGrid.setDragController(tblRowDragCont);
+            mGrid.setCurrentAxis(dimAxis);
+            mGrid.makeDraggable();
+            //mGrid.addRow((MeasureGrid)sender);
+            flexTableAddRecord(mGrid);
+        }      
         /*}
         else if(sender instanceof MeasureGrid && dimAxis.equals(IAxis.UNUSED)){
-            
+
         }*/
     }
     /*
@@ -222,39 +222,39 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
         DeferredCommand.addCommand(new Command() {
             public void execute() {
-              
-        
-        
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
-            if (sender instanceof MeasureLabel){
-                MeasureLabel measureLab = (MeasureLabel) sender;
-                doMeasureStuff(measureLab);
-            }
-            else if(sender instanceof MeasureGrid){
-                MeasureGrid measureGrid = (MeasureGrid) sender;
-                doMeasureStuff(measureGrid);
-            }
-            
-            
-            
-            
-            
-            else{
-                flexTableAddRecord(sender);
-            }
-        } 
-        //If the drop axis equals the source axis, remove the widget.
-        else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis.equals(sourceAxis)))) {
-            if(sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE) ){
-                
-            }else{
-            flexTableRemoveRecord(sourceRow);
-            }
-        }
-        
+
+
+
+                if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
+                    if (sender instanceof MeasureLabel){
+                        MeasureLabel measureLab = (MeasureLabel) sender;
+                        doMeasureStuff(measureLab);
+                    }
+                    else if(sender instanceof MeasureGrid){
+                        MeasureGrid measureGrid = (MeasureGrid) sender;
+                        doMeasureStuff(measureGrid);
+                    }
+
+
+
+
+
+                    else{
+                        flexTableAddRecord(sender);
+                    }
+                } 
+                //If the drop axis equals the source axis, remove the widget.
+                else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis.equals(sourceAxis)))) {
+                    if(sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.LabelType.MEASURE) ){
+
+                    }else{
+                        flexTableRemoveRecord(sourceRow);
+                    }
+                }
+
 
             }
-          });
+        });
     }
 
     private void flexTableRemoveRecord(final int sourceRow) {
@@ -287,9 +287,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                 new AsyncCallback<String[]>() {
 
-                    
 
-		    public void onFailure(final Throwable arg0) {
+
+                    public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
                                 .dimensionFetchFail());
                     }
@@ -300,64 +300,64 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                         dimensionTable = (DimensionFlexTable) TableUtil.clearTableRows(dimensionTable);
 
                         if (arg0.length == 0) {
-                          dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable);
-                            
+                            dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable);
+
                         }
                         else{
-                        ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                "Measures", new AsyncCallback<StringTree>() { //$NON-NLS-1$
+                            ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), Pat.getCurrQuery(),
+                                    "Measures", new AsyncCallback<StringTree>() { //$NON-NLS-1$
 
-                                    public void onFailure(final Throwable arg0) {
-                                        // TODO Auto-generated method stub
+                                public void onFailure(final Throwable arg0) {
+                                    // TODO Auto-generated method stub
 
+                                }
+
+                                public void onSuccess(final StringTree measuresTree) {
+                                    final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
+
+                                    final List<String> dimensionList = Arrays.asList(arg0);
+
+                                    MeasureGrid measureDropWidget = null;
+
+                                    if (index > -1) {
+                                        measureDropWidget = new MeasureGrid(query, dimAxis);
+                                        Pat.setMeasuresAxis(dimAxis);
+                                        tblRowDragCont.makeDraggable(measureDropWidget);
+                                        flexTableAddRecord(measureDropWidget, index);
+
+                                        //Insert Measures
+                                        for (int i = 0; i < measuresTree.getChildren().size(); i++) {
+                                            final MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.LabelType.MEASURE);
+                                            measureDropWidget.addRow(handle, i);
+                                            handle.setDragController(tblRowDragCont);
+                                            handle.makeDraggable();
+                                        }
+                                        measureDropWidget.setDragController(tblRowDragCont);
                                     }
 
-                                    public void onSuccess(final StringTree measuresTree) {
-                                            final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
 
-                                            final List<String> dimensionList = Arrays.asList(arg0);
-                                            
-                                            MeasureGrid measureDropWidget = null;
-                                            
-                                            if (index > -1) {
-                                                measureDropWidget = new MeasureGrid(query, dimAxis);
-                                                Pat.setMeasuresAxis(dimAxis);
-                                                tblRowDragCont.makeDraggable(measureDropWidget);
-                                                flexTableAddRecord(measureDropWidget, index);
-        
-                                                //Insert Measures
-                                                for (int i = 0; i < measuresTree.getChildren().size(); i++) {
-                                                    final MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.labelType.MEASURE);
-                                                    measureDropWidget.addRow(handle, i);
-                                                    handle.setDragController(tblRowDragCont);
-                                                    handle.makeDraggable();
-                                                }
-                                                measureDropWidget.setDragController(tblRowDragCont);
+                                    for (int row = 0; row < dimensionList.size(); row++) {
+                                        if(row != index){
+                                            MeasureLabel handle = new MeasureLabel(dimensionList.get(row),
+                                                    MeasureLabel.LabelType.DIMENSION);
+
+                                            flexTableAddRecord(handle, row);
+
+                                            handle.setDragController(tblRowDragCont);
+                                            handle.makeDraggable();
+                                            if (row == dimensionList.size() - 1 /* && anotherList.size() - 1 > 0 */) {
+                                                dimensionTable.getCellFormatter().addStyleName(row, 0,
+                                                        TABLE_DROP_ROWENDCELL);
                                             }
 
-                                            
-                                            for (int row = 0; row < dimensionList.size(); row++) {
-                                                if(row != index){
-                                                    MeasureLabel handle = new MeasureLabel(dimensionList.get(row),
-                                                            MeasureLabel.labelType.DIMENSION);
-                                                    
-                                                flexTableAddRecord(handle, row);
-                                                
-                                                handle.setDragController(tblRowDragCont);
-                                                handle.makeDraggable();
-                                                if (row == dimensionList.size() - 1 /* && anotherList.size() - 1 > 0 */) {
-                                                    dimensionTable.getCellFormatter().addStyleName(row, 0,
-                                                            TABLE_DROP_ROWENDCELL);
-                                                }
-                                                
-                                                
-                                                }
-                                            }
-                                            refreshTable();
-                                               
 
+                                        }
                                     }
-                                });
+                                    refreshTable();
+
+
+                                }
+                            });
                         }
                     }
                 });
@@ -372,7 +372,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     public void flexTableAddRecord(final Widget sender) {
         Widget wid = null;
         if (sender instanceof MeasureLabel){
-        wid = TableUtil.cloneMeasureLabel((MeasureLabel)sender);
+            wid = TableUtil.cloneMeasureLabel((MeasureLabel)sender);
         }
         else if(sender instanceof MeasureGrid){
             wid = TableUtil.cloneMeasureGrid((MeasureGrid)sender);
@@ -382,8 +382,8 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         else{
             //TODO Throw error;
         }
-        
-        
+
+
         if (empty) {
             dimensionTable = (DimensionFlexTable) TableUtil.clearTableRows(dimensionTable);
             dimensionTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
@@ -392,10 +392,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         } else {
             flexTableAddRecord(wid, dimensionTable.getRowCount());
         }
-        
+
         WidgetHelper.revalidate(dimensionTable);
     }
-    
+
     private void flexTableAddRecord(Widget sender, int row){
         dimensionTable.setWidget(row, 0, sender);
         dimensionTable.getCellFormatter().addStyleName(row, 0, "FlexTable-Cell"); //$NON-NLS-1$
@@ -405,8 +405,8 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
 
-    
-   
-    
-   
+
+
+
+
 }

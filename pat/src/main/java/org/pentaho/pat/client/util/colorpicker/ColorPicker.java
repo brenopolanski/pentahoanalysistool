@@ -357,7 +357,7 @@ public class ColorPicker extends Composite implements ClickHandler, KeyPressHand
         tbHue.addKeyPressHandler(this);
         tbGreen.addChangeHandler(this);
         tbBlue = new TextBox();
-        tbBlue.setText(new Integer(blue).toString());
+        tbBlue.setText(Integer.valueOf(blue).toString());
         tbBlue.setMaxLength(3);
         tbBlue.setVisibleLength(4);
         tbHue.addKeyPressHandler(this);
@@ -594,8 +594,8 @@ public class ColorPicker extends Composite implements ClickHandler, KeyPressHand
             slidermap.setOverlayOpacity(brightness);
 
             sliderbar.setSliderPosition(256 - (int) ((new Integer(brightness).floatValue() / 100) * 256));
-            slidermap.setSliderPosition((int) ((new Integer(hue).floatValue() / 360) * 256), 256 - (int) ((new Integer(
-                    saturation).floatValue() / 100) * 256));
+            slidermap.setSliderPosition((int) ((new Integer(hue).floatValue() / 360) * 256), 256 - (int) ((
+                    Integer.valueOf(saturation).floatValue() / 100) * 256));
         } else if (sender == rbRed) {
             if (colorMode != SliderMap.Red) {
                 colorMode = SliderMap.Red;

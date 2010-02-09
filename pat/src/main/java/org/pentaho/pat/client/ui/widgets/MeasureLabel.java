@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class MeasureLabel extends FocusPanel {
 
-    public enum labelType {
+    public enum LabelType {
         DIMENSION, MEASURE
     }
 
@@ -17,9 +17,9 @@ public class MeasureLabel extends FocusPanel {
 
     private Label text = new Label();
 
-    private labelType type;
+    private LabelType type;
 
-    public MeasureLabel(final String string, final labelType lType) {
+    public MeasureLabel(final String string, final LabelType lType) {
         super();
         text.setText(string);
         this.add(text);
@@ -35,7 +35,7 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final String string, final labelType lType, final FlexTableRowDragController dragController2,
+    public MeasureLabel(final String string, final LabelType lType, final FlexTableRowDragController dragController2,
             boolean draggable) {
         super();
         text.setText(string);
@@ -62,7 +62,7 @@ public class MeasureLabel extends FocusPanel {
         return text.getText();
     }
 
-    public labelType getType() {
+    public LabelType getType() {
         return type;
     }
 
@@ -85,7 +85,7 @@ public class MeasureLabel extends FocusPanel {
         this.dragController = dragController;
     }
 
-    public void setType(final labelType type) {
+    public void setType(final LabelType type) {
         this.type = type;
     }
 }
