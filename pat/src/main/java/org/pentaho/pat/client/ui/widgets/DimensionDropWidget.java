@@ -128,10 +128,8 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         final CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
         captLayoutPanel.setLayout(new BoxLayout());
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
-
+        dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable); 
         captLayoutPanel.add(dimensionTable, new BoxLayoutData(FillStyle.BOTH, true));
-
-        dimensionTable.clear();
 
         populateDimensionTable(dimAxis);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
@@ -258,7 +256,14 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     private void flexTableRemoveRecord(final int sourceRow) {
-        dimensionTable.removeRow(sourceRow);
+//      uncomment when widgets should be added horizontal instead of vertical
+//        if (horizontal) {
+//            dimensionTable.removeCell(0,sourceRow);
+//        }
+//        else {
+            dimensionTable.removeRow(sourceRow);    
+//        }
+        
         if (dimensionTable.getRowCount()==0){
             dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable);
             empty=true;
@@ -397,7 +402,13 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     private void flexTableAddRecord(Widget sender, int row){
-        dimensionTable.setWidget(row, 0, sender);
+//        uncomment when widgets should be added horizontal instead of vertical
+//        if (horizontal) {
+//            dimensionTable.setWidget(0, row, sender);
+//        }
+//        else {
+            dimensionTable.setWidget(row, 0, sender);
+        
         dimensionTable.getCellFormatter().addStyleName(row, 0, "FlexTable-Cell"); //$NON-NLS-1$
         dimensionTable.getCellFormatter().setStyleName(row, 0, TABLE_DRAG_CELL);
         dimensionTable.getCellFormatter().setVerticalAlignment(row, 0,HasVerticalAlignment.ALIGN_TOP);

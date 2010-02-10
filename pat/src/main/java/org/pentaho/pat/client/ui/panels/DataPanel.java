@@ -28,6 +28,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Application;
@@ -67,7 +68,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     private final LayoutPanel baseLayoutPanel = getLayoutPanel();
 
-    private final LayoutPanel mainLayoutPanel = new LayoutPanel(new BorderLayout());
+    private final LayoutPanel mainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final String queryId;
     
@@ -125,15 +126,16 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
         // Axis.FILTER);
         
-        final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout());
-        buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.VERTICAL));
-        buttonDropPanel.add(dimDropCol, new BoxLayoutData(FillStyle.BOTH));
+        final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        buttonDropPanel.add(dimDropRow, new BoxLayoutData(FillStyle.BOTH));
 
         
         //fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
-
-        mainLayoutPanel.add(buttonDropPanel, new BorderLayoutData(Region.NORTH, 0.2, 50, 200));
-        mainLayoutPanel.add(dimDropRow, new BorderLayoutData(Region.WEST, 0.2, 50, 200));
+        mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
+        mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
+        
+        
         // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
