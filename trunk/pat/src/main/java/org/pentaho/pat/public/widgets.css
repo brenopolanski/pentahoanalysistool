@@ -1,8 +1,9 @@
 /* DROP TABLE CSS*/
 
 .pat-cellLabel{
+	border: 0px;
 	
-	}
+}
 	
 
 .pat-Tree .pat-TreeItem-wrapper {
@@ -139,6 +140,8 @@ width: 100%;
   border-style: solid;
   border-color: #dfe8f6;
   padding: 5px;
+  cursor: hand;
+  
 }
 .dragProxy {
   border: 1px solid blue;
