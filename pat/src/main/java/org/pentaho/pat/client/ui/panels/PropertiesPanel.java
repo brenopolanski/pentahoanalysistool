@@ -253,6 +253,7 @@ public class PropertiesPanel extends LayoutComposite {
 
         final ToolButton createScenarioButton = new ToolButton("Create Scenario");
         createScenarioButton.setStyle(ToolButtonStyle.CHECKBOX);
+        createScenarioButton.setEnabled(false);
         createScenarioButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {

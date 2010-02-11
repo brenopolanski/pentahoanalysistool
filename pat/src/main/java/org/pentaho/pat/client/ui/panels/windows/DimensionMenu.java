@@ -45,6 +45,7 @@ import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.core.client.GWT;
@@ -281,15 +282,73 @@ public class DimensionMenu extends LayoutComposite {
     }
 
     /**
+     * Loads all Members 
+     * 
+     * @param queryId
+     *            - Query to use to discover dimension members
+     */
+    public final void loadAllMembers(final String queryId) {
+        dimensionTree.clear();
+        memberListBoxModel.clear();
+        loadAxisMembers(queryId, IAxis.COLUMNS,false);
+        loadAxisMembers(queryId, IAxis.ROWS,false);
+        loadAxisMembers(queryId, IAxis.FILTER,false);
+        loadAxisMembers(queryId, IAxis.UNUSED,false);
+
+    }
+    
+    /**
+     * Loads all Members of a given axis and query
+     * 
+     * @param queryId
+     *            - Query to use to discover dimension members
+     * @param targetAxis
+     *            - Axis of interest
+     * @param empty
+     *            - empty before populating
+     */
+    public final void loadAxisMembers(final String queryId, final IAxis targetAxis, final Boolean empty) {
+        if (empty) {
+            dimensionTree.clear();
+            memberListBoxModel.clear();
+        }
+        
+        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
+                new AsyncCallback<String[]>() {
+
+                    public void onFailure(Throwable arg0) {
+                        dimensionTree.clear();
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedMemberFetch(arg0.getLocalizedMessage()));
+                        
+                    }
+
+                    public void onSuccess(String[] dimensionList) {
+                        for (int i = 0; i < dimensionList.length;i++) {
+                            loadMembers(Pat.getCurrQuery(), dimensionList[i],false);
+                        }
+                        
+                    }
+                    
+                });
+
+    }
+    
+    /**
      * Loads all Members of a given dimension and query
      * 
      * @param queryId
      *            - Query to use to discover dimension members
      * @param dimensionId
      *            - Dimension of interest
+     * @param empty
+     *            - empty before populating
      */
-    public final void loadMembers(final String queryId, final String dimensionId) {
-        
+    public final void loadMembers(final String queryId, final String dimensionId, final Boolean empty) {
+        if (empty) {
+            dimensionTree.clear();
+            memberListBoxModel.clear();
+        }
             ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
                     new AsyncCallback<StringTree>() {
 
@@ -300,7 +359,6 @@ public class DimensionMenu extends LayoutComposite {
                         }
 
                         public void onSuccess(final StringTree labels) {
-                            dimensionTree.clear();
                             dimensionLabel = new Label(labels.getValue());
 
                             final TreeItem parent = dimensionTree.addItem(dimensionLabel);
@@ -383,7 +441,6 @@ public class DimensionMenu extends LayoutComposite {
                                                                              * .this.hierarchyModeModel.setSelectedItem
                                                                              * (null);
                                                                              */
-                                                                            memberListBoxModel.clear();
                                                                             addDimensionTreeItem(labels, parent,
                                                                                     selectionlist, dimensionLabel
                                                                                             .getText());

@@ -26,13 +26,16 @@ import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.images.IGuiImages;
+import org.pentaho.pat.client.ui.panels.DataPanel;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
@@ -43,6 +46,7 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The entry point for the whole application
@@ -390,6 +394,24 @@ public class Pat implements EntryPoint {
          return true;
         }
         return false;
+    }
+    
+    public static void executeQuery(final Widget sender, final String queryId ) {
+        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),queryId,
+                new AsyncCallback<CellDataSet>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedQuery(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(final CellDataSet result1) {
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                                sender, queryId, result1);
+                    }
+
+                });
+
     }
     /**
      *TODO JAVADOC

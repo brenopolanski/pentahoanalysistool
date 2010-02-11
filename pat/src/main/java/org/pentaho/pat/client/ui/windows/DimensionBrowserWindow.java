@@ -33,6 +33,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -58,11 +59,23 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     private final static DimensionBrowserWindow DBW = new DimensionBrowserWindow();
 
-    public static void displayDimension(final String queryId, final String dimension) {
-        dimMenuPanel.loadMembers(queryId, dimension);
+    public static void displayAllMembers(final String queryId) {
+        dimMenuPanel.loadAllMembers(queryId);
         display();
     }
-
+    
+    public static void displayAxis(final String queryId, final IAxis targetAxis) {
+        dimMenuPanel.loadAxisMembers(queryId, targetAxis,true);
+        display();
+    }
+    
+    public static void displayDimension(final String queryId, final String dimension) {
+        dimMenuPanel.loadMembers(queryId, dimension,true);
+        display();
+    }
+    
+    
+    
     private static void display() {
         DBW.setSize("650px", "450px"); //$NON-NLS-1$ //$NON-NLS-2$
         DBW.showModal(false);
@@ -106,10 +119,7 @@ public class DimensionBrowserWindow extends WindowPanel {
 
     }
 
-    // public static void displayAllDimensions(final String queryId) {
-    // query = queryId;
-    // display(true);
-    // }
+
 
     private void updateQuery() {
         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),

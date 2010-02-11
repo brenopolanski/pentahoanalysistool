@@ -25,6 +25,8 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -32,6 +34,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
+import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDropController;
@@ -43,10 +46,13 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.IAxis.Standard;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -125,7 +131,19 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         query = Pat.getCurrQuery();
         dimAxis = targetAxis;
         tblRowDragCont = tRDC;
-        final CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
+        CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
+
+        ToolButton axisButton = new ToolButton(Pat.IMAGES.dimbrowser().getHTML());
+        axisButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent arg0) {
+                DimensionBrowserWindow.displayAxis(query, targetAxis);
+            }
+            
+        });
+        
+        captLayoutPanel.getHeader().add(axisButton,CaptionRegion.RIGHT);
+        
         captLayoutPanel.setLayout(new BoxLayout());
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
         dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable); 
