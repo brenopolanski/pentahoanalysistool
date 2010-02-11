@@ -21,7 +21,6 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -39,14 +38,11 @@ import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -100,21 +96,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
-                        new AsyncCallback<CellDataSet>() {
-
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedQuery(arg0.getLocalizedMessage()));
-                            }
-
-                            public void onSuccess(final CellDataSet result1) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        DataPanel.this, Pat.getCurrQuery(), result1);
-                            }
-
-                        });
-
+                  Pat.executeQuery(DataPanel.this, Pat.getCurrQuery());
             }
 
         });
