@@ -23,13 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
@@ -51,9 +50,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -134,7 +131,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         tblRowDragCont = tRDC;
         CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
         captLayoutPanel.setLayout(new BoxLayout());
-        Button axisButton = new Button(Pat.IMAGES.dimbrowser().getHTML());
+        ImageButton axisButton = new ImageButton(Pat.IMAGES.dimbrowser());
         axisButton.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
