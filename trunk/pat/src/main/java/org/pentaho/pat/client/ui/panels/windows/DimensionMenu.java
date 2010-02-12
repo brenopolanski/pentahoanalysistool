@@ -290,6 +290,8 @@ public class DimensionMenu extends LayoutComposite {
     public final void loadAllMembers(final String queryId) {
         dimensionTree.clear();
         memberListBoxModel.clear();
+        filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(memberListBoxModel);
+        memberListBox.setModel(filterModel);
         loadAxisMembers(queryId, IAxis.COLUMNS,false);
         loadAxisMembers(queryId, IAxis.ROWS,false);
         loadAxisMembers(queryId, IAxis.FILTER,false);
@@ -311,6 +313,8 @@ public class DimensionMenu extends LayoutComposite {
         if (empty) {
             dimensionTree.clear();
             memberListBoxModel.clear();
+            filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(memberListBoxModel);
+            memberListBox.setModel(filterModel);
         }
         
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
@@ -348,6 +352,8 @@ public class DimensionMenu extends LayoutComposite {
         if (empty) {
             dimensionTree.clear();
             memberListBoxModel.clear();
+            filterModel = new FilterProxyListModel<MemberSelectionLabel, String>(memberListBoxModel);
+            memberListBox.setModel(filterModel);
         }
             ServiceFactory.getDiscoveryInstance().getMembers(Pat.getSessionID(), queryId, dimensionId,
                     new AsyncCallback<StringTree>() {
