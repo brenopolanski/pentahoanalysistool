@@ -203,15 +203,15 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
          */
         if (this.getRawValue() != null) {
 
-            final Image cellButton = new Image() {
-                public void onBrowserEvent(final Event event) {
-                    if (DOM.eventGetType(event) == Event.ONCLICK) {
-                        DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
-                    }
-                }
-            };
+//            final Image cellButton = new Image() {
+//                public void onBrowserEvent(final Event event) {
+//                    if (DOM.eventGetType(event) == Event.ONCLICK) {
+//                        DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
+//                    }
+//                }
+//            };
 
-            cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png"); //$NON-NLS-1$
+//            cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png"); //$NON-NLS-1$
 
             Image drillButton = null;
             if ((MemberCell.this).getChildMemberCount() > 0) {
@@ -263,32 +263,32 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
             }
             final Label cellLabel = new Label(getFormattedValue());
 
-            cellLabel.addMouseOverHandler(new MouseOverHandler() {
+//            cellLabel.addMouseOverHandler(new MouseOverHandler() {
+//
+//                public void onMouseOver(MouseOverEvent arg0) {
+//                    if (!getRawValue().equals("")) { //$NON-NLS-1$
+//                        cellButton.setVisible(true);
+//                    }
+//
+//                }
+//            });
 
-                public void onMouseOver(MouseOverEvent arg0) {
-                    if (!getRawValue().equals("")) { //$NON-NLS-1$
-                        cellButton.setVisible(true);
-                    }
+//            final Timer dimbrowserTimer = new Timer() {
+//                @Override
+//                public void run() {
+//                    cellButton.setVisible(false);
+//                }
+//            };
 
-                }
-            });
-
-            final Timer dimbrowserTimer = new Timer() {
-                @Override
-                public void run() {
-                    cellButton.setVisible(false);
-                }
-            };
-
-            cellLabel.addMouseOutHandler(new MouseOutHandler() {
-
-                public void onMouseOut(MouseOutEvent arg0) {
-                    if (!getRawValue().equals("")) { //$NON-NLS-1$
-                        dimbrowserTimer.schedule(800);
-                    }
-
-                }
-            });
+//            cellLabel.addMouseOutHandler(new MouseOutHandler() {
+//
+//                public void onMouseOut(MouseOutEvent arg0) {
+//                    if (!getRawValue().equals("")) { //$NON-NLS-1$
+//                        dimbrowserTimer.schedule(800);
+//                    }
+//
+//                }
+//            });
 
             if (drillButton != null) {
                 cellPanel.add(drillButton);
@@ -297,12 +297,12 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
             cellPanel.setWidth("100%"); //$NON-NLS-1$
 
-            cellButton.addStyleName(CELLBUTTON);
-
-            if (!getRawValue().equals("")) { //$NON-NLS-1$
-                cellPanel.add(cellButton);
-                cellButton.setVisible(false);
-            }
+//            cellButton.addStyleName(CELLBUTTON);
+//
+//            if (!getRawValue().equals("")) { //$NON-NLS-1$
+//                cellPanel.add(cellButton);
+//                cellButton.setVisible(false);
+//            }
         }
         return cellPanel;
     }

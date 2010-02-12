@@ -51,6 +51,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -126,14 +127,14 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      * @param targetAxis
      *            the target axis
      */
-    public final void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragController tRDC) {
+    public void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragController tRDC) {
         this.setStyleName(DIMENSION_DROP_WIDGET);
         query = Pat.getCurrQuery();
         dimAxis = targetAxis;
         tblRowDragCont = tRDC;
         CaptionLayoutPanel captLayoutPanel = new CaptionLayoutPanel(labelText);
-
-        ToolButton axisButton = new ToolButton(Pat.IMAGES.dimbrowser().getHTML());
+        captLayoutPanel.setLayout(new BoxLayout());
+        Button axisButton = new Button(Pat.IMAGES.dimbrowser().getHTML());
         axisButton.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
@@ -143,15 +144,15 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         });
         
         captLayoutPanel.getHeader().add(axisButton,CaptionRegion.RIGHT);
+        captLayoutPanel.getHeader().layout();
         
-        captLayoutPanel.setLayout(new BoxLayout());
         dimensionTable = new DimensionFlexTable(horizontal, dimAxis);
         dimensionTable = (DimensionFlexTable) TableUtil.insertSpacer(dimensionTable); 
         captLayoutPanel.add(dimensionTable, new BoxLayoutData(FillStyle.BOTH, true));
 
         populateDimensionTable(dimAxis);
-        final LayoutPanel baseLayoutPanel = getLayoutPanel();
-        baseLayoutPanel.add(captLayoutPanel);
+        
+        getLayoutPanel().add(captLayoutPanel);
     }
 
     @Override
