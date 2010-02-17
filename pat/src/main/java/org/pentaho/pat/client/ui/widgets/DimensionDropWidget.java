@@ -237,7 +237,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         } 
         //If the drop axis equals the source axis, remove the widget.
         else if (isAttached() && isVisible() && (Pat.getCurrQuery().equals(query) && (dimAxis.equals(sourceAxis)))) {
-            if(sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE) ){
+            if(sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.LabelType.MEASURE) ){
                 
             }else{
                 if(horizontal){
@@ -319,7 +319,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
                                 }
 
-                                public void onSuccess(final StringTree measuresTree) {
+                                /*public void onSuccess(final StringTree measuresTree) {
                                     final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
 
                                     final List<String> dimensionList = Arrays.asList(arg0);
@@ -340,7 +340,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                             handle.makeDraggable();
                                         }
                                         measureDropWidget.setDragController(tblRowDragCont);
-                                    }
+                                    }*/
 
                                     public void onSuccess(final StringTree measuresTree) {
                                             final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
@@ -357,7 +357,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         
                                                 //Insert Measures
                                                 for (int i = 0; i < measuresTree.getChildren().size(); i++) {
-                                                    final MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.labelType.MEASURE);
+                                                    final MeasureLabel handle = new MeasureLabel(measuresTree.getChildren().get(i).getValue(), MeasureLabel.LabelType.MEASURE);
                                                     measureDropWidget.addRow(handle, i);
                                                     handle.setDragController(tblRowDragCont);
                                                     handle.makeDraggable();

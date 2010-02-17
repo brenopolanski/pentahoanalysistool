@@ -96,9 +96,9 @@ public class FlexTableUtil {
         if (sourceTable.getAxis() == null || !sourceTable.getAxis().equals(targetTable.getAxis())) {
             final Widget w = sourceTable.getWidget(sRow, sCol);
             if (w instanceof MeasureLabel) {
-                if (((MeasureLabel) w).getType() == MeasureLabel.labelType.DIMENSION)
+                if (((MeasureLabel) w).getType() == MeasureLabel.LabelType.DIMENSION)
                     moveDimension(w, sourceRow, sourceCol, sourceTable, targetTable, targetAxis);
-                else if (((MeasureLabel) w).getType() == MeasureLabel.labelType.MEASURE)
+                else if (((MeasureLabel) w).getType() == MeasureLabel.LabelType.MEASURE)
                     moveMeasure(w, sourceRow, sourceCol, sourceTable, targetTable, targetAxis);
                 else {
                     MessageBox.error(ConstantFactory.getInstance().error(), "Forgot to add to the list");
@@ -230,14 +230,14 @@ public class FlexTableUtil {
         // If Measures is in unused Move Dimension to axis and create selection 
         //or if the source dimension only has one measure left
         if ((Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !Pat.getMeasuresAxis().equals(targetAxis))
-                || (targetAxis.equals(IAxis.UNUSED) && sourceTable.getRowCount() == 1)) {
+                || (targetAxis.equals(IAxis.UNUSED) && sourceTable.getRowCount() == 1 && sourceTable.getCellCount(0) == 1)) {
             moveDimensionCreateSelection(targetAxis, w, sourceTable, sourceRow, sourceCol, targetTable);
         } else if (targetAxis.equals(IAxis.UNUSED)) {
             final ArrayList<String> memberList = new ArrayList<String>();
             memberList.add(((MeasureLabel) w).getText().trim());
-            if (sourceTable.getRowCount() > 1) {
+            /*if (sourceTable.getRowCount() > 1) {*/
                 measureClearSelection(memberList, sourceTable, sourceRow, sourceCol, targetTable, targetAxis, w);
-            }
+            //}
 
         }
 
