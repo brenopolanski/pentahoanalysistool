@@ -42,10 +42,13 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     private final static String MEASURE_GRID = "pat-MeasureGrid"; //$NON-NLS-1$
 
-    public MeasureGrid(final String query, final IAxis currentAxis) {
+    private Boolean horizontal = false;
+    
+    public MeasureGrid(final String query, final IAxis currentAxis, final Boolean horizontal) {
         super();
         grid = new DimensionFlexTable(false, currentAxis);
         this.currentAxis=currentAxis;
+        this.horizontal = horizontal;
         final CaptionPanel panel = new CaptionPanel(ConstantFactory.getInstance().measures());
         this.setStyleName(MEASURE_GRID);
         panel.add(grid);
@@ -54,15 +57,35 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     public void addRow(final MeasureLabel mLabel) {
+        if(horizontal){
+            if (empty && grid.getCellCount(0) > 0)
+                TableUtil.removeSpacer(grid);
+            grid.setWidget(0, grid.getCellCount(0), mLabel);
+        }
+        else{
         if (empty && grid.getRowCount() > 0)
             TableUtil.removeSpacer(grid);
         grid.setWidget(grid.getRowCount(), 0, mLabel);
+        }
     }
 
     public void addRow(final MeasureLabel mLabel, final int row) {
-        if (empty && grid.getRowCount() > 0)
+        if(horizontal){
+        if (empty && grid.getRowCount() > 0){
             TableUtil.removeSpacer(grid);
-        grid.setWidget(row, 0, mLabel);
+               
+        }
+        empty=false; 
+        grid.setWidget(0, row, mLabel);
+        
+        }
+        else{
+            if (empty && grid.getRowCount() > 0){
+                TableUtil.removeSpacer(grid);
+                empty=false;
+            }
+            grid.setWidget(row, 0, mLabel);
+        }
         
     }
 
@@ -95,9 +118,16 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     public List<MeasureLabel> getMeasureLabels() {
         final List<MeasureLabel> measureLabels = new ArrayList<MeasureLabel>();
+        if(horizontal){
+            for (int i = 0; i < grid.getCellCount(0); i++)
+                if (grid.getWidget(0, i) instanceof MeasureLabel)
+                    measureLabels.add((MeasureLabel) grid.getWidget(0, i));
+        }
+        else{
         for (int i = 0; i < grid.getRowCount(); i++)
             if (grid.getWidget(i, 0) instanceof MeasureLabel)
                 measureLabels.add((MeasureLabel) grid.getWidget(i, 0));
+        }
         return measureLabels;
     }
 
@@ -138,13 +168,16 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
      * @see org.pentaho.pat.client.listeners.IQueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget, int,
      * org.pentaho.pat.rpc.dto.IAxis, org.pentaho.pat.rpc.dto.IAxis)
      */
-    public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
+    public void onQueryChange(final Widget sender, final int sourceRow, final int sourceCol, final IAxis sourceAxis, final IAxis targetAxis) {
 
         DeferredCommand.addCommand(new Command() {
             public void execute() {
         
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.LabelType.MEASURE)) {
-            
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
+            if(horizontal){
+               removeRow(sourceRow); 
+            }
+            else{
             grid.removeRow(sourceRow);
             
             int rowcount = 0;
@@ -156,6 +189,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
             }
             if (rowcount == 0){
                 MeasureGrid.this.removeFromParent();
+            }
             }
 WidgetHelper.layout(MeasureGrid.this);
         }
@@ -192,11 +226,23 @@ WidgetHelper.layout(MeasureGrid.this);
     }
 
     public void removeRow(final int row) {
-        if (!currentAxis.equals(IAxis.UNUSED) && grid.getRowCount() > 1){
-            grid.removeRow(row);
+        if(horizontal){
+            if (grid.getCellCount(0) > 1){
+                grid.removeCell(0, row);
+            }
+            
+            else{
+                MeasureGrid.this.removeFromParent();
+            }   
         }
         else{
+        if (grid.getRowCount() > 1){
+            grid.removeRow(row);
+        }
+        
+        else{
             MeasureGrid.this.removeFromParent();
+        }
         }
     }
 
@@ -243,5 +289,22 @@ WidgetHelper.layout(MeasureGrid.this);
      */
     public void setQuery(final String query) {
         this.query = query;
+    }
+
+    /**
+     *
+     *TODO JAVADOC
+     * @param horizontal the horizontal to set
+     */
+    public void setHorizontal(Boolean horizontal) {
+        this.horizontal = horizontal;
+    }
+
+    /**
+     *TODO JAVADOC
+     * @return the horizontal
+     */
+    public Boolean getHorizontal() {
+        return horizontal;
     }
 }

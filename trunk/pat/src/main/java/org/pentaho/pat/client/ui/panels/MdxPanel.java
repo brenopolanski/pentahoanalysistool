@@ -315,7 +315,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
      * @see org.pentaho.pat.client.ui.widgets.DataWidget#onInitialize()
      */
 
-    public void onQueryChange(final Widget sender, int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
+    public void onQueryChange(final Widget sender, int sourceRow, final int sourceCol, final IAxis sourceAxis, final IAxis targetAxis) {
         // TODO Auto-generated method stub
 
     }
