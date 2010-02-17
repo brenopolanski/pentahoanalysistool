@@ -66,9 +66,16 @@ public class TableUtil {
         MeasureGrid oldMeasureGrid = ((MeasureGrid)sender);
         MeasureGrid mg = new MeasureGrid(oldMeasureGrid.getQuery(), oldMeasureGrid.getCurrentAxis(), oldMeasureGrid.getHorizontal());
         mg.setDragController(((MeasureGrid)sender).getDragController());
+        if(oldMeasureGrid.getHorizontal()){
+            for(int i=0; i<oldMeasureGrid.getRows().getCellCount(0); i++){
+                MeasureLabel oldMl = (MeasureLabel) oldMeasureGrid.getRows().getWidget(0,i);
+                mg.addRow(cloneMeasureLabel(oldMl), i);
+                }
+        }else{
         for(int i=0; i<oldMeasureGrid.getRows().getRowCount(); i++){
             MeasureLabel oldMl = (MeasureLabel) oldMeasureGrid.getRows().getWidget(i, 0);
             mg.addRow(cloneMeasureLabel(oldMl), i);
+        }
         }
         return mg;
     }
