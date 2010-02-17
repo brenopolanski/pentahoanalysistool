@@ -173,9 +173,9 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         DeferredCommand.addCommand(new Command() {
             public void execute() {
         
-        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.labelType.MEASURE)) {
+        if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && currentAxis.equals(sourceAxis) && sender instanceof MeasureLabel && ((MeasureLabel)sender).getType().equals(MeasureLabel.LabelType.MEASURE)) {
             if(horizontal){
-               removeRow(sourceRow); 
+               removeRow(sourceCol); 
             }
             else{
             grid.removeRow(sourceRow);
