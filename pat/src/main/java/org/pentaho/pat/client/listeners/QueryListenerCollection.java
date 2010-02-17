@@ -45,9 +45,9 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
      *            The sender widget of the query changed event
      * @param iAxis 
      */
-    public void fireQueryChanged(final Widget sender, final int sourceRow, final IAxis sourceAxis, IAxis targetAxis) {
+    public void fireQueryChanged(final Widget sender, final int sourceRow, final int sourceCol, final IAxis sourceAxis, IAxis targetAxis) {
         for (IQueryListener listener : this) {
-            listener.onQueryChange(sender, sourceRow, sourceAxis, targetAxis);
+            listener.onQueryChange(sender, sourceRow, sourceCol, sourceAxis, targetAxis);
         }
     }
 

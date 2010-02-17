@@ -128,10 +128,10 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     /**
      * Fire on query changing.
      */
-    public void onQueryChange(final Widget sender, final int sourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
-        /**
-         * Fired on query change.
-         */
+    public void onQueryChange(final Widget sender, final int sourceRow, final int sourceCol, final IAxis sourceAxis, final IAxis targetAxis) {
+	/**
+	 * Fired on query change.
+	 */
 
     }
 

@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public interface IQueryListener extends EventListener {
 
-    void onQueryChange(Widget sender, int sourceRow, IAxis sourceAxis, IAxis targetAxis);
+    void onQueryChange(Widget sender, int sourceRow, int sourceCol, IAxis sourceAxis, IAxis targetAxis);
 
     void onQueryExecuted(String queryId, CellDataSet matrix);
 
