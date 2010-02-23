@@ -37,10 +37,10 @@ public class MeasureLabel extends FocusPanel {
      */
     public MeasureLabel(final String string, final LabelType lType, final FlexTableRowDragController dragController2,
             boolean draggable) {
-        this(string,lType);
+        this(string, lType);
         this.dragController = dragController2;
 
-        if (draggable == true){
+        if (draggable == true) {
             this.makeDraggable();
         }
     }

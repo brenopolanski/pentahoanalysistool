@@ -530,7 +530,7 @@
 		</repository>
 		<repository>
 			<id>MagicBeans-releases</id>
-			<url>http://repo.logical-analytics.co.uk/artifactory/libs-releases-local/</url>
+			<url>http://repo.logicalanalytics.co.uk/artifactory/libs-releases-local/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -905,12 +905,12 @@
 		<repository>
 			<id>pat.releases</id>
 			<name>A friendly description of your release repo</name>
-			<url>scpexe://logical-analytics.co.uk/repository</url>
+			<url>scpexe://logicalanalytics.co.uk/repository</url>
 		</repository>
 		<snapshotRepository>
 			<id>pat.snapshots</id>
 			<name>A friendly description of your snapshots repo</name>
-			<url>scpexe://logical-analytics.co.uk/snapshots</url>
+			<url>scpexe://logicalanalytics.co.uk/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>

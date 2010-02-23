@@ -98,8 +98,14 @@ public class FlexTableRowDropController extends AbstractPositioningDropControlle
     @Override
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
-        FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(),
-                TARGETROW + 1, trDragController.getDragCol(), TARGETCOL + 1, targetAxis);
+        if(trDragController.getDraggableTable().getHorizontal()){
+            FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragCol(), false,
+                    TARGETROW + 1, TARGETCOL + 1, targetAxis);    
+        }
+        else{
+        FlexTableUtil.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(), true,
+                TARGETROW + 1, TARGETCOL + 1, targetAxis);
+        }
         super.onDrop(context);
     }
 
