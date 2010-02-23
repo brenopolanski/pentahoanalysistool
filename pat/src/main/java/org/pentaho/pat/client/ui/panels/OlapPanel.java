@@ -270,7 +270,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         LogoPanel.spinWheel(false);
     }
 
-    public void onQueryChange(final Widget sender, int sourceRow, final int sourceCol, final IAxis sourceAxis, final IAxis targetAxis) {
+    public void onQueryChange(final Widget sender, int sourceRow, final boolean isSourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
         // TODO Auto-generated method stub
        
     }
