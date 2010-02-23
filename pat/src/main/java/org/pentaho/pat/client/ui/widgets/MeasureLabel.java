@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -77,7 +78,7 @@ public class MeasureLabel extends FocusPanel {
      * @param dragController
      *            the dragController to set
      */
-    public void setDragController(final FlexTableRowDragController dragController) {
+    public void setDragController(final FlexTableRowDragControllerImpl dragController) {
         this.dragController = dragController;
     }
 

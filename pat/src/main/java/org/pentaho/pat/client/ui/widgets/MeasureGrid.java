@@ -11,6 +11,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -195,7 +196,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                             MeasureGrid.this.removeFromParent();
                         }
                     }
-                    WidgetHelper.layout(MeasureGrid.this);
+                    WidgetHelper.revalidate(MeasureGrid.this);
                 }
 
                 else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query)
@@ -204,7 +205,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                     MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);
                     addRow(measureLabel);
 
-                    WidgetHelper.layout(MeasureGrid.this);
+                    WidgetHelper.revalidate(MeasureGrid.this);
                 } else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query)
                         && currentAxis.equals(targetAxis) && sender instanceof MeasureGrid) {
                     MeasureGrid mGrid = TableUtil.cloneMeasureGrid((MeasureGrid) sender);
@@ -213,7 +214,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                         addRow(measureLabel);
 
                     }
-                    WidgetHelper.layout(MeasureGrid.this);
+                    WidgetHelper.revalidate(MeasureGrid.this);
                 }
             }
         });

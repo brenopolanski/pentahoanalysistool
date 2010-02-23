@@ -35,8 +35,8 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.TableUtil;
-import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
-import org.pentaho.pat.client.util.dnd.FlexTableRowDropController;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -69,11 +69,11 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     private Boolean horizontal = false;
 
-    private FlexTableRowDropController fTblRowDropCont;
+    private FlexTableRowDropControllerImpl fTblRowDropCont;
 
     private String query;
 
-    private FlexTableRowDragController tblRowDragCont;
+    private FlexTableRowDragControllerImpl tblRowDragCont;
 
     private final static String TABLE_DROP_ROWENDCELL = "pat-dropRowEndCell"; //$NON-NLS-1$
 
@@ -93,7 +93,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      * 
      */
     public DimensionDropWidget(final String labelText, final Standard targetAxis,
-            final FlexTableRowDragController tblRowDragCont) {
+            final FlexTableRowDragControllerImpl tblRowDragCont) {
         super();
 
         init(labelText, targetAxis, tblRowDragCont);
@@ -101,7 +101,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
-            final FlexTableRowDragController tblRowDragCont) {
+            final FlexTableRowDragControllerImpl tblRowDragCont) {
         super();
         horizontal = orientation;
         init(labelText, targetAxis, tblRowDragCont);
@@ -125,7 +125,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
      * @param targetAxis
      *            the target axis
      */
-    public void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragController tRDC) {
+    public void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragControllerImpl tRDC) {
         this.setStyleName(DIMENSION_DROP_WIDGET);
         query = Pat.getCurrQuery();
         dimAxis = targetAxis;
@@ -155,7 +155,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     @Override
     public void onLoad() {
-        fTblRowDropCont = new FlexTableRowDropController(dimensionTable, dimAxis);
+        fTblRowDropCont = new FlexTableRowDropControllerImpl(dimensionTable, dimAxis);
         DimensionDropWidget.this.tblRowDragCont.registerDropController(fTblRowDropCont);
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
     }
@@ -201,7 +201,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             mGrid.setDragController(tblRowDragCont);
             mGrid.setCurrentAxis(dimAxis);
             mGrid.makeDraggable();
-            // mGrid.addRow((MeasureGrid)sender);
             flexTableAddRecord(mGrid);
         }
     }
@@ -220,11 +219,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
                 if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && dimAxis.equals(targetAxis)) {
                     if (sender instanceof MeasureLabel) {
-                        MeasureLabel measureLab = (MeasureLabel) sender;
-                        doMeasureStuff(measureLab);
+                        doMeasureStuff((MeasureLabel) sender);
                     } else if (sender instanceof MeasureGrid) {
-                        MeasureGrid measureGrid = (MeasureGrid) sender;
-                        doMeasureStuff(measureGrid);
+                        doMeasureStuff((MeasureGrid) sender);
                     }
 
                     else {
@@ -307,27 +304,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                             // TODO Auto-generated method stub
 
                                         }
-
-                                        /*
-                                         * public void onSuccess(final StringTree measuresTree) { final int index =
-                                         * Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
-                                         * 
-                                         * final List<String> dimensionList = Arrays.asList(arg0);
-                                         * 
-                                         * MeasureGrid measureDropWidget = null;
-                                         * 
-                                         * if (index > -1) { measureDropWidget = new MeasureGrid(query, dimAxis);
-                                         * Pat.setMeasuresAxis(dimAxis);
-                                         * tblRowDragCont.makeDraggable(measureDropWidget);
-                                         * flexTableAddRecord(measureDropWidget, index);
-                                         * 
-                                         * //Insert Measures for (int i = 0; i < measuresTree.getChildren().size(); i++)
-                                         * { final MeasureLabel handle = new
-                                         * MeasureLabel(measuresTree.getChildren().get(i).getValue(),
-                                         * MeasureLabel.LabelType.MEASURE); measureDropWidget.addRow(handle, i);
-                                         * handle.setDragController(tblRowDragCont); handle.makeDraggable(); }
-                                         * measureDropWidget.setDragController(tblRowDragCont); }
-                                         */
 
                                         public void onSuccess(final StringTree measuresTree) {
                                             final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
