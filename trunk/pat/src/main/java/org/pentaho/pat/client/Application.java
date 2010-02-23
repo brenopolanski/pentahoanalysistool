@@ -34,7 +34,7 @@ import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
-import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -94,7 +94,7 @@ public class Application extends Viewport {
 
     private MenuBar menuBar = null;
 
-    public static FlexTableRowDragController tblRowDrgCont;
+    public static FlexTableRowDragControllerImpl tblRowDrgCont;
 
     private static LayoutPanel rootPanel;
 
@@ -108,7 +108,7 @@ public class Application extends Viewport {
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
-        tblRowDrgCont = new FlexTableRowDragController(Application.getMainPanel());
+        tblRowDrgCont = new FlexTableRowDragControllerImpl(Application.getMainPanel());
 
         // Add the main menu
         if (Pat.getApplicationState().getMode().isShowMenu()) {

@@ -30,6 +30,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
@@ -47,7 +48,7 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class DimensionPanel extends LayoutComposite {
 
-    private final FlexTableRowDragController tRDragController = Application.tblRowDrgCont;
+    private final FlexTableRowDragControllerImpl tRDragController = Application.tblRowDrgCont;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 
