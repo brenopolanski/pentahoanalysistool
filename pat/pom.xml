@@ -31,6 +31,10 @@
     </plugins>
   </reporting>
       
+        <issueManagement>
+        	<system>JIRA</system>
+        	<url>http://jira.pentaho.com/browse/PAT</url>
+        </issueManagement>
         <developers>
                 <developer>
                         <id>pat01</id>
@@ -62,7 +66,7 @@
         <scm>
                 <connection>scm:svn:http://pentahoanalysistool.googlecode.com/svn/trunk/pat/</connection>
                 <developerConnection>scm:svn:https://pentahoanalysistool.googlecode.com/svn/trunk/pat/</developerConnection>
-                <url>http://pentahoanalysistool.googlecode.com/svn</url>
+                <url>http://pentahoanalysistool.googlecode.com/svn/</url>
         </scm>
         <build>
                 <!--
