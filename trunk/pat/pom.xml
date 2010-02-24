@@ -62,7 +62,7 @@
         <scm>
                 <connection>scm:svn:http://pentahoanalysistool.googlecode.com/svn/trunk/pat/</connection>
                 <developerConnection>scm:svn:https://pentahoanalysistool.googlecode.com/svn/trunk/pat/</developerConnection>
-                <url>http://pentahoanalysistool.googlecode.com/</url>
+                <url>http://pentahoanalysistool.googlecode.com/svn</url>
         </scm>
         <build>
                 <!--
