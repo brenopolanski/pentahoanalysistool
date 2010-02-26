@@ -113,13 +113,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
 
-                        BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");
-                        
-                        Object sfBean = factory.getBean("sessionFactory");
-                        
-                        LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
-                        lsfBean.setBeanClassLoader(pluginClassloader);
-                        
+                        BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");                        
                         dsBean.setDriverClassName(pentahoHibConfig.getProperty("connection.driver_class"));
                         dsBean.setUrl(pentahoHibConfig.getProperty("connection.url"));
                         dsBean.setUsername(pentahoHibConfig.getProperty("connection.username"));
@@ -130,10 +124,13 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
                         patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
                         
+                        LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
+                        lsfBean.setBeanClassLoader(pluginClassloader);
                         lsfBean.setConfigLocation(null);
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
                         lsfBean.setDataSource(dsBean);
-                        LOG.error("test");
+                        
+                        Object sfBean = factory.getBean("sessionFactory");
                         sfBean = lsfBean.getObject();
                     }
 

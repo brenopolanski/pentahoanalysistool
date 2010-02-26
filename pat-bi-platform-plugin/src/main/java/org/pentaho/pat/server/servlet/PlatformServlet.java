@@ -21,7 +21,9 @@ package org.pentaho.pat.server.servlet;
 
 import javax.servlet.ServletException;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.pentaho.pat.plugin.PatLifeCycleListener;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.IPlatform;
@@ -45,7 +47,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
 
     private QueryService queryService;
 
-    private final static Logger LOG = Logger.getLogger(PlatformServlet.class);
+    private final static Log LOG = LogFactory.getLog(PlatformServlet.class);
 
     public void init() throws ServletException {
         super.init();
