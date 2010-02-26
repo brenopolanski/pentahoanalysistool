@@ -29,7 +29,6 @@ import javax.servlet.ServletException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.pentaho.pat.plugin.messages.Messages;
@@ -115,8 +114,8 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
 
                         BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");
-                        @SuppressWarnings("unused")
-                        SessionFactory sfBean = (SessionFactory)factory.getBean("sessionFactory");
+                        
+                        Object sfBean = factory.getBean("sessionFactory");
                         
                         LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
                         lsfBean.setBeanClassLoader(pluginClassloader);
@@ -134,13 +133,15 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         lsfBean.setConfigLocation(null);
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
                         lsfBean.setDataSource(dsBean);
-                        sfBean = (SessionFactory) lsfBean.getObject();
+                        LOG.error("test");
+                        sfBean = lsfBean.getObject();
                     }
 
                 });
+                
                 applicationContext.refresh();
                 Thread.currentThread().setContextClassLoader(pluginClassloader);
-
+                
                 sessionBean.setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
                 sessionBean.init();
