@@ -54,7 +54,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *TODO JAVADOC
+ * Creates a dimension drop container widget for Dimension and Measure widgets.
  * 
  * @created Aug 8, 2009
  * @since 0.5.0
@@ -301,7 +301,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                     "Measures", new AsyncCallback<StringTree>() { //$NON-NLS-1$
 
                                         public void onFailure(final Throwable arg0) {
-                                            // TODO Auto-generated method stub
+                                        	// TODO Auto-generated method stub
 
                                         }
 
@@ -418,5 +418,13 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
         empty = false;
     }
+
+	public void onQueryPivoted(String queryId) {
+
+		if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && (dimAxis.equals(IAxis.COLUMNS) || dimAxis.equals(IAxis.ROWS))){
+		populateDimensionTable(dimAxis);
+	}
+		
+	}
 
 }

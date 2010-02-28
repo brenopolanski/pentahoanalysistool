@@ -82,17 +82,7 @@ public class DimensionPanel extends LayoutComposite {
                 IAxis.COLUMNS, tRDragController);
         final DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
                 IAxis.FILTER, tRDragController);
-        
-        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
-        executeButton.addClickHandler(new ClickHandler() {
-
-            public void onClick(final ClickEvent arg0) {
-                Pat.executeQuery(DimensionPanel.this, Pat.getCurrQuery());
-            }
-
-        });
-        mainPanel.add(executeButton);
-        mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
+                mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
         mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));

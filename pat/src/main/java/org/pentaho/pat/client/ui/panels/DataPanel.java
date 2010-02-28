@@ -41,9 +41,6 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -90,35 +87,16 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (pType == PanelUtil.PanelType.QM) {
         mainLayoutPanel.setPadding(0);
 
-//        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
-        
-        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
-        executeButton.addClickHandler(new ClickHandler() {
-
-            public void onClick(final ClickEvent arg0) {
-                  Pat.executeQuery(DataPanel.this, Pat.getCurrQuery());
-            }
-
-        });
-
         final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
                 IAxis.COLUMNS, true, Application.tblRowDrgCont);
         final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
                 IAxis.ROWS, false, Application.tblRowDrgCont);
-        // DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
-        // Axis.FILTER);
         
         final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        buttonDropPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         buttonDropPanel.add(dimDropRow, new BoxLayoutData(FillStyle.BOTH));
 
-        
-        //fillLayoutPanel.add(ofcPanel, new BorderLayoutData(Region.WEST, 0.5, 0, 1000));
         mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
         mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
-        
-        
-        // mainLayoutPanel.add(executeButton, new BorderLayoutData(Region.CENTER, true));
 
         baseLayoutPanel.add(mainLayoutPanel);
         }
@@ -180,8 +158,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      *
      * @see org.pentaho.pat.client.listeners.QueryListener#onQueryChange(com.google.gwt.user.client.ui.Widget)
      */
-    public void onQueryChange(final Widget sender, int sourceRow, final boolean isSourceRow, final IAxis sourceAxis, final IAxis targetAxis) {
-        // TODO Auto-generated method stub
+    public void onQueryChange(final Widget sender, int sourceRow, final boolean isSourceRow, final IAxis sourceAxis, final IAxis targetAxis) {       
 
     }
 
@@ -204,5 +181,9 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             }
         }
     }
+
+	public void onQueryPivoted(String queryId) {
+		
+	}
 }
 

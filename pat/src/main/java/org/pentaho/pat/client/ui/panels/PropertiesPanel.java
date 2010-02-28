@@ -48,6 +48,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Widget;
@@ -62,10 +63,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PropertiesPanel extends LayoutComposite {
 
+	private final ToolButton exportButton;
+
+	private final ToolButton mdxButton;
+	
+	private final ToolButton hideBlanksButton;
+	
+	private final ToolButton pivotButton;
+
+	private final ToolButton layoutMenuButton;
+	
+	private final ToolButton drillMenuButton;
+	
     private class LayoutCommand implements Command {
 
         private final Region region;
 
+        
         public LayoutCommand(final Region region) {
             this.region = region;
         }
@@ -82,7 +96,7 @@ public class PropertiesPanel extends LayoutComposite {
 
     }
 
-    private class DrillCommand implements Command {
+    private static class DrillCommand implements Command {
 
         private final DrillType drillType;
 
@@ -145,7 +159,24 @@ public class PropertiesPanel extends LayoutComposite {
         curQuery.setValue(Pat.getCurrQuery());
         formPanel.add(curQuery);
 
-        final ToolButton exportButton = new ToolButton(ConstantFactory.getInstance().export());
+
+        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        executeButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+            	exportButton.setEnabled(true);
+            	mdxButton.setEnabled(true);
+            	hideBlanksButton.setEnabled(true);
+            	pivotButton.setEnabled(true);
+            	layoutMenuButton.setEnabled(true);
+            	drillMenuButton.setEnabled(true);
+                Pat.executeQuery(PropertiesPanel.this, Pat.getCurrQuery());
+            }
+
+        });
+        
+
+        exportButton = new ToolButton(ConstantFactory.getInstance().export());
 
 
         exportButton.addClickHandler(new ClickHandler() {
@@ -154,7 +185,9 @@ public class PropertiesPanel extends LayoutComposite {
             }
         });
 
-        final ToolButton mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
+        exportButton.setEnabled(false);
+        
+        mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
         mdxButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -167,7 +200,6 @@ public class PropertiesPanel extends LayoutComposite {
                     }
 
                     public void onSuccess(final String mdx) {
-                        // TODO localize + externalize strings + extract show mdx window
                         final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
                         final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                         wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -217,9 +249,9 @@ public class PropertiesPanel extends LayoutComposite {
 
             }
         });
-        mdxButton.setEnabled(true);
+        mdxButton.setEnabled(false);
 
-        final ToolButton hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
+        hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
         hideBlanksButton.addClickHandler(new ClickHandler() {
 
@@ -251,6 +283,8 @@ public class PropertiesPanel extends LayoutComposite {
 
         });
 
+        hideBlanksButton.setEnabled(false);
+        
         final ToolButton createScenarioButton = new ToolButton("Create Scenario");
         createScenarioButton.setStyle(ToolButtonStyle.CHECKBOX);
         createScenarioButton.setEnabled(false);
@@ -266,7 +300,6 @@ public class PropertiesPanel extends LayoutComposite {
                     }
 
                     public void onSuccess(CellDataSet arg0) {
-                        // TODO Auto-generated method stub
                         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
 
                             public void onFailure(Throwable arg0) {
@@ -275,7 +308,6 @@ public class PropertiesPanel extends LayoutComposite {
                             }
 
                             public void onSuccess(CellDataSet arg0) {
-                                // TODO Auto-generated method stub
                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                         PropertiesPanel.this, Pat.getCurrQuery(), arg0);
                             }
@@ -297,7 +329,8 @@ public class PropertiesPanel extends LayoutComposite {
                 });*/
             }
         });
-        final ToolButton pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
+        
+        pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
         pivotButton.setStyle(ToolButtonStyle.CHECKBOX);
         pivotButton.addClickHandler(new ClickHandler() {
 
@@ -315,18 +348,21 @@ public class PropertiesPanel extends LayoutComposite {
 
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                        
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryPivoted(PropertiesPanel.this, Pat.getCurrQuery());
 
                     }
 
                 });
 
             }
-        });
-        pivotButton.setEnabled(true);
+        });        
+        pivotButton.setEnabled(false);
 
-        final ToolButton layoutMenuButton = new ToolButton(ConstantFactory.getInstance().layout());
+        layoutMenuButton = new ToolButton(ConstantFactory.getInstance().layout());
         layoutMenuButton.setStyle(ToolButtonStyle.MENU);
-
+        layoutMenuButton.setEnabled(false);
+        
         final PopupMenu layoutMenuBtnMenu = new PopupMenu();
         layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
         // layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
@@ -337,9 +373,10 @@ public class PropertiesPanel extends LayoutComposite {
 
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
-        final ToolButton drillMenuButton = new ToolButton(ConstantFactory.getInstance().drillStyle());
+        
+        drillMenuButton = new ToolButton(ConstantFactory.getInstance().drillStyle());
         drillMenuButton.setStyle(ToolButtonStyle.MENU);
-
+        drillMenuButton.setEnabled(false);
 
         final PopupMenu drillMenuBtnMenu = new PopupMenu();
         drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillPosition(), new DrillCommand(DrillType.POSITION));
@@ -350,7 +387,7 @@ public class PropertiesPanel extends LayoutComposite {
         final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
-
+        mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
         mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         if (pType == PanelUtil.PanelType.QM) {

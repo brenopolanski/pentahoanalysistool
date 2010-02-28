@@ -37,4 +37,5 @@ public interface IQueryListener extends EventListener {
 
     void onQueryExecuted(String queryId, CellDataSet matrix);
 
+    void onQueryPivoted(String queryId);
 }
