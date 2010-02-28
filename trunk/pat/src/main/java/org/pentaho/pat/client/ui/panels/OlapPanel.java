@@ -282,5 +282,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         }
     }
 
+	public void onQueryPivoted(String queryId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 

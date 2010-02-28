@@ -222,4 +222,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         }
         return tableDef;
     }
+	public void onQueryPivoted(String queryId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

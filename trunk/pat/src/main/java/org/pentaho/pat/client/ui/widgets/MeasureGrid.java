@@ -11,7 +11,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.TableUtil;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -315,4 +314,9 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     public Boolean getHorizontal() {
         return horizontal;
     }
+
+	public void onQueryPivoted(String queryId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

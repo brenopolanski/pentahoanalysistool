@@ -28,6 +28,7 @@ import org.pentaho.pat.client.util.factory.ConstantFactory;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -113,23 +114,24 @@ public class WelcomePanel extends AbstractDataWidget {
         DOM.setStyleAttribute(layoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         ((BoxLayout) layoutPanel.getLayout()).setAlignment(Alignment.CENTER);
 
-        final String pageTitle = "<h1>" + ConstantFactory.getInstance().mainTitle() + "</h1>"; //$NON-NLS-1$ //$NON-NLS-2$
-        final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
+       /* final LayoutPanel buttonBar = new LayoutPanel(new BoxLayout());
         ((BoxLayout) buttonBar.getLayout()).setAlignment(Alignment.CENTER);
         buttonBar.setWidgetSpacing(20);
         final ToolButton patwikiBtn = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.help_index(),
-                ConstantFactory.getInstance().wiki(), ButtonLabelType.TEXT_ON_BOTTOM), new ClickHandler() {
+                ConstantFactory.getInstance().wiki(), ButtonLabelType.TEXT_ON_RIGHT), new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 Window.open("http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         });
 
         buttonBar.add(patwikiBtn);
+*/
+//        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0, -1.0));
 
-        layoutPanel.add(new WidgetWrapper(new HTML(pageTitle)), new BoxLayoutData(FillStyle.HORIZONTAL));
-
-        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0, -1.0));
-
+        Frame frame = new Frame("welcome.html");
+        
+        layoutPanel.add(frame, new BoxLayoutData(FillStyle.BOTH));
+        
         return layoutPanel;
     }
 

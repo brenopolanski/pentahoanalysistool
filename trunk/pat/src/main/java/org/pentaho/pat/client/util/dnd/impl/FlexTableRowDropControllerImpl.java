@@ -182,24 +182,31 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
         else if((trDragController.getDraggableTable().getParent().getParent().getParent() instanceof MeasureGrid && ((DimensionFlexTable)trDragController.getDraggableTable().getParent().getParent().getParent().getParent()).getAxis().equals(flexTable.getAxis()))){
             throw new VetoDragException();
         }
+        else if((trDragController.getDraggableTable().getAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
+            throw new VetoDragException();
+        }
         else if(trDragController.getDraggableTable() == flexTable){
             throw new VetoDragException();
         }
     }
 
-    /**
-     * Positioner.
-     * 
-     * @param context
-     *            the context
-     * 
-     * @return the widget
-     */
-    private Widget newPositioner(final DragContext context) {
-        final Widget panel = new SimplePanel();
-        panel.addStyleName(CSS_DEMO_TABLE_POSITIONER);
-        panel.setPixelSize(flexTable.getOffsetWidth(), 1);
-        return panel;
-    }
+	/**
+	 * Positioner.
+	 * 
+	 * @param context
+	 *            the context
+	 * 
+	 * @return the widget
+	 */
+	private Widget newPositioner(final DragContext context) {
+		final Widget panel = new SimplePanel();
+		panel.addStyleName(CSS_DEMO_TABLE_POSITIONER);
+		if (flexTable.getHorizontal()) {
+			panel.setPixelSize(1, flexTable.getOffsetHeight());
+		} else {
+			panel.setPixelSize(flexTable.getOffsetWidth(), 1);
+		}
+		return panel;
+	}
 
 }

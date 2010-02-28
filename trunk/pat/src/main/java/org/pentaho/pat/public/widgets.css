@@ -43,13 +43,13 @@ height: 100%;
 
 .pat-invalidDropTarget
 {
-  background-color: red !important;
-	border: 1px solid red !important;
+  background-color: #c73a3a !important;
+	border: 1px solid #c73a3a !important;
 }
 
 .pat-validDropTarget{
-	background-color: blue !important;
-	border: 1px solid blue !important;	
+	background-color: #99bb0f !important;
+	border: 1px solid #99bb0f !important;	
 }
 
 .pat-DimensionFlextable{
@@ -59,7 +59,7 @@ background-color:white;
 }
 
 .pat-MeasureGrid{
-background-color:yellow;
+background-color:#99bbe8;
 
 	}
 
