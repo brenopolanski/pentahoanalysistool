@@ -306,6 +306,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                         }
 
                                         public void onSuccess(final StringTree measuresTree) {
+                                        	Arrays.sort(arg0);
                                             final int index = Arrays.binarySearch(arg0, "Measures"); //$NON-NLS-1$
 
                                             final List<String> dimensionList = Arrays.asList(arg0);
