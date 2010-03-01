@@ -174,7 +174,9 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
         
         if(flexTable.getWidget(TARGETROW, 0) instanceof MeasureLabel && ((MeasureLabel)flexTable.getWidget(TARGETROW, 0)).getType().equals(MeasureLabel.LabelType.MEASURE) 
                 && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis()) && !flexTable.getAxis().equals(IAxis.UNUSED)){
+        	
             throw new VetoDragException();
+        	
         }
         else if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
             throw new VetoDragException();
@@ -183,7 +185,10 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
             throw new VetoDragException();
         }
         else if((trDragController.getDraggableTable().getAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
-            throw new VetoDragException();
+        	Widget w = trDragController.getDraggableTable().getWidget(0, 0);
+        	if(trDragController.getDraggableTable().getWidget(0, 0) instanceof MeasureLabel){
+        	throw new VetoDragException();
+        	}
         }
         else if(trDragController.getDraggableTable() == flexTable){
             throw new VetoDragException();
