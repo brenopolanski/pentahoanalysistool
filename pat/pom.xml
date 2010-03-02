@@ -18,7 +18,7 @@
                 <gwt.output.directory>${basedir}/target/gwt</gwt.output.directory>
                 <gwtVersion>1.7.1</gwtVersion>
                 <spring.version>2.5.6</spring.version>
-                <spring.security.version>2.0.4</spring.security.version>
+                <spring.security.version>2.0.5.RELEASE</spring.security.version>
                 <hibernate.version>3.3.1.GA</hibernate.version>
                 <maven.test.output>${gwt.output.directory}/WEB-INF/test-classes</maven.test.output>
         </properties>
@@ -694,6 +694,12 @@
                         <groupId>xpp3</groupId>
                         <artifactId>xpp3</artifactId>
                         <version>1.1.4c</version>
+                </dependency>
+                <!-- maybe only necessary in the biserver plugin version -->
+                <dependency>
+                	<groupId>org.slf4j</groupId>
+                	<artifactId>slf4j-api</artifactId>
+                	<version>1.5.10</version>
                 </dependency>
         </dependencies>
 <distributionManagement>

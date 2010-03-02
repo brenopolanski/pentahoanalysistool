@@ -19,7 +19,7 @@
 		<gwt.output.directory>${pat.plugin.output.dir}/resources</gwt.output.directory>
 		<gwtVersion>1.7.1</gwtVersion>
 		<spring.version>2.5.6</spring.version>
-		<spring.security.version>2.0.4</spring.security.version>
+		<spring.security.version>2.0.5.RELEASE</spring.security.version>
 		<hibernate.version>3.3.1.GA</hibernate.version>
 		<maven.test.output>${gwt.output.directory}/WEB-INF/test-classes</maven.test.output>
 		<lib.output.dir>${pat.plugin.output.dir}/lib/</lib.output.dir>
@@ -238,12 +238,6 @@
 								<!-- Spring modules -->
 								<artifactItem>
 									<groupId>org.springframework</groupId>
-									<artifactId>spring-core</artifactId>
-									<version>${spring.version}</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.springframework</groupId>
 									<artifactId>spring-web</artifactId>
 									<version>${spring.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
@@ -257,13 +251,6 @@
 								<artifactItem>
 									<groupId>org.springframework</groupId>
 									<artifactId>spring-context-support</artifactId>
-									<version>${spring.version}</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-
-								<artifactItem>
-									<groupId>org.springframework</groupId>
-									<artifactId>spring-beans</artifactId>
 									<version>${spring.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
@@ -303,21 +290,35 @@
 									<version>${spring.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
+								<!--
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-core</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-beans</artifactId>
+									<version>${spring.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+							    <artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-taglibs</artifactId>
+									<version>${spring.security.version}</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
 								<artifactItem>
 									<groupId>org.springframework.security</groupId>
 									<artifactId>spring-security-core-tiger</artifactId>
 									<version>${spring.security.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
+								-->
 								<artifactItem>
 									<groupId>org.springframework.security</groupId>
 									<artifactId>spring-security-core</artifactId>
-									<version>${spring.security.version}</version>
-									<outputDirectory>${lib.output.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.springframework.security</groupId>
-									<artifactId>spring-security-taglibs</artifactId>
 									<version>${spring.security.version}</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
