@@ -171,8 +171,7 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
     public void onPreviewDrop(final DragContext context) throws VetoDragException {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
         super.onPreviewDrop(context);
-        
-        if(flexTable.getWidget(TARGETROW, 0) instanceof MeasureLabel && ((MeasureLabel)flexTable.getWidget(TARGETROW, 0)).getType().equals(MeasureLabel.LabelType.MEASURE) 
+                if(flexTable.getWidget(TARGETROW, 0) instanceof MeasureLabel && ((MeasureLabel)flexTable.getWidget(TARGETROW, 0)).getType().equals(MeasureLabel.LabelType.MEASURE) 
                 && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis()) && !flexTable.getAxis().equals(IAxis.UNUSED)){
         	
             throw new VetoDragException();
@@ -185,8 +184,7 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
             throw new VetoDragException();
         }
         else if((trDragController.getDraggableTable().getAxis().equals(IAxis.UNUSED) && !flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
-        	Widget w = trDragController.getDraggableTable().getWidget(0, 0);
-        	if(trDragController.getDraggableTable().getWidget(0, 0) instanceof MeasureLabel){
+        	if(trDragController.getDraggableTable().getWidget(0, 0) instanceof MeasureLabel && ((MeasureLabel)trDragController.getDraggableTable().getWidget(0, 0)).getType().equals(MeasureLabel.LabelType.MEASURE)){
         	throw new VetoDragException();
         	}
         }
