@@ -103,7 +103,7 @@ public class PatSolutionFile {
     public String toXml() {
         final XStream xstream = new XStream();
         xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-        xstream.alias("pav", PatSolutionFile.class); //$NON-NLS-1$
+        //xstream.alias("pav", PatSolutionFile.class); //$NON-NLS-1$
         
         return xstream.toXML(this);
     }
@@ -111,7 +111,7 @@ public class PatSolutionFile {
     public static PatSolutionFile convertDocument(Document doc) {
         final XStream xstream = new XStream();
         xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-        xstream.alias("pav", PatSolutionFile.class); //$NON-NLS-1$
+//        xstream.alias("pav", PatSolutionFile.class); //$NON-NLS-1$
         
         Object oQuery = xstream.fromXML(doc.asXML());
         if (oQuery instanceof PatSolutionFile) {

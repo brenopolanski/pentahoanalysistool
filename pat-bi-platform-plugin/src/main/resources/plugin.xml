@@ -32,7 +32,8 @@
 	
 	<lifecycle-listener class="org.pentaho.pat.plugin.PatLifeCycleListener" />
 
-
+	<bean id="schemaupload" class="org.pentaho.pat.plugin.PatSchemaUploader" />
+	
 	<content-type type="xpav" mime-type="text/html">
 		<title>Pentaho Analysis View</title>
 		<description>Pentaho analysis view definition file</description>
