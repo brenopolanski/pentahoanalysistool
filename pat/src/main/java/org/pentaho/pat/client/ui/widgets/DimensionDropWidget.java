@@ -165,7 +165,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             int location = -1;
             // If the dimension drop widget contains a measure grid, add it to the measure grid.
             if(horizontal){
-            	for (int i = 0; i < dimensionTable.getRowCount(); i++) {
+            	for (int i = 0; i < dimensionTable.getCellCount(0); i++) {
                     if (dimensionTable.getWidget(0, i) instanceof MeasureGrid) {
                         location = i;
                         break;
