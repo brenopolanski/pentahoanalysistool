@@ -208,10 +208,20 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
                 } else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query)
                         && currentAxis.equals(targetAxis) && sender instanceof MeasureGrid) {
                     MeasureGrid mGrid = TableUtil.cloneMeasureGrid((MeasureGrid) sender);
+                    if(mGrid.getHorizontal()){
+                        for (int i = 0; i < mGrid.getRows().getCellCount(0); i++) {
+                            MeasureLabel measureLabel = ((MeasureLabel) mGrid.getRows().getWidget(0, i));
+                            addRow(measureLabel);
+
+                        }
+                    	
+                    }
+                    else{
                     for (int i = 0; i < mGrid.getRows().getRowCount(); i++) {
                         MeasureLabel measureLabel = ((MeasureLabel) mGrid.getRows().getWidget(i, 0));
                         addRow(measureLabel);
 
+                    }
                     }
                     WidgetHelper.revalidate(MeasureGrid.this);
                 }
