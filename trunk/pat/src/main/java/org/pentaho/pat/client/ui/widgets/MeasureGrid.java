@@ -200,7 +200,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
                 else if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query)
                         && currentAxis.equals(targetAxis) && sender instanceof MeasureLabel
-                        && ((MeasureLabel) sender).getType().equals(MeasureLabel.LabelType.MEASURE)) {
+                        && ((MeasureLabel) sender).getType().equals(MeasureLabel.LabelType.MEASURE) && Pat.getMeasuresAxis().equals(getCurrentAxis())) {
                     MeasureLabel measureLabel = TableUtil.cloneMeasureLabel((MeasureLabel) sender);
                     addRow(measureLabel);
 
