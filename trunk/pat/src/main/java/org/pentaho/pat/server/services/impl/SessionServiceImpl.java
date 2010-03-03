@@ -76,15 +76,15 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
 
         return generatedId;
     }
-    
+
     public void bootstrapSession(final String userId, final String sessionId) throws OlapException {
-            this.validateSession(userId, sessionId);
-            final List<SavedConnection> savedConnections = getConnections(userId);
-            for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
-                if (savedConnections.get(cpt).isConnectOnStartup()) {
-                    connect(userId, sessionId, savedConnections.get(cpt));
-                }
+        this.validateSession(userId, sessionId);
+        final List<SavedConnection> savedConnections = getConnections(userId);
+        for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
+            if (savedConnections.get(cpt).isConnectOnStartup()) {
+                connect(userId, sessionId, savedConnections.get(cpt));
             }
+        }
     }
 
     public void releaseSession(final String userId, final String sessionId) {
@@ -229,8 +229,8 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
             Scenario scenario = connection.createScenario();
             connection.setScenario(scenario);
         }
-        
-        
+
+
     }
 
     public String createNewScenario(final String userId, final String sessionId, final String connectionId) throws OlapException{
@@ -328,19 +328,23 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
     public void saveConnection(final String userId, final SavedConnection connection) {
         this.validateUser(userId);
         final User user = this.userManager.getUser(userId);
-        Iterator<SavedConnection> iter = user.getSavedConnections().iterator();
-        while (iter.hasNext()) {
-            SavedConnection sc = iter.next();
-            if (sc.getId().equals(connection.getId())) {
-                user.getSavedConnections().remove(sc);
-                this.userManager.updateUser(user);
-                // this is necessary due to a hibernate cache error i think (paul)
-                connection.setId(UUID.randomUUID().toString());
-                if (connection.getType().equals(ConnectionType.MONDRIAN) && (connection.getSchemaData() == null || connection.getSchemaData().length() == 0)) {
-                    connection.setSchemaData(sc.getSchemaData());
-                }
-            }
+        //        Iterator<SavedConnection> iter = user.getSavedConnections().iterator();
+        if ( user.getSavedConnections().contains(connection)) {
+            user.getSavedConnections().remove(connection);
         }
+        //        
+        //        while (iter.hasNext()) {
+        //            SavedConnection sc = iter.next();
+        //            if (sc.getId().equals(connection.getId())) {
+        //                user.getSavedConnections().remove(sc);
+        ////                this.userManager.updateUser(user);
+        //                // this is necessary due to a hibernate cache error i think (paul)
+        connection.setId(UUID.randomUUID().toString());
+        //                if (connection.getType().equals(ConnectionType.MONDRIAN) && (connection.getSchemaData() == null || connection.getSchemaData().length() == 0)) {
+        //                    connection.setSchemaData(sc.getSchemaData());
+        //                }
+        //            }
+        //        }
         user.getSavedConnections().add(connection);
         this.userManager.updateUser(user);
     }
