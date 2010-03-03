@@ -206,6 +206,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                     driverListBox.setSelectedIndex(i);
             }
         }
+        schemaData = cc.getSchemaData();
         startupCheckbox.setValue(cc.isConnectOnStartup());
         saveButton.setEnabled(true);
     }
