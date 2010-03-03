@@ -53,6 +53,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
@@ -67,13 +68,13 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
     private DiscoveryServlet discoveryBean = null;
     private PlatformServlet platformBean = null;
 
-    
+
     public void init() throws PluginLifecycleException {
 
     }
 
     public void loaded() throws PluginLifecycleException {
-
+        ClassLoader origContextClassloader = Thread.currentThread().getContextClassLoader();
         IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
         try {
             sessionBean = (SessionServlet) serviceManager.getServiceBean("gwt","session.rpc"); //$NON-NLS-1$
@@ -89,13 +90,14 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             if (pluginClassloader == null)
                 throw new ServiceException(Messages.getString("LifeCycleListener.NoPluginClassloader")); //$NON-NLS-1$
 
+            Thread.currentThread().setContextClassLoader(pluginClassloader);
             final URL contextUrl = pluginClassloader.getResource(PAT_APP_CONTEXT); 
             final URL patHibConfigUrl = pluginClassloader.getResource(PAT_HIBERNATE_CONFIG);    
             if(patHibConfigUrl == null)
                 throw new ServiceException("Can't find PAT Hibernate Config");
             else
                 LOG.debug(PAT_PLUGIN_NAME + ": PAT Hibernate Config:" + patHibConfigUrl.toString());
-            
+
             if ( contextUrl!= null ) {
                 String appContextUrl = contextUrl.toString();
                 final ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] { appContextUrl }, false);
@@ -105,13 +107,15 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
                 final Configuration pentahoHibConfig = new Configuration();
                 pentahoHibConfig.configure(new File(pentahoHibConfigPath));
-                
+
                 final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
                 patHibConfig.configure(patHibConfigUrl);
 
                 applicationContext.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
 
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
+                        factory.setBeanClassLoader(pluginClassloader);
+                        factory.setTempClassLoader(pluginClassloader);
 
                         BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");                        
                         dsBean.setDriverClassName(pentahoHibConfig.getProperty("connection.driver_class"));
@@ -123,22 +127,22 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
                         patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
                         patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
-                        
+
                         LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
                         lsfBean.setBeanClassLoader(pluginClassloader);
                         lsfBean.setConfigLocation(null);
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
                         lsfBean.setDataSource(dsBean);
-                        
+
                         Object sfBean = factory.getBean("sessionFactory");
                         sfBean = lsfBean.getObject();
                     }
 
                 });
-                
+                applicationContext.setClassLoader(pluginClassloader);
                 applicationContext.refresh();
-                Thread.currentThread().setContextClassLoader(pluginClassloader);
-                
+
+
                 sessionBean.setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
                 sessionBean.init();
@@ -168,13 +172,18 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             LOG.error(e.getMessage(),e);
         } catch (Exception e) {
             LOG.error(e.getMessage(),e);
+        } finally {
+            // reset the classloader of the current thread
+            if (origContextClassloader != null) {
+                Thread.currentThread().setContextClassLoader(origContextClassloader);
+            }
         }
     }
 
     public void unLoaded() throws PluginLifecycleException {
         // TODO implement plugin unload only when needed
     }
-    
+
     private void injectPentahoXmlaUrl() throws Exception {
         List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);
         String pentahoXmlaUrl = "";
