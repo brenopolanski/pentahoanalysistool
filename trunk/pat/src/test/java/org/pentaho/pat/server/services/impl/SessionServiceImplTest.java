@@ -158,15 +158,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
 	
 	public void testSavedConnections() throws Exception
 	{
-	    String[][] expectedConnectionsArray = new String[][] {
-                {"1111-1111-1111-1111","driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                {"2222-2222-2222-2222","driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-        };
-        String[][] expectedMembershipsArray = new String[][] {
-                {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
-                {"admin","2222-2222-2222-2222"} //$NON-NLS-1$ //$NON-NLS-2$
-        };
-        
+
 	    String userId = "admin"; //$NON-NLS-1$
 	    initTest();
 	    
@@ -189,6 +181,16 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         conn.setConnectOnStartup(false);
         this.sessionService.saveConnection(userId, conn);
         
+        // Due to the saveConnection code setting the id of the connection to a random UUID we need to set the compare array here with the 'right' id
+	    String[][] expectedConnectionsArray = new String[][] {
+                {"1111-1111-1111-1111","driver_name", "administrator_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                {conn.getId(),"driver_name", "my_connection", "password", "aced00057372002f6f72672e70656e7461686f2e7061742e7365727665722e646174612e706f6a6f2e436f6e6e656374696f6e5479706500000000000000010200014c00046e616d657400124c6a6176612f6c616e672f537472696e673b78707400084d6f6e647269616e", "url", "username"} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+        };
+        String[][] expectedMembershipsArray = new String[][] {
+                {"admin","1111-1111-1111-1111"}, //$NON-NLS-1$ //$NON-NLS-2$
+                {"admin",conn.getId()} //$NON-NLS-1$ //$NON-NLS-2$
+        };
+        
         String[][] currentConnectionsArray = runOnDatasource("select id, driverClassName, name, password, type, url, username from pat_connections"); //$NON-NLS-1$
         assertTwoDimensionArrayEquals(expectedConnectionsArray, currentConnectionsArray);
         
@@ -201,7 +203,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         assertEquals(connSize+1, currentConnections.size());
         
         // Validate it returns the right one.
-        SavedConnection savedConn = this.sessionService.getConnection(userId, "2222-2222-2222-2222"); //$NON-NLS-1$
+        SavedConnection savedConn = this.sessionService.getConnection(userId, conn.getId()); //$NON-NLS-1$
         assertEquals(conn.getDriverClassName(), savedConn.getDriverClassName());
         assertEquals(conn.getName(), savedConn.getName());
         assertEquals(conn.getPassword(), savedConn.getPassword());
@@ -212,7 +214,7 @@ public class SessionServiceImplTest extends AbstractServiceTest {
         
         // Delete and test
         this.sessionService.deleteConnection(userId, savedConn.getId());
-        assertNull(this.sessionService.getConnection(userId, "2222-2222-2222-2222")); //$NON-NLS-1$
+        assertNull(this.sessionService.getConnection(userId, conn.getId())); //$NON-NLS-1$
         
         // Close this session.
         this.sessionService.releaseSession(userId, sessionId); 
