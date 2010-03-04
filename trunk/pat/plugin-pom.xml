@@ -422,6 +422,9 @@
 									<copy todir="${gwt.output.directory}"> <fileset
 									dir="${basedir}/target/${project.artifactId}-${project.version}"
 									/> </copy>
+									<zip destfile="target/${project.artifactId}-plugin-gwt-${project.version}.zip">
+									<zipfileset dir="target/pat-plugin"/>
+									</zip>
 								
 							</tasks>
 						</configuration>
