@@ -20,7 +20,16 @@ REM -----------------------
 REM - Run the application -
 REM -----------------------
 :startApp
-FOR %%b IN (sampledata,hibernate) DO call :runCommand %%b 
+REM -----------------------
+REM SAMPLEDATA + HIBERNATE
+REM -----------------------
+
+FOR %%b IN (sampledata,hibernate) DO call :runCommand %%b
+
+REM -----------------------
+REM  WITH FOODMART
+REM -----------------------
+REM FOR %%b IN (sampledata,hibernate,foodmart) DO call :runCommand %%b
 GOTO end
 
 :runCommand

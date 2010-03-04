@@ -10,13 +10,9 @@ cd $DIR_REL
 DIR=`pwd`
 cd -
 
-. "$DIR/set-pentaho-java.sh"
+. "$DIR/set-java.sh"
 
-if [ -d "$DIR/../jre" ]; then
-  setPentahoJava "$DIR/../jre"
-else 
-  setPentahoJava
-fi
+  setJava
 
 #---------------------------------#
 # dynamically build the classpath #
@@ -28,6 +24,9 @@ do
 done
 echo "classpath is $THE_CLASSPATH"
 
-"$_PENTAHO_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/sampledata" -user "SA" -password "" 
-"$_PENTAHO_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/hibernate" -user "SA" -password ""
-"$_PENTAHO_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/quartz" -user "sa" -password "" 
+"$_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/sampledata" -user "SA" -password "" 
+"$_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/hibernate" -user "SA" -password ""
+
+# -----------------------------
+# FOODMART SHUTDOWN
+# "$_JAVA" -cp $THE_CLASSPATH org.hsqldb.util.ShutdownServer -url "jdbc:hsqldb:hsql://localhost/foodmart" -user "sa" -password "" 
