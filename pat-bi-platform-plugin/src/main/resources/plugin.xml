@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin title="PAT Plugin" loader="overriding">
+
+	<overlays>
+		<overlay id="startup.patAnalysis" resourcebundle="../content/pat-res/patplugin.properties">
+			<overlay id="startup.patAnalysis">
+				<toolbar id="mainToolbar">
+					<toolbarbutton id="openPat" image="content/pat-res/pat-menu-icon.gif"
+						onclick="mainToolbarHandler.openUrl('PAT','PAT','content/pat')"
+						tooltiptext="${pat-plugin.tooltip}" insertafter="newAnalysisButton" />
+				</toolbar>
+			</overlay>
+		</overlay>
+		
+		<overlay id="launch" resourcebundle="content/pat-plugin/resources/patplugin.properties">
+		<button id="patButton" image="content/pat-res/pat-menu-icon.gif" 
+						command="openURL('PAT','PAT','content/pat')"
+						label="${pat-plugin.tooltip}" />
+		</overlay>
+	</overlays>
+
+	<menu-items>
+		<menu-item id="new-pat" anchor="file-new-submenu" label="New PAT Analysis"
+			command="content/pat" type="MENU_ITEM" how="LAST_CHILD" />
+	</menu-items>
+
+	<webservice id="session.rpc" type="gwt" class="org.pentaho.pat.server.servlet.SessionServlet" />
+	<webservice id="query.rpc" type="gwt" class="org.pentaho.pat.server.servlet.QueryServlet" />
+	<webservice id="discovery.rpc" type="gwt" class="org.pentaho.pat.server.servlet.DiscoveryServlet" />
+	<webservice id="platform.rpc" type="gwt" class="org.pentaho.pat.server.servlet.PlatformServlet" />
+	
+	<lifecycle-listener class="org.pentaho.pat.plugin.PatLifeCycleListener" />
+
+	<bean id="schemaupload" class="org.pentaho.pat.plugin.PatSchemaUploader" />
+	
+	<content-type type="xpav" mime-type="text/html">
+		<title>Pentaho Analysis View</title>
+		<description>Pentaho analysis view definition file</description>
+		<icon-url>content/pat-res/pat-icon.png</icon-url>
+		<meta-provider>org.pentaho.pat.plugin.PatContentTypeMetaProvider</meta-provider>
+		<operations>
+			<operation>
+				<id>RUN</id>
+				<command>content/pat?solution={solution}&amp;path={path}&amp;action={name}&amp;MODE=BISERVERPUC</command>
+			</operation>
+			<operation>
+        		<id>NEWWINDOW</id>
+        		<command>content/pat?solution={solution}&amp;path={path}&amp;action={name}&amp;MODE=ONECUBE</command>
+        	</operation>        		
+		</operations>
+	</content-type>
+
+	<content-generator id="pat" title="Pentaho Analysis Tool" type="xpav" class="org.pentaho.pat.plugin.PatContentGenerator" />
+
+	<static-paths>
+		<static-path url="/pat-res" localFolder="resources" />
+	</static-paths>
+
+
+</plugin>
