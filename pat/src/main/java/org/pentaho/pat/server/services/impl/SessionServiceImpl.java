@@ -328,23 +328,11 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
     public void saveConnection(final String userId, final SavedConnection connection) {
         this.validateUser(userId);
         final User user = this.userManager.getUser(userId);
-        //        Iterator<SavedConnection> iter = user.getSavedConnections().iterator();
         if ( user.getSavedConnections().contains(connection)) {
             user.getSavedConnections().remove(connection);
+            connection.setId(UUID.randomUUID().toString());
         }
-        //        
-        //        while (iter.hasNext()) {
-        //            SavedConnection sc = iter.next();
-        //            if (sc.getId().equals(connection.getId())) {
-        //                user.getSavedConnections().remove(sc);
-        ////                this.userManager.updateUser(user);
-        //                // this is necessary due to a hibernate cache error i think (paul)
-        connection.setId(UUID.randomUUID().toString());
-        //                if (connection.getType().equals(ConnectionType.MONDRIAN) && (connection.getSchemaData() == null || connection.getSchemaData().length() == 0)) {
-        //                    connection.setSchemaData(sc.getSchemaData());
-        //                }
-        //            }
-        //        }
+
         user.getSavedConnections().add(connection);
         this.userManager.updateUser(user);
     }
