@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.pentaho.pat</groupId>
+  <artifactId>pat-bi-platform-plugin-assembly</artifactId>
+  <packaging>pom</packaging>
+  <name>PAT-Plugin Assembly</name>
+  <version>0.6-SNAPSHOT</version>
+  <url>http://code.google.com/p/pentahoanalysistool/</url>
+  <build>
+  <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.pentaho</groupId>
+									<artifactId>pat-plugin-gwt</artifactId>
+									<version>${project.version}</version>
+									<type>zip</type>
+									<outputDirectory>target/</outputDirectory>
+								</artifactItem>
+									<artifactItem>
+									<groupId>org.pentaho</groupId>
+									<artifactId>pat-plugin-platform</artifactId>
+									<version>${project.version}</version>
+									<type>zip</type>
+									<outputDirectory>target/</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+							<!-- other configurations here -->
+						</configuration>
+
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<id>copy-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<unzip dest="target/zipsource/pat-plugin">
+    								<fileset dir="target/">
+        								<include name="*.zip"/>
+    								</fileset>
+								</unzip>
+								<copy todir="target/zipsource/pat-plugin"> 
+									<fileset dir="${basedir}/custom/pat-plugin/" /> 
+								</copy>
+								<zip destfile="target/pat-plugin-${project.version}.zip">
+									<zipfileset dir="target/zipsource"/>
+								</zip>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+  </plugins>
+  </build>
+</project>
