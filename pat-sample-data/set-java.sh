@@ -15,6 +15,7 @@ setJava() {
     _JAVA="$JAVA_HOME"/bin/$__LAUNCHER
   elif [ -n "$JRE_HOME" ]; then
     echo "DEBUG: Using JRE_HOME"
+    _JAVA_HOME="$JRE_HOME"
     _JAVA="$JRE_HOME"/bin/$__LAUNCHER
   else
     echo "WARNING: Using java from path"
