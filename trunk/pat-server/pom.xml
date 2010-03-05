@@ -71,6 +71,10 @@
 								<copy todir="target/stage/data/">
 									<fileset dir="${basedir}/custom/data/" />
 								</copy>
+								
+								<copy todir="target/dist/pat-server/">
+									<fileset dir="${basedir}/scripts/" />
+								</copy>
 								<copy todir="target/dist/pat-server/tomcat">
 									<fileset dir="target/stage/tomcat/${tomcat.version}" />
 								</copy>
