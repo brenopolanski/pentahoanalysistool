@@ -7,6 +7,7 @@ import java.util.Map;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ChartPanel;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -89,11 +90,12 @@ public class PieChartType {
                 slice.addChartClickHandler(new ChartClickHandler() {
 
                     public void onClick(final ChartClickEvent event) {
-
+                        LogoPanel.spinWheel(true);
                         ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
                                 DrillType.POSITION, ((MemberCell) cell[row]), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
+                                        LogoPanel.spinWheel(false);
                                         MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
                                                 .getInstance().failedDrill(arg0.getLocalizedMessage()));
                                     }
@@ -103,7 +105,7 @@ public class PieChartType {
                                                 Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 
                                                     public void onFailure(Throwable arg0) {
-
+                                                        LogoPanel.spinWheel(false);
                                                         MessageBox.alert(ConstantFactory.getInstance().error(),
                                                                 MessageFactory.getInstance().failedQuery(
                                                                         arg0.getLocalizedMessage()));
@@ -111,6 +113,7 @@ public class PieChartType {
                                                     }
 
                                                     public void onSuccess(CellDataSet arg0) {
+                                                        LogoPanel.spinWheel(false);
                                                         GlobalConnectionFactory
                                                                 .getQueryInstance()
                                                                 .getQueryListeners()
