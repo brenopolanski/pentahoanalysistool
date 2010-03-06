@@ -34,6 +34,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -41,6 +42,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.core.client.GWT;
@@ -61,7 +63,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class PropertiesPanel extends LayoutComposite {
+public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 	private final ToolButton exportButton;
 
@@ -74,6 +76,8 @@ public class PropertiesPanel extends LayoutComposite {
 	private final ToolButton layoutMenuButton;
 	
 	private final ToolButton drillMenuButton;
+	
+	private final String queryId;
 	
     private class LayoutCommand implements Command {
 
@@ -143,6 +147,10 @@ public class PropertiesPanel extends LayoutComposite {
     public PropertiesPanel(final DataPanel dPanel, PanelUtil.PanelType pType) {
         super();
         this.dataPanel = dPanel;
+        this.queryId = Pat.getCurrQuery();
+        
+        GlobalConnectionFactory.getQueryInstance().addQueryListener(this);
+        
         final LayoutPanel rootPanel = getLayoutPanel();
 
         final ScrollLayoutPanel mainPanel = new ScrollLayoutPanel();
@@ -158,19 +166,12 @@ public class PropertiesPanel extends LayoutComposite {
         curQuery.setName(FORM_NAME_QUERY);
         curQuery.setValue(Pat.getCurrQuery());
         formPanel.add(curQuery);
-
-
+        
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-            	exportButton.setEnabled(true);
-            	mdxButton.setEnabled(true);
-            	hideBlanksButton.setEnabled(true);
-            	pivotButton.setEnabled(true);
-            	layoutMenuButton.setEnabled(true);
-            	drillMenuButton.setEnabled(true);
-                Pat.executeQuery(PropertiesPanel.this, Pat.getCurrQuery());
+                Pat.executeQuery(PropertiesPanel.this, queryId);
             }
 
         });
@@ -191,7 +192,7 @@ public class PropertiesPanel extends LayoutComposite {
         mdxButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), Pat.getCurrQuery(),
+                ServiceFactory.getQueryInstance().getMdxForQuery(Pat.getSessionID(), queryId,
                         new AsyncCallback<String>() {
 
                     public void onFailure(final Throwable arg0) {
@@ -257,7 +258,7 @@ public class PropertiesPanel extends LayoutComposite {
 
             public void onClick(final ClickEvent arg0) {
 
-                ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), Pat.getCurrQuery(),
+                ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), queryId,
                         hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
@@ -274,7 +275,7 @@ public class PropertiesPanel extends LayoutComposite {
                             hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
                         }
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                                PropertiesPanel.this, queryId, arg0);
                     }
 
                 });
@@ -292,7 +293,7 @@ public class PropertiesPanel extends LayoutComposite {
 
             public void onClick(final ClickEvent arg0) {
 
-                ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
+                ServiceFactory.getQueryInstance().alterCell(queryId, Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -300,7 +301,7 @@ public class PropertiesPanel extends LayoutComposite {
                     }
 
                     public void onSuccess(CellDataSet arg0) {
-                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
+                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), queryId, new AsyncCallback<CellDataSet>(){
 
                             public void onFailure(Throwable arg0) {
                                 // TODO Auto-generated method stub
@@ -309,7 +310,7 @@ public class PropertiesPanel extends LayoutComposite {
 
                             public void onSuccess(CellDataSet arg0) {
                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                                        PropertiesPanel.this, queryId, arg0);
                             }
 
                         });
@@ -335,7 +336,7 @@ public class PropertiesPanel extends LayoutComposite {
         pivotButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), Pat.getCurrQuery(),
+                ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), queryId,
                         new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
@@ -347,9 +348,9 @@ public class PropertiesPanel extends LayoutComposite {
                     public void onSuccess(final CellDataSet arg0) {
 
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                PropertiesPanel.this, Pat.getCurrQuery(), arg0);
+                                PropertiesPanel.this, queryId, arg0);
                         
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryPivoted(PropertiesPanel.this, Pat.getCurrQuery());
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryPivoted(PropertiesPanel.this, queryId);
 
                     }
 
@@ -400,5 +401,29 @@ public class PropertiesPanel extends LayoutComposite {
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
 
+    }
+
+
+    public void onQueryChange(Widget sender, int sourceRow, boolean isSourceRow, IAxis sourceAxis, IAxis targetAxis) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void onQueryExecuted(String queryId, CellDataSet matrix) {
+
+        if(queryId == this.queryId) {
+            exportButton.setEnabled(true);
+            mdxButton.setEnabled(true);
+            hideBlanksButton.setEnabled(true);
+            pivotButton.setEnabled(true);
+            layoutMenuButton.setEnabled(true);
+            drillMenuButton.setEnabled(true);
+        }
+
+    }
+
+    public void onQueryPivoted(String queryId) {
+        // TODO Auto-generated method stub
+        
     }
 }

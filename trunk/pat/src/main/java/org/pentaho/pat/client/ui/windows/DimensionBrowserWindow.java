@@ -100,7 +100,7 @@ public class DimensionBrowserWindow extends WindowPanel {
             public void onClick(final ClickEvent arg0) {
 
                 updateQuery();
-                DimensionBrowserWindow.this.hide();
+                DBW.hide();
             }
 
         });
@@ -108,7 +108,7 @@ public class DimensionBrowserWindow extends WindowPanel {
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                DimensionBrowserWindow.this.hide();
+                DBW.hide();
             }
         });
         winContentpanel.add(buttons);
@@ -133,8 +133,7 @@ public class DimensionBrowserWindow extends WindowPanel {
                     public void onSuccess(final CellDataSet arg0) {
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 DimensionBrowserWindow.this, Pat.getCurrQuery(), arg0);
-
-                        DimensionBrowserWindow.this.hide();
+                        DBW.hide();
                     }
 
                 });
