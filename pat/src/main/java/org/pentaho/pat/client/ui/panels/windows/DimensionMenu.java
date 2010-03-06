@@ -539,7 +539,7 @@ public class DimensionMenu extends LayoutComposite {
         TreeItem treeItem = currentTreeItem;
         final List<String> pathList = new ArrayList<String>();
         pathList.add(treeItem.getText());
-        while (treeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
+        while (treeItem.getParentItem() != null && treeItem.getParentItem().getWidget() instanceof MemberSelectionLabel) {
             treeItem = treeItem.getParentItem();
             pathList.add(0, ((MemberSelectionLabel) treeItem.getWidget()).getText());
         }
