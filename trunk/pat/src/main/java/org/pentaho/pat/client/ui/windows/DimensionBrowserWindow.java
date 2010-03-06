@@ -98,8 +98,8 @@ public class DimensionBrowserWindow extends WindowPanel {
         updateQueryButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-
-                updateQuery();
+                // No automatic query execution for now
+                // updateQuery();
                 DBW.hide();
             }
 
