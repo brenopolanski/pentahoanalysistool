@@ -131,12 +131,12 @@ public class MemberSelectionLabel extends HorizontalPanel {
         case Event.ONCONTEXTMENU:
             break;
         case Event.ONCLICK:
-            final SelectionModeMenu test = new SelectionModeMenu();
+            final SelectionModeMenu selectionMenu = new SelectionModeMenu();
             // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
-            test.showContextMenu(event, this);
-            test.setPopupPositionAndShow(new PositionCallback() {
+            selectionMenu.showContextMenu(event, this);
+            selectionMenu.setPopupPositionAndShow(new PositionCallback() {
                 public void setPosition(final int offsetWidth, final int offsetHeight) {
-                    test.setPopupPosition(event.getClientX(), event.getClientY());
+                    selectionMenu.setPopupPosition(event.getClientX(), event.getClientY());
                 }
             });
         default:
