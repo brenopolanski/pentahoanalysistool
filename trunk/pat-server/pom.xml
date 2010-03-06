@@ -85,11 +85,13 @@
 								<copy todir="target/dist/pat-server/data">
 									<fileset dir="target/stage/data" />
 								</copy>
-
+								
+								<chmod perm="a+x" dir="target/dist/pat-server/" includes="**/*.sh" />
 								<zip destfile="target/pat-server-${project.version}.zip">
 									<zipfileset dir="target/dist/" />
 								</zip>
-
+								<tar destfile="target/pat-server-${project.version}.tar.gz"
+           							basedir="target/dist/" compression="gzip" />
 							</tasks>
 						</configuration>
 					</execution>
