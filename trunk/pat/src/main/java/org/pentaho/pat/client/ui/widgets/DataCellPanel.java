@@ -2,6 +2,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -38,11 +39,12 @@ public class DataCellPanel extends HorizontalPanel {
         super.onBrowserEvent(event);
 
         if (DOM.eventGetType(event) == Event.ONDBLCLICK) {
+            LogoPanel.spinWheel(true);
             ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
                     Pat.getCurrDrillType(), pcm, new AsyncCallback<Object>() {
 
                         public void onFailure(final Throwable arg0) {
-                            // TODO Auto-generated method stub
+                            LogoPanel.spinWheel(false);
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .failedDrill(arg0.getLocalizedMessage()));
                         }
@@ -52,6 +54,7 @@ public class DataCellPanel extends HorizontalPanel {
                                     Pat.getCurrDrillType(), prm, new AsyncCallback<Object>() {
 
                                         public void onFailure(final Throwable arg0) {
+                                            LogoPanel.spinWheel(false);
                                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
                                                     .getInstance().failedDrill(arg0.getLocalizedMessage()));
 
@@ -62,6 +65,7 @@ public class DataCellPanel extends HorizontalPanel {
                                                     Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 
                                                         public void onFailure(final Throwable arg0) {
+                                                            LogoPanel.spinWheel(false);
                                                             MessageBox.error(ConstantFactory.getInstance().error(),
                                                                     MessageFactory.getInstance().failedQuery(
                                                                             arg0.getLocalizedMessage()));
@@ -69,6 +73,7 @@ public class DataCellPanel extends HorizontalPanel {
                                                         }
 
                                                         public void onSuccess(final CellDataSet arg0) {
+                                                            LogoPanel.spinWheel(false);
                                                             GlobalConnectionFactory.getQueryInstance()
                                                                     .getQueryListeners().fireQueryExecuted(
                                                                             DataCellPanel.this, Pat.getCurrQuery(),

@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
@@ -219,10 +220,12 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
                     public void onBrowserEvent(final Event event) {
                         if (DOM.eventGetType(event) == Event.ONCLICK) {
+                            LogoPanel.spinWheel(true);
                             ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
                                     Pat.getCurrDrillType(), MemberCell.this, new AsyncCallback<Object>() {
 
                                         public void onFailure(Throwable arg0) {
+                                            LogoPanel.spinWheel(false);
                                             MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
                                                     .getInstance().failedDrill(arg0.getLocalizedMessage()));
                                         }
@@ -232,7 +235,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                                                     Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 
                                                         public void onFailure(Throwable arg0) {
-
+                                                            LogoPanel.spinWheel(false);
                                                             MessageBox.alert(ConstantFactory.getInstance().error(),
                                                                     MessageFactory.getInstance().failedQuery(
                                                                             arg0.getLocalizedMessage()));
@@ -240,6 +243,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                                                         }
 
                                                         public void onSuccess(CellDataSet arg0) {
+                                                            LogoPanel.spinWheel(false);
                                                             GlobalConnectionFactory.getQueryInstance()
                                                                     .getQueryListeners().fireQueryExecuted(cellPanel,
                                                                             Pat.getCurrQuery(), arg0);
