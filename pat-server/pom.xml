@@ -9,6 +9,7 @@
 	<url>http://code.google.com/p/pentahoanalysistool/</url>
 	<properties>
 		<tomcat.version>apache-tomcat-6.0.24</tomcat.version>
+		<tomcat.source>target/stage/tomcat/</tomcat.source>
 	</properties>
 	<build>
 		<plugins>
@@ -76,7 +77,7 @@
 									<fileset dir="${basedir}/scripts/" />
 								</copy>
 								<copy todir="target/dist/pat-server/tomcat">
-									<fileset dir="target/stage/tomcat/${tomcat.version}" />
+									<fileset dir="${tomcat.source}${tomcat.version}" />
 								</copy>
 								<copy todir="target/dist/pat-server/tomcat/webapps/pat">
 									<fileset dir="target/stage/webapp" />
