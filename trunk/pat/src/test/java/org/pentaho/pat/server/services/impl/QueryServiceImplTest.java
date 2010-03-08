@@ -56,7 +56,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	public void testMoveDimensions() throws Exception 
 	{
 		String userId = "admin"; //$NON-NLS-1$
-		String expectedMDX = "SELECT*new_line*{} ON COLUMNS,*new_line*CrossJoin({}, {}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
+		String expectedMDX = "SELECT*new_line*{[Department].[All Departments]} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions]}, {[Region].[All Regions]}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		initTest();
 		
@@ -83,6 +83,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		assertEquals("Positions", query.getAxes().get(Axis.ROWS).getDimensions().get(0).getName()); //$NON-NLS-1$
 		assertEquals("Region", query.getAxes().get(Axis.ROWS).getDimensions().get(1).getName()); //$NON-NLS-1$
 		// Verify MDX
+		query.validate();
 		Writer writer = new StringWriter();
 		SelectNode node = query.getSelect();
 		node.unparse(new ParseTreeWriter(new PrintWriter(writer)));
