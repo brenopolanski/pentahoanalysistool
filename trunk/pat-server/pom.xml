@@ -91,7 +91,14 @@
 									<zipfileset dir="target/dist/" />
 								</zip>
 								<tar destfile="target/pat-server-${project.version}.tar.gz"
-           							basedir="target/dist/" compression="gzip" />
+           							longfile="gnu" compression="gzip" >
+      									<tarfileset dir="target/dist/" mode="755">
+        									<include name="**/*.sh" />
+      									</tarfileset>
+      									<tarfileset dir="target/dist">
+        									<exclude name="**/*.sh" />
+      									</tarfileset>
+           							</tar>
 							</tasks>
 						</configuration>
 					</execution>
