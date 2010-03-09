@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -73,7 +74,10 @@ public class CubeMenu extends LayoutComposite {
         cubeTree.setAnimationEnabled(true);
         cubeTree.addStyleName("pat-Tree"); //$NON-NLS-1$
 
-        baseLayoutPanel.add(cubeTree, new BoxLayoutData(FillStyle.BOTH));
+        ScrollLayoutPanel sp = new ScrollLayoutPanel(new BoxLayout());
+        sp.setAnimationEnabled(true);
+        sp.add(cubeTree, new BoxLayoutData(FillStyle.BOTH));
+        baseLayoutPanel.add(sp, new BoxLayoutData(FillStyle.BOTH));
 
         cubeTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 
@@ -92,7 +96,7 @@ public class CubeMenu extends LayoutComposite {
             }
 
         });
-
+        baseLayoutPanel.layout();
     }
 
     public Tree getCubeTree() {
