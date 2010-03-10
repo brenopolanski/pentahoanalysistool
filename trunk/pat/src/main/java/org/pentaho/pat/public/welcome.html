@@ -1,41 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>PAT Welcome Page</title>
-</head>
-<style type="text/css">
-body { font-family: "Arial"; font-size: 1.0em;}
-a { color: #006699; }
-h2 { font-family: "Arial"; font-size: 34px; color: #333; margin:0.5em 0; }
-p.caption { font-family: "Georgia"; font-size: 26px; color: #777; font-style: italic; font-weight: normal; margin-bottom: 0.5em; margin-top:0em; }
-h3 { font-family: "Arial"; font-size: 24px; color: #336699; margin-bottom:0.5em; }
-</style>
-<body>
-<h2>Welcome!</h2>
-<p class="caption">The PAT Analysis Tool is an Open Source OLAP Viewer that aims to give business users the ability to visualise their data in an easy to understand fashion.</p>
-<h3>News</h3>
-<p>Version 1.0 isn't too far away and we're constantly looking for Beta Testers, CSS Designers, Translators and Programmers, if you are interested in helping
-please get in <a href="http://groups.google.com/group/pentahoanalysistool-dev">contact</a>.
+    <head>
+        <title>Welcome</title>
+        <!-- YUI 2 Reset, Fonts, Grids -->
+        <link rel="stylesheet" href="reset-fonts-grids.css" type="text/css">
+        <!-- Blueprint CSS Typography -->
+        <link rel="stylesheet" href="typography.css" type="text/css">
+        <!-- Styles -->
 
-<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ao7G4RZcFv8&hl=en&fs=1"></param><param name="allowFullScreen" value="false"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ao7G4RZcFv8&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="false" width="425" height="344"></embed></object>
-<h3>Integrate</h3>
-<p>The PAT Analysis Tool also aims to be a framework that will run both standalone and integrated into a Web App, for example Pentaho BI Server with the ability
-to utilise the parent applications' data sources and security.</p>
-<h3>Resources</h3>
-We have a number of resources to help testers and end users:</p>
-<ul>
-<li><a href="http://code.google.com/p/pentahoanalysistool/" target="_blank">Google Code Project Page</a></li>
-<li><a href="http://groups.google.com/group/pentahoanalysistool-dev" target="_blank">Devloper Mailing List</a></li>
-<li><a href="http://groups.google.com/group/pentahoanalysistool-users" target="_blank">End User Mailing List</a></li>
-<li><a href="http://jira.pentaho.com/browse/PAT" target="_blank">JIRA Bug Tracker</a></li>
+        <link rel="stylesheet" href="styles.css" type="text/css">
+    </head>
+    <body>
+        <div id="doc3" class="yui-t6">
+            <!-- Header -->
+            <div id="hd" role="banner">
+            	<h1>PAT Analysis Tool</h1>
+            	<hr />
 
-<li><a href="http://212.227.135.127:8080/hudson/">Access to the latest Trunk build</a></li>
-<li>The PAT Blog</li>
-<li><a href="http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6" target="_blank">The PAT Wiki</a></li>
-<li><a href="http://www.twitter.com/PATOLAP">Follow PAT on Twitter</a></li>
-</ul>
-</div>
-</body>
+            </div>
+            <div id="bd" role="main">
+                <div id="yui-main">
+                    <div class="yui-b">
+                        <div class="yui-g">
+                            <!-- About -->
+                            <div id="about">The PAT Analysis Tool is an Open Source OLAP Viewer that aims to give business users the ability to visualise their data in an easy to understand fashion.</div>
+                            <hr />
+
+                        </div>
+                        <div id="latest" class="yui-g">
+                            <!-- Version -->
+                            <div id="version" class="yui-u first">
+                                <h2>What's New In 0.6?</h2>
+                                <ul>
+                                    <li>
+                                        <strong>Drilling</strong>
+
+                                        <span>Improved drilling with charts and cubes</span>
+                                    </li>
+                                    <li>
+                                        <strong>Export</strong>
+                                        <span>Ability to export to Excel</span>
+                                    </li>
+                                    <li>
+
+                                        <strong>Schema</strong>
+                                        <span>Schema Validation</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Video -->
+                            <div id="video" class="yui-u">
+                                <object width="500" height="385"><param name="movie" value="http://www.youtube.com/v/BbPDbSnykeM&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/BbPDbSnykeM&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="300" height="200"></embed></object>
+
+                            </div>
+                        </div>
+                        <hr/>
+                        <!-- News -->
+                        <div id="news" class="yui-g">
+                            <h3><img src="images/newspaper_24.jpg" alt="News" /> News</h3>
+                            <p class="small-bottom"><strong>5th of March, 2010</strong></p>
+
+                            <p>Version 1.0 isn't too far away and we're constantly looking for Beta Testers, CSS Designers, Translators and Programmers, if you are interested in helping please get in <a href="http://groups.google.com/group/pentahoanalysistool-dev">contact</a>.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="sidebar" class="yui-b">
+                    <h3><img src="images/hammer_24.jpg" alt="Integrate" /> Integrate</h3>
+
+                    <p>The PAT Analysis Tool also aims to be a framework that will run both standalone and integrated into a Web App, for example Pentaho BI Server with the ability to utilise the parent applications' data sources and security.</p>
+                    <hr />
+                    <h3><img src="images/pencil_24.jpg" alt="Resources" /> Resources</h3>
+                    <p>We have a number of resources to help testers and end users:</p>
+                    <ul>
+                        <li><a href="http://code.google.com/p/pentahoanalysistool/" target="_blank">Google Code Project Page</a></li>
+
+                        <li><a href="http://groups.google.com/group/pentahoanalysistool-dev" target="_blank">Devloper Mailing List</a></li>
+                        <li><a href="http://groups.google.com/group/pentahoanalysistool-users" target="_blank">End User Mailing List</a></li>
+                        <li><a href="http://jira.pentaho.com/browse/PAT" target="_blank">JIRA Bug Tracker</a></li>
+                        <li><a href="http://212.227.135.127:8080/hudson/">Access to the latest Trunk build</a></li>
+                        <li>The PAT Blog</li>
+                        <li><a href="http://code.google.com/p/pentahoanalysistool/wiki/StartPage?tm=6" target="_blank">The PAT Wiki</a></li>
+
+                        <li><a href="http://www.twitter.com/PATOLAP">Follow PAT on Twitter</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div id="ft" role="contentinfo"></div>
+        </div>
+    </body>
 </html>
-
