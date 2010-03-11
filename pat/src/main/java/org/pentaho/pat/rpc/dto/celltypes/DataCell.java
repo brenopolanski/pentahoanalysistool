@@ -21,8 +21,10 @@ import java.io.Serializable;
 import org.pentaho.pat.client.ui.widgets.DataCellPanel;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 
 /**
  * The Class CellInfo.
@@ -112,7 +114,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber);
 
         final Label cellLabel = new Label(getFormattedValue());
-
+        cellLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         cellPanel.add(cellLabel);
 
         cellPanel.setWidth("100%"); //$NON-NLS-1$

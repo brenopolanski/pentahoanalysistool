@@ -177,6 +177,9 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
             throw new VetoDragException();
         	
         }
+        else if(trDragController.getDraggableTable() == flexTable){
+                    throw new VetoDragException();
+               }
         else if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
             throw new VetoDragException();
         }
@@ -188,9 +191,7 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
         	throw new VetoDragException();
         	}
         }
-        else if(trDragController.getDraggableTable() == flexTable){
-            throw new VetoDragException();
-        }
+     
     }
 
 	/**

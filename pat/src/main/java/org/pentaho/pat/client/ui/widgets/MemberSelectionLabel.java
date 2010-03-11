@@ -61,7 +61,6 @@ public class MemberSelectionLabel extends HorizontalPanel {
         selectionImageBundle = (ISelectionModeImageBundle) GWT.create(ISelectionModeImageBundle.class);
 
         setStyleName("olap-MemberSelectionLabel"); //$NON-NLS-1$
-
         this.add(label);
     }
 

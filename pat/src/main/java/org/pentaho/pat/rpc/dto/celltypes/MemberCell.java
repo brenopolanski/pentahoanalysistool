@@ -26,20 +26,15 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
-import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -120,7 +115,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     }
 
     /**
-     *TODO JAVADOC
+     *Is the member expanded?.
      * 
      * @return the expanded
      */
@@ -130,7 +125,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
     /**
      * 
-     *TODO JAVADOC
+     *Set Expanded Flag.
      * 
      * @param expanded
      *            the expanded to set
@@ -140,7 +135,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     }
 
     /**
-     *TODO JAVADOC
+     *Set the Parent Member Variable.
      * 
      * @param parentMember
      */
@@ -155,7 +150,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     }
 
     /**
-     *TODO JAVADOC
+     * Set the cell's unique name. 
      * 
      * @param uniqueName
      */
@@ -170,7 +165,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     }
 
     /**
-     *TODO JAVADOC
+     * List the amount of children.
      * 
      * @param childMemberCount
      */
@@ -199,20 +194,10 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     @Override
     public HorizontalPanel getLabel() {
         final CellLabelPanel cellPanel = new CellLabelPanel(MemberCell.this);
-        /**
+        /*
          * NON IMAGE BUNDLE IMAGES TO GET AROUND AN IE BUG
          */
         if (this.getRawValue() != null) {
-
-//            final Image cellButton = new Image() {
-//                public void onBrowserEvent(final Event event) {
-//                    if (DOM.eventGetType(event) == Event.ONCLICK) {
-//                        DimensionBrowserWindow.displayDimension(Pat.getCurrQuery(), getParentDimension());
-//                    }
-//                }
-//            };
-
-//            cellButton.setUrl(GWT.getModuleBaseURL() + "dimbrowser.png"); //$NON-NLS-1$
 
             Image drillButton = null;
             if ((MemberCell.this).getChildMemberCount() > 0) {
@@ -267,46 +252,14 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
             }
             final Label cellLabel = new Label(getFormattedValue());
 
-//            cellLabel.addMouseOverHandler(new MouseOverHandler() {
-//
-//                public void onMouseOver(MouseOverEvent arg0) {
-//                    if (!getRawValue().equals("")) { //$NON-NLS-1$
-//                        cellButton.setVisible(true);
-//                    }
-//
-//                }
-//            });
-
-//            final Timer dimbrowserTimer = new Timer() {
-//                @Override
-//                public void run() {
-//                    cellButton.setVisible(false);
-//                }
-//            };
-
-//            cellLabel.addMouseOutHandler(new MouseOutHandler() {
-//
-//                public void onMouseOut(MouseOutEvent arg0) {
-//                    if (!getRawValue().equals("")) { //$NON-NLS-1$
-//                        dimbrowserTimer.schedule(800);
-//                    }
-//
-//                }
-//            });
 
             if (drillButton != null) {
                 cellPanel.add(drillButton);
             }
+            cellLabel.setWidth("100%");
             cellPanel.add(cellLabel);
-
+            
             cellPanel.setWidth("100%"); //$NON-NLS-1$
-
-//            cellButton.addStyleName(CELLBUTTON);
-//
-//            if (!getRawValue().equals("")) { //$NON-NLS-1$
-//                cellPanel.add(cellButton);
-//                cellButton.setVisible(false);
-//            }
         }
         return cellPanel;
     }
