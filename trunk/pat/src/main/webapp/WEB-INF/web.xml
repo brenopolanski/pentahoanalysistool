@@ -39,6 +39,10 @@
   <listener>
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
   </listener>
+  
+  <session-config>
+  	<session-timeout>20</session-timeout>
+  </session-config>
 
 <servlet id="jsp">
     <servlet-name>jsp</servlet-name>
