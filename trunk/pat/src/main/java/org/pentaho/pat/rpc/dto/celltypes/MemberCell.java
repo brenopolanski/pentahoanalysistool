@@ -256,9 +256,10 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
             if (drillButton != null) {
                 cellPanel.add(drillButton);
             }
+            cellLabel.setStyleName("pat-MemberCellLabel");
             cellLabel.setWidth("100%");
             cellPanel.add(cellLabel);
-            
+            cellPanel.setCellWidth(cellLabel, "100%");
             cellPanel.setWidth("100%"); //$NON-NLS-1$
         }
         return cellPanel;

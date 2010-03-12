@@ -27,16 +27,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Application;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets

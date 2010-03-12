@@ -401,11 +401,6 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     private void flexTableAddRecord(Widget sender, int row) {
-        // uncomment when widgets should be added horizontal instead of vertical
-        // if (horizontal) {
-        // dimensionTable.setWidget(0, row, sender);
-        // }
-        // else {
         dimensionTable.setWidget(row, 0, sender);
 
         dimensionTable.getCellFormatter().addStyleName(row, 0, "FlexTable-Cell"); //$NON-NLS-1$
@@ -420,11 +415,19 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
             dimensionTable.getCellFormatter().addStyleName(0, row, "FlexTable-Cell"); //$NON-NLS-1$
             dimensionTable.getCellFormatter().setStyleName(0, row, TABLE_DRAG_CELL);
             dimensionTable.getCellFormatter().setVerticalAlignment(0, row, HasVerticalAlignment.ALIGN_TOP);
+            dimensionTable.getCellFormatter().addStyleName(0, row, "pat-dropColEndCell");
+            if(row>0){
+            dimensionTable.getCellFormatter().removeStyleName(0, row-1, "pat-dropColEndCell");
+            }
         } else {
             dimensionTable.setWidget(row, 0, sender);
             dimensionTable.getCellFormatter().addStyleName(row, 0, "FlexTable-Cell"); //$NON-NLS-1$
             dimensionTable.getCellFormatter().setStyleName(row, 0, TABLE_DRAG_CELL);
             dimensionTable.getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
+            dimensionTable.getCellFormatter().addStyleName(row, 0, "pat-dropRowEndCell");
+            if(row>0){
+            dimensionTable.getCellFormatter().removeStyleName(row-1, 0, "pat-dropRowEndCell");
+            }
         }
 
         empty = false;

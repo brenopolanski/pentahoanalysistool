@@ -4,7 +4,18 @@
 	border: 0px;
 	
 }
-	
+
+.pat-dropColEndCell {
+  width: 100%;
+}
+
+.pat-dropRowEndCell {
+height: 100%;	
+}
+
+.pat-MemberCellLabel{
+	width: 100%;
+	}
 
 .pat-Tree .pat-TreeItem-wrapper {
   margin: 0px 0px 0px 20px;  // Indentation
@@ -36,9 +47,6 @@
 	}
 .pat-dragDimensionCell{
 	
-}
-.pat-dropRowEndCell {
-height: 100%;	
 }
 
 .pat-invalidDropTarget
@@ -131,9 +139,6 @@ width: 100%;
  height: 100px;
 }
 
-.dropEndCell {
-  width: 100%;
-}
 .dragDimension{
   border-collapse:collapse;
   border-width: 1px 1px 1px 1px;
