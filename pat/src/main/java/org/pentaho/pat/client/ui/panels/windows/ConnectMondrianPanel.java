@@ -252,7 +252,9 @@ public class ConnectMondrianPanel extends LayoutComposite {
      */
     private CubeConnection getCubeConnection() {
         final CubeConnection cubeConn = new CubeConnection(ConnectionType.Mondrian);
-        cubeConn.setId(idHidden.getValue());
+        if (idHidden != null && idHidden.getValue() != null && idHidden.getValue().length() > 0) {
+            cubeConn.setId(idHidden.getValue());
+        }
         cubeConn.setName(nameTextBox.getText());
         cubeConn.setDriverClassName(driverListBox.getItemText(driverListBox.getSelectedIndex()));
         cubeConn.setUrl(urlTextBox.getText());
