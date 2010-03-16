@@ -50,7 +50,10 @@ public class SaveWindow extends WindowPanel {
 
     private final static SaveWindow CBW = new SaveWindow();
 
-    
+
+    /**
+     * Crazy stuff, but apparently does things.
+     */
     public static native void display()
     /*-{
     if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
@@ -79,6 +82,9 @@ public class SaveWindow extends WindowPanel {
     }-*/;
 
     
+    /**
+     * Display the save window.
+     */
     @SuppressWarnings("unused")
     private static void displaySaveWindow() {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -88,6 +94,9 @@ public class SaveWindow extends WindowPanel {
         CBW.layout();
     }
 
+    /**
+     * Create the save window.
+     */
     public SaveWindow() {
         super(SAVE_TITLE);
 
@@ -97,6 +106,10 @@ public class SaveWindow extends WindowPanel {
         this.layout();
     }
 
+    /**
+     * Create the button bar.
+     * @return
+     */
     public LayoutPanel buttonBar() {
         final Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler() {

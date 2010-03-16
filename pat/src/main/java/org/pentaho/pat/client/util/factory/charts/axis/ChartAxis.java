@@ -1,12 +1,24 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.util.factory.charts.axis;
 
 import java.util.Map;
 
 import com.rednels.ofcgwt.client.model.axis.XAxis;
 import com.rednels.ofcgwt.client.model.axis.YAxis;
-
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class ChartAxis {
 
+	/**
+	 * Create YAxis.
+	 * @param chartOptions
+	 * @return
+	 */
     public YAxis createYAxis(Map<String, Object> chartOptions) {
         final YAxis ya = new YAxis();
         // ya.setSteps(16);
@@ -28,6 +40,11 @@ public class ChartAxis {
 
     }
 
+    /**
+     * Create Xaxis.
+     * @param chartOptions
+     * @return
+     */
     public XAxis createXAxis(Map<String, Object> chartOptions) {
         final XAxis xa = new XAxis();
         // xa.setSteps(16);

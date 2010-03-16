@@ -54,7 +54,7 @@ public class ChartOptionsWindow extends WindowPanel {
 
     /**
      * 
-     * Dislay the window.
+     * Display the window.
      * 
      * @param chartPanel
      * 

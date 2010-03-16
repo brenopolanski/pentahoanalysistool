@@ -1,7 +1,15 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.util.factory.charts.util;
 
 import org.gwtwidgets.client.style.Color;
 
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class ChartUtils {
 
     /**

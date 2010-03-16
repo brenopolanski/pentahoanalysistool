@@ -64,15 +64,26 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 
     private final LayoutPanel layoutPanel = getLayoutPanel();
 
+    /**
+     * Create an OLAPTable.
+     */
     public OlapTable() {
         super();
 
     }
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onLoad()
+     */
     @Override
     public void onLoad(){
         GlobalConnectionFactory.getQueryInstance().addQueryListener(
                 OlapTable.this);
     }
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onUnload()
+     */
     @Override
     public void onUnload(){
         GlobalConnectionFactory.getQueryInstance().removeQueryListener(

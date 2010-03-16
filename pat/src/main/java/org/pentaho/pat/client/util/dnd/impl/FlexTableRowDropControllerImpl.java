@@ -87,13 +87,8 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
+     * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropController#onDrop(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
     @Override
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
@@ -110,13 +105,8 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
+     * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropController#onEnter(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
     @Override
     public void onEnter(final DragContext context) {
         super.onEnter(context);
@@ -129,13 +119,8 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
+     * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropController#onLeave(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
     @Override
     public void onLeave(final DragContext context) {
         positioner.removeFromParent();
@@ -148,13 +133,8 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
+     * @see com.allen_sauer.gwt.dnd.client.drop.AbstractDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropController#onMove(com.allen_sauer.gwt.dnd.client.DragContext)
-	 */
     @Override
     public void onMove(final DragContext context) {
         super.onMove(context);

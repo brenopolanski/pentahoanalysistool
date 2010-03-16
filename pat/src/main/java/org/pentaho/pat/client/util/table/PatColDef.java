@@ -27,9 +27,9 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *TODO JAVADOC
+ * The PAT Column Definition.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class PatColDef<RowType, ColType> extends AbstractColumnDefinition<RowType, ColType> implements
@@ -46,22 +46,36 @@ public class PatColDef<RowType, ColType> extends AbstractColumnDefinition<RowTyp
         setHeader(0, header);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.gen2.table.client.AbstractColumnDefinition#setCellValue(java.lang.Object, java.lang.Object)
+     */
     @Override
     public void setCellValue(final RowType rowValue, final ColType cellValue) {
         // Ignore
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.gen2.table.client.AbstractColumnDefinition#getCellValue(java.lang.Object)
+     */
     @Override
     public ColType getCellValue(final RowType rowValue) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    /**
+     * 
+     */
     public HorizontalAlignmentConstant getHorizontalAlignment() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    /**
+     * 
+     */
     public void setHorizontalAlignment(final HorizontalAlignmentConstant align) {
         // TODO Auto-generated method stub
 

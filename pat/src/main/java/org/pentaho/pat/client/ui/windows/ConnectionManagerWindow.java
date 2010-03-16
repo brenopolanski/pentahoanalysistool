@@ -66,9 +66,16 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** A Tab Layout Panel. */
     private final static TabLayoutPanel TABPANEL = new TabLayoutPanel();
 
+    /**
+     * Close the tabs.
+     */
     public static void closeTabs() {
         closeTabs(true);
     }
+    /**
+     * Close the tabs, optional refresh.
+     * @param refresh
+     */
     public static void closeTabs(boolean refresh) {
         for (final int i = 0; i < TABPANEL.getWidgetCount();) {
             TABPANEL.remove(i);
@@ -78,10 +85,17 @@ public class ConnectionManagerWindow extends WindowPanel {
             refreshWindow();
     }
 
+    /**
+     * Display.
+     */
     public static void display() {
         closeTabs();
     }
 
+    /**
+     * Display.
+     * @param cc
+     */
     public static void display(final CubeConnection cc) {
         if (TABPANEL.getWidgetCount() == 0) {
         
@@ -100,6 +114,9 @@ public class ConnectionManagerWindow extends WindowPanel {
         }
     }
 
+    /**
+     * Show new connection.
+     */
     public static void showNewConnection() {
         if (TABPANEL.getWidgetCount() == 0) {
             connectMondrian = new ConnectMondrianPanel();

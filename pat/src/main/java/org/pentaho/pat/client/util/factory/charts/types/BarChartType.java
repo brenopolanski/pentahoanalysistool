@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.util.factory.charts.types;
 
 import java.util.ArrayList;
@@ -34,7 +37,11 @@ import com.rednels.ofcgwt.client.model.axis.YAxis;
 import com.rednels.ofcgwt.client.model.elements.BarChart;
 import com.rednels.ofcgwt.client.model.elements.BarChart.Bar;
 import com.rednels.ofcgwt.client.model.elements.BarChart.BarStyle;
-
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class BarChartType {
     /**
      * 

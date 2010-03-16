@@ -189,6 +189,10 @@ public class MemberSelectionLabel extends HorizontalPanel {
         setImage(selectionImage);
     }
 
+    /**
+     * Set the selection mode.
+     * @param mode
+     */
     public final void setSelectionMode(final String mode) {
         Image selectionImage = null;
         if ("MEMBER".equals(mode)) { //$NON-NLS-1$
@@ -216,10 +220,18 @@ public class MemberSelectionLabel extends HorizontalPanel {
         label.setText(text);
     }
 
+    /**
+     * Set the widgets dimension.
+     * @param dimension
+     */
     public void setDimension(final String dimension) {
         this.dimension = dimension;
     }
 
+    /**
+     * Return the dimension.
+     * @return
+     */
     public String getDimension() {
         return dimension;
     }

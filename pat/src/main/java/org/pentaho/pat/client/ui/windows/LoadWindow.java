@@ -50,6 +50,9 @@ public class LoadWindow extends WindowPanel {
 
     private final static LoadWindow CBW = new LoadWindow();
 
+    /**
+     * Display window.
+     */
     public static void display() {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         LOADMENUPANEL.loadSavedQueries();
@@ -57,6 +60,9 @@ public class LoadWindow extends WindowPanel {
         CBW.layout();
     }
 
+    /**
+     * Create the load window.
+     */
     public LoadWindow() {
         super(LOAD_TITLE);
 
@@ -66,6 +72,10 @@ public class LoadWindow extends WindowPanel {
         this.layout();
     }
 
+    /**
+     * Create the button bar.
+     * @return
+     */
     public LayoutPanel buttonBar() {
         final Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler() {

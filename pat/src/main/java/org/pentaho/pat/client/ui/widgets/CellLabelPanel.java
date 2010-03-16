@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
- *TODO JAVADOC
+ * Creates the panel for Cell Labels.
  * 
  * @author tom(at)wamonline.org.uk
  * 
@@ -39,6 +39,10 @@ public class CellLabelPanel extends HorizontalPanel {
 
     private final static String CELL_LABEL_PANEL = "pat-cellLabel"; //$NON-NLS-1$
     
+    /**
+     * Create the CellLabelPanel.
+     * @param memCell
+     */
     public CellLabelPanel(final MemberCell memCell) {
         super();
         this.memCell = memCell;
@@ -46,6 +50,10 @@ public class CellLabelPanel extends HorizontalPanel {
         this.setStyleName(CELL_LABEL_PANEL);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
+     */
     @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
@@ -66,7 +74,7 @@ public class CellLabelPanel extends HorizontalPanel {
     }
 
     /**
-     *TODO JAVADOC
+     * Return this panels member cell.
      * 
      * @return the mc
      */

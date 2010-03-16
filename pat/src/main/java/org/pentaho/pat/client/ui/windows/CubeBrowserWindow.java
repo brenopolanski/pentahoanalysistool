@@ -61,24 +61,43 @@ public class CubeBrowserWindow extends WindowPanel {
     private final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
 
     private final static CubeBrowserWindow CBW = new CubeBrowserWindow();
-    
+
+    /**
+     * Display.
+     */
     public static void display() {
         display(true);
     }
 
+    /**
+     * Display.
+     * @param connectionId
+     */
     public static void display(final String connectionId) {
         CUBEMENUPANEL.loadCubes(connectionId);
         display(false);
     }
 
+    /**
+     * Enable MDX Query.
+     * @param enabled
+     */
     public static void enableMdxQuery(final boolean enabled) {
         MDXQUERYBUTTON.setEnabled(enabled);
     }
 
+    /**
+     * Enable Query Model Query.
+     * @param enabled
+     */
     public static void enableQmQuery(final boolean enabled) {
         QMQUERYBUTTON.setEnabled(enabled);
     }
 
+    /**
+     * Display with refresh.
+     * @param refreshCubes
+     */
     private static void display(final boolean refreshCubes) {
         QMQUERYBUTTON.setEnabled(false);
         MDXQUERYBUTTON.setEnabled(false);
@@ -108,6 +127,9 @@ public class CubeBrowserWindow extends WindowPanel {
 
     }
 
+    /**
+     * Setup query buttons.
+     */
     private void setupQueryButtons() {
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {

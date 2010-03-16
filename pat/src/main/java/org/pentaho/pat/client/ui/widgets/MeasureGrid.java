@@ -23,9 +23,9 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *TODO JAVADOC
+ * Measure Grid, contains measure widgets for query creation.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class MeasureGrid extends FocusPanel implements IQueryListener {
@@ -44,6 +44,12 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     private Boolean horizontal;
 
+    /**
+     * Creates the measure grid.
+     * @param query
+     * @param currentAxis
+     * @param horizontal
+     */
     public MeasureGrid(final String query, final IAxis currentAxis, final Boolean horizontal) {
         super();
         grid = new DimensionFlexTable(horizontal, currentAxis);
@@ -56,6 +62,10 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         this.query = query;
     }
 
+    /**
+     * Add a row.
+     * @param mLabel
+     */
     public void addRow(final MeasureLabel mLabel) {
         if (horizontal) {
             if (empty && grid.getRowCount()>0 && grid.getCellCount(0) > 0)
@@ -73,6 +83,11 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         }
     }
 
+    /**
+     * Add a row.
+     * @param mLabel
+     * @param row
+     */
     public void addRow(final MeasureLabel mLabel, final int row) {
         if (horizontal) {
             if (empty && grid.getRowCount() > 0) {
@@ -93,7 +108,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     /**
-     *TODO JAVADOC
+     * return the current axis.
      * 
      * @return the currentAxis
      */
@@ -102,7 +117,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     /**
-     *TODO JAVADOC
+     * return the dragController.
      * 
      * @return the dragController
      */
@@ -111,7 +126,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     /**
-     *TODO JAVADOC
+     * Return true if the container is empty.
      * 
      * @return the empty
      */
@@ -119,6 +134,10 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         return empty;
     }
 
+    /**
+     * Return a list of Measure Labels.
+     * @return
+     */
     public List<MeasureLabel> getMeasureLabels() {
         final List<MeasureLabel> measureLabels = new ArrayList<MeasureLabel>();
         if (horizontal) {
@@ -134,7 +153,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     /**
-     *TODO JAVADOC
+     * Return the query id.
      * 
      * @return the query
      */
@@ -142,14 +161,24 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
         return query;
     }
 
+    /**
+     * Return the flextable.
+     * @return
+     */
     public DimensionFlexTable getRows() {
         return grid;
     }
 
+    /**
+     * Make this widget draggable.
+     */
     public void makeDraggable() {
         dragController.makeDraggable(MeasureGrid.this);
     }
 
+    /**
+     * Make this widget non draggable.
+     */
     public void makeNotDraggable() {
         dragController.makeNotDraggable(MeasureGrid.this);
     }
@@ -240,6 +269,10 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     }
 
+    /**
+     * Remove a row.
+     * @param row
+     */
     public void removeRow(final int row) {
         if (horizontal) {
             if (grid.getCellCount(0) > 1) {
@@ -262,7 +295,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the widgets current axis.
      * 
      * @param currentAxis
      *            the currentAxis to set
@@ -274,7 +307,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the drag controller for this widget.
      * 
      * @param dragController
      *            the dragController to set
@@ -285,7 +318,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the widgets empty status.
      * 
      * @param empty
      *            the empty to set
@@ -296,7 +329,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the query id.
      * 
      * @param query
      *            the query to set
@@ -307,7 +340,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the orientation of the widget.
      * 
      * @param horizontal
      *            the horizontal to set
@@ -317,7 +350,7 @@ public class MeasureGrid extends FocusPanel implements IQueryListener {
     }
 
     /**
-     *TODO JAVADOC
+     * Return the orientation of this widget.
      * 
      * @return the horizontal
      */

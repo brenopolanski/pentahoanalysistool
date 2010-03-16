@@ -11,15 +11,20 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 
 /**
- *TODO JAVADOC
+ * OLAP Tabel utility class.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class TableUtil {
 
     private final static String TABLE_CSS_SPACER = "spacer-label"; //$NON-NLS-1$
 
+    /**
+     * insert spacer cell.
+     * @param flexTable
+     * @return
+     */
     public static FlexTable insertSpacer(FlexTable flexTable) {
         flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
         flexTable.setWidget(0, 0, new Label("")); //$NON-NLS-1$
@@ -27,6 +32,11 @@ public class TableUtil {
         return flexTable;
     }
 
+    /**
+     * Remove spacer cell.
+     * @param flexTable
+     * @return
+     */
     public static FlexTable removeSpacer(FlexTable flexTable) {
         if (flexTable.getCellFormatter().getStyleName(0, 0).equals(TABLE_CSS_SPACER)) {
             flexTable.getCellFormatter().removeStyleName(0, 0, TABLE_CSS_SPACER);
@@ -36,6 +46,11 @@ public class TableUtil {
             return flexTable;
     }
 
+    /**
+     * Clear table rows.
+     * @param flexTable
+     * @return
+     */
     public static FlexTable clearTableRows(FlexTable flexTable) {
         int count = flexTable.getRowCount();
         while (count > 0) {
@@ -45,6 +60,11 @@ public class TableUtil {
         return flexTable;
     }
 
+    /**
+     * Clear unused rows.
+     * @param flexTable
+     * @return
+     */
     public static FlexTable clearUnusedTableRows(FlexTable flexTable) {
         int count = flexTable.getRowCount();
         while (count > 0) {
@@ -56,10 +76,20 @@ public class TableUtil {
         return flexTable;
     }
 
+    /**
+     * Clone Measure Label.
+     * @param sender
+     * @return
+     */
     public static MeasureLabel cloneMeasureLabel(MeasureLabel sender) {
         return new MeasureLabel(sender.getText(), sender.getType(), sender.getDragController(), true);
     }
 
+    /**
+     * Clone measure grid.
+     * @param sender
+     * @return
+     */
     public static MeasureGrid cloneMeasureGrid(MeasureGrid sender) {
         MeasureGrid oldMeasureGrid = ((MeasureGrid) sender);
         MeasureGrid mg = new MeasureGrid(oldMeasureGrid.getQuery(), oldMeasureGrid.getCurrentAxis(), oldMeasureGrid
@@ -79,6 +109,12 @@ public class TableUtil {
         return mg;
     }
 
+    /**
+     * Clone measure grid.
+     * @param sender
+     * @param overrideHorizontal
+     * @return
+     */
     public static MeasureGrid cloneMeasureGrid(MeasureGrid sender, Boolean overrideHorizontal) {
         MeasureGrid oldMeasureGrid = ((MeasureGrid) sender);
         MeasureGrid mg = new MeasureGrid(oldMeasureGrid.getQuery(), oldMeasureGrid.getCurrentAxis(), overrideHorizontal);

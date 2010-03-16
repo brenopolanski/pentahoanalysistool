@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.rpc;
 
-import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;

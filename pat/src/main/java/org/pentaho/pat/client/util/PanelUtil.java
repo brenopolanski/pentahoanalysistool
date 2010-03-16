@@ -27,7 +27,12 @@ package org.pentaho.pat.client.util;
  * 
  */
 public class PanelUtil {
-    
+
+	/**
+	 * 
+	 * @author Paul Stoellberger
+	 *
+	 */
     public static enum PanelType {
         QM, MDX
     }

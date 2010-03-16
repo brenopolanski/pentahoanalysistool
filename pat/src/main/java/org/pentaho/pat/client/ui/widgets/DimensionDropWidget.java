@@ -84,13 +84,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     private boolean empty = true;
 
     /**
-     *TODO JAVADOC
-     * 
+     * Creates a drop target for axis so that dimension and measure widgets can be dropped on to it.
+     * @param labelText
+     * @param targetAxis
      * @param tblRowDragCont
-     * 
-     * @param unused
-     * @param string
-     * 
      */
     public DimensionDropWidget(final String labelText, final Standard targetAxis,
             final FlexTableRowDragControllerImpl tblRowDragCont) {
@@ -100,6 +97,13 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     }
 
+    /**
+     * 
+     * @param labelText
+     * @param targetAxis
+     * @param orientation
+     * @param tblRowDragCont
+     */
     public DimensionDropWidget(final String labelText, final Standard targetAxis, final Boolean orientation,
             final FlexTableRowDragControllerImpl tblRowDragCont) {
         super();
@@ -109,7 +113,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     /**
-     *TODO JAVADOC
+     * Return true if the widget has horizontal orientation.
      * 
      * @return the horizontal
      */
@@ -118,12 +122,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
     }
 
     /**
-     * Initialization.
-     * 
+     * Initialization routine.
      * @param labelText
-     *            the label text
      * @param targetAxis
-     *            the target axis
+     * @param tRDC
      */
     public void init(final String labelText, final IAxis targetAxis, final FlexTableRowDragControllerImpl tRDC) {
         this.setStyleName(DIMENSION_DROP_WIDGET);
@@ -153,6 +155,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         getLayoutPanel().add(captLayoutPanel);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onLoad()
+     */
     @Override
     public void onLoad() {
         fTblRowDropCont = new FlexTableRowDropControllerImpl(dimensionTable, dimAxis);
@@ -160,6 +166,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         GlobalConnectionFactory.getQueryInstance().addQueryListener(DimensionDropWidget.this);
     }
 
+    /**
+     * When a measure widget is dropped perform these operations.
+     * @param sender
+     */
     private void doMeasureStuff(Widget sender) {
         if (sender instanceof MeasureLabel && ((MeasureLabel) sender).getType().equals(MeasureLabel.LabelType.MEASURE)) {
             int location = -1;
@@ -195,6 +205,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         }
     }
 
+    /**
+     * When a measure grid is dropped, perform these operations.
+     * @param sender
+     */
     private void doMeasureStuff(MeasureGrid sender) {
         int location = -1;
         // If the dimension drop widget contains a measure grid, add it to the measure grid.
@@ -254,6 +268,10 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         });
     }
 
+    /**
+     * Remove a row
+     * @param sourceRow
+     */
     private void flexTableRemoveRecord(final int sourceRow) {
         if (horizontal) {
             dimensionTable.removeCell(0, sourceRow);
@@ -282,12 +300,20 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onUnload()
+     */
     @Override
     public void onUnload() {
         tblRowDragCont.unregisterDropController(fTblRowDropCont);
         GlobalConnectionFactory.getQueryInstance().removeQueryListener(DimensionDropWidget.this);
     }
 
+    /**
+     * Populate the widget when initializing.
+     * @param targetAxis
+     */
     private void populateDimensionTable(final IAxis targetAxis) {
 
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
@@ -366,12 +392,19 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                 });
     }
 
+    /**
+     * Refresh the table.
+     */
     private void refreshTable() {
 
         WidgetHelper.revalidate(dimensionTable);
 
     }
 
+    /**
+     * Add a record.
+     * @param sender
+     */
     public void flexTableAddRecord(final Widget sender) {
         Widget wid = null;
         if (sender instanceof MeasureLabel) {
@@ -400,6 +433,11 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         WidgetHelper.revalidate(dimensionTable);
     }
 
+    /**
+     * Add a record.
+     * @param sender
+     * @param row
+     */
     private void flexTableAddRecord(Widget sender, int row) {
         dimensionTable.setWidget(row, 0, sender);
 
@@ -409,6 +447,12 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         empty = false;
     }
 
+    /**
+     * Add a record.
+     * @param sender
+     * @param row
+     * @param horizontal
+     */
     private void flexTableAddRecord(Widget sender, int row, boolean horizontal) {
         if (horizontal) {
             dimensionTable.setWidget(0, row, sender);
@@ -433,6 +477,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
         empty = false;
     }
 
+    /**
+     * Execute when query is pivoted.
+     */
 	public void onQueryPivoted(String queryId) {
 
 		if (isAttached() && isVisible() && Pat.getCurrQuery().equals(query) && (dimAxis.equals(IAxis.COLUMNS) || dimAxis.equals(IAxis.ROWS))){
