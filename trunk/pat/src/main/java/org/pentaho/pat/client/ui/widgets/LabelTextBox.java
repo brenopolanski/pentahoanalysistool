@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
 /**
- *TODO JAVADOC
+ * Creates a Label and Textbox widget.
  * 
- * @author bugg
+ * @author tom(at)wamonline.org.uk
  * 
  */
 public class LabelTextBox extends LayoutComposite {
@@ -33,7 +33,7 @@ public class LabelTextBox extends LayoutComposite {
     }
 
     /**
-     *TODO JAVADOC
+     * Return the Label.
      * 
      * @return the textBoxLabel
      */
@@ -43,7 +43,7 @@ public class LabelTextBox extends LayoutComposite {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the label.
      * 
      * @param textBoxLabel
      *            the textBoxLabel to set
@@ -53,7 +53,7 @@ public class LabelTextBox extends LayoutComposite {
     }
 
     /**
-     *TODO JAVADOC
+     * Return the textbox value.
      * 
      * @return the textBox
      */
@@ -63,7 +63,7 @@ public class LabelTextBox extends LayoutComposite {
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the textbox value.
      * 
      * @param textBox
      *            the textBox to set

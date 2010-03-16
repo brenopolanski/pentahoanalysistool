@@ -93,7 +93,11 @@ public class CubeTreeItem extends TreeItem {
         }
 
     }
-    
+   
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.TreeItem#setSelected(boolean)
+     */
     @Override
     public void setSelected(boolean selected) {
         if (this.selected == selected) {
@@ -105,26 +109,50 @@ public class CubeTreeItem extends TreeItem {
       }
     
 
+    /**
+     * Return the connection id.
+     * @return
+     */
     public String getConnectionId() {
         return this.connection.getId();
     }
 
+    /**
+     * Return the Cube Name.
+     * @return
+     */
     public String getCubeName() {
         return this.cube.getName();
     }
 
+    /**
+     * Return the catalog name.
+     * @return
+     */
     public String getCatalogName() {
         return this.cube.getCatalog();
     }
 
+    /**
+     * Return the Schema Name.
+     * @return
+     */
     public String getSchemaName() {
         return this.cube.getSchema();
     }
 
+    /**
+     * Return the type.
+     * @return
+     */
     public ItemType getType() {
         return this.type;
     }
 
+    /**
+     * Return the Cube Item.
+     * @return
+     */
     public CubeItem getCubeItem() {
         return this.cube;
     }

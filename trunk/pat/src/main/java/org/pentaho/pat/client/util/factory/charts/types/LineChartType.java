@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.util.factory.charts.types;
 
 import java.util.Arrays;
@@ -33,8 +36,21 @@ import com.rednels.ofcgwt.client.model.axis.YAxis;
 import com.rednels.ofcgwt.client.model.elements.LineChart;
 import com.rednels.ofcgwt.client.model.elements.dot.BaseDot;
 import com.rednels.ofcgwt.client.model.elements.dot.SolidDot;
-
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class LineChartType {
+	/**
+	 * Create a Line Chart.
+	 * @param matrix
+	 * @param chartTitle
+	 * @param chartOptions
+	 * @param chartPanel
+	 * @param pos
+	 * @return
+	 */
     public ChartData getLineChartData(final CellDataSet matrix, final String chartTitle,
             Map<String, Object> chartOptions, final ChartPanel chartPanel, Position pos) {
 

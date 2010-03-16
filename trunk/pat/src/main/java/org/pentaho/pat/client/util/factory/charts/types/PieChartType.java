@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.util.factory.charts.types;
 
 import java.util.Arrays;
@@ -28,9 +31,22 @@ import com.rednels.ofcgwt.client.model.Legend;
 import com.rednels.ofcgwt.client.model.Legend.Position;
 import com.rednels.ofcgwt.client.model.elements.PieChart;
 import com.rednels.ofcgwt.client.model.elements.PieChart.Slice;
-
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class PieChartType {
 
+	/**
+	 * Create Pie Chart.
+	 * @param matrix
+	 * @param chartTitle
+	 * @param chartOptions
+	 * @param chartPanel
+	 * @param pos
+	 * @return
+	 */
     public ChartData getPieChartData(final CellDataSet matrix, final String chartTitle,
             Map<String, Object> chartOptions, final ChartPanel chartPanel, Position pos) {
 

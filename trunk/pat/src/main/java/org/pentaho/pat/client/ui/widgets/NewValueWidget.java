@@ -21,6 +21,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * A widget to allow you to add a new value to a cell, for use with mondrian scenarios.
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class NewValueWidget extends WindowPanel {
 
   

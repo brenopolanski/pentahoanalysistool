@@ -19,29 +19,23 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.DimensionMenu;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 
 /**
- * Lists all Dimensions and Members and allows their including/excluding in a Query.
+ * Lists all Dimensions and Members and allows their including/excluding in a
+ * Query.
  * 
  * @created Aug 18, 2009
  * @since 0.5.0
@@ -50,97 +44,98 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class DimensionBrowserWindow extends WindowPanel {
 
-    /** The Window Title. */
-    private final static String TITLE = ConstantFactory.getInstance().titleDimensionBrowser();
+	/** The Window Title. */
+	private final static String TITLE = ConstantFactory.getInstance()
+			.titleDimensionBrowser();
 
-    private static DimensionMenu dimMenuPanel = new DimensionMenu();
+	private static DimensionMenu dimMenuPanel = new DimensionMenu();
 
-    private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+	private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(
+			Orientation.HORIZONTAL));
 
-    private final static DimensionBrowserWindow DBW = new DimensionBrowserWindow();
+	private final static DimensionBrowserWindow DBW = new DimensionBrowserWindow();
 
-    public static void displayAllMembers(final String queryId) {
-        dimMenuPanel.loadAllMembers(queryId);
-        display();
-    }
-    
-    public static void displayAxis(final String queryId, final IAxis targetAxis) {
-        dimMenuPanel.loadAxisMembers(queryId, targetAxis,true);
-        display();
-    }
-    
-    public static void displayDimension(final String queryId, final String dimension) {
-        dimMenuPanel.loadMembers(queryId, dimension,true);
-        display();
-    }
-    
-    
-    
-    private static void display() {
-        DBW.setSize("650px", "450px"); //$NON-NLS-1$ //$NON-NLS-2$
-        DBW.showModal(false);
-        // dbw.show();
-        DBW.layout();
-    }
+	public static void displayAllMembers(final String queryId) {
+		dimMenuPanel.loadAllMembers(queryId);
+		display();
+	}
 
-    /**
-     * Cube Browser Window Constructor.
-     */
-    public DimensionBrowserWindow() {
-        super(TITLE);
-        winContentpanel.add(dimMenuPanel, new BoxLayoutData(FillStyle.BOTH));
-        final LayoutPanel buttons = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        final Button updateQueryButton = new Button(ConstantFactory.getInstance().ok());
-        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
-        buttons.add(updateQueryButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        buttons.add(cancelButton);
+	public static void displayAxis(final String queryId, final IAxis targetAxis) {
+		dimMenuPanel.loadAxisMembers(queryId, targetAxis, true);
+		display();
+	}
 
-        updateQueryButton.addClickHandler(new ClickHandler() {
+	public static void displayDimension(final String queryId,
+			final String dimension) {
+		dimMenuPanel.loadMembers(queryId, dimension, true);
+		display();
+	}
 
-            public void onClick(final ClickEvent arg0) {
-                // No automatic query execution for now
-                // updateQuery();
-                DBW.hide();
-            }
+	private static void display() {
+		DBW.setSize("650px", "450px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DBW.showModal(false);
+		// dbw.show();
+		DBW.layout();
+	}
 
-        });
+	/**
+	 * Cube Browser Window Constructor.
+	 */
+	public DimensionBrowserWindow() {
+		super(TITLE);
+		winContentpanel.add(dimMenuPanel, new BoxLayoutData(FillStyle.BOTH));
+		final LayoutPanel buttons = new LayoutPanel(new BoxLayout(
+				Orientation.VERTICAL));
+		final Button updateQueryButton = new Button(ConstantFactory
+				.getInstance().ok());
+		final Button cancelButton = new Button(ConstantFactory.getInstance()
+				.cancel());
+		buttons.add(updateQueryButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+		buttons.add(cancelButton);
 
-        cancelButton.addClickHandler(new ClickHandler() {
+		updateQueryButton.addClickHandler(new ClickHandler() {
 
-            public void onClick(final ClickEvent arg0) {
-                DBW.hide();
-            }
-        });
-        winContentpanel.add(buttons);
+			public void onClick(final ClickEvent arg0) {
+				// No automatic query execution for now
+				// updateQuery();
+				DBW.hide();
+			}
 
-        this.setWidget(winContentpanel);
+		});
 
-        this.layout();
+		cancelButton.addClickHandler(new ClickHandler() {
 
-    }
+			public void onClick(final ClickEvent arg0) {
+				DBW.hide();
+			}
+		});
+		winContentpanel.add(buttons);
 
+		this.setWidget(winContentpanel);
 
+		this.layout();
 
-    private void updateQuery() {
-        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(),
-                new AsyncCallback<CellDataSet>() {
+	}
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedQuery(arg0.getLocalizedMessage()));
-                    }
+	/*
+	 * private void updateQuery() {
+	 * ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
+	 * Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
+	 * 
+	 * public void onFailure(final Throwable arg0) {
+	 * MessageBox.error(ConstantFactory.getInstance().error(),
+	 * MessageFactory.getInstance() .failedQuery(arg0.getLocalizedMessage())); }
+	 * 
+	 * public void onSuccess(final CellDataSet arg0) {
+	 * GlobalConnectionFactory.getQueryInstance
+	 * ().getQueryListeners().fireQueryExecuted( DimensionBrowserWindow.this,
+	 * Pat.getCurrQuery(), arg0); DBW.hide(); }
+	 * 
+	 * }); }
+	 */
 
-                    public void onSuccess(final CellDataSet arg0) {
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                DimensionBrowserWindow.this, Pat.getCurrQuery(), arg0);
-                        DBW.hide();
-                    }
-
-                });
-    }
-
-    public static DimensionMenu getDimensionMenuPanel() {
-        return dimMenuPanel;
-    }
+	public static DimensionMenu getDimensionMenuPanel() {
+		return dimMenuPanel;
+	}
 
 }

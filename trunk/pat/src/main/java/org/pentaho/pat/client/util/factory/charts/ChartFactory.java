@@ -72,6 +72,16 @@ public class ChartFactory {
         }
     }
 
+    /**
+     * Return the chart.
+     * @param chartType
+     * @param matrix
+     * @param chartTitle
+     * @param legendPosition
+     * @param chartOptions
+     * @param chartPanel
+     * @return
+     */
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
             Position legendPosition, Map<String, Object> chartOptions, ChartPanel chartPanel) {
         pos = legendPosition;
@@ -81,6 +91,15 @@ public class ChartFactory {
 
     }
 
+    /**
+     * Return the chart.
+     * @param chartType
+     * @param matrix
+     * @param chartTitle
+     * @param legendPosition
+     * @param chartPanel
+     * @return
+     */
     public ChartData getChart(final ChartType chartType, final CellDataSet matrix, final String chartTitle,
             Position legendPosition, ChartPanel chartPanel) {
         Map<String, Object> chartOptions = null;

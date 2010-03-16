@@ -42,8 +42,9 @@ public class DimensionFlexTable extends FlexTable {
 
     private final static String VALID_DROP_TARGET = "pat-validDropTarget";  //$NON-NLS-1$
     private final static String INVALID_DROP_TARGET = "pat-invalidDropTarget";  //$NON-NLS-1$
+
     /**
-     *TODO JAVADOC
+     * Create a flextable widget for the DimensionDropWidget.
      * 
      */
     public DimensionFlexTable() {
@@ -51,6 +52,11 @@ public class DimensionFlexTable extends FlexTable {
         this.setStyleName(TABLE_CSS_NAME);        
     }
 
+    /**
+     * Create a flextable widget for the DimensionDropWidget.
+     * @param orientation
+     * @param axis
+     */
     public DimensionFlexTable(final Boolean orientation, final IAxis axis) {
         super();
         this.setStyleName(TABLE_CSS_NAME);
@@ -61,7 +67,7 @@ public class DimensionFlexTable extends FlexTable {
 
     
     /**
-     *TODO JAVADOC
+     * Return true if the widget is in horizontal orientation.
      * 
      * @return the horizontal
      */
@@ -69,16 +75,24 @@ public class DimensionFlexTable extends FlexTable {
         return horizontal;
     }
 
+    /**
+     * Set the mondrian axis for this widget.
+     * @param axis
+     */
     public void setAxis(final IAxis axis) {
 	this.axis = axis;
     }
 
+    /**
+     * Get the mondrian axis for this widget.
+     * @return
+     */
     public IAxis getAxis() {
 	return axis;
     }
 
     /**
-     *TODO JAVADOC
+     * CSS styling for dropping.
      *
      * @param engaged
      */

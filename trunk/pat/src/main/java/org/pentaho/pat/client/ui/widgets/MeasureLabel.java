@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
@@ -6,6 +9,11 @@ import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 
+/**
+ * The measure label widget.
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class MeasureLabel extends FocusPanel {
 
     public enum LabelType {
@@ -20,6 +28,11 @@ public class MeasureLabel extends FocusPanel {
 
     private LabelType type;
 
+    /**
+     * Create a measure label.
+     * @param string
+     * @param lType
+     */
     public MeasureLabel(final String string, final LabelType lType) {
         super();
         text.setText(string);
@@ -30,7 +43,7 @@ public class MeasureLabel extends FocusPanel {
     }
 
     /**
-     *TODO JAVADOC
+     * Create a measure label.
      * 
      * @param text2
      * @param type2
@@ -47,7 +60,7 @@ public class MeasureLabel extends FocusPanel {
     }
 
     /**
-     *TODO JAVADOC
+     * Return the drag controller.
      * 
      * @return the dragController
      */
@@ -55,25 +68,39 @@ public class MeasureLabel extends FocusPanel {
         return dragController;
     }
 
+    /**
+     * Return the labels text.
+     * @return
+     */
     public String getText() {
         return text.getText();
     }
 
+    /**
+     * Return the labels type.
+     * @return
+     */
     public LabelType getType() {
         return type;
     }
 
+    /**
+     * Make the widget draggable.
+     */
     public void makeDraggable() {
         dragController.makeDraggable(MeasureLabel.this);
     }
 
+    /**
+     * Make the widget non draggable.
+     */
     public void makeNotDraggable() {
         dragController.makeNotDraggable(MeasureLabel.this);
     }
 
     /**
      * 
-     *TODO JAVADOC
+     * Set the drag contoller.
      * 
      * @param dragController
      *            the dragController to set
@@ -82,6 +109,10 @@ public class MeasureLabel extends FocusPanel {
         this.dragController = dragController;
     }
 
+    /**
+     * Set the type.
+     * @param type
+     */
     public void setType(final LabelType type) {
         this.type = type;
     }

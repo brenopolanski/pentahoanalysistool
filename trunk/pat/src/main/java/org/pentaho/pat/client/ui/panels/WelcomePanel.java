@@ -18,9 +18,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
+
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 
 import com.google.gwt.core.client.GWT;
+
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 

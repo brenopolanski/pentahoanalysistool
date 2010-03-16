@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.util.dnd.impl;
 
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
-import org.pentaho.pat.client.ui.widgets.MeasureGrid;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -62,12 +61,8 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.allen_sauer.gwt.dnd.client.PickupDragController#dragEnd()
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragController#dragEnd()
-	 */
     @Override
     public void dragEnd() {
         super.dragEnd();
@@ -194,16 +189,11 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.allen_sauer.gwt.dnd.client.PickupDragController#setBehaviorDragProxy(boolean)
      */
-    /* (non-Javadoc)
-	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragController#setBehaviorDragProxy(boolean)
-	 */
     @Override
     public void setBehaviorDragProxy(final boolean dragProxyEnabled) {
         if (!dragProxyEnabled) {
-            // TODO implement drag proxy behavior
             throw new IllegalArgumentException();
         }
         super.setBehaviorDragProxy(dragProxyEnabled);

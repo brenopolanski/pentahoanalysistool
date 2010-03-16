@@ -28,6 +28,11 @@ package org.pentaho.pat.client.util;
  */
 public class State {
 
+	/**
+	 * 
+	 * @author Paul Stoellberger
+	 *
+	 */
     public static enum Mode {
         BISERVERPUC("BISERVERPUC", false, false, false, false, false, false, false, false, false), //$NON-NLS-1$
         DEFAULT("DEFAULT", false, true, true, false, true, true, true, true, true), //$NON-NLS-1$
@@ -66,6 +71,19 @@ public class State {
 
         private boolean allowQmQuery;
 
+        /**
+         * 
+         * @param param
+         * @param showConnections
+         * @param manageConnections
+         * @param showCubeMenu
+         * @param showOnlyTable
+         * @param showMenu
+         * @param showWelcomePanel
+         * @param showDimensionMenu
+         * @param allowMdxQuery
+         * @param allowQmQuery
+         */
         private Mode(final String param, final boolean showConnections, final boolean manageConnections,
                 final boolean showCubeMenu, final boolean showOnlyTable, final boolean showMenu,
                 final boolean showWelcomePanel, final boolean showDimensionMenu, final boolean allowMdxQuery,
@@ -81,43 +99,83 @@ public class State {
             this.allowMdxQuery = allowMdxQuery;
             this.allowQmQuery = allowQmQuery;
         }
-
+        
+        /**
+         * 
+         * @return
+         */
         public String getParam() {
             return param;
         }
-
+        
+        /**
+         * 
+         * @return
+         */
         public boolean isAllowMdxQuery() {
             return allowMdxQuery;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isAllowQmQuery() {
             return allowQmQuery;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isManageConnections() {
             return manageConnections;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowConnections() {
             return showConnections;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowCubeMenu() {
             return showCubeMenu;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowDimensionMenu() {
             return showDimensionMenu;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowMenu() {
             return showMenu;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowOnlyTable() {
             return showOnlyTable;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean isShowWelcomePanel() {
             return showWelcomePanel;
         }
@@ -129,26 +187,50 @@ public class State {
 
     private boolean connected = false;
 
+    /**
+     * 
+     * @return
+     */
     public Mode getMode() {
         return mode;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getSession() {
         return sessionId;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isConnected() {
         return connected;
     }
 
+    /**
+     * 
+     * @param connected
+     */
     public void setConnected(final boolean connected) {
         this.connected = connected;
     }
 
+    /**
+     * 
+     * @param mode
+     */
     public void setMode(final Mode mode) {
         this.mode = mode;
     }
 
+    /**
+     * 
+     * @param session
+     */
     public void setSession(final String session) {
         sessionId = session;
     }

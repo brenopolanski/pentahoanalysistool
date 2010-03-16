@@ -62,8 +62,6 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
     private List<String> memberPath;
 
-    private final static String CELLBUTTON = "cellButton"; //$NON-NLS-1$
-
     /**
      * 
      * Blank Constructor for Serializable niceness, don't use it.

@@ -15,6 +15,11 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
+/**
+ * Data Cell Panel for the OLAPTable.
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class DataCellPanel extends HorizontalPanel {
 
     private final MemberCell pcm;
@@ -25,6 +30,12 @@ public class DataCellPanel extends HorizontalPanel {
 
     private final static String DATA_CELL_PANEL = "pat-DataCellPanel"; //$NON-NLS-1$
     
+    /**
+     * Creates a DataCellPanel.
+     * @param parentColMember
+     * @param parentRowMember
+     * @param rawNumber
+     */
     public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember, Number rawNumber) {
         super();
         sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
@@ -34,6 +45,10 @@ public class DataCellPanel extends HorizontalPanel {
         this.setStyleName(DATA_CELL_PANEL);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
+     */
     @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
@@ -103,10 +118,17 @@ public class DataCellPanel extends HorizontalPanel {
 
   
 
+    /**
+     * Return the cells number.
+     * @return
+     */
     public Number getCellNum() {
 	return cellNum;
     }
     
+    /**
+     * Set the cells number. 
+     */
     public void setCellNum(Number num) {
 	this.cellNum = num;
     }

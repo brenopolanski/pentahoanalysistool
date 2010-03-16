@@ -38,6 +38,11 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ * @author tom(at)wamonline.org.uk
+ *
+ */
 public class DimensionMovementsImpl {
 
 	/**

@@ -143,14 +143,14 @@ public class MDXRichTextArea extends RichTextArea {
         return newStr;
     }
 
-    private void unFormatMdx() {
+/*    private void unFormatMdx() {
         this.setHTML(this.getHTML().replaceAll("<br>", " ")); //$NON-NLS-1$ //$NON-NLS-2$
         this.setHTML(this.getText());
     }
 
     private void showHTML() {
         super.setText(this.getHTML().replaceAll("<br>", " ")); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+    }*/
 
     /**
      * JAVADOC Calling this method will reformat the mdx code
