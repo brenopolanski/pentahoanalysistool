@@ -54,7 +54,9 @@ public class MenuBar extends LayoutComposite {
 
     private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
             ConstantFactory.getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
-    
+
+    private final static ToolButton SAVECDABUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
+            ConstantFactory.getInstance().save() + " as CDA", ButtonLabelType.TEXT_ON_BOTTOM));
     // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
     // cases)
     final static ToolButton CONNECTIONBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
@@ -80,6 +82,9 @@ public class MenuBar extends LayoutComposite {
         addConnectionsButton();
         addCubesButton();
         addSaveButton();
+        if (Pat.isPlugin()) {
+            addSaveCdaButton();
+        }
         addLoadButton();
         addLogoutButton();
         rootPanel.add(logoPanel, new BoxLayoutData(FillStyle.BOTH));
@@ -147,6 +152,23 @@ public class MenuBar extends LayoutComposite {
         SAVEBUTTON.setEnabled(false);
         rootPanel.add(SAVEBUTTON, new BoxLayoutData(FillStyle.VERTICAL));
     }
+
+    private void addSaveCdaButton() {
+        // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
+        // cases)
+        SAVECDABUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
+        // FIXME remove that and use style
+        DOM.setStyleAttribute(SAVECDABUTTON.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+        SAVECDABUTTON.addClickHandler(new ClickHandler() {
+
+            public void onClick(final ClickEvent arg0) {
+                SaveWindow.displayCDA();
+            }
+        });
+        SAVECDABUTTON.setEnabled(false);
+        rootPanel.add(SAVECDABUTTON, new BoxLayoutData(FillStyle.VERTICAL));
+    }
+
     
     private void addLoadButton() {
         LOADBUTTON.addStyleName("pat-toolButton"); //$NON-NLS-1$
@@ -186,6 +208,7 @@ public class MenuBar extends LayoutComposite {
     }
     public static void enableSave(final Boolean enabled) {
         SAVEBUTTON.setEnabled(enabled);
+        SAVECDABUTTON.setEnabled(enabled);
     }
     public static void enableLoad(final Boolean enabled) {
         LOADBUTTON.setEnabled(enabled);

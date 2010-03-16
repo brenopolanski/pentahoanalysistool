@@ -65,6 +65,19 @@ public class SaveWindow extends WindowPanel {
           @org.pentaho.pat.client.ui.windows.SaveWindow::displaySaveWindow()();
       }
     }-*/;
+
+    public static native void displayCDA()
+    /*-{
+    if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
+        testo = { 
+            fileSelected:function(solution,path,name,localizedFileName) { 
+                @org.pentaho.pat.client.Pat::saveQueryAsCda(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(solution,path,name,localizedFileName);
+            }
+        } 
+        top.openFileDialog(testo, "Save Datasource... ","Save","cda");
+      }
+    }-*/;
+
     
     @SuppressWarnings("unused")
     private static void displaySaveWindow() {
