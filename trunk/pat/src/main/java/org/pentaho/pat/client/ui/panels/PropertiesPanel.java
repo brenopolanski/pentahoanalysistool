@@ -388,10 +388,15 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
         drillThruButton.setEnabled(false);
-        mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
-        mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        
+        if (pType == PanelUtil.PanelType.MDX) {
+            mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
+            mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));    
+        }
         if (pType == PanelUtil.PanelType.QM) {
+            mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
+            mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
