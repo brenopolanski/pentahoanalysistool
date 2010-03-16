@@ -126,17 +126,24 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
                 xml.append("<CDADescriptor>\n");
                 xml.append("<DataSources>");
-                if (sc.getType().equals(ConnectionType.MONDRIAN)) {
-                    xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\">\n");
-                    // TODO replace with actual values
-                    xml.append("<Driver>" + sc.getDriverClassName() + "</Driver>\n");
-                    xml.append("<Url>" + sc.getUrl()+ "</Url>\n");
-                    xml.append("<User>" + sc.getUsername() + "</User>\n");
-                    xml.append("<Pass>" + sc.getPassword() + "</Pass>\n");
-                    xml.append("</Connection>\n");
-                }
+//                if (sc.getType().equals(ConnectionType.MONDRIAN)) {
+//                    xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\">\n");
+//                    // TODO replace with actual values
+//                    xml.append("<Driver>" + sc.getDriverClassName() + "</Driver>\n");
+//                    xml.append("<Url>" + sc.getUrl()+ "</Url>\n");
+//                    xml.append("<User>" + sc.getUsername() + "</User>\n");
+//                    xml.append("<Pass>" + sc.getPassword() + "</Pass>\n");
+//                    xml.append("</Connection>\n");
+//                
+//                }
+                xml.append("<Connection id=\"1\" type=\"mondrian.jndi\">\n");
+                // TODO replace with actual values
+                xml.append("<Jndi>SampleData</Driver>\n");
+                xml.append("<Catalog>../../../steel-wheels/analysis/SampleData.mondrian.xml</Catalog>\n");
+                xml.append("</Connection>\n");
+            
                 xml.append("</DataSources>\n");
-                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"olap4J\" access=\"public\">\n");
+                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"mdx\" access=\"public\">\n");
                 xml.append("<Name>" + (name != null && name.length() > 0  ? name : "No Name") + "</Name>\n");
                     xml.append("<Query>\n");
                     //  TODO replace with actual values
