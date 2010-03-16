@@ -60,7 +60,8 @@
 									todir="${project.build.directory}/pat-plugin/" />
 								<mkdir dir="${project.build.directory}/pat-plugin/jdbc" />
 								<mkdir dir="${project.build.directory}/pat-plugin/schema_temp" />
-								<zip destfile="target/${project.artifactId}-platform-${project.version}.zip">
+								<zip
+									destfile="target/${project.artifactId}-platform-${project.version}.zip">
 									<zipfileset dir="target/pat-plugin" />
 								</zip>
 							</tasks>
@@ -111,6 +112,30 @@
 			<artifactId>pat</artifactId>
 			<version>0.6-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.olap4j</groupId>
+			<artifactId>olap4j</artifactId>
+			<version>0.9.8-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm-commons</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>retroweaver</groupId>
+					<artifactId>retroweaver</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>retroweaver</groupId>
+					<artifactId>retroweaver-rt</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
