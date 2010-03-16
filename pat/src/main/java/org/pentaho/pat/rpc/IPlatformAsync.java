@@ -30,4 +30,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface IPlatformAsync {
     
     void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution, String path, String name, String localizedFileName, AsyncCallback<Object> callback);
+    
+    void saveQueryAsCda(String sessionId, String queryId, String connectionId, String solution,String path, String name, String localizedFileName, AsyncCallback<Object> callback);
+    
 }

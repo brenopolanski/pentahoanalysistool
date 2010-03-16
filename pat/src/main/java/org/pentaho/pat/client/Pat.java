@@ -26,7 +26,6 @@ import org.gwtwidgets.client.util.Location;
 import org.gwtwidgets.client.util.WindowUtils;
 import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.images.IGuiImages;
-import org.pentaho.pat.client.ui.panels.DataPanel;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.util.State;
@@ -376,10 +375,28 @@ public class Pat implements EntryPoint {
 
                     }
 
-                });
-
-                
+        });
     }
+
+
+    public static void saveQueryAsCda(final String solution, final String path,final String name,final String localizedFileName) {
+        ServiceFactory.getPlatformInstance().saveQueryAsCda(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+
+            public void onFailure(Throwable arg0) {
+                MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
+
+            }
+
+            public void onSuccess(Object arg0) {
+                MessageBox.info("Success", "File Saved");
+                refreshSolutionRepo();
+            }
+
+        });
+
+
+    }
+    
     public static native void refreshSolutionRepo()
     /*-{
     if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {

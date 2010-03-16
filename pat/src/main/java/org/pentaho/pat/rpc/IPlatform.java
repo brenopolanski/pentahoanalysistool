@@ -33,4 +33,7 @@ public interface IPlatform extends RemoteService {
     
     @Secured( {"Users"})
     void saveQueryToSolution(String sessionId, String queryId, String connectionId, String solution, String path, String name, String localizedFileName)throws RpcException;
+    
+    @Secured( {"Users"})
+    void saveQueryAsCda(String sessionId, String queryId, String connectionId, String solution,String path, String name, String localizedFileName) throws RpcException;
 }
