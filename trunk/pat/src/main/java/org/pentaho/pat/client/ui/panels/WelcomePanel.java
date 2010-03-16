@@ -11,25 +11,17 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
-import org.gwt.mosaic.ui.client.ToolButton;
-import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.gwt.mosaic.ui.client.util.ButtonHelper;
-import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -128,7 +120,14 @@ public class WelcomePanel extends AbstractDataWidget {
 */
 //        layoutPanel.add(buttonBar, new BoxLayoutData(-1.0, -1.0));
 
-        Frame frame = new Frame("welcome.html");
+        String url = "welcome.html";
+        if (Pat.isPlugin()) {
+            url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content"));
+            url = url != null && url.length() > 0 ? url + "content/pat-res/pat/welcome.html" : url;
+        }
+        
+        Frame frame = new Frame(url);
+        
         
         layoutPanel.add(frame, new BoxLayoutData(FillStyle.BOTH));
         
