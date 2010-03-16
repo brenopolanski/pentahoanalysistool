@@ -360,7 +360,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });        
         pivotButton.setEnabled(false);
 
-        layoutMenuButton = new ToolButton(ConstantFactory.getInstance().layout());
+        layoutMenuButton = new ToolButton(ConstantFactory.getInstance().chart());
         layoutMenuButton.setStyle(ToolButtonStyle.MENU);
         layoutMenuButton.setEnabled(false);
         
