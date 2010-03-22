@@ -4,7 +4,7 @@
 	<groupId>org.pentaho</groupId>
 	<artifactId>pat-plugin</artifactId>
 	<name>PAT-Plugin</name>
-	<version>0.6</version>
+	<version>0.7-SNAPSHOT</version>
 	<url>http://code.google.com/p/pentahoanalysistool/</url>
 
 	<properties>
