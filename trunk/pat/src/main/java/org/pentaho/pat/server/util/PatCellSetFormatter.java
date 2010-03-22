@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.server.util;
 
+import java.text.DecimalFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -285,12 +286,23 @@ public class PatCellSetFormatter {
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
 
-            if (cellValue.length() < 1) {
-                final Number value = (Number) cell.getValue();
-                if (value == null || value.doubleValue() < 1.23457E08)
-                    cellValue = "null"; //$NON-NLS-1$
-                else
-                    cellValue = cell.getValue().toString(); // Otherwise return
+            if (cellValue == null || cellValue.equals("null")) {
+                cellValue ="";
+            }
+            if ( cellValue.length() < 1) {
+                final Object value =  cell.getValue();
+                if (value == null  || value.equals("null"))
+                    cellValue = ""; //$NON-NLS-1$
+                else {
+                    try {
+                        DecimalFormat myFormatter = new DecimalFormat("#,###.###");
+                        String output = myFormatter.format(cell.getValue());
+                        cellValue = output;
+                    }
+                    catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }
                 // the raw value
             }
             cellInfo.setFormattedValue(getValueString(cellValue));
