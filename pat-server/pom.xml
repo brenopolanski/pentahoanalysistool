@@ -63,9 +63,6 @@
 										<include name="${tomcat.version}.zip" />
 									</fileset>
 								</unzip>
-								<copy todir="target/stage/tomcat/">
-									<fileset dir="${basedir}/custom/tomcat/" />
-								</copy>
 								<copy todir="target/stage/data/">
 									<fileset dir="${basedir}/pat-sample-data/" />
 								</copy>
@@ -84,6 +81,9 @@
           								<exclude name="webapps/manager/**" />
           							    <exclude name="webapps/ROOT/**" />
 									</fileset>
+								</copy>
+								<copy todir="target/dist/pat-server/tomcat/">
+									<fileset dir="${basedir}/custom/tomcat/" />
 								</copy>
 								<copy todir="target/dist/pat-server/tomcat/webapps/pat">
 									<fileset dir="target/stage/webapp" />
