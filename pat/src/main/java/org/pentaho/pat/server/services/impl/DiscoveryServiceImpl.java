@@ -192,13 +192,14 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.services.DiscoveryService#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public StringTree getAllLevelProperties(String userId, String sessionId, String queryId, String dimensionName)
+    public String[][] getAllLevelProperties(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
         List<String> uniqueNameList = new ArrayList<String>();
+        List<String> levelNameList = new ArrayList<String>();
 
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
         Set<String> propertyExclusions = getPropertyExclusions();
@@ -207,12 +208,20 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
             for (Property property : levelProperties) {
                 if(!propertyExclusions.contains(property.getUniqueName())){
                     uniqueNameList.add(property.getUniqueName());
+                    levelNameList.add(level.getName());
                 }
+                
+              
             }
         }
-
-
-        return null;
+        String str[][] = new String[uniqueNameList.size()][2];
+        for(int i = 0; i<uniqueNameList.size(); i++){
+        	str[i][0]=levelNameList.get(i);
+        	str[i][1]=uniqueNameList.get(i);
+        }
+        
+        
+        return str;
 
         
     }

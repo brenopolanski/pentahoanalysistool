@@ -40,7 +40,7 @@ public interface IDiscoveryAsync {
 
     void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
     
-    void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
+    void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<String[][]> callback);
     
     void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<StringTree> callback);
 }

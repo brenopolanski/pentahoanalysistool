@@ -107,20 +107,53 @@ public class PropertiesMenu extends LayoutComposite {
                 });
     }
     
+    class Person {
+        private String levelName;
+        private String propertyName;
+
+
+        public Person(String levelName, String propertyName) {
+          this.levelName = levelName;
+          this.propertyName = propertyName;
+        }
+
+        public String getLevelName(){
+        	return levelName;
+        }
+        public String getPropertyName() {
+          return propertyName;
+        }
+
+        public void setPropertyName(String gender) {
+          this.propertyName = gender;
+        }
+
+        public void setLevelName(String name) {
+          this.levelName = name;
+        }
+
+        @Override
+        public String toString() {
+          return getLevelName() + " " + getPropertyName();
+        }
+      }
+
+ 
     public void createListBox(String queryId, String dimensionId){
         final LayoutPanel vBox = new LayoutPanel(
                 new BoxLayout(Orientation.VERTICAL));
             vBox.setPadding(0);
             vBox.setWidgetSpacing(0);
 
-            final ListBox<String> listBox = new ListBox<String>();
+            final ListBox<Person> listBox = new ListBox<Person>();
 //            listBox.setContextMenu(createContextMenu());
 
-            final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
-            
-            
+            final DefaultListModel<Person> model = new DefaultListModel<Person>();
+          
+
+            listBox.setModel(model);
             ServiceFactory.getDiscoveryInstance().getAllLevelProperties(Pat.getSessionID(), queryId, dimensionId,
-                    new AsyncCallback<StringTree>() {
+                    new AsyncCallback<String[][]>() {
 
                 public void onFailure(final Throwable arg0) {
                     //dimensionTree.clear();
@@ -128,12 +161,16 @@ public class PropertiesMenu extends LayoutComposite {
                             .failedMemberFetch(arg0.getLocalizedMessage()));
                 }
 
-                public void onSuccess(final StringTree labels) {
-                    
-                    model.add(labels.getValue());
+                public void onSuccess(final String[][] labels) {
+                    for(int i = 0; i<labels.length; i++)
+                    model.add(new Person(labels[i][0], labels[i][1]));
                     
                 }
             });
+            listBox.setSize("100%", "100%");
+            vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+            
+            this.getLayoutPanel().add(vBox);
     }
             
             
