@@ -7,7 +7,7 @@
   <head>
   <meta http-equiv="content-type" content="text/html; charset=windows-1250">
   <meta name="generator" content="Pentaho Analysis Tool">
-  <title>Pentaho Analysis Tool - Login - Version 0.5</title>
+  <title>Pentaho Analysis Tool - Login - Version 0.7</title>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css">
   <style type="text/css">
   
