@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
+import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
+import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -26,6 +28,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.windows.DimensionMenu;
+import org.pentaho.pat.client.ui.panels.windows.PropertiesMenu;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
@@ -49,6 +52,8 @@ public class DimensionBrowserWindow extends WindowPanel {
 			.titleDimensionBrowser();
 
 	private static DimensionMenu dimMenuPanel = new DimensionMenu();
+	
+	private static PropertiesMenu propertiesMenuPanel = new PropertiesMenu();
 
 	private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(
 			Orientation.HORIZONTAL));
@@ -62,12 +67,14 @@ public class DimensionBrowserWindow extends WindowPanel {
 
 	public static void displayAxis(final String queryId, final IAxis targetAxis) {
 		dimMenuPanel.loadAxisMembers(queryId, targetAxis, true);
+		propertiesMenuPanel.loadAxisProperties(queryId, targetAxis);
 		display();
 	}
 
 	public static void displayDimension(final String queryId,
 			final String dimension) {
 		dimMenuPanel.loadMembers(queryId, dimension, true);
+		
 		display();
 	}
 
@@ -83,7 +90,10 @@ public class DimensionBrowserWindow extends WindowPanel {
 	 */
 	public DimensionBrowserWindow() {
 		super(TITLE);
-		winContentpanel.add(dimMenuPanel, new BoxLayoutData(FillStyle.BOTH));
+		final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
+		tabPanel.add(dimMenuPanel, "Members");
+		tabPanel.add(propertiesMenuPanel, "Properties");
+		winContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
 		final LayoutPanel buttons = new LayoutPanel(new BoxLayout(
 				Orientation.VERTICAL));
 		final Button updateQueryButton = new Button(ConstantFactory

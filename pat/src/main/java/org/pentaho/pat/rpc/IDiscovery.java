@@ -90,4 +90,11 @@ public interface IDiscovery extends RemoteService {
      */
     @Secured( {"Users"})
     StringTree getMembers(String sessionId, String queryId, String dimensionName) throws RpcException;
+    
+    
+    @Secured( {"Users"})
+    StringTree getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException;
+    
+    @Secured( {"Users"})
+    StringTree getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName) throws RpcException;
 }

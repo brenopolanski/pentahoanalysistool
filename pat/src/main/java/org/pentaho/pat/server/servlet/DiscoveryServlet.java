@@ -94,4 +94,29 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
         final List<String> driverNames = this.discoveryService.getDrivers();
         return driverNames.toArray(new String[driverNames.size()]);
     }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IDiscovery#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StringTree getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException {
+        try {
+            return this.discoveryService.getAllLevelProperties(getCurrentUserId(), sessionId, queryId, dimensionName);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IDiscovery#getNamedLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StringTree getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName)
+            throws RpcException {
+        try {
+            return this.discoveryService.getNamedLevelProperties(getCurrentUserId(), sessionId, queryId, dimensionName, levelName);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }   
+    }
 }
