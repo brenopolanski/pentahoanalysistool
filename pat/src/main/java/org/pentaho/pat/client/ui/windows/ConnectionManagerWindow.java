@@ -130,15 +130,6 @@ public class ConnectionManagerWindow extends WindowPanel {
     }
 
     private static void refreshWindow() {
-        //        
-        // int preferredWidth = Window.getClientWidth();
-        // preferredWidth = Math.max(preferredWidth / 3, 256);
-        //
-        // connectionManagerWindow.setPixelSize(preferredWidth, 356);
-        //
-        // if (connectionManagerWindow.getOffsetWidth() < preferredWidth)
-        // connectionManagerWindow.setPixelSize(preferredWidth, 356);
-
         CONNMANGRWINDOW.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
         CONNMANGRWINDOW.showModal();
@@ -161,14 +152,6 @@ public class ConnectionManagerWindow extends WindowPanel {
         WINCONTENTPANEL.add(new ConnectionManagerPanel(), new BoxLayoutData(FillStyle.BOTH));
         MAINCONTENTPANEL.add(WINCONTENTPANEL, new BoxLayoutData(FillStyle.BOTH));
         MAINCONTENTPANEL.add(cmCancelButton);
-        // connectMondrian = new ConnectMondrianPanel();
-        // connectXmla = new ConnectXmlaPanel();
-        // tabPanel.setPadding(5);
-        // tabPanel.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-        // tabPanel.add(connectXmla, ConstantFactory.getInstance().xmla());
-        // tabPanel.selectTab(0);
-        // windowContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.VERTICAL));
-        // GlobalConnectionFactory.getInstance().addConnectionListener(ConnectionManagerWindow.this);
         this.setWidget(MAINCONTENTPANEL);
         this.layout();
 

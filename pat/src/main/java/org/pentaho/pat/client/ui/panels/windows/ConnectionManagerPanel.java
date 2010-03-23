@@ -41,7 +41,6 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
-import org.pentaho.pat.client.ui.windows.AbstractFailBox;
 import org.pentaho.pat.client.util.ConnectionItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -120,7 +119,9 @@ public class ConnectionManagerPanel extends LayoutComposite {
         toolBar.add(new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.database_add(), null,
                 ButtonLabelType.NO_TEXT), new ClickHandler() {
             public void onClick(final ClickEvent event) {
+                ConnectionManagerWindow.closeTabs(false);
                 ConnectionManagerWindow.showNewConnection();
+                refreshMe();
             }
         }));
 
@@ -183,14 +184,17 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     MessageBox.alert("ListBox Edit", "No item selected"); //$NON-NLS-1$ //$NON-NLS-2$
                     return;
                 }
+                
                 final ConnectionItem item = linkedListBox.getItem(linkedListBox.getSelectedIndex());
                 ServiceFactory.getSessionInstance().getConnection(Pat.getSessionID(), item.getId(), new AsyncCallback<CubeConnection>() {
 
                     public void onFailure(Throwable arg0) {
+                        ConnectionManagerWindow.closeTabs();
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().unexpectedError());
                     }
 
                     public void onSuccess(final CubeConnection cc) {
+                        ConnectionManagerWindow.closeTabs(false);
                         if (item.isConnected()) {
                             ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), cc.getId(), new AsyncCallback<Object>() {
 
@@ -201,11 +205,13 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                                 public void onSuccess(Object arg0) {
                                     ConnectionManagerWindow.display(cc);
+                                    refreshMe();
                                 }
                             });
                         }
                         else {
                             ConnectionManagerWindow.display(cc);
+                            refreshMe();
                         }
                     }
                 });
@@ -332,11 +338,10 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                         public void onFailure(final Throwable arg0) {
                             LogoPanel.spinWheel(false);
-                            AbstractFailBox
-                            .alert(
+                            MessageBox.alert(
                                     ConstantFactory.getInstance().error(),
-                                    "There has been an error regarding the Connection. "
-                                    + "Please contact the system administrator", 
+                                    "There has been an error regarding the Connection. " +
+                                    "Please contact the system administrator <br>"+ 
                                     MessageFactory.getInstance().failedLoadConnection(arg0.getMessage())); //$NON-NLS-1$
                         }
 
