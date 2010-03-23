@@ -77,7 +77,13 @@
 									<fileset dir="${basedir}/scripts/" />
 								</copy>
 								<copy todir="target/dist/pat-server/tomcat">
-									<fileset dir="${tomcat.source}${tomcat.version}" />
+									<fileset dir="${tomcat.source}${tomcat.version}" >
+									    <exclude name="webapps/docs/**" />
+          								<exclude name="webapps/examples/**" />
+          								<exclude name="webapps/host-manager/**" />
+          								<exclude name="webapps/manager/**" />
+          							    <exclude name="webapps/ROOT/**" />
+									</fileset>
 								</copy>
 								<copy todir="target/dist/pat-server/tomcat/webapps/pat">
 									<fileset dir="target/stage/webapp" />
