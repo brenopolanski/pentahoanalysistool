@@ -110,7 +110,7 @@ public interface DiscoveryService extends Service {
      * @param dimensionName
      * @return
      */
-    StringTree getAllLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName) throws OlapException;
+    String[][] getAllLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      *TODO JAVADOC

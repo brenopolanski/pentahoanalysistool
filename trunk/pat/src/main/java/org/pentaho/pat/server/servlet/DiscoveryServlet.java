@@ -98,7 +98,7 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
     /* (non-Javadoc)
      * @see org.pentaho.pat.rpc.IDiscovery#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String)
      */
-    public StringTree getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException {
+    public String[][] getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException {
         try {
             return this.discoveryService.getAllLevelProperties(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
