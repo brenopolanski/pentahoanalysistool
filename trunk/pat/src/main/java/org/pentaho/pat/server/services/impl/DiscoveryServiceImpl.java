@@ -23,7 +23,9 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
@@ -33,7 +35,9 @@ import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
+import org.olap4j.metadata.Property;
 import org.olap4j.metadata.Schema;
+import org.olap4j.metadata.Property.StandardMemberProperty;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.rpc.dto.CubeItem;
@@ -183,5 +187,51 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
     public void setDriverFinder(JdbcDriverFinder driverFinder) {
         this.driverFinder = driverFinder;
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.DiscoveryService#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StringTree getAllLevelProperties(String userId, String sessionId, String queryId, String dimensionName)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+        List<String> uniqueNameList = new ArrayList<String>();
+
+        NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
+        Set<String> propertyExclusions = getPropertyExclusions();
+        for (Level level : levels) {
+            List<Property> levelProperties = level.getProperties();
+            for (Property property : levelProperties) {
+                if(!propertyExclusions.contains(property.getUniqueName())){
+                    uniqueNameList.add(property.getUniqueName());
+                }
+            }
+        }
+
+
+        return null;
+
+        
+    }
+    
+
+    private static Set<String> getPropertyExclusions() {
+    Set <String> propertyElementExclusions = new HashSet<String>();
+    StandardMemberProperty[] test = Property.StandardMemberProperty.values();
+    for (int i = 0; i < test.length; i++){
+        propertyElementExclusions.add(test[i].getUniqueName());
+    }
+    return propertyElementExclusions;
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.DiscoveryService#getNamedLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StringTree getNamedLevelProperties(String currentUserId, String sessionId, String queryId,
+            String dimensionName, String levelName) throws OlapException {
+return null;
     }
 }

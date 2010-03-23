@@ -39,4 +39,8 @@ public interface IDiscoveryAsync {
     void getCubes(String sessionId, String connectionId, AsyncCallback<CubeItem[]> callback);
 
     void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
+    
+    void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
+    
+    void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<StringTree> callback);
 }

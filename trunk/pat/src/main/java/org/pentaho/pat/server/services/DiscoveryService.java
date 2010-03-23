@@ -100,4 +100,28 @@ public interface DiscoveryService extends Service {
      */
     @Secured( {"Users"})
     List<String> getDrivers();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessionId
+     * @param queryId
+     * @param dimensionName
+     * @return
+     */
+    StringTree getAllLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName) throws OlapException;
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessionId
+     * @param queryId
+     * @param dimensionName
+     * @param levelName
+     * @return
+     */
+    StringTree getNamedLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName,
+            String levelName) throws OlapException;
 }
