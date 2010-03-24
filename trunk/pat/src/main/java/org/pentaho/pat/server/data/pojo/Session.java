@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.olap4j.OlapConnection;
+import org.olap4j.metadata.Property;
 import org.olap4j.query.Query;
 import org.pentaho.pat.server.util.MdxQuery;
 
@@ -45,6 +46,11 @@ public class Session {
     private Map<String, Query> queries = new ConcurrentHashMap<String, Query>();
 
     private Map<String, MdxQuery> mdxQueries = new ConcurrentHashMap<String, MdxQuery>();
+
+    /*
+     *This isn't ideal, but its better than designing an query metamodel at 10:15pm. 
+     */
+    private Map<String, List<Property>> queryProperties= new ConcurrentHashMap<String, List<Property>>();
 
     public Session(final String id) {
         this.id = id;
@@ -128,5 +134,13 @@ public class Session {
 
     public void setMdxQueries(Map<String, MdxQuery> mdxQueries) {
         this.mdxQueries = mdxQueries;
+    }
+    
+    public void setQueryProperties(Map<String, List<Property>> queryProperties){
+        this.queryProperties = queryProperties;
+    }
+    
+    public Map<String, List<Property>> getQueryProperties(){
+       return  queryProperties;
     }
 }

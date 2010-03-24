@@ -46,8 +46,4 @@ public class LevelProperties implements Serializable, IsSerializable {
       this.levelName = levelName;
     }
 
-    @Override
-    public String toString() {
-      return getLevelName() + " " + getPropertyName();
-    }
 }

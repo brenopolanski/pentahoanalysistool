@@ -44,6 +44,7 @@ import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
+import org.olap4j.metadata.Property;
 import org.olap4j.metadata.Schema;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
@@ -235,11 +236,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
-        query.getAxes().get(Axis.FILTER).getDimensions().add(query.getDimension("Scenario"));
-        List selection = new ArrayList();
-        selection.add("0");
+        query.getAxes().get(Axis.FILTER).getDimensions().add(query.getDimension("Scenario")); //$NON-NLS-1$
+        List<String> selection = new ArrayList<String>();
+        selection.add("0"); //$NON-NLS-1$
         try {
-	    createSelection(userId, sessionId, queryId, "Scenario", selection, Operator.MEMBER);
+	    createSelection(userId, sessionId, queryId, "Scenario", selection, Operator.MEMBER); //$NON-NLS-1$
 	} catch (OlapException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
@@ -543,7 +544,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final OlapConnection con = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
         final OlapStatement stmt = con.createStatement();
-        return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx));
+        return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx), null);
     }
 
     /*
@@ -561,7 +562,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         OlapUtil.storeCellSet(mdxQueryId, cellSet);
 
-        return OlapUtil.cellSet2Matrix(cellSet);
+        return OlapUtil.cellSet2Matrix(cellSet, null);
     }
 
     /*
@@ -595,7 +596,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         OlapUtil.storeCellSet(queryId, cellSet);
         // Check the mdx generated
 
-        return OlapUtil.cellSet2Matrix(cellSet);
+        Set<Entry<String, List<Property>>> entries = sessionService.getSession(userId, sessionId).getQueryProperties().entrySet();
+        List<Property> props = null;
+        for (final Entry<String, List<Property>> entry : entries) {
+            if(entry.getKey().equals(queryId)){
+                props = entry.getValue();
+            }
+        }
+        return OlapUtil.cellSet2Matrix(cellSet, props);
 
     }
 
@@ -923,6 +931,19 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         q.getAxis(Axis.ROWS).setNonEmpty(flag);
         q.getAxis(Axis.FILTER).setNonEmpty(flag);
         return executeQuery(userId, sessionId, queryId);
+    }
+
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.server.services.QueryService#setProperty(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void setProperty(String userId, String sessionId, String queryId, String dimensionName, String levelName,
+            String propertyName, Boolean enabled) {
+        this.sessionService.validateSession(userId, sessionId);
+        Query query = this.getQuery(userId, sessionId, queryId);
+        Property prop = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels().get(levelName).getProperties().get(propertyName);
+        List<Property> props = new ArrayList<Property>();
+        props.add(prop);
+        sessionService.getSession(userId, sessionId).getQueryProperties().put(queryId, props);
     }
 
 }
