@@ -19,8 +19,11 @@
  */
 package org.pentaho.pat.rpc;
 
+import java.util.List;
+
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -93,7 +96,7 @@ public interface IDiscovery extends RemoteService {
     
     
     @Secured( {"Users"})
-    String[][] getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException;
+    List<LevelProperties> getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException;
     
     @Secured( {"Users"})
     StringTree getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName) throws RpcException;
