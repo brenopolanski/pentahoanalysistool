@@ -19,48 +19,29 @@
  */
 package org.pentaho.pat.client.ui.panels.windows;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.ComboBox;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
-import org.gwt.mosaic.ui.client.TabLayoutPanel;
 import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.gwt.mosaic.ui.client.list.DefaultComboBoxModel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
-import org.gwt.mosaic.ui.client.list.Filter;
-import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.Application.ApplicationImages;
-import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
-import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.LevelProperties;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * Tree list of connections and cubes.
@@ -75,8 +56,7 @@ public class PropertiesMenu extends LayoutComposite {
 
     private final static String DIMENSION_MENU = "pat-DimensionMenu"; //$NON-NLS-1$
 
-
-    // final DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) hierarchyComboBox.getModel();
+    final DefaultListModel<LevelProperties> model = new DefaultListModel<LevelProperties>();
     /**
      * 
      * DimensionMenu Constructor.
@@ -87,8 +67,50 @@ public class PropertiesMenu extends LayoutComposite {
         this.setStyleName(DIMENSION_MENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        
+        final LayoutPanel vBox = new LayoutPanel(
+                new BoxLayout(Orientation.VERTICAL));
+            vBox.setPadding(0);
+            vBox.setWidgetSpacing(0);
+
+            final ListBox<LevelProperties> listBox = new ListBox<LevelProperties>();
+            listBox.setCellRenderer(new CellRenderer<LevelProperties>() {
+                public void renderCell(ListBox<LevelProperties> listBox, int row, int column,
+                    LevelProperties item) {
+                  switch (column) {
+                    case 0:
+                      listBox.setWidget(row, column, createRichListBoxCell(item));
+                      break;
+                    default:
+                      throw new RuntimeException("Should not happen");
+                  }
+                }
+              });
+
+//            listBox.setContextMenu(createContextMenu());
+
+            listBox.setModel(model);
+            
+            
+            baseLayoutPanel.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+
         }
+
+    private Widget createRichListBoxCell(LevelProperties item) {
+        final FlexTable table = new FlexTable();
+        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
+
+        table.setWidth("100%");
+        table.setBorderWidth(0);
+        table.setCellPadding(3);
+        table.setCellSpacing(0);
+        table.setStyleName("RichListBoxCell");
+        
+        table.setHTML(0, 0, "<b>" + item.getLevelName() + "</b>");
+        
+        table.setText(0, 1, "Property: " + item.getPropertyName());
+
+        return table;
+      }
 
 
     public void loadAxisProperties(final String queryId, IAxis targetAxis){
@@ -107,53 +129,10 @@ public class PropertiesMenu extends LayoutComposite {
                 });
     }
     
-    class Person {
-        private String levelName;
-        private String propertyName;
-
-
-        public Person(String levelName, String propertyName) {
-          this.levelName = levelName;
-          this.propertyName = propertyName;
-        }
-
-        public String getLevelName(){
-        	return levelName;
-        }
-        public String getPropertyName() {
-          return propertyName;
-        }
-
-        public void setPropertyName(String gender) {
-          this.propertyName = gender;
-        }
-
-        public void setLevelName(String name) {
-          this.levelName = name;
-        }
-
-        @Override
-        public String toString() {
-          return getLevelName() + " " + getPropertyName();
-        }
-      }
-
- 
+     
     public void createListBox(String queryId, String dimensionId){
-        final LayoutPanel vBox = new LayoutPanel(
-                new BoxLayout(Orientation.VERTICAL));
-            vBox.setPadding(0);
-            vBox.setWidgetSpacing(0);
-
-            final ListBox<Person> listBox = new ListBox<Person>();
-//            listBox.setContextMenu(createContextMenu());
-
-            final DefaultListModel<Person> model = new DefaultListModel<Person>();
-          
-
-            listBox.setModel(model);
-            ServiceFactory.getDiscoveryInstance().getAllLevelProperties(Pat.getSessionID(), queryId, dimensionId,
-                    new AsyncCallback<String[][]>() {
+                    ServiceFactory.getDiscoveryInstance().getAllLevelProperties(Pat.getSessionID(), queryId, dimensionId,
+                    new AsyncCallback<List<LevelProperties>>() {
 
                 public void onFailure(final Throwable arg0) {
                     //dimensionTree.clear();
@@ -161,16 +140,10 @@ public class PropertiesMenu extends LayoutComposite {
                             .failedMemberFetch(arg0.getLocalizedMessage()));
                 }
 
-                public void onSuccess(final String[][] labels) {
-                    for(int i = 0; i<labels.length; i++)
-                    model.add(new Person(labels[i][0], labels[i][1]));
-                    
+                public void onSuccess(final List<LevelProperties> labels) {
+                    model.addAll(0, labels);
                 }
             });
-            listBox.setSize("100%", "100%");
-            vBox.add(listBox, new BoxLayoutData(FillStyle.BOTH));
-            
-            this.getLayoutPanel().add(vBox);
     }
             
             

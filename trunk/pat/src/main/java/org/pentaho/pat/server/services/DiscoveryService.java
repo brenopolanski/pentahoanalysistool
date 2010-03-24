@@ -25,6 +25,7 @@ import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import org.springframework.security.annotation.Secured;
@@ -110,7 +111,7 @@ public interface DiscoveryService extends Service {
      * @param dimensionName
      * @return
      */
-    String[][] getAllLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName) throws OlapException;
+    List<LevelProperties> getAllLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName) throws OlapException;
 
     /**
      *TODO JAVADOC

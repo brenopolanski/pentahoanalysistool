@@ -19,8 +19,11 @@
  */
 package org.pentaho.pat.rpc;
 
+import java.util.List;
+
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -40,7 +43,8 @@ public interface IDiscoveryAsync {
 
     void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
     
-    void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<String[][]> callback);
+    void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<List<LevelProperties>> callback);
     
-    void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<StringTree> callback);
+    void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<List<LevelProperties>> callback);
+
 }

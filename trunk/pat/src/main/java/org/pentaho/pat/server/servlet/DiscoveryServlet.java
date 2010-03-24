@@ -28,6 +28,7 @@ import org.olap4j.OlapException;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
@@ -98,7 +99,7 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
     /* (non-Javadoc)
      * @see org.pentaho.pat.rpc.IDiscovery#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String)
      */
-    public String[][] getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException {
+    public List<LevelProperties> getAllLevelProperties(String sessionId, String queryId, String dimensionName) throws RpcException {
         try {
             return this.discoveryService.getAllLevelProperties(getCurrentUserId(), sessionId, queryId, dimensionName);
         } catch (OlapException e) {
