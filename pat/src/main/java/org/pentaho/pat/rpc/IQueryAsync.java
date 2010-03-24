@@ -115,5 +115,15 @@ public interface IQueryAsync {
     
     void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
 	    String newCellValue, AsyncCallback<?> callback);
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param sessionID
+     * @param currQuery
+     * @param string
+     * @param string2
+     */
+    void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled, AsyncCallback callback);
     
 }

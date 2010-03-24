@@ -96,7 +96,7 @@ public class ExportController extends AbstractCommandController  implements Init
     }
 
     public static void exportExcel(String queryId, OutputStream out) throws IOException {
-        exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryId));
+        exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryId), null);
         if (exportResult != null) {
 
             PatTableModel table = new PatTableModel(exportResult);

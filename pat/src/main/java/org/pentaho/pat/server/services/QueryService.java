@@ -593,4 +593,16 @@ public interface QueryService extends Service {
     @Secured( {"Users"})
     void alterCell(final String userId, final String queryId, final String sessionId, final String scenarioId, final String connectionId, 
 	    final String newCellValue) throws OlapException;
+
+    /**
+     *TODO JAVADOC
+     *
+     * @param currentUserId
+     * @param sessionID
+     * @param queryId
+     * @param levelName
+     * @param propertyName
+     */
+    @Secured( {"Users"})
+    void setProperty(String currentUserId, String sessionID, String queryId, String dimensionName, String levelName, String propertyName, Boolean enabled);
 }

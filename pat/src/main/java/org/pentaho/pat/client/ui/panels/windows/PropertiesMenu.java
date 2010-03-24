@@ -24,6 +24,7 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.PopupMenu;
 import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
@@ -38,6 +39,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
@@ -86,7 +88,7 @@ public class PropertiesMenu extends LayoutComposite {
                 }
               });
 
-//            listBox.setContextMenu(createContextMenu());
+            listBox.setContextMenu(createContextMenu());
 
             listBox.setModel(model);
             
@@ -94,6 +96,32 @@ public class PropertiesMenu extends LayoutComposite {
             baseLayoutPanel.add(listBox, new BoxLayoutData(FillStyle.BOTH));
 
         }
+
+    private PopupMenu createContextMenu() {
+        Command cmd = new Command() {
+          public void execute() {
+            //InfoPanel.show("Menu Button", "You selected a menu item!");
+              ServiceFactory.getQueryInstance().addProperty(Pat.getSessionID(), Pat.getCurrQuery(), "dimensionName", "levelName", "propertyName", true, new AsyncCallback(){
+
+                public void onFailure(Throwable arg0) {
+                    // TODO Auto-generated method stub
+                    
+                }
+
+                public void onSuccess(Object arg0) {
+                    // TODO Auto-generated method stub
+                    
+                }
+                  
+              });
+          }
+        };
+
+        PopupMenu contextMenu = new PopupMenu();
+
+        contextMenu.addItem("Enable", cmd);
+        return contextMenu;
+      }
 
     private Widget createRichListBoxCell(LevelProperties item) {
         final FlexTable table = new FlexTable();

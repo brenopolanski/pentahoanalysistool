@@ -416,4 +416,7 @@ public interface IQuery extends RemoteService {
     @Secured( {"Users"})
     void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
 	    String newCellValue)throws RpcException;
+    
+    @Secured( {"Users"})
+    void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException;
 }

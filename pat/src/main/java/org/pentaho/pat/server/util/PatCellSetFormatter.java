@@ -286,16 +286,16 @@ public class PatCellSetFormatter {
             String cellValue = cell.getFormattedValue(); // First try to get a
             // formatted value
 
-            if (cellValue == null || cellValue.equals("null")) {
-                cellValue ="";
+            if (cellValue == null || cellValue.equals("null")) { //$NON-NLS-1$
+                cellValue =""; //$NON-NLS-1$
             }
             if ( cellValue.length() < 1) {
                 final Object value =  cell.getValue();
-                if (value == null  || value.equals("null"))
+                if (value == null  || value.equals("null")) //$NON-NLS-1$
                     cellValue = ""; //$NON-NLS-1$
                 else {
                     try {
-                        DecimalFormat myFormatter = new DecimalFormat("#,###.###");
+                        DecimalFormat myFormatter = new DecimalFormat("#,###.###"); //$NON-NLS-1$
                         String output = myFormatter.format(cell.getValue());
                         cellValue = output;
                     }
@@ -342,7 +342,6 @@ public class PatCellSetFormatter {
 
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
-
                 final AxisOrdinalInfo ordinalInfo = axisInfo.ordinalInfos.get(j);
                 while (member != null) {
                     if (member.getDepth() < ordinalInfo.minDepth)

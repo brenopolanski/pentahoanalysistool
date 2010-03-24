@@ -672,4 +672,14 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.pentaho.pat.rpc.IQuery#addProperty(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void addProperty(String sessionID, String queryId, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException {
+
+        this.queryService.setProperty(getCurrentUserId(), sessionID, queryId, dimensionName, levelName, propertyName, enabled);
+
+    }
+
+
 }
