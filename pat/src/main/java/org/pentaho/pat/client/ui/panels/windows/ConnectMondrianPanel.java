@@ -158,6 +158,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private final Button uploadButton;
 
     private final CheckBox startupCheckbox;
+    
+    private final CheckBox schemaValCheckbox;
 
     /** Connect button. */
     private final Button saveButton;
@@ -186,6 +188,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
+        schemaValCheckbox = new CheckBox(ConstantFactory.getInstance().validateSchema());
         this.setStyleName(CONNECT_MONDRIAN_PANEL);
         init();
 
@@ -291,9 +294,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                 arg0.getResults().indexOf(VALIDATION_START) + VALIDATION_START.length(),
                                 arg0.getResults().indexOf(VALIDATION_END));
                         if(tmp != null && tmp.length() > 0) {
-                            // TODO use error / warning custom messagebox for this 
-                            MessageBox.info(ConstantFactory.getInstance().warning(), MessageFactory.getInstance()
+                            if (schemaValCheckbox.getValue()) { 
+                                MessageBox.info(ConstantFactory.getInstance().warning(), MessageFactory.getInstance()
                                     .schemaFileInvalid() + "<br>" + tmp); //$NON-NLS-1$
+                            }
                         }
                     }
                     if (arg0.getResults().contains(SCHEMA_START)) {
@@ -348,6 +352,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
         builder.add(uploadButton, CellConstraints.xyw(3, 11, 5));
         builder.add(startupCheckbox,CellConstraints.xy(3,13));
+        builder.add(schemaValCheckbox, CellConstraints.xy(7,13));
 
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
