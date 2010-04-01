@@ -860,4 +860,6 @@ public interface IGuiConstants extends Constants {
     
     String logout();
     
+    String validateSchema();
+    
 }
