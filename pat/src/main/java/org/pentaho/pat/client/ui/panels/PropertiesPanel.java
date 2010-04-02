@@ -164,7 +164,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
         Hidden curQuery = new Hidden(FORM_NAME_QUERY);
         curQuery.setName(FORM_NAME_QUERY);
-        curQuery.setValue(Pat.getCurrQuery());
+        curQuery.setValue(queryId);
         formPanel.add(curQuery);
         
         final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());

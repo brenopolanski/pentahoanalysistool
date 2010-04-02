@@ -20,7 +20,7 @@
 package org.pentaho.pat.server.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,9 +43,7 @@ import org.pentaho.pat.server.messages.Messages;
 
 public class OlapUtil {
 
-    private static List<String> cellSetIndex = new ArrayList<String>();
-
-    private static List<CellSet> cellSetItems = new ArrayList<CellSet>();
+    private static Map<String, CellSet> cellSetMap = new HashMap<String, CellSet>();
 
     /**
      * 
@@ -161,22 +159,12 @@ public class OlapUtil {
      * @return
      */
     public static CellSet getCellSet(final String queryId) {
-        Collections.sort(cellSetIndex);
-        final int index = Collections.binarySearch(cellSetIndex, queryId);
-
-        return cellSetItems.get(index);
+        return cellSetMap.get(queryId);
 
     }
 
     public static void deleteCellSet(final String queryId) {
-        Collections.sort(cellSetIndex);
-        final int index = Collections.binarySearch(cellSetIndex, queryId);
-
-        if (index >= 0) {
-            cellSetIndex.remove(index);
-            cellSetItems.remove(index);
-        }
-
+        cellSetMap.remove(queryId);
     }
 
     /**
@@ -341,16 +329,10 @@ public class OlapUtil {
      * 
      */
     public static void storeCellSet(final String queryId, final CellSet cellSet) {
-        Collections.sort(cellSetIndex);
-        final int index = Collections.binarySearch(cellSetIndex, queryId);
-
-        if (index >= 0) {
-            cellSetIndex.remove(index);
-            cellSetItems.remove(index);
+        if (cellSetMap.containsKey(queryId)) {
+            cellSetMap.remove(queryId);
         }
-
-        cellSetIndex.add(queryId);
-        cellSetItems.add(cellSet);
+        cellSetMap.put(queryId, cellSet);
     }
 
 }
