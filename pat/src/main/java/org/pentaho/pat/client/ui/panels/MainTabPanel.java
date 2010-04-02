@@ -19,7 +19,9 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.DecoratedTabLayoutPanel;
@@ -100,34 +102,49 @@ public class MainTabPanel extends LayoutComposite {
      * @param content
      * @param tabName
      */
-    public static void addContent(final AbstractDataWidget content, final String tabName) {
+    public static void addContent(final AbstractDataWidget content, String tabName) {
 
-        boolean isWelcomePanel = false;
         if (content != null) {
 
-            final Iterator<Widget> iter = CONTENTWRAPPER.iterator();
-            while (iter.hasNext()) {
-                if (iter.next() instanceof WelcomePanel) {
-                    isWelcomePanel = true;
+            Integer countName = 0;
+            Boolean done = false;
+            List<String> tabnames = new ArrayList<String>();
+
+            Widget widget;
+            Iterator<Widget> iter = CONTENTWRAPPER.iterator();
+            while ((widget = iter.next()) != null) {
+                if (widget.getTitle() != null && widget.getTitle().length() > 0) {
+                    tabnames.add(widget.getTitle());
                 }
             }
-            if (isWelcomePanel) {
-                if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE)) {
-                    CONTENTWRAPPER.add(content, tabName);
-                } else {
-                    CONTENTWRAPPER.add(content, tabCloseLabel(content, tabName));
+            while (!done) {
+                done = true;
+                if(tabnames.contains(tabName) && countName == 0) {
+                    countName++;
+                    done = false;
                 }
-                CONTENTWRAPPER.selectTab(counter);
-                counter++;
-                CONTENTWRAPPER.layout();
+                if (tabnames.contains(tabName + " (" + countName + ")")) {
+                    countName++;
+                    done = false;
+                }
+
             }
 
-            else {
-                CONTENTWRAPPER.add(content, tabName);
-                counter++;
-                CONTENTWRAPPER.layout();
+            if (countName > 0) {
+                tabName = tabName + " (" + countName + ")";
             }
+            content.setTitle(tabName);
+
+            if (Pat.getApplicationState().getMode().equals(State.Mode.ONECUBE)) {
+                CONTENTWRAPPER.add(content, tabName);
+            } else {
+                CONTENTWRAPPER.add(content, tabCloseLabel(content, tabName));
+            }
+            CONTENTWRAPPER.selectTab(counter);
+            counter++;
+            CONTENTWRAPPER.layout();
         }
+
     }
 
     /**
