@@ -43,7 +43,9 @@ public class MemberSelectionLabel extends HorizontalPanel {
     private ISelectionModeImageBundle selectionImageBundle = GWT.create(ISelectionModeImageBundle.class);
 
     /** Label. */
-    private final Label label = new Label();
+    private final Label value = new Label();
+    
+    private final Label caption = new Label();
 
     /** Image. */
     private Image image;
@@ -61,7 +63,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
         selectionImageBundle = (ISelectionModeImageBundle) GWT.create(ISelectionModeImageBundle.class);
 
         setStyleName("olap-MemberSelectionLabel"); //$NON-NLS-1$
-        this.add(label);
+        this.add(value);
     }
 
     /**
@@ -70,9 +72,10 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * @param text
      *            the text
      */
-    public MemberSelectionLabel(final String text) {
+    public MemberSelectionLabel(final String text, final String captiontext) {
         this();
-        label.setText(text);
+        value.setText(text);
+        caption.setText(captiontext);
     }
 
     /**
@@ -100,7 +103,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * @return the label
      */
     public Label getLabel() {
-        return label;
+        return value;
     }
 
     /**
@@ -109,7 +112,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
      * @return the text
      */
     public String getText() {
-        return label.getText();
+        return value.getText();
     }
 
     /*
@@ -217,7 +220,7 @@ public class MemberSelectionLabel extends HorizontalPanel {
      *            the text
      */
     public final void setText(final String text) {
-        label.setText(text);
+        value.setText(text);
     }
 
     /**

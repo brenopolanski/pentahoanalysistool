@@ -509,8 +509,8 @@ public class DimensionMenu extends LayoutComposite {
 
         for (int i = 0; i < child.size(); i++) {
             // Need a copy of the memberLabel because of GWT's lack of clone support
-            final MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue());
-            final MemberSelectionLabel memberLabelcopy = new MemberSelectionLabel(child.get(i).getValue());
+            final MemberSelectionLabel memberLabel = new MemberSelectionLabel(child.get(i).getValue(), child.get(i).getCaption());
+            final MemberSelectionLabel memberLabelcopy = new MemberSelectionLabel(child.get(i).getValue(), child.get(i).getCaption());
             memberLabel.setDimension(dimension);
             memberLabelcopy.setDimension(dimension);
 

@@ -25,21 +25,38 @@ public class MeasureLabel extends FocusPanel {
     private FlexTableRowDragController dragController;
 
     private Label text = new Label();
+    
+    private String value;
 
     private LabelType type;
 
     /**
-     * Create a measure label.
-     * @param string
+     * Create a measure label (with no predefined caption).
+     * @param valure
      * @param lType
      */
-    public MeasureLabel(final String string, final LabelType lType) {
+    public MeasureLabel(final String value, final LabelType lType) {
         super();
-        text.setText(string);
+        text.setText(value);
         this.add(text);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
         this.setType(lType);
-
+        this.setValue(value);
+    }
+    
+    /**
+     * Create a measure label with a separate caption.
+     * @param value
+     * @param caption
+     * @param lType
+     */
+    public MeasureLabel(final String value, final String caption, final LabelType lType) {
+        super();
+        text.setText(caption);
+        this.add(text);
+        setStylePrimaryName(TABLE_DRAG_WIDGET);
+        this.setType(lType);
+        this.setValue(value);
     }
 
     /**
@@ -49,9 +66,9 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final String string, final LabelType lType, final FlexTableRowDragController dragController2,
+    public MeasureLabel(final String string, final String caption, final LabelType lType, final FlexTableRowDragController dragController2,
             boolean draggable) {
-        this(string, lType);
+        this(string, caption, lType);
         this.dragController = dragController2;
 
         if (draggable == true) {
@@ -116,4 +133,12 @@ public class MeasureLabel extends FocusPanel {
     public void setType(final LabelType type) {
         this.type = type;
     }
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
 }
