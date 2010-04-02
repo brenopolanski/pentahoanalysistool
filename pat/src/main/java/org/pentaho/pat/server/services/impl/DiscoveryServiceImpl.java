@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.olap4j.Axis;
@@ -42,6 +43,7 @@ import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.MemberItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
@@ -160,27 +162,29 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
-        List<String> uniqueNameList = new ArrayList<String>();
+        List<MemberItem> uniqueNameList = new ArrayList<MemberItem>();
 
         // FIXME Only uses the first hierarchy for now.
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
-
+        
+        Locale loc = Locale.getDefault(); 
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
             for (Member member : levelMembers) {
-                uniqueNameList.add(member.getUniqueName());
+                uniqueNameList.add(new MemberItem(member.getUniqueName(), member.getCaption(loc)));
             }
         }
 
         StringTree result = new StringTree(dimensionName, null);
         for (int i = 0; i < uniqueNameList.size(); i++) {
-            String[] memberNames = uniqueNameList.get(i).split("\\]\\.\\["); //$NON-NLS-1$
+            String[] memberNames = uniqueNameList.get(i).getLevelName().split("\\]\\.\\["); //$NON-NLS-1$
+            String captionNames = uniqueNameList.get(i).getPropertyName();
             for (int j = 0; j < memberNames.length; j++) { // Trim off the
                 // brackets
                 memberNames[j] = memberNames[j].replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
                         .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            result = OlapUtil.parseMembers(memberNames, result);
+            result = OlapUtil.parseMembers(memberNames, captionNames, result);
         }
 
         return result;

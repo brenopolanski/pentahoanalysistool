@@ -358,7 +358,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                                 // Insert Measures
                                                 for (int i = 0; i < measuresTree.getChildren().size(); i++) {
                                                     final MeasureLabel handle = new MeasureLabel(measuresTree
-                                                            .getChildren().get(i).getValue(),
+                                                            .getChildren().get(i).getValue(), measuresTree.getChildren().get(i).getCaption(),
                                                             MeasureLabel.LabelType.MEASURE);
                                                     measureDropWidget.addRow(handle, i);
                                                     handle.setDragController(tblRowDragCont);

@@ -99,7 +99,7 @@ public class OlapUtil {
      *            The search string.
      * @return found String Tree.
      */
-    public static StringTree findOrCreateNode(final StringTree parent, final String srchString) {
+    public static StringTree findOrCreateNode(final StringTree parent, final String srchString, String caption) {
         StringTree found = null;
         for (int i = 0; i < parent.getChildren().size() && found == null; i++) {
             final StringTree targetNode = parent.getChildren().get(i);
@@ -108,7 +108,7 @@ public class OlapUtil {
             }
         }
         if (found == null) {
-            found = new StringTree(srchString, parent);
+            found = new StringTree(srchString, caption, parent);
         }
         return found;
     }
@@ -314,10 +314,10 @@ public class OlapUtil {
         return buffer.toString();
     }
 
-    public static StringTree parseMembers(final String[] uniqueMemberNames, final StringTree parentNode) {
+    public static StringTree parseMembers(final String[] uniqueMemberNames, String captionNames, final StringTree parentNode) {
         StringTree currentNode = parentNode;
         for (int i = 1; i < uniqueMemberNames.length; i++)
-            currentNode = OlapUtil.findOrCreateNode(currentNode, uniqueMemberNames[i]);
+            currentNode = OlapUtil.findOrCreateNode(currentNode, uniqueMemberNames[i], captionNames);
         return parentNode;
     }
 

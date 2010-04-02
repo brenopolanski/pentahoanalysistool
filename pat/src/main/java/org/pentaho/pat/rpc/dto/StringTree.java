@@ -11,6 +11,8 @@ public class StringTree implements Serializable, IsSerializable {
 
     private String value;
 
+    private String caption;
+    
     private List<StringTree> children;
 
     private StringTree parent;
@@ -28,6 +30,16 @@ public class StringTree implements Serializable, IsSerializable {
         }
     }
 
+    public StringTree(final String value, final String caption, final StringTree parent) {
+        this();
+        this.value = value;
+        this.caption = caption;
+        this.parent = parent;
+        if (this.parent != null) {
+            this.parent.addChild(this);
+        }
+    }
+    
     public String getValue() {
         return value;
     }
@@ -36,6 +48,13 @@ public class StringTree implements Serializable, IsSerializable {
         this.value = value;
     }
 
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(final String caption) {
+        this.caption = caption;
+    }
     public void addChild(final StringTree stringTree) {
         children.add(stringTree);
     }

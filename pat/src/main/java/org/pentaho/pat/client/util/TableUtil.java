@@ -82,7 +82,7 @@ public class TableUtil {
      * @return
      */
     public static MeasureLabel cloneMeasureLabel(MeasureLabel sender) {
-        return new MeasureLabel(sender.getText(), sender.getType(), sender.getDragController(), true);
+        return new MeasureLabel(sender.getValue(), sender.getText(), sender.getType(), sender.getDragController(), true);
     }
 
     /**
