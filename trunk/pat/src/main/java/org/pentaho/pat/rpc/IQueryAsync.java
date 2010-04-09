@@ -87,6 +87,9 @@ public interface IQueryAsync {
     void drillPosition(String sessionId, String queryId, DrillType drillType, MemberCell member,
             AsyncCallback<Object> callback);
 
+    void drillThrough(String sessionId, String queryId, AsyncCallback<String[][]> callback);
+
+    
     void createNewMdxQuery(String sessionId, String connectionId, String catalogName, AsyncCallback<String> callback);
 
     void createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx,

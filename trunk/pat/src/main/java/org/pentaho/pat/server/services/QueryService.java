@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.server.services;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
 
@@ -392,6 +393,26 @@ public interface QueryService extends Service {
     void drillPosition(String userId, String sessionId, String queryId, DrillType drillType, MemberCell member)
             throws OlapException;
 
+    /**
+     * 
+     * Carries out a drillthrough on the current member in 
+     * 
+     * @param userId
+     *            The owner of the query.
+     * @param sessionId
+     *            The session id into which the query is stored.
+     * @param queryId
+     *            The query id.
+     * @param member
+     *            The member being drilled.
+     * @throws OlapException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    ResultSet drillThrough(String userId, String sessionId, String queryId)
+            throws OlapException;
+
+    
     /**
      *TODO JAVADOC
      * 

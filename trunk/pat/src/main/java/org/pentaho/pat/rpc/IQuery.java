@@ -377,6 +377,9 @@ public interface IQuery extends RemoteService {
     void drillPosition(String sessionId, String queryId, DrillType drillType, MemberCell member) throws RpcException;
 
     @Secured( {"Users"})
+    String[][] drillThrough(String sessionId, String queryId) throws RpcException;
+    
+    @Secured( {"Users"})
     String createNewMdxQuery(String sessionId, String connectionId, String catalogName) throws RpcException;
 
     @Secured( {"Users"})

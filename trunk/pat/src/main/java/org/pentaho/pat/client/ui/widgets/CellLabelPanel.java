@@ -19,12 +19,18 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
+import org.pentaho.pat.client.ui.windows.DrillThroughWindow;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.TableDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
@@ -59,6 +65,23 @@ public class CellLabelPanel extends HorizontalPanel {
         super.onBrowserEvent(event);
         switch (DOM.eventGetType(event)) {
         case Event.ONCLICK:
+            ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),new AsyncCallback<String[][]>() {
+                
+                public void onSuccess(String[][] arg0) {
+
+                    if (arg0 != null && arg0[0] != null) {
+                    TableDataSet ts = new TableDataSet(arg0[0].length,arg0.length);
+                    ts.setTableHeader(arg0[0]);
+                    ts.setTableBody(arg0);
+                    DrillThroughWindow.display(ts);
+                    }
+                }
+                
+                public void onFailure(Throwable arg0) {
+                    MessageBox.alert("error", "drillthrough error");
+                    
+                }
+            });
             break;
         case Event.ONCONTEXTMENU:
             final CellModeMenu test = new CellModeMenu();
