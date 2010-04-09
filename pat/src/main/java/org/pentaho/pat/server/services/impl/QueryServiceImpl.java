@@ -22,6 +22,7 @@ package org.pentaho.pat.server.services.impl;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.Position;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
@@ -502,6 +504,27 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 }
             }
+    }
+
+    public ResultSet drillThrough(final String userId, final String sessionId, final String queryId) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final CellSet cellSet = OlapUtil.getCellSet(queryId);
+        Cell cell = null;
+        
+        for (Position axis_0 : cellSet.getAxes().get(Axis.ROWS.axisOrdinal()).getPositions()) {
+                  for (Position axis_1 : cellSet.getAxes().get(Axis.COLUMNS.axisOrdinal()).getPositions()) {
+                          cell = cellSet.getCell(axis_0, axis_1);
+                  }
+              }        
+
+        if (cell == null) {
+                    // We failed to find the member.
+                    throw new OlapException("cant find cell");//$NON-NLS-1$
+        }
+
+        return cell.drillThrough();
+        
     }
 
     /*
