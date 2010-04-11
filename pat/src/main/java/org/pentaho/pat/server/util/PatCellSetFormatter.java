@@ -32,6 +32,7 @@ import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
+import org.olap4j.metadata.Property;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -143,7 +144,7 @@ public class PatCellSetFormatter {
 
     private Matrix matrix;
 
-    public Matrix format(final CellSet cellSet) {
+    public Matrix format(final CellSet cellSet, final List<Property> props) {
         // Compute how many rows are required to display the columns axis.
         final CellSetAxis columnsAxis;
         if (cellSet.getAxes().size() > 0) {
@@ -169,10 +170,10 @@ public class PatCellSetFormatter {
                 dimensions[i - 2] = cellSetAxis.getPositions().size();
             }
             for (final int[] pageCoords : CoordinateIterator.iterate(dimensions)) {
-                matrix = formatPage(cellSet, pageCoords, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
+                matrix = formatPage(cellSet, pageCoords, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo, props);
             }
         } else {
-            matrix = formatPage(cellSet, new int[] {}, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
+            matrix = formatPage(cellSet, new int[] {}, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo, props);
         }
 
         return matrix;
@@ -226,7 +227,7 @@ public class PatCellSetFormatter {
      *            Description of rows axis
      */
     private Matrix formatPage(final CellSet cellSet, final int[] pageCoords, final CellSetAxis columnsAxis,
-            final AxisInfo columnsAxisInfo, final CellSetAxis rowsAxis, final AxisInfo rowsAxisInfo) {
+            final AxisInfo columnsAxisInfo, final CellSetAxis rowsAxis, final AxisInfo rowsAxisInfo, final List<Property> props) {
 
         // Figure out the dimensions of the blank rectangle in the top left
         // corner.

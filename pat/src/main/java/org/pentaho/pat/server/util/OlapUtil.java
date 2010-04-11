@@ -61,7 +61,7 @@ public class OlapUtil {
         }
         final PatCellSetFormatter pcsf = new PatCellSetFormatter();
 
-        final Matrix matrix = pcsf.format(cellSet);
+        final Matrix matrix = pcsf.format(cellSet, props);
         final CellDataSet cds = new CellDataSet(matrix.getMatrixWidth(), matrix.getMatrixHeight());
 
         int z = 0;
