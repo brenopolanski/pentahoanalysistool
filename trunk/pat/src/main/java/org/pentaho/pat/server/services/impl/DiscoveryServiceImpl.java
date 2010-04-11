@@ -166,8 +166,8 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
         // FIXME Only uses the first hierarchy for now.
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
-        
-        Locale loc = Locale.getDefault(); 
+
+        Locale loc = Locale.getDefault();
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
             for (Member member : levelMembers) {
@@ -194,11 +194,14 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         this.driverFinder = driverFinder;
     }
 
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.server.services.DiscoveryService#getAllLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.DiscoveryService#getAllLevelProperties(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String)
      */
-    public List<LevelProperties> getAllLevelProperties(String userId, String sessionId, String queryId, String dimensionName)
-            throws OlapException {
+    public List<LevelProperties> getAllLevelProperties(String userId, String sessionId, String queryId,
+            String dimensionName) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
@@ -209,35 +212,34 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         for (Level level : levels) {
             List<Property> levelProperties = level.getProperties();
             for (Property property : levelProperties) {
-                if(!propertyExclusions.contains(property.getUniqueName())){
-                    propertiesReturnList.add(new LevelProperties(level.getName(), property.getUniqueName()));
+                if (!propertyExclusions.contains(property.getUniqueName())) {
+                    propertiesReturnList.add(new LevelProperties(level.getName(), property.getCaption(null)));
                 }
-                
-              
+
             }
         }
-        
-        
-        
+
         return propertiesReturnList;
 
-        
-    }
-    
-    private static Set<String> getPropertyExclusions() {
-    Set <String> propertyElementExclusions = new HashSet<String>();
-    StandardMemberProperty[] test = Property.StandardMemberProperty.values();
-    for (int i = 0; i < test.length; i++){
-        propertyElementExclusions.add(test[i].getUniqueName());
-    }
-    return propertyElementExclusions;
     }
 
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.server.services.DiscoveryService#getNamedLevelProperties(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    private static Set<String> getPropertyExclusions() {
+        Set<String> propertyElementExclusions = new HashSet<String>();
+        StandardMemberProperty[] test = Property.StandardMemberProperty.values();
+        for (int i = 0; i < test.length; i++) {
+            propertyElementExclusions.add(test[i].getCaption(null));
+        }
+        return propertyElementExclusions;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.DiscoveryService#getNamedLevelProperties(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String)
      */
     public StringTree getNamedLevelProperties(String currentUserId, String sessionId, String queryId,
             String dimensionName, String levelName) throws OlapException {
-return null;
+        return null;
     }
 }
