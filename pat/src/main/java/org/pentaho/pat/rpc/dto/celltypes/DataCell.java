@@ -17,6 +17,7 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import org.pentaho.pat.client.ui.widgets.DataCellPanel;
 
@@ -41,6 +42,8 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     private MemberCell parentColMember = null;
 
+    private HashMap<String,String> properties = new HashMap<String, String>();
+    
     public MemberCell getParentColMember() {
         return parentColMember;
     }
@@ -121,4 +124,17 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         return cellPanel;
 
     }
+    
+    public void setProperty(String name, String value){
+        properties.put(name, value);
+    }
+    
+    public HashMap<String, String> getProperties(){
+        return properties;
+    }
+    
+    public String getProperty(String name){
+        return properties.get(name);
+    }
+    
 }

@@ -27,7 +27,6 @@ import org.olap4j.metadata.Cube;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.StringTree;
-
 import org.springframework.security.annotation.Secured;
 
 /**

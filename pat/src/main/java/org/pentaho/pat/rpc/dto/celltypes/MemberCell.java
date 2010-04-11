@@ -20,6 +20,7 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -62,6 +63,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
     private List<String> memberPath;
 
+    private HashMap<String, String> properties = new HashMap<String, String>();
     /**
      * 
      * Blank Constructor for Serializable niceness, don't use it.
@@ -287,4 +289,16 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
         return memberPath;
     }
 
+    public void setProperty(String name, String value){
+        properties.put(name, value);
+    }
+    
+    public HashMap<String, String> getProperties(){
+        return properties;
+    }
+    
+    public String getProperty(String name){
+        return properties.get(name);
+    }
+    
 }

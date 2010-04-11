@@ -28,10 +28,12 @@ import java.util.List;
 import org.olap4j.Cell;
 import org.olap4j.CellSet;
 import org.olap4j.CellSetAxis;
+import org.olap4j.OlapException;
 import org.olap4j.Position;
 import org.olap4j.impl.CoordinateIterator;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Member;
+import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Property;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
@@ -144,7 +146,7 @@ public class PatCellSetFormatter {
 
     private Matrix matrix;
 
-    public Matrix format(final CellSet cellSet, final List<Property> props) {
+    public Matrix format(final CellSet cellSet) {
         // Compute how many rows are required to display the columns axis.
         final CellSetAxis columnsAxis;
         if (cellSet.getAxes().size() > 0) {
@@ -170,10 +172,10 @@ public class PatCellSetFormatter {
                 dimensions[i - 2] = cellSetAxis.getPositions().size();
             }
             for (final int[] pageCoords : CoordinateIterator.iterate(dimensions)) {
-                matrix = formatPage(cellSet, pageCoords, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo, props);
+                matrix = formatPage(cellSet, pageCoords, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
             }
         } else {
-            matrix = formatPage(cellSet, new int[] {}, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo, props);
+            matrix = formatPage(cellSet, new int[] {}, columnsAxis, columnsAxisInfo, rowsAxis, rowsAxisInfo);
         }
 
         return matrix;
@@ -227,7 +229,7 @@ public class PatCellSetFormatter {
      *            Description of rows axis
      */
     private Matrix formatPage(final CellSet cellSet, final int[] pageCoords, final CellSetAxis columnsAxis,
-            final AxisInfo columnsAxisInfo, final CellSetAxis rowsAxis, final AxisInfo rowsAxisInfo, final List<Property> props) {
+            final AxisInfo columnsAxisInfo, final CellSetAxis rowsAxis, final AxisInfo rowsAxisInfo) {
 
         // Figure out the dimensions of the blank rectangle in the top left
         // corner.
@@ -280,7 +282,20 @@ public class PatCellSetFormatter {
                     break;
                 }
             }
-
+            
+            NamedList<Property> proplist = null;
+            try {
+                proplist = cell.getCellSet().getMetaData().getCellProperties();
+                for(int i = 0; i<proplist.size(); i++){
+                    cellInfo.setProperty(proplist.get(i).getCaption(null), cell.getPropertyValue(proplist.get(i)).toString());
+               }
+          
+            } catch (OlapException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            
+            
             if (cell.getValue() != null)
                 if (cell.getValue() instanceof Number)
                     cellInfo.setRawNumber((Number) cell.getValue());
@@ -379,6 +394,7 @@ public class PatCellSetFormatter {
                 memberInfo.setExpanded(expanded);
                 same = same && i > 0 && Olap4jUtil.equal(prevMembers[y], member);
 
+                
                 if (member != null) {
                     if (x - 1 == offset)
                         memberInfo.setLastRow(true);
@@ -389,7 +405,11 @@ public class PatCellSetFormatter {
                     memberInfo.setParentDimension(member.getDimension().getName());
                     memberInfo.setUniquename(member.getUniqueName());
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
-
+                    NamedList<Property> values = member.getLevel().getProperties();
+                    for(int j=0; j<values.size();j++){
+                    memberInfo.setProperty(values.get(j).getCaption(null), member.getPropertyFormattedValue(values.get(j)));
+                    }
+                    
                     if (y > 0 && prevMembers[y - 1] != null)
                         memberInfo.setRightOf(prevMemberInfo[y - 1]);
 
