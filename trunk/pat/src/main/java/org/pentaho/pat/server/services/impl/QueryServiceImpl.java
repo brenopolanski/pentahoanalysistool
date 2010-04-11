@@ -351,10 +351,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
             }
         }
-
+        
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
         qDim.include(selectionMode, member);
+
     }
 
     /*
@@ -616,6 +617,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         final CellSet cellSet = mdx.execute();
 
+        
         OlapUtil.storeCellSet(queryId, cellSet);
         // Check the mdx generated
 
