@@ -224,7 +224,6 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         
     }
     
-
     private static Set<String> getPropertyExclusions() {
     Set <String> propertyElementExclusions = new HashSet<String>();
     StandardMemberProperty[] test = Property.StandardMemberProperty.values();

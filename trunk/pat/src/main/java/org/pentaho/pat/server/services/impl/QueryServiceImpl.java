@@ -568,7 +568,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final OlapConnection con = this.sessionService.getNativeConnection(userId, sessionId, connectionId);
         final OlapStatement stmt = con.createStatement();
-        return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx), null);
+        return OlapUtil.cellSet2Matrix(stmt.executeOlapQuery(mdx));
     }
 
     /*
@@ -586,7 +586,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         OlapUtil.storeCellSet(mdxQueryId, cellSet);
 
-        return OlapUtil.cellSet2Matrix(cellSet, null);
+        return OlapUtil.cellSet2Matrix(cellSet);
     }
 
     /*
@@ -619,16 +619,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         
         OlapUtil.storeCellSet(queryId, cellSet);
-        // Check the mdx generated
 
-        Set<Entry<String, List<Property>>> entries = sessionService.getSession(userId, sessionId).getQueryProperties().entrySet();
-        List<Property> props = null;
-        for (final Entry<String, List<Property>> entry : entries) {
-            if(entry.getKey().equals(queryId)){
-                props = entry.getValue();
-            }
-        }
-        return OlapUtil.cellSet2Matrix(cellSet, props);
+
+   
+        return OlapUtil.cellSet2Matrix(cellSet);
 
     }
 

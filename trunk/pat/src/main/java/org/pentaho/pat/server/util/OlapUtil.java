@@ -30,7 +30,6 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Member;
-import org.olap4j.metadata.Property;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
@@ -51,17 +50,16 @@ public class OlapUtil {
      * 
      * @param cellSet
      *            The Olap4j cellset.
-     * @param props 
      * @return cds The Matrix.
      */
 
-    public static CellDataSet cellSet2Matrix(final CellSet cellSet, List<Property> props) {
+    public static CellDataSet cellSet2Matrix(final CellSet cellSet) {
         if (cellSet == null) {
             return null;
         }
         final PatCellSetFormatter pcsf = new PatCellSetFormatter();
 
-        final Matrix matrix = pcsf.format(cellSet, props);
+        final Matrix matrix = pcsf.format(cellSet);
         final CellDataSet cds = new CellDataSet(matrix.getMatrixWidth(), matrix.getMatrixHeight());
 
         int z = 0;
