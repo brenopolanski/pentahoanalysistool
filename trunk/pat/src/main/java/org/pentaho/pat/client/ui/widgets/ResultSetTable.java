@@ -91,8 +91,10 @@ public class ResultSetTable extends LayoutComposite {
                         - request.getStartRow());
 
                 final List<String[]> list = new ArrayList<String[]>();
-                for (int i = 0, n = numRows; i < n; i++) {
-                    list.add(data.get(request.getStartRow() + i));
+                // in the first row is just the header of the data table
+                // this might be a dirty hack but works for now, until we have a proper resultset object
+                for (int i = 0, n = numRows - 1; i < n; i++) {
+                    list.add(data.get(request.getStartRow() + 1 + i));
                 }
                 final SerializableResponse response = new SerializableResponse(
                         list);
@@ -139,7 +141,7 @@ public class ResultSetTable extends LayoutComposite {
             final DefaultColumnDefinition<String[],String> colDef0 = new DefaultColumnDefinition<String[],String>(headers) {
                 @Override
                 public String getCellValue(String[] rowValue) {
-                    return rowValue[cell];
+                    return (rowValue == null  || rowValue[cell] == null || rowValue[cell].equals("null") ? "" : rowValue[cell]);
                     
                 }
               };
