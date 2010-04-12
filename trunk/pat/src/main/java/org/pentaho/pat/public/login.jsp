@@ -134,7 +134,7 @@
 
   <body onload="document.f.j_username.focus();">
   <!-- Header -->
-  <div id="hd"><h1>Pentaho Analysis Tool 0.6</h1></div>
+  <div id="hd"><h1>Pentaho Analysis Tool 0.7</h1></div>
   <!-- Container -->
   <div id="container">
     <!-- Form -->
