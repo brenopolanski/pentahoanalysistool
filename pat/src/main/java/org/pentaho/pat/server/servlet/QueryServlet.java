@@ -416,19 +416,19 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                         row[i] = rs.getString(header[i]);
                         if (row[i] == null )
                             row[i] = "";
-                        if(height < 10) {
+//                        if(height < 10) {
                             System.out.print(" |\t" + row[i]);
-                        }
+//                        }
                     
                 }
-                if(height < 10) {
+//                if(height < 10) {
                     System.out.println(" |");
                     rows.add(row);
 
-                }
+//                }
                 height++;
             }
-            
+            height = 11;
             String[][] result = rows.toArray(new String[height][width]);
 //            for (int i = 0; i<rows.size();i++) {
 //                String[] row = rows.get(i);
