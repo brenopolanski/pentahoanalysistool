@@ -13,6 +13,7 @@
 package org.pentaho.pat.client.util.factory;
 
 import org.pentaho.pat.client.listeners.QueryChangeListeners;
+import org.pentaho.pat.client.listeners.TableListener;
 
 import com.google.gwt.core.client.GWT;
 
@@ -32,4 +33,14 @@ public class GlobalConnectionFactory {
         }
         return qcl;
     }
+    
+    protected static TableListener tl;
+
+    public static TableListener getOperationInstance() {
+        if (tl == null) {
+            tl = (TableListener) GWT.create(TableListener.class);
+        }
+        return tl;
+    }
+
 }

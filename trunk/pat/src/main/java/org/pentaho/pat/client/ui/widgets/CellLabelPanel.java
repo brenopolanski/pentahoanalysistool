@@ -22,9 +22,8 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
-import org.pentaho.pat.client.ui.windows.DrillThroughWindow;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.TableDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -68,13 +67,14 @@ public class CellLabelPanel extends HorizontalPanel {
             ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),new AsyncCallback<String[][]>() {
                 
                 public void onSuccess(String[][] arg0) {
-
-                    if (arg0 != null && arg0[0] != null) {
-                    TableDataSet ts = new TableDataSet(arg0[0].length,arg0.length);
-                    ts.setTableHeader(arg0[0]);
-                    ts.setTableBody(arg0);
-                    DrillThroughWindow.display(ts);
-                    }
+//
+//                    if (arg0 != null && arg0[0] != null) {
+//                    TableDataSet ts = new TableDataSet(arg0[0].length,arg0.length);
+//                    ts.setTableHeader(arg0[0]);
+//                    ts.setTableBody(arg0);
+//                    DrillThroughWindow.display(ts);
+//                    }
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(CellLabelPanel.this, Pat.getCurrQuery(), arg0);
                 }
                 
                 public void onFailure(Throwable arg0) {
