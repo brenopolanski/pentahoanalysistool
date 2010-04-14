@@ -93,4 +93,13 @@ public class TableDataSet implements IsSerializable, Serializable {
     public void setTableBody(String[][] tableBody) {
         this.tableBody = tableBody;
     }
+
+    public void setData(String[][] data) {
+        if (data != null && data[0] != null) {
+            width = data[0].length;
+            height = data.length;
+            setTableHeader(data[0]);
+            setTableBody(data);
+        }
+    }
 }

@@ -236,7 +236,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        final LayoutPanel centerPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+
         
         final ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseLeft());
         westPanel.getHeader().add(collapseBtn3, CaptionRegion.RIGHT);
@@ -251,12 +251,16 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         
         final DataPanel dPanel = new DataPanel(queryId, PanelUtil.PanelType.QM);
         final PropertiesPanel pPanel = new PropertiesPanel(dPanel, PanelUtil.PanelType.QM);
+        final MainSouthPanel msPanel = new MainSouthPanel();
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        centerPanel.add(pPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
-        centerPanel.add(dPanel,new BoxLayoutData(FillStyle.BOTH));
-
+        final LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
+        centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
+        centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
+        centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,true));
+        centerPanel.setCollapsed(msPanel, true);
+        
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
         westPanel.add(mainMenuPanel);
 
