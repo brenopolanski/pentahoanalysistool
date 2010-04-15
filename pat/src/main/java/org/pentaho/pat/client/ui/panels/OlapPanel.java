@@ -267,7 +267,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
                 centerPanel.layout();
             }
         });
-        centerPanel.setCollapsed(msPanel, true);
+
         msPanel.setVisible(false);
         
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
