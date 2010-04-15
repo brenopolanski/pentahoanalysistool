@@ -27,6 +27,6 @@ package org.pentaho.pat.client.util;
  * 
  */
 public enum Operation {
-    ENABLE_DRILLTHROUGH
+    ENABLE_DRILLTHROUGH, DISABLE_DRILLTHROUGH
 
 }

@@ -27,12 +27,8 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
-import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
@@ -251,15 +247,28 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         
         final DataPanel dPanel = new DataPanel(queryId, PanelUtil.PanelType.QM);
         final PropertiesPanel pPanel = new PropertiesPanel(dPanel, PanelUtil.PanelType.QM);
-        final MainSouthPanel msPanel = new MainSouthPanel();
+        
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         final LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
+        final MainSouthPanel msPanel = new MainSouthPanel(centerPanel);
+        
         centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
-        centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,true));
+        centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,0.3, 20, 300, true));
+        
+        final ImageButton collapseBtnSouth = new ImageButton(Caption.IMAGES.toolCollapseDown());
+        msPanel.getHeader().add(collapseBtnSouth, CaptionRegion.RIGHT);
+
+        collapseBtnSouth.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                centerPanel.setCollapsed(msPanel, !centerPanel.isCollapsed(msPanel));
+                centerPanel.layout();
+            }
+        });
         centerPanel.setCollapsed(msPanel, true);
+        msPanel.setVisible(false);
         
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);
         westPanel.add(mainMenuPanel);

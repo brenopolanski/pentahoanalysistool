@@ -20,10 +20,7 @@
 package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
-import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
-import org.gwt.mosaic.ui.client.ImageButton;
-import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -31,10 +28,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.TableDataSet;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
  * Collapsable Southpanel for MainTabPanel
@@ -47,36 +42,56 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
 
     private DrillThroughPanel dtp = null;
     private LayoutPanel baselayoutPanel = getLayoutPanel();
+    private LayoutPanel parent = null;
     
     /**
      * 
      */
-    public MainSouthPanel() {
+    public MainSouthPanel(LayoutPanel _parent) {
+        parent = _parent;
         initializeWidget();
     }
 
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        if (parent != null) {
+            parent.layout();
+        }
+        GlobalConnectionFactory.getOperationInstance().addTableListener(MainSouthPanel.this);
+    };
+
+    @Override
+    protected void onDetach() {
+        super.onDetach();
+        if (parent != null) {
+            parent.layout();
+        }
+        GlobalConnectionFactory.getOperationInstance().removeTableListener(MainSouthPanel.this);
+    };
+
+    
     private void initializeWidget() {
-        baselayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
+        this.setLayout(new BoxLayout(Orientation.VERTICAL));
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        MainSouthPanel.this.setSize("750px", "500px");
         
-        final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseUp());
-        this.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
-
-        ClickHandler collapseClick = new ClickHandler() {
-            public void onClick(final ClickEvent event) {
-                MainSouthPanel.this.setCollapsed(!MainSouthPanel.this.isCollapsed());
-                if (MainSouthPanel.this.isCollapsed())
-                    collapseBtn.setImage(Caption.IMAGES.toolCollapseDown().createImage());
-                else
-                    collapseBtn.setImage(Caption.IMAGES.toolCollapseUp().createImage());
-                
-                baselayoutPanel.layout();
-                
-            }
-        };
-        MainSouthPanel.this.getHeader().addClickHandler(collapseClick);
+//        final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseDown());
+//        this.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
+//
+//        ClickHandler collapseClick = new ClickHandler() {
+//            public void onClick(final ClickEvent event) {
+//                MainSouthPanel.this.setCollapsed(!MainSouthPanel.this.isCollapsed());
+//                if (MainSouthPanel.this.isCollapsed())
+//                    collapseBtn.setImage(Caption.IMAGES.toolCollapseDown().createImage());
+//                else
+//                    collapseBtn.setImage(Caption.IMAGES.toolCollapseUp().createImage());
+//                
+//                MainSouthPanel.this.layout();
+//                
+//            }
+//        };
+//        MainSouthPanel.this.getHeader().addClickHandler(collapseClick);
     }
     
     
@@ -85,23 +100,29 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
      */
     public void onOperationExecuted(Operation operation) {
         if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
+            this.clear();
             this.setVisible(true);
-            baselayoutPanel.clear();
-            this.setTitle("Drill Through Data Panel");
-            MainSouthPanel.this.setCollapsed(true);
+            this.getHeader().setText("Drill Through Data Panel");
             dtp = new DrillThroughPanel();
-            baselayoutPanel.add(dtp,new BoxLayoutData(FillStyle.BOTH));
-            baselayoutPanel.layout();
+            this.add(dtp,new BoxLayoutData(FillStyle.BOTH));
+            parent.setCollapsed(this,false);
+            this.layout();
+            parent.layout();
         }
-        // TODO Auto-generated method stub
-
+        
+        if (operation.equals(Operation.DISABLE_DRILLTHROUGH)) {
+            this.clear();
+            parent.setCollapsed(this,true);
+            this.setVisible(false);
+            parent.layout();
+        }
     }
 
     public void onDrillThroughExecuted(String queryId, String[][] result) {
         TableDataSet tds = new TableDataSet();
         tds.setData(result);
         dtp.setData(tds);
-        baselayoutPanel.layout();
+        MainSouthPanel.this.layout();
         
     }
 

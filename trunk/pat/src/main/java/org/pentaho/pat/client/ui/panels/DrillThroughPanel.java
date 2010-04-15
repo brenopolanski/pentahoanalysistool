@@ -68,6 +68,7 @@ public class DrillThroughPanel extends LayoutComposite {
     
     public void setData(TableDataSet tableData) {
         rTable.setData(tableData);
+        this.layout();
     }
 
 }

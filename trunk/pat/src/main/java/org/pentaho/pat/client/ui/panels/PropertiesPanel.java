@@ -36,6 +36,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
+import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -76,6 +77,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 	private final ToolButton layoutMenuButton;
 	
 	private final ToolButton drillMenuButton;
+	
+	private final ToolButton drillThroughButton;
 	
 	private final String queryId;
 	
@@ -385,9 +388,23 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
         drillMenuButton.setMenu(drillMenuBtnMenu);
 
-        final ToolButton drillThruButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
-        drillThruButton.setStyle(ToolButtonStyle.CHECKBOX);
-        drillThruButton.setEnabled(false);
+        drillThroughButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
+        drillThroughButton.setEnabled(false);
+        drillThroughButton.setStyle(ToolButtonStyle.CHECKBOX);
+        
+        drillThroughButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                if (drillThroughButton.isChecked()) {
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, Operation.ENABLE_DRILLTHROUGH);
+                }
+                else
+                {
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, Operation.DISABLE_DRILLTHROUGH);
+                }
+                
+            }
+        });
         
         if (pType == PanelUtil.PanelType.MDX) {
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
@@ -401,6 +418,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(drillThroughButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -423,6 +441,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             pivotButton.setEnabled(true);
             layoutMenuButton.setEnabled(true);
             drillMenuButton.setEnabled(true);
+            drillThroughButton.setEnabled(true);
         }
 
     }
