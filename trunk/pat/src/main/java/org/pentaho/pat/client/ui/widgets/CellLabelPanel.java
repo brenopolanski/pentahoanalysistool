@@ -65,25 +65,6 @@ public class CellLabelPanel extends HorizontalPanel {
         super.onBrowserEvent(event);
         switch (DOM.eventGetType(event)) {
         case Event.ONCLICK:
-            ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),new AsyncCallback<String[][]>() {
-                
-                public void onSuccess(String[][] arg0) {
-//
-//                    if (arg0 != null && arg0[0] != null) {
-//                    TableDataSet ts = new TableDataSet(arg0[0].length,arg0.length);
-//                    ts.setTableHeader(arg0[0]);
-//                    ts.setTableBody(arg0);
-//                    DrillThroughWindow.display(ts);
-//                    }
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(CellLabelPanel.this, Operation.ENABLE_DRILLTHROUGH);
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(CellLabelPanel.this, Pat.getCurrQuery(), arg0);
-                }
-                
-                public void onFailure(Throwable arg0) {
-                    MessageBox.alert("error", "drillthrough error");
-                    
-                }
-            });
             break;
         case Event.ONCONTEXTMENU:
             final CellModeMenu test = new CellModeMenu();
@@ -93,6 +74,7 @@ public class CellLabelPanel extends HorizontalPanel {
                     test.setPopupPosition(event.getClientX(), event.getClientY());
                 }
             });
+            break;
         default:
             break;
         }
