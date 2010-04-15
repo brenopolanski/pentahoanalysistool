@@ -22,6 +22,7 @@ package org.pentaho.pat.client.ui.widgets;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
+import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -74,6 +75,7 @@ public class CellLabelPanel extends HorizontalPanel {
 //                    ts.setTableBody(arg0);
 //                    DrillThroughWindow.display(ts);
 //                    }
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(CellLabelPanel.this, Operation.ENABLE_DRILLTHROUGH);
                     GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(CellLabelPanel.this, Pat.getCurrQuery(), arg0);
                 }
                 
