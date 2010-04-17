@@ -167,7 +167,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         // can't see any effect with that
         table.reload();
         table.redraw();
-        table.fillWidth();
+        //table.fillWidth();
         this.layout();
     }
 

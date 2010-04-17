@@ -136,11 +136,4 @@ public class Session {
         this.mdxQueries = mdxQueries;
     }
     
-    public void setQueryProperties(Map<String, List<Property>> queryProperties){
-        this.queryProperties = queryProperties;
-    }
-    
-    public Map<String, List<Property>> getQueryProperties(){
-       return  queryProperties;
-    }
 }

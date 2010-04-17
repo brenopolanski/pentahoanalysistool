@@ -20,6 +20,7 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -40,6 +41,7 @@ public abstract class AbstractBaseCell implements Serializable, IsSerializable {
 
     private String parentDimension = null;
 
+    private HashMap<String,String> properties = new HashMap<String, String>();
     /**
      * 
      * Blank Constructor for serialization dont use.
@@ -147,4 +149,15 @@ public abstract class AbstractBaseCell implements Serializable, IsSerializable {
 
     }
 
+    public void setProperty(String name, String value){
+        properties.put(name, value);
+    }
+    
+    public HashMap<String, String> getProperties(){
+        return properties;
+    }
+    
+    public String getProperty(String name){
+        return properties.get(name);
+    }
 }

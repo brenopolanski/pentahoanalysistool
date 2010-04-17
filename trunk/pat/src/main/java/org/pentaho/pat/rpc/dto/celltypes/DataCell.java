@@ -42,7 +42,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     private MemberCell parentColMember = null;
 
-    private HashMap<String,String> properties = new HashMap<String, String>();
+    //private HashMap<String,String> properties = new HashMap<String, String>();
     
     public MemberCell getParentColMember() {
         return parentColMember;
@@ -125,7 +125,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     }
     
-    public void setProperty(String name, String value){
+/*    public void setProperty(String name, String value){
         properties.put(name, value);
     }
     
@@ -136,5 +136,5 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
     public String getProperty(String name){
         return properties.get(name);
     }
-    
+  */  
 }

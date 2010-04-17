@@ -55,10 +55,10 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
  */
 public class PropertiesMenu extends LayoutComposite {
 
-
     private final static String DIMENSION_MENU = "pat-DimensionMenu"; //$NON-NLS-1$
 
     final DefaultListModel<LevelProperties> model = new DefaultListModel<LevelProperties>();
+
     /**
      * 
      * DimensionMenu Constructor.
@@ -69,59 +69,57 @@ public class PropertiesMenu extends LayoutComposite {
         this.setStyleName(DIMENSION_MENU);
         final LayoutPanel baseLayoutPanel = getLayoutPanel();
         baseLayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
-        final LayoutPanel vBox = new LayoutPanel(
-                new BoxLayout(Orientation.VERTICAL));
-            vBox.setPadding(0);
-            vBox.setWidgetSpacing(0);
+        final LayoutPanel vBox = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+        vBox.setPadding(0);
+        vBox.setWidgetSpacing(0);
 
-            final ListBox<LevelProperties> listBox = new ListBox<LevelProperties>();
-            listBox.setCellRenderer(new CellRenderer<LevelProperties>() {
-                public void renderCell(ListBox<LevelProperties> listBox, int row, int column,
-                    LevelProperties item) {
-                  switch (column) {
-                    case 0:
-                      listBox.setWidget(row, column, createRichListBoxCell(item));
-                      break;
-                    default:
-                      throw new RuntimeException("Should not happen");
-                  }
+        final ListBox<LevelProperties> listBox = new ListBox<LevelProperties>();
+        listBox.setCellRenderer(new CellRenderer<LevelProperties>() {
+            public void renderCell(ListBox<LevelProperties> listBox, int row, int column, LevelProperties item) {
+                switch (column) {
+                case 0:
+                    listBox.setWidget(row, column, createRichListBoxCell(item));
+                    break;
+                default:
+                    throw new RuntimeException("Should not happen");
                 }
-              });
+            }
+        });
 
-            listBox.setContextMenu(createContextMenu());
+        listBox.setContextMenu(createContextMenu());
 
-            listBox.setModel(model);
-            
-            
-            baseLayoutPanel.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+        listBox.setModel(model);
 
-        }
+        baseLayoutPanel.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+
+    }
 
     private PopupMenu createContextMenu() {
         Command cmd = new Command() {
-          public void execute() {
-            //InfoPanel.show("Menu Button", "You selected a menu item!");
-              ServiceFactory.getQueryInstance().addProperty(Pat.getSessionID(), Pat.getCurrQuery(), "dimensionName", "levelName", "propertyName", true, new AsyncCallback(){
+            public void execute() {
+                // InfoPanel.show("Menu Button", "You selected a menu item!");
+                ServiceFactory.getQueryInstance().addProperty(Pat.getSessionID(), Pat.getCurrQuery(), "dimensionName",
+                        "levelName", "propertyName", true, new AsyncCallback() {
 
-                public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
-                    
-                }
+                            public void onFailure(Throwable arg0) {
+                                // TODO Auto-generated method stub
 
-                public void onSuccess(Object arg0) {
-                    // TODO Auto-generated method stub
-                    
-                }
-                  
-              });
-          }
+                            }
+
+                            public void onSuccess(Object arg0) {
+                                // TODO Auto-generated method stub
+
+                            }
+
+                        });
+            }
         };
 
         PopupMenu contextMenu = new PopupMenu();
 
         contextMenu.addItem("Enable", cmd);
         return contextMenu;
-      }
+    }
 
     private Widget createRichListBoxCell(LevelProperties item) {
         final FlexTable table = new FlexTable();
@@ -132,16 +130,15 @@ public class PropertiesMenu extends LayoutComposite {
         table.setCellPadding(3);
         table.setCellSpacing(0);
         table.setStyleName("RichListBoxCell");
-        
+
         table.setHTML(0, 0, "<b>" + item.getLevelName() + "</b>");
-        
+
         table.setText(0, 1, "Property: " + item.getPropertyName());
 
         return table;
-      }
+    }
 
-
-    public void loadAxisProperties(final String queryId, IAxis targetAxis){
+    public void loadAxisProperties(final String queryId, IAxis targetAxis) {
         ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(), Pat.getCurrQuery(), targetAxis,
                 new AsyncCallback<String[]>() {
 
@@ -156,24 +153,25 @@ public class PropertiesMenu extends LayoutComposite {
                     }
                 });
     }
-    
-     
-    public void createListBox(String queryId, String dimensionId){
-                    ServiceFactory.getDiscoveryInstance().getAllLevelProperties(Pat.getSessionID(), queryId, dimensionId,
-                    new AsyncCallback<List<LevelProperties>>() {
 
-                public void onFailure(final Throwable arg0) {
-                    //dimensionTree.clear();
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                            .failedMemberFetch(arg0.getLocalizedMessage()));
-                }
+    public void createListBox(String queryId, String dimensionId) {
+        ServiceFactory.getDiscoveryInstance().getAllLevelProperties(Pat.getSessionID(), queryId, dimensionId,
+                new AsyncCallback<List<LevelProperties>>() {
 
-                public void onSuccess(final List<LevelProperties> labels) {
-                    model.addAll(0, labels);
-                }
-            });
+                    public void onFailure(final Throwable arg0) {
+                        // dimensionTree.clear();
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedMemberFetch(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(final List<LevelProperties> labels) {
+                        if (labels.size() > 0) {
+                            model.addAll(0, labels);
+                        } else {
+                            model.add(new LevelProperties("N/A", "No properties available"));
+                        }
+                    }
+                });
     }
-            
-            
 
-    }
+}

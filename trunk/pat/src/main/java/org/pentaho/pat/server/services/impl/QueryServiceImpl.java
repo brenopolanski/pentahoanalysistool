@@ -959,10 +959,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             String propertyName, Boolean enabled) {
         this.sessionService.validateSession(userId, sessionId);
         Query query = this.getQuery(userId, sessionId, queryId);
-        Property prop = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels().get(levelName).getProperties().get(propertyName);
-        List<Property> props = new ArrayList<Property>();
-        props.add(prop);
-        sessionService.getSession(userId, sessionId).getQueryProperties().put(queryId, props);
+        
     }
 
 }

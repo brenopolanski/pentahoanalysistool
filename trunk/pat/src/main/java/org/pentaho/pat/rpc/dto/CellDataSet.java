@@ -68,7 +68,6 @@ public class CellDataSet implements IsSerializable, Serializable {
     }
 
     public void setOffset(final int offset) {
-        // TODO Auto-generated method stub
         this.offset = offset;
     }
 
