@@ -63,7 +63,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
 
     private List<String> memberPath;
 
-    private HashMap<String, String> properties = new HashMap<String, String>();
+    //private HashMap<String, String> properties = new HashMap<String, String>();
     /**
      * 
      * Blank Constructor for Serializable niceness, don't use it.
@@ -289,7 +289,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
         return memberPath;
     }
 
-    public void setProperty(String name, String value){
+    /*public void setProperty(String name, String value){
         properties.put(name, value);
     }
     
@@ -299,6 +299,6 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     
     public String getProperty(String name){
         return properties.get(name);
-    }
+    }*/
     
 }

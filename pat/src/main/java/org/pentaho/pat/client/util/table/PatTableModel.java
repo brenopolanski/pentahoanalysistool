@@ -96,7 +96,17 @@ public class PatTableModel {
          * 
          * for (int x = 0; x < olapMatrix.getMatrixWidth(); x++) { values[z][x] = olapMatrix.get(x, y); } z++; }
          */
-
+/*int propertyamount = 0;
+        AbstractBaseCell[][] meh = olapMatrix.getCellSetBody();
+        for (int i=0; i<meh.length; i++){
+            AbstractBaseCell[] cell = meh[i];
+            for(int j = 0; j<cell.length; j++){
+                cell[j].getProperty("property");
+             }
+            
+            AbstractBaseCell[] extended = new AbstractBaseCell[meh[i].length + propertyamount];
+            
+        }*/
         return olapMatrix.getCellSetBody();
     }
 
