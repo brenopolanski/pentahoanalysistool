@@ -23,10 +23,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  */
 public class DataCellPanel extends HorizontalPanel implements ITableListener {
 
-    private final MemberCell pcm;
-
-    private final MemberCell prm;
-    
     private Number cellNum;
 
     private final static String DATA_CELL_PANEL = "pat-DataCellPanel"; //$NON-NLS-1$
@@ -40,8 +36,6 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
     public DataCellPanel(final MemberCell parentColMember, final MemberCell parentRowMember, Number rawNumber) {
         super();
         sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
-        pcm = parentColMember;
-        prm = parentRowMember;
         cellNum = rawNumber;
         this.setStyleName(DATA_CELL_PANEL);
         GlobalConnectionFactory.getOperationInstance().addTableListener(this);

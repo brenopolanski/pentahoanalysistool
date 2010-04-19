@@ -19,18 +19,12 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
-import org.pentaho.pat.client.util.Operation;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 

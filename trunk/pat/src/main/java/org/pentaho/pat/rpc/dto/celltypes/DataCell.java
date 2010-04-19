@@ -17,7 +17,6 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import org.pentaho.pat.client.ui.widgets.DataCellPanel;
 

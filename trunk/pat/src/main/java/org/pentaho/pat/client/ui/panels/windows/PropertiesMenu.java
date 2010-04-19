@@ -43,7 +43,6 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * Tree list of connections and cubes.
@@ -99,7 +98,7 @@ public class PropertiesMenu extends LayoutComposite {
             public void execute() {
                 // InfoPanel.show("Menu Button", "You selected a menu item!");
                 ServiceFactory.getQueryInstance().addProperty(Pat.getSessionID(), Pat.getCurrQuery(), "dimensionName",
-                        "levelName", "propertyName", true, new AsyncCallback() {
+                        "levelName", "propertyName", true, new AsyncCallback<Object>() {
 
                             public void onFailure(Throwable arg0) {
                                 // TODO Auto-generated method stub
@@ -123,8 +122,6 @@ public class PropertiesMenu extends LayoutComposite {
 
     private Widget createRichListBoxCell(LevelProperties item) {
         final FlexTable table = new FlexTable();
-        final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
-
         table.setWidth("100%");
         table.setBorderWidth(0);
         table.setCellPadding(3);

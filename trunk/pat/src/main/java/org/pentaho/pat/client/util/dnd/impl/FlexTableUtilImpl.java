@@ -60,6 +60,7 @@ public class FlexTableUtilImpl {
             targetTable.setWidget(targetRow, col, html);
         }
         copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
+        
     }
 
     /**

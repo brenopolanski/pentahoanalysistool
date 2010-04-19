@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Paul Stoellberger
+ * Copyright (C) 2010 Paul Stoellberger
  *
  * This program is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -37,7 +36,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  * Lists all Connections and Cubes and allows creation of new queries.
  * 
  * @created Aug 7, 2009
- * @since 0.5.0
+ * @since 0.7.0
  * @author Paul Stoellberger
  * 
  */
