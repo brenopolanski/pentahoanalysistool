@@ -20,7 +20,6 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
