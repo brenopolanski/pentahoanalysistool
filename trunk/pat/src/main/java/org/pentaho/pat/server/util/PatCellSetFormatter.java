@@ -261,7 +261,7 @@ public class PatCellSetFormatter {
             int y = yOffset;
             if (coordList.size() > 1)
                 y += coordList.get(1);
-            final DataCell cellInfo = new DataCell(true, false);
+            final DataCell cellInfo = new DataCell(true, false, coordList);
 
             for (int z = 0; z < matrix.getMatrixHeight(); z++) {
                 final AbstractBaseCell headerCell = matrix.get(x, z);

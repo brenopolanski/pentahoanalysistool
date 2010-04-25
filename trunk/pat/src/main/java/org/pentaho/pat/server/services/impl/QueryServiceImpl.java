@@ -39,14 +39,12 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
-import org.olap4j.Position;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
-import org.olap4j.metadata.Property;
 import org.olap4j.metadata.Schema;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
@@ -507,17 +505,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             }
     }
 
-    public ResultSet drillThrough(final String userId, final String sessionId, final String queryId) throws OlapException {
+    public ResultSet drillThrough(final String userId, final String sessionId, final String queryId, final List<Integer> coordinates) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
-        Cell cell = null;
-        
-        for (Position axis_0 : cellSet.getAxes().get(Axis.ROWS.axisOrdinal()).getPositions()) {
-                  for (Position axis_1 : cellSet.getAxes().get(Axis.COLUMNS.axisOrdinal()).getPositions()) {
-                          cell = cellSet.getCell(axis_0, axis_1);
-                  }
-              }        
+        Cell cell = cellSet.getCell(coordinates);
 
         if (cell == null) {
                     // We failed to find the member.
