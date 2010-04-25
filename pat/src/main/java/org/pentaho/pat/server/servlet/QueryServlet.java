@@ -389,25 +389,25 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
-    public String[][] drillThrough(final String sessionId, final String queryId) throws RpcException {
+    public String[][] drillThrough(final String sessionId, final String queryId, final List<Integer> coordinates) throws RpcException {
         try {
-            ResultSet rs = this.queryService.drillThrough(getCurrentUserId(), sessionId, queryId);
+            ResultSet rs = this.queryService.drillThrough(getCurrentUserId(), sessionId, queryId, coordinates);
             Integer width = 0;
             Integer height = 0;
             String[] header = null;
             List<String[]> rows = new ArrayList<String[]>();
-            System.out.println("DATASET");
+//            System.out.println("DATASET");
             while(rs.next()) {
                 if (height == 0) {
                     width = rs.getMetaData().getColumnCount();
                     header = new String[width];
                     for (int s = 0;s<width;s++) {
                         header[s] =rs.getMetaData().getColumnName(s+1);
-                        System.out.print(" |\t" + header[s]);
+//                        System.out.print(" |\t" + header[s]);
                     }
                     if (width > 0) {
                         rows.add(header);
-                        System.out.println(" |");
+//                        System.out.println(" |");
                     }
                 }
                 String[] row = new String[width];
@@ -417,12 +417,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                         if (row[i] == null )
                             row[i] = "";
 //                        if(height < 10) {
-                            System.out.print(" |\t" + row[i]);
+//                            System.out.print(" |\t" + row[i]);
 //                        }
                     
                 }
 //                if(height < 10) {
-                    System.out.println(" |");
+//                    System.out.println(" |");
                     rows.add(row);
 
 //                }
@@ -434,7 +434,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 //                String[] row = rows.get(i);
 //                result[i] = row;
 //            }
-            System.out.println("rows : " + rows.size() + " width: " + width);
+            LOG.debug("Drill-Through Result: Rows : " + rows.size() + " Width: " + width);
             return result;
             
         } catch (SQLException e) {

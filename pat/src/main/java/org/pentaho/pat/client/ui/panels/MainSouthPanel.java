@@ -100,19 +100,18 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
      */
     public void onOperationExecuted(Operation operation) {
         if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
-            this.clear();
-            this.setVisible(true);
             this.getHeader().setText("Drill Through Data Panel");
             dtp = new DrillThroughPanel();
             this.add(dtp,new BoxLayoutData(FillStyle.BOTH));
-            parent.setCollapsed(this,false);
+            this.setVisible(true);
             this.layout();
+            parent.setCollapsed(this,false);
             parent.layout();
         }
         
         if (operation.equals(Operation.DISABLE_DRILLTHROUGH)) {
-            this.clear();
-            parent.setCollapsed(this,true);
+            this.remove(dtp);
+            this.getHeader().setText("");
             this.setVisible(false);
             parent.layout();
         }

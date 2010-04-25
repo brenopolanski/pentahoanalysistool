@@ -17,6 +17,7 @@
 package org.pentaho.pat.rpc.dto.celltypes;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.pentaho.pat.client.ui.widgets.DataCellPanel;
 
@@ -24,6 +25,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The Class CellInfo.
@@ -41,7 +43,34 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     private MemberCell parentColMember = null;
 
+    private MemberCell parentRowMember = null;
+
+    private List<Integer> coordinates = null;
     //private HashMap<String,String> properties = new HashMap<String, String>();
+    
+    
+    /**
+     * 
+     * Blank constructor for serialization purposes, don't use it.
+     * 
+     */
+    public DataCell() {
+        super();
+    }
+
+    /**
+     * 
+     * Construct a Data Cell containing olap data.
+     * 
+     * @param b
+     * @param c
+     */
+    public DataCell(final boolean right, final boolean sameAsPrev, List<Integer> coordinates) {
+        super();
+        this.right = right;
+        this.sameAsPrev = sameAsPrev;
+        this.coordinates = coordinates;
+    }
     
     public MemberCell getParentColMember() {
         return parentColMember;
@@ -59,7 +88,6 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         this.parentRowMember = parentRowMember;
     }
 
-    private MemberCell parentRowMember = null;
 
     public Number getRawNumber() {
         return rawNumber;
@@ -69,27 +97,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         this.rawNumber = rawNumber;
     }
 
-    /**
-     * 
-     * Blank constructor for serialization purposes, don't use it.
-     * 
-     */
-    public DataCell() {
-        super();
-    }
 
-    /**
-     * 
-     * Construct a Data Cell containing olap data.
-     * 
-     * @param b
-     * @param c
-     */
-    public DataCell(final boolean right, final boolean sameAsPrev) {
-        super();
-        this.right = right;
-        this.sameAsPrev = sameAsPrev;
-    }
 
     /**
      * Gets the color value.
@@ -112,16 +120,26 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
 
     @Override
     public HorizontalPanel getLabel() {
-        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber);
-
+        
         final Label cellLabel = new Label(getFormattedValue());
-        cellLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        cellPanel.add(cellLabel);
+        final HorizontalPanel hp = new HorizontalPanel();
+        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber, coordinates);
+        cellPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        hp.setWidth("100%"); //$NON-NLS-1$
+        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        hp.add(cellPanel);
+        hp.setCellHorizontalAlignment(cellPanel, HasHorizontalAlignment.ALIGN_LEFT);
+        hp.add(cellLabel);
+        return hp;
 
-        cellPanel.setWidth("100%"); //$NON-NLS-1$
+    }
 
-        return cellPanel;
+    public List<Integer> getCoordinates() {
+        return coordinates;
+    }
 
+    public void setCoordinates(List<Integer> coordinates) {
+        this.coordinates = coordinates;
     }
     
 /*    public void setProperty(String name, String value){
