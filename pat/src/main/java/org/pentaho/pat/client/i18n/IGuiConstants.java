@@ -313,6 +313,8 @@ public interface IGuiConstants extends Constants {
      */
     String connections();
 
+    String connect();
+
     /**
      *TODO JAVADOC
      * 
@@ -325,6 +327,8 @@ public interface IGuiConstants extends Constants {
      * 
      * @return
      */
+    String disconnect();
+    
     String drillThrough();
 
     /**

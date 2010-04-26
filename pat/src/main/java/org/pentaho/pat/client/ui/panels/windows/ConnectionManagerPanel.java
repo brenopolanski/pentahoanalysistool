@@ -20,8 +20,6 @@
 
 package org.pentaho.pat.client.ui.panels.windows;
 
-import java.util.ArrayList;
-
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.core.client.Dimension;
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -49,8 +47,7 @@ import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
-import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CustomButton;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -98,7 +95,36 @@ public class ConnectionManagerPanel extends LayoutComposite {
     }
 
     private ListBox<ConnectionItem> createListBox() {
-        final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>();
+        final ListBox<ConnectionItem> cListBox = new ListBox<ConnectionItem>() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                super.onBrowserEvent(event);
+                switch (DOM.eventGetType(event)) {
+                case Event.ONCLICK:
+                    Integer index = this.getSelectedIndex();
+                    if (index >= 0) {
+                        connectionButton.setEnabled(true);
+                        ConnectionItem ci = this.getItem(index);
+
+                        if (ci.isConnected()) {
+                            connectionButton.invalidate();
+                            connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
+                                    ConstantFactory.getInstance().disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
+                            connectionButton.layout();
+                        }
+                        else
+                        {
+                            connectionButton.invalidate();
+                            connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
+                                    ConstantFactory.getInstance().connect(), ButtonLabelType.TEXT_ON_RIGHT));
+                            connectionButton.layout();
+                        }
+
+                    }
+                    break;
+                }
+            }
+        };
         cListBox.setCellRenderer(new ListBox.CellRenderer<ConnectionItem>() {
             public void renderCell(final ListBox<ConnectionItem> cListBox, final int row, final int column,
                     final ConnectionItem item) {
@@ -111,27 +137,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
             }
         });
         cListBox.setModel(CIMODEL);
-        cListBox.setSelectionEnabled(true);
-        cListBox.addRowSelectionHandler(new RowSelectionHandler() {
-            
-            public void onRowSelection(RowSelectionEvent event) {
-                ConnectionItem ci = cListBox.getItem(cListBox.getSelectedIndex());
-                if (ci.isConnected()) {
-                    connectionButton.invalidate();
-                    connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
-                            "Disconnect", ButtonLabelType.TEXT_ON_RIGHT));
-                    connectionButton.layout();
-                }
-                else
-                {
-                    connectionButton.invalidate();
-                    connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
-                            "Connect", ButtonLabelType.TEXT_ON_RIGHT));
-                    connectionButton.layout();
-                }
-                
-            }
-        });
+        
+        
         // FIXME remove that and use style
         DOM.setStyleAttribute(cListBox.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -242,7 +249,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 });
             }
         });
-        //editButton.setEnabled(false);
         toolBar.add(editButton);
 
 
@@ -255,8 +261,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     public static void refreshConnectionList() {
 
-//        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
         CIMODEL.clear();
+        
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
                 MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(
@@ -265,16 +271,12 @@ public class ConnectionManagerPanel extends LayoutComposite {
             }
 
             public void onSuccess(final CubeConnection[] ccArray) {
+                CIMODEL.clear();
                 for (final CubeConnection element2 : ccArray) {
                     final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), element2.isConnected());
                     CIMODEL.add(newCi);
-//                    cList.add(newCi);
                 }
-//                                for (final ConnectionItem cItem : cList) {
-//                                    CIMODEL.add(cItem);
-//                                }
-//                CIMODEL.addAll(cList);
-//                refreshMe();
+                refreshMe();
             }
         });
 
@@ -296,7 +298,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         }
         connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
         
-        final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
+        connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
                 "Connect", ButtonLabelType.TEXT_ON_RIGHT));
 
         connectionButton.addClickHandler(new ClickHandler() {
@@ -306,7 +308,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 if (index >= 0) {
                     ConnectionItem ci = listBox.getItem(index);
                     if (ci != null) {
-                        connectEvent(ci);
+                        connectEvent(ci.getId(),ci.isConnected());
                         if (ci.isConnected()) {
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
                                     "Disconnect", ButtonLabelType.TEXT_ON_RIGHT));
@@ -320,7 +322,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 
             }
         });
-        
+        connectionButton.setEnabled(false);
         connectionsList.add(connectionButton,new BoxLayoutData(FillStyle.HORIZONTAL));
         
     }
@@ -334,7 +336,6 @@ public class ConnectionManagerPanel extends LayoutComposite {
         table.setCellPadding(3);
         table.setCellSpacing(0);
 
-        // table.setStyleName("RichListBoxCell");
         Image cImage;
         if (item.isConnected()) {
             cImage = Pat.IMAGES.connect().createImage();
@@ -345,26 +346,28 @@ public class ConnectionManagerPanel extends LayoutComposite {
             @Override
             protected void onClick() {
                 super.onClick();
-                connectEvent(item);
-                // final int index = linkedListBox.getSelectedIndex();
-                // ciModel.set(index, item);
-
+                connectEvent(item.getId(),item.isConnected());
             };
         };
         table.setWidget(0, 0, cButton);
         cellFormatter.setWidth(0, 0, "25px"); //$NON-NLS-1$
-        // cellFormatter.setHeight(0, 0, "25px");
         table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
         cellFormatter.setWidth(0, 1, "100%"); //$NON-NLS-1$
         return table;
     }
 
-    private void connectEvent(final ConnectionItem item) {
-        if (item != null) {
+    /**
+     * Fires a connection event
+     * If the connection item is connected already, it will disconnect, otherwise connect
+     * @param item - The connection item
+     */
+    public static void connectEvent(final String connectionId, final Boolean isConnected) {
+
+        if(connectionId != null && isConnected != null) {
             LogoPanel.spinWheel(true);
 
-            if (item.isConnected()) {
-                ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
+            if (isConnected) {
+                ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), connectionId,
                         new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
@@ -374,27 +377,27 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        refreshConnectionList();
                         LogoPanel.spinWheel(false);
+                        refreshConnectionList();
+
                     }
 
                 });
             } else {
-                ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
+                ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), connectionId,
                         new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
                         LogoPanel.spinWheel(false);
                         MessageBox.alert(
                                 ConstantFactory.getInstance().error(),
-                                "There has been an error regarding the Connection. " +
-                                "Please contact the system administrator <br>"+ 
-                                MessageFactory.getInstance().failedLoadConnection(arg0.getMessage())); //$NON-NLS-1$
+                                MessageFactory.getInstance().failedConnect(arg0.getMessage())); //$NON-NLS-1$
                     }
 
                     public void onSuccess(final Object arg0) {
                         LogoPanel.spinWheel(false);
                         refreshConnectionList();
+
                     }
 
                 });

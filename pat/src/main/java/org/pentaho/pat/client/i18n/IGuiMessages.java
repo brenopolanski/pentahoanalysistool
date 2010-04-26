@@ -120,6 +120,7 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
      */
     String failedConnection(String arg0);
 
+    String failedConnect(String arg0);
     /**
      * 
      *TODO JAVADOC
