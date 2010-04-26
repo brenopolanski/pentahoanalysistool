@@ -49,6 +49,8 @@ import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
+import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CustomButton;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -74,6 +76,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     private ToolBar toolBar;
 
+    ToolButton connectionButton;
+    
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
     private static final DefaultListModel<ConnectionItem> CIMODEL = new DefaultListModel<ConnectionItem>();
@@ -107,6 +111,27 @@ public class ConnectionManagerPanel extends LayoutComposite {
             }
         });
         cListBox.setModel(CIMODEL);
+        cListBox.setSelectionEnabled(true);
+        cListBox.addRowSelectionHandler(new RowSelectionHandler() {
+            
+            public void onRowSelection(RowSelectionEvent event) {
+                ConnectionItem ci = cListBox.getItem(cListBox.getSelectedIndex());
+                if (ci.isConnected()) {
+                    connectionButton.invalidate();
+                    connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
+                            "Disconnect", ButtonLabelType.TEXT_ON_RIGHT));
+                    connectionButton.layout();
+                }
+                else
+                {
+                    connectionButton.invalidate();
+                    connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
+                            "Connect", ButtonLabelType.TEXT_ON_RIGHT));
+                    connectionButton.layout();
+                }
+                
+            }
+        });
         // FIXME remove that and use style
         DOM.setStyleAttribute(cListBox.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -230,7 +255,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     public static void refreshConnectionList() {
 
-        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
+//        final ArrayList<ConnectionItem> cList = new ArrayList<ConnectionItem>();
         CIMODEL.clear();
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
@@ -241,38 +266,15 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
             public void onSuccess(final CubeConnection[] ccArray) {
                 for (final CubeConnection element2 : ccArray) {
-                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), false);
-                    cList.add(newCi);
+                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2.getName(), element2.isConnected());
+                    CIMODEL.add(newCi);
+//                    cList.add(newCi);
                 }
-                ServiceFactory.getSessionInstance().getActiveConnections(Pat.getSessionID(),
-                        new AsyncCallback<CubeConnection[]>() {
-
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedActiveConnection(arg0.getLocalizedMessage()));
-
-                            }
-
-                            public void onSuccess(final CubeConnection[] ccArray2) {
-                                for (final CubeConnection element2 : ccArray2) {
-                                    final ConnectionItem newCi = new ConnectionItem(element2.getId(), element2
-                                            .getName(), false);
-
-                                    if (cList.contains(newCi)) {
-                                        cList.get(cList.indexOf(newCi)).setConnected(true);
-                                    } else {
-                                        newCi.setConnected(true);
-                                        cList.add(newCi);
-                                    }
-                                }
-
-                                for (final ConnectionItem cItem : cList) {
-                                    CIMODEL.add(cItem);
-                                }
-                                refreshMe();
-                            }
-                        });
-
+//                                for (final ConnectionItem cItem : cList) {
+//                                    CIMODEL.add(cItem);
+//                                }
+//                CIMODEL.addAll(cList);
+//                refreshMe();
             }
         });
 
@@ -293,6 +295,34 @@ public class ConnectionManagerPanel extends LayoutComposite {
             connectionsList.add(toolBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
         connectionsList.add(listBox, new BoxLayoutData(FillStyle.BOTH));
+        
+        final ToolButton connectionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
+                "Connect", ButtonLabelType.TEXT_ON_RIGHT));
+
+        connectionButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent arg0) {
+                Integer index = listBox.getSelectedIndex();
+                if (index >= 0) {
+                    ConnectionItem ci = listBox.getItem(index);
+                    if (ci != null) {
+                        connectEvent(ci);
+                        if (ci.isConnected()) {
+                            connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
+                                    "Disconnect", ButtonLabelType.TEXT_ON_RIGHT));
+                        }
+                        else
+                            connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
+                                    "Connect", ButtonLabelType.TEXT_ON_RIGHT));
+                    }
+                }
+                
+                
+            }
+        });
+        
+        connectionsList.add(connectionButton,new BoxLayoutData(FillStyle.HORIZONTAL));
+        
     }
 
     private Widget createRichListBoxCell(final ConnectionItem item) {
@@ -315,43 +345,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
             @Override
             protected void onClick() {
                 super.onClick();
-                LogoPanel.spinWheel(true);
-                if (item.isConnected()) {
-                    ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
-                            new AsyncCallback<Object>() {
-
-                        public void onFailure(final Throwable arg0) {
-                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
-                                    .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
-                            LogoPanel.spinWheel(false);
-                        }
-
-                        public void onSuccess(final Object arg0) {
-                            refreshConnectionList();
-                            LogoPanel.spinWheel(false);
-                        }
-
-                    });
-                } else {
-                    ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
-                            new AsyncCallback<Object>() {
-
-                        public void onFailure(final Throwable arg0) {
-                            LogoPanel.spinWheel(false);
-                            MessageBox.alert(
-                                    ConstantFactory.getInstance().error(),
-                                    "There has been an error regarding the Connection. " +
-                                    "Please contact the system administrator <br>"+ 
-                                    MessageFactory.getInstance().failedLoadConnection(arg0.getMessage())); //$NON-NLS-1$
-                        }
-
-                        public void onSuccess(final Object arg0) {
-                            LogoPanel.spinWheel(false);
-                            refreshConnectionList();
-                        }
-
-                    });
-                }
+                connectEvent(item);
                 // final int index = linkedListBox.getSelectedIndex();
                 // ciModel.set(index, item);
 
@@ -363,5 +357,48 @@ public class ConnectionManagerPanel extends LayoutComposite {
         table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
         cellFormatter.setWidth(0, 1, "100%"); //$NON-NLS-1$
         return table;
+    }
+
+    private void connectEvent(final ConnectionItem item) {
+        if (item != null) {
+            LogoPanel.spinWheel(true);
+
+            if (item.isConnected()) {
+                ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), item.getId(),
+                        new AsyncCallback<Object>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
+                        LogoPanel.spinWheel(false);
+                    }
+
+                    public void onSuccess(final Object arg0) {
+                        refreshConnectionList();
+                        LogoPanel.spinWheel(false);
+                    }
+
+                });
+            } else {
+                ServiceFactory.getSessionInstance().connect(Pat.getSessionID(), item.getId(),
+                        new AsyncCallback<Object>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        LogoPanel.spinWheel(false);
+                        MessageBox.alert(
+                                ConstantFactory.getInstance().error(),
+                                "There has been an error regarding the Connection. " +
+                                "Please contact the system administrator <br>"+ 
+                                MessageFactory.getInstance().failedLoadConnection(arg0.getMessage())); //$NON-NLS-1$
+                    }
+
+                    public void onSuccess(final Object arg0) {
+                        LogoPanel.spinWheel(false);
+                        refreshConnectionList();
+                    }
+
+                });
+            }
+        }
     }
 }

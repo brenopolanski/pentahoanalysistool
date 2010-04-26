@@ -119,6 +119,10 @@ public class Session {
         conns.addAll(this.connections.keySet());
         return conns;
     }
+    
+    public Map<String, OlapConnection>  getActiveConnections() {
+        return this.connections;
+    }
 
     public Map<String, Query> getQueries() {
         return queries;
