@@ -188,6 +188,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
+        startupCheckbox.setValue(true);
         schemaValCheckbox = new CheckBox(ConstantFactory.getInstance().validateSchema());
         this.setStyleName(CONNECT_MONDRIAN_PANEL);
         init();
@@ -321,7 +322,6 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-                // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
         "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
@@ -336,8 +336,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
         builder.add(passwordTextBox, CellConstraints.xy(7, 7));
         builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
         fileUpload.setName(FORM_NAME_FILE);
-        builder.add(fileUpload, CellConstraints.xyw(3, 9, 5));
-
+        builder.add(fileUpload, CellConstraints.xyw(3, 9, 3));
+        builder.add(schemaValCheckbox, CellConstraints.xy(7,9));
         uploadButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final String filename = fileUpload.getFilename();
@@ -352,14 +352,15 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
         builder.add(uploadButton, CellConstraints.xyw(3, 11, 5));
         builder.add(startupCheckbox,CellConstraints.xy(3,13));
-        builder.add(schemaValCheckbox, CellConstraints.xy(7,13));
+        
 
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                if (validateConnection(getCubeConnection())) {
+                final CubeConnection cc = getCubeConnection();
+                if (validateConnection(cc)) {
 
                     saveButton.setEnabled(false);
-                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), cc,
                             new AsyncCallback<String>() {
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -367,9 +368,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
                             saveButton.setEnabled(true);
                         }
 
-                        public void onSuccess(final String object) {
-                            saveButton.setEnabled(true);
-                            // TODO refresh or close?
+                        public void onSuccess(final String id) {
+                            if (cc.isConnectOnStartup()) {
+                                ConnectionManagerPanel.connectEvent(id,cc.isConnected());
+                            }
                             ConnectionManagerWindow.closeTabs();
                         }
                     });

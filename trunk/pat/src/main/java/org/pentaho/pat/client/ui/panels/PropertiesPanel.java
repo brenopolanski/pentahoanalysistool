@@ -443,7 +443,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             drillMenuButton.setEnabled(true);
             drillThroughButton.setEnabled(true);
             drillThroughButton.setChecked(false);
-            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(this, Operation.DISABLE_DRILLTHROUGH);
+            // TODO Enable the listener again, dunno why it breaks other stuff
+//            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(this, Operation.DISABLE_DRILLTHROUGH);
         }
 
     }
