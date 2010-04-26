@@ -93,8 +93,12 @@ public class SessionServlet extends AbstractServlet implements ISession {
         try {
             final List<SavedConnection> savedConnections = this.sessionService.getConnections(getCurrentUserId());
             CubeConnection[] cubeConnections = new CubeConnection[savedConnections.size()];
+            List<String> activeConnections = this.sessionService.getActiveConnectionsId(getCurrentUserId(), sessionId);
             for (int cpt = 0; cpt < savedConnections.size(); cpt++) {
                 cubeConnections[cpt] = convert(savedConnections.get(cpt));
+                if (activeConnections != null && activeConnections.size() > 0 && activeConnections.contains(cubeConnections[cpt].getId())) {
+                    cubeConnections[cpt].setConnected(true);
+                }
             }
             return cubeConnections;
         }

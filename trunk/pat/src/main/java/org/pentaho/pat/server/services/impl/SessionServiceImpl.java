@@ -352,6 +352,11 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
         }
         return conns;
     }
+    
+    public List<String> getActiveConnectionsId(final String userId, final String sessionId) {
+        this.validateSession(userId, sessionId);
+        return this.getSession(userId, sessionId).getActiveConnectionsId();
+    }
 
     public void deleteConnection(final String userId, final String connectionName) {
         this.validateUser(userId);

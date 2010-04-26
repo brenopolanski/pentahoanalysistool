@@ -242,6 +242,20 @@ public interface SessionService extends Service {
     @Secured( {"Users"})
     @Transactional(readOnly = true)
     List<SavedConnection> getActiveConnections(String userId, String sessionId);
+    
+    /**
+     * Returns a list of currently active connections id's associated to a user.
+     * 
+     * @param userId
+     *            The owner of the connections we want the names of.
+     * @param sessionId
+     *            The session in which to seek for active connections
+     * @return A list of connection names, null if the user doesn't exist.
+     */
+    @Secured( {"Users"})
+    @Transactional(readOnly = true)
+    List<String> getActiveConnectionsId(final String userId, final String sessionId);
+
 
     /**
      * Saves a connection in a user account.

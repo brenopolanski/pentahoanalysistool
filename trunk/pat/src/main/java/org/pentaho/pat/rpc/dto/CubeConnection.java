@@ -55,6 +55,9 @@ public class CubeConnection implements Serializable, IsSerializable {
     private String schemaData = null;
     
     private boolean connectOnStartup = false;
+    
+    private boolean connected = false;
+    
 
     public enum ConnectionType implements IsSerializable {
         XMLA, Mondrian
@@ -146,5 +149,13 @@ public class CubeConnection implements Serializable, IsSerializable {
 
     public void setId(final String id) {
         this.id = id;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }
