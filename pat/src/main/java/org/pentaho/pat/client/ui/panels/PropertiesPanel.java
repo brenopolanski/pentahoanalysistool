@@ -43,6 +43,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
@@ -227,7 +228,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                                 if (widget instanceof OlapPanel) {
                                     ((OlapPanel) widget).getCubeItem();
                                     final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
-                                            Pat.getCurrConnection(), mdxArea.getText());
+                                            Pat.getCurrConnectionId(), mdxArea.getText());
                                     MainTabPanel.displayContentWidget(mdxpanel);
                                 }
 
@@ -296,7 +297,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
 
-                ServiceFactory.getQueryInstance().alterCell(queryId, Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
+                ServiceFactory.getQueryInstance().alterCell(queryId, Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnectionId(), "123", new AsyncCallback<CellDataSet>(){
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -441,7 +442,9 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             pivotButton.setEnabled(true);
             layoutMenuButton.setEnabled(true);
             drillMenuButton.setEnabled(true);
-            drillThroughButton.setEnabled(true);
+            if (Pat.getCurrConnection().getConnectionType().equals(CubeConnection.ConnectionType.Mondrian)) {
+                drillThroughButton.setEnabled(true);
+            }
             drillThroughButton.setChecked(false);
             // TODO Enable the listener again, dunno why it breaks other stuff
 //            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(this, Operation.DISABLE_DRILLTHROUGH);

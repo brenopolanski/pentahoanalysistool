@@ -118,7 +118,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                     public void onSuccess(final String query) {
                         queryId = query;
                         Pat.setCurrQuery(query);
-                        Pat.setCurrConnection(connectionId);
+                        Pat.setCurrConnectionId(connectionId);
 
                         initializeWidget();
                         LogoPanel.spinWheel(false);
