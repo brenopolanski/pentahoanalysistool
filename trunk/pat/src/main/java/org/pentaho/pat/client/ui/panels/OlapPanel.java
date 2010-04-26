@@ -38,6 +38,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -64,6 +65,8 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     private CubeItem cubeItem = null;
 
     private String connectionId = null;
+    
+    private CubeConnection connection = null;
 
     private String queryId = null;
 
@@ -84,15 +87,15 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
      * OLAP Panel Constructor.
      *
      */
-    public OlapPanel(final CubeItem cube, final String connection) {
+    public OlapPanel(final CubeItem cube, final CubeConnection cubeConnection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = cube.getName();
         
         cubeItem = cube;
         cubeName = cube.getName();
-        connectionId = connection;
-
+        connectionId = cubeConnection.getId();
+        connection = cubeConnection;
         ServiceFactory.getQueryInstance().createNewQuery(Pat.getSessionID(), connectionId, cubeName,
                 new AsyncCallback<String>() {
 
@@ -106,9 +109,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
                     public void onSuccess(final String query) {
                         queryId = query;
                         Pat.setCurrQuery(query);
-                        Pat.setCurrConnection(connectionId);
+                        Pat.setCurrConnectionId(connectionId);
                         Pat.setCurrCubeName(cubeName);
                         Pat.setCurrCube(cubeItem);
+                        Pat.setCurrConnection(connection);
                         initializeWidget();
                     }
                 });
@@ -128,7 +132,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         Pat.setCurrQuery(query);
         Pat.setCurrCube(qsm.getCube());
         Pat.setCurrCubeName(qsm.getCubeName());
-        Pat.setCurrConnection(qsm.getConnection());
+        Pat.setCurrConnectionId(qsm.getConnection());
 
         panelName = qsm.getCubeName();
         cubeItem = qsm.getCube();

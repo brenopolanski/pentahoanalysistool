@@ -35,6 +35,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
@@ -86,7 +87,9 @@ public class Pat implements EntryPoint {
 
     private static String currQuery = null;
 
-    private static String currConnection = null;
+    private static String currConnectionId = null;
+    
+    private static CubeConnection currConnection = null;
 
     private static CubeItem currCube = null;
 
@@ -98,12 +101,12 @@ public class Pat implements EntryPoint {
 
     private static DrillType currDrillType = DrillType.POSITION;
 
-    public static String getCurrConnection() {
-        return currConnection;
+    public static String getCurrConnectionId() {
+        return currConnectionId;
     }
 
-    public final static void setCurrConnection(final String currConnection) {
-        Pat.currConnection = currConnection;
+    public final static void setCurrConnectionId(final String currConnection) {
+        Pat.currConnectionId = currConnection;
     }
 
     /**
@@ -351,7 +354,7 @@ public class Pat implements EntryPoint {
     }
     public static void saveQueryToSolution(final String solution, final String path,final String name,final String localizedFileName) {
         ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), name,
-                Pat.getCurrConnection(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
+                Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -359,7 +362,7 @@ public class Pat implements EntryPoint {
                     }
 
                     public void onSuccess(final Object arg0) {
-                        ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+                        ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnectionId(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
                             public void onFailure(Throwable arg0) {
                                 MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
@@ -380,7 +383,7 @@ public class Pat implements EntryPoint {
 
 
     public static void saveQueryAsCda(final String solution, final String path,final String name,final String localizedFileName) {
-        ServiceFactory.getPlatformInstance().saveQueryAsCda(getSessionID(), getCurrQuery(), getCurrConnection(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
+        ServiceFactory.getPlatformInstance().saveQueryAsCda(getSessionID(), getCurrQuery(), getCurrConnectionId(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
             public void onFailure(Throwable arg0) {
                 MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
@@ -480,6 +483,14 @@ public class Pat implements EntryPoint {
 
     public static IAxis getMeasuresAxis() {
 	return measuresAxis;
+    }
+
+    public static CubeConnection getCurrConnection() {
+        return currConnection;
+    }
+
+    public static void setCurrConnection(CubeConnection connection) {
+        Pat.currConnection = connection;
     }
 
 }

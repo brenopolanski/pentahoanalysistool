@@ -156,4 +156,12 @@ public class CubeTreeItem extends TreeItem {
     public CubeItem getCubeItem() {
         return this.cube;
     }
+
+    public CubeConnection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(CubeConnection connection) {
+        this.connection = connection;
+    }
 }

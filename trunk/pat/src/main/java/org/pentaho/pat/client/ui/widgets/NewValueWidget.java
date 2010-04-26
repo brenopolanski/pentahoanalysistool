@@ -73,7 +73,7 @@ public class NewValueWidget extends WindowPanel {
         okButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-        ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnection(), "123", new AsyncCallback<CellDataSet>(){
+        ServiceFactory.getQueryInstance().alterCell(Pat.getCurrQuery(), Pat.getSessionID(), Pat.getCurrScenario(), Pat.getCurrConnectionId(), "123", new AsyncCallback<CellDataSet>(){
 
       		public void onFailure(Throwable arg0) {
       		    // TODO Auto-generated method stub

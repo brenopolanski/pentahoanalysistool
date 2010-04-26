@@ -73,7 +73,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     private ToolBar toolBar;
 
-    ToolButton connectionButton;
+    private static ToolButton connectionButton;
     
     private static LayoutPanel connectionsList = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
@@ -261,6 +261,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
     public static void refreshConnectionList() {
 
+        connectionButton.setEnabled(false);
         CIMODEL.clear();
         
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
@@ -279,6 +280,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 refreshMe();
             }
         });
+
 
     }
 

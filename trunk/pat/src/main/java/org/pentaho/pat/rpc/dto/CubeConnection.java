@@ -64,6 +64,7 @@ public class CubeConnection implements Serializable, IsSerializable {
     }
 
     public CubeConnection(final ConnectionType cType) {
+        super();
         connectionType = cType;
     }
 
