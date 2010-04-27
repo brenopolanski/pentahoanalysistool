@@ -73,7 +73,7 @@ public class MainTabPanel extends LayoutComposite {
                 final Widget widget = CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
 
                 if (widget instanceof OlapPanel || widget instanceof MdxPanel) {
-                    MenuBar.enableSave(true);
+                    MainMenuBar.enableSave(true);
                     if (widget instanceof OlapPanel) {
                         Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
                         Pat.setCurrConnectionId(((OlapPanel) widget).getConnectionId());
@@ -83,7 +83,7 @@ public class MainTabPanel extends LayoutComposite {
                     }
 
                 } else {
-                    MenuBar.enableSave(false);
+                    MainMenuBar.enableSave(false);
                 }
 
             }

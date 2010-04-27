@@ -179,9 +179,10 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(startupCheckbox,CellConstraints.xy(3,9));
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                if (validateConnection(getCubeConnection())) {
+                final CubeConnection cc = getCubeConnection();
+                if (validateConnection(cc)) {
                     saveButton.setEnabled(false);
-                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), getCubeConnection(),
+                    ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), cc,
                             new AsyncCallback<String>() {
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -189,8 +190,10 @@ public class ConnectXmlaPanel extends LayoutComposite {
                             saveButton.setEnabled(true);
                         }
 
-                        public void onSuccess(final String object) {
-                            saveButton.setEnabled(true);
+                        public void onSuccess(final String id) {
+                            if (cc.isConnectOnStartup()) {
+                                ConnectionManagerPanel.connectEvent(id,cc.isConnected(),true);
+                            }
                             ConnectionManagerWindow.closeTabs();
                         }
                     });
