@@ -105,13 +105,15 @@ public class Session {
 
     public void closeConnection(String connectionId) {
         final OlapConnection conn = this.connections.get(connectionId);
-        try {
-            if (!conn.isClosed()) {
-                conn.close();
+        if (conn != null) {
+            try {
+                if (!conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
+            this.connections.remove(connectionId);
         }
-        this.connections.remove(connectionId);
     }
 
     public List<String> getActiveConnectionsId() {
