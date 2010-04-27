@@ -310,14 +310,14 @@ public class ConnectionManagerPanel extends LayoutComposite {
                 if (index >= 0) {
                     ConnectionItem ci = listBox.getItem(index);
                     if (ci != null) {
-                        connectEvent(ci.getId(),ci.isConnected());
+                        connectEvent(ci.getId(),ci.isConnected(),true);
                         if (ci.isConnected()) {
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
-                                    "Disconnect", ButtonLabelType.TEXT_ON_RIGHT));
+                                    ConstantFactory.getInstance().disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
                         }
                         else
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
-                                    "Connect", ButtonLabelType.TEXT_ON_RIGHT));
+                                    ConstantFactory.getInstance().connect(), ButtonLabelType.TEXT_ON_RIGHT));
                     }
                 }
                 
@@ -348,7 +348,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
             @Override
             protected void onClick() {
                 super.onClick();
-                connectEvent(item.getId(),item.isConnected());
+                connectEvent(item.getId(),item.isConnected(),true);
             };
         };
         table.setWidget(0, 0, cButton);
@@ -363,7 +363,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
      * If the connection item is connected already, it will disconnect, otherwise connect
      * @param item - The connection item
      */
-    public static void connectEvent(final String connectionId, final Boolean isConnected) {
+    public static void connectEvent(final String connectionId, final Boolean isConnected, final Boolean callFromManagerPanel) {
 
         if(connectionId != null && isConnected != null) {
             LogoPanel.spinWheel(true);
@@ -380,7 +380,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                     public void onSuccess(final Object arg0) {
                         LogoPanel.spinWheel(false);
-                        refreshConnectionList();
+                        if (callFromManagerPanel)
+                            refreshConnectionList();
 
                     }
 
@@ -398,7 +399,8 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                     public void onSuccess(final Object arg0) {
                         LogoPanel.spinWheel(false);
-                        refreshConnectionList();
+                        if(callFromManagerPanel)
+                            refreshConnectionList();
 
                     }
 

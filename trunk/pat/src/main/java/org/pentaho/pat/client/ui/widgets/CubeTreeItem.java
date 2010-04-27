@@ -79,7 +79,7 @@ public class CubeTreeItem extends TreeItem {
                 this.type = ItemType.CONNECTION;
             } else {
                 this.itemImage = Pat.IMAGES.cube();
-                this.itemName = "<b>" + this.cube.getName() + "</b>"; //$NON-NLS-1$ //$NON-NLS-2$
+                this.itemName = this.cube.getName(); //$NON-NLS-1$ //$NON-NLS-2$
                 this.type = ItemType.CUBE;
             }
 

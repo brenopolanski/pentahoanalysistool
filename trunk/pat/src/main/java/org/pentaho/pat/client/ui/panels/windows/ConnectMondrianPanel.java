@@ -370,7 +370,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
                         public void onSuccess(final String id) {
                             if (cc.isConnectOnStartup()) {
-                                ConnectionManagerPanel.connectEvent(id,cc.isConnected());
+                                ConnectionManagerPanel.connectEvent(id,cc.isConnected(),true);
                             }
                             ConnectionManagerWindow.closeTabs();
                         }

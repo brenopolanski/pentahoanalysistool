@@ -30,8 +30,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.ui.panels.MainMenuBar;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.ui.panels.MenuBar;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
 import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
@@ -92,7 +92,7 @@ public class Application extends Viewport {
 
     private static MainTabPanel mainTabPanel = null;
 
-    private MenuBar menuBar = null;
+    private MainMenuBar menuBar = null;
 
     public static FlexTableRowDragControllerImpl tblRowDrgCont;
 
@@ -104,7 +104,6 @@ public class Application extends Viewport {
 
     public Application() {
         super();
-
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
@@ -113,11 +112,11 @@ public class Application extends Viewport {
         // Add the main menu
         if (Pat.getApplicationState().getMode().isShowMenu()) {
 
-            menuBar = new MenuBar();
-            MenuBar.enableConnect(false);
-            MenuBar.enableSave(false);
-            MenuBar.enableCube(false);
-            MenuBar.enableLoad(false);
+            menuBar = new MainMenuBar();
+            MainMenuBar.enableConnect(false);
+            MainMenuBar.enableSave(false);
+            MainMenuBar.enableCube(false);
+            MainMenuBar.enableLoad(false);
             
             rootPanel.add(menuBar, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
