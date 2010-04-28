@@ -25,6 +25,8 @@ import org.pentaho.pat.client.ui.panels.windows.ConnectionManagerPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
+import org.pentaho.pat.client.ui.windows.LoadWindow;
+import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -85,31 +87,21 @@ public class TopMenu extends MenuBar {
     public void setup() {
 
         this.clearItems();
-        
-        // Create a command that will execute on menu item selection
-        Command menuCommand = new Command() {
-            public void execute() {
-                MessageBox.alert(Window.getTitle(), "exec 1");
-            }
-        };
 
         // Create a menu bar
-        this.setAnimationEnabled(false);
+        this.setAnimationEnabled(true);
 
-        // Create the file menu
-        MenuBar fileMenu = new MenuBar(true);
-        fileMenu.setAnimationEnabled(false);
+        final MenuBar fileMenu = createFileMenu();
         this.addItem(new MenuItem("File", fileMenu));
-        String[] fileOptions = { "Open Query", "Save Query", "Save Query As ..." , "Logout"};
-        for (int i = 0; i < fileOptions.length; i++) {
-                fileMenu.addItem(fileOptions[i], menuCommand);
-        }
-
+        
         final MenuBar conMenu = createConnectionMenu();
+        conMenu.setAnimationEnabled(true);
         final MenuItem conItem = new MenuItem("Connections", conMenu);
         this.addItem(conItem);
 
         final MenuBar cubeMenu = createCubesMenu();
+        cubeMenu.setAnimationEnabled(true);
+        cubeMenu.setAutoOpen(true);
         final MenuItem cubeItem = new MenuItem("Cubes", cubeMenu);
         this.addItem(cubeItem);
 
@@ -130,11 +122,16 @@ public class TopMenu extends MenuBar {
         });
     }
 
+    public final MenuBar createFileMenu() {
+        final FileMenu fileMenu = new FileMenu(true);
+        fileMenu.setAnimationEnabled(true);
+        return fileMenu;
+    }
+    
     public final MenuBar createConnectionMenu() {
         final ConnectionsMenu connectionMenu = new ConnectionsMenu(true);
         connectionMenu.setAnimationEnabled(true);
         return connectionMenu;
-
     }
 
     public final MenuBar createCubesMenu() {
@@ -142,6 +139,58 @@ public class TopMenu extends MenuBar {
         cubesMenu.setAnimationEnabled(true);
         return cubesMenu;
 
+    }
+
+    private class FileMenu extends MenuBar {
+
+        FileMenu(Boolean isVertical) {
+            super(isVertical);
+        }
+
+        @Override
+        protected void onAttach() {
+            // TODO Auto-generated method stub
+            super.onAttach();
+            refresh();
+        }
+
+        public void refresh() {
+            FileMenu.this.clearItems();
+            FileMenu.this.setAnimationEnabled(true);
+            
+            
+            HTML openWidget = new HTML(Pat.IMAGES.folder().getHTML() +" "+ "Open Query");
+            MenuItem openQuery = new MenuItem(openWidget.getHTML(),true,new Command() {
+               public void execute() {
+                    LoadWindow.display();
+                } 
+            });
+            FileMenu.this.addItem(openQuery);
+
+            HTML saveWidget = new HTML(Pat.IMAGES.disk().getHTML() +" "+ "Save Query");
+            MenuItem saveQuery = new MenuItem(saveWidget.getHTML(),true,new Command() {
+                public void execute() {
+                     SaveWindow.display();
+                 } 
+             });
+            
+            FileMenu.this.addItem(saveQuery);
+            
+            MenuItem logout = new MenuItem(ConstantFactory.getInstance().logout(),new Command() {
+                public void execute() {
+                    if (!Pat.isPlugin()) {
+                        Window.Location.assign(Pat.getBaseUrl()+"logout");
+                    }
+
+                 } 
+             });
+            
+            if (!Pat.isPlugin()) {
+                FileMenu.this.addSeparator();
+                FileMenu.this.addItem(logout);
+            }
+            
+        }
     }
 
     private class ConnectionsMenu extends MenuBar {
@@ -210,7 +259,7 @@ public class TopMenu extends MenuBar {
                     });
         }
     }
-
+    
     private class CubesMenu extends MenuBar {
 
         CubesMenu(Boolean isVertical) {
@@ -298,7 +347,7 @@ public class TopMenu extends MenuBar {
                                                     });
                                                     CubesMenu.this.addItem(noitem);
                                                 }
-                                                else {
+                                                else if(connections[connections.length-1].equals(connection)) {
                                                     CubesMenu.this.addSeparator();
                                                     CubesMenu.this.addItem("Cube Window", new Command() {
 
