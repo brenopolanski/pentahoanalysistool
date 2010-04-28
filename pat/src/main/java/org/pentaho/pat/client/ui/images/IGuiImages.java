@@ -88,4 +88,8 @@ public interface IGuiImages extends ImageBundle {
     AbstractImagePrototype chart_pie();
     
     AbstractImagePrototype chart_line();
+    
+    AbstractImagePrototype folder();
+    
+    AbstractImagePrototype disk();
 }

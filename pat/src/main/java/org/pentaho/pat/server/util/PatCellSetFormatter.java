@@ -407,9 +407,7 @@ public class PatCellSetFormatter {
                     memberInfo.setChildMemberCount(member.getChildMemberCount());
                     NamedList<Property> values = member.getLevel().getProperties();
                     for(int j=0; j<values.size();j++){
-                        if (!values.get(j).equals(Property.StandardMemberProperty.PARENT_LEVEL) && !values.get(j).equals(Property.StandardMemberProperty.PARENT_UNIQUE_NAME)) {
-                            memberInfo.setProperty(values.get(j).getCaption(null), member.getPropertyFormattedValue(values.get(j)));
-                        }
+                        memberInfo.setProperty(values.get(j).getCaption(null), member.getPropertyFormattedValue(values.get(j)));
                     }
                     
                     if (y > 0 && prevMembers[y - 1] != null)
