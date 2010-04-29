@@ -39,7 +39,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.MenuItemSeparator;
+import com.google.gwt.user.client.ui.MenuItemSeparator;;
 
 /**
  * Menu for PAT - MenuBar Style
@@ -300,7 +300,18 @@ public class TopMenu extends MenuBar {
                                 MenuItemSeparator mis = new MenuItemSeparator();
                                 mis.getElement().setInnerHTML(widget.getHTML());
                                 CubesMenu.this.addSeparator(mis);
+                                
+                                // This is needed due the lack of proper menubar functionality in GWT
+                                // we might remove that once the menubar supports proper insert
+                                MenuItem item = new MenuItem(widget.getHTML(),new Command() {
 
+                                    public void execute() {
+                                        // TODO Auto-generated method stub
+                                        
+                                    } }) {
+                                };
+                                final MenuItem indexItem = CubesMenu.this.addItem(item);
+                                
                                 ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
                                         new AsyncCallback<CubeItem[]>() {
                                             public void onFailure(final Throwable arg0) {
@@ -338,8 +349,9 @@ public class TopMenu extends MenuBar {
                                                     MenuItem item = new MenuItem(widget.getHTML(),true,newQuery);
                                                     item.setCommand(cmd);
 
-                                                    CubesMenu.this.addItem(item);
+                                                    CubesMenu.this.insertItem(item,CubesMenu.this.getItemIndex(indexItem)+1);
                                                 }
+                                                CubesMenu.this.removeItem(indexItem);
                                                 // if there are no  cubes we'll add a nocube item to the menu
                                                 if (cubeItm.length == 0) {
                                                     MenuItem noitem = new MenuItem("(No Cubes)",new Command() {

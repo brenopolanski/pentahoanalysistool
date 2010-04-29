@@ -23,7 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -617,7 +616,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
         xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
         final String xml = xstream.toXML(cc);
-        final SavedQuery sc = new SavedQuery(cc.toString());
+        final SavedQuery sc = new SavedQuery();
         sc.setQueryId(queryId);
         sc.setCubeName(cubeName);
         sc.setCube(cube);
@@ -649,17 +648,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         try {
             final Set<SavedQuery> ssc = this.queryService.getSavedQueries(getCurrentUserId(), sessionId);
 
-            final Iterator<SavedQuery> it = ssc.iterator();
             final List<QuerySaveModel> results = new ArrayList<QuerySaveModel>();
-            while (it.hasNext()) {
-                // Get element
-                final SavedQuery element = (SavedQuery) it.next();
-
-                results.add(new QuerySaveModel(element.getId(), element.getQueryId(), element.getName(), element.getConnectionId(), element
-                        .getCube(), element.getCubeName(), element.getUpdatedDate(), element.getQueryType()));
+            for (SavedQuery savedQuery : ssc) {
+                results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), savedQuery.getConnectionId(), savedQuery
+                        .getCube(), savedQuery.getCubeName(), savedQuery.getUpdatedDate(), savedQuery.getQueryType()));
 
             }
-
+            
             return results;
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.GetSavedQueriesError"), e); //$NON-NLS-1$
@@ -694,11 +689,14 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * 
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
-    public QuerySaveModel loadQuery(final String sessionId, final String queryId) throws RpcException {
+    public QuerySaveModel loadQuery(final String sessionId, final String savedQueryId) throws RpcException {
         try {
 
-            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessionId, queryId);
+            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessionId, savedQueryId);
 
+            if (sc == null)
+                throw new Exception("Couldn't load Query with ID: " + savedQueryId);
+            
             final XStream xstream = new XStream();
 
             xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
