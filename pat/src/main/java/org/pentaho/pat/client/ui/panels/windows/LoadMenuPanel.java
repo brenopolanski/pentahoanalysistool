@@ -46,9 +46,12 @@ import org.pentaho.pat.rpc.dto.enums.QueryType;
 
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -64,7 +67,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
     /**
      */
-    private final TextBox textBox = new TextBox();
+    private final TextBox filtertextBox = new TextBox();
 
     private DefaultListModel<QuerySaveModel> model;
 
@@ -78,7 +81,7 @@ public class LoadMenuPanel extends LayoutComposite {
     private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
-            filterModel.filter(textBox.getText());
+            filterModel.filter(filtertextBox.getText());
         }
     };
 
@@ -90,17 +93,32 @@ public class LoadMenuPanel extends LayoutComposite {
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
         this.setStyleName(LOAD_MENU_PANEL);
-        textBox.addKeyPressHandler(new KeyPressHandler() {
+        filtertextBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
             }
         });
 
-        layoutPanel.add(textBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        final Label filterText = new Label(ConstantFactory.getInstance().filter() + ":"); //$NON-NLS-1$
+        final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
+        filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
+
+        
+        layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
         this.getLayoutPanel().add(layoutPanel);
 
+    }
+    
+    @Override
+    protected void onAttach() {
+     
+        super.onAttach();
+        if (filtertextBox != null) {
+            filtertextBox.setText("");
+        }
     }
 
     private ListBox<?> createListBox() {
@@ -134,7 +152,9 @@ public class LoadMenuPanel extends LayoutComposite {
     }
 
     public void load() {
-        load(listBox.getItem(listBox.getSelectedIndex()));
+        if (listBox.getSelectedIndex() >= 0) {
+            load(listBox.getItem(listBox.getSelectedIndex()));
+        }
     }
     public static void load(final QuerySaveModel qsm) {
         ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
@@ -199,7 +219,19 @@ public class LoadMenuPanel extends LayoutComposite {
     }
 
     private Widget createRichListBoxCell(final QuerySaveModel item) {
-        final FlexTable table = new FlexTable();
+        final FlexTable table = new FlexTable() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                super.onBrowserEvent(event);
+                switch (DOM.eventGetType(event)) {
+                    case Event.ONDBLCLICK:
+                        MessageBox.alert("asdfasdf", "DOUBLE CLICK LOAD");
+                        load();
+                        break;
+                }
+
+            }
+        };
         final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
         table.setWidth("100%"); //$NON-NLS-1$

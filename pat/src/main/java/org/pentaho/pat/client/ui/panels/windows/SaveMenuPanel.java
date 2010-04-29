@@ -36,6 +36,7 @@ import org.gwt.mosaic.ui.client.list.Filter;
 import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.LabelTextBox;
+import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -43,9 +44,12 @@ import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -61,13 +65,13 @@ public class SaveMenuPanel extends LayoutComposite {
 
     /**
      */
-    private final TextBox textBox;
+    private final TextBox filtertextBox;
 
     private DefaultListModel<QuerySaveModel> model;
 
     private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
 
-    private LabelTextBox ltb = new LabelTextBox();
+    private LabelTextBox saveTextBox = new LabelTextBox();
 
     private final static String SAVE_MENU_PANEL = "pat-SaveMenuPanel"; //$NON-NLS-1$
     /**
@@ -77,7 +81,7 @@ public class SaveMenuPanel extends LayoutComposite {
     private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
-            filterModel.filter(textBox.getText());
+            filterModel.filter(filtertextBox.getText());
         }
     };
 
@@ -86,21 +90,39 @@ public class SaveMenuPanel extends LayoutComposite {
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
         this.setStyleName(SAVE_MENU_PANEL);
-        textBox = new TextBox();
-        textBox.addKeyPressHandler(new KeyPressHandler() {
+        filtertextBox = new TextBox();
+        filtertextBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
             }
         });
 
-        layoutPanel.add(textBox, new BoxLayoutData(FillStyle.HORIZONTAL));
+        final Label filterText = new Label(ConstantFactory.getInstance().filter() + ":"); //$NON-NLS-1$
+        final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
+        filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
+
+        
+        layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
-        ltb.setTextBoxLabelText(ConstantFactory.getInstance().save());
-        layoutPanel.add(ltb);
+        saveTextBox.setTextBoxLabelText(ConstantFactory.getInstance().save());
+        layoutPanel.add(saveTextBox);
 
         this.getLayoutPanel().add(layoutPanel);
 
+    }
+    
+    @Override
+    protected void onAttach() {
+     
+        super.onAttach();
+        if (filtertextBox != null) {
+            filtertextBox.setText("");
+        }
+        if (saveTextBox != null) {
+            saveTextBox.setTextBoxText("");
+        }
     }
 
     public ListBox<?> createListBox() {
@@ -157,24 +179,45 @@ public class SaveMenuPanel extends LayoutComposite {
     }
 
     public void save() {
-        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), ltb.getTextBoxText(),
-                Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
+        if (saveTextBox != null && saveTextBox.getTextBoxText().length() > 0) {
+            ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), saveTextBox.getTextBoxText(),
+                    Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedSaveQuery(arg0.getLocalizedMessage()));
-                    }
+                public void onFailure(final Throwable arg0) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .failedSaveQuery(arg0.getLocalizedMessage()));
+                }
 
-                    public void onSuccess(final Object arg0) {
-                        loadSavedQueries();
+                public void onSuccess(final Object arg0) {
+                    loadSavedQueries();
 
-                    }
+                }
 
-                });
+            });
+        }
     }
 
     private Widget createRichListBoxCell(final QuerySaveModel item) {
-        final FlexTable table = new FlexTable();
+        final FlexTable table = new FlexTable(){
+            @Override
+            public void onBrowserEvent(Event event) {
+                super.onBrowserEvent(event);
+                
+//                if (listBox != null && listBox.getSelectedIndex() > 0) {
+//                    SaveWindow.enableSave(true);
+//                }
+//                else {
+//                    SaveWindow.enableSave(false);
+//                }
+                switch (DOM.eventGetType(event)) {
+                    case Event.ONDBLCLICK:
+                        MessageBox.alert("asdfasdf", "DOUBLE CLICK SV");
+                        save();
+                        break;
+                }
+
+            }
+        };
         final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
         table.setWidth("100%"); //$NON-NLS-1$

@@ -68,7 +68,7 @@ public class LoadWindow extends WindowPanel {
 
         winContentpanel.add(LOADMENUPANEL, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(winContentpanel);
-        this.setFooter(buttonBar());
+        this.setFooter(createButtonBar());
         this.layout();
     }
 
@@ -76,7 +76,7 @@ public class LoadWindow extends WindowPanel {
      * Create the button bar.
      * @return
      */
-    public LayoutPanel buttonBar() {
+    public LayoutPanel createButtonBar() {
         final Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler() {
 
@@ -87,6 +87,8 @@ public class LoadWindow extends WindowPanel {
             }
 
         });
+        okButton.setEnabled(false);
+        
         final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 

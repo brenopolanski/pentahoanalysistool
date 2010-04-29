@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.ui.panels;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.gwt.mosaic.core.client.DOM;
@@ -110,9 +109,7 @@ public class MainTabPanel extends LayoutComposite {
             Boolean done = false;
             List<String> tabnames = new ArrayList<String>();
 
-            Widget widget;
-            Iterator<Widget> iter = CONTENTWRAPPER.iterator();
-            while ((widget = iter.next()) != null) {
+            for(Widget widget : CONTENTWRAPPER) {
                 if (widget.getTitle() != null && widget.getTitle().length() > 0) {
                     tabnames.add(widget.getTitle());
                 }

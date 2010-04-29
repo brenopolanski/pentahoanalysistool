@@ -866,11 +866,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * 
      * @see org.pentaho.pat.server.services.QueryService#saveQuery(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void saveQuery(String userId, String sessionId, SavedQuery queryId) {
+    public void saveQuery(String userId, String sessionId, SavedQuery query) {
         this.sessionService.validateSession(userId, sessionId);
 
         final User user = this.userManager.getUser(userId);
-        user.getSavedQueries().add(queryId);
+        user.getSavedQueries().add(query);
         this.userManager.updateUser(user);
     }
 
@@ -879,10 +879,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * 
      * @see org.pentaho.pat.server.services.QueryService#loadQuery(java.lang.String, java.lang.String, java.lang.String)
      */
-    public SavedQuery loadQuery(String userId, String sessionId, String queryName) {
+    public SavedQuery loadQuery(String userId, String sessionId, String savedQueryId) {
         this.sessionService.validateSession(userId, sessionId);
 
-        return this.userManager.getSavedQuery(userId, queryName);
+        return this.userManager.getSavedQuery(userId, savedQueryId);
     }
 
     /*

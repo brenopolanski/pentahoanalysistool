@@ -50,7 +50,6 @@ public class SaveWindow extends WindowPanel {
 
     private final static SaveWindow CBW = new SaveWindow();
 
-
     /**
      * Crazy stuff, but apparently does things.
      */
@@ -102,7 +101,7 @@ public class SaveWindow extends WindowPanel {
 
         winContentpanel.add(SAVEMENUPANEL, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(winContentpanel);
-        this.setFooter(buttonBar());
+        this.setFooter(createButtonBar());
         this.layout();
     }
 
@@ -110,9 +109,9 @@ public class SaveWindow extends WindowPanel {
      * Create the button bar.
      * @return
      */
-    public LayoutPanel buttonBar() {
-        final Button okButton = new Button(ConstantFactory.getInstance().ok());
-        okButton.addClickHandler(new ClickHandler() {
+    public LayoutPanel createButtonBar() {
+        final Button saveButton = new Button(ConstantFactory.getInstance().save());
+        saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
 
@@ -121,6 +120,8 @@ public class SaveWindow extends WindowPanel {
             }
 
         });
+        
+        
         final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
@@ -131,6 +132,7 @@ public class SaveWindow extends WindowPanel {
 
         });
 
-        return ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);
+        return ButtonBarFactory.buildOKCancelBar(saveButton, cancelButton);
     }
+    
 }
