@@ -38,6 +38,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
+import org.pentaho.pat.client.ui.windows.LoadWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -46,7 +47,6 @@ import org.pentaho.pat.rpc.dto.enums.QueryType;
 
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -71,7 +71,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
     private DefaultListModel<QuerySaveModel> model;
 
-    private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private ListBox<QuerySaveModel> listBox = null;
 
     private final static String LOAD_MENU_PANEL = "pat-LoadMenuPanel"; //$NON-NLS-1$
     /**
@@ -122,7 +122,19 @@ public class LoadMenuPanel extends LayoutComposite {
     }
 
     private ListBox<?> createListBox() {
+        listBox = new ListBox<QuerySaveModel>(){
+            @Override
+            public void onBrowserEvent(Event event) {
+                super.onBrowserEvent(event);
+                switch (event.getTypeInt()) {
+                case Event.ONCLICK:
+                    LoadWindow.setLoadEnabled(true);
+                    break;
+                
+                }
 
+            }
+        };
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
             public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
                     final QuerySaveModel item) {
@@ -157,41 +169,44 @@ public class LoadMenuPanel extends LayoutComposite {
         }
     }
     public static void load(final QuerySaveModel qsm) {
-        ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
-                qsm.getId(), new AsyncCallback<QuerySaveModel>() {
+        if (qsm !=  null ) {
+            LoadWindow.close();
+            ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
+                    qsm.getId(), new AsyncCallback<QuerySaveModel>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedOpenQuery(arg0.getLocalizedMessage()));
+                public void onFailure(final Throwable arg0) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .failedOpenQuery(arg0.getLocalizedMessage()));
+                }
+
+                public void onSuccess(final QuerySaveModel arg0) {
+                    if (arg0.getQueryType().equals(QueryType.QM)) {
+                        final OlapPanel olapPanel = new OlapPanel(arg0.getId(), arg0);
+                        MainTabPanel.displayContentWidget(olapPanel);
+                    }
+                    if (arg0.getQueryType().equals(QueryType.MDX)) {
+                        ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0.getId(), new AsyncCallback<String>() {
+
+                            public void onFailure(Throwable arg0) {
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
+
+                            }
+
+                            public void onSuccess(String arg0) {
+                                MdxPanel mdxPanel = new MdxPanel(qsm.getCube(),qsm.getConnection(),arg0);
+                                MainTabPanel.displayContentWidget(mdxPanel);
+
+                            }
+
+                        });
+
+
                     }
 
-                    public void onSuccess(final QuerySaveModel arg0) {
-                        if (arg0.getQueryType().equals(QueryType.QM)) {
-                            final OlapPanel olapPanel = new OlapPanel(arg0.getId(), arg0);
-                            MainTabPanel.displayContentWidget(olapPanel);
-                        }
-                        if (arg0.getQueryType().equals(QueryType.MDX)) {
-                            ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0.getId(), new AsyncCallback<String>() {
+                }
 
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
-
-                                }
-
-                                public void onSuccess(String arg0) {
-                                    MdxPanel mdxPanel = new MdxPanel(qsm.getCube(),qsm.getConnection(),arg0);
-                                    MainTabPanel.displayContentWidget(mdxPanel);
-
-                                }
-
-                            });
-
-
-                        }
-
-                    }
-
-                });
+            });
+        }
     }
 
     public void loadSavedQueries() {
@@ -219,19 +234,7 @@ public class LoadMenuPanel extends LayoutComposite {
     }
 
     private Widget createRichListBoxCell(final QuerySaveModel item) {
-        final FlexTable table = new FlexTable() {
-            @Override
-            public void onBrowserEvent(Event event) {
-                super.onBrowserEvent(event);
-                switch (DOM.eventGetType(event)) {
-                    case Event.ONDBLCLICK:
-                        MessageBox.alert("asdfasdf", "DOUBLE CLICK LOAD");
-                        load();
-                        break;
-                }
-
-            }
-        };
+        final FlexTable table = new FlexTable();
         final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
         table.setWidth("100%"); //$NON-NLS-1$

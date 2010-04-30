@@ -223,7 +223,13 @@ public class TopMenu extends MenuBar {
 
                         public void onSuccess(final CubeConnection[] connections) {
                             ConnectionsMenu.this.clearItems();
-
+                            MenuItem newconitem = new MenuItem("New Connection",new Command() {
+                                public void execute() {
+                                    ConnectionManagerWindow.showNewConnection();
+                                };
+                            });
+                            ConnectionsMenu.this.addItem(newconitem);
+                            ConnectionsMenu.this.addSeparator();
                             for (final CubeConnection con : connections) {
                                 final Command cmd = new Command() {
 
@@ -303,7 +309,7 @@ public class TopMenu extends MenuBar {
                                 
                                 // This is needed due the lack of proper menubar functionality in GWT
                                 // we might remove that once the menubar supports proper insert
-                                MenuItem item = new MenuItem(widget.getHTML(),new Command() {
+                                MenuItem item = new MenuItem(widget.getHTML(),true,new Command() {
 
                                     public void execute() {
                                         // TODO Auto-generated method stub

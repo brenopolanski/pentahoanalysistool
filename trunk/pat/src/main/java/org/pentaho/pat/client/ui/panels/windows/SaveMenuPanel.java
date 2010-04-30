@@ -36,7 +36,6 @@ import org.gwt.mosaic.ui.client.list.Filter;
 import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.LabelTextBox;
-import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -69,7 +68,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
     private DefaultListModel<QuerySaveModel> model;
 
-    private final ListBox<QuerySaveModel> listBox = new ListBox<QuerySaveModel>();
+    private ListBox<QuerySaveModel> listBox = null;
 
     private LabelTextBox saveTextBox = new LabelTextBox();
 
@@ -126,7 +125,20 @@ public class SaveMenuPanel extends LayoutComposite {
     }
 
     public ListBox<?> createListBox() {
+        listBox = new ListBox<QuerySaveModel>(){
+            @Override
+            public void onBrowserEvent(Event event) {
 
+                super.onBrowserEvent(event);
+                switch (DOM.eventGetType(event)) {
+                case Event.ONDBLCLICK:
+                    save();
+                    break;
+                }
+
+            }
+        };
+        
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
             public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
                     final QuerySaveModel item) {
@@ -198,26 +210,7 @@ public class SaveMenuPanel extends LayoutComposite {
     }
 
     private Widget createRichListBoxCell(final QuerySaveModel item) {
-        final FlexTable table = new FlexTable(){
-            @Override
-            public void onBrowserEvent(Event event) {
-                super.onBrowserEvent(event);
-                
-//                if (listBox != null && listBox.getSelectedIndex() > 0) {
-//                    SaveWindow.enableSave(true);
-//                }
-//                else {
-//                    SaveWindow.enableSave(false);
-//                }
-                switch (DOM.eventGetType(event)) {
-                    case Event.ONDBLCLICK:
-                        MessageBox.alert("asdfasdf", "DOUBLE CLICK SV");
-                        save();
-                        break;
-                }
-
-            }
-        };
+        final FlexTable table = new FlexTable();
         final FlexCellFormatter cellFormatter = table.getFlexCellFormatter();
 
         table.setWidth("100%"); //$NON-NLS-1$

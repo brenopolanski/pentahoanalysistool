@@ -43,6 +43,9 @@ import com.google.gwt.user.client.ui.Button;
 public class LoadWindow extends WindowPanel {
 
     private static final String LOAD_TITLE = ConstantFactory.getInstance().load();
+    
+    final static Button okButton = new Button(ConstantFactory.getInstance().ok());
+
 
     private final static LoadMenuPanel LOADMENUPANEL = new LoadMenuPanel();
 
@@ -56,6 +59,7 @@ public class LoadWindow extends WindowPanel {
     public static void display() {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         LOADMENUPANEL.loadSavedQueries();
+        okButton.setEnabled(false);
         CBW.showModal(false);
         CBW.layout();
     }
@@ -77,7 +81,6 @@ public class LoadWindow extends WindowPanel {
      * @return
      */
     public LayoutPanel createButtonBar() {
-        final Button okButton = new Button(ConstantFactory.getInstance().ok());
         okButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -99,5 +102,13 @@ public class LoadWindow extends WindowPanel {
 
         });
         return ButtonBarFactory.buildOKCancelBar(okButton, cancelButton);
+    }
+    
+    public static void setLoadEnabled(boolean enabled) {
+        okButton.setEnabled(enabled);
+    }
+    
+    public static void close() {
+        CBW.hide();
     }
 }
