@@ -21,6 +21,8 @@ package org.pentaho.pat.server.services.impl;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -30,14 +32,13 @@ import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
+import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;
-import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Property;
-import org.olap4j.metadata.Schema;
 import org.olap4j.metadata.Property.StandardMemberProperty;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
@@ -105,30 +106,32 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         if (conn == null) {
             return list;
         }
-        // OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
-        // try {
-        // ResultSet cubesResult = olapDbMeta.getCubes(conn.getCatalog(), null, null);
-        //        
-        // while(cubesResult.next()) {
-        //
-        // list.add(cubesResult.getString("CUBE_NAME"));
-        // }
-        // } catch (SQLException e) {
-        // e.printStackTrace();
-        // }
+         OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
+         try {
+         ResultSet cubesResult = olapDbMeta.getCubes(null, null, null);
+                
+         while(cubesResult.next()) {
+        
+         list.add(new CubeItem(cubesResult.getString("CUBE_NAME"),cubesResult.getString("CATALOG_NAME"),
+                 cubesResult.getString("SCHEMA_NAME")));
 
-        final NamedList<Catalog> catalogs = conn.getCatalogs();
-        for (int k = 0; k < catalogs.size(); k++) {
-            NamedList<Schema> schemas = catalogs.get(k).getSchemas();
-            for (int j = 0; j < schemas.size(); j++) {
-                NamedList<Cube> cubes = schemas.get(j).getCubes();
+         }
+         } catch (SQLException e) {
+             throw new OlapException(e.getMessage(),e);
+         }
 
-                for (int i = 0; i < cubes.size(); i++) {
-                    list.add(new CubeItem(cubes.get(i).getName(), cubes.get(i).getSchema().getCatalog().getName(),
-                            cubes.get(i).getSchema().getName()));
-                }
-            }
-        }
+//        final NamedList<Catalog> catalogs = conn.getCatalogs();
+//        for (int k = 0; k < catalogs.size(); k++) {
+//            NamedList<Schema> schemas = catalogs.get(k).getSchemas();
+//            for (int j = 0; j < schemas.size(); j++) {
+//                NamedList<Cube> cubes = schemas.get(j).getCubes();
+//
+//                for (int i = 0; i < cubes.size(); i++) {
+//                    list.add(new CubeItem(cubes.get(i).getName(), cubes.get(i).getSchema().getCatalog().getName(),
+//                            cubes.get(i).getSchema().getName()));
+//                }
+//            }
+//        }
         return list;
     }
 

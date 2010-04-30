@@ -21,7 +21,6 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
@@ -33,30 +32,16 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.windows.ConnectionManagerPanel;
-import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
 import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.CubeConnection;
-import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.MenuItemSeparator;
-import com.google.gwt.user.client.ui.TreeItem;
 
 /**
  * Menu Bar
@@ -240,6 +225,7 @@ public class MainMenuBar extends LayoutComposite {
     public static void enableSave(final Boolean enabled) {
         SAVEBUTTON.setEnabled(enabled);
         SAVECDABUTTON.setEnabled(enabled);
+        SaveWindow.setSaveEnabled(enabled);
     }
     public static void enableLoad(final Boolean enabled) {
         LOADBUTTON.setEnabled(enabled);

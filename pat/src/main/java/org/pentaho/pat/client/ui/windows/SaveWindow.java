@@ -44,6 +44,8 @@ public class SaveWindow extends WindowPanel {
 
     private static final String SAVE_TITLE = ConstantFactory.getInstance().save();
 
+    private final static Button saveButton = new Button(ConstantFactory.getInstance().save());
+    
     private final static SaveMenuPanel SAVEMENUPANEL = new SaveMenuPanel();
 
     private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
@@ -89,7 +91,6 @@ public class SaveWindow extends WindowPanel {
         CBW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
         SAVEMENUPANEL.loadSavedQueries();
         CBW.showModal(false);
-
         CBW.layout();
     }
 
@@ -110,7 +111,7 @@ public class SaveWindow extends WindowPanel {
      * @return
      */
     public LayoutPanel createButtonBar() {
-        final Button saveButton = new Button(ConstantFactory.getInstance().save());
+
         saveButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -133,6 +134,10 @@ public class SaveWindow extends WindowPanel {
         });
 
         return ButtonBarFactory.buildOKCancelBar(saveButton, cancelButton);
+    }
+    
+    public static void setSaveEnabled(boolean enabled) {
+        saveButton.setEnabled(enabled);
     }
     
 }
