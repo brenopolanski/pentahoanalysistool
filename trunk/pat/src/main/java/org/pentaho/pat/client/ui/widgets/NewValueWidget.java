@@ -9,7 +9,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -81,22 +80,7 @@ public class NewValueWidget extends WindowPanel {
       		}
 
       		public void onSuccess(CellDataSet arg0) {
-      		    ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), Pat.getCurrQuery(), new AsyncCallback<CellDataSet>(){
-
-			public void onFailure(Throwable arg0) {
-			    // TODO Auto-generated method stub
-			    
-			}
-
-			public void onSuccess(CellDataSet arg0) {
-			    GlobalConnectionFactory.getQueryInstance()
-                            .getQueryListeners().fireQueryExecuted(
-                                    NewValueWidget.this, Pat.getCurrQuery(),
-                                    arg0);
-			}
-      			
-      		    });
-      		    
+                Pat.executeQuery(NewValueWidget.this, Pat.getCurrQuery());
       		}
       		
       	    });

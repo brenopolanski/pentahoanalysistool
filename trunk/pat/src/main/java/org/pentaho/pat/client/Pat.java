@@ -417,6 +417,8 @@ public class Pat implements EntryPoint {
     }
     
     public static void executeQuery(final Widget sender, final String queryId ) {
+        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(sender, queryId);
+        
         ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),queryId,
                 new AsyncCallback<CellDataSet>() {
 

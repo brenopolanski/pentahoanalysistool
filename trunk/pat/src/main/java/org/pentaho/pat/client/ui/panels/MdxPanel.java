@@ -337,4 +337,9 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 		
 	}
 
+    public void onQueryStartExecution(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

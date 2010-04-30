@@ -237,4 +237,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
 		// TODO Auto-generated method stub
 		
 	}
+    public void onQueryStartExecution(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
 }

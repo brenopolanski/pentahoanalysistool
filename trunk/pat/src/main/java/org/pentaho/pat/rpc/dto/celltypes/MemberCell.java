@@ -27,10 +27,8 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.CellDataSet;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -215,26 +213,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
                                         }
 
                                         public void onSuccess(Object arg0) {
-                                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
-                                                    Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
-
-                                                        public void onFailure(Throwable arg0) {
-                                                            LogoPanel.spinWheel(false);
-                                                            MessageBox.alert(ConstantFactory.getInstance().error(),
-                                                                    MessageFactory.getInstance().failedQuery(
-                                                                            arg0.getLocalizedMessage()));
-
-                                                        }
-
-                                                        public void onSuccess(CellDataSet arg0) {
-                                                            LogoPanel.spinWheel(false);
-                                                            GlobalConnectionFactory.getQueryInstance()
-                                                                    .getQueryListeners().fireQueryExecuted(cellPanel,
-                                                                            Pat.getCurrQuery(), arg0);
-
-                                                        }
-
-                                                    });
+                                            Pat.executeQuery(cellPanel,Pat.getCurrQuery());;
                                         }
 
                                     });

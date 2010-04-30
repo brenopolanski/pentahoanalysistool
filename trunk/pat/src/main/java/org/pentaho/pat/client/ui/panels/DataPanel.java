@@ -25,6 +25,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
@@ -41,6 +42,9 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -64,6 +68,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     private final LayoutPanel mainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
     private final String queryId;
+    
+    private final Label throbberLabel = new Label();
     
     PanelUtil.PanelType dPaneltype = null;
 
@@ -170,6 +176,9 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
         if (query.equals(queryId)) {
+            if (throbberLabel.isAttached()) {
+                baseLayoutPanel.remove(throbberLabel);
+            }
             if (mainLayoutPanel.isAttached()) {
                 baseLayoutPanel.remove(mainLayoutPanel);
             }
@@ -185,5 +194,29 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 	public void onQueryPivoted(String queryId) {
 		
 	}
+
+    public void onQueryStartExecution(String queryId) {
+        if (queryId.equals(this.queryId)) {
+            if (mainLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(mainLayoutPanel);
+            }
+            if (fillLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(fillLayoutPanel);
+            }
+            if (!throbberLabel.isAttached()) {
+                throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
+                throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
+                throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
+                throbberLabel.setPixelSize(100, 100);
+                
+//                final FillLayout layout = (FillLayout) baseLayoutPanel.getLayout();
+//                layout.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//                layout.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+                
+                baseLayoutPanel.add(throbberLabel, new BorderLayoutData());
+            }
+            baseLayoutPanel.layout();
+        }
+    }
 }
 

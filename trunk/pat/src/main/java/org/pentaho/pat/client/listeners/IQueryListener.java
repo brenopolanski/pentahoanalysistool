@@ -36,6 +36,8 @@ public interface IQueryListener extends EventListener {
     void onQueryChange(Widget sender, int sourceRow, boolean isSourceRow, IAxis sourceAxis, IAxis targetAxis);
 
     void onQueryExecuted(String queryId, CellDataSet matrix);
+    
+    void onQueryStartExecution(String queryId);
 
     void onQueryPivoted(String queryId);
 }

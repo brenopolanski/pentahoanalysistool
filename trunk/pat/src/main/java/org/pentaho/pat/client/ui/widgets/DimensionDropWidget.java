@@ -488,4 +488,9 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 		
 	}
 
+    public void onQueryStartExecution(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

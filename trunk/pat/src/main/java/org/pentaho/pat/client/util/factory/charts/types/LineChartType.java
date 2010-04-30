@@ -12,7 +12,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ChartPanel;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.factory.charts.axis.ChartAxis;
@@ -146,26 +145,7 @@ public class LineChartType {
                                         }
 
                                         public void onSuccess(Object arg0) {
-                                            ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(),
-                                                    Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
-
-                                                        public void onFailure(Throwable arg0) {
-                                                            LogoPanel.spinWheel(false);
-                                                            MessageBox.alert(ConstantFactory.getInstance().error(),
-                                                                    MessageFactory.getInstance().failedQuery(
-                                                                            arg0.getLocalizedMessage()));
-
-                                                        }
-
-                                                        public void onSuccess(CellDataSet arg0) {
-                                                            LogoPanel.spinWheel(false);
-                                                            GlobalConnectionFactory.getQueryInstance()
-                                                                    .getQueryListeners().fireQueryExecuted(chartPanel,
-                                                                            Pat.getCurrQuery(), arg0);
-
-                                                        }
-
-                                                    });
+                                            Pat.executeQuery(chartPanel,Pat.getCurrQuery());
                                         }
 
                                     });

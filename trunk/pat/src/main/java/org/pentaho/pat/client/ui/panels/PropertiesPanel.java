@@ -305,19 +305,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                     }
 
                     public void onSuccess(CellDataSet arg0) {
-                        ServiceFactory.getQueryInstance().executeQuery(Pat.getSessionID(), queryId, new AsyncCallback<CellDataSet>(){
-
-                            public void onFailure(Throwable arg0) {
-                                // TODO Auto-generated method stub
-
-                            }
-
-                            public void onSuccess(CellDataSet arg0) {
-                                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
-                                        PropertiesPanel.this, queryId, arg0);
-                            }
-
-                        });
+                        Pat.executeQuery(PropertiesPanel.this, queryId);
                     }
 
                 });
@@ -453,6 +441,12 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
     }
 
     public void onQueryPivoted(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    public void onQueryStartExecution(String queryId) {
         // TODO Auto-generated method stub
         
     }

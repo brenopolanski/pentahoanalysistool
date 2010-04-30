@@ -69,7 +69,14 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
         }
     }
 
+    public void fireQueryStartsExecution(final Widget sender, final String queryId) {
+        ArrayList<IQueryListener> queryExecutedList = (ArrayList<IQueryListener>) this.clone();
+        for (IQueryListener listener : queryExecutedList) {
+            listener.onQueryStartExecution(queryId);
+        }
+    }
 
+    
     public void fireQueryPivoted(final Widget sender, final String queryId) {
     	ArrayList<IQueryListener> queryPivotedList = (ArrayList<IQueryListener>) this.clone();
         for (IQueryListener listener : queryPivotedList) {

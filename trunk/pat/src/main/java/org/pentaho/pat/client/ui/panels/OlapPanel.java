@@ -304,5 +304,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 		
 	}
 
+    public void onQueryStartExecution(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
 
