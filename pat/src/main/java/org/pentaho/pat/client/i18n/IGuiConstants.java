@@ -28,15 +28,12 @@ import com.google.gwt.i18n.client.Constants;
  * @since 0.5.0
  * @author tom(at)wamonline.org.uk
  */
-
 public interface IGuiConstants extends Constants {
 
     /** The Constant CURRENT_QUERY_NAME. */
     String CURRENT_QUERY_NAME = "current-query-name"; //$NON-NLS-1$
-
     /** The Constant CURRENT_CUBE_NAME. */
     String CURRENT_CUBE_NAME = "current-cube-name"; //$NON-NLS-1$
-
     /** The STYLE_THEMES. */
     String[] STYLE_THEMES = {"aegean", "standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -328,7 +325,7 @@ public interface IGuiConstants extends Constants {
      * @return
      */
     String disconnect();
-    
+
     String drillThrough();
 
     /**
@@ -843,7 +840,7 @@ public interface IGuiConstants extends Constants {
      * @return
      */
     String showBlankCells();
-    
+
     /**
      *TODO JAVADOC
      *
@@ -856,14 +853,117 @@ public interface IGuiConstants extends Constants {
      *
      * @return
      */
-    String measures(); 
+    String measures();
 
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String flat();
-    
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String hierarchical();
-    
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String logout();
-    
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
     String validateSchema();
-    
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String manageConnections();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String newConnection();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String file();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String help();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String about();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String noConnections();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String noCubes();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+    String openQuery();
+
+    /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+     String saveQuery();
+
+     /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+     String loading();
+
+     /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+     String cubeWindow();
+
+     /**
+     *TODO JAVADOC
+     *
+     * @return
+     */
+
 }
