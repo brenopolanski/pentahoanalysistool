@@ -79,8 +79,8 @@
     <security:authentication-provider>
       <security:jdbc-user-service
         data-source-ref="dataSource"
-        users-by-username-query="SELECT U.username, U.password, U.enabled FROM pat_users U where U.username=?"
-        authorities-by-username-query="SELECT U.username, G.name as authority FROM pat_users U JOIN pat_groups_users GU ON U.username = GU.user_id JOIN pat_groups G ON G.name = GU.group_id WHERE U.username=?" />
+        users-by-username-query="SELECT U.username, U.password, U.enabled FROM PAT_USERS U where U.username=?"
+        authorities-by-username-query="SELECT U.username, G.name as authority FROM PAT_USERS U JOIN PAT_GROUPS_USERS GU ON U.username = GU.user_id JOIN PAT_GROUPS G ON G.name = GU.group_id WHERE U.username=?" />
     </security:authentication-provider>
 
     
