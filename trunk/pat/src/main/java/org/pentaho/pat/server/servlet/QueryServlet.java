@@ -402,6 +402,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                     header = new String[width];
                     for (int s = 0;s<width;s++) {
                         header[s] =rs.getMetaData().getColumnName(s+1);
+                        
 //                        System.out.print(" |\t" + header[s]);
                     }
                     if (width > 0) {
@@ -412,7 +413,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 String[] row = new String[width];
                 for (int i = 0;i<width;i++) {
                     
-                        row[i] = rs.getString(header[i]);
+                        row[i] = rs.getString(i+1);
                         if (row[i] == null )
                             row[i] = "";
 //                        if(height < 10) {
