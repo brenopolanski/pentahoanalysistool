@@ -259,7 +259,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         
-        final LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
+        LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
         msPanel = new MainSouthPanel(centerPanel);
         centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));

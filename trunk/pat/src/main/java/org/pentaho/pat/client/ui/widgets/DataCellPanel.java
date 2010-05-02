@@ -30,6 +30,8 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
 
     private Number cellNum;
     
+    private String queryId; 
+    
     private List<Integer> coordinates = null;
 
     private final static String DATA_CELL_PANEL = "pat-DataCellPanel"; //$NON-NLS-1$
@@ -49,7 +51,7 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
         cellNum = rawNumber;
         this.setStyleName(DATA_CELL_PANEL);
         GlobalConnectionFactory.getOperationInstance().addTableListener(this);
-        
+        queryId = Pat.getCurrQuery();
         this.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     }
     
@@ -76,39 +78,40 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
         
     }
 
-    public void onOperationExecuted(Operation operation) {
-        ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
-        collapseBtn3.addClickHandler(new ClickHandler() {
-            
-            public void onClick(ClickEvent arg0) {
-                ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),coordinates, new AsyncCallback<String[][]>() {
-                    
-                    public void onSuccess(String[][] arg0) {
-                        GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(DataCellPanel.this, Pat.getCurrQuery(), arg0);
-                    }
-                    
-                    public void onFailure(Throwable arg0) {
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrillThrough(arg0.getMessage()));
-                        
-                    }
-                });
+    public void onOperationExecuted(String _queryId, Operation operation) {
+        if (this.queryId.equals(_queryId)) {
+            ImageButton collapseBtn3 = new ImageButton(Caption.IMAGES.toolCollapseDown());
+            collapseBtn3.addClickHandler(new ClickHandler() {
 
-                
-            }
-        });
-        
-     
-        if (Operation.ENABLE_DRILLTHROUGH.equals(operation)) {
+                public void onClick(ClickEvent arg0) {
+                    ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),coordinates, new AsyncCallback<String[][]>() {
+
+                        public void onSuccess(String[][] arg0) {
+                            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(DataCellPanel.this, Pat.getCurrQuery(), arg0);
+                        }
+
+                        public void onFailure(Throwable arg0) {
+                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrillThrough(arg0.getMessage()));
+
+                        }
+                    });
+
+
+                }
+            });
+
+
+            if (Operation.ENABLE_DRILLTHROUGH.equals(operation)) {
                 if(cellNum != null) {
                     this.add(collapseBtn3);
 
                 }
+            }
+
+            if (Operation.DISABLE_DRILLTHROUGH.equals(operation)) {
+                this.clear();
+            }
         }
-        
-        if (Operation.DISABLE_DRILLTHROUGH.equals(operation)) {
-            this.clear();
-        }
-        
     }
 
 }

@@ -56,14 +56,12 @@ import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
-import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
-import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.util.MdxQuery;
 import org.pentaho.pat.server.util.OlapUtil;
 import org.springframework.util.Assert;
@@ -198,6 +196,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         Query newQuery;
         try {
             newQuery = new Query(generatedId, cube);
+            newQuery.getAxis(Axis.COLUMNS).setNonEmpty(true);
+            newQuery.getAxis(Axis.ROWS).setNonEmpty(true);
         } catch (final SQLException e) {
             throw new OlapException(Messages.getString("Services.Session.CreateQueryException"), //$NON-NLS-1$
                     e);
@@ -998,7 +998,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         q.getAxis(Axis.COLUMNS).setNonEmpty(flag);
         q.getAxis(Axis.ROWS).setNonEmpty(flag);
-        q.getAxis(Axis.FILTER).setNonEmpty(flag);
         return executeQuery(userId, sessionId, queryId);
     }
 

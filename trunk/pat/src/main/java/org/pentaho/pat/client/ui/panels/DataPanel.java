@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.FillLayout;
+import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
@@ -182,6 +183,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             if (mainLayoutPanel.isAttached()) {
                 baseLayoutPanel.remove(mainLayoutPanel);
             }
+            baseLayoutPanel.setLayout(new BorderLayout());
             baseLayoutPanel.add(fillLayoutPanel);
             baseLayoutPanel.layout();
             if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
@@ -209,11 +211,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
                 throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
                 throbberLabel.setPixelSize(100, 100);
                 
-//                final FillLayout layout = (FillLayout) baseLayoutPanel.getLayout();
-//                layout.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-//                layout.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-                
-                baseLayoutPanel.add(throbberLabel, new BorderLayoutData());
+                baseLayoutPanel.setLayout(new FillLayout());
+                baseLayoutPanel.add(throbberLabel, new FillLayoutData(HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE));
             }
             baseLayoutPanel.layout();
         }
