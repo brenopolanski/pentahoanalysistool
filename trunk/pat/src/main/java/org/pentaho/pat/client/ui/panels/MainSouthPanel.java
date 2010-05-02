@@ -114,11 +114,9 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
             if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
                 this.getHeader().setText(ConstantFactory.getInstance().drillThroughPanel());
                 simple.clear();
-//                dtp.refresh();
                 simple.add(dtp);
                 parent.setCollapsed(this,false);
                 this.setVisible(true);
-                
                 WidgetHelper.revalidate(this);
             }
 
