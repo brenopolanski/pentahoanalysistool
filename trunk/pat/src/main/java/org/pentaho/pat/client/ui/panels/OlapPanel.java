@@ -72,7 +72,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     private LayoutPanel baselayoutPanel;
 
-    
+    LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
     
     private final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
     
@@ -259,8 +259,9 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         
-        LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
+
         msPanel = new MainSouthPanel(centerPanel);
+        centerPanel.clear();
         centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
         centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,0.3, 20, 300, true));
@@ -295,8 +296,8 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
        
     }
 
-    public void onQueryExecuted(String queryId, CellDataSet matrix) {
-        if (Pat.getCurrQuery() != null && queryId.equals(Pat.getCurrQuery()) && this.isAttached()) {
+    public void onQueryExecuted(String _queryId, CellDataSet matrix) {
+        if (queryId != null && queryId.equals(_queryId) && this.isAttached()) {
             baselayoutPanel.setCollapsed(westPanel, true);
             msPanel.setVisible(false);
             baselayoutPanel.layout();
