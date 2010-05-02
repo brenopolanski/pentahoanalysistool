@@ -428,6 +428,7 @@ public class Pat implements EntryPoint {
                     }
 
                     public void onSuccess(final CellDataSet result1) {
+                        LogoPanel.spinWheel(false);
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 sender, queryId, result1);
                     }

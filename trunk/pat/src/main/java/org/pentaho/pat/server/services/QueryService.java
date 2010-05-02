@@ -409,7 +409,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    ResultSet drillThrough(String userId, String sessionId, String queryId, List<Integer> coordinates)
+    String[][] drillThrough(String userId, String sessionId, String queryId, List<Integer> coordinates)
             throws OlapException;
 
     

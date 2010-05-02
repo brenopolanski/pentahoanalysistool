@@ -19,8 +19,6 @@
  */
 package org.pentaho.pat.server.servlet;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -390,54 +388,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     public String[][] drillThrough(final String sessionId, final String queryId, final List<Integer> coordinates) throws RpcException {
         try {
-            ResultSet rs = this.queryService.drillThrough(getCurrentUserId(), sessionId, queryId, coordinates);
-            Integer width = 0;
-            Integer height = 0;
-            String[] header = null;
-            List<String[]> rows = new ArrayList<String[]>();
-//            System.out.println("DATASET");
-            while(rs.next()) {
-                if (height == 0) {
-                    width = rs.getMetaData().getColumnCount();
-                    header = new String[width];
-                    for (int s = 0;s<width;s++) {
-                        header[s] =rs.getMetaData().getColumnName(s+1);
-                        
-//                        System.out.print(" |\t" + header[s]);
-                    }
-                    if (width > 0) {
-                        rows.add(header);
-//                        System.out.println(" |");
-                    }
-                }
-                String[] row = new String[width];
-                for (int i = 0;i<width;i++) {
-                    
-                        row[i] = rs.getString(i+1);
-                        if (row[i] == null )
-                            row[i] = "";
-//                        if(height < 10) {
-//                            System.out.print(" |\t" + row[i]);
-//                        }
-                    
-                }
-//                if(height < 10) {
-//                    System.out.println(" |");
-                    rows.add(row);
-
-//                }
-                height++;
-            }
-            height = 11;
-            String[][] result = rows.toArray(new String[height][width]);
-//            for (int i = 0; i<rows.size();i++) {
-//                String[] row = rows.get(i);
-//                result[i] = row;
-//            }
-            LOG.debug("Drill-Through Result: Rows : " + rows.size() + " Width: " + width);
-            return result;
-            
-        } catch (SQLException e) {
+            return this.queryService.drillThrough(getCurrentUserId(), sessionId, queryId, coordinates);
+        } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
