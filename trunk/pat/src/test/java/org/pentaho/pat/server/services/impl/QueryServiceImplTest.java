@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.olap4j.Axis;
 import org.olap4j.mdx.ParseTreeWriter;
-import org.olap4j.mdx.SelectNode;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.pentaho.pat.server.services.DiscoveryService;
@@ -103,7 +102,7 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 	{
 		initTest();
 		String userId = "admin"; //$NON-NLS-1$
-		String expectedMDX = "SELECT*new_line*{[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*CrossJoin({[Positions].[All Positions].[CTO]}, {[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
+		String expectedMDX = "SELECT*new_line*NON EMPTY {[Department].[All Departments].[Finance].Siblings} ON COLUMNS,*new_line*NON EMPTY CrossJoin({[Positions].[All Positions].[CTO]}, {[Region].[All Regions].[Central], [Region].[All Regions].[Central].Children}) ON ROWS*new_line*FROM [Quadrant Analysis]"; //$NON-NLS-1$
 		expectedMDX = expectedMDX.replaceAll("\\*new\\_line\\*", System.getProperty( "line.separator" )); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Create a session.

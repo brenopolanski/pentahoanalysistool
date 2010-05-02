@@ -19,6 +19,8 @@
  */
 package org.pentaho.pat.client.ui.windows;
 
+import org.gwt.mosaic.core.client.DOM;
+import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.WidgetWrapper;
 import org.gwt.mosaic.ui.client.WindowPanel;
@@ -53,7 +55,7 @@ public class AboutWindow extends WindowPanel {
     
     private static final AboutWindow ABOUTWINDOW = new AboutWindow();
     
-    private static final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+    private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
     
     /**
      *  About box
@@ -61,15 +63,15 @@ public class AboutWindow extends WindowPanel {
     public AboutWindow() {
         super(TITLE);
         LayoutPanel aboutPanel = new LayoutPanel(new FillLayout());
+        DOM.setStyleAttribute(aboutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
         HTML aboutText = new HTML();
         aboutText.setWordWrap(true);
         StringBuffer txt = new StringBuffer();
-        txt.append("<h2><b>About PAT<b><h2>");
+        txt.append("<h2><b>About PAT</b></h2>");
         txt.append("PAT is an open source project that aims for nothing less than creating the best next generation OLAP slicer and dicer.");
-        txt.append("<br><i>Tom Barber, Paul Stoellberger</i>");
-        txt.append("<br><br>");
-        txt.append("<b>Donate</b>");
-        txt.append("Since PAT development and all the used infrastructure is done for free, donations are more than welcome.<br>");
+        txt.append("<p><i>- Tom Barber & Paul Stoellberger</i></p>");
+        txt.append("<b>Donate</b><br>");
+        txt.append("PAT development and infrastructure maintenance is a full-spare-time project and we do have expenses to cover, so donations would help a lot to keep this project going and even push it's progress.<br>");
         
         ToolButton tb = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.donate(), "", ButtonLabelType.NO_TEXT));
         tb.addClickHandler(new ClickHandler() {
@@ -79,19 +81,25 @@ public class AboutWindow extends WindowPanel {
                 
             }
         });
-        
+        txt.append("<a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%2estoellberger%40gmail%2ecom&lc=GB&item_name=PAT%20Project&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted\" target=\"_blank\">");
         txt.append(tb.getHTML());
+        txt.append("</a>");
+        txt.append("<br><br>");
         txt.append("<b>Credits</b><br>");
         txt.append("We would like to follow the following persons for their support:<br>");
         txt.append("Peter Parker, Mary Jane");
         aboutText.setHTML(txt.toString());
-        aboutPanel.add(new WidgetWrapper(aboutText) , new FillLayoutData(HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE));
-        winContentpanel.add(aboutPanel, new BoxLayoutData(FillStyle.BOTH));
-        ABOUTWINDOW.setWidget(winContentpanel);
+        aboutPanel.add(new WidgetWrapper(aboutText) , new FillLayoutData(HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_TOP));
+        ScrollLayoutPanel sp = new ScrollLayoutPanel(new BoxLayout());
+        sp.setAnimationEnabled(true);
+        sp.add(aboutPanel, new BoxLayoutData(FillStyle.BOTH));
+        winContentpanel.add(sp, new BoxLayoutData(FillStyle.BOTH));
+        this.setWidget(winContentpanel);
+        this.layout();
     }
 
     public static void display() {
-        ABOUTWINDOW.setSize("450px", "300px"); //$NON-NLS-1$ //$NON-NLS-2$
+        ABOUTWINDOW.setSize("450px", "500px"); //$NON-NLS-1$ //$NON-NLS-2$
         ABOUTWINDOW.showModal(false);
         ABOUTWINDOW.layout();
     }
