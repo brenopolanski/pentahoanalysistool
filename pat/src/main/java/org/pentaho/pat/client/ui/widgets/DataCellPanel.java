@@ -8,7 +8,9 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 
@@ -86,7 +88,7 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
                     }
                     
                     public void onFailure(Throwable arg0) {
-                        MessageBox.alert("error", "drillthrough error");
+                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDrillThrough(arg0.getMessage()));
                         
                     }
                 });

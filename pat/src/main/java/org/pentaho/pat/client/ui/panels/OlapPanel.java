@@ -72,7 +72,11 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     private LayoutPanel baselayoutPanel;
 
+    
+    
     private final CaptionLayoutPanel westPanel = new CaptionLayoutPanel();
+    
+    private  MainSouthPanel msPanel = null;
    
     public OlapPanel() {
         // Needs working out so it accounts for multiple cubes of the same name.
@@ -254,23 +258,22 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         
         // FIXME remove that and use style 
         DOM.setStyleAttribute(pPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        final LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
-        final MainSouthPanel msPanel = new MainSouthPanel(centerPanel);
         
+        final LayoutPanel centerPanel = new LayoutPanel(new BorderLayout());
+        msPanel = new MainSouthPanel(centerPanel);
         centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
         centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,0.3, 20, 300, true));
         
-        final ImageButton collapseBtnSouth = new ImageButton(Caption.IMAGES.toolCollapseDown());
-        msPanel.getHeader().add(collapseBtnSouth, CaptionRegion.RIGHT);
-
-        collapseBtnSouth.addClickHandler(new ClickHandler() {
-            public void onClick(final ClickEvent event) {
-                centerPanel.setCollapsed(msPanel, !centerPanel.isCollapsed(msPanel));
-                centerPanel.layout();
-            }
-        });
+//        final ImageButton collapseBtnSouth = new ImageButton(Caption.IMAGES.toolCollapseDown());
+//        msPanel.getHeader().add(collapseBtnSouth, CaptionRegion.RIGHT);
+//
+//        collapseBtnSouth.addClickHandler(new ClickHandler() {
+//            public void onClick(final ClickEvent event) {
+//                centerPanel.setCollapsed(msPanel, !centerPanel.isCollapsed(msPanel));
+//                centerPanel.layout();
+//            }
+//        });
 
         msPanel.setVisible(false);
         
@@ -295,6 +298,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     public void onQueryExecuted(String queryId, CellDataSet matrix) {
         if (Pat.getCurrQuery() != null && queryId.equals(Pat.getCurrQuery()) && this.isAttached()) {
             baselayoutPanel.setCollapsed(westPanel, true);
+            msPanel.setVisible(false);
             baselayoutPanel.layout();
         }
     }

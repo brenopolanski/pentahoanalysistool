@@ -179,7 +179,7 @@ public class TopMenu extends MenuBar {
             MenuItem logout = new MenuItem(ConstantFactory.getInstance().logout(),new Command() {
                 public void execute() {
                     if (!Pat.isPlugin()) {
-                        Window.Location.assign(Pat.getBaseUrl()+ConstantFactory.getInstance().logout());
+                        Window.Location.assign(Pat.getBaseUrl()+"logout");
                     }
 
                  } 

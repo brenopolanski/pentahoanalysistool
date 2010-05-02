@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -28,8 +29,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.TableDataSet;
+
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Collapsable Southpanel for MainTabPanel
@@ -43,6 +47,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
     private DrillThroughPanel dtp = null;
     private LayoutPanel baselayoutPanel = getLayoutPanel();
     private LayoutPanel parent = null;
+    private final LayoutPanel simple  = new LayoutPanel(new BorderLayout());
     
     /**
      * 
@@ -53,24 +58,26 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    protected void onLoad() {
+        super.onLoad();
         if (parent != null) {
             parent.layout();
         }
         GlobalConnectionFactory.getOperationInstance().addTableListener(MainSouthPanel.this);
     };
+    
+   
 
     @Override
-    protected void onDetach() {
-        super.onDetach();
+    protected void onUnload() {
+        super.onUnload();
         if (parent != null) {
             parent.layout();
         }
+       
         GlobalConnectionFactory.getOperationInstance().removeTableListener(MainSouthPanel.this);
     };
 
-    
     private void initializeWidget() {
         this.setLayout(new BoxLayout(Orientation.VERTICAL));
         // FIXME remove that and use style
@@ -92,6 +99,8 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
 //            }
 //        };
 //        MainSouthPanel.this.getHeader().addClickHandler(collapseClick);
+        
+        this.add(simple,new BoxLayoutData(FillStyle.BOTH));
     }
     
     
@@ -100,9 +109,10 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
      */
     public void onOperationExecuted(Operation operation) {
         if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
-            this.getHeader().setText("Drill Through Data Panel");
+            this.getHeader().setText(ConstantFactory.getInstance().drillThroughPanel());
             dtp = new DrillThroughPanel();
-            this.add(dtp,new BoxLayoutData(FillStyle.BOTH));
+            simple.clear();
+            simple.add(dtp);
             this.setVisible(true);
             this.layout();
             parent.setCollapsed(this,false);
@@ -112,6 +122,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
         if (operation.equals(Operation.DISABLE_DRILLTHROUGH)) {
             this.remove(dtp);
             this.getHeader().setText("");
+            parent.setCollapsed(this,false);
             this.setVisible(false);
             parent.layout();
         }
