@@ -140,7 +140,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private final TextBox nameTextBox;
 
     /** Listbox for drivers. */
-    private final ListBox driverListBox;
+    private  ListBox driverListBox;
 
     /** Textbox for url. */
     private final TextBox urlTextBox;
@@ -175,13 +175,16 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * ConnectMondrianPanel Constructor.
      */
     public ConnectMondrianPanel() {
+        this(true);
+    }
+    private ConnectMondrianPanel(Boolean initData) {
         super(new BorderLayout());
         idHidden = new Hidden();
         nameTextBox = new TextBox();
         saveButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
-        driverListBox = createDriverListComboBox();
+        driverListBox = new ListBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
@@ -192,11 +195,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
         schemaValCheckbox = new CheckBox(ConstantFactory.getInstance().validateSchema());
         this.setStyleName(CONNECT_MONDRIAN_PANEL);
         init();
+        if (initData) {
+            initDriverListBox();
+        }
 
     }
     
     public ConnectMondrianPanel(CubeConnection cc) {
-        this();
+        this(false);
         idHidden.setValue(cc.getId());
         nameTextBox.setText(cc.getName());
         urlTextBox.setText(cc.getUrl());
@@ -204,11 +210,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
             userTextBox.setText(cc.getUsername());
         if (cc.getPassword() != null)
             passwordTextBox.setText(cc.getPassword());
+        
+        
         if (cc.getDriverClassName() != null) {
-            for (int i=0; i < driverListBox.getItemCount(); i++) {
-                if (driverListBox.getItemText(i).equals(cc.getDriverClassName()))
-                    driverListBox.setSelectedIndex(i);
-            }
+            initDriverListBox(cc.getDriverClassName());
         }
         schemaData = cc.getSchemaData();
         startupCheckbox.setValue(cc.isConnectOnStartup());
@@ -226,19 +231,28 @@ public class ConnectMondrianPanel extends LayoutComposite {
      * 
      * @return the list box
      */
-    private ListBox createDriverListComboBox() {
-        final ListBox listBox = new ListBox();
-
+    private void initDriverListBox() {
+        initDriverListBox(null);
+    }
+    private void initDriverListBox(final String selectedDriver) {
+        if (driverListBox == null) {
+            driverListBox = new ListBox();
+        }
+        driverListBox.clear();
         ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
             public void onFailure(final Throwable arg0) {
                 MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());
             }
 
             public void onSuccess(final String[] arg0) {
-
                 if (arg0 != null && arg0.length > 0) {
                     for (final String element2 : arg0) {
-                        listBox.addItem(element2);
+                        driverListBox.addItem(element2);
+                    }
+                    for (int i=0; selectedDriver != null && i < driverListBox.getItemCount(); i++) {
+                        if (driverListBox.getItemText(i).equals(selectedDriver)) {
+                            driverListBox.setSelectedIndex(i);
+                        }
                     }
                 } else {
                     MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
@@ -246,7 +260,6 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 }
             }
         });
-        return listBox;
     }
 
     /**

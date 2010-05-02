@@ -24,6 +24,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -90,6 +91,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         while (driversEnum.hasMoreElements()) {
             drivers.add(driversEnum.nextElement().getClass().getName());
         }
+        Collections.sort(drivers);
 
         return drivers;
     }

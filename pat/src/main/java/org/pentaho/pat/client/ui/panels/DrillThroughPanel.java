@@ -72,9 +72,8 @@ public class DrillThroughPanel extends LayoutComposite {
         this.layout();
     }
     
-    public void refresh() {
-        rTable.refresh();
-        initializeWidget();
+    public void refreshTable() {
+        rTable.setData(new TableDataSet());
         this.layout();
     }
 
