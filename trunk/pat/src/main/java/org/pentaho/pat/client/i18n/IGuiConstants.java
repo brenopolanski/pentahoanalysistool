@@ -966,5 +966,7 @@ public interface IGuiConstants extends Constants {
      * @return
      */
      String drillThroughPanel();
+     
+     String aboutPat();
 
 }
