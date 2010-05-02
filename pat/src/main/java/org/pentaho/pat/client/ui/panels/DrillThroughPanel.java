@@ -59,6 +59,7 @@ public class DrillThroughPanel extends LayoutComposite {
     protected void initializeWidget() {
 
         final LayoutPanel baselayoutPanel = getLayoutPanel();
+        baselayoutPanel.clear();
         baselayoutPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         // FIXME remove that and use style
         DOM.setStyleAttribute(baselayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -68,6 +69,12 @@ public class DrillThroughPanel extends LayoutComposite {
     
     public void setData(TableDataSet tableData) {
         rTable.setData(tableData);
+        this.layout();
+    }
+    
+    public void refresh() {
+        rTable.refresh();
+        initializeWidget();
         this.layout();
     }
 

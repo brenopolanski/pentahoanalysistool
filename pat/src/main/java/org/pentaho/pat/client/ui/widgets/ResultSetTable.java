@@ -110,6 +110,9 @@ public class ResultSetTable extends LayoutComposite {
 
     }
 
+    public void refresh() {
+        initTable();
+    }
 
     /**
      * 

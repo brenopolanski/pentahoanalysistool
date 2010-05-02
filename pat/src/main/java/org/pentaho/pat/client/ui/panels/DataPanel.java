@@ -176,7 +176,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
-        if (query.equals(queryId)) {
+        if (query.equals(queryId) && this.isAttached()) {
             if (throbberLabel.isAttached()) {
                 baseLayoutPanel.remove(throbberLabel);
             }

@@ -201,7 +201,14 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
 
                 // Obtaining a connection object doesn't mean that the
                 // credentials are ok or whatever. We'll test it.
-                this.discoveryService.getCubes(userId, sessionId, sc.getId());
+                try {
+                    this.discoveryService.getCubes(userId, sessionId, sc.getId());
+                }
+                catch (Exception e) {
+                    sessions.get(userId).get(sessionId).closeConnection(sc.getId());
+                    LOG.error(e);
+                    throw new OlapException(e.getMessage(),e);
+                }
 
             }
 

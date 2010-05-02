@@ -27,6 +27,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.util.Operation;
@@ -43,7 +44,7 @@ import org.pentaho.pat.rpc.dto.TableDataSet;
  */
 public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener {
 
-    private DrillThroughPanel dtp = null;
+    private DrillThroughPanel dtp = new DrillThroughPanel();
     private LayoutPanel baselayoutPanel = getLayoutPanel();
     private LayoutPanel parent = null;
     private String queryId;
@@ -109,16 +110,16 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
      * @see org.pentaho.pat.client.listeners.ITableListener#onOperationExecuted(org.pentaho.pat.client.util.Operation)
      */
     public void onOperationExecuted(String queryId, Operation operation) {
-        if (this.queryId.equals(queryId)) {
+        if (this.queryId.equals(queryId) && this.isAttached()) {
             if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
                 this.getHeader().setText(ConstantFactory.getInstance().drillThroughPanel());
-                dtp = new DrillThroughPanel();
                 simple.clear();
+//                dtp.refresh();
                 simple.add(dtp);
-                this.setVisible(true);
-                this.layout();
                 parent.setCollapsed(this,false);
-                parent.layout();
+                this.setVisible(true);
+                
+                WidgetHelper.revalidate(this);
             }
 
             if (operation.equals(Operation.DISABLE_DRILLTHROUGH)) {
@@ -126,17 +127,17 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
                 this.getHeader().setText("");
                 parent.setCollapsed(this,false);
                 this.setVisible(false);
-                parent.layout();
+                WidgetHelper.revalidate(this);
             }
         }
     }
 
     public void onDrillThroughExecuted(String queryId, String[][] result) {
-        if (this.queryId.equals(queryId)) {
+        if (this.queryId.equals(queryId)  && this.isAttached()) {
             TableDataSet tds = new TableDataSet();
             tds.setData(result);
             dtp.setData(tds);
-            MainSouthPanel.this.layout();
+            WidgetHelper.revalidate(this);
         }
     }
 
