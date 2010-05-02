@@ -30,7 +30,7 @@ import org.pentaho.pat.client.util.Operation;
  */
 public interface ITableListener extends EventListener {
 
-    void onOperationExecuted(Operation operation);
+    void onOperationExecuted(String queryId, Operation operation);
     
     void onDrillThroughExecuted(String queryId, String[][] drillThroughResult);
 }

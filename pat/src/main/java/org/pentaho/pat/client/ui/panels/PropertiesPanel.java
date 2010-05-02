@@ -77,7 +77,9 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 	private final ToolButton layoutMenuButton;
 	
-	private final ToolButton drillMenuButton;
+	private final ToolButton drillReplaceButton;
+	
+	private final ToolButton drillPositionButton;
 	
 	private final ToolButton drillThroughButton;
 	
@@ -254,10 +256,11 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
             }
         });
-        mdxButton.setEnabled(false);
+        //mdxButton.setEnabled(false);
 
-        hideBlanksButton = new ToolButton(ConstantFactory.getInstance().hideBlankCells());
+        hideBlanksButton = new ToolButton(ConstantFactory.getInstance().showBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
+        hideBlanksButton.setChecked(true);
         hideBlanksButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -367,15 +370,33 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
         
-        drillMenuButton = new ToolButton(ConstantFactory.getInstance().drillStyle());
-        drillMenuButton.setStyle(ToolButtonStyle.MENU);
-        drillMenuButton.setEnabled(false);
+        drillPositionButton = new ToolButton(ConstantFactory.getInstance().drillPosition());
+        drillPositionButton.setStyle(ToolButtonStyle.RADIO);
+        drillPositionButton.setEnabled(false);
+        drillPositionButton.setChecked(true);
+        drillPositionButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                drillReplaceButton.setChecked(true);
+                drillPositionButton.setChecked(false);
 
-        final PopupMenu drillMenuBtnMenu = new PopupMenu();
-        drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillPosition(), new DrillCommand(DrillType.POSITION));
-        drillMenuBtnMenu.addItem(ConstantFactory.getInstance().drillReplace(), new DrillCommand(DrillType.REPLACE));
+                (new DrillCommand(DrillType.POSITION)).execute();
+            }
+        });
+        
+        drillReplaceButton = new ToolButton(ConstantFactory.getInstance().drillReplace());
+        drillReplaceButton.setStyle(ToolButtonStyle.RADIO);
+        drillReplaceButton.setEnabled(false);
+        drillReplaceButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                drillReplaceButton.setChecked(true);
+                drillPositionButton.setChecked(false);
+                (new DrillCommand(DrillType.REPLACE)).execute();
+            }
+        });
+        
 
-        drillMenuButton.setMenu(drillMenuBtnMenu);
 
         drillThroughButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThroughButton.setEnabled(false);
@@ -385,11 +406,11 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             
             public void onClick(ClickEvent arg0) {
                 if (drillThroughButton.isChecked()) {
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, Operation.ENABLE_DRILLTHROUGH);
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, queryId,  Operation.ENABLE_DRILLTHROUGH);
                 }
                 else
                 {
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, Operation.DISABLE_DRILLTHROUGH);
+                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, queryId, Operation.DISABLE_DRILLTHROUGH);
                 }
                 
             }
@@ -403,7 +424,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            mainPanel.add(drillMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(drillReplaceButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -429,7 +451,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             hideBlanksButton.setEnabled(true);
             pivotButton.setEnabled(true);
             layoutMenuButton.setEnabled(true);
-            drillMenuButton.setEnabled(true);
+            drillPositionButton.setEnabled(true);
+            drillReplaceButton.setEnabled(true);
             if (Pat.getCurrConnection().getConnectionType().equals(CubeConnection.ConnectionType.Mondrian)) {
                 drillThroughButton.setEnabled(true);
             }

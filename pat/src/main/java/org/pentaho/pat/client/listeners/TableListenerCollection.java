@@ -43,10 +43,10 @@ public class TableListenerCollection extends ArrayList<ITableListener> {
     private static final long serialVersionUID = -3567349113647466922L;
 
 
-    public void fireOperationExecuted(final Widget sender, Operation operation) {
+    public void fireOperationExecuted(final Widget sender, String queryId, Operation operation) {
     	ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
         for (ITableListener listener : tableList) {
-            listener.onOperationExecuted(operation);
+            listener.onOperationExecuted(queryId, operation);
         }
     }
 
