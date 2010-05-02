@@ -23,6 +23,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.ConnectionManagerPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
+import org.pentaho.pat.client.ui.windows.AboutWindow;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
@@ -39,7 +40,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.MenuItemSeparator;;
+import com.google.gwt.user.client.ui.MenuItemSeparator;
 
 /**
  * Menu for PAT - MenuBar Style
@@ -112,14 +113,23 @@ public class TopMenu extends MenuBar {
         this.addItem(new MenuItem(ConstantFactory.getInstance().help(),helpMenu));
 
 
-        helpMenu.addItem(ConstantFactory.getInstance().about(), new Command(){
+        helpMenu.addItem("Donate", new Command(){
 
             public void execute() {
-                // TODO Auto-generated method stub
-
+                   Pat.openDonation();
             }
 
         });
+        
+        helpMenu.addItem(ConstantFactory.getInstance().about(), new Command(){
+
+            public void execute() {
+                   AboutWindow.display();
+            }
+
+        });
+
+        
     }
 
     public final MenuBar createFileMenu() {

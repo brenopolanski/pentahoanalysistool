@@ -44,6 +44,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -435,6 +436,10 @@ public class Pat implements EntryPoint {
 
                 });
 
+    }
+    
+    public static void openDonation() {
+        Window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%2estoellberger%40gmail%2ecom&lc=GB&item_name=PAT%20Project&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted", "_blank", "");
     }
     /**
      *TODO JAVADOC

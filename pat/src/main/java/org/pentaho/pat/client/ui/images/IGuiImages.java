@@ -92,4 +92,6 @@ public interface IGuiImages extends ImageBundle {
     AbstractImagePrototype folder();
     
     AbstractImagePrototype disk();
+    
+    AbstractImagePrototype donate();
 }
