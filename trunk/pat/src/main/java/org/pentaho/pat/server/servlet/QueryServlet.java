@@ -40,6 +40,7 @@ import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.QueryType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
@@ -57,6 +58,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     private static final long serialVersionUID = 1L;
 
     private QueryService queryService;
+    
+    private SessionService sessionService; 
 
     private final static Logger LOG = Logger.getLogger(QueryServlet.class);
 
@@ -75,7 +78,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public void init() throws ServletException {
         super.init();
         queryService = (QueryService) applicationContext.getBean("queryService"); //$NON-NLS-1$
-        final SessionService sessionService = (SessionService) applicationContext.getBean("sessionService"); //$NON-NLS-1$
+        sessionService = (SessionService) applicationContext.getBean("sessionService"); //$NON-NLS-1$
         if (queryService == null) {
             throw new ServletException(Messages.getString("Servlet.QueryServiceNotFound")); //$NON-NLS-1$
         }
@@ -603,7 +606,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
             final List<QuerySaveModel> results = new ArrayList<QuerySaveModel>();
             for (SavedQuery savedQuery : ssc) {
-                results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), savedQuery.getConnectionId(), savedQuery
+                SavedConnection sc = sessionService.getConnection(getCurrentUserId(), savedQuery.getConnectionId());
+                if (sc == null) {
+                    throw new Exception("Connection for query doesn't exist");
+                }
+                
+                results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), SessionServlet.convert(sc), savedQuery
                         .getCube(), savedQuery.getCubeName(), savedQuery.getUpdatedDate(), savedQuery.getQueryType()));
 
             }
@@ -670,8 +678,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, sc.getConnectionId(),(MdxQuery) oQuery);
             }
 
+            SavedConnection svc = sessionService.getConnection(getCurrentUserId(), sc.getConnectionId());
+            if (svc == null) {
+                throw new Exception("Connection for query doesn't exist");
+            }
 
-            return new QuerySaveModel(createdQueryId, sc.getQueryId(), sc.getName(), sc.getConnectionId(), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
+            return new QuerySaveModel(createdQueryId, sc.getQueryId(), sc.getName(), SessionServlet.convert(svc), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
 
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$

@@ -41,6 +41,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 
@@ -68,6 +69,8 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     private CubeItem cubeItem = null;
 
     private String connectionId = null;
+    
+    private CubeConnection connection = null;
 
     private String queryId = null;
 
@@ -78,7 +81,6 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     private final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
     public MdxPanel() {
-        // Needs working out so it accounts for multiple cubes of the same name.
         super();
 
     }
@@ -92,7 +94,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
      * Mdx Panel Constructor.
      * 
      */
-    public MdxPanel(final CubeItem cube, final String connection) {
+    public MdxPanel(final CubeItem cube, final CubeConnection connection) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
@@ -101,7 +103,8 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
         this.cubeItem = cube;
         this.cube = cube.getName();
-        this.connectionId = connection;
+        this.connection = connection;
+        this.connectionId = connection.getId();
         final String catalog = cube.getCatalog();
 
         ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,
@@ -119,7 +122,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                         queryId = query;
                         Pat.setCurrQuery(query);
                         Pat.setCurrConnectionId(connectionId);
-
+                        Pat.setCurrConnection(connection);
                         initializeWidget();
                         LogoPanel.spinWheel(false);
 
@@ -128,7 +131,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     }
 
-    public MdxPanel(final CubeItem cube, final String connection, final String mdx) {
+    public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx) {
         this(cube, connection);
         this.mdxArea.setText(mdx);
     }

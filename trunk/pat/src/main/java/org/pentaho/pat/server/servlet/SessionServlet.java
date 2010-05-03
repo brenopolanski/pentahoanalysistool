@@ -71,7 +71,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
     public CubeConnection getConnection(final String sessionId, final String connectionName) throws RpcException {
         try {
         final SavedConnection savedConn = this.sessionService.getConnection(getCurrentUserId(), connectionName);
-        return savedConn == null ? null : this.convert(savedConn);
+        return savedConn == null ? null : convert(savedConn);
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Session.CantGetSavedConnections"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Session.CantGetSavedConnections")); //$NON-NLS-1$
@@ -176,7 +176,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
             //TODO FIX
 	}
     }
-    private CubeConnection convert(final SavedConnection sc) {
+    public static CubeConnection convert(final SavedConnection sc) {
 
         final CubeConnection cc = new CubeConnection();
         cc.setName(sc.getName());
