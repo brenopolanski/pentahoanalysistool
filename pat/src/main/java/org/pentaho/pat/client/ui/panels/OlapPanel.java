@@ -136,11 +136,13 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         Pat.setCurrQuery(query);
         Pat.setCurrCube(qsm.getCube());
         Pat.setCurrCubeName(qsm.getCubeName());
-        Pat.setCurrConnectionId(qsm.getConnection());
+        Pat.setCurrConnectionId(qsm.getConnection().getId());
+        Pat.setCurrConnection(qsm.getConnection());
 
         panelName = qsm.getCubeName();
         cubeItem = qsm.getCube();
-        connectionId = qsm.getConnection();
+        connectionId = qsm.getConnection().getId();
+        connection = qsm.getConnection();
         initializeWidget();
 
     }

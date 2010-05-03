@@ -354,7 +354,7 @@ public class TopMenu extends MenuBar {
 
                                                         public void execute() {
                                                             LogoPanel.spinWheel(true);
-                                                            final MdxPanel mdxPanel = new MdxPanel(cubeItem, connection.getId());
+                                                            final MdxPanel mdxPanel = new MdxPanel(cubeItem, connection);
                                                             MainTabPanel.displayContentWidget(mdxPanel);
 
                                                         }

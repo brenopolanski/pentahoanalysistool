@@ -162,7 +162,7 @@ public class CubeBrowserWindow extends WindowPanel {
                     final CubeTreeItem selected = (CubeTreeItem) CUBEMENUPANEL.getCubeTree().getSelectedItem();
                     if (selected.getType() == CubeTreeItem.ItemType.CUBE) {
                         LogoPanel.spinWheel(true);
-                        final MdxPanel mdxPanel = new MdxPanel(selected.getCubeItem(), selected.getConnectionId());
+                        final MdxPanel mdxPanel = new MdxPanel(selected.getCubeItem(), selected.getConnection());
                         MainTabPanel.displayContentWidget(mdxPanel);
                     }
                     CBW.hide();

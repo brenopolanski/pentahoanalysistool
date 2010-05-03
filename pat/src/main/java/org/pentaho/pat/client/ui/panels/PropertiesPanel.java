@@ -230,7 +230,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                                 if (widget instanceof OlapPanel) {
                                     ((OlapPanel) widget).getCubeItem();
                                     final MdxPanel mdxpanel = new MdxPanel(((OlapPanel) widget).getCubeItem(),
-                                            Pat.getCurrConnectionId(), mdxArea.getText());
+                                            Pat.getCurrConnection(), mdxArea.getText());
                                     MainTabPanel.displayContentWidget(mdxpanel);
                                 }
 

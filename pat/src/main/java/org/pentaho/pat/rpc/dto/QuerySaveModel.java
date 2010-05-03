@@ -23,7 +23,7 @@ public class QuerySaveModel implements Serializable {
 
     private String name;
 
-    private String connection;
+    private CubeConnection connection;
     
     private String queryId;
 
@@ -46,7 +46,7 @@ public class QuerySaveModel implements Serializable {
      * public QuerySaveModel(String id, String name, String connection, Date savedDate) { this.name = name;
      * this.connection = connection; this.id = id; this.savedDate = savedDate; }
      */
-    public QuerySaveModel(final String id,final String queryId, final String name, final String connection, final CubeItem cube,
+    public QuerySaveModel(final String id,final String queryId, final String name, final CubeConnection connection, final CubeItem cube,
             final String cubeName, final Date updatedDate, final QueryType queryType) {
         this.name = name;
         this.queryId = queryId;
@@ -83,7 +83,7 @@ public class QuerySaveModel implements Serializable {
      * 
      * @return the connection
      */
-    public String getConnection() {
+    public CubeConnection getConnection() {
         return connection;
     }
 
@@ -94,7 +94,7 @@ public class QuerySaveModel implements Serializable {
      * @param connection
      *            the connection to set
      */
-    public void setConnection(final String connection) {
+    public void setConnection(final CubeConnection connection) {
         this.connection = connection;
     }
 
