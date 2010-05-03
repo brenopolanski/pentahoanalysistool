@@ -71,7 +71,7 @@ public class AboutWindow extends WindowPanel {
         txt.append("PAT is an open source project that aims for nothing less than creating the best next generation OLAP slicer and dicer.");
         txt.append("<p><i>- Tom Barber & Paul Stoellberger</i></p>");
         txt.append("<b>Donate</b><br>");
-        txt.append("PAT development and infrastructure maintenance is a full-spare-time project and we do have expenses to cover, so donations would help a lot to keep this project going and even push it's progress.<br>");
+        txt.append("PAT development and infrastructure maintenance is a full-spare-time project and we do have expenses to cover. Donations would help a lot to keep this project going and even push it's progress.<br>");
         
         ToolButton tb = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.donate(), "", ButtonLabelType.NO_TEXT));
         tb.addClickHandler(new ClickHandler() {
