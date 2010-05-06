@@ -377,8 +377,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         drillPositionButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
-                drillReplaceButton.setChecked(true);
-                drillPositionButton.setChecked(false);
+                drillReplaceButton.setChecked(false);
+                drillPositionButton.setChecked(true);
 
                 (new DrillCommand(DrillType.POSITION)).execute();
             }
@@ -390,8 +390,9 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         drillReplaceButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
-                drillReplaceButton.setChecked(true);
                 drillPositionButton.setChecked(false);
+                drillReplaceButton.setChecked(true);
+
                 (new DrillCommand(DrillType.REPLACE)).execute();
             }
         });

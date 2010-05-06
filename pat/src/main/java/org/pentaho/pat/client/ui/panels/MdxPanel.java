@@ -99,8 +99,6 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
 
-        
-
         this.cubeItem = cube;
         this.cube = cube.getName();
         this.connection = connection;
@@ -197,6 +195,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
                 
+                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(MdxPanel.this, queryId);
                 mdxArea.formatMDX();
                 ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdxArea.getText(),
                         new AsyncCallback<Object>() {
@@ -208,7 +207,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
                             public void onSuccess(final Object arg0) {
                                 ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(),
-                                        Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
+                                        queryId, new AsyncCallback<CellDataSet>() {
 
                                             public void onFailure(final Throwable arg0) {
                                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
@@ -217,7 +216,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
                                             public void onSuccess(final CellDataSet result1) {
                                                 GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                        .fireQueryExecuted(MdxPanel.this, Pat.getCurrQuery(), result1);
+                                                        .fireQueryExecuted(MdxPanel.this, queryId, result1);
                                             }
 
                                         });
@@ -324,25 +323,18 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     }
 
     public void onQueryExecuted(final String queryId, final CellDataSet matrix) {
-        if (this.queryId.equals(queryId) && Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery()
-                && this.isAttached()) {
-
-//            tableLayoutPanel.layout();
+        if (this.queryId.equals(queryId) && this.isAttached()) {
             this.layout();
-            
-
         }
+
 
     }
 
 	public void onQueryPivoted(String queryId) {
-		// TODO Auto-generated method stub
 		
 	}
 
     public void onQueryStartExecution(String queryId) {
-        // TODO Auto-generated method stub
-        
     }
 
 }
