@@ -92,20 +92,20 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (pType == PanelUtil.PanelType.QM) {
-        mainLayoutPanel.setPadding(0);
+            mainLayoutPanel.setPadding(0);
 
-        final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                IAxis.COLUMNS, true, Application.tblRowDrgCont);
-        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
-                IAxis.ROWS, false, Application.tblRowDrgCont);
-        
-        final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        buttonDropPanel.add(dimDropRow, new BoxLayoutData(FillStyle.BOTH));
+            final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
+                    IAxis.COLUMNS, true, Application.tblRowDrgCont);
+            final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
+                    IAxis.ROWS, false, Application.tblRowDrgCont);
 
-        mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
-        mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
+            final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+            buttonDropPanel.add(dimDropRow, new BoxLayoutData(FillStyle.BOTH));
 
-        baseLayoutPanel.add(mainLayoutPanel);
+            mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
+            mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
+
+            baseLayoutPanel.add(mainLayoutPanel);
         }
 
         
