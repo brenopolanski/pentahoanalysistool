@@ -4,7 +4,7 @@
   <artifactId>pat-bi-platform-plugin-assembly</artifactId>
   <packaging>pom</packaging>
   <name>PAT-Plugin Assembly</name>
-  <version>0.7-SNAPSHOT</version>
+  <version>0.7</version>
   <url>http://code.google.com/p/pentahoanalysistool/</url>
   <build>
   <plugins>
