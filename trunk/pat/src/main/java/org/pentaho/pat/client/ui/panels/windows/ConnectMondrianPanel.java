@@ -335,7 +335,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -349,8 +349,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
         builder.add(passwordTextBox, CellConstraints.xy(7, 7));
         builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
         fileUpload.setName(FORM_NAME_FILE);
-        builder.add(fileUpload, CellConstraints.xyw(3, 9, 3));
-        builder.add(schemaValCheckbox, CellConstraints.xy(7,9));
+        builder.add(fileUpload, CellConstraints.xyw(3, 9, 5));
+        builder.add(schemaValCheckbox, CellConstraints.xyw(3, 11, 5));
         uploadButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final String filename = fileUpload.getFilename();
@@ -363,8 +363,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
             }
         });
 
-        builder.add(uploadButton, CellConstraints.xyw(3, 11, 5));
-        builder.add(startupCheckbox,CellConstraints.xy(3,13));
+        builder.add(uploadButton, CellConstraints.xyw(3, 13, 5));
+        builder.add(startupCheckbox,CellConstraints.xy(3,15));
         
 
         saveButton.addClickHandler(new ClickHandler() {
@@ -394,14 +394,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
 
         saveButton.setEnabled(false);
-        builder.add(saveButton, CellConstraints.xy(3, 15));
+        builder.add(saveButton, CellConstraints.xy(3, 17));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton, CellConstraints.xy(7, 15));
+        builder.add(cancelButton, CellConstraints.xy(7, 17));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);
