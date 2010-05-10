@@ -156,6 +156,7 @@ public class SavedConnection implements Comparable<SavedConnection> {
         this.type = type;
     }
 
+    @Type(type = "text")
     public String getSchemaData() {
         return schemaData == null ? "" : schemaData; //$NON-NLS-1$
     }

@@ -86,8 +86,7 @@ public class AboutWindow extends WindowPanel {
         txt.append("</a>");
         txt.append("<br><br>");
         txt.append("<b>Credits</b><br>");
-        txt.append("We would like to follow the following persons for their support:<br>");
-        txt.append("Peter Parker, Mary Jane");
+        txt.append("We would like to thank all donors for their generous support of the PAT project.<br>");
         aboutText.setHTML(txt.toString());
         aboutPanel.add(new WidgetWrapper(aboutText) , new FillLayoutData(HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_TOP));
         ScrollLayoutPanel sp = new ScrollLayoutPanel(new BoxLayout());
