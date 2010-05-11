@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jxl.Workbook;
+import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
@@ -65,11 +66,6 @@ public class ExportController extends AbstractCommandController  implements Init
     
     public static CellDataSet exportResult = null;
     
-    private static WritableCellFormat cs;
-    private static WritableCellFormat hcs;
-    private static WritableCellFormat rcs;
-    private static WritableCellFormat csn;
-
     public static final String extensionFile = ".xls"; //$NON-NLS-1$
 
 
@@ -82,20 +78,21 @@ public class ExportController extends AbstractCommandController  implements Init
 
                 byte[] resultExcel = exportExcel(queryExportBean.getQuery());
                 if (resultExcel != null && resultExcel.length > 0) {
-                    response.getOutputStream().write(resultExcel);
                     response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
-//                    response.setHeader("filename", "export.xls"); //$NON-NLS-1$ //$NON-NLS-2$
                     response.setHeader("Content-Disposition", "attachment; filename=PAT_Export.xls");
                     response.setHeader("Content-Length", ""+ resultExcel.length);
+                    response.getOutputStream().write(resultExcel);
                     response.flushBuffer();
 
                 }
                 else {
+                    LOG.error("Empty Excel resultset - nothing to return");
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
 
             }
             else {
+                LOG.error("CellSet for query ID not found :" + queryExportBean.getQuery());
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (Exception e) {
@@ -109,7 +106,6 @@ public class ExportController extends AbstractCommandController  implements Init
     public static byte[] exportExcel(String queryId) throws IOException {
         exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryId));
         if (exportResult != null) {
-
             PatTableModel table = new PatTableModel(exportResult);
             AbstractBaseCell[][] rowData = table.getRowData();
             AbstractBaseCell[][] rowHeader = table.getColumnHeaders();
@@ -132,7 +128,6 @@ public class ExportController extends AbstractCommandController  implements Init
                 result[xTarget]= cols.toArray(new String[cols.size()]);
 
             }
-
             return export(result);
         }
         return new byte[0];
@@ -147,25 +142,26 @@ public class ExportController extends AbstractCommandController  implements Init
         try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             wb = Workbook.createWorkbook(bout);
+            wb.setColourRGB(Colour.BLUE, 0xf0,0xf8,0xff);
+            wb.setColourRGB(Colour.PALE_BLUE, 0xf9,0xf9,0xf9);
             WritableSheet sheet = wb.createSheet("Sheet", 0); //$NON-NLS-1$
-            setCellsStyles();
+
             WritableCellFormat cf;
 
             if(resultSet.length > 0){
-
                 boolean swapRows  = resultSet[0].length > 256 ? true : false;
 
                 for(int i =  0; i < resultSet.length; i++){
                     String[] vs = resultSet[i];
                     for(int j = 0; j < vs.length ; j++){
                         //cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
-                        cf = (i % 2 != 0 ? hcs : rcs);
+                        cf = (i % 2 != 0 ? getEvenFormat() : getOddFormat());
                         String value = vs[j];
                         if(value == null || value == "null")  //$NON-NLS-1$
                             value=""; //$NON-NLS-1$
 
                         if(isDouble(value)){
-                            WritableCellFormat vf = csn;
+                            WritableCellFormat vf = getNumberFormat();
                             vf.setBackground(cf.getBackgroundColour());
                             Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),vf);
                             sheet.addCell(number);
@@ -180,42 +176,44 @@ public class ExportController extends AbstractCommandController  implements Init
 
 
                 wb.write();
-                return bout.toByteArray();
+                wb.close();
+                byte[] output =bout.toByteArray();
+                return output;
 
             }
         } catch (RowsExceededException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(),e);
         } catch (NumberFormatException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(),e);
         } catch (WriteException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(),e);
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(),e);
         }
-
         return new byte[0];
     }
 
-private static void setCellsStyles() throws WriteException {
-        
-        cs = new WritableCellFormat();
-        cs.setBorder(Border.ALL, BorderLineStyle.THIN);
-        //cs.setShrinkToFit(true);
-        csn = new WritableCellFormat(new NumberFormat("###,###,###.###")); //$NON-NLS-1$
-        csn.setBorder(Border.ALL, BorderLineStyle.THIN);
-        //csn.setShrinkToFit(true);
-        
-        hcs = new WritableCellFormat();
-        hcs.setBorder(Border.ALL, BorderLineStyle.THIN);
-        hcs.setBackground(Colour.GRAY_50);
-        //hcs.setShrinkToFit(true);
-        
-        rcs = new WritableCellFormat();
-        rcs.setBorder(Border.ALL, BorderLineStyle.THIN);
-        rcs.setBackground(Colour.GRAY_25);
-        //rcs.setShrinkToFit(true);
-
+private static WritableCellFormat getOddFormat() throws WriteException {
+    WritableCellFormat cs = new WritableCellFormat();
+    cs.setBorder(Border.ALL, BorderLineStyle.THIN);
+    cs.setBackground(Colour.PALE_BLUE);
+    return cs;
 }
+private static WritableCellFormat getEvenFormat() throws WriteException {
+    WritableCellFormat cs = new WritableCellFormat();
+    cs.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+
+    cs.setBackground(Colour.BLUE);
+    return cs;
+}
+private static WritableCellFormat getNumberFormat() throws WriteException {
+    WritableCellFormat cs = new WritableCellFormat(new NumberFormat("###,###,###.###")); //$NON-NLS-1$
+    cs.setBorder(Border.ALL, BorderLineStyle.THIN);
+    cs.setAlignment(Alignment.RIGHT);
+    return cs;
+}
+
 
 public String getExtension() {
         return extensionFile;
