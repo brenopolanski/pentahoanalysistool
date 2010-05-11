@@ -19,12 +19,11 @@
  */
 package org.pentaho.pat.server.servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,6 +38,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import org.apache.log4j.Logger;
 import org.pentaho.pat.client.util.table.PatTableModel;
@@ -72,17 +72,28 @@ public class ExportController extends AbstractCommandController  implements Init
 
     public static final String extensionFile = ".xls"; //$NON-NLS-1$
 
-    
+
     protected ModelAndView handle(final HttpServletRequest request, final HttpServletResponse response,
             final Object command, final BindException errors) throws Exception {
         final QueryExportBean queryExportBean = (QueryExportBean) command;
-        
+
         try {
             if(OlapUtil.getCellSet(queryExportBean.getQuery()) != null)  {
-                response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
-                response.setHeader("filename", "export.xls"); //$NON-NLS-1$ //$NON-NLS-2$
-                response.setStatus(HttpServletResponse.SC_OK);
-                exportExcel(queryExportBean.getQuery(),response.getOutputStream());
+
+                byte[] resultExcel = exportExcel(queryExportBean.getQuery());
+                if (resultExcel != null && resultExcel.length > 0) {
+                    response.getOutputStream().write(resultExcel);
+                    response.setContentType("application/vnd.ms-excel"); //$NON-NLS-1$
+//                    response.setHeader("filename", "export.xls"); //$NON-NLS-1$ //$NON-NLS-2$
+                    response.setHeader("Content-Disposition", "attachment; filename=PAT_Export.xls");
+                    response.setHeader("Content-Length", ""+ resultExcel.length);
+                    response.flushBuffer();
+
+                }
+                else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+
             }
             else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -95,14 +106,14 @@ public class ExportController extends AbstractCommandController  implements Init
         return null;
     }
 
-    public static void exportExcel(String queryId, OutputStream out) throws IOException {
+    public static byte[] exportExcel(String queryId) throws IOException {
         exportResult = OlapUtil.cellSet2Matrix(OlapUtil.getCellSet(queryId));
         if (exportResult != null) {
 
             PatTableModel table = new PatTableModel(exportResult);
             AbstractBaseCell[][] rowData = table.getRowData();
             AbstractBaseCell[][] rowHeader = table.getColumnHeaders();
-            
+
             String[][] result = new String[rowHeader.length + rowData.length][];
             for (int x = 0; x<rowHeader.length;x++) {
                 List<String> cols = new ArrayList<String>();
@@ -110,7 +121,7 @@ public class ExportController extends AbstractCommandController  implements Init
                     cols.add(rowHeader[x][y].getFormattedValue()); 
                 }
                 result[x]= cols.toArray(new String[cols.size()]);
-                
+
             }
             for (int x = 0; x<rowData.length ;x++) {
                 int xTarget = rowHeader.length + x;
@@ -119,79 +130,71 @@ public class ExportController extends AbstractCommandController  implements Init
                     cols.add(rowData[x][y].getFormattedValue()); 
                 }
                 result[xTarget]= cols.toArray(new String[cols.size()]);
-                
-            }
-           
-            export(result,out);
-                                      
 
-            try {
-                out.flush();
-  
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                throw e;
             }
-            
 
+            return export(result);
         }
+        return new byte[0];
     }
-    public static void export(String[][] resultSet, OutputStream out) {
-        
-        
+    
+    public static byte[] export(String[][] resultSet) {
+
+
         WritableWorkbook  wb = null;
-        
+
+
         try {
- 
-                wb = Workbook.createWorkbook(out);
-                WritableSheet sheet = wb.createSheet("Sheet", 0); //$NON-NLS-1$
-                setCellsStyles();
-                WritableCellFormat cf;
-                
-                if(resultSet.length > 0){
-                        
-                        boolean swapRows  = resultSet[0].length > 256 ? true : false;
-                        
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            wb = Workbook.createWorkbook(bout);
+            WritableSheet sheet = wb.createSheet("Sheet", 0); //$NON-NLS-1$
+            setCellsStyles();
+            WritableCellFormat cf;
+
+            if(resultSet.length > 0){
+
+                boolean swapRows  = resultSet[0].length > 256 ? true : false;
+
                 for(int i =  0; i < resultSet.length; i++){
-                        String[] vs = resultSet[i];
-                        for(int j = 0; j < vs.length ; j++){
-                                //cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
-                                cf = (i % 2 != 0 ? hcs : rcs);
-                                String value = vs[j];
-                                if(value == null || value == "null")  //$NON-NLS-1$
-                                    value=""; //$NON-NLS-1$
-                                    
-                                if(isDouble(value)){
-                                    WritableCellFormat vf = csn;
-                                    vf.setBackground(cf.getBackgroundColour());
-                                        Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),vf);
-                                        sheet.addCell(number);
-                                }
-                                else{
-                                        Label label = new Label(swapRows ? i : j,swapRows ? j : i,value,cf);
-                                sheet.addCell(label); 
-                                }
+                    String[] vs = resultSet[i];
+                    for(int j = 0; j < vs.length ; j++){
+                        //cf = i == 0 ? hcs : j != 0 ? cs : (i % 2 != 0 ? hcs : rcs);
+                        cf = (i % 2 != 0 ? hcs : rcs);
+                        String value = vs[j];
+                        if(value == null || value == "null")  //$NON-NLS-1$
+                            value=""; //$NON-NLS-1$
+
+                        if(isDouble(value)){
+                            WritableCellFormat vf = csn;
+                            vf.setBackground(cf.getBackgroundColour());
+                            Number number = new Number(swapRows ? i : j,swapRows ? j : i,Double.parseDouble(value),vf);
+                            sheet.addCell(number);
                         }
+                        else{
+                            Label label = new Label(swapRows ? i : j,swapRows ? j : i,value,cf);
+                            sheet.addCell(label); 
+                        }
+                    }
                 }
-                }
-        
-        
-        wb.write();
-        } catch (IOException e) {
-                LOG.error( "IO ERROR" );
+
+
+
+                wb.write();
+                return bout.toByteArray();
+
+            }
+        } catch (RowsExceededException e) {
+            LOG.error(e.getMessage());
+        } catch (NumberFormatException e) {
+            LOG.error(e.getMessage());
         } catch (WriteException e) {
-                LOG.error( "WRITE ERROR"); 
-        } catch (Exception e) {
-                LOG.error( ("Error writing Excel Export") );
+            LOG.error(e.getMessage());
+        } catch (IOException e) {
+            LOG.error(e.getMessage());
         }
-        finally{
-            try {
-                wb.close();
-                } catch (Exception e){
-                        LOG.error( "IO ERROR"); //$NON-NLS-1$
-                }
-        }
-}
+
+        return new byte[0];
+    }
 
 private static void setCellsStyles() throws WriteException {
         
