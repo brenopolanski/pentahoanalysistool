@@ -24,14 +24,11 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.Document;
-import org.pentaho.pat.plugin.messages.Messages;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.platform.api.engine.IFileInfo;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.SolutionFileMetaAdapter;
 import org.pentaho.platform.engine.core.solution.FileInfo;
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 /**
  * Retrieve content metadata from the .xpav content file.
@@ -44,12 +41,12 @@ public class PatContentTypeMetaProvider extends SolutionFileMetaAdapter {
 
     public IFileInfo getFileInfo(ISolutionFile solutionFile, InputStream in) {
         try {
-            Document doc = XmlDom4JHelper.getDocFromStream(in);
-            if (doc == null) {
-                LOG.error(Messages.getString("ContentTypeMetaProvider.CantParseXpavFile")); //$NON-NLS-1$
-                return null;
-            }
-            PatSolutionFile patFile = PatSolutionFile.convertDocument(doc);
+//            Document doc = XmlDom4JHelper.getDocFromStream(in);
+//            if (doc == null) {
+//                LOG.error(Messages.getString("ContentTypeMetaProvider.CantParseXpavFile")); //$NON-NLS-1$
+//                return null;
+//            }
+            PatSolutionFile patFile = PatSolutionFile.convertDocument(in);
 
             String title = patFile.getTitle();
             String author = patFile.getAuthor();

@@ -29,7 +29,6 @@ import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.IPlatform;
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
@@ -74,7 +73,9 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
             ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
             try {
                 PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId,queryId);
-                String xml = solutionFile.toXml();
+                String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+                xml.concat(solutionFile.toXml());
+                
 
                 if (!name.endsWith(".xpav")) {
                     name = name + ".xpav";
@@ -86,7 +87,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
 
                 if (fileToSave != null || (!repository.resourceExists(filePath) && parentFile != null)) {
-                    repository.publish(base, '/' + parentPath, name, xml.getBytes(), true);
+                    repository.publish(base, '/' + parentPath, name, xml.getBytes("UTF-8"), true);
                     LOG.debug(PluginConfig.PAT_PLUGIN_NAME + " : Published " + solution + " / " + path + " / " + name );
                 } else {
                     throw new Exception(org.pentaho.pat.plugin.messages.Messages.getString("PlatformServlet.ErrorPublish"));

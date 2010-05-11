@@ -20,6 +20,8 @@
 
 package org.pentaho.pat.plugin.util;
 
+import java.io.InputStream;
+
 import org.dom4j.Document;
 
 import com.thoughtworks.xstream.XStream;
@@ -120,4 +122,18 @@ public class PatSolutionFile {
         else
             return null;
     }
+    
+    public static PatSolutionFile convertDocument(InputStream in) {
+        final XStream xstream = new XStream();
+        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+//        xstream.alias("pav", PatSolutionFile.class); //$NON-NLS-1$
+        
+        Object oQuery = xstream.fromXML(in);
+        if (oQuery instanceof PatSolutionFile) {
+            return (PatSolutionFile) oQuery;
+        }
+        else
+            return null;
+    }
+
 }
