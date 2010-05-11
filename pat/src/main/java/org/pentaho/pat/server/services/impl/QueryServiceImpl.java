@@ -376,8 +376,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Cube cube = query.getCube();
 
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
-        
-        Member member = levels.get(0).getMembers().get(0);
+        Member member = null;
+        if (levels != null && levels.size() >= 1 && levels.get(0) != null && levels.get(0).getMembers().size() >= 1) {
+         member = levels.get(0).getMembers().get(0);
+        }
 
         if (member == null) {
             // Let's try with only the dimension name in front.
