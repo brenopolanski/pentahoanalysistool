@@ -193,7 +193,7 @@ public class LoadMenuPanel extends LayoutComposite {
                             }
 
                             public void onSuccess(String arg0) {
-                                MdxPanel mdxPanel = new MdxPanel(qsm.getCube(),qsm.getConnection(),arg0);
+                                MdxPanel mdxPanel = new MdxPanel(qsm.getName(),qsm.getCube(),qsm.getConnection(),arg0);
                                 MainTabPanel.displayContentWidget(mdxPanel);
 
                             }

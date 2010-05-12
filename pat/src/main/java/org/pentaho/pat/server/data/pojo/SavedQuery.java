@@ -41,7 +41,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
     @Basic
     private QueryType queryType;
     
-    @Basic
+    @Type(type = "text")
     private String xml;
 
     @Basic
@@ -92,6 +92,7 @@ public class SavedQuery implements Comparable<SavedQuery> {
         this.name = name;
     }
 
+    @Type(type = "text")
     public String getXml() {
         return xml;
     }
