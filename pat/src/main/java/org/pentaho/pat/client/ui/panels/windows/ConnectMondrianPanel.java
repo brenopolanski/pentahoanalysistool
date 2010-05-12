@@ -78,7 +78,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
     private static String FORM_ACTION = "schemaupload"; //$NON-NLS-1$
     static {
         if (GWT.getModuleBaseURL().indexOf("content/pat")> -1) {
-            String url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content/pat")) + "uploader/schemaupload";
+            String url = GWT.getModuleBaseURL().substring(0, GWT.getModuleBaseURL().indexOf("content/pat")) + "upload/schemaupload";
             FORM_ACTION = url;
         }
       }
