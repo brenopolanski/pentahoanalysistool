@@ -133,7 +133,12 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         this(cube, connection);
         this.mdxArea.setText(mdx);
     }
-    
+
+    public MdxPanel(final String name, final CubeItem cube, final CubeConnection connection, final String mdx) {
+        this(cube, connection,mdx);
+        panelName = name;
+    }
+
     @Override
     protected void initializeWidget() {
 

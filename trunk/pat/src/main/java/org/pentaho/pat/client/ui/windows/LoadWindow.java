@@ -109,6 +109,8 @@ public class LoadWindow extends WindowPanel {
     }
     
     public static void close() {
-        CBW.hide();
+        if (CBW.isAttached() || CBW.isShowing()) {
+            CBW.hide();
+        }
     }
 }
