@@ -73,9 +73,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
             ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
             try {
                 PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId,queryId);
-                String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-                xml.concat(solutionFile.toXml());
-                
+                String xml = "" + solutionFile.toXml();
 
                 if (!name.endsWith(".xpav")) {
                     name = name + ".xpav";
