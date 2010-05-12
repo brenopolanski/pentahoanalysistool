@@ -107,8 +107,12 @@ public class PatContentGenerator extends SimpleContentGenerator {
             }
 
             out = contentItem.getOutputStream(null);
-            contentItem.setMimeType("application/vnd.ms-excel");
-            ExportController.exportExcel(requestParams.getStringParameter("query", null), out);
+            
+            byte[] resultExcel = ExportController.exportExcel(requestParams.getStringParameter("query", null));
+            if (resultExcel != null && resultExcel.length > 0) {
+                contentItem.setMimeType("application/vnd.ms-excel");
+                out.write(resultExcel);
+            }
 
             out.flush();
             out.close();
