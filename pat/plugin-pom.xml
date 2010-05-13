@@ -134,13 +134,18 @@
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
+									<groupId>pentaho</groupId>
+									<artifactId>mondrian</artifactId>
+									<version>4.0.0.13109</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
 									<groupId>org.olap4j</groupId>
 									<artifactId>olap4j</artifactId>
 									<version>0.9.8-SNAPSHOT</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-
 									<groupId>eigenbase</groupId>
 									<artifactId>eigenbase-properties</artifactId>
 									<version>1.1.0.10924</version>
@@ -670,7 +675,7 @@
 			<artifactId>mondrian</artifactId>
 			<!-- SWITCH TO MONDRIAN 4.0 for SCENARIOS -->
 			<!-- <version>3.1.1.12929</version> -->
-			<version>3.2.0.13583</version>
+			<version>4.0.0.13109</version>
 		</dependency>
 		<dependency>
 			<groupId>javacup</groupId>
