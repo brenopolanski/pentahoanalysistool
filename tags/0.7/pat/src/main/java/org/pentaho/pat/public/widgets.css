@@ -1,0 +1,216 @@
+/* DROP TABLE CSS*/
+
+.pat-cellLabel{
+	border: 0px;
+	
+}
+
+.pat-dropColEndCell {
+  width: 100%;
+}
+
+.pat-dropRowEndCell {
+height: 100%;	
+}
+
+.pat-MemberCellLabel{
+	width: 100%;
+	}
+
+.pat-Tree .pat-TreeItem-wrapper {
+  margin: 0px 0px 0px 20px;  // Indentation
+}
+
+.pat-Tree .pat-TreeItem {
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid white;
+  white-space: nowrap;
+  cursor: hand;
+  cursor: pointer;
+}
+
+.pat-Tree .pat-TreeItem-hovering {
+}
+
+.pat-Tree .pat-TreeItem-selected {
+  background: #93c2f1 url(images/bg_listgradient.gif) repeat-x;
+  border: 1px dotted #888;
+}
+
+.pat-DataCellPanel{
+	
+	}
+
+.pat-DimensionDropWidget{
+	
+	}
+.pat-dragDimensionCell{
+	
+}
+
+.pat-invalidDropTarget
+{
+  background-color: #c73a3a !important;
+	border: 1px solid #c73a3a !important;
+}
+
+.pat-validDropTarget{
+	background-color: #99bb0f !important;
+	border: 1px solid #99bb0f !important;	
+}
+
+.pat-DimensionFlextable{
+border : 1px;
+border-color: white;
+background-color:white;
+}
+
+.pat-MeasureGrid{
+background-color:#99bbe8;
+
+	}
+
+.pat-SelectionModeMenu{
+	
+	}
+
+.pat-CellModeMenu{
+	
+	}
+
+
+.pat-SaveMenuPanel{
+	
+	}
+
+.pat-LogoPanel{
+  width: 100%;
+  align: right;
+}
+
+#throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.throbber {
+	width: 48px !important;
+	height: 48px !important;
+	border: none;
+}
+.Throbber-loading {
+	background: url(loadinfo.gif);
+}
+.Throbber-static {
+	background: url(loadinfostatic.gif);
+}
+
+.pat-ChartOptionsPanel{
+	
+	}
+	
+.pat-ConnectionManagerPanel{
+	
+	}
+	
+.pat-ConnectMondrianPanel{
+
+}
+
+.pat-ConnectXmlaPanel{
+	
+}
+
+
+
+
+
+
+
+.dropFlextable2{
+border : 1px;
+border-color: blue;
+background-color:red;
+width: 100%;
+}
+
+.spacer-label {
+ height: 100px;
+}
+
+.dragDimension{
+  border-collapse:collapse;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: #dfe8f6;
+  padding: 5px;
+  cursor: hand;
+  
+}
+.dragProxy {
+  border: 1px solid blue;
+  filter: alpha(opacity = 50);
+  opacity: 0.5;
+}
+
+
+
+
+
+.demo-table-positioner {
+  z-index: 1;
+  border-top: 1px solid green;
+  margin-top: 1px;
+}
+
+
+.dragProxy{
+	background-color:#a6c5f4;
+}
+.pat-dropTable{
+	
+	}
+	
+.FlexTable {
+  border-top: thin solid #444444;
+  border-left: thin solid #444444;
+  border-right: thin solid #111111;
+  border-bottom: thin solid #111111;
+  background-color:  #505050;
+}
+
+.FlexTable-OddRow {
+  background-color: #cccccc;
+}
+
+.FlexTable-EvenRow {
+  background-color:  #505050;
+}
+
+
+.FlexTable-ColumnLabel {
+  color: white;
+  padding: 3px;
+}
+
+.FlexTable-ColumnLabelCell {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: white;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.FlexTable-Cell {
+  border-width: 0px 0px 0px 1px;
+  border-style: solid;
+  border-color: white;
+  padding: 5px;
+}
+
+
+.cellButton {
+align: right;
+}
