@@ -43,8 +43,6 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
-import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -389,19 +387,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
         if(type.equals("dimension")){
         	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
-        	  List<String> memberNameList = new ArrayList();
+        	  List<String> memberNameList = new ArrayList<String>();
         	  String name = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember().getUniqueName();
-              name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+              name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
               .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
         	  memberNameList.add(name);
         	  return memberNameList;
         }
         else if(type.equals("hierarchy")){
         	qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
-        	List<String> memberNameList = new ArrayList(); 
+        	List<String> memberNameList = new ArrayList<String>(); 
         	String name = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember().getUniqueName();
-        	name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+        	name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
             .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
       	  memberNameList.add(name);
@@ -412,11 +409,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         else if(type.equals("level")){
         	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-2))
     		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
-        	List<String> memberNameList = new ArrayList(); 
+        	List<String> memberNameList = new ArrayList<String>(); 
         	for (Member member:members){
             qDim.include(selectionMode, member);
             String name = member.getUniqueName();
-            name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
             .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
             memberNameList.add(name);
