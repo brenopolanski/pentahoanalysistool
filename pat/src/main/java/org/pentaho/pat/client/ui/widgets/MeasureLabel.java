@@ -3,10 +3,16 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
+import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
  * The measure label widget.
@@ -51,6 +57,7 @@ public class MeasureLabel extends FocusPanel {
      */
     public MeasureLabel(final String value, final String caption, final LabelType lType) {
         super();
+        
         text.setText(caption);
         this.add(text);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
@@ -75,6 +82,14 @@ public class MeasureLabel extends FocusPanel {
         }
     }
 
+    public void enableSinkEvents(){
+    	this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+    }
+    
+    public void disableSinkEvents(){
+    	this.unsinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
+    }
+    
     public MeasureLabel() {
 		// TODO Auto-generated constructor stub
 	}
@@ -144,4 +159,25 @@ public class MeasureLabel extends FocusPanel {
 	public String getValue() {
 		return value;
 	}
+	
+	
+	@Override
+    public void onBrowserEvent(final Event event) {
+        super.onBrowserEvent(event);
+        switch (DOM.eventGetType(event)) {
+        case Event.ONCONTEXTMENU:
+        	final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu();
+            // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
+            selectionMenu.showContextMenu(event, this);
+            selectionMenu.setPopupPositionAndShow(new PositionCallback() {
+                public void setPosition(final int offsetWidth, final int offsetHeight) {
+                    selectionMenu.setPopupPosition(event.getClientX(), event.getClientY());
+                }
+            });	
+        case Event.ONCLICK:
+        	break;
+        default:
+            break;
+        }
+    }
 }
