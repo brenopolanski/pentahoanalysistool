@@ -384,7 +384,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
-        final QueryDimension qDim = OlapUtil.getQueryDimension(query, memberNames.get(0));
+        QueryDimension qDim = OlapUtil.getQueryDimension(query, memberNames.get(0));
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
         if(type.equals("dimension")){
         	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
@@ -417,13 +417,19 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         }
         else if(type.equals("measure")){
         	List<Measure> members = null;
-        	if(memberNames.get(0).equals("Measures")){
+        	if(memberNames.get(1)==null){
         		members = cube.getMeasures();
         	}else{
-        		members = cube.getMeasures();	
+        		members = new ArrayList();
+        		List<Measure> members2 = cube.getMeasures();
+        		for(Measure measure : members2){
+        			if(measure.getName().equals(memberNames.get(1))){
+        				members.add(measure);
+        			}
+        		}
         	}
         	
-        	
+        	qDim = OlapUtil.getQueryDimension(query, "Measures");
         	List<String> memberNameList = new ArrayList<String>(); 
         	for (Measure member:members){
             qDim.include(selectionMode, member);
