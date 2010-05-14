@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
+import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.DOM;
@@ -37,6 +38,8 @@ public class MeasureLabel extends FocusPanel {
     private LabelType type;
 
 	private String actualname;
+
+	private IAxis axis;
 
     /**
      * Create a measure label (with no predefined caption).
@@ -185,4 +188,13 @@ public class MeasureLabel extends FocusPanel {
             break;
         }
     }
+
+	public void setAxis(IAxis axis) {
+		this.axis=axis;
+		
+	}
+	
+	public IAxis getAxis(){
+		return axis;
+	}
 }
