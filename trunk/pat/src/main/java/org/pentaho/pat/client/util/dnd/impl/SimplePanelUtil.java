@@ -8,10 +8,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Widget;
 
 public class SimplePanelUtil {
 
