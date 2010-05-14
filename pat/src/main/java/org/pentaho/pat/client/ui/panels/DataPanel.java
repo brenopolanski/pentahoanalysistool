@@ -95,7 +95,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (pType == PanelUtil.PanelType.QM) {
             mainLayoutPanel.setPadding(0);
 
-        FlexTable dropTable = new FlexTable();
+        //FlexTable dropTable = new FlexTable();
         dropTable.setSize("100%", "100%");
         dropTable.setWidget(0, 1, dropTarget);
         dropTable.setWidget(1, 0, dropTarget);
