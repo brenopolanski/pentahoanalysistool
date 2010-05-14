@@ -120,4 +120,40 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
         }   
     }
+
+	public String[] getHierarchies(String sessionId, String queryId,
+			String dimensionName) throws RpcException {
+		List<String> hierarchyList;
+		try {
+			hierarchyList = this.discoveryService.getHierarchies(getCurrentUserId(), sessionId, queryId, dimensionName);
+            return hierarchyList.toArray(new String[hierarchyList.size()]);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+	}
+
+	public String[] getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName,
+			String levelName) throws RpcException {
+		List<String> levelList;
+		try {
+			levelList = this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName,  levelName);
+            return levelList.toArray(new String[levelList.size()]);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+	}
+
+	public String[] getLevels(String sessionId, String queryId, String dimensionName,
+			String hierarchyName) throws RpcException {
+		List<String> levelList;
+		try {
+			levelList = this.discoveryService.getLevels(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName);
+            return levelList.toArray(new String[levelList.size()]);
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+	}
 }

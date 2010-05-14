@@ -124,4 +124,13 @@ public interface DiscoveryService extends Service {
      */
     StringTree getNamedLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName,
             String levelName) throws OlapException;
+
+	List<String> getHierarchies(String currentUserId, String sessionId,	String queryId, String dimensionName) throws OlapException;
+
+	List<String> getLevels(String currentUserId, String sessionId,
+			String queryId, String dimensionName, String hierarchy) throws OlapException;
+	
+	List<String> getLevelMembers(String currentUserId, String sessionId,
+			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException;
+
 }

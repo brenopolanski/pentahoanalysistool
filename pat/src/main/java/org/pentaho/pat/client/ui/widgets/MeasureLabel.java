@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 public class MeasureLabel extends FocusPanel {
 
     public enum LabelType {
-        DIMENSION, MEASURE
+        DIMENSION, MEASURE, ALLMEMBER, HIERARCHY, LEVEL, MEMBER
     }
 
     private final static String TABLE_DRAG_WIDGET = "dragDimension"; //$NON-NLS-1$
