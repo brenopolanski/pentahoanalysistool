@@ -417,7 +417,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         }
         else if(type.equals("measure")){
         	List<Measure> members = null;
-        	if(memberNames.get(1)==null){
+        	if(memberNames.get(0).equals("Measures")){
         		members = cube.getMeasures();
         	}else{
         		members = new ArrayList();
