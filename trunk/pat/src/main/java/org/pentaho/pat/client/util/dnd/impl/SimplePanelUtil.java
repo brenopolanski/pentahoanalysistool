@@ -8,8 +8,10 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Widget;
 
 public class SimplePanelUtil {
 
@@ -25,6 +27,8 @@ public class SimplePanelUtil {
 			public void onSuccess(Object arg0) {
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				
+				label.makeNotDraggable();
 			}
         	
         });
@@ -48,7 +52,8 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
-				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());				
+				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				label.makeNotDraggable();
 			}
         	
         });
@@ -69,7 +74,8 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
-				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());	
+				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				label.makeNotDraggable();
 			}
         	
         });

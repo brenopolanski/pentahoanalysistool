@@ -29,7 +29,6 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
-import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.springframework.security.annotation.Secured;
 
 /**

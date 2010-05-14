@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
@@ -51,7 +50,6 @@ import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberItem;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
-import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;

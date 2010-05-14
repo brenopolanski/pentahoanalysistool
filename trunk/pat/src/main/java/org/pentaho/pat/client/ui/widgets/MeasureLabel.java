@@ -41,6 +41,8 @@ public class MeasureLabel extends FocusPanel {
 
 	private IAxis axis;
 
+	private boolean draggable;
+
     /**
      * Create a measure label (with no predefined caption).
      * @param valure
@@ -131,14 +133,21 @@ public class MeasureLabel extends FocusPanel {
      * Make the widget draggable.
      */
     public void makeDraggable() {
+    	if(draggable==false){
+    	this.draggable=true;
+    	
         dragController.makeDraggable(MeasureLabel.this);
+    	}
     }
 
     /**
      * Make the widget non draggable.
      */
     public void makeNotDraggable() {
+    	if(draggable==true){
+    	this.draggable=false;
         dragController.makeNotDraggable(MeasureLabel.this);
+    	}
     }
 
     /**
@@ -197,4 +206,5 @@ public class MeasureLabel extends FocusPanel {
 	public IAxis getAxis(){
 		return axis;
 	}
+
 }

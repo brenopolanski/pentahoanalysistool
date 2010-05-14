@@ -27,16 +27,15 @@ import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
+import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
@@ -101,35 +100,6 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             this.selectionMode = selectionMode;
         }
 
-        private void addNewChild(StringTree tree, FlexTable ft, int[] parentcoords, IAxis axis){
-        	if(axis.equals(IAxis.ROWS)){
-        	final List<StringTree> child = tree.getChildren();
-            for (int i = 0; i < child.size(); i++) {
-                // Need a copy of the memberLabel because of GWT's lack of clone support
-                final Label memberLabel = new Label(child.get(i).getCaption());
-               
-                ft.insertRow(parentcoords[0]+1);
-            	
-            	ft.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
-                
-               addNewChild(child.get(i), ft, parentcoords, IAxis.ROWS);
-            }
-        	}
-        	else if(axis.equals(IAxis.COLUMNS)){
-        		final List<StringTree> child = tree.getChildren();
-                for (int i = 0; i < child.size(); i++) {
-                    // Need a copy of the memberLabel because of GWT's lack of clone support
-                    final Label memberLabel = new Label(child.get(i).getCaption());
-                   
-                    
-                	
-                	ft.setWidget(parentcoords[0], parentcoords[1]+i, memberLabel);
-                    
-                   addNewChild(child.get(i), ft, parentcoords, IAxis.COLUMNS);
-                }	
-        	}
-
-        }
         
         /*
          * (non-Javadoc)
@@ -172,53 +142,10 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                         }
 
                         public void onSuccess(final StringTree labels) {
-                        	if(targetLabel.getAxis().equals(IAxis.ROWS)){
-                        	FlexTable flexTable = ((FlexTable)targetLabel.getParent().getParent());
-                        	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
-                        
-                        	int[] parentcoords = dimPanel.getCoord();
-                        	final List<StringTree> child = labels.getChildren();
-                        	removeRowsFromFlexTable(flexTable, parentcoords);
-                        	flexTable.insertRow(parentcoords[0]+1);
-                        	final Label parentLabel = new Label(labels.getCaption());
-                        	
-                         	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
-                            for (int i = 0; i < 5; i++) {
-                                
-                                final Label memberLabel = new Label(child.get(i).getCaption());
-                                
-                                flexTable.insertRow(parentcoords[0]+1);
-                            	
-                            	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
-                                
-                            	addNewChild(child.get(i), flexTable, parentcoords, IAxis.ROWS);
-                               
-                            }
-
-                        	}
-                        	if(targetLabel.getAxis().equals(IAxis.COLUMNS)){
-                        	
-                        		FlexTable flexTable = ((FlexTable)targetLabel.getParent().getParent());
-                            	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
-                            
-                            	int[] parentcoords = dimPanel.getCoord();
-                            	final List<StringTree> child = labels.getChildren();
-                            	removeRowsFromFlexTable(flexTable, parentcoords);
-                            	flexTable.insertRow(parentcoords[0]+1);
-                            	final Label parentLabel = new Label(labels.getCaption());
-                            	
-                             	flexTable.setWidget(parentcoords[0], parentcoords[1]+1, parentLabel);
-                                for (int i = 1; i < 5; i++) {
-                                    
-                                    final Label memberLabel = new Label(child.get(i).getCaption());
-                                    
-                                    flexTable.setWidget(parentcoords[0], parentcoords[1]+i, memberLabel);
-                                    
-                                	//addNewChild(child.get(i), flexTable, parentcoords, IAxis.COLUMNS);
-                                   
-                                }
-                        	}
-                        }
+                        	QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
+                        			.getParent().getParent().getParent());
+                        	flexTable.alterSelectionDisplay(targetLabel, labels);
+                        	                        }
 
                     });
             
@@ -227,15 +154,6 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     }
 
     
-    private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords){
-    	while(flexTable.isCellPresent(coords[0]+1, coords[1])==true 
-    			&& flexTable.getWidget(coords[0]+1, coords[1]) instanceof Label){
-    	
-    		flexTable.removeRow(coords[0]+1);
-    	
-    	}
-    	
-    }
     /** The Constant MEMBER. */
     public static final int MEMBER = 0;
 
