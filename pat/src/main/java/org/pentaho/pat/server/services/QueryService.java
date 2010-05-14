@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.server.services;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
 
@@ -632,4 +631,10 @@ public interface QueryService extends Service {
      */
     @Secured( {"Users"})
     void setProperty(String currentUserId, String sessionID, String queryId, String dimensionName, String levelName, String propertyName, Boolean enabled);
+    
+    @Secured( {"Users"})
+    void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position);
+    
+    @Secured( {"Users"})
+    void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position);
 }

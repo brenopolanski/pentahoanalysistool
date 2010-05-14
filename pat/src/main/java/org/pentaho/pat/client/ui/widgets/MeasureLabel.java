@@ -183,7 +183,7 @@ public class MeasureLabel extends FocusPanel {
         super.onBrowserEvent(event);
         switch (DOM.eventGetType(event)) {
         case Event.ONCONTEXTMENU:
-        	final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu();
+        	final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu(this.getType());
             // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
             selectionMenu.showContextMenu(event, this);
             selectionMenu.setPopupPositionAndShow(new PositionCallback() {

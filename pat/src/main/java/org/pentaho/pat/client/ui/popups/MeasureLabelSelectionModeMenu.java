@@ -28,6 +28,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel.LabelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -184,11 +185,15 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         source = source2;
     }
 
+	private LabelType setType;
 
-	public MeasureLabelSelectionModeMenu() {
+
+	public MeasureLabelSelectionModeMenu(LabelType labelType) {
         super();
+        this.setType = labelType;
         init();
         this.setStyleName(SELECTION_MODE_MENU);
+        
     }
 
     public MeasureLabelSelectionModeMenu(DimensionSimplePanel dimensionSimplePanel, MeasureLabel label) {
@@ -200,6 +205,9 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
 	private void init() {
         this.setAutoOpen(true);
+       if(this.setType == MeasureLabel.LabelType.LEVEL){
+    	   this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));   
+       }else{
         this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
@@ -208,8 +216,11 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+       }
     }
-
+	
+	
+  
     public final String setSelectionMode(final int selectionMode) {
         String selection = ""; //$NON-NLS-1$
         switch (selectionMode) {

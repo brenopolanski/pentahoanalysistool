@@ -721,4 +721,17 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
 
 
+
+    
+    public void pushDownDimension(String currentUserId, String sessionID, String queryId, IAxis axis, int position){
+    	this.queryService.pushDownDimension(currentUserId, sessionID, queryId, 
+    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), position);
+    }
+    
+    
+    public void pullUpDimension(String currentUserId, String sessionID, String queryId, IAxis axis, int position){
+    	this.queryService.pullUpDimension(currentUserId, sessionID, queryId, 
+    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), position);
+    	
+    }
 }
