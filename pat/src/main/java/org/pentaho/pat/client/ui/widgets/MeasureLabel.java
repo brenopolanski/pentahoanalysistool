@@ -53,22 +53,6 @@ public class MeasureLabel extends FocusPanel {
         this.setValue(value);
     }
     
-    /**
-     * Create a measure label with a separate caption.
-     * @param value
-     * @param caption
-     * @param lType
-     */
-    public MeasureLabel(final List value, final String caption, final LabelType lType) {
-        super();
-        
-        text.setText(caption);
-        this.add(text);
-        setStylePrimaryName(TABLE_DRAG_WIDGET);
-        this.setType(lType);
-        this.setValue(value);
-    }
-
     public MeasureLabel(final List parents, final String name, final String caption, final LabelType lType) {
         super();
         text.setText(caption);
@@ -96,7 +80,7 @@ public class MeasureLabel extends FocusPanel {
      */
     public MeasureLabel(final List string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
             boolean draggable) {
-        this(string, caption, lType);
+        this(string, null, caption, lType);
         this.dragController = dragController2;
 
         if (draggable == true) {

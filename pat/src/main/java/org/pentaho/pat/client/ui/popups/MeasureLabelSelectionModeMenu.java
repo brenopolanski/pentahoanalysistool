@@ -110,7 +110,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         public final void execute() {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
             final String dimName = targetLabel.getText();
-
+            
             final List<String> dimSelections = targetLabel.getValue();
 
             final String selection = setSelectionMode(selectionMode);
@@ -138,9 +138,13 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
             	List<String> sel = new ArrayList<String>();
-            	
-            	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                        dimSelections, "hierarchy", selection, new AsyncCallback<Object>() {
+            	final List<String> dimSelections1 = new ArrayList();
+            	String dimName1 = targetLabel.getValue().get(0);
+            	dimSelections1.add(targetLabel.getValue().get(0));
+            	dimSelections1.add(targetLabel.getActualName());
+            	//final String hiername = targetLabel.getActualName();	
+            	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
+                        dimSelections1, "hierarchy", selection, new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
