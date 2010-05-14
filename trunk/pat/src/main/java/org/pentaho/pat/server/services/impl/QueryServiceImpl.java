@@ -43,6 +43,8 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Dimension;
+import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -390,6 +392,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         else if(type.equals("level")){
         	final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
             final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+            Dimension dim = cube.getDimensions().get(dimensionName);
+            Hierarchy hier = dim.getHierarchies().get(memberNames.get(memberNames.size()-2));
+            Level level = hier.getLevels().get(memberNames.get(memberNames.size()-1));
+            List<Member> memb = level.getMembers();
             qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
             		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers().get(0));
         }

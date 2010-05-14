@@ -161,12 +161,16 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                         });            	
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.LEVEL){
-            	List<String> sel = new ArrayList<String>();
-            	sel.add("Region");
-            	sel.add("Region");
-            	sel.add("Region");
-            	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                        sel, "level", selection, new AsyncCallback<Object>() {
+            	
+     
+            	final List<String> dimSelections1 = new ArrayList<String>();
+            	String dimName1 = targetLabel.getValue().get(0);
+            	dimSelections1.add(targetLabel.getValue().get(0));
+            	dimSelections1.add(targetLabel.getValue().get(1));
+            	dimSelections1.add(targetLabel.getActualName());
+            	
+            	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
+                        dimSelections1, "level", selection, new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()

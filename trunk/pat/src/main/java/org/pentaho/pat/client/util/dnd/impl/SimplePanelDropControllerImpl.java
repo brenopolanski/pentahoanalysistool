@@ -56,7 +56,9 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 	    else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.HIERARCHY){
 	    	SimplePanelUtil.moveHierarchy(context, label);	
 	    }
-	    
+	    else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.LEVEL){
+	    	SimplePanelUtil.moveLevel(context, label);	
+	    }
 	    super.onDrop(context);
 	  }
 

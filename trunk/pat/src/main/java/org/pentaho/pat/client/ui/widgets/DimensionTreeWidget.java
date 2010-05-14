@@ -113,13 +113,16 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								});
 					} else if (labelType != null
 							&& labelType == LabelType.LEVEL) {
+						Widget w =parentItem.getWidget();
+						String name = ((MeasureLabel)w).getActualName();
+						String dimname = ((MeasureLabel)w).getValue().get(0);
+						String hiername = ((MeasureLabel)w).getValue().get(1);
 						ServiceFactory.getDiscoveryInstance().getLevelMembers(
 								Pat.getSessionID(),
 								Pat.getCurrQuery(),
-								parentItem.getParentItem().getParentItem()
-										.getText(),
-								parentItem.getParentItem().getText(),
-								parentlabel.getText(),
+								dimname,
+								hiername,
+								name,
 								new AsyncCallback<String[]>() {
 
 									public void onFailure(Throwable arg0) {
