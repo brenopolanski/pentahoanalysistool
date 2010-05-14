@@ -48,16 +48,20 @@ public class DimensionSimplePanel extends SimplePanel {
     private final static String INVALID_DROP_TARGET = "pat-invalidDropTarget";  //$NON-NLS-1$
 
     private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
+    
+    private int[] coord;
     /**
      * Create a flextable widget for the DimensionDropWidget.
      * 
      */
-    public DimensionSimplePanel() {
+    public DimensionSimplePanel(final IAxis axis, int[] coord) {
         super();
         this.setStyleName(TABLE_CSS_NAME);
         this.setSize("100%", "100%");
         SimplePanelDropControllerImpl fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this);
         tblRowDragCont.registerDropController(fTblRowDropCont);
+        this.setAxis(axis);
+        this.setCoord(coord);
     }
 
     /**
@@ -119,5 +123,13 @@ public class DimensionSimplePanel extends SimplePanel {
        }
         
     }
+
+	public void setCoord(int[] coord) {
+		this.coord = coord;
+	}
+
+	public int[] getCoord() {
+		return coord;
+	}
   
 }
