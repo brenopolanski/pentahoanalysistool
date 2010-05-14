@@ -4,20 +4,14 @@ import java.util.ArrayList;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.hibernate.mapping.List;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel.LabelType;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
-import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenEvent;
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenHandler;
@@ -30,8 +24,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class DimensionTreeWidget extends LayoutComposite implements
 		IQueryListener {
-
-	private SimplePanelDropControllerImpl dropController;
 
 	private SimplePanelDragControllerImpl dragController;
 
@@ -63,20 +55,20 @@ public class DimensionTreeWidget extends LayoutComposite implements
 						ServiceFactory.getDiscoveryInstance().getHierarchies(
 								Pat.getSessionID(), Pat.getCurrQuery(),
 								parentlabel.getText(),
-								new AsyncCallback<String[]>() {
+								new AsyncCallback<ArrayList<MemberLabelItem>>() {
 
 									public void onFailure(Throwable arg0) {
 										// TODO Auto-generated method stub
 
 									}
 
-									public void onSuccess(String[] arg0) {
-										for (int i = 0; i < arg0.length; i++) {
+									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
+										for (int i = 0; i < arg0.size(); i++) {
 											ArrayList path = new ArrayList();
 											path.add(parentItem.getText());
-											path.add(arg0[i]);
-											MeasureLabel label = new MeasureLabel(path,
-													arg0[i],
+											path.add(arg0.get(i));
+											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(),
+													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.HIERARCHY);
 											label.setDragController(dragController);
 											label.makeDraggable();
@@ -95,21 +87,17 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								Pat.getSessionID(), Pat.getCurrQuery(),
 								parentItem.getParentItem().getText(),
 								parentlabel.getText(),
-								new AsyncCallback<String[]>() {
+								new AsyncCallback<ArrayList<MemberLabelItem>>() {
 
 									public void onFailure(Throwable arg0) {
 										// TODO Auto-generated method stub
 
 									}
 
-									public void onSuccess(String[] arg0) {
-										for (int i = 0; i < arg0.length; i++) {
-											ArrayList path = new ArrayList();
-											path.add(parentItem.getParentItem().getText());
-											path.add(parentItem.getText());
-											path.add(arg0[i]);
-											MeasureLabel label = new MeasureLabel(path,
-													arg0[i],
+									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
+										for (int i = 0; i < arg0.size(); i++) {
+											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(),
+													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.LEVEL);
 											label.setDragController(dragController);
 											label.makeDraggable();

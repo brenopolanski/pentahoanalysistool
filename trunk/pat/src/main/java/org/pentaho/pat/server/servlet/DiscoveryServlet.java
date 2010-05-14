@@ -29,6 +29,7 @@ import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.messages.Messages;
@@ -81,6 +82,18 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
 
     }
 
+    public List<MemberLabelItem> getDimensionList(final String sessionId, final String queryId, final IAxis axis) throws RpcException {
+        try {
+            return this.discoveryService.getDimensionList(getCurrentUserId(), sessionId, queryId, (axis
+                    .equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()));
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateDimensionsList")); //$NON-NLS-1$
+        }
+
+    }
+
+
     public StringTree getMembers(final String sessionId, final String queryId, final String dimensionName)
             throws RpcException {
         try {
@@ -121,12 +134,11 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
         }   
     }
 
-	public String[] getHierarchies(String sessionId, String queryId,
+	public List<MemberLabelItem> getHierarchies(String sessionId, String queryId,
 			String dimensionName) throws RpcException {
-		List<String> hierarchyList;
 		try {
-			hierarchyList = this.discoveryService.getHierarchies(getCurrentUserId(), sessionId, queryId, dimensionName);
-            return hierarchyList.toArray(new String[hierarchyList.size()]);
+			return this.discoveryService.getHierarchies(getCurrentUserId(), sessionId, queryId, dimensionName);
+            
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
@@ -145,12 +157,11 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
         }
 	}
 
-	public String[] getLevels(String sessionId, String queryId, String dimensionName,
+	public List<MemberLabelItem> getLevels(String sessionId, String queryId, String dimensionName,
 			String hierarchyName) throws RpcException {
-		List<String> levelList;
 		try {
-			levelList = this.discoveryService.getLevels(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName);
-            return levelList.toArray(new String[levelList.size()]);
+			return this.discoveryService.getLevels(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName);
+            
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$

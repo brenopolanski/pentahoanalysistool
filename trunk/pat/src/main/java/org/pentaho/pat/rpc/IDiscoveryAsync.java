@@ -19,11 +19,13 @@
  */
 package org.pentaho.pat.rpc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -39,6 +41,8 @@ public interface IDiscoveryAsync {
 
     void getDimensions(String sessionId, String queryId, IAxis axis, AsyncCallback<String[]> callback);
 
+    void getDimensionList(String sessionId, String queryId, IAxis axis, AsyncCallback<ArrayList<MemberLabelItem>> callback);
+    
     void getCubes(String sessionId, String connectionId, AsyncCallback<CubeItem[]> callback);
 
     void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
@@ -47,9 +51,9 @@ public interface IDiscoveryAsync {
     
     void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<List<LevelProperties>> callback);
 
-	void getHierarchies(String sessionID, String queryId, String dimensionName,	AsyncCallback<String[]> callback);
+	void getHierarchies(String sessionID, String queryId, String dimensionName,	AsyncCallback<ArrayList<MemberLabelItem>> asyncCallback);
 
-	void getLevels(String sessionID, String currQuery, String dimensionName, String hierarchyName, AsyncCallback<String[]> callback);
+	void getLevels(String sessionID, String currQuery, String dimensionName, String hierarchyName, AsyncCallback<ArrayList<MemberLabelItem>> asyncCallback);
 	
 	void getLevelMembers(String sessionID, String currQuery, String dimensionName, String hierarchyName, String levelName, AsyncCallback<String[]> callback);
 

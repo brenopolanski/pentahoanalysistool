@@ -24,6 +24,7 @@ import java.util.List;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
@@ -64,6 +65,9 @@ public interface IDiscovery extends RemoteService {
     @Secured( {"Users"})
     String[] getDimensions(String sessionId, String queryId, IAxis axis) throws RpcException;
 
+    @Secured( {"Users"})
+    List<MemberLabelItem> getDimensionList(String sessionId, String queryId, IAxis axis) throws RpcException;
+
     /**
      * Returns all the cube names available on the current connection.
      * 
@@ -102,10 +106,10 @@ public interface IDiscovery extends RemoteService {
     StringTree getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName) throws RpcException;
     
     @Secured( {"Users"})
-    String[] getHierarchies(String sessionId, String queryId, String dimensionName) throws RpcException;
+    List<MemberLabelItem> getHierarchies(String sessionId, String queryId, String dimensionName) throws RpcException;
     
     @Secured( {"Users"})
-    String[] getLevels(String sessionId, String queryId, String dimensionName, String hierarchyName) throws RpcException;
+    List<MemberLabelItem> getLevels(String sessionId, String queryId, String dimensionName, String hierarchyName) throws RpcException;
 
     @Secured( {"Users"})
     String[] getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName) throws RpcException;

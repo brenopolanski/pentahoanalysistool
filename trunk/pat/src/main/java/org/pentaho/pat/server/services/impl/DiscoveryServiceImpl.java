@@ -47,6 +47,7 @@ import org.olap4j.query.QueryDimension;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberItem;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
@@ -67,7 +68,9 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
     private QueryService queryService = null;
 
     private JdbcDriverFinder driverFinder = null;
-
+    
+    private Locale loc = Locale.getDefault();
+    
     public void setSessionService(final SessionService sessionService) {
         this.sessionService = sessionService;
     }
@@ -162,6 +165,25 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return dimNames;
     }
 
+	public List<MemberLabelItem> getDimensionList(String userId, String sessionId,
+			String queryId, Axis.Standard axis) throws OlapException {
+		this.sessionService.validateSession(userId, sessionId);
+
+		Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+		Axis targetAxis = null;
+		if (axis != null) {
+			targetAxis = axis;
+		}
+		List<QueryDimension> dimList = query.getAxes().get(targetAxis)
+				.getDimensions();
+		List<MemberLabelItem> dimNames = new ArrayList<MemberLabelItem>();
+		for (QueryDimension dim : dimList) {
+			dimNames.add(new MemberLabelItem(dim.getName(), dim.getName(), null));
+		}
+		return dimNames;
+	}
+
     public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
@@ -173,7 +195,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         // FIXME Only uses the first hierarchy for now.
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
 
-        Locale loc = Locale.getDefault();
+        
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
             for (Member member : levelMembers) {
@@ -249,7 +271,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return null;
     }
 
-	public List<String> getHierarchies(String userId, String sessionId,
+	public List<MemberLabelItem> getHierarchies(String userId, String sessionId,
 			String queryId, String dimensionName) throws OlapException {
 		this.sessionService.validateSession(userId, sessionId);
 
@@ -257,15 +279,18 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
         List<Hierarchy> hierarchyList = query.getCube().getDimensions().get(dimensionName).getHierarchies();
         
-        List<String> hNames = new ArrayList<String>();
+        List<MemberLabelItem> hNames = new ArrayList<MemberLabelItem>();
+        Locale loc = Locale.getDefault();
         for (Hierarchy dim : hierarchyList) {
-            hNames.add(dim.getName());
+        	List<String> lst = new ArrayList<String>();
+        	lst.add(dim.getDimension().getName());
+            hNames.add(new MemberLabelItem(dim.getName(), dim.getCaption(loc), lst));
         }
         return hNames;
 
 	}
 
-	public List<String> getLevels(String userId, String sessionId,
+	public List<MemberLabelItem> getLevels(String userId, String sessionId,
 			String queryId, String dimensionName, String hierarchyName) throws OlapException {
 		this.sessionService.validateSession(userId, sessionId);
 
@@ -273,9 +298,12 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 
         List<Level> levelList = query.getCube().getHierarchies().get(hierarchyName).getLevels();
         
-        List<String> levelNames = new ArrayList<String>();
+        List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Level dim : levelList) {
-            levelNames.add(dim.getName());
+        	List<String> lst = new ArrayList<String>();
+        	lst.add(dim.getDimension().getName());
+        	lst.add(dim.getHierarchy().getName());
+            levelNames.add(new MemberLabelItem(dim.getName(), dim.getCaption(loc), lst));
         }
         return levelNames;
 	}
