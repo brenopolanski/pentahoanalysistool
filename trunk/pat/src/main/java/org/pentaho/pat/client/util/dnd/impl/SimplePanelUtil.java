@@ -180,6 +180,7 @@ public class SimplePanelUtil {
 							public void onSuccess(List<String> arg0) {
 								label.setCurrentSelection(arg0);
 								label.setSelectionType("MEMBER");
+								label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), 
 										label.getText(), dimension, "dimension", "MEMBER", new AsyncCallback<StringTree>(){
 
@@ -203,7 +204,7 @@ public class SimplePanelUtil {
 				});
 				
 				
-				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				
 				
 				//label.makeNotDraggable();
 			}
@@ -240,6 +241,7 @@ public class SimplePanelUtil {
 						public void onSuccess(List<String> arg0) {
 							label.setCurrentSelection(arg0);
 							label.setSelectionType("MEMBER");
+							label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 							ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0), label.getValue(), "hierarchy",
 						            "MEMBER", new AsyncCallback<StringTree>(){
 
@@ -262,7 +264,7 @@ public class SimplePanelUtil {
 			});
 			
 			
-			label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+			
 			
 			//label.makeNotDraggable();
 		}
@@ -296,6 +298,7 @@ public class SimplePanelUtil {
 							public void onSuccess(List<String> arg0) {
 								label.setCurrentSelection(arg0);
 								label.setSelectionType("MEMBER");
+								label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "level",
 							            "MEMBER", new AsyncCallback<StringTree>(){
 
@@ -318,7 +321,7 @@ public class SimplePanelUtil {
 				});
 				
 				
-				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				
 				
 				//label.makeNotDraggable();
 			}
@@ -328,6 +331,62 @@ public class SimplePanelUtil {
 		addNewDropTargets(context);
 		
 
+	}
+
+
+	public static void moveMeasure(final DragContext context, final MeasureLabel label) {
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
+        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback<Object>(){
+
+					public void onFailure(Throwable arg0) {
+						
+						
+					}
+
+					public void onSuccess(Object arg0) {
+						if(label.getText().equals("Measures")){
+							final List list = new ArrayList();
+							list.add("Measures");
+							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), "Measures", list, "measure",
+						            "MEMBER", new AsyncCallback<List<String>>(){
+
+										public void onFailure(Throwable arg0) {
+											MessageBox.error("Error", "oops");
+											
+										}
+
+										public void onSuccess(List<String> arg0) {
+											label.setCurrentSelection(arg0);
+											label.setSelectionType("MEMBER");
+											label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+											ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), 
+													"Measures", list, "measures", "CHILDREN", new AsyncCallback<StringTree>(){
+
+														public void onFailure(
+																Throwable arg0) {
+															// TODO Auto-generated method stub
+															
+														}
+
+														public void onSuccess(
+																StringTree arg0) {
+															GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
+															
+														}
+												
+											});
+											
+										}
+								
+							});
+						}
+						else{
+							
+						}
+						addNewDropTargets(context);				
+					}
+		});
+		
 	}
 
 }

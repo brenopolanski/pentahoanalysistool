@@ -159,4 +159,6 @@ public interface DiscoveryService extends Service {
 	StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName,
 			Selection.Operator selectionType) throws OlapException;
 
+	List<MemberLabelItem> getMeasures(String currentUserId, String sessionID, String currQuery) throws OlapException;
+
 }

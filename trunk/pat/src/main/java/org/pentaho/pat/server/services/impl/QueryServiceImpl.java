@@ -44,6 +44,7 @@ import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Level;
+import org.olap4j.metadata.Measure;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Schema;
@@ -389,18 +390,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
         	  List<String> memberNameList = new ArrayList<String>();
         	  String name = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember().getUniqueName();
-              name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-              .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        	  memberNameList.add(name);
+              memberNameList.add(name);
         	  return memberNameList;
         }
         else if(type.equals("hierarchy")){
         	qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
         	List<String> memberNameList = new ArrayList<String>(); 
         	String name = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember().getUniqueName();
-        	name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
+        	
       	  memberNameList.add(name);
 
 
@@ -413,13 +410,30 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         	for (Member member:members){
             qDim.include(selectionMode, member);
             String name = member.getUniqueName();
-            name = name.replaceFirst("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
+            
             memberNameList.add(name);
         	}
         	return memberNameList;
         }
+        else if(type.equals("measure")){
+        	List<Measure> members = null;
+        	if(memberNames.get(0).equals("Measures")){
+        		members = cube.getMeasures();
+        	}else{
+        		members = cube.getMeasures();	
+        	}
+        	
+        	
+        	List<String> memberNameList = new ArrayList<String>(); 
+        	for (Measure member:members){
+            qDim.include(selectionMode, member);
+            String name = member.getUniqueName();
+            
+            memberNameList.add(name);
+        	}
+        	return memberNameList;
+        }
+
         return null;
         //return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
         

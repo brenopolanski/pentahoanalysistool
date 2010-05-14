@@ -168,4 +168,14 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
         }
 	}
+
+	public List<MemberLabelItem> getMeasures(String sessionID, String currQuery) throws RpcException{
+		try {
+			return this.discoveryService.getMeasures(getCurrentUserId(), sessionID, currQuery);
+            
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
+        }
+	}
 }

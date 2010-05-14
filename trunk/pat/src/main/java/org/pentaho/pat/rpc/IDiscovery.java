@@ -30,6 +30,7 @@ import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
@@ -115,4 +116,6 @@ public interface IDiscovery extends RemoteService {
     @Secured( {"Users"})
     String[] getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName) throws RpcException;
 
+    @Secured( {"Users"})
+    List<MemberLabelItem> getMeasures(String sessionID, String currQuery) throws RpcException;
 }

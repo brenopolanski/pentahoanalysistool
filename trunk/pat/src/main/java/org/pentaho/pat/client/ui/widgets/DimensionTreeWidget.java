@@ -117,12 +117,13 @@ public class DimensionTreeWidget extends LayoutComposite implements
 						String name = ((MeasureLabel)w).getActualName();
 						String dimname = ((MeasureLabel)w).getValue().get(0);
 						String hiername = ((MeasureLabel)w).getValue().get(1);
+						String levelName = ((MeasureLabel)w).getValue().get(2);
 						ServiceFactory.getDiscoveryInstance().getLevelMembers(
 								Pat.getSessionID(),
 								Pat.getCurrQuery(),
 								dimname,
 								hiername,
-								name,
+								levelName,
 								new AsyncCallback<String[]>() {
 
 									public void onFailure(Throwable arg0) {
@@ -143,7 +144,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											
 											FastTreeItem fti = new FastTreeItem(
 													label);
-											fti.becomeInteriorNode();
+											fti.becomeLeaf();
 											parentItem.addItem(fti);
 										}
 
@@ -155,7 +156,26 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 					} else if (labelType != null
 							&& labelType == LabelType.MEASURE) {
+						ServiceFactory.getDiscoveryInstance().getMeasures(Pat.getSessionID(), Pat.getCurrQuery(),
+								new AsyncCallback<List<MemberLabelItem>>(){
 
+							public void onFailure(Throwable arg0) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							public void onSuccess(List<MemberLabelItem> arg0) {
+								for (int i = 0; i< arg0.size(); i++){
+								MeasureLabel label = new MeasureLabel(null, arg0.get(i).getName(), arg0.get(i).getCaption(), MeasureLabel.LabelType.MEASURE);
+								label.setDragController(dragController);
+								label.makeDraggable();
+								FastTreeItem fti = new FastTreeItem(label);
+								fti.becomeLeaf();
+								parentItem.addItem(fti);
+								}
+							}
+							
+						});
 					} else {
 						MessageBox.alert("Error", "Unknown cell type");
 					}
@@ -197,8 +217,14 @@ public class DimensionTreeWidget extends LayoutComposite implements
 						for (int i = 0; i < arg0.length; i++) {
 							ArrayList<String> path = new ArrayList<String>();
 							path.add(arg0[i]);
-							MeasureLabel label = new MeasureLabel(path ,arg0[i], arg0[i],
+							MeasureLabel label;
+							if(arg0[i].equals("Measures")){
+								label = new MeasureLabel(path ,arg0[i], arg0[i],
+										MeasureLabel.LabelType.MEASURE);
+							}else{
+								label = new MeasureLabel(path ,arg0[i], arg0[i],
 									MeasureLabel.LabelType.DIMENSION);
+							}
 							label.setDragController(dragController);
 							label.makeDraggable();
 							final FastTreeItem item = new FastTreeItem(label);
