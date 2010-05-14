@@ -35,77 +35,77 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * 
  * @author tom(at)wamonline.org.uk
  */
-public class SimplePanelDropControllerImpl extends SimpleDropController implements SimplePanelDropController {
+public class SimplePanelDropControllerImpl extends SimpleDropController
+		implements SimplePanelDropController {
 
-	 private final SimplePanel dropTarget;
+	private final SimplePanel dropTarget;
 	private boolean trash;
 
-	 
-	  public SimplePanelDropControllerImpl(SimplePanel dropTarget, boolean trash) {
-	    super(dropTarget);
-	    this.dropTarget = dropTarget;
-	    this.trash = trash;
-	  }
+	public SimplePanelDropControllerImpl(SimplePanel dropTarget, boolean trash) {
+		super(dropTarget);
+		this.dropTarget = dropTarget;
+		this.trash = trash;
+	}
 
-	  @Override
-	  public void onDrop(final DragContext context) {
-		  MeasureLabel originalLabel =((MeasureLabel)context.draggable);
-		  
-	    
-	    if(trash){
-	    	DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
-	    	context.draggable.removeFromParent();
-	    	if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.DIMENSION){
-	    		SimplePanelUtil.clearDimension(context, context.draggable, panel.getCoord(), panel.getAxis());
-	    	}
-	    	else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.HIERARCHY){
-	    		SimplePanelUtil.clearHierarchy(context, context.draggable, panel.getCoord(), panel.getAxis());
-	    	}
-	    	else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.LEVEL){
-	    		SimplePanelUtil.clearLevel(context, context.draggable, panel.getCoord(), panel.getAxis());
-	    	}
-	    }
-	    else{
-	    	MeasureLabel label = new MeasureLabel(originalLabel.getValue(), 
-	    			originalLabel.getActualName(), originalLabel.getText(), originalLabel.getType());
+	@Override
+	public void onDrop(final DragContext context) {
+		MeasureLabel originalLabel = ((MeasureLabel) context.draggable);
+
+		if (trash) {
+			DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel
+					.getParent();
+			context.draggable.removeFromParent();
+			if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.DIMENSION) {
+				SimplePanelUtil.clearDimension(context, context.draggable,
+						panel.getCoord(), panel.getAxis());
+			} else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.HIERARCHY) {
+				SimplePanelUtil.clearHierarchy(context, context.draggable,
+						panel.getCoord(), panel.getAxis());
+			} else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.LEVEL) {
+				SimplePanelUtil.clearLevel(context, context.draggable, panel
+						.getCoord(), panel.getAxis());
+			}
+		} else {
+			MeasureLabel label = new MeasureLabel(originalLabel.getValue(),
+					originalLabel.getActualName(), originalLabel.getText(),
+					originalLabel.getType());
 			label.setDragController(originalLabel.getDragController());
 			label.makeDraggable();
 			label.enableSinkEvents();
-	    dropTarget.setWidget(label);
-	    FastTree ft = ((FastTree)originalLabel.getParent());
-		FastTreeItem fti = ft.getSelectedItem();
-	    for(int i = 0; i<fti.getChildCount();i++){
-	    	
-	    	((MeasureLabel)fti.getChild(i).getWidget()).makeNotDraggable();
-	    }
-	    
-	    originalLabel.makeNotDraggable();
-	    
-	    if (originalLabel.getType() == MeasureLabel.LabelType.DIMENSION){
-	    SimplePanelUtil.moveDimension(context, label, context.draggable);
-	    }
-	    else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
-	    	SimplePanelUtil.moveHierarchy(context, label);	
-	    }
-	    else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL){
-	    	SimplePanelUtil.moveLevel(context, label);	
-	    }
+			dropTarget.setWidget(label);
+			FastTree ft = ((FastTree) originalLabel.getParent());
+			FastTreeItem fti = ft.getSelectedItem();
+			for (int i = 0; i < fti.getChildCount(); i++) {
 
-	    }
-	    super.onDrop(context);	    
-	  }
+				((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
+			}
 
-	  @Override
-	  public void onPreviewDrop(DragContext context) throws VetoDragException {
-	    if (dropTarget.getWidget() != null) {
-	      throw new VetoDragException();
-	    }
-	    super.onPreviewDrop(context);
-	  }
+			originalLabel.makeNotDraggable();
+
+			if (originalLabel.getType() == MeasureLabel.LabelType.DIMENSION) {
+				SimplePanelUtil
+						.moveDimension(context, label, context.draggable);
+			} else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY) {
+				SimplePanelUtil.moveHierarchy(context, label);
+			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
+				SimplePanelUtil.moveLevel(context, label);
+			}
+
+		}
+		super.onDrop(context);
+	}
+
+	@Override
+	public void onPreviewDrop(DragContext context) throws VetoDragException {
+		if (dropTarget.getWidget() != null) {
+			throw new VetoDragException();
+		}
+		super.onPreviewDrop(context);
+	}
 
 	public void SetWidgetDropController(SimplePanel dropTarget) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

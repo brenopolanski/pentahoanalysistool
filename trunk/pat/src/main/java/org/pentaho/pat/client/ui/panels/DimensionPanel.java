@@ -29,8 +29,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
-import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
 /**
