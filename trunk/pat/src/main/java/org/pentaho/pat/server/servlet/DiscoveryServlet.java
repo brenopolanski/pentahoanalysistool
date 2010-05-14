@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;

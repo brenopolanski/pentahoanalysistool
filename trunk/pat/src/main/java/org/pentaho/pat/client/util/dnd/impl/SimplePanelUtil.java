@@ -1,5 +1,8 @@
 package org.pentaho.pat.client.util.dnd.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
@@ -26,8 +29,9 @@ public class SimplePanelUtil {
 			}
 
 			public void onSuccess(Object arg0) {
-				
-				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), null, "dimension",
+				List dimension = new ArrayList();
+				dimension.add(label.getText());
+				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), dimension, "dimension",
 			            "MEMBER", new AsyncCallback<StringTree>(){
 
 							public void onFailure(Throwable arg0) {
@@ -69,7 +73,24 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
+				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0), label.getValue(), "hierarchy",
+			            "MEMBER", new AsyncCallback<StringTree>(){
+
+							public void onFailure(Throwable arg0) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							public void onSuccess(StringTree arg0) {
+								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+								
+							}
+					
+				});
+				
+				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				
 				label.makeNotDraggable();
 			}
         	
@@ -90,8 +111,24 @@ public class SimplePanelUtil {
 			}
 
 			public void onSuccess(Object arg0) {
+				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "level",
+			            "MEMBER", new AsyncCallback<StringTree>(){
+
+							public void onFailure(Throwable arg0) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							public void onSuccess(StringTree arg0) {
+								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+								
+							}
+					
+				});
+				
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+				
 				label.makeNotDraggable();
 			}
         	
