@@ -36,6 +36,7 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -247,4 +248,51 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
             String dimensionName, String levelName) throws OlapException {
         return null;
     }
+
+	public List<String> getHierarchies(String userId, String sessionId,
+			String queryId, String dimensionName) throws OlapException {
+		this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+        List<Hierarchy> hierarchyList = query.getCube().getDimensions().get(dimensionName).getHierarchies();
+        
+        List<String> hNames = new ArrayList<String>();
+        for (Hierarchy dim : hierarchyList) {
+            hNames.add(dim.getName());
+        }
+        return hNames;
+
+	}
+
+	public List<String> getLevels(String userId, String sessionId,
+			String queryId, String dimensionName, String hierarchyName) throws OlapException {
+		this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+        List<Level> levelList = query.getCube().getHierarchies().get(hierarchyName).getLevels();
+        
+        List<String> levelNames = new ArrayList<String>();
+        for (Level dim : levelList) {
+            levelNames.add(dim.getName());
+        }
+        return levelNames;
+	}
+
+	public List<String> getLevelMembers(String userId, String sessionId,
+			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException {
+		this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+
+        List<Member> levelList = query.getCube().getDimensions().get(dimensionName).getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers();
+        
+        List<String> levelNames = new ArrayList<String>();
+        for (Member dim : levelList) {
+            levelNames.add(dim.getName());
+        }
+        return levelNames;
+
+	}
 }

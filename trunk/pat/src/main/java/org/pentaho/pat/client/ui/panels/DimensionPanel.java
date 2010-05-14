@@ -26,12 +26,11 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
@@ -69,19 +68,9 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
-        final DimensionDropWidget dimDropUnused = new DimensionDropWidget(ConstantFactory.getInstance().unused(),
-                IAxis.UNUSED, tRDragController);
-        final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
-                IAxis.ROWS, tRDragController);
-        final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                IAxis.COLUMNS, tRDragController);
-        final DimensionDropWidget dimDropFilter = new DimensionDropWidget(ConstantFactory.getInstance().filter(),
-                IAxis.FILTER, tRDragController);
-                mainPanel.add(dimDropUnused, new BoxLayoutData(1, -1));
-        mainPanel.add(dimDropRow, new BoxLayoutData(1, -1));
-        mainPanel.add(dimDropCol, new BoxLayoutData(1, -1));
-        mainPanel.add(dimDropFilter, new BoxLayoutData(1, -1));
-
+        final DimensionTreeWidget dimDropUnused = new DimensionTreeWidget(tRDragController);
+        mainPanel.add(dimDropUnused, new BoxLayoutData(FillStyle.BOTH, true));
+        
         rootPanel.add(mainPanel);
 
     }

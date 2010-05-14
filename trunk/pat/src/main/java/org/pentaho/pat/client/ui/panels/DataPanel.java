@@ -46,6 +46,7 @@ import org.pentaho.pat.rpc.dto.IAxis;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -94,7 +95,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (pType == PanelUtil.PanelType.QM) {
             mainLayoutPanel.setPadding(0);
 
-            final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
+            <!--final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
                     IAxis.COLUMNS, true, Application.tblRowDrgCont);
             final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
                     IAxis.ROWS, false, Application.tblRowDrgCont);
@@ -105,7 +106,14 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
             mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
 
-            baseLayoutPanel.add(mainLayoutPanel);
+            baseLayoutPanel.add(mainLayoutPanel);-->
+        FlexTable dropTable = new FlexTable();
+        dropTable.setSize("100%", "100%");
+        dropTable.setWidget(0, 1, dropTarget);
+        dropTable.setWidget(1, 0, dropTarget);
+        dropTable.setWidget(1, 1, dropTarget);
+        
+        baseLayoutPanel.add(mainLayoutPanel);
         }
 
         
