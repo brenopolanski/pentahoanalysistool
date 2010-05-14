@@ -26,6 +26,7 @@ import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.springframework.security.annotation.Secured;
 
@@ -54,6 +55,26 @@ public interface DiscoveryService extends Service {
      */
     @Secured( {"Users"})
     List<String> getDimensions(String userId, String sessionId, String queryId, Axis.Standard axis)
+            throws OlapException;
+
+    /**
+     * Retreives a list of dimensions currently placed on a given dimension. For dimensions not currently used, pass a
+     * null value as the Axis parameter.
+     * 
+     * @param userId
+     *            The id of the user who requests this operation.
+     * @param sessionId
+     *            The id of the current session into which to perform this operation.
+     * @param the
+     *            query UUID where to lookup the dimensions
+     * @param axis
+     *            The axis for which we want the current dimensions.
+     * @return A list of dimension names.
+     * @throws OlapException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    List<MemberLabelItem> getDimensionList(String userId, String sessionId, String queryId, Axis.Standard axis)
             throws OlapException;
 
     /**
@@ -125,9 +146,9 @@ public interface DiscoveryService extends Service {
     StringTree getNamedLevelProperties(String currentUserId, String sessionId, String queryId, String dimensionName,
             String levelName) throws OlapException;
 
-	List<String> getHierarchies(String currentUserId, String sessionId,	String queryId, String dimensionName) throws OlapException;
+	List<MemberLabelItem> getHierarchies(String currentUserId, String sessionId,	String queryId, String dimensionName) throws OlapException;
 
-	List<String> getLevels(String currentUserId, String sessionId,
+	List<MemberLabelItem> getLevels(String currentUserId, String sessionId,
 			String queryId, String dimensionName, String hierarchy) throws OlapException;
 	
 	List<String> getLevelMembers(String currentUserId, String sessionId,
