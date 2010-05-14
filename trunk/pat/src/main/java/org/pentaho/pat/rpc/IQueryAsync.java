@@ -132,5 +132,9 @@ public interface IQueryAsync {
      * @param string2
      */
     void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled, AsyncCallback callback);
+
+    void pullUpDimension(String currentUserId, String sessionID,String queryId, IAxis iaxis, int position, AsyncCallback<?> callback);
     
+    void pushDownDimension(String currentUserId, String sessionID, String queryId, IAxis iaxis, int position, AsyncCallback<?> callback);
+
 }

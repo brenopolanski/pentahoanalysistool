@@ -48,6 +48,7 @@ import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Schema;
 import org.olap4j.query.Query;
+import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
@@ -396,8 +397,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         else if(type.equals("level")){
         	hierarchyName = memberNames.get(1);
         	levelName = memberNames.get(2);
-            qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
-            		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers().get(0));
+        	List<Member> members = cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
+    		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
+        	for (Member member:members){
+            qDim.include(selectionMode, member);
+        	}
         }
         return discoveryService.getSpecificMembers(userId, sessionId, queryId, dimensionName, hierarchyName, levelName, selectionMode);
     }
@@ -1054,5 +1058,29 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         Query query = this.getQuery(userId, sessionId, queryId);
         
     }
+
+	public void pullUpDimension(String currentUserId, String sessionID,
+			String queryId, Axis iaxis, int position) {
+		this.sessionService.validateSession(currentUserId, sessionID);
+		
+		Query query = this.getQuery(currentUserId, sessionID, queryId);
+		
+		QueryAxis axis = query.getAxis(iaxis);
+		
+		axis.pullUp(position);
+		
+	}
+
+	public void pushDownDimension(String currentUserId, String sessionID,
+			String queryId, Axis iaxis, int position) {
+		this.sessionService.validateSession(currentUserId, sessionID);
+		
+		Query query = this.getQuery(currentUserId, sessionID, queryId);
+		
+		QueryAxis axis = query.getAxis(iaxis);
+		
+		axis.pullUp(position);
+		
+	}
 
 }
