@@ -43,6 +43,8 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Dimension;
+import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -383,7 +385,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
-        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, memberNames.get(0));
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
         String hierarchyName = null;
         String levelName = null;
@@ -392,18 +394,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         }
         else if(type.equals("hierarchy")){
         	hierarchyName = memberNames.get(1);
-        	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
+        	qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
         }
         else if(type.equals("level")){
         	hierarchyName = memberNames.get(1);
         	levelName = memberNames.get(2);
-        	List<Member> members = cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
+        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-2))
     		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
         	for (Member member:members){
             qDim.include(selectionMode, member);
         	}
         }
-        return discoveryService.getSpecificMembers(userId, sessionId, queryId, dimensionName, hierarchyName, levelName, selectionMode);
+        return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
     }
 
     

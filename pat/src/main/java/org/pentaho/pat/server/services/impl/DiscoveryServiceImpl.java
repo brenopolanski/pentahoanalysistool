@@ -369,8 +369,11 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         Locale loc = Locale.getDefault();
         for (Hierarchy dim : hierarchyList) {
         	List<String> lst = new ArrayList<String>();
+        	 String dimunique = dim.getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+             .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
         	lst.add(dim.getDimension().getName());
-            hNames.add(new MemberLabelItem(dim.getName(), dim.getCaption(loc), lst));
+        	lst.add(dimunique);
+            hNames.add(new MemberLabelItem(dimunique, dim.getCaption(loc), lst));
         }
         return hNames;
 
@@ -387,9 +390,14 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Level dim : levelList) {
         	List<String> lst = new ArrayList<String>();
+        	String levelunique = dim.getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        	String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
         	lst.add(dim.getDimension().getName());
-        	lst.add(dim.getHierarchy().getName());
-            levelNames.add(new MemberLabelItem(dim.getName(), dim.getCaption(loc), lst));
+        	lst.add(hierarchyunique);
+        	lst.add(dim.getName());
+            levelNames.add(new MemberLabelItem(levelunique, dim.getCaption(loc), lst));
         }
         return levelNames;
 	}
