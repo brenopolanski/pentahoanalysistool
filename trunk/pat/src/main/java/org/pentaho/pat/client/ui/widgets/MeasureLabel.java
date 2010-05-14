@@ -6,7 +6,6 @@ package org.pentaho.pat.client.ui.widgets;
 import java.util.List;
 
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
-import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -33,7 +32,7 @@ public class MeasureLabel extends FocusPanel {
 
     private Label text = new Label();
     
-    private List value;
+    private List<String> value;
 
     private LabelType type;
 
@@ -53,7 +52,7 @@ public class MeasureLabel extends FocusPanel {
         this.setValue(value);
     }
     
-    public MeasureLabel(final List parents, final String name, final String caption, final LabelType lType) {
+    public MeasureLabel(final List<String> parents, final String name, final String caption, final LabelType lType) {
         super();
         text.setText(caption);
         this.add(text);
@@ -78,7 +77,7 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final List string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
+    public MeasureLabel(final List<String> string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
             boolean draggable) {
         this(string, null, caption, lType);
         this.dragController = dragController2;
@@ -158,7 +157,7 @@ public class MeasureLabel extends FocusPanel {
         this.type = type;
     }
 
-	public void setValue(List value) {
+	public void setValue(List<String> value) {
 		this.value = value;
 	}
 

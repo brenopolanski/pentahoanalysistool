@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.ui.popups;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -111,8 +110,6 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
             final String dimName = targetLabel.getText();
             
-            final List<String> dimSelections = targetLabel.getValue();
-
             final String selection = setSelectionMode(selectionMode);
             if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
@@ -137,8 +134,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                     });
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
-            	List<String> sel = new ArrayList<String>();
-            	final List<String> dimSelections1 = new ArrayList();
+            	final List<String> dimSelections1 = new ArrayList<String>();
             	String dimName1 = targetLabel.getValue().get(0);
             	dimSelections1.add(targetLabel.getValue().get(0));
             	dimSelections1.add(targetLabel.getActualName());
@@ -228,9 +224,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
 	private DimensionSimplePanel dimensionSimplePanel;
 
-	private MeasureLabel label;
-	
-    public MeasureLabelSelectionModeMenu() {
+	public MeasureLabelSelectionModeMenu() {
         super();
         init();
         this.setStyleName(SELECTION_MODE_MENU);
@@ -241,7 +235,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         init();
         this.setStyleName(SELECTION_MODE_MENU);
         this.dimensionSimplePanel = dimensionSimplePanel;
-        this.source = source;
+        
 	}
 
 	private void init() {
