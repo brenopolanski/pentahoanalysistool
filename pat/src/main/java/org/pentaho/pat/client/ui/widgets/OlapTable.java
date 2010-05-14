@@ -131,7 +131,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 createTableDefinition());
 
         layoutPanel.add(table);
-        table.fillWidth();
+        //table.fillWidth();
         layoutPanel.layout();
 
     }

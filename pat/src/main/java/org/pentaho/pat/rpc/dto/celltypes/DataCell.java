@@ -25,7 +25,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The Class CellInfo.
@@ -125,7 +124,7 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
         final HorizontalPanel hp = new HorizontalPanel();
         final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber, coordinates);
         cellPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-        hp.setWidth("100%"); //$NON-NLS-1$
+//        hp.setWidth("100%"); //$NON-NLS-1$
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         hp.add(cellPanel);
         hp.setCellHorizontalAlignment(cellPanel, HasHorizontalAlignment.ALIGN_LEFT);

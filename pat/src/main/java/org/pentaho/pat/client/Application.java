@@ -112,7 +112,7 @@ public class Application extends Viewport {
 
         tblRowDrgCont = new FlexTableRowDragControllerImpl(Application.getMainPanel());
         
-        SimplePanelDrgCont = new SimplePanelDragControllerImpl(Application.getMainPanel(),true);
+        SimplePanelDrgCont = new SimplePanelDragControllerImpl(Application.getMainPanel(),false);
 
         // Add the main menu
         if (Pat.getApplicationState().getMode().isShowMenu()) {

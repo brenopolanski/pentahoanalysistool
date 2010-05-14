@@ -77,8 +77,10 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                         }
 
                         public void onSuccess(final Object result) {
-                            //targetLabel.setSelectionMode(CLEAR);
-                            //DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, CLEAR);
+                        	StringTree sl= new StringTree();
+                        	QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
+                        			.getParent().getParent().getParent());
+                        	flexTable.alterSelectionDisplay(targetLabel, sl);
 
                         }
                     });
@@ -119,18 +121,20 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             String type = null;
             if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
             	type = "dimension";
+            	hierarchySelections = new ArrayList<String>();
+            	hierarchySelections.add(targetLabel.getValue().get(0));
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
             	hierarchySelections = new ArrayList<String>();
             	hierarchySelections.add(targetLabel.getValue().get(0));
-            	hierarchySelections.add(targetLabel.getActualName());	
+            	hierarchySelections.add(targetLabel.getValue().get(1));	
             	type = "hierarchy";
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.LEVEL){
             	hierarchySelections = new ArrayList<String>();
             	hierarchySelections.add(targetLabel.getValue().get(0));
             	hierarchySelections.add(targetLabel.getValue().get(1));
-            	hierarchySelections.add(targetLabel.getActualName());
+            	hierarchySelections.add(targetLabel.getValue().get(2));
             	type="level";
             }
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
@@ -206,15 +210,16 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 	private void init() {
         this.setAutoOpen(true);
        if(this.setType == MeasureLabel.LabelType.LEVEL){
-    	   this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));   
+    	   this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
+    	   this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
        }else{
         this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
+        /*this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
                 INCLUDE_CHILDREN)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));
+        this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));*/
         this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
        }
     }
