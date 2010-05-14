@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.FlexTable;
 
 public class SimplePanelUtil {
 
-	public static void moveDimension(final DragContext context, MeasureLabel label) {
+	public static void moveDimension(final DragContext context, final MeasureLabel label) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
-        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getText(), new AsyncCallback(){
+        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getText(), new AsyncCallback<Object>(){
 
 			public void onFailure(Throwable arg0) {
 				MessageBox.error("Error", "move to axis failed");
@@ -24,7 +24,7 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
-				
+				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 			}
         	
         });
@@ -37,9 +37,9 @@ public class SimplePanelUtil {
 			}
 
 
-		public static void moveHierarchy(final DragContext context, MeasureLabel label){
+		public static void moveHierarchy(final DragContext context, final MeasureLabel label){
 		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
-        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback(){
+        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback<Object>(){
 
 			public void onFailure(Throwable arg0) {
 				MessageBox.error("Error", "move to axis failed");
@@ -48,7 +48,7 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
-				
+				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());				
 			}
         	
         });
@@ -58,9 +58,9 @@ public class SimplePanelUtil {
 
 	}
 
-	public static void moveLevel(final DragContext context, MeasureLabel label){
+	public static void moveLevel(final DragContext context, final MeasureLabel label){
 		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
-        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback(){
+        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback<Object>(){
 
 			public void onFailure(Throwable arg0) {
 				MessageBox.error("Error", "move to axis failed");
@@ -69,7 +69,7 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				
-				
+				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());	
 			}
         	
         });
