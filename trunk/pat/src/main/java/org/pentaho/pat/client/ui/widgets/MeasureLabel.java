@@ -3,6 +3,8 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import java.util.List;
+
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.ui.popups.SelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
@@ -31,7 +33,7 @@ public class MeasureLabel extends FocusPanel {
 
     private Label text = new Label();
     
-    private String value;
+    private List value;
 
     private LabelType type;
 
@@ -40,9 +42,9 @@ public class MeasureLabel extends FocusPanel {
      * @param valure
      * @param lType
      */
-    public MeasureLabel(final String value, final LabelType lType) {
+    public MeasureLabel(final List<String> value, final LabelType lType) {
         super();
-        text.setText(value);
+        text.setText(value.get(0));
         this.add(text);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
         this.setType(lType);
@@ -55,7 +57,7 @@ public class MeasureLabel extends FocusPanel {
      * @param caption
      * @param lType
      */
-    public MeasureLabel(final String value, final String caption, final LabelType lType) {
+    public MeasureLabel(final List value, final String caption, final LabelType lType) {
         super();
         
         text.setText(caption);
@@ -72,7 +74,7 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final String string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
+    public MeasureLabel(final List string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
             boolean draggable) {
         this(string, caption, lType);
         this.dragController = dragController2;
@@ -152,11 +154,11 @@ public class MeasureLabel extends FocusPanel {
         this.type = type;
     }
 
-	public void setValue(String value) {
+	public void setValue(List value) {
 		this.value = value;
 	}
 
-	public String getValue() {
+	public List<String> getValue() {
 		return value;
 	}
 	

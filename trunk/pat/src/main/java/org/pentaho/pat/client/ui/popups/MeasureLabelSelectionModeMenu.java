@@ -63,8 +63,8 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         public final void execute() {
 
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
-            final String dimName = targetLabel.getValue();
-            final List<String> dimSelections = Arrays.asList(targetLabel.getValue());
+            final String dimName = targetLabel.getText();
+            final List<String> dimSelections = (targetLabel.getValue());
 
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
                     dimSelections, new AsyncCallback<Object>() {
@@ -109,9 +109,9 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
          */
         public final void execute() {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
-            final String dimName = targetLabel.getValue();
+            final String dimName = targetLabel.getText();
 
-            final List<String> dimSelections = Arrays.asList(targetLabel.getValue());
+            final List<String> dimSelections = targetLabel.getValue();
 
             final String selection = setSelectionMode(selectionMode);
             if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
@@ -136,12 +136,11 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
                     });
             }
-            else{
+            else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
             	List<String> sel = new ArrayList<String>();
-            	sel.add("Region");
-            	sel.add("Region");
+            	
             	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                        sel, selection, new AsyncCallback<Object>() {
+                        dimSelections, "hierarchy", selection, new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -161,6 +160,33 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
                         });            	
             }
+            else if(targetLabel.getType() == MeasureLabel.LabelType.LEVEL){
+            	List<String> sel = new ArrayList<String>();
+            	sel.add("Region");
+            	sel.add("Region");
+            	sel.add("Region");
+            	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
+                        sel, "level", selection, new AsyncCallback<Object>() {
+
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .noSelectionSet(arg0.getLocalizedMessage()));
+
+                            }
+
+                            public void onSuccess(final Object arg0) {
+                                //targetLabel.setSelectionMode(selectionMode);
+                                if(dimensionSimplePanel == null){
+                                
+                                }
+                                if(dimensionSimplePanel != null){
+        //                        	updateChildren(selection);
+                                }
+                            }
+
+                        });            	
+            }
+
             MeasureLabelSelectionModeMenu.this.hide();
         }
     }

@@ -1,10 +1,13 @@
 package org.pentaho.pat.client.ui.widgets;
 
+import java.util.ArrayList;
+
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.hibernate.mapping.List;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel.LabelType;
@@ -69,7 +72,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(String[] arg0) {
 										for (int i = 0; i < arg0.length; i++) {
-											MeasureLabel label = new MeasureLabel(
+											ArrayList path = new ArrayList();
+											path.add(parentItem.getText());
+											path.add(arg0[i]);
+											MeasureLabel label = new MeasureLabel(path,
 													arg0[i],
 													MeasureLabel.LabelType.HIERARCHY);
 											label.setDragController(dragController);
@@ -98,9 +104,15 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(String[] arg0) {
 										for (int i = 0; i < arg0.length; i++) {
-											MeasureLabel label = new MeasureLabel(
+											ArrayList path = new ArrayList();
+											path.add(parentItem.getParentItem().getText());
+											path.add(parentItem.getText());
+											path.add(arg0[i]);
+											MeasureLabel label = new MeasureLabel(path,
 													arg0[i],
 													MeasureLabel.LabelType.LEVEL);
+											label.setDragController(dragController);
+											label.makeDraggable();
 											FastTreeItem fti = new FastTreeItem(
 													label);
 											fti.becomeInteriorNode();
@@ -127,9 +139,15 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(String[] arg0) {
 										for (int i = 0; i < arg0.length; i++) {
-											MeasureLabel label = new MeasureLabel(
+											ArrayList<String> path = new ArrayList();
+											path.add(parentItem.getParentItem().getParentItem()
+											.getText());
+											path.add(parentItem.getParentItem().getText());
+											path.add(arg0[i]);
+											MeasureLabel label = new MeasureLabel(path,
 													arg0[i],
 													MeasureLabel.LabelType.MEMBER);
+											
 											FastTreeItem fti = new FastTreeItem(
 													label);
 											fti.becomeInteriorNode();
@@ -184,7 +202,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 					public void onSuccess(String[] arg0) {
 
 						for (int i = 0; i < arg0.length; i++) {
-							MeasureLabel label = new MeasureLabel(arg0[i],
+							ArrayList path = new ArrayList();
+							path.add(arg0[i]);
+							MeasureLabel label = new MeasureLabel(path ,arg0[i],
 									MeasureLabel.LabelType.DIMENSION);
 							label.setDragController(dragController);
 							label.makeDraggable();

@@ -136,6 +136,10 @@ public interface QueryService extends Service {
             List<String> memberNames, Selection.Operator selectionType) throws OlapException;
 
 
+    @Secured( {"Users"})
+    void createSelection(String userId, String sessionId, String queryId, String dimensionName,
+            List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
+
     /**
      * Creates a selection of members on a given dimension. You must first specify onto which query to perform the
      * operation via Session.setCurrentQuery().
