@@ -361,7 +361,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
                                                             .getChildren().get(i).getValue(), measuresTree.getChildren().get(i).getCaption(),
                                                             MeasureLabel.LabelType.MEASURE);
                                                     measureDropWidget.addRow(handle, i);
-                                                    handle.setDragController(tblRowDragCont);
+                                                    //handle.setDragController(tblRowDragCont);
                                                     handle.makeDraggable();
                                                 }
                                                 measureDropWidget.setDragController(tblRowDragCont);
@@ -374,7 +374,7 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
                                                     flexTableAddRecord(handle, row);
 
-                                                    handle.setDragController(tblRowDragCont);
+                                                   // handle.setDragController(tblRowDragCont);
                                                     handle.makeDraggable();
                                                     if (row == dimensionList.size() - 1 /* && anotherList.size() - 1 > 0 */) {
                                                         dimensionTable.getCellFormatter().addStyleName(row, 0,

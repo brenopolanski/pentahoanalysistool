@@ -31,6 +31,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
@@ -42,7 +43,7 @@ import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
  */
 public class DimensionPanel extends LayoutComposite {
 
-    private final FlexTableRowDragControllerImpl tRDragController = Application.tblRowDrgCont;
+    private final SimplePanelDragControllerImpl tRDragController = Application.SimplePanelDrgCont;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 
@@ -51,7 +52,7 @@ public class DimensionPanel extends LayoutComposite {
      * 
      * @return tableRowDragController
      */
-    public FlexTableRowDragController getTableRowDragController() {
+    public SimplePanelDragControllerImpl getTableRowDragController() {
         return tRDragController;
     }
 

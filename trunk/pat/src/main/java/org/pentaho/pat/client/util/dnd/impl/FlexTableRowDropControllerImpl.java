@@ -92,14 +92,15 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
     @Override
     public void onDrop(final DragContext context) {
         final FlexTableRowDragController trDragController = (FlexTableRowDragController) context.dragController;
-        if(trDragController.getDraggableTable().getHorizontal()){
+        /*if(trDragController.getDraggableTable().getHorizontal()){
             FlexTableUtilImpl.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragCol(), false,
                     TARGETROW + 1, TARGETCOL + 1, targetAxis);    
         }
         else{
         FlexTableUtilImpl.moveRow(trDragController.getDraggableTable(), flexTable, trDragController.getDragRow(), true,
                 TARGETROW + 1, TARGETCOL + 1, targetAxis);
-        }
+        }*/
+        FlexTableUtilImpl.moveRowNew(trDragController.getDraggableTable(), flexTable);
         super.onDrop(context);
     }
 
@@ -157,7 +158,7 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
             throw new VetoDragException();
         	
         }
-        else if(trDragController.getDraggableTable() == flexTable){
+        /*else if(trDragController.getDraggableTable() == flexTable){
                     throw new VetoDragException();
                }
         else if ((trDragController.getDraggableTable().getAxis()==null && (!flexTable.getAxis().equals(Pat.getMeasuresAxis())&& !flexTable.getAxis().equals(IAxis.UNUSED)) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
@@ -170,7 +171,7 @@ public class FlexTableRowDropControllerImpl extends AbstractPositioningDropContr
         	if(trDragController.getDraggableTable().getWidget(0, 0) instanceof MeasureLabel && ((MeasureLabel)trDragController.getDraggableTable().getWidget(0, 0)).getType().equals(MeasureLabel.LabelType.MEASURE)){
         	throw new VetoDragException();
         	}
-        }
+        }*/
      
     }
 
