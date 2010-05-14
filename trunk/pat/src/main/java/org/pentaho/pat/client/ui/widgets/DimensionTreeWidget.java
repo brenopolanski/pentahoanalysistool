@@ -72,6 +72,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											MeasureLabel label = new MeasureLabel(
 													arg0[i],
 													MeasureLabel.LabelType.HIERARCHY);
+											label.setDragController(dragController);
+											label.makeDraggable();
 											FastTreeItem fti = new FastTreeItem(
 													label);
 											fti.becomeInteriorNode();
