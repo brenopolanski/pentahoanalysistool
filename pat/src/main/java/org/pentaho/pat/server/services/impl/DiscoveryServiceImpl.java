@@ -36,7 +36,6 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Measure;
@@ -219,6 +218,32 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         	}
         }
         else if(selectionType.equals(Selection.Operator.CHILDREN)){
+        	if(hierarchyName == null){
+        		Member parentMember = query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember();
+        		NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree(null, null, null);
+        		for (Member mem : members){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        	else if(levelName == null){
+        		Member parentMember = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember();
+        		NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree(null, null, null);
+        		for (Member mem : members){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        	else{
+        		List<Member> parentMember = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers();
+        		//NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree(null, null, null);
+        		for (Member mem : parentMember){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        }
+        else if(selectionType.equals(Selection.Operator.INCLUDE_CHILDREN)){
         	if(hierarchyName == null){
         		Member parentMember = query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember();
         		NamedList<? extends Member> members = parentMember.getChildMembers();
