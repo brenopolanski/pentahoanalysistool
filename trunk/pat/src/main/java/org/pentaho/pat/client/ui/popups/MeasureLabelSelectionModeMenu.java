@@ -146,12 +146,13 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                         	int[] parentcoords = dimPanel.getCoord();
                         	final List<StringTree> child = labels.getChildren();
                         	flexTable.insertRow(parentcoords[0]+1);
-                        	final Label parentLabel = new Label(labels.getCaption());         	
+                        	final Label parentLabel = new Label(labels.getCaption());
+                        	removeRowsFromFlexTable(flexTable, parentcoords);
                          	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
                             for (int i = 0; i < child.size(); i++) {
                                 
                                 final Label memberLabel = new Label(child.get(i).getCaption());
-                               
+                                
                                 flexTable.insertRow(parentcoords[0]+1);
                             	
                             	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
@@ -185,6 +186,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                             
                             	int[] parentcoords = dimPanel.getCoord();
                             	final List<StringTree> child = labels.getChildren();
+                            	removeRowsFromFlexTable(flexTable, parentcoords);
                             	
                             	flexTable.insertRow(parentcoords[0]+1);
                             	final Label parentLabel = new Label(labels.getCaption());         	
@@ -228,17 +230,9 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
                             
                             	int[] parentcoords = dimPanel.getCoord();
                             	final List<StringTree> child = labels.getChildren();
-                            	int rows = flexTable.getRowCount();
-                            	for(int i =1; i < flexTable.getRowCount()+1; i++){
-                            		if(flexTable.isCellPresent(parentcoords[0]+i, parentcoords[1])){
-                            		if(flexTable.getWidget(parentcoords[0]+i, parentcoords[1]) instanceof Label){
-                            			flexTable.removeRow(parentcoords[0]+i);
-                            		}
-                            		else if(flexTable.getWidget(parentcoords[0]+i, parentcoords[1]) instanceof MeasureLabel){
-                            			break;
-                            		}
-                            		}
-                            	}
+
+                            	removeRowsFromFlexTable(flexTable, parentcoords);
+                            	
                             	flexTable.insertRow(parentcoords[0]+1);
                             	final Label parentLabel = new Label(labels.getCaption());         	
                              	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
@@ -261,6 +255,16 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         }
     }
 
+    
+    private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords){
+    	while(flexTable.isCellPresent(coords[0]+1, coords[1])==true 
+    			&& flexTable.getWidget(coords[0]+1, coords[1]) instanceof Label){
+    	
+    		flexTable.removeRow(coords[0]+1);
+    	
+    	}
+    	
+    }
     /** The Constant MEMBER. */
     public static final int MEMBER = 0;
 
