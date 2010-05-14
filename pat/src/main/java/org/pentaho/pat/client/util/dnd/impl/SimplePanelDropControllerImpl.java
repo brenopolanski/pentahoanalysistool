@@ -25,6 +25,8 @@ import org.pentaho.pat.client.util.dnd.SimplePanelDropController;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
+import com.google.gwt.gen2.complexpanel.client.FastTree;
+import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -50,6 +52,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 		label.makeDraggable();
 		label.enableSinkEvents();
 	    dropTarget.setWidget(label);
+	    FastTree ft = ((FastTree)((MeasureLabel)context.draggable).getParent());
+		FastTreeItem fti = ft.getSelectedItem();
+	    for(int i = 0; i<fti.getChildCount();i++){
+	    	
+	    	((MeasureLabel)fti.getChild(i).getWidget()).makeNotDraggable();
+	    }
+	    
+	    ((MeasureLabel)context.draggable).makeNotDraggable();
 	    if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.DIMENSION){
 	    SimplePanelUtil.moveDimension(context, label);
 	    }

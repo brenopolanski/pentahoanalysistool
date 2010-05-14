@@ -32,17 +32,12 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
-import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
-import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
-import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
+import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
 import org.pentaho.pat.client.util.PanelUtil;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropControllerImpl;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
@@ -79,9 +74,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     
     PanelUtil.PanelType dPaneltype = null;
 
-	private FlexTableRowDragControllerImpl tblRowDragCont;
-
-    /**
+	/**
      *DataPanel Constructor.
      *
      * @param query
@@ -91,7 +84,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         super();
         this.queryId = query;
         this.dPaneltype = pType;
-        FlexTable dropTable = new FlexTable();
+        QueryDesignTable dropTable = new QueryDesignTable();
         
         olapTable = new OlapTable();
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
@@ -108,12 +101,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         dropTable.setWidget(1, 0, dropTarget);
         dropTable.setWidget(1, 1, dropTarget);
         
-        dropTable.setSize("100%", "100%");
+        
         dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS, new int[]{0,1}));
         dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS, new int[]{1,0}));
-        //dropTable.setWidget(1, 1, new DimensionFlexTable());
-        dropTable.setBorderWidth(10);
-        mainLayoutPanel.add(dropTable);
+        dropTable.setSize("100%", "100%");
+        
+        mainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
         baseLayoutPanel.add(mainLayoutPanel);
         }
 
