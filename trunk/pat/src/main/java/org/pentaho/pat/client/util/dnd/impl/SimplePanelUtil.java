@@ -58,12 +58,22 @@ public class SimplePanelUtil {
 				if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.ROWS){
 				ft.setText(coordinate[0]+1,coordinate[1], arg0.getValue());
 				for(int i = 0; i<ft.getRowCount(); i++){
+					/*if(ft.getWidget(i, coordinate[1]+1) instanceof DimensionSimplePanel){
+						((DimensionSimplePanel)ft.getWidget(i, coordinate[1]+1)).setCoord(new int[] {i, coordinate[1]+2});
+					}*/
 				ft.insertCell(i, coordinate[1]+1);
 				}
 				ft
 				.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.ROWS, new int[]{coordinate[0], coordinate[1]+1}));
 				}
-				
+
+				else if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.COLUMNS){
+					ft.setText(coordinate[0],coordinate[1]+1, arg0.getValue());
+					ft.insertRow(coordinate[0]+1);
+					ft
+					.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.ROWS, new int[]{coordinate[0]+1, coordinate[1]}));
+					}
+
 			}
 			
 		});
