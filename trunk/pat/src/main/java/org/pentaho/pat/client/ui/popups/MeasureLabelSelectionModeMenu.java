@@ -117,7 +117,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     
             List<String> hierarchySelections =null;
             final String selection = setSelectionMode(selectionMode);
-            String dimName1 = targetLabel.getValue().get(0);
+            final String dimName1 = targetLabel.getValue().get(0);
             String type = null;
             if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
             	type = "dimension";
@@ -137,23 +137,56 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             	hierarchySelections.add(targetLabel.getValue().get(2));
             	type="level";
             }
-            ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-                    hierarchySelections, type, selection, new AsyncCallback<StringTree>() {
+            final String finalType = type;
+            final List<String> finalHierarchySelections = hierarchySelections;
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
+            		targetLabel.getCurrentSelection(), new AsyncCallback(){
 
-                        public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                    .noSelectionSet(arg0.getLocalizedMessage()));
+						public void onFailure(Throwable arg0) {
+							// TODO Auto-generated method stub
+							
+						}
 
-                        }
+						public void onSuccess(Object arg0) {
+							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
+				                    finalHierarchySelections, finalType, selection, new AsyncCallback<List<String>>() {
 
-                        public void onSuccess(final StringTree labels) {
-                        	QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
-                        			.getParent().getParent().getParent());
-                        	flexTable.alterSelectionDisplay(targetLabel, labels);
-                        	                        }
+				                        public void onFailure(final Throwable arg0) {
+				                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+				                                    .noSelectionSet(arg0.getLocalizedMessage()));
 
-                    });
-            
+				                        }
+
+				                        public void onSuccess(final List<String> arg0) {
+				                        	ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
+								                    finalHierarchySelections, finalType, selection, new AsyncCallback<StringTree>() {
+
+														public void onFailure(
+																Throwable arg0) {
+															// TODO Auto-generated method stub
+															
+														}
+
+														public void onSuccess(
+																StringTree labels) {
+															QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
+								                        			.getParent().getParent().getParent());
+								                        	flexTable.alterSelectionDisplay(targetLabel, labels);
+															
+														}
+				                        	});
+				                        	
+				                        	
+				                        	                        }
+
+				                    });
+
+							
+						}
+
+            	
+            });
+                        
                 MeasureLabelSelectionModeMenu.this.hide();
         }
     }

@@ -145,7 +145,7 @@ public class OlapUtil {
      * @param dim
      */
     public static Selection findSelection(String path, final QueryDimension dim) {
-        path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
+        //path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
         return findSelection(path, dim.getInclusions());
     }
 

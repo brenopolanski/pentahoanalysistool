@@ -43,6 +43,12 @@ public class MeasureLabel extends FocusPanel {
 
 	private boolean draggable;
 
+	private String setSelectionType;
+
+	private List<String> currentSelection;
+
+	private String selectionType;
+
     /**
      * Create a measure label (with no predefined caption).
      * @param valure
@@ -205,6 +211,24 @@ public class MeasureLabel extends FocusPanel {
 	
 	public IAxis getAxis(){
 		return axis;
+	}
+
+	public void setCurrentSelection(List<String> arg0) {
+		this.currentSelection=arg0;
+		
+	}
+
+	public void setSelectionType(String string) {
+		this.selectionType=string;
+		
+	}
+	
+	public List<String> getCurrentSelection(){
+		return this.currentSelection;
+	}
+	
+	public String getSelectionType(){
+		return this.selectionType;
 	}
 
 }

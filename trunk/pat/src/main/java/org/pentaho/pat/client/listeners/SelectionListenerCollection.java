@@ -22,6 +22,7 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.ArrayList;
 
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -47,11 +48,20 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
      * @param tree 
      * @param iAxis 
      */
-    public void fireSelectionChanged(final Widget sender, StringTree tree, final String type) {
+    public void fireSelectionChanged(final String queryID, final Widget sender, StringTree tree, final String type) {
     	ArrayList<ISelectionListener> queryChangedList = (ArrayList<ISelectionListener>) this.clone();
         for (ISelectionListener listener : queryChangedList) {
-            listener.onSelectionChange(sender, tree, type);
+            listener.onSelectionChange(queryID, sender, tree, type);
         }
     }
+
+	public void fireSelectionCleared(String currQuery, MeasureLabel label,
+			int[] is, IAxis iAxis) {
+		ArrayList<ISelectionListener> queryChangedList = (ArrayList<ISelectionListener>) this.clone();
+        for (ISelectionListener listener : queryChangedList) {
+            listener.onSelectionCleared(currQuery, label, is, iAxis);
+        }
+		
+	}
 
 }

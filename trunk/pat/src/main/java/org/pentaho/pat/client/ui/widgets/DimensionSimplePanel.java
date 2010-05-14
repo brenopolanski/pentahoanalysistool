@@ -55,7 +55,7 @@ public class DimensionSimplePanel extends SimplePanel {
         super();
         this.setStyleName(TABLE_CSS_NAME);
         this.setSize("100", "100");
-        fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this);
+        fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this, false);
         this.setAxis(axis);
         this.setCoord(coord);
     }

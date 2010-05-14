@@ -155,7 +155,11 @@ public interface IQuery extends RemoteService {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    StringTree createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
+    List<String> createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
+            String selectionType) throws RpcException;
+
+    @Secured( {"Users"})
+    StringTree getSpecificMembers(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
             String selectionType) throws RpcException;
 
     /**

@@ -21,6 +21,8 @@ package org.pentaho.pat.client.listeners;
 
 import java.util.EventListener;
 
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
+import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -32,6 +34,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public interface ISelectionListener extends EventListener {
 
-    void onSelectionChange(Widget sender, StringTree tree, String type);
+    void onSelectionChange(String queryID, Widget sender, StringTree tree, String type);
+
+	void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis iAxis);
 
 }
