@@ -165,8 +165,11 @@ public class DimensionTreeWidget extends LayoutComposite implements
 							}
 
 							public void onSuccess(List<MemberLabelItem> arg0) {
+								List list = new ArrayList();
+								list.add("Measures");
 								for (int i = 0; i< arg0.size(); i++){
-								MeasureLabel label = new MeasureLabel(null, arg0.get(i).getName(), arg0.get(i).getCaption(), MeasureLabel.LabelType.MEASURE);
+								
+								MeasureLabel label = new MeasureLabel(list, arg0.get(i).getName(), arg0.get(i).getCaption(), MeasureLabel.LabelType.MEASURE);
 								label.setDragController(dragController);
 								label.makeDraggable();
 								FastTreeItem fti = new FastTreeItem(label);
