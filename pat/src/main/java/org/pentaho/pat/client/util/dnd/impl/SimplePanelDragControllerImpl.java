@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @see #registerDropController(DropController)
  */
+@SuppressWarnings("unused")
 public class SimplePanelDragControllerImpl extends AbstractDragController {
 
   /**

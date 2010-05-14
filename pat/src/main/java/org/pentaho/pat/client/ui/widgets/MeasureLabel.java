@@ -3,8 +3,6 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
-import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
 import com.google.gwt.user.client.ui.FocusPanel;

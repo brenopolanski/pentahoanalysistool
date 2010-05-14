@@ -25,15 +25,22 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
 import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
+import org.pentaho.pat.client.util.dnd.impl.SimplePanelUtil;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.StringTree;
 
+import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
@@ -124,8 +131,12 @@ public class SelectionModeMenu extends PopupMenu {
 
                         public void onSuccess(final Object arg0) {
                             targetLabel.setSelectionMode(selectionMode);
+                            if(dimensionSimplePanel == null){
                             DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
-
+                            }
+                            if(dimensionSimplePanel != null){
+    //                        	updateChildren(selection);
+                            }
                         }
 
                     });
@@ -164,13 +175,26 @@ public class SelectionModeMenu extends PopupMenu {
         source = source2;
     }
 
+
+	private DimensionSimplePanel dimensionSimplePanel;
+
+	private MeasureLabel label;
+	
     public SelectionModeMenu() {
         super();
         init();
         this.setStyleName(SELECTION_MODE_MENU);
     }
 
-    private void init() {
+    public SelectionModeMenu(DimensionSimplePanel dimensionSimplePanel, MeasureLabel label) {
+    	super();
+        init();
+        this.setStyleName(SELECTION_MODE_MENU);
+        this.dimensionSimplePanel = dimensionSimplePanel;
+        this.source = source;
+	}
+
+	private void init() {
         this.setAutoOpen(true);
         this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
@@ -224,6 +248,12 @@ public class SelectionModeMenu extends PopupMenu {
 
     }
 
+    public final void showContextMenu(final MemberSelectionLabel selectedItem) {
+
+        setSource(selectedItem);
+
+    }
+
     protected final String getDimensionName(final MemberSelectionLabel targetLabel) {
         final Tree tree = (Tree) targetLabel.getParent();
         final TreeItem rootItem = tree.getItem(0);
@@ -231,4 +261,6 @@ public class SelectionModeMenu extends PopupMenu {
 
         return widget.getText();
     }
+
+    
 }

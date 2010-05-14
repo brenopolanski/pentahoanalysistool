@@ -109,8 +109,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         dropTable.setWidget(1, 1, dropTarget);
         
         dropTable.setSize("100%", "100%");
-        dropTable.setWidget(0, 1, new DimensionSimplePanel());
-        dropTable.setWidget(1, 0, new DimensionSimplePanel());
+        dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS, new int[]{0,1}));
+        dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS, new int[]{1,0}));
         //dropTable.setWidget(1, 1, new DimensionFlexTable());
         dropTable.setBorderWidth(10);
         mainLayoutPanel.add(dropTable);
