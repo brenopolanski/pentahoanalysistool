@@ -36,8 +36,10 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
+import org.olap4j.metadata.Measure;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Property;
@@ -194,7 +196,15 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 		
         
         StringTree st = null;
-        if(selectionType==(Selection.Operator.MEMBER)){
+        if(dimensionName.equals("Measures")){
+        	List<Measure> measures = query.getCube().getMeasures();
+        	st = new StringTree("", "", null);
+        	
+    		for (Measure mem : measures){
+    			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+    		}
+        }
+        else if(selectionType==(Selection.Operator.MEMBER)){
         	if(hierarchyName == null){
         		Member members = query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember();
         		st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
@@ -407,7 +417,6 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 		this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
-
         List<Member> levelList = query.getCube().getDimensions().get(dimensionName).getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers();
         
         List<String> levelNames = new ArrayList<String>();
@@ -416,5 +425,21 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         }
         return levelNames;
 
+	}
+
+	public List<MemberLabelItem> getMeasures(String currentUserId, String sessionID,
+			String currQuery) throws OlapException {
+		this.sessionService.validateSession(currentUserId, sessionID);
+
+        Query query = this.queryService.getQuery(currentUserId, sessionID, currQuery);
+
+        Axis targetAxis = null;
+        
+        List<Measure> measureList = query.getCube().getMeasures();
+        List<MemberLabelItem> measureNames = new ArrayList<MemberLabelItem>();
+        for (Measure measure : measureList) {
+            measureNames.add(new MemberLabelItem(measure.getName(), measure.getCaption(loc), null));
+        }
+        return measureNames;
 	}
 }

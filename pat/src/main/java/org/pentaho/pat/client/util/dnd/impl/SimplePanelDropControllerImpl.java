@@ -65,6 +65,10 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil.clearLevel(context, context.draggable, panel
 						.getCoord(), panel.getAxis());
 			}
+			else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.MEASURE) {
+				SimplePanelUtil.clearDimension(context, context.draggable,
+						panel.getCoord(), panel.getAxis());
+			}
 		} else {
 			MeasureLabel label = new MeasureLabel(originalLabel.getValue(),
 					originalLabel.getActualName(), originalLabel.getText(),
@@ -89,6 +93,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil.moveHierarchy(context, label);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
 				SimplePanelUtil.moveLevel(context, label);
+			} else if (originalLabel.getType() == MeasureLabel.LabelType.MEASURE){
+				SimplePanelUtil.moveMeasure(context, label);
 			}
 
 		}

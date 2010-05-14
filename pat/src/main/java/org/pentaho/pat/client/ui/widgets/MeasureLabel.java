@@ -106,9 +106,7 @@ public class MeasureLabel extends FocusPanel {
     	this.unsinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
     }
     
-    public MeasureLabel() {
-		// TODO Auto-generated constructor stub
-	}
+    
 
 	/**
      * Return the drag controller.

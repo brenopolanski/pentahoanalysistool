@@ -58,4 +58,6 @@ public interface IDiscoveryAsync {
 	
 	void getLevelMembers(String sessionID, String currQuery, String dimensionName, String hierarchyName, String levelName, AsyncCallback<String[]> callback);
 
+	void getMeasures(String sessionID, String currQuery, AsyncCallback<List<MemberLabelItem>> asyncCallback);
+
 }
