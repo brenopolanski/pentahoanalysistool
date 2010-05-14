@@ -36,8 +36,12 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionDropWidget;
+import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.util.PanelUtil;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -75,6 +79,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     
     PanelUtil.PanelType dPaneltype = null;
 
+	private FlexTableRowDragControllerImpl tblRowDragCont;
+
     /**
      *DataPanel Constructor.
      *
@@ -85,7 +91,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         super();
         this.queryId = query;
         this.dPaneltype = pType;
-
+        FlexTable dropTable = new FlexTable();
+        
         olapTable = new OlapTable();
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
         // FIXME remove that and use style
@@ -95,24 +102,18 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (pType == PanelUtil.PanelType.QM) {
             mainLayoutPanel.setPadding(0);
 
-            <!--final DimensionDropWidget dimDropCol = new DimensionDropWidget(ConstantFactory.getInstance().columns(),
-                    IAxis.COLUMNS, true, Application.tblRowDrgCont);
-            final DimensionDropWidget dimDropRow = new DimensionDropWidget(ConstantFactory.getInstance().rows(),
-                    IAxis.ROWS, false, Application.tblRowDrgCont);
-
-            final LayoutPanel buttonDropPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-            buttonDropPanel.add(dimDropRow, new BoxLayoutData(FillStyle.BOTH));
-
-            mainLayoutPanel.add(buttonDropPanel, new BoxLayoutData(FillStyle.VERTICAL));
-            mainLayoutPanel.add(dimDropCol, new BoxLayoutData(FillStyle.HORIZONTAL));
-
-            baseLayoutPanel.add(mainLayoutPanel);-->
         FlexTable dropTable = new FlexTable();
         dropTable.setSize("100%", "100%");
         dropTable.setWidget(0, 1, dropTarget);
         dropTable.setWidget(1, 0, dropTarget);
         dropTable.setWidget(1, 1, dropTarget);
         
+        dropTable.setSize("100%", "100%");
+        dropTable.setWidget(0, 1, new DimensionSimplePanel());
+        dropTable.setWidget(1, 0, new DimensionSimplePanel());
+        //dropTable.setWidget(1, 1, new DimensionFlexTable());
+        dropTable.setBorderWidth(10);
+        mainLayoutPanel.add(dropTable);
         baseLayoutPanel.add(mainLayoutPanel);
         }
 

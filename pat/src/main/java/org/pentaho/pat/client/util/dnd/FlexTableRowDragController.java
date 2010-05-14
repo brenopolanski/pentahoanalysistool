@@ -20,7 +20,9 @@
 package org.pentaho.pat.client.util.dnd;
 
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -47,7 +49,7 @@ public interface FlexTableRowDragController {
 	 * 
 	 * @return the draggable table
 	 */
-	public abstract DimensionFlexTable getDraggableTable();
+	public abstract MeasureLabel getDraggableTable();
 
 	/**
 	 * Get the source row.

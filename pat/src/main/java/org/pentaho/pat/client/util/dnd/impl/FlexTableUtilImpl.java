@@ -51,15 +51,11 @@ public class FlexTableUtilImpl {
      * @param targetRow
      *            the index before which to insert the copied row
      */
-    protected static void copyRow(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
-            final int sourceRow, final int targetRow) {
-        targetTable.insertRow(targetRow);
-        final HTML html = new HTML();
-        for (int col = 0; col < sourceTable.getCellCount(sourceRow); col++) {
-            html.setHTML(sourceTable.getHTML(sourceRow, col));
-            targetTable.setWidget(targetRow, col, html);
-        }
-        copyRowStyle(sourceTable, targetTable, sourceRow, targetRow);
+    protected static void copyRow(final MeasureLabel sourceTable, final MeasureLabel targetTable) {
+        
+    	targetTable.setValue(sourceTable.getValue());
+    	targetTable.setType(sourceTable.getType());
+        copyRowStyle(sourceTable, targetTable);
         
     }
 
@@ -119,10 +115,16 @@ public class FlexTableUtilImpl {
      * @param targetRow
      *            the target row
      */
-    private static void copyRowStyle(final DimensionFlexTable sourceTable, final DimensionFlexTable targetTable,
-            final int sourceRow, final int targetRow) {
-        final String rowStyle = sourceTable.getRowFormatter().getStyleName(sourceRow);
-        targetTable.getRowFormatter().setStyleName(targetRow, rowStyle);
+    private static void copyRowStyle(final MeasureLabel sourceTable, final MeasureLabel targetTable) {
+        final String rowStyle = sourceTable.getStyleName();
+        targetTable.setStyleName(rowStyle);
     }
+
+	public static void moveRowNew(MeasureLabel draggableTable,
+			DimensionFlexTable flexTable) {
+		
+		flexTable.setWidget(0,0, draggableTable);
+		
+	}
 
     }

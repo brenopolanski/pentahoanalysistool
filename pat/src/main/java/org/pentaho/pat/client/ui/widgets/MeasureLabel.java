@@ -5,6 +5,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -22,7 +23,7 @@ public class MeasureLabel extends FocusPanel {
 
     private final static String TABLE_DRAG_WIDGET = "dragDimension"; //$NON-NLS-1$
 
-    private FlexTableRowDragController dragController;
+    private SimplePanelDragControllerImpl dragController;
 
     private Label text = new Label();
     
@@ -66,7 +67,7 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final String string, final String caption, final LabelType lType, final FlexTableRowDragController dragController2,
+    public MeasureLabel(final String string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
             boolean draggable) {
         this(string, caption, lType);
         this.dragController = dragController2;
@@ -76,12 +77,16 @@ public class MeasureLabel extends FocusPanel {
         }
     }
 
-    /**
+    public MeasureLabel() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
      * Return the drag controller.
      * 
      * @return the dragController
      */
-    public FlexTableRowDragController getDragController() {
+    public SimplePanelDragControllerImpl getDragController() {
         return dragController;
     }
 
@@ -122,7 +127,7 @@ public class MeasureLabel extends FocusPanel {
      * @param dragController
      *            the dragController to set
      */
-    public void setDragController(final FlexTableRowDragControllerImpl dragController) {
+    public void setDragController(final SimplePanelDragControllerImpl dragController) {
         this.dragController = dragController;
     }
 

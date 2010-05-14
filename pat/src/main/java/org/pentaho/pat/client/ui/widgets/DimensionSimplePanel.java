@@ -21,12 +21,12 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragControllerImpl;
-import org.pentaho.pat.client.util.dnd.impl.FlexTableRowDropControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
+import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
+
 import org.pentaho.pat.rpc.dto.IAxis;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  *TODO JAVADOC
@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.FlexTable;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class DimensionFlexTable extends FlexTable {
+public class DimensionSimplePanel extends SimplePanel {
 
     private Boolean horizontal = false;
 
@@ -47,16 +47,16 @@ public class DimensionFlexTable extends FlexTable {
     private final static String VALID_DROP_TARGET = "pat-validDropTarget";  //$NON-NLS-1$
     private final static String INVALID_DROP_TARGET = "pat-invalidDropTarget";  //$NON-NLS-1$
 
-    private FlexTableRowDragControllerImpl tblRowDragCont = Application.tblRowDrgCont;
+    private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
     /**
      * Create a flextable widget for the DimensionDropWidget.
      * 
      */
-    public DimensionFlexTable() {
+    public DimensionSimplePanel() {
         super();
         this.setStyleName(TABLE_CSS_NAME);
         this.setSize("100%", "100%");
-        FlexTableRowDropControllerImpl fTblRowDropCont = new FlexTableRowDropControllerImpl(DimensionFlexTable.this);
+        SimplePanelDropControllerImpl fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this);
         tblRowDragCont.registerDropController(fTblRowDropCont);
     }
 
@@ -65,7 +65,7 @@ public class DimensionFlexTable extends FlexTable {
      * @param orientation
      * @param axis
      */
-    public DimensionFlexTable(final Boolean orientation, final IAxis axis) {
+    public DimensionSimplePanel(final Boolean orientation, final IAxis axis) {
         super();
         this.setStyleName(TABLE_CSS_NAME);
         this.setAxis(axis);

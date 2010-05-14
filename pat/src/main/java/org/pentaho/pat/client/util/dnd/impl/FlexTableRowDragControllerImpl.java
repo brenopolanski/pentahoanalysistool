@@ -20,6 +20,7 @@
 package org.pentaho.pat.client.util.dnd.impl;
 
 import org.pentaho.pat.client.ui.widgets.DimensionFlexTable;
+import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.util.dnd.FlexTableRowDragController;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -39,7 +40,7 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
     private static final String DRAG_CSS_PROXY = "dragProxy"; //$NON-NLS-1$
 
     /** The flextable. */
-    private DimensionFlexTable draggableTable;
+    private MeasureLabel draggableTable;
 
     /** The source row. */
     private int dragRow;
@@ -74,7 +75,7 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
     /* (non-Javadoc)
 	 * @see org.pentaho.pat.client.util.dnd.impl.FlexTableRowDragController#getDraggableTable()
 	 */
-    public DimensionFlexTable getDraggableTable() {
+    public MeasureLabel getDraggableTable() {
         return draggableTable;
     }
 
@@ -177,13 +178,15 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
     @Override
     protected Widget newDragProxy(final DragContext context) {
 
-        final DimensionFlexTable proxy = new DimensionFlexTable();
-        proxy.addStyleName(DRAG_CSS_PROXY);
+
         
-        draggableTable = (DimensionFlexTable) context.draggable.getParent();
-        dragRow = getWidgetRow(context.draggable, draggableTable);
-        dragCol = getWidgetCol(context.draggable, draggableTable);
-        FlexTableUtilImpl.copyRow(draggableTable, proxy, dragRow, 0);
+        
+        draggableTable = (MeasureLabel) context.draggable;
+        final MeasureLabel proxy = new MeasureLabel(draggableTable.getText(), draggableTable.getType());
+        proxy.addStyleName(DRAG_CSS_PROXY);
+        //dragRow = getWidgetRow(context.draggable, draggableTable);
+        //dragCol = getWidgetCol(context.draggable, draggableTable);
+        //FlexTableUtilImpl.copyRow(draggableTable, proxy);
         return proxy;
     }
 
