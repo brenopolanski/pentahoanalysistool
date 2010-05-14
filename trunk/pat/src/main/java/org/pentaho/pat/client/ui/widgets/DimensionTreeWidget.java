@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -55,19 +56,16 @@ public class DimensionTreeWidget extends LayoutComposite implements
 						ServiceFactory.getDiscoveryInstance().getHierarchies(
 								Pat.getSessionID(), Pat.getCurrQuery(),
 								parentlabel.getText(),
-								new AsyncCallback<ArrayList<MemberLabelItem>>() {
+								new AsyncCallback<List<MemberLabelItem>>() {
 
 									public void onFailure(Throwable arg0) {
 										// TODO Auto-generated method stub
 
 									}
 
-									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
+									public void onSuccess(List<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
-											ArrayList path = new ArrayList();
-											path.add(parentItem.getText());
-											path.add(arg0.get(i));
-											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(),
+											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.HIERARCHY);
 											label.setDragController(dragController);
@@ -83,10 +81,14 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								});
 					} else if (labelType != null
 							&& labelType == LabelType.HIERARCHY) {
+						//MeasureLabel
+						Widget w =parentItem.getWidget();
+						String name = ((MeasureLabel)w).getActualName();
+						String dimname = ((MeasureLabel)w).getValue().get(0);
 						ServiceFactory.getDiscoveryInstance().getLevels(
 								Pat.getSessionID(), Pat.getCurrQuery(),
-								parentItem.getParentItem().getText(),
-								parentlabel.getText(),
+								dimname,
+								name,
 								new AsyncCallback<ArrayList<MemberLabelItem>>() {
 
 									public void onFailure(Throwable arg0) {

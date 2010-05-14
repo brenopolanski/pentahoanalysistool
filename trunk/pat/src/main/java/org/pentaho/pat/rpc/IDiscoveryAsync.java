@@ -51,7 +51,7 @@ public interface IDiscoveryAsync {
     
     void getNamedLevelProperties(String sessionId, String queryId, String dimensionName, String levelName, AsyncCallback<List<LevelProperties>> callback);
 
-	void getHierarchies(String sessionID, String queryId, String dimensionName,	AsyncCallback<ArrayList<MemberLabelItem>> asyncCallback);
+	void getHierarchies(String sessionID, String queryId, String dimensionName,	AsyncCallback<List<MemberLabelItem>> asyncCallback);
 
 	void getLevels(String sessionID, String currQuery, String dimensionName, String hierarchyName, AsyncCallback<ArrayList<MemberLabelItem>> asyncCallback);
 	

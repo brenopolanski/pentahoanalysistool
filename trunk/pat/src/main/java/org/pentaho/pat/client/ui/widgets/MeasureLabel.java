@@ -37,6 +37,8 @@ public class MeasureLabel extends FocusPanel {
 
     private LabelType type;
 
+	private String actualname;
+
     /**
      * Create a measure label (with no predefined caption).
      * @param valure
@@ -67,7 +69,25 @@ public class MeasureLabel extends FocusPanel {
         this.setValue(value);
     }
 
-    /**
+    public MeasureLabel(final List parents, final String name, final String caption, final LabelType lType) {
+        super();
+        text.setText(caption);
+        this.add(text);
+        this.setActualName(name);
+        setStylePrimaryName(TABLE_DRAG_WIDGET);
+        this.setType(lType);
+        this.setValue(parents);
+    }
+    public void setActualName(String name) {
+		actualname = name;
+		
+	}
+    
+    public String getActualName(){
+    	return actualname;
+    }
+
+	/**
      * Create a measure label.
      * 
      * @param text2
