@@ -5,6 +5,9 @@ import java.util.List;
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.pentaho.pat.client.listeners.ISelectionListener;
+import org.pentaho.pat.client.ui.panels.DataPanel;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 
@@ -12,7 +15,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class QueryDesignTable extends LayoutComposite {
+public class QueryDesignTable extends LayoutComposite implements ISelectionListener{
 	
 	FlexTable flex = new FlexTable();
 	
@@ -26,6 +29,16 @@ public class QueryDesignTable extends LayoutComposite {
 		this.setSize("100%", "100%");
 		this.getLayoutPanel().add(slp);
 	}
+
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getSelectionInstance().addSelectionListener(QueryDesignTable.this);
+    }
+
+    @Override
+    public void onUnload(){
+        GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(QueryDesignTable.this);   
+    }
 
 	public void alterSelectionDisplay(MeasureLabel targetLabel, StringTree labels){
     	if(targetLabel.getAxis().equals(IAxis.ROWS)){
@@ -130,6 +143,11 @@ public class QueryDesignTable extends LayoutComposite {
 	
 	public Widget getWidget(int i, int j){
 		return this.flex.getWidget(i, j);
+	}
+
+	public void onSelectionChange(Widget sender, StringTree tree, String type) {
+		MeasureLabel ml = (MeasureLabel) sender;
+		alterSelectionDisplay(ml, tree);
 	}
 
 }

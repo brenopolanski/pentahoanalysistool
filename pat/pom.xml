@@ -303,7 +303,7 @@
         <repositories>
                 <repository>
                         <id>MagicBeans-releases</id>
-                        <url>http://212.227.135.127/artifactory/libs-releases/</url>
+                        <url>http://repo.analytical-labs.com/libs-releases/</url>
                 </repository>
         </repositories>
         <pluginRepositories>

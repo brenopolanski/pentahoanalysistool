@@ -4,16 +4,19 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Widget;
 
 public class SimplePanelUtil {
 
-	public static void moveDimension(final DragContext context, final MeasureLabel label) {
+	public static void moveDimension(final DragContext context, final MeasureLabel label, final Widget w) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
         		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getText(), new AsyncCallback<Object>(){
 
@@ -23,6 +26,22 @@ public class SimplePanelUtil {
 			}
 
 			public void onSuccess(Object arg0) {
+				
+				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), null, "dimension",
+			            "MEMBER", new AsyncCallback<StringTree>(){
+
+							public void onFailure(Throwable arg0) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							public void onSuccess(StringTree arg0) {
+								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+								
+							}
+					
+				});
+				
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 				
