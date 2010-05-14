@@ -385,7 +385,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         if(type.equals("hierarchy")){
         	  final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
               final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-              String hierarchyname = memberNames.get(memberNames.size()-1);
               qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
         }
         else if(type.equals("level")){

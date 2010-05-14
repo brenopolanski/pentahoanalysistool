@@ -98,7 +98,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
-											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(),
+											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.LEVEL);
 											label.setDragController(dragController);
@@ -134,7 +134,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											.getText());
 											path.add(parentItem.getParentItem().getText());
 											path.add(arg0[i]);
-											MeasureLabel label = new MeasureLabel(path,
+											MeasureLabel label = new MeasureLabel(path, "",
 													arg0[i],
 													MeasureLabel.LabelType.MEMBER);
 											
@@ -194,7 +194,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 						for (int i = 0; i < arg0.length; i++) {
 							ArrayList path = new ArrayList();
 							path.add(arg0[i]);
-							MeasureLabel label = new MeasureLabel(path ,arg0[i],
+							MeasureLabel label = new MeasureLabel(path ,arg0[i], arg0[i],
 									MeasureLabel.LabelType.DIMENSION);
 							label.setDragController(dragController);
 							label.makeDraggable();
