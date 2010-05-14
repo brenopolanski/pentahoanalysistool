@@ -24,10 +24,12 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -153,5 +155,8 @@ public interface DiscoveryService extends Service {
 	
 	List<String> getLevelMembers(String currentUserId, String sessionId,
 			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException;
+	
+	StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName,
+			Selection.Operator selectionType) throws OlapException;
 
 }

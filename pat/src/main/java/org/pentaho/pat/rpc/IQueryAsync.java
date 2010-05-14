@@ -25,6 +25,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
@@ -43,10 +44,10 @@ public interface IQueryAsync {
             AsyncCallback<Object> callback);
 
     void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames,
-            String selectionType, AsyncCallback<Object> callback);
+            String selectionType, AsyncCallback<StringTree> callback);
 
     void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
-            String selectionType, AsyncCallback<Object> callback);
+            String selectionType, AsyncCallback<StringTree> asyncCallback);
 
     void createSelection(String sessionId, String queryId, String dimensionName,
             String selectionType, AsyncCallback<Object> callback);

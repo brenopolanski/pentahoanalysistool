@@ -30,10 +30,13 @@ import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
+import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
@@ -98,6 +101,21 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             this.selectionMode = selectionMode;
         }
 
+        private void addNewChild(StringTree tree, FlexTable ft, int[] parentcoords){
+        	final List<StringTree> child = tree.getChildren();
+            for (int i = 0; i < child.size(); i++) {
+                // Need a copy of the memberLabel because of GWT's lack of clone support
+                final Label memberLabel = new Label(child.get(i).getCaption());
+               
+                ft.insertRow(parentcoords[0]+1);
+            	
+            	ft.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
+                
+               addNewChild(child.get(i), ft, parentcoords);
+            }
+
+        }
+        
         /*
          * (non-Javadoc)
          * 
@@ -113,7 +131,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             final String selection = setSelectionMode(selectionMode);
             if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                    null, selection, new AsyncCallback<Object>() {
+                    null, "dimension", selection, new AsyncCallback<StringTree>() {
 
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -121,26 +139,39 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
                         }
 
-                        public void onSuccess(final Object arg0) {
-                            //targetLabel.setSelectionMode(selectionMode);
-                            if(dimensionSimplePanel == null){
-                            
+                        public void onSuccess(final StringTree labels) {
+                        	FlexTable flexTable = ((FlexTable)targetLabel.getParent().getParent());
+                        	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
+                        
+                        	int[] parentcoords = dimPanel.getCoord();
+                        	final List<StringTree> child = labels.getChildren();
+                        	flexTable.insertRow(parentcoords[0]+1);
+                        	final Label parentLabel = new Label(labels.getCaption());         	
+                         	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
+                            for (int i = 0; i < child.size(); i++) {
+                                
+                                final Label memberLabel = new Label(child.get(i).getCaption());
+                               
+                                flexTable.insertRow(parentcoords[0]+1);
+                            	
+                            	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
+                                
+                            	addNewChild(child.get(i), flexTable, parentcoords);
+                               
                             }
-                            if(dimensionSimplePanel != null){
-    //                        	updateChildren(selection);
-                            }
+
+                        	
                         }
 
                     });
             }
             else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
-            	final List<String> dimSelections1 = new ArrayList<String>();
+            	final List<String> hierarchySelections = new ArrayList<String>();
             	String dimName1 = targetLabel.getValue().get(0);
-            	dimSelections1.add(targetLabel.getValue().get(0));
-            	dimSelections1.add(targetLabel.getActualName());
-            	//final String hiername = targetLabel.getActualName();	
+            	hierarchySelections.add(targetLabel.getValue().get(0));
+            	hierarchySelections.add(targetLabel.getActualName());	
             	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-                        dimSelections1, "hierarchy", selection, new AsyncCallback<Object>() {
+                        hierarchySelections, "hierarchy", selection, new AsyncCallback<StringTree>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -148,14 +179,27 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
                             }
 
-                            public void onSuccess(final Object arg0) {
-                                //targetLabel.setSelectionMode(selectionMode);
-                                if(dimensionSimplePanel == null){
-                                
+                            public void onSuccess(final StringTree labels) {
+                            	FlexTable flexTable = ((FlexTable)targetLabel.getParent().getParent());
+                            	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
+                            
+                            	int[] parentcoords = dimPanel.getCoord();
+                            	final List<StringTree> child = labels.getChildren();
+                            	
+                            	flexTable.insertRow(parentcoords[0]+1);
+                            	final Label parentLabel = new Label(labels.getCaption());         	
+                             	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
+                                for (int i = 0; i < child.size(); i++) {
+                                    
+                                    final Label memberLabel = new Label(child.get(i).getCaption());
+                                   
+                                    flexTable.insertRow(parentcoords[0]+1);
+                                	
+                                	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
+                                    
+                                	addNewChild(child.get(i), flexTable, parentcoords);                                   
                                 }
-                                if(dimensionSimplePanel != null){
-        //                        	updateChildren(selection);
-                                }
+
                             }
 
                         });            	
@@ -163,14 +207,14 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             else if(targetLabel.getType() == MeasureLabel.LabelType.LEVEL){
             	
      
-            	final List<String> dimSelections1 = new ArrayList<String>();
+            	final List<String> levelSelections = new ArrayList<String>();
             	String dimName1 = targetLabel.getValue().get(0);
-            	dimSelections1.add(targetLabel.getValue().get(0));
-            	dimSelections1.add(targetLabel.getValue().get(1));
-            	dimSelections1.add(targetLabel.getActualName());
+            	levelSelections.add(targetLabel.getValue().get(0));
+            	levelSelections.add(targetLabel.getValue().get(1));
+            	levelSelections.add(targetLabel.getActualName());
             	
             	ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-                        dimSelections1, "level", selection, new AsyncCallback<Object>() {
+                        levelSelections, "level", selection, new AsyncCallback<StringTree>() {
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -178,13 +222,35 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
                             }
 
-                            public void onSuccess(final Object arg0) {
-                                //targetLabel.setSelectionMode(selectionMode);
-                                if(dimensionSimplePanel == null){
-                                
-                                }
-                                if(dimensionSimplePanel != null){
-        //                        	updateChildren(selection);
+                            public void onSuccess(final StringTree labels) {
+                            	FlexTable flexTable = ((FlexTable)targetLabel.getParent().getParent());
+                            	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
+                            
+                            	int[] parentcoords = dimPanel.getCoord();
+                            	final List<StringTree> child = labels.getChildren();
+                            	int rows = flexTable.getRowCount();
+                            	for(int i =1; i < flexTable.getRowCount()+1; i++){
+                            		if(flexTable.isCellPresent(parentcoords[0]+i, parentcoords[1])){
+                            		if(flexTable.getWidget(parentcoords[0]+i, parentcoords[1]) instanceof Label){
+                            			flexTable.removeRow(parentcoords[0]+i);
+                            		}
+                            		else if(flexTable.getWidget(parentcoords[0]+i, parentcoords[1]) instanceof MeasureLabel){
+                            			break;
+                            		}
+                            		}
+                            	}
+                            	flexTable.insertRow(parentcoords[0]+1);
+                            	final Label parentLabel = new Label(labels.getCaption());         	
+                             	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], parentLabel);
+                            	for (int i = 0; i < child.size(); i++) {
+                                    
+                                    final Label memberLabel = new Label(child.get(i).getCaption());
+                                   
+                                    flexTable.insertRow(parentcoords[0]+1);
+                                	
+                                	flexTable.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
+                                    
+                                	addNewChild(child.get(i), flexTable, parentcoords);                                   
                                 }
                             }
 
@@ -226,8 +292,6 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     }
 
 
-	private DimensionSimplePanel dimensionSimplePanel;
-
 	public MeasureLabelSelectionModeMenu() {
         super();
         init();
@@ -238,7 +302,6 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     	super();
         init();
         this.setStyleName(SELECTION_MODE_MENU);
-        this.dimensionSimplePanel = dimensionSimplePanel;
         
 	}
 

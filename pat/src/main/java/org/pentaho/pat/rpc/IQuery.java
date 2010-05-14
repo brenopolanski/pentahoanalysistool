@@ -25,6 +25,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -154,7 +155,7 @@ public interface IQuery extends RemoteService {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
+    StringTree createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
             String selectionType) throws RpcException;
 
     /**

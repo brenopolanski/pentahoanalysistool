@@ -78,7 +78,7 @@ public class SimplePanelDragControllerImpl extends AbstractDragController {
 
   private int boundaryOffsetY;
 
-  private boolean dragProxyEnabled = false;
+  private boolean dragProxyEnabled = true;
 
   private final DropControllerCollection dropControllerCollection;
 

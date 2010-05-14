@@ -36,6 +36,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.QueryType;
@@ -166,10 +167,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
      * java.util.List, java.lang.String)
      */
-    public void createSelection(final String sessionId, final String queryId, final String dimensionName,
+    public StringTree createSelection(final String sessionId, final String queryId, final String dimensionName,
             final List<String> memberNames, String type, final String selectionType) throws RpcException {
         try {
-            this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
+            return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType));
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$

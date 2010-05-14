@@ -30,10 +30,12 @@ import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
-import org.pentaho.pat.server.util.MdxQuery;
+import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
+import org.pentaho.pat.server.util.MdxQuery;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -137,7 +139,7 @@ public interface QueryService extends Service {
 
 
     @Secured( {"Users"})
-    void createSelection(String userId, String sessionId, String queryId, String dimensionName,
+    StringTree createSelection(String userId, String sessionId, String queryId, String dimensionName,
             List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
 
     /**
