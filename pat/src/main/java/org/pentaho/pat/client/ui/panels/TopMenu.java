@@ -366,13 +366,13 @@ public class TopMenu extends MenuBar {
 
                                                     CubesMenu.this.insertItem(item,CubesMenu.this.getItemIndex(indexItem)+1);
                                                 }
-                                                CubesMenu.this.removeItem(indexItem);
+                                                
                                                 // if there are no  cubes we'll add a nocube item to the menu
                                                 if (cubeItm.length == 0) {
                                                     MenuItem noitem = new MenuItem("("+ConstantFactory.getInstance().noCubes()+")",new Command() {
                                                         public void execute() {};
                                                     });
-                                                    CubesMenu.this.addItem(noitem);
+                                                    CubesMenu.this.insertItem(noitem,CubesMenu.this.getItemIndex(indexItem)+1);
                                                 }
                                                 else if(connections[connections.length-1].equals(connection)) {
                                                     CubesMenu.this.addSeparator();
@@ -384,6 +384,7 @@ public class TopMenu extends MenuBar {
 
                                                     });
                                                 }
+                                                CubesMenu.this.removeItem(indexItem);
 
 
 
