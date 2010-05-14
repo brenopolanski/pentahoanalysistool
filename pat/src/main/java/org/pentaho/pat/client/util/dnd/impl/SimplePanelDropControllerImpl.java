@@ -44,12 +44,18 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 
 	  @Override
 	  public void onDrop(final DragContext context) {
-		MeasureLabel label = new MeasureLabel(((MeasureLabel)context.draggable).getText(), ((MeasureLabel)context.draggable).getType());
+		MeasureLabel label = new MeasureLabel(((MeasureLabel)context.draggable).getValue(), ((MeasureLabel)context.draggable).getText(), ((MeasureLabel)context.draggable).getType());
 		label.setDragController(((MeasureLabel)context.draggable).getDragController());
 		label.makeDraggable();
 		label.enableSinkEvents();
 	    dropTarget.setWidget(label);
+	    if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.DIMENSION){
 	    SimplePanelUtil.moveDimension(context, label);
+	    }
+	    else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.HIERARCHY){
+	    	SimplePanelUtil.moveHierarchy(context, label);	
+	    }
+	    
 	    super.onDrop(context);
 	  }
 

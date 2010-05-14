@@ -154,6 +154,26 @@ public interface IQuery extends RemoteService {
      *             If something goes sour.
      */
     @Secured( {"Users"})
+    void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
+            String selectionType) throws RpcException;
+
+    /**
+     * Performs a selection of the first member in a dimension.
+     * 
+     * @param sessionId
+     *            Identifies the window session id that requested the operation.
+     * @param queryId
+     *            Identifies on which query to perform the operation.
+     * @param dimensionName
+     *            The name of the dimension on which we want to select members.
+     * @param memberNames
+     *            The actual names of the members to perform a selection on.
+     * @param selectionType
+     *            The type of selection to perform.
+     * @throws RpcException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
     void createSelection(String sessionId, String queryId, String dimensionName,
             String selectionType) throws RpcException;
 

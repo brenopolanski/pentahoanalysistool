@@ -357,25 +357,25 @@ public class DimensionDropWidget extends LayoutComposite implements IQueryListen
 
                                                 // Insert Measures
                                                 for (int i = 0; i < measuresTree.getChildren().size(); i++) {
-                                                    final MeasureLabel handle = new MeasureLabel(measuresTree
+  /*                                                  final MeasureLabel handle = new MeasureLabel(measuresTree
                                                             .getChildren().get(i).getValue(), measuresTree.getChildren().get(i).getCaption(),
-                                                            MeasureLabel.LabelType.MEASURE);
-                                                    measureDropWidget.addRow(handle, i);
+                                                            MeasureLabel.LabelType.MEASURE);*/
+                                                    
                                                     //handle.setDragController(tblRowDragCont);
-                                                    handle.makeDraggable();
+                                                    
                                                 }
                                                 measureDropWidget.setDragController(tblRowDragCont);
                                             }
 
                                             for (int row = 0; row < dimensionList.size(); row++) {
                                                 if (row != index) {
-                                                    MeasureLabel handle = new MeasureLabel(dimensionList.get(row),
+                                                    /*MeasureLabel handle = new MeasureLabel(dimensionList.get(row),
                                                             MeasureLabel.LabelType.DIMENSION);
-
-                                                    flexTableAddRecord(handle, row);
+*/
+                                                 //   flexTableAddRecord(handle, row);
 
                                                    // handle.setDragController(tblRowDragCont);
-                                                    handle.makeDraggable();
+                                                   // handle.makeDraggable();
                                                     if (row == dimensionList.size() - 1 /* && anotherList.size() - 1 > 0 */) {
                                                         dimensionTable.getCellFormatter().addStyleName(row, 0,
                                                                 TABLE_DROP_ROWENDCELL);

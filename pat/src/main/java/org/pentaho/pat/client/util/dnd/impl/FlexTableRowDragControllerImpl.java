@@ -182,12 +182,12 @@ public class FlexTableRowDragControllerImpl extends PickupDragController impleme
         
         
         draggableTable = (MeasureLabel) context.draggable;
-        final MeasureLabel proxy = new MeasureLabel(draggableTable.getText(), draggableTable.getType());
-        proxy.addStyleName(DRAG_CSS_PROXY);
+        //final MeasureLabel proxy = new MeasureLabel(draggableTable.getText(), draggableTable.getType());
+        //proxy.addStyleName(DRAG_CSS_PROXY);
         //dragRow = getWidgetRow(context.draggable, draggableTable);
         //dragCol = getWidgetCol(context.draggable, draggableTable);
         //FlexTableUtilImpl.copyRow(draggableTable, proxy);
-        return proxy;
+        return null;
     }
 
     /*

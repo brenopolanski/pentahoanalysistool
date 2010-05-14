@@ -364,11 +364,39 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         	
             final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
             final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-            Member member = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember();
             qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang .String, java.lang.String,
+     * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
+     */
+    public void createSelection(final String userId, final String sessionId, final String queryId,
+            final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final Query query = this.getQuery(userId, sessionId, queryId);
+        final Cube cube = query.getCube();
+
+        if(type.equals("hierarchy")){
+        	  final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+              final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+              String hierarchyname = memberNames.get(memberNames.size()-1);
+              qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
+        }
+        else if(type.equals("level")){
+        	final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+            final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+            qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
+            		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers().get(0));
+        }
+    }
+
+    
     /*
      * (non-Javadoc)
      * 

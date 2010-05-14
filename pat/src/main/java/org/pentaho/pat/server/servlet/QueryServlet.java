@@ -159,6 +159,24 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
+     * java.util.List, java.lang.String)
+     */
+    public void createSelection(final String sessionId, final String queryId, final String dimensionName,
+            final List<String> memberNames, String type, final String selectionType) throws RpcException {
+        try {
+            this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
+                    org.olap4j.query.Selection.Operator.valueOf(selectionType));
+        } catch (OlapException e) {
+            LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
