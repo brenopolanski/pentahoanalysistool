@@ -257,4 +257,77 @@ public class SimplePanelUtil {
 		
 	}
 
+
+	public static void clearHierarchy(DragContext context, Widget draggable,
+			final int[] coord, final IAxis axis) {
+
+		final MeasureLabel label = ((MeasureLabel)draggable);
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED, 
+				label.getValue().get(0), new AsyncCallback(){
+
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void onSuccess(Object arg0) {
+						ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0),
+								label.getCurrentSelection(), new AsyncCallback(){
+
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onSuccess(Object arg0) {
+										StringTree tree = null;
+										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
+												label, coord, axis);
+									}
+							
+						});	
+						
+					}
+			
+		});
+
+		
+	}
+
+
+	public static void clearLevel(DragContext context, Widget draggable,
+			final int[] coord, final IAxis axis) {
+		final MeasureLabel label = ((MeasureLabel)draggable);
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED, 
+				label.getValue().get(0), new AsyncCallback(){
+
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void onSuccess(Object arg0) {
+						ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0),
+								label.getCurrentSelection(), new AsyncCallback(){
+
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onSuccess(Object arg0) {
+										StringTree tree = null;
+										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
+												label, coord, axis);
+									}
+							
+						});	
+						
+					}
+			
+		});
+
+		
+	}
+
 }
