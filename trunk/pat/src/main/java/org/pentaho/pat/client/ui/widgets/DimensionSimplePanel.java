@@ -20,10 +20,8 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Application;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
-
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -44,12 +42,11 @@ public class DimensionSimplePanel extends SimplePanel {
     
     private final static String TABLE_CSS_NAME = "pat-DimensionFlexTable"; //$NON-NLS-1$
 
-    private final static String VALID_DROP_TARGET = "pat-validDropTarget";  //$NON-NLS-1$
-    private final static String INVALID_DROP_TARGET = "pat-invalidDropTarget";  //$NON-NLS-1$
-
     private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
     
     private int[] coord;
+    
+    SimplePanelDropControllerImpl fTblRowDropCont;
     /**
      * Create a flextable widget for the DimensionDropWidget.
      * 
@@ -58,8 +55,7 @@ public class DimensionSimplePanel extends SimplePanel {
         super();
         this.setStyleName(TABLE_CSS_NAME);
         this.setSize("100", "100");
-        SimplePanelDropControllerImpl fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this);
-        tblRowDragCont.registerDropController(fTblRowDropCont);
+        fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this);
         this.setAxis(axis);
         this.setCoord(coord);
     }
@@ -77,7 +73,16 @@ public class DimensionSimplePanel extends SimplePanel {
 
     }
 
+    @Override
+    protected void onLoad(){
+    	
+        tblRowDragCont.registerDropController(fTblRowDropCont);
+    }
     
+    @Override
+    protected void onUnload(){
+    	tblRowDragCont.unregisterDropController(fTblRowDropCont);
+    }
     /**
      * Return true if the widget is in horizontal orientation.
      * 
@@ -101,27 +106,6 @@ public class DimensionSimplePanel extends SimplePanel {
      */
     public IAxis getAxis() {
 	return axis;
-    }
-
-    /**
-     * CSS styling for dropping.
-     *
-     * @param engaged
-     */
-    public void setEngaged(final boolean engaged) {
-       if(engaged && (Pat.getMeasuresAxis().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
-           this.addStyleName(VALID_DROP_TARGET);
-       }
-       else if(!engaged && (Pat.getMeasuresAxis().equals(axis) || axis.equals(IAxis.UNUSED) || Pat.getMeasuresAxis().equals(IAxis.UNUSED))){
-           this.removeStyleName(VALID_DROP_TARGET);
-       }
-       else if(engaged && (!Pat.getMeasuresAxis().equals(axis) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
-           this.addStyleName(INVALID_DROP_TARGET);
-       }
-       else if(!engaged && (!Pat.getMeasuresAxis().equals(axis) && !Pat.getMeasuresAxis().equals(IAxis.UNUSED) && !axis.equals(IAxis.UNUSED))){
-           this.removeStyleName(INVALID_DROP_TARGET);
-       }
-        
     }
 
 	public void setCoord(int[] coord) {
