@@ -129,7 +129,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(String[] arg0) {
 										for (int i = 0; i < arg0.length; i++) {
-											ArrayList<String> path = new ArrayList();
+											ArrayList<String> path = new ArrayList<String>();
 											path.add(parentItem.getParentItem().getParentItem()
 											.getText());
 											path.add(parentItem.getParentItem().getText());
@@ -192,7 +192,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 					public void onSuccess(String[] arg0) {
 
 						for (int i = 0; i < arg0.length; i++) {
-							ArrayList path = new ArrayList();
+							ArrayList<String> path = new ArrayList<String>();
 							path.add(arg0[i]);
 							MeasureLabel label = new MeasureLabel(path ,arg0[i], arg0[i],
 									MeasureLabel.LabelType.DIMENSION);
