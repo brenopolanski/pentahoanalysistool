@@ -17,10 +17,11 @@ import com.google.gwt.user.client.ui.Widget;
 public class QueryDesignTable extends LayoutComposite implements ISelectionListener{
 	
 	FlexTable flex = new FlexTable();
+	private Object queryID;
 	
-	public QueryDesignTable(){
+	public QueryDesignTable(String queryID){
 		ScrollLayoutPanel slp = new ScrollLayoutPanel();
-		
+		this.queryID = queryID;
 		slp.add(flex);
 		//this.flex.setSize("100%", "100%");
 		this.flex.setBorderWidth(10);
@@ -39,8 +40,20 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(QueryDesignTable.this);   
     }
 
+    public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis){
+    	int row = 0;
+    	if(axis.equals(IAxis.ROWS)){
+    	while(flex.isCellPresent(row, coords[1])==true){
+    	
+    		
+    		flex.removeCell(row, coords[1]);
+    	row++;
+    	}
+    	}
+    }
 	public void alterSelectionDisplay(MeasureLabel targetLabel, StringTree labels){
-    	if(targetLabel.getAxis().equals(IAxis.ROWS)){
+		
+		if(targetLabel.getAxis().equals(IAxis.ROWS)){
         	
         	DimensionSimplePanel dimPanel = ((DimensionSimplePanel)targetLabel.getParent());
         
@@ -94,36 +107,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
     
 
 
-	private void addNewChild(StringTree tree, FlexTable ft, int[] parentcoords, IAxis axis){
-    	if(axis.equals(IAxis.ROWS)){
-    	final List<StringTree> child = tree.getChildren();
-        for (int i = 0; i < child.size(); i++) {
-            // Need a copy of the memberLabel because of GWT's lack of clone support
-            final Label memberLabel = new Label(child.get(i).getCaption());
-           
-            ft.insertRow(parentcoords[0]+1);
-        	
-        	ft.setWidget(parentcoords[0]+1, parentcoords[1], memberLabel);
-            
-           addNewChild(child.get(i), ft, parentcoords, IAxis.ROWS);
-        }
-    	}
-    	else if(axis.equals(IAxis.COLUMNS)){
-    		final List<StringTree> child = tree.getChildren();
-            for (int i = 0; i < child.size(); i++) {
-                // Need a copy of the memberLabel because of GWT's lack of clone support
-                final Label memberLabel = new Label(child.get(i).getCaption());
-               
-                
-            	
-            	ft.setWidget(parentcoords[0], parentcoords[1]+i, memberLabel);
-                
-               addNewChild(child.get(i), ft, parentcoords, IAxis.COLUMNS);
-            }	
-    	}
-
-    }
-
+	
     private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords){
     	while(flexTable.isCellPresent(coords[0]+1, coords[1])==true 
     			&& flexTable.getWidget(coords[0]+1, coords[1]) instanceof Label){
@@ -144,9 +128,17 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
 		return this.flex.getWidget(i, j);
 	}
 
-	public void onSelectionChange(Widget sender, StringTree tree, String type) {
+	public void onSelectionChange(String queryID, Widget sender, StringTree tree, String type) {
+		if(this.queryID.equals(queryID)){
 		MeasureLabel ml = (MeasureLabel) sender;
 		alterSelectionDisplay(ml, tree);
+		}
+	}
+
+	public void onSelectionCleared(String currQuery, MeasureLabel label,
+			int[] is, IAxis axis) {
+		alterSelectionDisplay(label, is, axis);
+		
 	}
 
 }

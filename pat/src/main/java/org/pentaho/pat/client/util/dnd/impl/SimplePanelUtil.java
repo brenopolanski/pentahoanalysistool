@@ -29,18 +29,36 @@ public class SimplePanelUtil {
 			}
 
 			public void onSuccess(Object arg0) {
-				List dimension = new ArrayList();
+				final List<String> dimension = new ArrayList<String>();
 				dimension.add(label.getText());
 				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), dimension, "dimension",
-			            "MEMBER", new AsyncCallback<StringTree>(){
+			            "MEMBER", new AsyncCallback<List<String>>(){
 
 							public void onFailure(Throwable arg0) {
 								// TODO Auto-generated method stub
 								
 							}
 
-							public void onSuccess(StringTree arg0) {
-								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+							public void onSuccess(List<String> arg0) {
+								label.setCurrentSelection(arg0);
+								label.setSelectionType("MEMBER");
+								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), 
+										label.getText(), dimension, "dimension", "MEMBER", new AsyncCallback<StringTree>(){
+
+											public void onFailure(Throwable arg0) {
+												// TODO Auto-generated method stub
+												
+											}
+
+											public void onSuccess(StringTree arg0) {
+												
+												GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(Pat.getCurrQuery(), label, 
+														arg0, "MEMBER");
+												
+												
+											}
+									
+								});
 								
 							}
 					
@@ -49,7 +67,7 @@ public class SimplePanelUtil {
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 				
-				label.makeNotDraggable();
+				//label.makeNotDraggable();
 			}
         	
         });
@@ -74,15 +92,32 @@ public class SimplePanelUtil {
 			public void onSuccess(Object arg0) {
 				
 				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0), label.getValue(), "hierarchy",
-			            "MEMBER", new AsyncCallback<StringTree>(){
+			            "MEMBER", new AsyncCallback<List<String>>(){
 
 							public void onFailure(Throwable arg0) {
 								// TODO Auto-generated method stub
 								
 							}
 
-							public void onSuccess(StringTree arg0) {
-								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+							public void onSuccess(List<String> arg0) {
+								label.setCurrentSelection(arg0);
+								label.setSelectionType("MEMBER");
+								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0), label.getValue(), "hierarchy",
+							            "MEMBER", new AsyncCallback<StringTree>(){
+
+											public void onFailure(Throwable arg0) {
+												// TODO Auto-generated method stub
+												
+											}
+
+											public void onSuccess(
+													StringTree arg0) {
+												GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
+												
+											}
+									
+								});
+								
 								
 							}
 					
@@ -91,7 +126,7 @@ public class SimplePanelUtil {
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 				
-				label.makeNotDraggable();
+				//label.makeNotDraggable();
 			}
         	
         });
@@ -112,15 +147,32 @@ public class SimplePanelUtil {
 
 			public void onSuccess(Object arg0) {
 				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "level",
-			            "MEMBER", new AsyncCallback<StringTree>(){
+			            "MEMBER", new AsyncCallback<List<String>>(){
 
 							public void onFailure(Throwable arg0) {
 								// TODO Auto-generated method stub
 								
 							}
 
-							public void onSuccess(StringTree arg0) {
-								GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(label, arg0, "MEMBER");
+							public void onSuccess(List<String> arg0) {
+								label.setCurrentSelection(arg0);
+								label.setSelectionType("MEMBER");
+								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "level",
+							            "MEMBER", new AsyncCallback<StringTree>(){
+
+											public void onFailure(Throwable arg0) {
+												// TODO Auto-generated method stub
+												
+											}
+
+											public void onSuccess(
+													StringTree arg0) {
+												GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
+												
+											}
+									
+								});
+								
 								
 							}
 					
@@ -129,7 +181,7 @@ public class SimplePanelUtil {
 				
 				label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 				
-				label.makeNotDraggable();
+				//label.makeNotDraggable();
 			}
         	
         });
@@ -168,6 +220,40 @@ public class SimplePanelUtil {
 			.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS, new int[]{coordinate[0]+1, coordinate[1]}));
 			
 			}
+		
+	}
+
+
+	public static void clearDimension(DragContext context, Widget draggable, final int[] is, final IAxis iAxis) {
+		final MeasureLabel label = ((MeasureLabel)draggable);
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED, 
+				label.getValue().get(0), new AsyncCallback(){
+
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void onSuccess(Object arg0) {
+						ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0),
+								label.getCurrentSelection(), new AsyncCallback(){
+
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onSuccess(Object arg0) {
+										StringTree tree = null;
+										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
+												label, is, iAxis);
+									}
+							
+						});	
+						
+					}
+			
+		});
 		
 	}
 

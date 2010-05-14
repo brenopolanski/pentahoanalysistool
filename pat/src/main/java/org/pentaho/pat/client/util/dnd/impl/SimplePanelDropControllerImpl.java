@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.client.util.dnd.impl;
 
+import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.util.dnd.SimplePanelDropController;
 
@@ -37,39 +38,55 @@ import com.google.gwt.user.client.ui.SimplePanel;
 public class SimplePanelDropControllerImpl extends SimpleDropController implements SimplePanelDropController {
 
 	 private final SimplePanel dropTarget;
+	private boolean trash;
 
 	 
-	  public SimplePanelDropControllerImpl(SimplePanel dropTarget) {
+	  public SimplePanelDropControllerImpl(SimplePanel dropTarget, boolean trash) {
 	    super(dropTarget);
 	    this.dropTarget = dropTarget;
+	    this.trash = trash;
 	  }
 
 	  @Override
 	  public void onDrop(final DragContext context) {
-		MeasureLabel label = new MeasureLabel(((MeasureLabel)context.draggable).getValue(), 
-				((MeasureLabel)context.draggable).getActualName(), ((MeasureLabel)context.draggable).getText(), ((MeasureLabel)context.draggable).getType());
-		label.setDragController(((MeasureLabel)context.draggable).getDragController());
-		label.makeDraggable();
-		label.enableSinkEvents();
+		  MeasureLabel originalLabel =((MeasureLabel)context.draggable);
+		  
+	    
+	    if(trash){
+	    	DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
+	    	context.draggable.removeFromParent();
+	    	if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.DIMENSION){
+	    		SimplePanelUtil.clearDimension(context, context.draggable, panel.getCoord(), panel.getAxis());
+	    	}
+	    }
+	    else{
+	    	MeasureLabel label = new MeasureLabel(originalLabel.getValue(), 
+	    			originalLabel.getActualName(), originalLabel.getText(), originalLabel.getType());
+			label.setDragController(originalLabel.getDragController());
+			label.makeDraggable();
+			label.enableSinkEvents();
 	    dropTarget.setWidget(label);
-	    FastTree ft = ((FastTree)((MeasureLabel)context.draggable).getParent());
+	    FastTree ft = ((FastTree)originalLabel.getParent());
 		FastTreeItem fti = ft.getSelectedItem();
 	    for(int i = 0; i<fti.getChildCount();i++){
 	    	
 	    	((MeasureLabel)fti.getChild(i).getWidget()).makeNotDraggable();
 	    }
 	    
-	    ((MeasureLabel)context.draggable).makeNotDraggable();
-	    if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.DIMENSION){
+	    originalLabel.makeNotDraggable();
+	    
+	    if (originalLabel.getType() == MeasureLabel.LabelType.DIMENSION){
 	    SimplePanelUtil.moveDimension(context, label, context.draggable);
 	    }
-	    else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.HIERARCHY){
+	    else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
 	    	SimplePanelUtil.moveHierarchy(context, label);	
 	    }
-	    else if (((MeasureLabel)context.draggable).getType() == MeasureLabel.LabelType.LEVEL){
+	    else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL){
 	    	SimplePanelUtil.moveLevel(context, label);	
 	    }
-	    super.onDrop(context);
+
+	    }
+	    super.onDrop(context);	    
 	  }
 
 	  @Override

@@ -37,6 +37,7 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
+import org.pentaho.pat.client.ui.widgets.QueryTrashWidget;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -83,7 +84,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         super();
         this.queryId = query;
         this.dPaneltype = pType;
-        QueryDesignTable dropTable = new QueryDesignTable();
+        QueryDesignTable dropTable = new QueryDesignTable(this.queryId);
         
         olapTable = new OlapTable();
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
@@ -100,7 +101,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS, new int[]{1,0}));
         dropTable.setSize("100%", "100%");
         
+       QueryTrashWidget trashPanel = new QueryTrashWidget();
+        
         mainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
+        mainLayoutPanel.add(trashPanel, new BoxLayoutData(FillStyle.BOTH));
         baseLayoutPanel.add(mainLayoutPanel);
         }
 

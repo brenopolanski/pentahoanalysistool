@@ -138,7 +138,11 @@ public interface QueryService extends Service {
 
 
     @Secured( {"Users"})
-    StringTree createSelection(String userId, String sessionId, String queryId, String dimensionName,
+    List<String> createSelection(String userId, String sessionId, String queryId, String dimensionName,
+            List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
+
+    @Secured( {"Users"})
+    StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName,
             List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
 
     /**

@@ -378,7 +378,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang .String, java.lang.String,
      * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
-    public StringTree createSelection(final String userId, final String sessionId, final String queryId,
+    public List<String> createSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
@@ -387,27 +387,67 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Cube cube = query.getCube();
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, memberNames.get(0));
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-        String hierarchyName = null;
-        String levelName = null;
         if(type.equals("dimension")){
         	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
+        	  List<String> memberNameList = new ArrayList();
+        	  String name = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember().getUniqueName();
+              name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+              .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+        	  memberNameList.add(name);
+        	  return memberNameList;
         }
         else if(type.equals("hierarchy")){
-        	hierarchyName = memberNames.get(1);
         	qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
+        	List<String> memberNameList = new ArrayList(); 
+        	String name = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember().getUniqueName();
+        	name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+      	  memberNameList.add(name);
+
+
+        	return memberNameList;
+        }
+        else if(type.equals("level")){
+        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-2))
+    		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
+        	List<String> memberNameList = new ArrayList(); 
+        	for (Member member:members){
+            qDim.include(selectionMode, member);
+            String name = member.getUniqueName();
+            name = name.replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+            memberNameList.add(name);
+        	}
+        	return memberNameList;
+        }
+        return null;
+        //return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
+        
+    }
+
+    public StringTree getSpecificMembers(final String userId, final String sessionId, final String queryId,
+            final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType) throws OlapException{
+    	this.sessionService.validateSession(userId, sessionId);
+    	
+    	String hierarchyName = null;
+        String levelName = null;
+        final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+        if(type.equals("hierarchy")){
+        	hierarchyName = memberNames.get(1);
         }
         else if(type.equals("level")){
         	hierarchyName = memberNames.get(1);
         	levelName = memberNames.get(2);
-        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-2))
-    		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
-        	for (Member member:members){
-            qDim.include(selectionMode, member);
-        	}
+        	
+        
         }
-        return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
+        
+        
+    	return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
     }
-
     
     /*
      * (non-Javadoc)

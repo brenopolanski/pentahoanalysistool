@@ -47,8 +47,11 @@ public interface IQueryAsync {
             String selectionType, AsyncCallback<StringTree> callback);
 
     void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
-            String selectionType, AsyncCallback<StringTree> asyncCallback);
+            String selectionType, AsyncCallback<List<String>> asyncCallback);
 
+    void getSpecificMembers(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
+            String selectionType, AsyncCallback<StringTree> asyncCallback);
+    
     void createSelection(String sessionId, String queryId, String dimensionName,
             String selectionType, AsyncCallback<Object> callback);
     
