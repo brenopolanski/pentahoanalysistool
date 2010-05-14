@@ -13,6 +13,7 @@
 package org.pentaho.pat.client.util.factory;
 
 import org.pentaho.pat.client.listeners.QueryChangeListeners;
+import org.pentaho.pat.client.listeners.SelectionChangeListeners;
 import org.pentaho.pat.client.listeners.TableListener;
 
 import com.google.gwt.core.client.GWT;
@@ -41,6 +42,15 @@ public class GlobalConnectionFactory {
             tl = (TableListener) GWT.create(TableListener.class);
         }
         return tl;
+    }
+
+    protected static SelectionChangeListeners sl;
+
+    public static SelectionChangeListeners getSelectionInstance() {
+        if (sl == null) {
+            sl = (SelectionChangeListeners) GWT.create(SelectionChangeListeners.class);
+        }
+        return sl;
     }
 
 }
