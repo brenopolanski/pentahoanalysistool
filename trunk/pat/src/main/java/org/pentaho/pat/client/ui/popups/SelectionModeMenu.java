@@ -121,7 +121,7 @@ public class SelectionModeMenu extends PopupMenu {
 
             final String selection = setSelectionMode(selectionMode);
             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                    dimSelections, selection, new AsyncCallback<Object>() {
+                    dimSelections, selection, new AsyncCallback<StringTree>() {
 
                         public void onFailure(final Throwable arg0) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -129,7 +129,7 @@ public class SelectionModeMenu extends PopupMenu {
 
                         }
 
-                        public void onSuccess(final Object arg0) {
+                        public void onSuccess(final StringTree arg0) {
                             targetLabel.setSelectionMode(selectionMode);
                             if(dimensionSimplePanel == null){
                             DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);

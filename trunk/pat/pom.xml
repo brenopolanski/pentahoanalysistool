@@ -302,24 +302,8 @@
         </profiles>
         <repositories>
                 <repository>
-                        <id>gwt-maven</id>
-                        <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-                </repository>
-                <repository>
-                        <id>central</id>
-                        <url>http://www.ibiblio.org/maven2</url>
-                </repository>
-                <repository>
-                        <id>pentaho-repo</id>
-                        <url>http://repo.pentaho.org/artifactory/pentaho/</url>
-                </repository>
-                <repository>
-                        <id>pentaho-third-party</id>
-                        <url>http://repo.pentaho.org/artifactory/third-party/</url>
-                </repository>
-                <repository>
                         <id>MagicBeans-releases</id>
-                        <url>http://repo.logical-analytics.co.uk/artifactory/libs-releases-local/</url>
+                        <url>http://212.227.135.127/artifactory/libs-releases/</url>
                 </repository>
         </repositories>
         <pluginRepositories>

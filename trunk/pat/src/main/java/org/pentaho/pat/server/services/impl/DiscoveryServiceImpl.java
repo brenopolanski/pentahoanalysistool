@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
@@ -44,11 +45,13 @@ import org.olap4j.metadata.Property;
 import org.olap4j.metadata.Property.StandardMemberProperty;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberItem;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
@@ -184,6 +187,91 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 		return dimNames;
 	}
 
+	public StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName,
+			Selection.Operator selectionType) throws OlapException{
+
+		this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+		
+        
+        StringTree st = null;
+        if(selectionType==(Selection.Operator.MEMBER)){
+        	if(hierarchyName == null){
+        		Member members = query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember();
+        		st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
+        	}
+        	else if(levelName == null){
+        		Member members  = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember();
+        		st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
+        	}
+        	else{
+        		Member members = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers().get(0);
+        		st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
+        	}
+        }
+        else if(selectionType.equals(Selection.Operator.CHILDREN)){
+        	if(hierarchyName == null){
+        		Member parentMember = query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember();
+        		NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
+        		for (Member mem : members){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        	else if(levelName == null){
+        		Member parentMember = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember();
+        		NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
+        		for (Member mem : members){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        	else{
+        		List<Member> parentMember = query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers();
+        		//NamedList<? extends Member> members = parentMember.getChildMembers();
+        		st = new StringTree("", "", null);
+        		for (Member mem : parentMember){
+        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        		}
+        	}
+        }
+        else if(selectionType.equals(Selection.Operator.DESCENDANTS)){
+        	if(hierarchyName == null){
+        		query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember().getName();
+        	}
+        	else if(levelName == null){
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember().getName();
+        	}
+        	else{
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName);
+        	}	
+        }
+        else if(selectionType.equals(Selection.Operator.SIBLINGS)){
+        	if(hierarchyName == null){
+        		query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember().getName();
+        	}
+        	else if(levelName == null){
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember().getName();
+        	}
+        	else{
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName);
+        	}	
+        }
+        else if(selectionType.equals(Selection.Operator.ANCESTORS)){
+        	if(hierarchyName == null){
+        		query.getDimension(dimensionName).getDimension().getDefaultHierarchy().getDefaultMember().getName();
+        	}
+        	else if(levelName == null){
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getDefaultMember().getName();
+        	}
+        	else{
+        		query.getDimension(dimensionName).getDimension().getHierarchies().get(hierarchyName).getLevels().get(levelName);
+        	}	
+        }
+		return st;
+	}
+	
     public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);

@@ -43,8 +43,6 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
-import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
@@ -56,6 +54,7 @@ import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.olap4j.query.Selection.Operator;
 import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
@@ -376,29 +375,31 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#createSelection(java.lang .String, java.lang.String,
      * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
-    public void createSelection(final String userId, final String sessionId, final String queryId,
+    public StringTree createSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
-
-        if(type.equals("hierarchy")){
-        	  final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-              final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-              qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
+        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+        final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+        String hierarchyName = null;
+        String levelName = null;
+        if(type.equals("dimension")){
+        	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
+        }
+        else if(type.equals("hierarchy")){
+        	hierarchyName = memberNames.get(1);
+        	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
         }
         else if(type.equals("level")){
-        	final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-            final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-            Dimension dim = cube.getDimensions().get(dimensionName);
-            Hierarchy hier = dim.getHierarchies().get(memberNames.get(memberNames.size()-2));
-            Level level = hier.getLevels().get(memberNames.get(memberNames.size()-1));
-            List<Member> memb = level.getMembers();
+        	hierarchyName = memberNames.get(1);
+        	levelName = memberNames.get(2);
             qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(memberNames.get(memberNames.size()-2))
             		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers().get(0));
         }
+        return discoveryService.getSpecificMembers(userId, sessionId, queryId, dimensionName, hierarchyName, levelName, selectionMode);
     }
 
     

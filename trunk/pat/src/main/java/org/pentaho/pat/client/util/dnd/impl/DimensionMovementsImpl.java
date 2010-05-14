@@ -34,6 +34,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -120,7 +121,7 @@ public class DimensionMovementsImpl {
                         memberList.add(((MeasureLabel) w).getText().trim());
                         ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
                                 "Measures", memberList, "MEMBER", //$NON-NLS-1$ //$NON-NLS-2$
-                                new AsyncCallback<Object>() {
+                                new AsyncCallback<StringTree>() {
 
                                     public void onFailure(final Throwable arg0) {
                                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
@@ -129,7 +130,7 @@ public class DimensionMovementsImpl {
 
                                     }
 
-                                    public void onSuccess(final Object arg0) {
+                                    public void onSuccess(final StringTree arg0) {
 
                                         GlobalConnectionFactory.getQueryInstance().getQueryListeners()
                                                 .fireQueryChanged(w, sourceRow, isSourceRow, sourceTable.getAxis(),
@@ -236,7 +237,7 @@ public class DimensionMovementsImpl {
             final DimensionFlexTable sourceTable, final int sourceRow, final boolean isSourceRow,
             final DimensionFlexTable targetTable, final Widget w) {
         ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
+                "Measures", memberList, "MEMBER", new AsyncCallback<StringTree>() { //$NON-NLS-1$//$NON-NLS-2$
 
                     public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -244,7 +245,7 @@ public class DimensionMovementsImpl {
                         LogoPanel.spinWheel(false);
                     }
 
-                    public void onSuccess(final Object arg0) {
+                    public void onSuccess(final StringTree arg0) {
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryChanged(w, sourceRow,
                                 isSourceRow, sourceTable.getAxis(), targetTable.getAxis());
                         LogoPanel.spinWheel(false);
@@ -290,7 +291,7 @@ public class DimensionMovementsImpl {
                                     memberNames.add(measureLab.getText().trim());
                                     ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
                                             Pat.getCurrQuery(),
-                                            "Measures", memberNames, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
+                                            "Measures", memberNames, "MEMBER", new AsyncCallback<StringTree>() { //$NON-NLS-1$//$NON-NLS-2$
 
                                                 public void onFailure(final Throwable arg0) {
                                                     MessageBox.error(ConstantFactory.getInstance().error(),
@@ -300,7 +301,7 @@ public class DimensionMovementsImpl {
 
                                                 }
 
-                                                public void onSuccess(final Object arg0) {
+                                                public void onSuccess(final StringTree arg0) {
 
                                                 }
 
@@ -351,7 +352,7 @@ public class DimensionMovementsImpl {
                 memberList.clear();
                 memberList.add(((MeasureLabel) ((MeasureGrid) w).getMeasureLabels().get(i)).getText().trim());
                 ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                        "Measures", memberList, "MEMBER", new AsyncCallback<Object>() { //$NON-NLS-1$//$NON-NLS-2$
+                        "Measures", memberList, "MEMBER", new AsyncCallback<StringTree>() { //$NON-NLS-1$//$NON-NLS-2$
 
                             public void onFailure(final Throwable arg0) {
                                 MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -359,7 +360,7 @@ public class DimensionMovementsImpl {
                                 LogoPanel.spinWheel(false);
                             }
 
-                            public void onSuccess(final Object arg0) {
+                            public void onSuccess(final StringTree arg0) {
                             }
                         });
             }
