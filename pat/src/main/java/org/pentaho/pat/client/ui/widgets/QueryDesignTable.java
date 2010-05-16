@@ -2,7 +2,6 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
-import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.pentaho.pat.client.listeners.ISelectionListener;
@@ -24,9 +23,7 @@ public class QueryDesignTable extends LayoutComposite implements
 		ScrollLayoutPanel slp = new ScrollLayoutPanel();
 		this.queryID = queryID;
 		slp.add(flex);
-		// this.flex.setSize("100%", "100%");
-		this.flex.setBorderWidth(10);
-		DOM.setStyleAttribute(flex.getElement(), "background", "red");
+		flex.setStylePrimaryName("pat-QueryDesignTable");
 		this.setSize("100%", "100%");
 		this.getLayoutPanel().add(slp);
 	}
@@ -103,7 +100,6 @@ public class QueryDesignTable extends LayoutComposite implements
 
 			int[] parentcoords = dimPanel.getCoord();
 			final List<StringTree> child = labels.getChildren();
-			//removeRowsFromFlexTable(flex, parentcoords);
 			removeColsFromFlexTable(flex, parentcoords);
 			flex.insertRow(parentcoords[0] + 1);
 

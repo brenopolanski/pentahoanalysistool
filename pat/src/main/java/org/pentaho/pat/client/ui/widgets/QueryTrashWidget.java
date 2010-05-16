@@ -1,6 +1,5 @@
 package org.pentaho.pat.client.ui.widgets;
 
-import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
@@ -17,12 +16,11 @@ public class QueryTrashWidget extends LayoutComposite{
     
 	public QueryTrashWidget(){
 		 SimplePanel trashPanel = new SimplePanel();
-		 DOM.setStyleAttribute(trashPanel.getElement(), "background", "red");
-		 DOM.setStyleAttribute(this.getElement(), "background", "red");
 		 trashPanel.setSize("100", "100");
 		 this.getLayoutPanel().setSize("100", "100");
 	     //trashPanel.setWidget(Pat.IMAGES.stock_delete().createImage());
 	     fTblRowDropCont = new SimplePanelDropControllerImpl(trashPanel, true);
+	     trashPanel.setStylePrimaryName("pat-QueryTrashWidget");
 	     this.getLayoutPanel().add(trashPanel);
 	}
 	
