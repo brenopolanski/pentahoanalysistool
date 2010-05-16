@@ -22,14 +22,8 @@ public class SimplePanelUtil {
 	private static void addNewDropTargets(DragContext context){
 		int[] coordinate = ((DimensionSimplePanel)context.finalDropController.getDropTarget()).getCoord();
         FlexTable ft = ((FlexTable)((DimensionSimplePanel)context.finalDropController.getDropTarget()).getParent());
-    	int numberofcols = ft.getCellCount(0);
 		if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.ROWS){
 			for(int i = 0; i<ft.getRowCount(); i++){
-				for(int j = 1; j<numberofcols+1; j++){
-				if(ft.isCellPresent(i, coordinate[1]+j) && ft.getWidget(i, coordinate[1]+j) instanceof DimensionSimplePanel){
-					((DimensionSimplePanel)ft.getWidget(i, coordinate[1]+j)).setCoord(new int[] {i, coordinate[1]+(j+1)});
-				}
-				}
 			ft.insertCell(i, coordinate[1]+1);
 			}
 			ft
@@ -37,13 +31,7 @@ public class SimplePanelUtil {
 			}
 		
 		else if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.COLUMNS){
-			for(int i=0; i<numberofcols+1; i++){
-				for(int j =coordinate[0]+1; j<ft.getRowCount(); j++){
-					if(ft.isCellPresent(coordinate[0]+j, i) && ft.getWidget(coordinate[0]+j, i) instanceof DimensionSimplePanel){
-						((DimensionSimplePanel)ft.getWidget(coordinate[0]+j, i)).setCoord(new int[] {coordinate[0]+(j+1), i});
-					}	
-				}
-			}
+			
 			ft.insertRow(coordinate[0]+1);
 			ft
 			.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS, new int[]{coordinate[0]+1, coordinate[1]}));
@@ -73,7 +61,6 @@ public class SimplePanelUtil {
 										}
 
 										public void onSuccess(Object arg0) {
-											StringTree tree = null;
 											GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
 													label, is, iAxis);
 										}
@@ -108,7 +95,6 @@ public class SimplePanelUtil {
 									}
 
 									public void onSuccess(Object arg0) {
-										StringTree tree = null;
 										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
 												label, coord, axis);
 									}
@@ -142,7 +128,6 @@ public class SimplePanelUtil {
 									}
 
 									public void onSuccess(Object arg0) {
-										StringTree tree = null;
 										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
 												label, coord, axis);
 									}
@@ -162,7 +147,7 @@ public class SimplePanelUtil {
         		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getText(), new AsyncCallback<Object>(){
 
 			public void onFailure(Throwable arg0) {
-				MessageBox.error("Error", "move to axis failed");
+				// TODO Auto-generated method stub
 				
 			}
 
@@ -203,10 +188,6 @@ public class SimplePanelUtil {
 					
 				});
 				
-				
-				
-				
-				//label.makeNotDraggable();
 			}
         	
         });
@@ -262,11 +243,6 @@ public class SimplePanelUtil {
 						}
 				
 			});
-			
-			
-			
-			
-			//label.makeNotDraggable();
 		}
 		
 	});
@@ -319,11 +295,6 @@ public class SimplePanelUtil {
 							}
 					
 				});
-				
-				
-				
-				
-				//label.makeNotDraggable();
 			}
         	
         });
@@ -345,7 +316,7 @@ public class SimplePanelUtil {
 
 					public void onSuccess(Object arg0) {
 						if(label.getText().equals("Measures")){
-							final List list = new ArrayList();
+							final List<String> list = new ArrayList<String>();
 							list.add("Measures");
 							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), "Measures", list, "measure",
 						            "MEMBER", new AsyncCallback<List<String>>(){
@@ -381,7 +352,7 @@ public class SimplePanelUtil {
 							});
 						}
 						else{
-							List list = new ArrayList();
+							List<String> list = new ArrayList<String>();
 							list.add(label.getValue().get(0));
 							list.add(label.getActualName());
 							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), 

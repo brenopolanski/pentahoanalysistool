@@ -68,9 +68,12 @@ public class QueryDesignTable extends LayoutComposite implements
 			if (!flex.isCellPresent(parentcoords[0] + 1, 0)) {
 				flex.insertRow(parentcoords[0] + 1);
 			}
+			
+			if(!(labels.getCaption()==null)){
 			final Label parentLabel = new Label(labels.getCaption());
-
+			
 			flex.setWidget(parentcoords[0] + 1, parentcoords[1], parentLabel);
+			
 			for (int i = 2; i < 6; i++) {
 				if (i < child.size()) {
 					final Label memberLabel = new Label(child.get(i)
@@ -85,6 +88,24 @@ public class QueryDesignTable extends LayoutComposite implements
 				// addNewChild(child.get(i), this, parentcoords, IAxis.ROWS);
 
 			}
+			}
+			else{
+				for (int i = 1; i < 5; i++) {
+					if (i < child.size()) {
+						final Label memberLabel = new Label(child.get(i)
+								.getCaption());
+						if (!flex.isCellPresent(parentcoords[1] + i, 0)) {
+							flex.insertRow(parentcoords[0] + i);
+						}
+
+						flex.setWidget(parentcoords[0] + i, parentcoords[1],
+								memberLabel);
+					}
+					// addNewChild(child.get(i), this, parentcoords, IAxis.ROWS);
+
+				}
+				
+			}
 
 		} else if (targetLabel.getAxis().equals(IAxis.COLUMNS)) {
 
@@ -95,9 +116,13 @@ public class QueryDesignTable extends LayoutComposite implements
 			final List<StringTree> child = labels.getChildren();
 			removeRowsFromFlexTable(flex, parentcoords);
 			flex.insertRow(parentcoords[0] + 1);
+			
+			if(!(labels.getCaption()==null)){
 			final Label parentLabel = new Label(labels.getCaption());
-
+			
+			
 			flex.setWidget(parentcoords[0], parentcoords[1] + 1, parentLabel);
+			
 			for (int i = 2; i < 6; i++) {
 				if (i < child.size()) {
 					final Label memberLabel = new Label(child.get(i)
@@ -106,8 +131,19 @@ public class QueryDesignTable extends LayoutComposite implements
 					flex.setWidget(parentcoords[0], parentcoords[1] + i,
 							memberLabel);
 				}
-				// addNewChild(child.get(i), flexTable, parentcoords,
-				// IAxis.COLUMNS);
+				
+			}
+			}else{
+				for (int i = 1; i < 5; i++) {
+					if (i < child.size()) {
+						final Label memberLabel = new Label(child.get(i)
+								.getCaption());
+
+						flex.setWidget(parentcoords[0], parentcoords[1] + i,
+								memberLabel);
+					}
+					
+				}
 
 			}
 		}
