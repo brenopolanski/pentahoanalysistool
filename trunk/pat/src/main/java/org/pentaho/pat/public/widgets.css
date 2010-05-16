@@ -16,7 +16,22 @@ height: 100%;
 .pat-MemberCellLabel{
 	width: 100%;
 	}
+	
+.pat-QueryDesignTable{
+	border-style: solid;
+	border-width: 2px;
+	border-color: #8db2e3;
+	/*background: #e8eef7;*/
+	background: white;
+	}
 
+.pat-DimensionSimplePanel{
+	background: #dfe8f6
+	}
+	
+.pat-QueryTrashWidget{
+	background: #93c2f1 url(images/stock_delete.png) no-repeat center center;
+	}
 .pat-Tree .pat-TreeItem-wrapper {
   margin: 0px 0px 0px 20px;  // Indentation
 }
