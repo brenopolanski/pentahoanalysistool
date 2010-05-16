@@ -140,7 +140,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             final String finalType = type;
             final List<String> finalHierarchySelections = hierarchySelections;
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-            		targetLabel.getCurrentSelection(), new AsyncCallback(){
+            		targetLabel.getCurrentSelection(), new AsyncCallback<Object>(){
 
 						public void onFailure(Throwable arg0) {
 							// TODO Auto-generated method stub

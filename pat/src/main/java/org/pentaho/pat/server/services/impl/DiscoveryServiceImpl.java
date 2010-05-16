@@ -457,8 +457,6 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 		this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.queryService.getQuery(currentUserId, sessionID, currQuery);
-
-        Axis targetAxis = null;
         
         List<Measure> measureList = query.getCube().getMeasures();
         List<MemberLabelItem> measureNames = new ArrayList<MemberLabelItem>();

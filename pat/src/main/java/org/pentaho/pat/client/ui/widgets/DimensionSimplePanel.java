@@ -46,8 +46,6 @@ public class DimensionSimplePanel extends SimplePanel {
 
 	private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
 
-	private int[] coord;
-
 	SimplePanelDropControllerImpl fTblRowDropCont;
 
 	/**
@@ -61,7 +59,6 @@ public class DimensionSimplePanel extends SimplePanel {
 		fTblRowDropCont = new SimplePanelDropControllerImpl(
 				DimensionSimplePanel.this, false);
 		this.setAxis(axis);
-		this.setCoord(coord);
 	}
 
 	/**
@@ -115,15 +112,9 @@ public class DimensionSimplePanel extends SimplePanel {
 	public IAxis getAxis() {
 		return axis;
 	}
-
-	public void setCoord(int[] coord) {
-		this.coord = coord;
-	}
-
-	public int[] getCoord() {
-
-		return getWidgetRow(this, ((FlexTable) this.getParent()));
 	
+	public int[] getCoord() {
+		return getWidgetRow(this, ((FlexTable) this.getParent()));
 	}
 
 	private int[] getWidgetRow(Widget widget, FlexTable table) {
