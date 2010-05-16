@@ -85,7 +85,6 @@ public class QueryDesignTable extends LayoutComposite implements
 					flex.setWidget(parentcoords[0] + i, parentcoords[1],
 							memberLabel);
 				}
-				// addNewChild(child.get(i), this, parentcoords, IAxis.ROWS);
 
 			}
 			}
@@ -101,7 +100,6 @@ public class QueryDesignTable extends LayoutComposite implements
 						flex.setWidget(parentcoords[0] + i, parentcoords[1],
 								memberLabel);
 					}
-					// addNewChild(child.get(i), this, parentcoords, IAxis.ROWS);
 
 				}
 				
@@ -150,13 +148,30 @@ public class QueryDesignTable extends LayoutComposite implements
 	}
 
 	private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords) {
-		while (flexTable.isCellPresent(coords[0] + 1, coords[1]) == true
-				&& flexTable.getWidget(coords[0] + 1, coords[1]) instanceof Label) {
+		
+		for (int z = 0; z<flexTable.getRowCount(); z++)
+			{
+			if(flexTable.isCellPresent(z, coords[1]) == true		
+				&& flexTable.getWidget(z, coords[1]) instanceof Label) {
+			
+			boolean flag =false;
 
-			flexTable.removeRow(coords[0] + 1);
+			Widget w = flexTable.getWidget(z, coords[1]);
+			if(w!=null){
+			w.removeFromParent();
+			}
+			for(int i = 0; i<100; i++){
+				if(flexTable.isCellPresent(coords[0]+1, i) && flexTable.getWidget(coords[0]+1, i)!=null){
+					flag = true;
+					break;
+				}
+			}
+			if(flag == false){
+				flexTable.removeRow(coords[0]+1);
+			}
 
 		}
-
+			}
 	}
 
 	public void setWidget(int i, int j, Widget w) {
