@@ -40,6 +40,9 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.layout.CellSetFormatter;
+import org.olap4j.layout.RectangularCellSetFormatter;
+import org.olap4j.layout.TraditionalCellSetFormatter;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
@@ -530,10 +533,17 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Query query = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
 
+//        CellSetFormatter formatter = new  TraditionalCellSetFormatter();
+//        formatter.format(cellSet,new PrintWriter(System.out, true)); 
+//        System.out.flush();
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
-
-        if (memberFetched.getChildMemberCount() > 0)
+//        LOG.error("children: " + memberFetched.getChildMemberCount() + " member expanded:" + member.isExpanded() );
+        HierarchizeMode hm = queryDimension.getHierarchizeMode();
+        if (hm == null) {
+            queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
+        }
+        if (memberFetched.getChildMemberCount() > 0) {
             if (!member.isExpanded()) {
                 // If its the left most dimension don't do anything apart from
                 // include.
@@ -542,6 +552,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     switch (drillType) {
                     case POSITION:
                         selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
+
                         queryDimension.getInclusions().remove(selection);
                         queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         break;
@@ -552,7 +563,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         } else {
                             selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
                         }
-                        queryDimension.getInclusions().remove(selection);
+//                        LOG.error("REPLACE 1 - parent member: " + member.getParentMember());
+
+                        //queryDimension.getInclusions().remove(selection);
+                        queryDimension.clearInclusions();
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         break;
                     default:
@@ -574,8 +588,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
                                     .getInclusions());
                         }
-                        queryDimension.getInclusions().remove(currentMemberSelection);
-                    } else {
+                        LOG.error("REPLACE 2 - parent member: " + member.getParentMember() + " selection:" + currentMemberSelection.toString());
+                        queryDimension.clearInclusions();
                         final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
                         while (memberdrill.getRightOf() != null) {
@@ -601,6 +615,35 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             memberdrill = memberdrill.getRightOf();
                         }
 
+                    } 
+                    if (drillType == DrillType.POSITION) {
+                        final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        // Test to see if there are populated cells to its left
+                        while (memberdrill.getRightOf() != null) {
+
+                            // If yes test to make sure its not name isn't null and
+                            // it hasn't just skipped back to its all member level
+                            if (memberdrill.getRightOf().getUniqueName() != null
+                                    && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
+
+                                // Get dimension to the left of the current member.
+                                final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
+                                        .getRightOfDimension());
+
+                                // Get the Olap4J member.
+                                final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
+                                        .getRightOf(), cellSet);
+
+                                selection.addContext(queryDimension2.createSelection(memberFetched2));
+
+                            }
+
+                            // Get next member.
+                            memberdrill = memberdrill.getRightOf();
+                        }
+                        
+
+
                     }
                 }
             } else {
@@ -615,6 +658,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 }
             }
+        }
     }
 
     public String[][] drillThrough(final String userId, final String sessionId, final String queryId, final List<Integer> coordinates) throws OlapException {
@@ -770,6 +814,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
+        mdx.validate();
         final Writer writer = new StringWriter();
         mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
         final CellSet cellSet = mdx.execute();
