@@ -48,10 +48,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 			private void lazyCreateChilds() {
 				try {
-					MeasureLabel parentlabel = (MeasureLabel) parentItem
+					final MeasureLabel parentlabel = (MeasureLabel) parentItem
 							.getWidget();
 					LabelType labelType = parentlabel.getType();
-
+					
 					if (labelType != null && labelType == LabelType.DIMENSION) {
 						ServiceFactory.getDiscoveryInstance().getHierarchies(
 								Pat.getSessionID(), Pat.getCurrQuery(),
@@ -65,13 +65,15 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(List<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
+											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
-													MeasureLabel.LabelType.HIERARCHY);
+													MeasureLabel.LabelType.HIERARCHY,fti);
 											label.setDragController(dragController);
+											if(parentlabel.isDraggable()){
 											label.makeDraggable();
-											FastTreeItem fti = new FastTreeItem(
-													label);
+											}
+											fti.setWidget(label);
 											fti.becomeInteriorNode();
 											parentItem.addItem(fti);
 										}
@@ -82,9 +84,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 					} else if (labelType != null
 							&& labelType == LabelType.HIERARCHY) {
 						//MeasureLabel
-						Widget w =parentItem.getWidget();
-						String name = ((MeasureLabel)w).getActualName();
-						String dimname = ((MeasureLabel)w).getValue().get(0);
+						final MeasureLabel w =(MeasureLabel) parentItem.getWidget();
+						String name = w.getActualName();
+						String dimname = w.getValue().get(0);
 						ServiceFactory.getDiscoveryInstance().getLevels(
 								Pat.getSessionID(), Pat.getCurrQuery(),
 								dimname,
@@ -98,13 +100,15 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
+											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
-													MeasureLabel.LabelType.LEVEL);
+													MeasureLabel.LabelType.LEVEL, fti);
 											label.setDragController(dragController);
+											if(w.isDraggable()){
 											label.makeDraggable();
-											FastTreeItem fti = new FastTreeItem(
-													label);
+											}
+											fti.setWidget(label);
 											fti.becomeInteriorNode();
 											parentItem.addItem(fti);
 										}
@@ -113,11 +117,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								});
 					} else if (labelType != null
 							&& labelType == LabelType.LEVEL) {
-						Widget w =parentItem.getWidget();
-						String name = ((MeasureLabel)w).getActualName();
-						String dimname = ((MeasureLabel)w).getValue().get(0);
-						String hiername = ((MeasureLabel)w).getValue().get(1);
-						String levelName = ((MeasureLabel)w).getValue().get(2);
+						MeasureLabel w =(MeasureLabel) parentItem.getWidget();
+						String dimname = w.getValue().get(0);
+						String hiername = w.getValue().get(1);
+						String levelName = w.getValue().get(2);
 						ServiceFactory.getDiscoveryInstance().getLevelMembers(
 								Pat.getSessionID(),
 								Pat.getCurrQuery(),
@@ -138,12 +141,13 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											.getText());
 											path.add(parentItem.getParentItem().getText());
 											path.add(arg0[i]);
+
+											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(path, "",
 													arg0[i],
-													MeasureLabel.LabelType.MEMBER);
-											
-											FastTreeItem fti = new FastTreeItem(
-													label);
+													MeasureLabel.LabelType.MEMBER, fti);
+											label.setDragController(dragController);
+											fti.setWidget(label);
 											fti.becomeLeaf();
 											parentItem.addItem(fti);
 										}
@@ -165,14 +169,15 @@ public class DimensionTreeWidget extends LayoutComposite implements
 							}
 
 							public void onSuccess(List<MemberLabelItem> arg0) {
-								List list = new ArrayList();
+								List<String> list = new ArrayList<String>();
 								list.add("Measures");
 								for (int i = 0; i< arg0.size(); i++){
-								
-								MeasureLabel label = new MeasureLabel(list, arg0.get(i).getName(), arg0.get(i).getCaption(), MeasureLabel.LabelType.MEASURE);
+								FastTreeItem fti = new FastTreeItem();
+								MeasureLabel label = new MeasureLabel(list, arg0.get(i).getName(), arg0.get(i).getCaption(), 
+										MeasureLabel.LabelType.MEASURE, fti);
 								label.setDragController(dragController);
 								label.makeDraggable();
-								FastTreeItem fti = new FastTreeItem(label);
+								fti.setWidget(label);
 								fti.becomeLeaf();
 								parentItem.addItem(fti);
 								}
@@ -221,16 +226,17 @@ public class DimensionTreeWidget extends LayoutComposite implements
 							ArrayList<String> path = new ArrayList<String>();
 							path.add(arg0[i]);
 							MeasureLabel label;
+							final FastTreeItem item = new FastTreeItem();
 							if(arg0[i].equals("Measures")){
 								label = new MeasureLabel(path ,arg0[i], arg0[i],
-										MeasureLabel.LabelType.MEASURE);
+										MeasureLabel.LabelType.MEASURE, item);
 							}else{
 								label = new MeasureLabel(path ,arg0[i], arg0[i],
-									MeasureLabel.LabelType.DIMENSION);
+									MeasureLabel.LabelType.DIMENSION, item);
 							}
 							label.setDragController(dragController);
 							label.makeDraggable();
-							final FastTreeItem item = new FastTreeItem(label);
+							item.setWidget(label);
 							item.becomeInteriorNode();
 							parent.addItem(item);
 						}

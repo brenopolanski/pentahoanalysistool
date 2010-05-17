@@ -50,11 +50,21 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 	@Override
 	public void onDrop(final DragContext context) {
 		MeasureLabel originalLabel = ((MeasureLabel) context.draggable);
-
 		if (trash) {
 			DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel
 					.getParent();
 			context.draggable.removeFromParent();
+			
+			FastTreeItem fti = originalLabel.getParentNode();
+			((MeasureLabel) fti.getWidget()).makeDraggable();
+			for (int i = 0; i < fti.getChildCount(); i++) {
+				
+				enableDrag(fti.getChild(i));
+				
+			}
+
+			originalLabel.makeDraggable();
+
 			if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.DIMENSION) {
 				SimplePanelUtil.clearDimension(context, context.draggable,
 						panel.getCoord(), panel.getAxis());
@@ -72,16 +82,17 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 		} else {
 			MeasureLabel label = new MeasureLabel(originalLabel.getValue(),
 					originalLabel.getActualName(), originalLabel.getText(),
-					originalLabel.getType());
+					originalLabel.getType(), originalLabel.getParentNode());
 			label.setDragController(originalLabel.getDragController());
 			label.makeDraggable();
 			label.enableSinkEvents();
 			dropTarget.setWidget(label);
-			FastTree ft = ((FastTree) originalLabel.getParent());
-			FastTreeItem fti = ft.getSelectedItem();
+			FastTreeItem fti = originalLabel.getParentNode();
+			((MeasureLabel) fti.getWidget()).makeNotDraggable();
 			for (int i = 0; i < fti.getChildCount(); i++) {
-
-				((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
+				
+				disableDrag(fti.getChild(i));
+				
 			}
 
 			originalLabel.makeNotDraggable();
@@ -112,6 +123,28 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 	public void SetWidgetDropController(SimplePanel dropTarget) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void enableDrag(FastTreeItem fti){
+		((MeasureLabel)fti.getWidget()).makeDraggable();
+		for (int i = 0; i < fti.getChildCount(); i++) {
+
+		((MeasureLabel) fti.getChild(i).getWidget()).makeDraggable();
+		for(int j =0; j<fti.getChild(i).getChildCount(); j++){
+			enableDrag(fti.getChild(j));
+		}
+		}
+	}
+	
+	private void disableDrag(FastTreeItem fti){
+		((MeasureLabel)fti.getWidget()).makeNotDraggable();
+		for (int i = 0; i < fti.getChildCount(); i++) {
+
+		((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
+		for(int j =0; j<fti.getChild(i).getChildCount(); j++){
+			enableDrag(fti.getChild(j));
+		}
+		}
 	}
 
 }
