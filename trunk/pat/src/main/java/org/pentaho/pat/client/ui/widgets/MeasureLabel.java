@@ -10,6 +10,7 @@ import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -43,11 +44,11 @@ public class MeasureLabel extends FocusPanel {
 
 	private boolean draggable;
 
-	private String setSelectionType;
-
 	private List<String> currentSelection;
 
 	private String selectionType;
+
+	private FastTreeItem parentNode;
 
     /**
      * Create a measure label (with no predefined caption).
@@ -63,8 +64,9 @@ public class MeasureLabel extends FocusPanel {
         this.setValue(value);
     }
     
-    public MeasureLabel(final List<String> parents, final String name, final String caption, final LabelType lType) {
+    public MeasureLabel(final List<String> parents, final String name, final String caption, final LabelType lType, FastTreeItem parentNode) {
         super();
+        this.setParentNode(parentNode);
         text.setText(caption);
         this.add(text);
         this.setActualName(name);
@@ -88,7 +90,7 @@ public class MeasureLabel extends FocusPanel {
      * @param type2
      * @param dragController2
      */
-    public MeasureLabel(final List<String> string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
+    /*public MeasureLabel(final List<String> string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
             boolean draggable) {
         this(string, null, caption, lType);
         this.dragController = dragController2;
@@ -96,7 +98,7 @@ public class MeasureLabel extends FocusPanel {
         if (draggable == true) {
             this.makeDraggable();
         }
-    }
+    }*/
 
     public void enableSinkEvents(){
     	this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
@@ -154,6 +156,9 @@ public class MeasureLabel extends FocusPanel {
     	}
     }
 
+    public boolean isDraggable(){
+    	return draggable;
+    }
     /**
      * 
      * Set the drag contoller.
@@ -227,6 +232,14 @@ public class MeasureLabel extends FocusPanel {
 	
 	public String getSelectionType(){
 		return this.selectionType;
+	}
+
+	public void setParentNode(FastTreeItem parentNode) {
+		this.parentNode = parentNode;
+	}
+
+	public FastTreeItem getParentNode() {
+		return parentNode;
 	}
 
 }
