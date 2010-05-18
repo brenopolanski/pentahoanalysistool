@@ -130,12 +130,25 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
                         LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
                         lsfBean.setBeanClassLoader(pluginClassloader);
-                        lsfBean.setConfigLocation(null);
+//                        lsfBean.setConfigLocation(null);
+                        
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
                         lsfBean.setDataSource(dsBean);
-
-                        Object sfBean = factory.getBean("sessionFactory");
-                        sfBean = lsfBean.getObject();
+                        try {
+                            if (lsfBean.getConfiguration() == null)
+                                LOG.error("config is null");
+                            
+                            lsfBean.afterPropertiesSet();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            LOG.error(e.getMessage(),e);
+                            throw new BeansException(e.getMessage(),e){
+                                private static final long serialVersionUID = 1L;
+                            };
+                        }
+//
+//                        Object sfBean = factory.getBean("sessionFactory");
+//                        sfBean = lsfBean.getObject();
                     }
 
                 });
