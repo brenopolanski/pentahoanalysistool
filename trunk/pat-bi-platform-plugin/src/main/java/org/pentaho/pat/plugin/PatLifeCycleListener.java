@@ -123,6 +123,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         dsBean.setUsername(pentahoHibConfig.getProperty("connection.username"));
                         dsBean.setPassword(pentahoHibConfig.getProperty("connection.password"));
 
+                        patHibConfig.getProperties().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("dialect"));
                         patHibConfig.getProperties().setProperty("dialect", pentahoHibConfig.getProperty("dialect"));
                         patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
                         patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
