@@ -287,7 +287,8 @@ public class PatCellSetFormatter {
             try {
                 proplist = cell.getCellSet().getMetaData().getCellProperties();
                 for(int i = 0; i<proplist.size(); i++){
-                    cellInfo.setProperty(proplist.get(i).getCaption(null), cell.getPropertyValue(proplist.get(i)).toString());
+                	
+                   // cellInfo.setProperty(proplist.get(i).getName(), cell.getPropertyValue(proplist.get(i)).toString());
                }
           
             } catch (OlapException e1) {
