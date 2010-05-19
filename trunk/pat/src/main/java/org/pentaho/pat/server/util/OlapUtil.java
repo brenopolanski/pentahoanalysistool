@@ -142,12 +142,60 @@ public class OlapUtil {
 
     /**
      * @param path
+     * @param dimension
+     * @param member
+     * @return selection
+     */
+    public static List<Selection> findSelection(final String path, final QueryDimension dimension,Member contextMember) {
+        List<Selection> returnselections = new ArrayList<Selection>();
+        Selection children = findSelection(path, dimension.getInclusions(), Selection.Operator.CHILDREN);
+        System.out.println("COLLAPSE Member:" + children.getMember().getUniqueName());
+        if (children.getSelectionContext() != null) {
+            for (Selection mcontext : children.getSelectionContext()) {
+                System.out.println("\t COLLAPSE Contextmember:" + mcontext.getMember().getUniqueName());
+            }
+        }
+        for (final Selection selection : dimension.getInclusions()) {
+            System.out.println("Member: " + selection.getMember().getUniqueName());
+            System.out.println("Context:");
+            if (selection.getSelectionContext() != null) {
+                for (Selection mcontext : selection.getSelectionContext()) {
+                    System.out.println("\t Contextmember: " + mcontext.getMember().getUniqueName());
+                }
+                System.out.println("\t ContainsAll: " + selection.getSelectionContext().containsAll(children.getSelectionContext()));
+                System.out.println("\t Contains :" + selection.getSelectionContext().contains(children.getSelectionContext()));
+            }
+            if (selection.getSelectionContext() != null && selection.getSelectionContext().containsAll(children.getSelectionContext())) {
+                returnselections.add(selection);
+            }
+            
+//            
+//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(children)) {
+//                returnselections.add(selection);
+//            }
+//            Selection includechildren = findSelection(path, dimension.getInclusions(), Selection.Operator.INCLUDE_CHILDREN);
+//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(includechildren)) {
+//                returnselections.add(selection);
+//            }
+//            
+//            Selection memberselect = findSelection(path, dimension.getInclusions(), Selection.Operator.MEMBER);
+//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(memberselect)) {
+//                returnselections.add(selection);
+//            }
+        }
+        return returnselections;
+    }
+    
+    /**
+     * @param path
      * @param dim
      */
     public static Selection findSelection(String path, final QueryDimension dim) {
         //path = "[" + dim.getName() + "]." + path; //$NON-NLS-1$ //$NON-NLS-2$
         return findSelection(path, dim.getInclusions());
     }
+    
+    
 
     /**
      * getCellSet returns a stored cellset for a query.
