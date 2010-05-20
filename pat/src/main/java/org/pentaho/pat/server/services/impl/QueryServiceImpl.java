@@ -643,21 +643,41 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     }
                 }
             } else {
-                if (member.getRightOf() == null) {
-                    queryDimension.clearInclusions();
-                    queryDimension.include(memberFetched);
-                } else {
+                
+                    final Selection collapseselection = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
+                    MemberCell collapsemember = member;
+                    while (collapsemember.getRightOf() != null) {
+                    if (collapsemember.getRightOf().getUniqueName() != null
+                            && !collapsemember.getRightOf().getUniqueName().equals(collapsemember.getParentMember())) {
 
-                    final Member contextMember = OlapUtil.getMember(query, queryDimension, member, cellSet);
-                    
-                    final List<Selection> contextSelections = OlapUtil.findSelection(member.getUniqueName(), queryDimension,contextMember);
-                    for (Selection removeselect : contextSelections) {
-                        queryDimension.getInclusions().remove(removeselect);
+                        // Get dimension to the left of the current member.
+                        final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, collapsemember.getRightOfDimension());
+
+                        // Get the Olap4J member.
+                        final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember.getRightOf(), cellSet);
+
+                        collapseselection.addContext(queryDimension2.createSelection(memberFetched2));
+
                     }
 
-                        
+                    // Get next member.
+                    collapsemember = collapsemember.getRightOf();
+                    }
 
-                }
+                    final List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseselection);
+                    queryDimension.getInclusions().removeAll(childSelections);
+
+                    Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
+                    Integer size = queryDimension.getAxis().getDimensions().size();
+                    for (int i = index+1; index >= 0 && i < size; i++) {
+                        QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
+                        for (Selection possibleContext : childSelections) {
+                            List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
+                            qDim.getInclusions().removeAll(findResult);
+                        }
+                        
+                    }
+                    
             }
         }
     }

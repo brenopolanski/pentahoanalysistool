@@ -143,20 +143,46 @@ public class OlapUtil {
     /**
      * Finds all selections that share the same context and 
      * are on a lower level of the Selection including the selection of the given Path
-     * @param path
      * @param dimension
      * @param member
      * @return selection
      */
-    public static List<Selection> findSelection(final String path, final QueryDimension dimension,Member contextMember) {
+    public static List<Selection> findChildrenSelections(final QueryDimension dimension,Selection selectedSelection) {
         List<Selection> returnselections = new ArrayList<Selection>();
-        Selection children = findSelection(path, dimension.getInclusions(), Selection.Operator.CHILDREN);
-        if (children != null && children.getSelectionContext() != null ) {
-            returnselections.add(children);
+        if (selectedSelection != null) {
+
+                returnselections.add(selectedSelection);
+                for (final Selection selection : dimension.getInclusions()) {
+
+                    if (
+                            (selectedSelection.getSelectionContext() != null && selection.getSelectionContext() != null 
+                            && selection.getSelectionContext().containsAll(selectedSelection.getSelectionContext()))
+                            ||
+                            (selectedSelection.getSelectionContext() == null && selection.getSelectionContext() == null))
+                    {
+                        if (selectedSelection.getMember().getLevel().getDepth() < selection.getMember().getDepth())
+                            returnselections.add(selection);
+                    }
+                }
+            }
+
+
+        return returnselections;
+    }
+    
+    /**
+     * Finds all selections that contain the given context 
+     * @param dimension - Dimension to search on
+     * @param context - context that needs to be contained
+     * @return selection
+     */
+    public static List<Selection> findSelectionsByContext(final QueryDimension dimension,List<Selection> context) {
+        List<Selection> returnselections = new ArrayList<Selection>();
+        if (context != null) {
+
             for (final Selection selection : dimension.getInclusions()) {
 
-                if (containsAllSelection(selection.getSelectionContext(),children.getSelectionContext())) {
-                        if (children.getMember().getLevel().getDepth() < selection.getMember().getDepth())
+                if (selection.getSelectionContext() != null && selection.getSelectionContext().containsAll(context)) {
                             returnselections.add(selection);
                     }
                 }
@@ -164,6 +190,7 @@ public class OlapUtil {
 
         return returnselections;
     }
+
     
     /**
      * @param path
