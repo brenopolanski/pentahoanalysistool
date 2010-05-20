@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.olap4j.AllocationPolicy;
 import org.olap4j.Axis;
 import org.olap4j.Cell;
@@ -41,9 +40,6 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
-import org.olap4j.layout.CellSetFormatter;
-import org.olap4j.layout.RectangularCellSetFormatter;
-import org.olap4j.layout.TraditionalCellSetFormatter;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
@@ -564,7 +560,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         } else {
                             selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
                         }
-//                        LOG.error("REPLACE 1 - parent member: " + member.getParentMember());
 
                         //queryDimension.getInclusions().remove(selection);
                         queryDimension.clearInclusions();
@@ -653,19 +648,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     queryDimension.include(memberFetched);
                 } else {
 
-//                    final Selection currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(),
-//                            queryDimension.getInclusions(), Selection.Operator.CHILDREN);
-//                    
                     final Member contextMember = OlapUtil.getMember(query, queryDimension, member, cellSet);
                     
                     final List<Selection> contextSelections = OlapUtil.findSelection(member.getUniqueName(), queryDimension,contextMember);
-                    LOG.error("Number of items to remove: " + contextSelections.size());
                     for (Selection removeselect : contextSelections) {
-                        LOG.error("Remove Item:" + removeselect.getMember().getUniqueName());
-                        LOG.error("Contains in inclusion? :" + queryDimension.getInclusions().contains(removeselect));
                         queryDimension.getInclusions().remove(removeselect);
                     }
-//                    queryDimension.getInclusions().remove(currentMemberSelection);
 
                         
 

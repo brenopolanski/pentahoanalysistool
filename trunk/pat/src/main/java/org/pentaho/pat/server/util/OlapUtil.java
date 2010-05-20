@@ -141,6 +141,8 @@ public class OlapUtil {
     }
 
     /**
+     * Finds all selections that share the same context and 
+     * are on a lower level of the Selection including the selection of the given Path
      * @param path
      * @param dimension
      * @param member
@@ -149,40 +151,17 @@ public class OlapUtil {
     public static List<Selection> findSelection(final String path, final QueryDimension dimension,Member contextMember) {
         List<Selection> returnselections = new ArrayList<Selection>();
         Selection children = findSelection(path, dimension.getInclusions(), Selection.Operator.CHILDREN);
-        System.out.println("COLLAPSE Member:" + children.getMember().getUniqueName());
-        if (children.getSelectionContext() != null) {
-            for (Selection mcontext : children.getSelectionContext()) {
-                System.out.println("\t COLLAPSE Contextmember:" + mcontext.getMember().getUniqueName());
-            }
-        }
-        for (final Selection selection : dimension.getInclusions()) {
-            System.out.println("Member: " + selection.getMember().getUniqueName());
-            System.out.println("Context:");
-            if (selection.getSelectionContext() != null) {
-                for (Selection mcontext : selection.getSelectionContext()) {
-                    System.out.println("\t Contextmember: " + mcontext.getMember().getUniqueName());
+        if (children != null && children.getSelectionContext() != null ) {
+            returnselections.add(children);
+            for (final Selection selection : dimension.getInclusions()) {
+
+                if (containsAllSelection(selection.getSelectionContext(),children.getSelectionContext())) {
+                        if (children.getMember().getLevel().getDepth() < selection.getMember().getDepth())
+                            returnselections.add(selection);
+                    }
                 }
-                System.out.println("\t ContainsAll: " + selection.getSelectionContext().containsAll(children.getSelectionContext()));
-                System.out.println("\t Contains :" + selection.getSelectionContext().contains(children.getSelectionContext()));
-            }
-            if (selection.getSelectionContext() != null && selection.getSelectionContext().containsAll(children.getSelectionContext())) {
-                returnselections.add(selection);
-            }
-            
-//            
-//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(children)) {
-//                returnselections.add(selection);
-//            }
-//            Selection includechildren = findSelection(path, dimension.getInclusions(), Selection.Operator.INCLUDE_CHILDREN);
-//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(includechildren)) {
-//                returnselections.add(selection);
-//            }
-//            
-//            Selection memberselect = findSelection(path, dimension.getInclusions(), Selection.Operator.MEMBER);
-//            if (selection.getSelectionContext() != null && selection.getSelectionContext().contains(memberselect)) {
-//                returnselections.add(selection);
-//            }
         }
+
         return returnselections;
     }
     
@@ -195,7 +174,31 @@ public class OlapUtil {
         return findSelection(path, dim.getInclusions());
     }
     
+    public static Boolean containsSelection(Selection selection, List<Selection> collection) {
+        if (selection == null || collection == null )
+            return false;
+        
+        for (Selection item : collection) {
+            if (item.getMember().getUniqueName().equals(selection.getMember().getUniqueName())) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     
+    public static Boolean containsAllSelection(List<Selection> selection,List<Selection> collection) {
+        if (selection == null || collection == null )
+            return false;
+        
+        for (Selection item : selection) {
+            Boolean ret = containsSelection(item, collection);
+            if (ret == false) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * getCellSet returns a stored cellset for a query.
