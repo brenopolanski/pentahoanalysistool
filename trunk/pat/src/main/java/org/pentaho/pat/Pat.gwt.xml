@@ -60,5 +60,6 @@
 	<extend-property name="locale" values="pt"/>
 	<extend-property name="locale" values="pl"/>
 	<extend-property name="locale" values="th"/>
+	<extend-property name="locale" values="he"/>
 <!--<set-property name="user.agent" value="gecko"/>  -->
 </module>
