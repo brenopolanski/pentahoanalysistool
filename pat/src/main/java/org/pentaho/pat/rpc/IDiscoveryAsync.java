@@ -22,7 +22,6 @@ package org.pentaho.pat.rpc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;

@@ -100,11 +100,17 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil
 						.moveDimension(context, label, context.draggable);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY) {
+				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
 				SimplePanelUtil.moveHierarchy(context, label);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
+				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
+				//((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
 				SimplePanelUtil.moveLevel(context, label);
 			}
 			else if (originalLabel.getType() == MeasureLabel.LabelType.MEMBER) {
+				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
+				//((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
+				//((MeasureLabel)fti.getParentItem().getParentItem().getParentItem().getWidget()).makeNotDraggable();
 						SimplePanelUtil.moveMember(context, label);
 			}
 			 else if (originalLabel.getType() == MeasureLabel.LabelType.MEASURE){

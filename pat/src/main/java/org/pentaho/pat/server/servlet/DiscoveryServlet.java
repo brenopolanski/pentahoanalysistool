@@ -25,7 +25,6 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
-import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
@@ -148,10 +147,8 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
 
 	public List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName,
 			String levelName) throws RpcException {
-		List<String> levelList;
 		try {
 			return this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName,  levelName);
-            //return levelList.toArray(new String[levelList.size()]);
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
