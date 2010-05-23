@@ -200,7 +200,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         	st = new StringTree("", "", null);
         	
     		for (Measure mem : measures){
-    			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+    			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
     		}
         }
         else if(selectionType==(Selection.Operator.MEMBER)){
@@ -223,7 +223,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree(null, null, null);
         		for (Member mem : members){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         	else if(levelName == null){
@@ -231,7 +231,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree(null, null, null);
         		for (Member mem : members){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         	else{
@@ -239,7 +239,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		//NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree(null, null, null);
         		for (Member mem : parentMember){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         }
@@ -249,7 +249,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
         		for (Member mem : members){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         	else if(levelName == null){
@@ -257,7 +257,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
         		for (Member mem : members){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         	else{
@@ -265,7 +265,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         		//NamedList<? extends Member> members = parentMember.getChildMembers();
         		st = new StringTree("", "", null);
         		for (Member mem : parentMember){
-        			st.addChild(new StringTree(mem.getUniqueName(), mem.getCaption(loc), st));
+        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
         		}
         	}
         }
