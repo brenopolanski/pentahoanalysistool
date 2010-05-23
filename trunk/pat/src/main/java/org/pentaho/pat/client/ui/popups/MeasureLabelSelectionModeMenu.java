@@ -38,6 +38,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -87,6 +88,36 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             MeasureLabelSelectionModeMenu.this.hide();
         }
     }
+    
+    public class SortModeCommand implements Command {
+    	
+    	private String sortMode;
+
+		public SortModeCommand(final String sortMode) {
+            this.sortMode  = sortMode;
+        }
+
+		public void execute() {
+			final MeasureLabel targetLabel = (MeasureLabel) getSource();
+		    
+            final String dimName1 = targetLabel.getValue().get(0);
+    
+			ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), 
+					dimName1, sortMode, new AsyncCallback<Object>(){
+
+						public void onFailure(Throwable arg0) {
+							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSetSortOrder(arg0.getLocalizedMessage()));
+							
+						}
+
+						public void onSuccess(Object arg0) {
+							
+						}
+				
+			});
+			
+		}
+    }
 
     public class SelectionModeCommand implements Command {
 
@@ -103,6 +134,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             this.selectionMode = selectionMode;
         }
 
+        
         
         /*
          * (non-Javadoc)
@@ -211,6 +243,8 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     /** The Constant CLEAR. */
     public static final int CLEAR = -1;
 
+    public static final int EXCLUDE = -2;
+    
     /** The source. */
     private static Widget source;
 
@@ -242,19 +276,29 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
 	private void init() {
         this.setAutoOpen(true);
-       if(this.setType == MeasureLabel.LabelType.LEVEL){
-    	   this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-    	   this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+       
+        MenuBar selectionMenu = new MenuBar(true);
+        MenuBar sortMenu = new MenuBar(true);
+        if(this.setType == MeasureLabel.LabelType.LEVEL){
+        	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
+        	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
        }else{
-        this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
+    	   sortMenu.addItem(new MenuItem(ConstantFactory.getInstance().sortAscending(), new SortModeCommand("ASC")));
+    	   sortMenu.addItem(new MenuItem(ConstantFactory.getInstance().sortDescending(), new SortModeCommand("DESC")));
+    	   //this.addItem(new MenuItem(ConstantFactory.getInstance().exclude(), new SelectionModeCommand(EXCLUDE)));
+    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
+    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
+    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
                 INCLUDE_CHILDREN)));
         /*this.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
         this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));*/
-        this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
        }
+        
+		
+        this.addItem("Selections", selectionMenu);
+        this.addItem(ConstantFactory.getInstance().sort(), sortMenu);
     }
 	
 	

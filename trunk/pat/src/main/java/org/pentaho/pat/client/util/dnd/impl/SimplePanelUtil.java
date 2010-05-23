@@ -415,4 +415,11 @@ public class SimplePanelUtil {
 		
 	}
 
+
+	public static void clearMember(DragContext context, Widget draggable,
+			int[] coord, IAxis axis) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

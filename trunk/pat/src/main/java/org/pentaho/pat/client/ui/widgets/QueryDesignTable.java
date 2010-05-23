@@ -63,29 +63,29 @@ public class QueryDesignTable extends LayoutComposite implements
 				flex.setWidget(parentcoords[0] + 1, parentcoords[1],
 						parentLabel);
 
-				for (int i = 2; i < 6; i++) {
+				for (int i = 0; i < 5; i++) {
 					if (i < child.size()) {
 						final Label memberLabel = new Label(child.get(i)
 								.getCaption());
-						if (!flex.isCellPresent(parentcoords[1] + i, 0)) {
-							flex.insertRow(parentcoords[0] + i);
+						if (!flex.isCellPresent(parentcoords[1] + i+2, 0)) {
+							flex.insertRow(parentcoords[0] + i+2);
 						}
 
-						flex.setWidget(parentcoords[0] + i, parentcoords[1],
+						flex.setWidget(parentcoords[0] + i+2, parentcoords[1],
 								memberLabel);
 					}
 
 				}
 			} else {
-				for (int i = 1; i < 5; i++) {
+				for (int i = 0; i < 5; i++) {
 					if (i < child.size()) {
 						final Label memberLabel = new Label(child.get(i)
 								.getCaption());
-						if (!flex.isCellPresent(parentcoords[1] + i, 0)) {
-							flex.insertRow(parentcoords[0] + i);
+						if (!flex.isCellPresent(parentcoords[1] + i+1, 0)) {
+							flex.insertRow(parentcoords[0] + i+1);
 						}
 
-						flex.setWidget(parentcoords[0] + i, parentcoords[1],
+						flex.setWidget(parentcoords[0] + i+1, parentcoords[1],
 								memberLabel);
 					}
 
@@ -109,23 +109,23 @@ public class QueryDesignTable extends LayoutComposite implements
 				flex.setWidget(parentcoords[0], parentcoords[1] + 1,
 						parentLabel);
 
-				for (int i = 2; i < 6; i++) {
+				for (int i = 0; i < 6; i++) {
 					if (i < child.size()) {
 						final Label memberLabel = new Label(child.get(i)
 								.getCaption());
 
-						flex.setWidget(parentcoords[0], parentcoords[1] + i,
+						flex.setWidget(parentcoords[0], parentcoords[1] + i+2,
 								memberLabel);
 					}
 
 				}
 			} else {
-				for (int i = 1; i < 5; i++) {
+				for (int i = 0; i < 5; i++) {
 					if (i < child.size()) {
 						final Label memberLabel = new Label(child.get(i)
 								.getCaption());
 
-						flex.setWidget(parentcoords[0], parentcoords[1] + i,
+						flex.setWidget(parentcoords[0], parentcoords[1] + i+1,
 								memberLabel);
 					}
 

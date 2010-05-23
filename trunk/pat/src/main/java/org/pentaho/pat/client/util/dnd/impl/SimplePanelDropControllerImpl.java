@@ -73,6 +73,9 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 			} else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.LEVEL) {
 				SimplePanelUtil.clearLevel(context, context.draggable, panel
 						.getCoord(), panel.getAxis());
+			} else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.MEMBER) {
+				SimplePanelUtil.clearMember(context, context.draggable, panel
+					.getCoord(), panel.getAxis());
 			}
 			else if (((MeasureLabel) context.draggable).getType() == MeasureLabel.LabelType.MEASURE) {
 				SimplePanelUtil.clearDimension(context, context.draggable,
@@ -103,7 +106,6 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				}
 				SimplePanelUtil.moveHierarchy(context, label);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
-				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
 				FastTreeItem fti = originalLabel.getParentNode();
 
 				((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
@@ -115,8 +117,6 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil.moveLevel(context, label);
 			}
 			else if (originalLabel.getType() == MeasureLabel.LabelType.MEMBER) {
-				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
-				//((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
 				FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem().getParentItem();
 
 				((MeasureLabel)fti.getWidget()).makeNotDraggable();
@@ -164,8 +164,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 		for (int i = 0; i < fti.getChildCount(); i++) {
 
 		((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
-		for(int j =0; j<fti.getChild(i).getChildCount()-1; j++){
-			disableDrag(fti.getChild(j));
+		for(int j =0; j<fti.getChild(i).getChildCount(); j++){
+			disableDrag(fti.getChild(i).getChild(j));
 		}
 		}
 	}
