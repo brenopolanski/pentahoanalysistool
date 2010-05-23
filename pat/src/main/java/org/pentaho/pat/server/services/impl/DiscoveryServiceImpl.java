@@ -437,16 +437,26 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return levelNames;
 	}
 
-	public List<String> getLevelMembers(String userId, String sessionId,
+	public List<MemberLabelItem> getLevelMembers(String userId, String sessionId,
 			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException {
 		this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
         List<Member> levelList = query.getCube().getDimensions().get(dimensionName).getHierarchies().get(hierarchyName).getLevels().get(levelName).getMembers();
         
-        List<String> levelNames = new ArrayList<String>();
+        List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Member dim : levelList) {
-            levelNames.add(dim.getName());
+        	List<String> lst = new ArrayList<String>();
+        	String memberunique = dim.getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        	
+        	String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        	lst.add(dim.getDimension().getName());
+        	lst.add(hierarchyunique);
+        	lst.add(levelName);
+        	lst.add(dim.getName());
+            levelNames.add(new MemberLabelItem(memberunique, dim.getCaption(loc), lst));
         }
         return levelNames;
 

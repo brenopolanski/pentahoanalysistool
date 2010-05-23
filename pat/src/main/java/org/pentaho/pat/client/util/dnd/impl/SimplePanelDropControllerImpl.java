@@ -26,7 +26,6 @@ import org.pentaho.pat.client.util.dnd.SimplePanelDropController;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
-import com.google.gwt.gen2.complexpanel.client.FastTree;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -104,7 +103,11 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil.moveHierarchy(context, label);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
 				SimplePanelUtil.moveLevel(context, label);
-			} else if (originalLabel.getType() == MeasureLabel.LabelType.MEASURE){
+			}
+			else if (originalLabel.getType() == MeasureLabel.LabelType.MEMBER) {
+						SimplePanelUtil.moveMember(context, label);
+			}
+			 else if (originalLabel.getType() == MeasureLabel.LabelType.MEASURE){
 				SimplePanelUtil.moveMeasure(context, label);
 			}
 

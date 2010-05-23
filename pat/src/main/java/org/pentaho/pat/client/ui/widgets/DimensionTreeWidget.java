@@ -127,26 +127,24 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								dimname,
 								hiername,
 								levelName,
-								new AsyncCallback<String[]>() {
+								new AsyncCallback<List<MemberLabelItem>>() {
 
 									public void onFailure(Throwable arg0) {
 										// TODO Auto-generated method stub
 
 									}
 
-									public void onSuccess(String[] arg0) {
-										for (int i = 0; i < arg0.length; i++) {
+									public void onSuccess(List<MemberLabelItem> arg0) {
+										for (int i = 0; i < arg0.size(); i++) {
 											ArrayList<String> path = new ArrayList<String>();
-											path.add(parentItem.getParentItem().getParentItem()
-											.getText());
-											path.add(parentItem.getParentItem().getText());
-											path.add(arg0[i]);
+											path.addAll(arg0.get(0).getParents());
 
 											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(path, "",
-													arg0[i],
+													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.MEMBER, fti);
 											label.setDragController(dragController);
+											label.makeDraggable();
 											fti.setWidget(label);
 											fti.becomeLeaf();
 											parentItem.addItem(fti);

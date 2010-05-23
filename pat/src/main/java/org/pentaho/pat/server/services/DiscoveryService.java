@@ -153,7 +153,7 @@ public interface DiscoveryService extends Service {
 	List<MemberLabelItem> getLevels(String currentUserId, String sessionId,
 			String queryId, String dimensionName, String hierarchy) throws OlapException;
 	
-	List<String> getLevelMembers(String currentUserId, String sessionId,
+	List<MemberLabelItem> getLevelMembers(String currentUserId, String sessionId,
 			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException;
 	
 	StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName,
