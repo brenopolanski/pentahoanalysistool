@@ -415,12 +415,27 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         	}
         	return memberNameList;
         }
+        else if(type.equals("member")){
+        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(1))
+    		.getLevels().get(memberNames.get(2)).getMembers();
+        	List<String> memberNameList = new ArrayList<String>(); 
+        	for (Member member:members){
+        		if(member.getName().equals(memberNames.get(3))){
+            qDim.include(selectionMode, member);
+        		
+            String name = member.getUniqueName();
+            
+            memberNameList.add(name);
+        		}
+        	}
+        	return memberNameList;
+        }
         else if(type.equals("measure")){
         	List<Measure> members = null;
         	if(memberNames.get(0).equals("Measures")){
         		members = cube.getMeasures();
         	}else{
-        		members = new ArrayList();
+        		members = new ArrayList<Measure>();
         		List<Measure> members2 = cube.getMeasures();
         		for(Measure measure : members2){
         			if(measure.getName().equals(memberNames.get(1))){
@@ -1180,7 +1195,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     public void setProperty(String userId, String sessionId, String queryId, String dimensionName, String levelName,
             String propertyName, Boolean enabled) {
         this.sessionService.validateSession(userId, sessionId);
-        Query query = this.getQuery(userId, sessionId, queryId);
+       // Query query = this.getQuery(userId, sessionId, queryId);
         
     }
 

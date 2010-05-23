@@ -377,4 +377,42 @@ public class SimplePanelUtil {
 		
 	}
 
+
+	public static void moveMember(final DragContext context, final MeasureLabel label) {
+
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), 
+        		((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis(), label.getValue().get(0), new AsyncCallback<Object>(){
+
+			public void onFailure(Throwable arg0) {
+				MessageBox.error("Error", "move to axis failed");
+				
+			}
+
+			public void onSuccess(Object arg0) {
+				ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "member",
+			            "MEMBER", new AsyncCallback<List<String>>(){
+
+							public void onFailure(Throwable arg0) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							public void onSuccess(List<String> arg0) {
+								label.setCurrentSelection(arg0);
+								label.setSelectionType("MEMBER");
+								label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
+								
+								
+							}
+					
+				});
+			}
+        	
+        });
+        
+		addNewDropTargets(context);
+
+		
+	}
+
 }

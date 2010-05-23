@@ -146,12 +146,12 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
         }
 	}
 
-	public String[] getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName,
+	public List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName,
 			String levelName) throws RpcException {
 		List<String> levelList;
 		try {
-			levelList = this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName,  levelName);
-            return levelList.toArray(new String[levelList.size()]);
+			return this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName,  levelName);
+            //return levelList.toArray(new String[levelList.size()]);
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
