@@ -86,13 +86,6 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 			label.makeDraggable();
 			label.enableSinkEvents();
 			dropTarget.setWidget(label);
-			FastTreeItem fti = originalLabel.getParentNode();
-			((MeasureLabel) fti.getWidget()).makeNotDraggable();
-			for (int i = 0; i < fti.getChildCount(); i++) {
-				
-				disableDrag(fti.getChild(i));
-				
-			}
 
 			originalLabel.makeNotDraggable();
 
@@ -100,17 +93,38 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 				SimplePanelUtil
 						.moveDimension(context, label, context.draggable);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY) {
-				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
+				FastTreeItem fti = originalLabel.getParentNode();
+
+				((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
+				for (int i = 0; i < fti.getChildCount(); i++) {
+					
+					disableDrag(fti.getChild(i));
+					
+				}
 				SimplePanelUtil.moveHierarchy(context, label);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.LEVEL) {
 				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
-				//((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
+				FastTreeItem fti = originalLabel.getParentNode();
+
+				((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
+				for (int i = 0; i < fti.getChildCount(); i++) {
+					
+					disableDrag(fti.getChild(i));
+					
+				}
 				SimplePanelUtil.moveLevel(context, label);
 			}
 			else if (originalLabel.getType() == MeasureLabel.LabelType.MEMBER) {
 				//((MeasureLabel)fti.getParentItem().getWidget()).makeNotDraggable();
 				//((MeasureLabel)fti.getParentItem().getParentItem().getWidget()).makeNotDraggable();
-				//((MeasureLabel)fti.getParentItem().getParentItem().getParentItem().getWidget()).makeNotDraggable();
+				FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem().getParentItem();
+
+				((MeasureLabel)fti.getWidget()).makeNotDraggable();
+				for (int i = 0; i < fti.getChildCount(); i++) {
+					
+					disableDrag(fti.getChild(i));
+					
+				}
 						SimplePanelUtil.moveMember(context, label);
 			}
 			 else if (originalLabel.getType() == MeasureLabel.LabelType.MEASURE){
@@ -150,8 +164,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 		for (int i = 0; i < fti.getChildCount(); i++) {
 
 		((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
-		for(int j =0; j<fti.getChild(i).getChildCount(); j++){
-			enableDrag(fti.getChild(j));
+		for(int j =0; j<fti.getChild(i).getChildCount()-1; j++){
+			disableDrag(fti.getChild(j));
 		}
 		}
 	}
