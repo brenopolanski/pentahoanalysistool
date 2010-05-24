@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -170,7 +171,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 if (member == null) {
                     // We failed to find the member.
-                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                    String lookup = "";
+                    for (String namepart : memberNames) {
+                        lookup = lookup + namepart;
+                    }
+                        
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember",lookup));//$NON-NLS-1$
                 }
             }
         }
@@ -565,8 +571,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     case POSITION:
                         selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
 
-                        queryDimension.getInclusions().remove(selection);
-                        queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+//                        queryDimension.getInclusions().remove(selection);
+//                        queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+                        queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         break;
                     case REPLACE:
                         if (member.getParentMember() != null) {
@@ -853,14 +860,17 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         mdx.validate();
         final Writer writer = new StringWriter();
         mdx.getSelect().unparse(new ParseTreeWriter(new PrintWriter(writer)));
+        Long start = (new Date()).getTime();
         final CellSet cellSet = mdx.execute();
+        Long exec = (new Date()).getTime();
 
-        
         OlapUtil.storeCellSet(queryId, cellSet);
 
 
-   
-        return OlapUtil.cellSet2Matrix(cellSet);
+        CellDataSet result = OlapUtil.cellSet2Matrix(cellSet);
+        Long format = (new Date()).getTime();
+        LOG.info("Size: " + result.getWidth() +"/"+ result.getHeight() + "\tExecute:\t" + (exec-start) + "ms\tFormat:\t" + (format-exec) + "ms\t Total: " + (format-start) + "ms");
+        return result;
 
     }
 
