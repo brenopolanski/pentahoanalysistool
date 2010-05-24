@@ -58,6 +58,7 @@
   	<extend-property name="locale" values="nl"/>
   	<extend-property name="locale" values="it"/>
 	<extend-property name="locale" values="pt"/>
+        <extend-property name="locale" values="pt_BR"/>
 	<extend-property name="locale" values="pl"/>
 	<extend-property name="locale" values="th"/>
 	<extend-property name="locale" values="he"/>
