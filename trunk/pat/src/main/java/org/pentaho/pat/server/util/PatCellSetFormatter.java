@@ -407,11 +407,16 @@ public class PatCellSetFormatter {
                         memberInfo.setProperty(values.get(j).getCaption(null), member.getPropertyFormattedValue(values.get(j)));
                     }
                     
-                    if (y > 0 && prevMembers[y - 1] != null)
-                        memberInfo.setRightOf(prevMemberInfo[y - 1]);
+                    if (y > 0) {
+                        for (int previ = y-1; previ >= 0;previ--) {
+                            if(prevMembers[previ] != null) {
+                                memberInfo.setRightOf(prevMemberInfo[previ]);
+                                memberInfo.setRightOfDimension(prevMembers[previ].getDimension().getName());
+                                previ = -1;
+                            }
+                        }
+                    }
 
-                    if (y > 0 && prevMembers[y - 1] != null)
-                        memberInfo.setRightOfDimension(prevMembers[y - 1].getDimension().getName());
 
                     if (member.getParentMember() != null)
                         memberInfo.setParentMember(member.getParentMember().getUniqueName());
