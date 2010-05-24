@@ -191,6 +191,32 @@ public class OlapUtil {
         return returnselections;
     }
 
+    /**
+     * Finds all selections whose context contain parent or one of its descendants 
+     * @param dimension - Dimension to search on
+     * @param parent - parent who is looking for its children
+     * @return selection
+     */
+    public static List<Selection> findSelectionByParent(final QueryDimension dimension,final Member parent) {
+        List<Selection> returnselections = new ArrayList<Selection>();
+        if (parent != null) {
+            for (final Selection selection : dimension.getInclusions()) {
+
+                if (selection.getSelectionContext() != null) {
+                    for (Selection context : selection.getSelectionContext()) {
+                        if (context.getMember().getAncestorMembers().contains(parent)); {
+                            returnselections.add(selection);
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        return returnselections;
+    }
+
     
     /**
      * @param path
