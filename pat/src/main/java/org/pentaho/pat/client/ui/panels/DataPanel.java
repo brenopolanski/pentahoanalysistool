@@ -104,7 +104,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
        QueryTrashWidget trashPanel = new QueryTrashWidget();
         
         mainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
-        mainLayoutPanel.add(trashPanel, new BoxLayoutData(FillStyle.BOTH));
+        mainLayoutPanel.add(trashPanel, new BoxLayoutData(200.0, 200.0));
         baseLayoutPanel.add(mainLayoutPanel);
         }
 

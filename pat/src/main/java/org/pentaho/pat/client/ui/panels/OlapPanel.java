@@ -300,7 +300,8 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     public void onQueryExecuted(String _queryId, CellDataSet matrix) {
         if (queryId != null && queryId.equals(_queryId) && this.isAttached()) {
-            baselayoutPanel.setCollapsed(westPanel, true);
+            //baselayoutPanel.setCollapsed(westPanel, true);
+            westPanel.setVisible(false);
             msPanel.setVisible(false);
             baselayoutPanel.layout();
         }
