@@ -665,10 +665,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     }
                 }
             } else {
-                
-                    final Selection collapseselection = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
-                    MemberCell collapsemember = member;
-                    while (collapsemember.getRightOf() != null) {
+
+                final Selection collapseselection = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
+                MemberCell collapsemember = member;
+                while (collapsemember.getRightOf() != null) {
                     if (collapsemember.getRightOf().getUniqueName() != null
                             && !collapsemember.getRightOf().getUniqueName().equals(collapsemember.getParentMember())) {
 
@@ -684,22 +684,27 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                     // Get next member.
                     collapsemember = collapsemember.getRightOf();
+                }
+
+                final List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseselection);
+                queryDimension.getInclusions().removeAll(childSelections);
+
+                Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
+                Integer size = queryDimension.getAxis().getDimensions().size();
+                for (int i = index+1; index >= 0 && i < size; i++) {
+                    QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
+                    for (Selection possibleContext : childSelections) {
+                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
+                        qDim.getInclusions().removeAll(findResult);
+                    }
+                    if (member.getRightOf() == null) {
+                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseselection.getMember());
+                        qDim.getInclusions().removeAll(findResult2);
                     }
 
-                    final List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseselection);
-                    queryDimension.getInclusions().removeAll(childSelections);
 
-                    Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
-                    Integer size = queryDimension.getAxis().getDimensions().size();
-                    for (int i = index+1; index >= 0 && i < size; i++) {
-                        QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
-                        for (Selection possibleContext : childSelections) {
-                            List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
-                            qDim.getInclusions().removeAll(findResult);
-                        }
-                        
-                    }
-                    
+                }
+
             }
         }
     }
