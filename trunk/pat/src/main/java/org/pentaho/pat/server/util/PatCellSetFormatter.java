@@ -342,9 +342,6 @@ public class PatCellSetFormatter {
      * @param offset
      *            Ordinal of first cell to populate in matrix
      */
-    public enum property {
-        MINDEPTH, MAXDEPTH, WIDTH
-    }
     private void populateAxis(final Matrix matrix, final CellSetAxis axis, final AxisInfo axisInfo,
             final boolean isColumns, final int offset) {
         if (axis == null)
