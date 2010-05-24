@@ -67,6 +67,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
+	private boolean executemode = false;
 	private final ToolButton exportButton;
 
 	private final ToolButton mdxButton;
@@ -177,7 +178,16 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                Pat.executeQuery(PropertiesPanel.this, queryId);
+            	if(executemode==false){
+            		Pat.executeQuery(PropertiesPanel.this, queryId);
+            		executemode=true;
+            		executeButton.setText("Edit Query");
+            	}
+            	else{
+            		executeButton.setText(ConstantFactory.getInstance().executeQuery());
+            		executemode=false;
+            		dPanel.swapWindows();
+            	}
             }
 
         });
