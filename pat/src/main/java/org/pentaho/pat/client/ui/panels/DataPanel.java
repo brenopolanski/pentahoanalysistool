@@ -95,7 +95,6 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         if (pType == PanelUtil.PanelType.QM) {
             mainLayoutPanel.setPadding(0);
 
-        //FlexTable dropTable = new FlexTable();
                 
         dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS, new int[]{0,1}));
         dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS, new int[]{1,0}));
@@ -180,12 +179,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             if (throbberLabel.isAttached()) {
                 baseLayoutPanel.remove(throbberLabel);
             }
-            if (mainLayoutPanel.isAttached()) {
-                baseLayoutPanel.remove(mainLayoutPanel);
-            }
-            baseLayoutPanel.setLayout(new BorderLayout());
-            baseLayoutPanel.add(fillLayoutPanel);
-            baseLayoutPanel.layout();
+           // swapWindows();
             if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
                 olapTable.setData(matrix);
                 ofcPanel.onQueryExecuted(matrix);
@@ -193,18 +187,36 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         }
     }
 
+    public void swapWindows(){
+    	if (mainLayoutPanel.isAttached()) {
+            baseLayoutPanel.remove(mainLayoutPanel);
+            baseLayoutPanel.setLayout(new BorderLayout());
+            baseLayoutPanel.add(fillLayoutPanel);
+            baseLayoutPanel.layout();
+        }
+    	else{
+    		baseLayoutPanel.remove(fillLayoutPanel);
+            baseLayoutPanel.setLayout(new FillLayout());
+            baseLayoutPanel.add(mainLayoutPanel);
+            baseLayoutPanel.layout();
+    	}
+        
+    }
+    
 	public void onQueryPivoted(String queryId) {
 		
 	}
 
     public void onQueryStartExecution(String queryId) {
         if (queryId.equals(this.queryId)) {
-            if (mainLayoutPanel.isAttached()) {
-                baseLayoutPanel.remove(mainLayoutPanel);
-            }
-            if (fillLayoutPanel.isAttached()) {
-                baseLayoutPanel.remove(fillLayoutPanel);
-            }
+            //if (mainLayoutPanel.isAttached()) {
+                //baseLayoutPanel.remove(mainLayoutPanel);
+            	swapWindows();
+            //}
+            //else if (fillLayoutPanel.isAttached()) {
+                //baseLayoutPanel.remove(fillLayoutPanel);
+            //	swapWindows();
+            //}
             if (!throbberLabel.isAttached()) {
                 throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
                 throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
