@@ -202,8 +202,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                         new AsyncCallback<String>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedPivot(arg0.getLocalizedMessage()));
+                        MessageBox.error(ConstantFactory.getInstance().error(),arg0.getLocalizedMessage());
                     }
 
                     public void onSuccess(final String mdx) {
