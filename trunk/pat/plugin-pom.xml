@@ -135,7 +135,7 @@
 								<artifactItem>
 									<groupId>pentaho</groupId>
 									<artifactId>mondrian</artifactId>
-									<version>4.0.0.13109</version>
+									<version>3.2-SNAPSHOT</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -674,7 +674,7 @@
 			<artifactId>mondrian</artifactId>
 			<!-- SWITCH TO MONDRIAN 4.0 for SCENARIOS -->
 			<!-- <version>3.1.1.12929</version> -->
-			<version>4.0.0.13109</version>
+			<version>3.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javacup</groupId>
