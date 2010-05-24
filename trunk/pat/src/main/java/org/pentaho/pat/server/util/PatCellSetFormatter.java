@@ -200,9 +200,8 @@ public class PatCellSetFormatter {
             for (final Member member : position.getMembers()) {
                 ++k;
                 final AxisOrdinalInfo axisOrdinalInfo = axisInfo.ordinalInfos.get(k);
-                final int topDepth = member.isAll() ? member.getDepth() : member.getHierarchy().hasAll() ? 1 : 0;
-                if (axisOrdinalInfo.minDepth > topDepth || p == 0) {
-                    axisOrdinalInfo.minDepth = topDepth;
+                if (axisOrdinalInfo.minDepth > member.getDepth() || p == 0) {
+                    axisOrdinalInfo.minDepth = member.getDepth();
                 }
                 axisOrdinalInfo.maxDepth = Math.max(axisOrdinalInfo.maxDepth, member.getDepth());
             }
@@ -343,6 +342,9 @@ public class PatCellSetFormatter {
      * @param offset
      *            Ordinal of first cell to populate in matrix
      */
+    public enum property {
+        MINDEPTH, MAXDEPTH, WIDTH
+    }
     private void populateAxis(final Matrix matrix, final CellSetAxis axis, final AxisInfo axisInfo,
             final boolean isColumns, final int offset) {
         if (axis == null)
@@ -360,13 +362,10 @@ public class PatCellSetFormatter {
             for (int j = 0; j < memberList.size(); j++) {
                 Member member = memberList.get(j);
                 final AxisOrdinalInfo ordinalInfo = axisInfo.ordinalInfos.get(j);
-                while (member != null) {
                     if (member.getDepth() < ordinalInfo.minDepth)
                         break;
                     final int y = yOffset + member.getDepth() - ordinalInfo.minDepth;
                     members[y] = member;
-                    member = member.getParentMember();
-                }
                 yOffset += ordinalInfo.getWidth();
             }
 
