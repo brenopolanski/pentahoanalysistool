@@ -179,7 +179,6 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
 
-    	if(this.dPaneltype == PanelUtil.PanelType.MDX){
     	if (query.equals(queryId) && this.isAttached()) {
             if (throbberLabel.isAttached()) {
                 baseLayoutPanel.remove(throbberLabel);
@@ -195,18 +194,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
                 ofcPanel.onQueryExecuted(matrix);
             }
         }
-    	}
-    	else{
-    	if (query.equals(queryId) && this.isAttached()) {
-            if (throbberLabel.isAttached()) {
-                baseLayoutPanel.remove(throbberLabel);
-            }
-            if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
-                olapTable.setData(matrix);
-                ofcPanel.onQueryExecuted(matrix);
-            }
-        }
-    	}
+    	
     }
 
     public void swapWindows(){
@@ -214,16 +202,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             baseLayoutPanel.remove(mainLayoutPanel);
             baseLayoutPanel.setLayout(new BorderLayout());
             baseLayoutPanel.add(fillLayoutPanel);
-            //WidgetHelper.revalidate(olapTable);
-/*            olapTable.invalidate();
-            olapTable.layout();
-            fillLayoutPanel.invalidate();
-            fillLayoutPanel.layout();*/
             baseLayoutPanel.invalidate();
             baseLayoutPanel.layout();
-//            olapTable.test();
         }
-    	else{
+    	else if (fillLayoutPanel.isAttached()){
     		baseLayoutPanel.remove(fillLayoutPanel);
             baseLayoutPanel.setLayout(new FillLayout());
             baseLayoutPanel.add(mainLayoutPanel);
@@ -244,6 +226,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     public void onQueryStartExecution(String queryId) {
         if (queryId.equals(this.queryId)) {
+            if (mainLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(mainLayoutPanel);
+            }
+            if (fillLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(fillLayoutPanel);
+            }
 
             if (!throbberLabel.isAttached()) {
                 throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
