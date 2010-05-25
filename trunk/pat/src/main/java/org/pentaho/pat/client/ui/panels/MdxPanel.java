@@ -183,7 +183,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         
         centerPanel.add(collapsePanel, new BoxLayoutData(FillStyle.HORIZONTAL));
                 
-        olapTable = new DataPanel(queryId, PanelUtil.PanelType.MDX);
+        olapTable = new DataPanel(queryId, PanelUtil.PanelType.MDX, null);
         final PropertiesPanel propPanel = new PropertiesPanel(olapTable, PanelUtil.PanelType.MDX);
         
         centerPanel.add(propPanel,new BoxLayoutData(FillStyle.HORIZONTAL));

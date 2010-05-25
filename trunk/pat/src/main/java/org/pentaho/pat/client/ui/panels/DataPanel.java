@@ -74,14 +74,17 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     
     PanelUtil.PanelType dPaneltype = null;
 
+	private OlapPanel olapPanel;
+
 	/**
      *DataPanel Constructor.
      *
      * @param query
      *
      */
-    public DataPanel(final String query, final PanelUtil.PanelType pType) {
+    public DataPanel(final String query, final PanelUtil.PanelType pType, OlapPanel parent) {
         super();
+        this.olapPanel = parent;
         this.queryId = query;
         this.dPaneltype = pType;
         QueryDesignTable dropTable = new QueryDesignTable(this.queryId);
@@ -192,13 +195,26 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             baseLayoutPanel.remove(mainLayoutPanel);
             baseLayoutPanel.setLayout(new BorderLayout());
             baseLayoutPanel.add(fillLayoutPanel);
+            //WidgetHelper.revalidate(olapTable);
+/*            olapTable.invalidate();
+            olapTable.layout();
+            fillLayoutPanel.invalidate();
+            fillLayoutPanel.layout();*/
+            baseLayoutPanel.invalidate();
             baseLayoutPanel.layout();
+//            olapTable.test();
         }
     	else{
     		baseLayoutPanel.remove(fillLayoutPanel);
             baseLayoutPanel.setLayout(new FillLayout());
             baseLayoutPanel.add(mainLayoutPanel);
+            olapPanel.setWestPanelVisible(true);
+            baseLayoutPanel.invalidate();
             baseLayoutPanel.layout();
+            
+            mainLayoutPanel.invalidate();
+            mainLayoutPanel.layout();
+            
     	}
         
     }
@@ -209,14 +225,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     public void onQueryStartExecution(String queryId) {
         if (queryId.equals(this.queryId)) {
-            //if (mainLayoutPanel.isAttached()) {
-                //baseLayoutPanel.remove(mainLayoutPanel);
-            	swapWindows();
-            //}
-            //else if (fillLayoutPanel.isAttached()) {
-                //baseLayoutPanel.remove(fillLayoutPanel);
-            //	swapWindows();
-            //}
+            	//swapWindows();
             if (!throbberLabel.isAttached()) {
                 throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
                 throbberLabel.addStyleName("throbber"); //$NON-NLS-1$

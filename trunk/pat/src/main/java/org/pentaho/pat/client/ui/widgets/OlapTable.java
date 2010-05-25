@@ -26,6 +26,7 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
@@ -165,10 +166,15 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         this.olapData = olapData;
         initTable();
         // can't see any effect with that
-        table.reload();
-        table.redraw();
+        //table.reload();
+        //table.redraw();
         //table.fillWidth();
-        this.layout();
+        WidgetHelper.revalidate(table);
+        /*table.invalidate();
+        table.layout();
+        layoutPanel.invalidate();
+        layoutPanel.layout();
+        this.layout();*/
     }
 
     /**
@@ -240,5 +246,12 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     public void onQueryStartExecution(String queryId) {
         // TODO Auto-generated method stub
         
+    }
+
+    public void test(){
+        table.reload();
+        table.redraw();
+        //table.fillWidth();
+        this.layout();
     }
 }

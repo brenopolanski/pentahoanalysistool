@@ -255,7 +255,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         });
 
         
-        final DataPanel dPanel = new DataPanel(queryId, PanelUtil.PanelType.QM);
+        final DataPanel dPanel = new DataPanel(queryId, PanelUtil.PanelType.QM, this);
         final PropertiesPanel pPanel = new PropertiesPanel(dPanel, PanelUtil.PanelType.QM);
         
         // FIXME remove that and use style 
@@ -317,5 +317,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         
     }
 
+    public void setWestPanelVisible(boolean istrue){
+    	westPanel.setVisible(istrue);
+    	baselayoutPanel.invalidate();
+    	baselayoutPanel.layout();
+    }
 }
 
