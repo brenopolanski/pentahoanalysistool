@@ -374,19 +374,21 @@ public class PatCellSetFormatter {
                 final List<String> memberPath = new ArrayList<String>();
                 expanded = false;
                 Boolean exit = false;
-                for (int z = i+1; z < axis.getPositionCount() && exit == false; z++) {
-                    for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
-                        if (member != null && exit == false) {
-                            if (!member.getUniqueName().equals(possibleChild.getUniqueName())) {
-                                if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
+                if (member != null) {
+                    for (int z = i+1; z < axis.getPositionCount() && exit == false; z++) {
+                        for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
+                            
+                            if (member.getUniqueName().equals(possibleChild.getUniqueName())) {
+                                break;
+                            }
+                            else if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
 
                                     expanded = true;
                                     exit = true;
                                     break;
-                                }
+                                
                             }
-                            else
-                                exit = true;
+//                          
                         }
                     }
                 }
