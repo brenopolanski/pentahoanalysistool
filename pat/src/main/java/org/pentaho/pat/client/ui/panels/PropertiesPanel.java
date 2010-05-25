@@ -181,6 +181,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             	if(executemode==false){
             		Pat.executeQuery(PropertiesPanel.this, queryId);
             		executemode=true;
+            		dPanel.swapWindows();
             		executeButton.setText("Edit Query");
             	}
             	else{
