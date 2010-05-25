@@ -373,15 +373,22 @@ public class PatCellSetFormatter {
                 final Member member = members[y];
                 final List<String> memberPath = new ArrayList<String>();
                 expanded = false;
-                for (int z = i+1; z < axis.getPositionCount(); z++) {
-                        for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
-                            if (member != null) {
-                                if (!member.equals(possibleChild) && possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
+                Boolean exit = false;
+                for (int z = i+1; z < axis.getPositionCount() && exit == false; z++) {
+                    for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
+                        if (member != null && exit == false) {
+                            if (!member.getUniqueName().equals(possibleChild.getUniqueName())) {
+                                if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
+
                                     expanded = true;
+                                    exit = true;
                                     break;
                                 }
                             }
+                            else
+                                exit = true;
                         }
+                    }
                 }
                 if (member != null)
                     memberPath.add(member.getUniqueName());
