@@ -178,16 +178,35 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * org.pentaho.pat.rpc.dto.CellDataSet)
      */
     public void onQueryExecuted(final String query, final CellDataSet matrix) {
-        if (query.equals(queryId) && this.isAttached()) {
+
+    	if(this.dPaneltype == PanelUtil.PanelType.MDX){
+    	if (query.equals(queryId) && this.isAttached()) {
             if (throbberLabel.isAttached()) {
                 baseLayoutPanel.remove(throbberLabel);
             }
-           // swapWindows();
+            if (mainLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(mainLayoutPanel);
+            }
+            baseLayoutPanel.setLayout(new BorderLayout());
+            baseLayoutPanel.add(fillLayoutPanel);
+            baseLayoutPanel.layout();
             if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
                 olapTable.setData(matrix);
                 ofcPanel.onQueryExecuted(matrix);
             }
         }
+    	}
+    	else{
+    	if (query.equals(queryId) && this.isAttached()) {
+            if (throbberLabel.isAttached()) {
+                baseLayoutPanel.remove(throbberLabel);
+            }
+            if (Pat.getCurrQuery() != null && queryId == Pat.getCurrQuery() && this.isAttached()) {
+                olapTable.setData(matrix);
+                ofcPanel.onQueryExecuted(matrix);
+            }
+        }
+    	}
     }
 
     public void swapWindows(){
@@ -225,7 +244,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     public void onQueryStartExecution(String queryId) {
         if (queryId.equals(this.queryId)) {
-            	//swapWindows();
+
             if (!throbberLabel.isAttached()) {
                 throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
                 throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
