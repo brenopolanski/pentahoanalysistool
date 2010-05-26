@@ -422,7 +422,6 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
         List<Level> levelList = query.getCube().getHierarchies().get(hierarchyName).getLevels();
-        
         List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Level dim : levelList) {
         	List<String> lst = new ArrayList<String>();

@@ -7,6 +7,7 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
+import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel.LabelType;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -27,14 +28,16 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		IQueryListener {
 
 	private SimplePanelDragControllerImpl dragController;
-
-	public DimensionTreeWidget(SimplePanelDragControllerImpl dragController) {
+	private FastTree t;
+	private DimensionPanel parentPanel;
+	public DimensionTreeWidget(SimplePanelDragControllerImpl dragController, DimensionPanel dimensionPanel) {
+		this.parentPanel = dimensionPanel;
 		this.dragController = dragController;
 		this.getLayoutPanel().add(onInitialize());
 	}
 
 	protected Widget onInitialize() {
-		final FastTree t = new FastTree();
+		t = new FastTree();
 		lazyCreateChild(t.getTreeRoot(), 0, 50);
 
 		t.addBeforeOpenHandler(new BeforeOpenHandler<FastTreeItem>() {
@@ -68,7 +71,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
-													MeasureLabel.LabelType.HIERARCHY,fti);
+													MeasureLabel.LabelType.HIERARCHY,fti, parentPanel.isUniqueNameLabel());
 											label.setDragController(dragController);
 											if(parentlabel.isDraggable()){
 											label.makeDraggable();
@@ -103,7 +106,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											FastTreeItem fti = new FastTreeItem();
 											MeasureLabel label = new MeasureLabel(arg0.get(i).getParents(), arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
-													MeasureLabel.LabelType.LEVEL, fti);
+													MeasureLabel.LabelType.LEVEL, fti, parentPanel.isUniqueNameLabel());
 											label.setDragController(dragController);
 											if(w.isDraggable()){
 											label.makeDraggable();
@@ -140,9 +143,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											path.addAll(arg0.get(0).getParents());
 
 											FastTreeItem fti = new FastTreeItem();
-											MeasureLabel label = new MeasureLabel(path, "",
+											MeasureLabel label = new MeasureLabel(path, arg0.get(i).getName(),
 													arg0.get(i).getCaption(),
-													MeasureLabel.LabelType.MEMBER, fti);
+													MeasureLabel.LabelType.MEMBER, fti, parentPanel.isUniqueNameLabel());
 											label.setDragController(dragController);
 											label.makeDraggable();
 											fti.setWidget(label);
@@ -172,7 +175,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								for (int i = 0; i< arg0.size(); i++){
 								FastTreeItem fti = new FastTreeItem();
 								MeasureLabel label = new MeasureLabel(list, arg0.get(i).getName(), arg0.get(i).getCaption(), 
-										MeasureLabel.LabelType.MEASURE, fti);
+										MeasureLabel.LabelType.MEASURE, fti, parentPanel.isUniqueNameLabel());
 								label.setDragController(dragController);
 								label.makeDraggable();
 								fti.setWidget(label);
@@ -227,10 +230,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 							final FastTreeItem item = new FastTreeItem();
 							if(arg0[i].equals("Measures")){
 								label = new MeasureLabel(path ,arg0[i], arg0[i],
-										MeasureLabel.LabelType.MEASURE, item);
+										MeasureLabel.LabelType.MEASURE, item, parentPanel.isUniqueNameLabel());
 							}else{
 								label = new MeasureLabel(path ,arg0[i], arg0[i],
-									MeasureLabel.LabelType.DIMENSION, item);
+									MeasureLabel.LabelType.DIMENSION, item, parentPanel.isUniqueNameLabel());
 							}
 							label.setDragController(dragController);
 							label.makeDraggable();
@@ -264,5 +267,4 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		// TODO Auto-generated method stub
 		
 	}
-
 }

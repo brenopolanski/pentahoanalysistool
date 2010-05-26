@@ -52,7 +52,7 @@ public class DimensionSimplePanel extends SimplePanel {
 	 * Create a flextable widget for the DimensionDropWidget.
 	 * 
 	 */
-	public DimensionSimplePanel(final IAxis axis, int[] coord) {
+	public DimensionSimplePanel(final IAxis axis) {
 		super();
 		this.setStyleName(TABLE_CSS_NAME);
 		this.setSize("100", "100");

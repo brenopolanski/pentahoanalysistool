@@ -18,8 +18,10 @@ public class QueryDesignTable extends LayoutComposite implements
 
 	FlexTable flex = new FlexTable();
 	private Object queryID;
+	private boolean isfilter;
 
-	public QueryDesignTable(String queryID) {
+	public QueryDesignTable(String queryID, boolean isfilter) {
+		this.isfilter = isfilter;
 		ScrollLayoutPanel slp = new ScrollLayoutPanel();
 		this.queryID = queryID;
 		slp.add(flex);
@@ -30,14 +32,14 @@ public class QueryDesignTable extends LayoutComposite implements
 
 	public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
 		int row = 0;
-		if (axis.equals(IAxis.ROWS)) {
+		if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
 			while (flex.isCellPresent(row, coords[1]) == true) {
 
 				flex.removeCell(row, coords[1]);
 				row++;
 			}
 		}
-		if(axis.equals(IAxis.COLUMNS)){
+		if(!isfilter && axis.equals(IAxis.COLUMNS)){
 			flex.removeRow(coords[0]);
 		}
 	}
@@ -45,7 +47,7 @@ public class QueryDesignTable extends LayoutComposite implements
 	public void alterSelectionDisplay(MeasureLabel targetLabel,
 			StringTree labels) {
 
-		if (targetLabel.getAxis().equals(IAxis.ROWS)) {
+		if ((targetLabel.getAxis().equals(IAxis.ROWS) && !isfilter)|| (isfilter && targetLabel.getAxis().equals(IAxis.FILTER))) {
 
 			DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel
 					.getParent());
@@ -93,7 +95,7 @@ public class QueryDesignTable extends LayoutComposite implements
 
 			}
 
-		} else if (targetLabel.getAxis().equals(IAxis.COLUMNS)) {
+		} else if (!isfilter && targetLabel.getAxis().equals(IAxis.COLUMNS)) {
 
 			DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel
 					.getParent());

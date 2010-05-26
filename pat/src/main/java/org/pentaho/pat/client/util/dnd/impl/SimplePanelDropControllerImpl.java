@@ -84,7 +84,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 		} else {
 			MeasureLabel label = new MeasureLabel(originalLabel.getValue(),
 					originalLabel.getActualName(), originalLabel.getText(),
-					originalLabel.getType(), originalLabel.getParentNode());
+					originalLabel.getType(), originalLabel.getParentNode(), originalLabel.isUniqueName());
 			label.setDragController(originalLabel.getDragController());
 			label.makeDraggable();
 			label.enableSinkEvents();
