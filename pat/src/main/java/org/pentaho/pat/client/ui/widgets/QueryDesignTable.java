@@ -31,7 +31,7 @@ public class QueryDesignTable extends LayoutComposite implements
 	}
 
 	public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
-		int row = 0;
+		int row = coords[0];
 		if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
 			while (flex.isCellPresent(row, coords[1]) == true) {
 
