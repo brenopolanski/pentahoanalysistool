@@ -45,6 +45,7 @@ public interface IGuiImages extends ImageBundle {
      */
     AbstractImagePrototype cube();
 
+    AbstractImagePrototype downbutton();
     /**
      * 
      *Close Tab Image

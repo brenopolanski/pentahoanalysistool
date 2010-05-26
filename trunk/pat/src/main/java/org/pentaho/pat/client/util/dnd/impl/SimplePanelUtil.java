@@ -427,8 +427,37 @@ public class SimplePanelUtil {
 
 
 	public static void clearMember(DragContext context, Widget draggable,
-			int[] coord, IAxis axis) {
-		// TODO Auto-generated method stub
+			final int[] coord, final IAxis axis) {
+		final MeasureLabel label = ((MeasureLabel)draggable);
+		ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED, 
+				label.getValue().get(0), new AsyncCallback<Object>(){
+
+					public void onFailure(Throwable arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void onSuccess(Object arg0) {
+						ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), label.getValue().get(0),
+								label.getCurrentSelection(), new AsyncCallback<Object>(){
+
+									public void onFailure(Throwable arg0) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onSuccess(Object arg0) {
+										GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(Pat.getCurrQuery(), 
+												label, coord, axis);
+									}
+							
+						});	
+						
+					}
+			
+		});
+
+
 		
 	}
 

@@ -5,6 +5,9 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ILabelListener;
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
@@ -12,10 +15,16 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
@@ -56,21 +65,10 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 
 	private FastTreeItem parentNode;
 
-    /**
-     * Create a measure label (with no predefined caption).
-     * @param valure
-     * @param lType
-     */
-    public MeasureLabel(final List<String> value, final LabelType lType) {
-        super();
-        text.setText(value.get(0));
-        this.add(text);
-        setStylePrimaryName(TABLE_DRAG_WIDGET);
-        this.setType(lType);
-        this.setValue(value);
-    }
-    
-    public MeasureLabel(final List<String> parents, final String name, 
+	private boolean buttonVisible;
+    private Button image;
+    @SuppressWarnings("deprecation")
+	public MeasureLabel(final List<String> parents, final String name, 
     		final String caption, final LabelType lType, FastTreeItem parentNode, boolean isuniquename) {
         super();
         this.setParentNode(parentNode);
@@ -80,7 +78,29 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
         	text.setText(caption);
         }
         this.setIsUniqueName(isuniquename);
-        this.add(text);
+        HorizontalPanel container = new HorizontalPanel();
+        container.add(text);
+        final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu(this.getType());
+
+         image = new Button("M");
+         image.addClickListener(new ClickListener() {
+			
+			public void onClick(Widget sender) {
+				selectionMenu.showContextMenu(MeasureLabel.this);
+				 final int left = sender.getAbsoluteLeft() + 10;
+			        final int top = sender.getAbsoluteTop() + 10;
+			        
+			        selectionMenu.setPopupPositionAndShow(new PositionCallback() {
+		                public void setPosition(final int offsetWidth, final int offsetHeight) {
+		                     selectionMenu.setPopupPosition(left, top);
+		                }
+		            });
+			}
+		});
+         
+         image.setVisible(false);
+        container.add(image);
+        this.add(container);
         this.setActualName(name);
         this.setCaption(caption);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
@@ -113,31 +133,6 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     
     public String getCaption(){
     	return caption;
-    }
-
-	/**
-     * Create a measure label.
-     * 
-     * @param text2
-     * @param type2
-     * @param dragController2
-     */
-    /*public MeasureLabel(final List<String> string, final String caption, final LabelType lType, final SimplePanelDragControllerImpl dragController2,
-            boolean draggable) {
-        this(string, null, caption, lType);
-        this.dragController = dragController2;
-
-        if (draggable == true) {
-            this.makeDraggable();
-        }
-    }*/
-
-    public void enableSinkEvents(){
-    	this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
-    }
-    
-    public void disableSinkEvents(){
-    	this.unsinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
     }
     
     
@@ -218,26 +213,9 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 		return value;
 	}
 	
-	
-	@Override
-    public void onBrowserEvent(final Event event) {
-        super.onBrowserEvent(event);
-        switch (DOM.eventGetType(event)) {
-        case Event.ONCONTEXTMENU:
-        	final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu(this.getType());
-            // test.showContextMenu(event, getSelectedItem().getText(), getSelectedItem().getTree());
-            selectionMenu.showContextMenu(event, this);
-            selectionMenu.setPopupPositionAndShow(new PositionCallback() {
-                public void setPosition(final int offsetWidth, final int offsetHeight) {
-                    selectionMenu.setPopupPosition(event.getClientX(), event.getClientY());
-                }
-            });	
-        case Event.ONCLICK:
-        	break;
-        default:
-            break;
-        }
-    }
+	public void setDownButtonVisible(boolean isVisible){
+		this.image.setVisible(isVisible);
+	}
 
 	public void setAxis(IAxis axis) {
 		this.axis=axis;

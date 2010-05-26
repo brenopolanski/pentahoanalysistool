@@ -87,7 +87,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 					originalLabel.getType(), originalLabel.getParentNode(), originalLabel.isUniqueName());
 			label.setDragController(originalLabel.getDragController());
 			label.makeDraggable();
-			label.enableSinkEvents();
+			label.setDownButtonVisible(true);
+			//label.enableSinkEvents();
 			dropTarget.setWidget(label);
 
 			originalLabel.makeNotDraggable();
