@@ -66,7 +66,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 	private FastTreeItem parentNode;
 
 	private boolean buttonVisible;
-    private Button image;
+    private Image image;
     @SuppressWarnings("deprecation")
 	public MeasureLabel(final List<String> parents, final String name, 
     		final String caption, final LabelType lType, FastTreeItem parentNode, boolean isuniquename) {
@@ -82,7 +82,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
         container.add(text);
         final MeasureLabelSelectionModeMenu selectionMenu = new MeasureLabelSelectionModeMenu(this.getType());
 
-         image = new Button("M");
+         image = Pat.IMAGES.downbutton().createImage();
          image.addClickListener(new ClickListener() {
 			
 			public void onClick(Widget sender) {
@@ -169,7 +169,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     	if(draggable==false){
     	this.draggable=true;
     	
-        dragController.makeDraggable(MeasureLabel.this);
+        dragController.makeDraggable(text);
     	}
     }
 
@@ -179,7 +179,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     public void makeNotDraggable() {
     	if(draggable==true){
     	this.draggable=false;
-        dragController.makeNotDraggable(MeasureLabel.this);
+        dragController.makeNotDraggable(text);
     	}
     }
 
