@@ -666,7 +666,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
             } else {
 
-                final Selection collapseselection = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
+                final Selection collapseSelChildren = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
+                final Selection collapseSelIncludeChildren = queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                 MemberCell collapsemember = member;
                 while (collapsemember.getRightOf() != null) {
                     if (collapsemember.getRightOf().getUniqueName() != null
@@ -678,7 +679,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         // Get the Olap4J member.
                         final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember.getRightOf(), cellSet);
 
-                        collapseselection.addContext(queryDimension2.createSelection(memberFetched2));
+                        collapseSelChildren.addContext(queryDimension2.createSelection(memberFetched2));
+                        collapseSelIncludeChildren.addContext(queryDimension2.createSelection(memberFetched2));
 
                     }
 
@@ -686,9 +688,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     collapsemember = collapsemember.getRightOf();
                 }
 
-                final List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseselection);
+                List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseSelChildren);
+                queryDimension.getInclusions().removeAll(childSelections);
+                childSelections.clear();
+                childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseSelIncludeChildren);
                 queryDimension.getInclusions().removeAll(childSelections);
 
+                
                 Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
                 Integer size = queryDimension.getAxis().getDimensions().size();
                 for (int i = index+1; index >= 0 && i < size; i++) {
@@ -698,7 +704,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         qDim.getInclusions().removeAll(findResult);
                     }
                     if (member.getRightOf() == null) {
-                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseselection.getMember());
+                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren.getMember());
                         qDim.getInclusions().removeAll(findResult2);
                     }
 
