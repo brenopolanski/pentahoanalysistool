@@ -379,10 +379,10 @@ public class PatCellSetFormatter {
                         for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
                             
                             if (member.getUniqueName().equals(possibleChild.getUniqueName())) {
+                                exit = true;
                                 break;
                             }
                             else if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
-
                                     expanded = true;
                                     exit = true;
                                     break;
