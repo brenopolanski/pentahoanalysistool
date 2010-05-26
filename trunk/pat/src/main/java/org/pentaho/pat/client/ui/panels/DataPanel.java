@@ -87,8 +87,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         this.olapPanel = parent;
         this.queryId = query;
         this.dPaneltype = pType;
-        QueryDesignTable dropTable = new QueryDesignTable(this.queryId);
-        
+        QueryDesignTable dropTable = new QueryDesignTable(this.queryId, false);
+        QueryDesignTable filterTable = new QueryDesignTable(this.queryId, true);
         olapTable = new OlapTable();
         fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
         // FIXME remove that and use style
@@ -99,13 +99,16 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             mainLayoutPanel.setPadding(0);
 
                 
-        dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS, new int[]{0,1}));
-        dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS, new int[]{1,0}));
+        dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS));
+        dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS));
         dropTable.setSize("100%", "100%");
         
-       QueryTrashWidget trashPanel = new QueryTrashWidget();
-        
-        mainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
+        filterTable.setWidget(0, 0, new DimensionSimplePanel(IAxis.FILTER));
+        QueryTrashWidget trashPanel = new QueryTrashWidget();
+        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout());
+        subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
+        subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
+        mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
         mainLayoutPanel.add(trashPanel, new BoxLayoutData(200.0, 200.0));
         baseLayoutPanel.add(mainLayoutPanel);
         }

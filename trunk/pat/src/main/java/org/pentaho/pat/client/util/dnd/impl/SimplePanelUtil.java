@@ -27,16 +27,26 @@ public class SimplePanelUtil {
 			ft.insertCell(i, coordinate[1]+1);
 			}
 			ft
-			.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.ROWS, new int[]{coordinate[0], coordinate[1]+1}));
+			.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.ROWS));
 			}
 		
 		else if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.COLUMNS){
 			
 			ft.insertRow(coordinate[0]+1);
 			ft
-			.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS, new int[]{coordinate[0]+1, coordinate[1]}));
+			.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS));
 			
 			}
+		
+		else if(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis()==IAxis.FILTER){
+			for(int i = 0; i<ft.getRowCount(); i++){
+			ft.insertCell(i, coordinate[1]+1);
+			}
+			ft
+			.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.FILTER));
+			}
+		
+		
 		
 	}
 

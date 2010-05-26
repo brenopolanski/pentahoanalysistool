@@ -22,6 +22,8 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -30,6 +32,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
  * The dimension panel creates the axis dimension lists and facilitates the drag and drop of those widgets
@@ -41,6 +47,8 @@ import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
  */
 public class DimensionPanel extends LayoutComposite {
 
+	private final ToolButton checkButton1 = new ToolButton("Show Unique Names");
+	
     private final SimplePanelDragControllerImpl tRDragController = Application.SimplePanelDrgCont;
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
@@ -67,11 +75,32 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
-        final DimensionTreeWidget dimDropUnused = new DimensionTreeWidget(tRDragController);
+        
+        checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
+        
+        checkButton1.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent arg0) {
+				if(checkButton1.isChecked()){
+					GlobalConnectionFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, true);
+				}
+				else{
+					GlobalConnectionFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, false);
+				}
+				
+			}
+		});
+        final DimensionTreeWidget dimDropUnused = new DimensionTreeWidget(tRDragController, this);
+        mainPanel.add(checkButton1);
         mainPanel.add(dimDropUnused, new BoxLayoutData(FillStyle.BOTH, true));
         
         rootPanel.add(mainPanel);
 
     }
+    
+    public boolean isUniqueNameLabel(){
+    	return checkButton1.isChecked();
+    }
+
 
 }

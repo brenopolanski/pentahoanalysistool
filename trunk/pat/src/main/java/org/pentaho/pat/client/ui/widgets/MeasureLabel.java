@@ -5,8 +5,10 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
+import org.pentaho.pat.client.listeners.ILabelListener;
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
@@ -22,12 +25,13 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  * @author tom(at)wamonline.org.uk
  *
  */
-public class MeasureLabel extends FocusPanel {
+public class MeasureLabel extends FocusPanel implements ILabelListener{
 
     public enum LabelType {
         DIMENSION, MEASURE, ALLMEMBER, HIERARCHY, LEVEL, MEMBER
     }
 
+    private boolean isUniqueName;
     private final static String TABLE_DRAG_WIDGET = "dragDimension"; //$NON-NLS-1$
 
     private SimplePanelDragControllerImpl dragController;
@@ -40,6 +44,8 @@ public class MeasureLabel extends FocusPanel {
 
 	private String actualname;
 
+	private String caption;
+	
 	private IAxis axis;
 
 	private boolean draggable;
@@ -64,16 +70,33 @@ public class MeasureLabel extends FocusPanel {
         this.setValue(value);
     }
     
-    public MeasureLabel(final List<String> parents, final String name, final String caption, final LabelType lType, FastTreeItem parentNode) {
+    public MeasureLabel(final List<String> parents, final String name, 
+    		final String caption, final LabelType lType, FastTreeItem parentNode, boolean isuniquename) {
         super();
         this.setParentNode(parentNode);
-        text.setText(caption);
+        if(isuniquename){
+        	text.setText(name);
+        }else{
+        	text.setText(caption);
+        }
+        this.setIsUniqueName(isuniquename);
         this.add(text);
         this.setActualName(name);
+        this.setCaption(caption);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
         this.setType(lType);
         this.setValue(parents);
+        GlobalConnectionFactory.getLabelInstance().addLabelListener(MeasureLabel.this);
     }
+    public void setIsUniqueName(boolean isuniquename) {
+		this.isUniqueName= isuniquename;
+		
+	}
+    
+    public boolean isUniqueName(){
+    	return isUniqueName;
+    }
+
     public void setActualName(String name) {
 		actualname = name;
 		
@@ -81,6 +104,15 @@ public class MeasureLabel extends FocusPanel {
     
     public String getActualName(){
     	return actualname;
+    }
+
+    public void setCaption(String name) {
+		caption = name;
+		
+	}
+    
+    public String getCaption(){
+    	return caption;
     }
 
 	/**
@@ -242,4 +274,14 @@ public class MeasureLabel extends FocusPanel {
 		return parentNode;
 	}
 
+	public void onUniqueNameChange(Widget sender, boolean uniqueName) {
+		if(uniqueName){
+			text.setText(actualname);
+		}
+		else{
+			text.setText(caption);
+		}
+		this.setIsUniqueName(uniqueName);
+		
+	}
 }
