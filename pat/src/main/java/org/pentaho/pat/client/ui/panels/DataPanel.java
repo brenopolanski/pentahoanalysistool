@@ -105,7 +105,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         
         filterTable.setWidget(0, 0, new DimensionSimplePanel(IAxis.FILTER));
         QueryTrashWidget trashPanel = new QueryTrashWidget();
-        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout());
+        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
         subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
