@@ -93,7 +93,7 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
 
     }
 
-
+    @Deprecated
     public StringTree getMembers(final String sessionId, final String queryId, final String dimensionName)
             throws RpcException {
         try {

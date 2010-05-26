@@ -45,6 +45,7 @@ public interface IDiscoveryAsync {
     
     void getCubes(String sessionId, String connectionId, AsyncCallback<CubeItem[]> callback);
 
+    @Deprecated
     void getMembers(String sessionId, String queryId, String dimensionName, AsyncCallback<StringTree> callback);
     
     void getAllLevelProperties(String sessionId, String queryId, String dimensionName, AsyncCallback<List<LevelProperties>> callback);

@@ -95,6 +95,7 @@ public interface IDiscovery extends RemoteService {
      * @throws RpcException
      *             If something goes sour.
      */
+    @Deprecated
     @Secured( {"Users"})
     StringTree getMembers(String sessionId, String queryId, String dimensionName) throws RpcException;
     
