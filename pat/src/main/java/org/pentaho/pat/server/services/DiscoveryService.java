@@ -112,6 +112,7 @@ public interface DiscoveryService extends Service {
      * @throws OlapException
      *             If anything goes sour.
      */
+    @Deprecated
     @Secured( {"Users"})
     StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName) throws OlapException;
 

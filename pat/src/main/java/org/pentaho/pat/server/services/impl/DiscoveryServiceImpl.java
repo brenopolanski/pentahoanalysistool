@@ -305,6 +305,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
 		return st;
 	}
 	
+	@Deprecated
     public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);

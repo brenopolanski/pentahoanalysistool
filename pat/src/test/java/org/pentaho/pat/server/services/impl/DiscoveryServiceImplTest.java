@@ -123,8 +123,8 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		StringTree members = this.discoveryService.getMembers(userId, sessionId, queryId, "Region"); //$NON-NLS-1$ 
 		assertNotNull(members);
 		assertEquals("Region", members.getValue()); //$NON-NLS-1$
-		assertEquals(1, members.getChildren().size());
-		assertEquals(4, members.getChildren().get(0).getChildren().size());
+		assertEquals(5, members.getChildren().size());
+		assertEquals(0, members.getChildren().get(0).getChildren().size());
 		
 		// Release the session.
 		this.sessionService.releaseSession(userId, sessionId); 
