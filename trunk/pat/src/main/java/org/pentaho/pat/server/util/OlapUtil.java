@@ -204,9 +204,22 @@ public class OlapUtil {
 
                 if (selection.getSelectionContext() != null) {
                     for (Selection context : selection.getSelectionContext()) {
-                        if (context.getMember().getAncestorMembers().contains(parent)); {
+                        Member searchMember = context.getMember();
+                        boolean found = false;
+                        if (parent.equals(searchMember)) {
+                            found = true;
                             returnselections.add(selection);
                         }
+                        while (searchMember != null && searchMember.getParentMember() != null && found == false) {
+                            if (searchMember.getParentMember().getUniqueName().equals(parent.getUniqueName())) {
+                                returnselections.add(selection);
+                                found = true;
+                            }
+                            searchMember = searchMember.getParentMember();
+                        }
+//                        if (context.getMember().getAncestorMembers().contains(parent)); {
+//                            returnselections.add(selection);
+//                        }
 
                     }
                 }
