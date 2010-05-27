@@ -375,19 +375,44 @@ public class PatCellSetFormatter {
                 expanded = false;
                 Boolean exit = false;
                 if (member != null) {
+
+//                    System.out.println(" ");
+//                    System.out.println(" ");
+//                    System.out.println(" ");
+//                    System.out.println("############################# Member: " + member.getUniqueName() + " ######################");
                     for (int z = i+1; z < axis.getPositionCount() && exit == false; z++) {
-                        for (Member possibleChild : axis.getPositions().get(z).getMembers()) {
-                            
-                            if (member.getUniqueName().equals(possibleChild.getUniqueName())) {
+//                        System.out.println("------------------------------------POSITION " + z +" ------------------------------------");
+                        List<Member> posMembers = axis.getPositions().get(z).getMembers();
+                        for (int k = 0;k<posMembers.size();k++) {
+                            Member possibleChild = posMembers.get(k);
+                            if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
+                                expanded = true;
                                 exit = true;
                                 break;
+                            
                             }
-                            else if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
-                                    expanded = true;
+                            if (member.getUniqueName().equals(possibleChild.getUniqueName())) {
+                                if (posMembers.size() == 1) {
                                     exit = true;
                                     break;
-                                
+                                }
+                                else {
+                                    Boolean notExpanded = false;
+                                    for (int t = k+1;t<posMembers.size() && notExpanded == false;t++) {
+                                        if (posMembers.get(t).getParentMember().equals(axis.getPositions().get(z-1).getMembers().get(t))
+                                                ||
+                                                !axis.getPositions().get(z-1).getMembers().get(t).equals(posMembers.get(t))  ) {
+                                            
+                                            notExpanded = true;
+                                        }
+                                    }
+                                    if (!notExpanded) {
+                                        exit = true;
+                                        break;
+                                    }
+                                }
                             }
+                            
 //                          
                         }
                     }
