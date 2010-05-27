@@ -690,9 +690,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseSelChildren);
                 queryDimension.getInclusions().removeAll(childSelections);
-                childSelections.clear();
-                childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseSelIncludeChildren);
-                queryDimension.getInclusions().removeAll(childSelections);
+                
+                List<Selection> childSelections2 = OlapUtil.findChildrenSelections(queryDimension,collapseSelIncludeChildren);
+                queryDimension.getInclusions().removeAll(childSelections2);
 
                 
                 Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
@@ -703,7 +703,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
                         qDim.getInclusions().removeAll(findResult);
                     }
-                    if (member.getRightOf() == null) {
+                    for (Selection possibleContext : childSelections2) {
+                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
+                        qDim.getInclusions().removeAll(findResult);
+                    }
+                    if (member.getRightOf() == null) {        
                         List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren.getMember());
                         qDim.getInclusions().removeAll(findResult2);
                     }
@@ -1099,8 +1103,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             try {
                 connection.setCatalog(catalogs.get(k).getName());
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new OlapException("Error setting catalog: "+catalogs.get(k).getName(),e);
+
             }
             final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
             for (int j = 0; j < schemas.size(); j++) {
