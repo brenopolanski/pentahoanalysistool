@@ -128,15 +128,10 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
              throw new OlapException(e.getMessage(),e);
          }
 
-//        final NamedList<Catalog> catalogs = conn.getCatalogs();
-//        for (int k = 0; k < catalogs.size(); k++) {
-//            NamedList<Schema> schemas = catalogs.get(k).getSchemas();
-//            for (int j = 0; j < schemas.size(); j++) {
-//                NamedList<Cube> cubes = schemas.get(j).getCubes();
-//
-//                for (int i = 0; i < cubes.size(); i++) {
-//                    list.add(new CubeItem(cubes.get(i).getName(), cubes.get(i).getSchema().getCatalog().getName(),
-//                            cubes.get(i).getSchema().getName()));
+//        for (Catalog cat : conn.getCatalogs()) {
+//            for(Schema schem : cat.getSchemas()) {
+//                 for (Cube cub : schem.getCubes()) {
+//                      list.add(new CubeItem(cub.getName(), cat.getName(), schem.getName()));
 //                }
 //            }
 //        }
