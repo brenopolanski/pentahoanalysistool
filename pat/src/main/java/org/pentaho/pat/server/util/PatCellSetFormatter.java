@@ -388,7 +388,7 @@ public class PatCellSetFormatter {
                             if (possibleChild.getParentMember() !=  null && possibleChild.getParentMember().equals(member)) {
                                 expanded = true;
                                 exit = true;
-                                break;
+                                
                             
                             }
                             if (member.getUniqueName().equals(possibleChild.getUniqueName())) {
@@ -399,9 +399,7 @@ public class PatCellSetFormatter {
                                 else {
                                     Boolean notExpanded = false;
                                     for (int t = k+1;t<posMembers.size() && notExpanded == false;t++) {
-                                        if (posMembers.get(t).getParentMember().equals(axis.getPositions().get(z-1).getMembers().get(t))
-                                                ||
-                                                !axis.getPositions().get(z-1).getMembers().get(t).equals(posMembers.get(t))  ) {
+                                        if (!axis.getPositions().get(z-1).getMembers().get(t).equals(posMembers.get(t))  ) {
                                             
                                             notExpanded = true;
                                         }
