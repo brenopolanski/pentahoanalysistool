@@ -19,14 +19,19 @@
  */
 package org.pentaho.pat.server.util.serializer;
 
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
+import org.olap4j.OlapStatement;
 import org.olap4j.mdx.SelectNode;
+import org.olap4j.mdx.parser.MdxParser;
+import org.olap4j.mdx.parser.MdxValidator;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.query.Query;
@@ -40,165 +45,197 @@ import org.olap4j.query.QueryDimension;
  * @author pmac
  * 
  */
-public class QmQuery implements PatQuery {
+public class MdxQuery2 implements PatQuery {
 
-    private Query query;
+    private String catalog;
     private OlapConnection connection;
+    private String name;
+    private SelectNode select;
+    private String mdx;
+    private MdxParser mdxParser;
     
-    public QmQuery(OlapConnection connection, Query query) {
-        this.query = query;
+    public MdxQuery2(OlapConnection connection, String catalog) {
+        this(UUID.randomUUID().toString(),connection,catalog);
+    }
+    
+    public MdxQuery2(String name, OlapConnection connection, String catalog) {
+        this(name,connection,catalog,null);
+    }
+    
+    public MdxQuery2(String name, OlapConnection connection, String catalog, String mdx) {
+        this.name = name;
         this.connection = connection;
+        this.catalog = catalog;
+        this.mdx = mdx;
+        if (this.connection != null) {
+            this.mdxParser = connection.getParserFactory().createMdxParser(connection);
+            select = mdxParser.parseSelect(mdx);
+        }
+        else
+            throw new RuntimeException("connection of mdx query "+ name + " can not be null");
     }
     
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#execute()
      */
-    public org.olap4j.query.Query getQuery() {
-        return this.query;
+    public Query getQuery() {
+        return null;
     }
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#execute()
      */
     public CellSet execute() throws OlapException {
-        return query.execute();
+        OlapStatement stmt;
+        try {
+            if (this.catalog != null) {
+                this.connection.setCatalog(catalog);
+            }
+        } catch (SQLException e) {
+            throw new OlapException("Error setting catalog for MDX statement: '" + catalog + "'");
+        }
+
+        stmt = connection.createStatement();
+        if (mdx != null && mdx.length() > 0) {
+            validate();
+            return stmt.executeOlapQuery(mdx);
+        }
+            throw new OlapException("Can't execute blank or empty query");
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getAxes()
      */
     public Map<Axis, QueryAxis> getAxes() {
-        return query.getAxes();
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getAxis(org.olap4j.Axis)
      */
     public QueryAxis getAxis(Axis axis) {
-        return query.getAxis(axis);
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getCatalog()
      */
     public Catalog getCatalog() {
-        return query.getCube().getSchema().getCatalog();
+        throw new UnsupportedOperationException();
     }
     
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getCatalogName()
      */
     public String getCatalogName() {
-        return query.getCube().getSchema().getCatalog().getName();
+        return this.catalog;
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getCube()
      */
     public Cube getCube() {
-        return query.getCube();
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getDimension(java.lang.String)
      */
     public QueryDimension getDimension(String name) {
-        return query.getDimension(name);
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getLocale()
      */
     public Locale getLocale() {
-        return query.getLocale();
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getMdx()
      */
     public String getMdx() {
-        return query.getSelect().toString();
+        return this.mdx;
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getName()
      */
     public String getName() {
-        return query.getName();
+        return this.name;
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getSelect()
      */
     public SelectNode getSelect() {
-        return query.getSelect();
+        return this.select;
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#getUnusedAxis()
      */
     public QueryAxis getUnusedAxis() {
-        return query.getUnusedAxis();
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#setCatalog(java.lang.String)
      */
     public void setCatalog(String catalogName) {
-        throw new UnsupportedOperationException();
+        this.catalog = catalogName;
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#setMdx()
      */
     public void setMdx(String mdx) {
-        throw new UnsupportedOperationException();
+        this.mdx = mdx;
+        this.select = mdxParser.parseSelect(mdx);
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#setSelectDefaultMembers(boolean)
      */
     public void setSelectDefaultMembers(boolean selectDefaultMembers) {
-        query.setSelectDefaultMembers(selectDefaultMembers);
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#swapAxes()
      */
     public void swapAxes() {
-        query.swapAxes();
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#tearDown(boolean)
      */
     public void tearDown(boolean closeConnection) {
-        query.tearDown(closeConnection);
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#tearDown()
      */
     public void tearDown() {
-        query.tearDown();
-
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
      * @see org.pentaho.pat.server.util.serializer.Query#validate()
      */
     public void validate() throws OlapException {
-        query.validate();
+        MdxValidator mdxValidator =
+            connection.getParserFactory().createMdxValidator(connection);
+        mdxValidator.validateSelect(select);
     }
-    
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.server.util.serializer.Query#getCubeName()
-     */
     public String getCubeName() {
-        return getCube().getUniqueName();
+        throw new UnsupportedOperationException();
     }
 
     public OlapConnection getConnection() {
-        return connection;
+        return this.connection;
     }
 
     public void setConnection(OlapConnection connection) {
