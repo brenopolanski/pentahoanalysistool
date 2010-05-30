@@ -27,6 +27,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.mdx.SelectNode;
+import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
@@ -38,7 +39,7 @@ import org.olap4j.query.QueryDimension;
  * @author pmac
  * 
  */
-public interface Query {
+public interface PatQuery {
     
     public org.olap4j.query.Query getQuery();
 
@@ -58,12 +59,18 @@ public interface Query {
     /**
      * Sets the MDX for the Query Object 
      */
-    public void setMdx();
+    public void setMdx(String mdx);
     
     /**
      * Gets the Catalog of the Query Object
      */
+    public Catalog getCatalog();
+    
     public String getCatalogName();
+    
+    public OlapConnection getConnection();
+    
+    public void setConnection(OlapConnection connection);
     
     /**
      * Sets the Catalog for the Query Object
@@ -138,7 +145,7 @@ public interface Query {
      * been placed on an axis but no selections were performed on it,
      * the default hierarchy and default member will be selected. This
      * can be turned off by invoking the
-     * {@link Query#setSelectDefaultMembers(boolean)} method.
+     * {@link PatQuery#setSelectDefaultMembers(boolean)} method.
      * @throws OlapException If the query is not valid, an exception
      * will be thrown and it's message will describe exactly what to fix.
      */

@@ -46,10 +46,10 @@ import org.w3c.dom.Element;
  */
 public class QuerySerializer {
     
-    private Query query;
+    private PatQuery query;
     Document dom;
     
-    public QuerySerializer(Query query) {
+    public QuerySerializer(PatQuery query) {
         this.query = query;
     }
     
@@ -94,7 +94,7 @@ public class QuerySerializer {
         if (StringUtils.isNotBlank(query.getCatalogName())) {
             rootEle.setAttribute("catalog", query.getCatalogName());
         }
-        
+                
         rootEle = appendQmQuery(rootEle);
         
         dom.appendChild(rootEle);
