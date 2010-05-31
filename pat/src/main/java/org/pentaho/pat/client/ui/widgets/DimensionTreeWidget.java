@@ -120,7 +120,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								});
 					} else if (labelType != null
 							&& labelType == LabelType.LEVEL) {
-						MeasureLabel w =(MeasureLabel) parentItem.getWidget();
+						final MeasureLabel w =(MeasureLabel) parentItem.getWidget();
 						String dimname = w.getValue().get(0);
 						String hiername = w.getValue().get(1);
 						String levelName = w.getValue().get(2);
@@ -147,7 +147,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 													arg0.get(i).getCaption(),
 													MeasureLabel.LabelType.MEMBER, fti, parentPanel.isUniqueNameLabel());
 											label.setDragController(dragController);
+											if(w.isDraggable()){
 											label.makeDraggable();
+											}
 											fti.setWidget(label);
 											fti.becomeLeaf();
 											parentItem.addItem(fti);
