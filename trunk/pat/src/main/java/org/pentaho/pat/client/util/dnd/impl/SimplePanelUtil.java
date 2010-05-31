@@ -286,7 +286,7 @@ public class SimplePanelUtil {
 								label.setSelectionType("MEMBER");
 								label.setAxis(((DimensionSimplePanel)context.finalDropController.getDropTarget()).getAxis());
 								ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), label.getText(), label.getValue(), "level",
-							            "MEMBER", new AsyncCallback<StringTree>(){
+							            "CHILDREN", new AsyncCallback<StringTree>(){
 
 											public void onFailure(Throwable arg0) {
 												// TODO Auto-generated method stub

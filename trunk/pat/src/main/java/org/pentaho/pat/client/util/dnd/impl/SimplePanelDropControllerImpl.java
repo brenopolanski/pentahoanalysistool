@@ -95,6 +95,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 			originalLabel.makeNotDraggable();
 
 			if (originalLabel.getType() == MeasureLabel.LabelType.DIMENSION) {
+				FastTreeItem fti = originalLabel.getParentNode();
+
+				((MeasureLabel)fti.getWidget()).makeNotDraggable();
+				for (int i = 0; i < fti.getChildCount(); i++) {
+					
+					disableDrag(fti.getChild(i));
+					
+				}	
 				SimplePanelUtil
 						.moveDimension(context, label, originalLabel);
 			} else if (originalLabel.getType() == MeasureLabel.LabelType.HIERARCHY) {
@@ -156,7 +164,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController
 
 		((MeasureLabel) fti.getChild(i).getWidget()).makeDraggable();
 		for(int j =0; j<fti.getChild(i).getChildCount(); j++){
-			enableDrag(fti.getChild(j));
+			enableDrag(fti.getChild(i).getChild(j));
 		}
 		}
 	}
