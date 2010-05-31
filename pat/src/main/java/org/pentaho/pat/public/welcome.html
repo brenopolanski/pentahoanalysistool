@@ -10,13 +10,23 @@
         <!-- Styles  -->
 
         <link rel="stylesheet" href="styles.css" type="text/css">
+        
+                    <script type="text/javascript" src="jquery.js"></script>
+            <script type="text/javascript" src="jfeed.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#news').rssfeed('http://www.analytical-labs.com/?q=rss.xml', {
+                        limit: 1
+                    });
+                });
+            </script> 
     </head>
     <body>
         <div id="doc3" class="yui-t6">
             <!-- Header -->
             <div id="hd" role="banner">
-            	<h1>PAT Analysis Tool</h1>
-            	<hr />
+                <h1>PAT Analysis Tool</h1>
+                <hr />
 
             </div>
             <div id="bd" role="main">
@@ -42,29 +52,25 @@
                             <!-- Video -->
                             <div id="video" class="yui-u">
                             <a href="http://www.youtube.com/watch?v=ao7G4RZcFv8" target="_blank">
-                            	<img src="images/youtube.gif" alt="Demo Video" />
-                           	</a>
+                                <img src="images/youtube.gif" alt="Demo Video" />
+                                </a>
                                 
 
                             </div>
                         </div>
                         <hr/>
                         <!-- News -->
-                        <div id="news" class="yui-g">
-                            <h3><img src="images/newspaper_24.jpg" alt="News" /> News</h3>
-                            <p class="small-bottom"><strong>11th of May, 2010</strong></p>
-
-                            <p>After a 10 days long PAT hackfest in the UK we have reached now the final intensive sprint-phase before we release PAT 1.0.
-This would be a perfect time to get on board and help us with testing, design issues or anything else! PAT needs you!
-<br>If you are interested in helping please get in <a href="http://groups.google.com/group/pentahoanalysistool-dev">contact</a>.</p>
-                        </div>
+                        <div class="yui-g">
+                                <h3><img src="images/newspaper_24.jpg" alt="News" /> News</h3>
+                                <p id="news" class="small-bottom"></p>
+                            </div>
                     </div>
                 </div>
                 <div id="sidebar" class="yui-b">
                     <h3>Donate</h3>
                     <p>PAT development and infrastructure maintenance is a full-spare-time project and we do have expenses to cover. Donations would help a lot to keep this project going and even push it's progress.</p>
                     <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%2estoellberger%40gmail%2ecom&lc=GB&item_name=PAT%20Project&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
-                    	<img src="images/donate.gif" alt="Donate" /> 
+                        <img src="images/donate.gif" alt="Donate" /> 
                     </a>
                     <br />
                     <br />
