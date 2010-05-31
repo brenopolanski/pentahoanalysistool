@@ -399,7 +399,7 @@ public interface QueryService extends Service {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    void drillPosition(String userId, String sessionId, String queryId, DrillType drillType, MemberCell member)
+    StringTree drillPosition(String userId, String sessionId, String queryId, DrillType drillType, MemberCell member)
             throws OlapException;
 
     /**
