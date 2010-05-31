@@ -1,6 +1,5 @@
 package org.pentaho.pat.server.util.serializer;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -33,12 +31,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+
 public class QueryDeserializer {
 
     private static PatQuery query;
     private static Document dom;
     private static Query qm;
-    private static String mdx;
+    private static String xml;
     private static OlapConnection connection;
     private static InputSource source;
     final private static XPath xpath = XPathFactory.newInstance().newXPath();
@@ -46,7 +45,7 @@ public class QueryDeserializer {
     public static PatQuery unparse(String xml, OlapConnection connection) throws Exception {
         
         QueryDeserializer.connection = connection;
-        
+        QueryDeserializer.xml = xml;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db;
         try {
@@ -54,7 +53,8 @@ public class QueryDeserializer {
         } catch (ParserConfigurationException e) {
             throw new Exception("error creating document config");
         }
-        source = new InputSource(new BufferedInputStream(new ByteArrayInputStream(xml.getBytes())));
+        
+        source = new InputSource((new ByteArrayInputStream(xml.getBytes())));
         
 
         dom = db.parse((new InputSource(new StringReader(xml))));
@@ -114,6 +114,8 @@ public class QueryDeserializer {
                 qm = createEmptyQuery(queryName,catalogName, cubeName);
 
                 manipulateQuery();
+                return new QmQuery(connection,qm);
+                
             } catch (OlapException e) {
                 throw new QueryParseException(e.getMessage(),e);
             }
@@ -124,7 +126,7 @@ public class QueryDeserializer {
             throw new QueryParseException("Cannot parse Query Model: Query node not found and/or more than 1 Query node found");
         }
 
-        return null;
+
     }
 
     private static void manipulateQuery() throws OlapException {
@@ -142,6 +144,8 @@ public class QueryDeserializer {
             if (attrNode != null && StringUtils.isNotBlank(attrNode.getNodeValue())) {
                 location = attrNode.getNodeValue();
             }
+            else 
+                throw new OlapException("Location for Axis Element can't be null");
             
             QueryAxis qAxis = qm.getAxes().get(getAxisName(location));
             
@@ -173,15 +177,12 @@ public class QueryDeserializer {
                 }
             }
             
-            String searchPath = "/Query/QueryModel/Axes/Axis[@location=\"" + location + "\"//Dimension]";
+            String searchPath = "/Query/QueryModel/Axes/Axis[@location=\"" + location + "\"]//Dimension";
             System.out.println(searchPath);
             NodeList dimensions = null;
             try {
-                dimensions = (NodeList) xpath.evaluate(searchPath, source, XPathConstants.NODESET);
-                for (int k = 0; k < dimensions.getLength();k++) {
-                    
-                    processDimension(dimensions, location);
-                }
+                dimensions = (NodeList) xpath.evaluate(searchPath, dom, XPathConstants.NODESET);
+                processDimension(dimensions, location);
             } catch (XPathExpressionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -199,8 +200,12 @@ public class QueryDeserializer {
              Node attrNode = dimensions.item(z).getAttributes().getNamedItem("name");
             if (attrNode != null && StringUtils.isNotBlank(attrNode.getNodeValue())) {
                 String dimName = attrNode.getNodeValue();
+                dimName = dimName.substring(1,dimName.length() - 1);
+                System.out.println("dimName:"  + dimName);
                 QueryDimension dim = qm.getDimension(dimName);
                 
+                if (dim == null)
+                    throw new OlapException("Dimension not found:" + dimName);
                 
                 String sortOrder = null;
                 attrNode = dimensions.item(z).getAttributes().getNamedItem("sortOrder");
