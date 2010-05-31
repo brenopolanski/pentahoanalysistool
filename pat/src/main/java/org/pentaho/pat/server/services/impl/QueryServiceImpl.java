@@ -545,7 +545,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang. String, java.lang.String,
      * java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public void drillPosition(final String userId, final String sessionId, final String queryId, DrillType drillType,
+    public StringTree drillPosition(final String userId, final String sessionId, final String queryId, DrillType drillType,
             final MemberCell member) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = getQuery(userId, sessionId, queryId);
@@ -566,26 +566,22 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 // If its the left most dimension don't do anything apart from
                 // include.
                 if (member.getRightOf() == null) {
-                    final Selection selection;
                     switch (drillType) {
                     case POSITION:
-                        selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
-
-//                        queryDimension.getInclusions().remove(selection);
+                        //                        queryDimension.getInclusions().remove(selection);
 //                        queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        memberFetched.getChildMembers();
                         break;
                     case REPLACE:
                         if (member.getParentMember() != null) {
-                            selection = OlapUtil
-                                    .findSelection(member.getParentMember(), queryDimension.getInclusions());
                         } else {
-                            selection = OlapUtil.findSelection(member.getUniqueName(), queryDimension.getInclusions());
                         }
 
                         //queryDimension.getInclusions().remove(selection);
                         queryDimension.clearInclusions();
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        memberFetched.getChildMembers();
                         break;
                     default:
                         break;
@@ -717,6 +713,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
             }
         }
+        return null;
     }
 
     public String[][] drillThrough(final String userId, final String sessionId, final String queryId, final List<Integer> coordinates) throws OlapException {

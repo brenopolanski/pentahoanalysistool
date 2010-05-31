@@ -5,8 +5,6 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.layout.BoxLayout;
-import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ILabelListener;
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
@@ -14,13 +12,7 @@ import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -34,6 +26,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  * @author tom(at)wamonline.org.uk
  *
  */
+@SuppressWarnings("deprecation")
 public class MeasureLabel extends FocusPanel implements ILabelListener{
 
     public enum LabelType {
@@ -65,10 +58,8 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 
 	private FastTreeItem parentNode;
 
-	private boolean buttonVisible;
-    private Image image;
-    @SuppressWarnings("deprecation")
-	public MeasureLabel(final List<String> parents, final String name, 
+	private Image image;
+    public MeasureLabel(final List<String> parents, final String name, 
     		final String caption, final LabelType lType, FastTreeItem parentNode, boolean isuniquename) {
         super();
         this.setParentNode(parentNode);
