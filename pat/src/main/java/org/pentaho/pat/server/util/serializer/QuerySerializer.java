@@ -87,6 +87,10 @@ public class QuerySerializer {
 
         Element rootEle = dom.createElement("Query");
         
+        if (StringUtils.isNotBlank(query.getName())) {
+            rootEle.setAttribute("name", query.getName());
+        }
+        
         if (StringUtils.isNotBlank(query.getCubeName())) {
             rootEle.setAttribute("cube", query.getCubeName());
         }
@@ -94,7 +98,7 @@ public class QuerySerializer {
         if (StringUtils.isNotBlank(query.getCatalogName())) {
             rootEle.setAttribute("catalog", query.getCatalogName());
         }
-                
+                        
         rootEle = appendQmQuery(rootEle);
         
         dom.appendChild(rootEle);
