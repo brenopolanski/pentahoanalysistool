@@ -121,9 +121,12 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
-        final Selection selection = OlapUtil.findSelection(path, qDim);
+        //final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
+        for(int i=0; i<memberNames.size();i++){
+        final Selection selection = OlapUtil.findSelection(memberNames.get(i), qDim);
         qDim.getInclusions().remove(selection);
+        }
+        
 
     }
 

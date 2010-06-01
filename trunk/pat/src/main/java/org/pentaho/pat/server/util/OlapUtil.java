@@ -423,9 +423,9 @@ public class OlapUtil {
         /*for (final String name : memberNames) {
             buffer.append("[").append(name).append("]."); //$NON-NLS-1$ //$NON-NLS-2$
         }*/
-        for (final String name: memberNames){
+        /*for (final String name: memberNames){
         	buffer.append(name);
-        }
+        }*/
         /*if (buffer.length() > 0)
             buffer.deleteCharAt(buffer.length() - 1); // Remove the last "."
 */
