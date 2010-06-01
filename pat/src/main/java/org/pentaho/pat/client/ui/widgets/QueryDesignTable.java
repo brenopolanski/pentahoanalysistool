@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.pentaho.pat.client.listeners.ISelectionListener;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -22,11 +24,17 @@ public class QueryDesignTable extends LayoutComposite implements
 
 	public QueryDesignTable(String queryID, boolean isfilter) {
 		this.isfilter = isfilter;
+		if(isfilter){
+		Label filterLabel = new Label(ConstantFactory.getInstance().filter());
+		this.getLayoutPanel().setLayout(new BoxLayout());
+		this.getLayoutPanel().add(filterLabel);
+		}
 		ScrollLayoutPanel slp = new ScrollLayoutPanel();
 		this.queryID = queryID;
 		slp.add(flex);
 		flex.setStylePrimaryName("pat-QueryDesignTable");
 		this.setSize("100%", "100%");
+		
 		this.getLayoutPanel().add(slp);
 	}
 
