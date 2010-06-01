@@ -54,7 +54,7 @@
 				</Level>
 			</Hierarchy>
 		</Dimension>
-		     <Dimension name='Scenario' foreignKey='TIME_ID'>
+		<!--     <Dimension name='Scenario' foreignKey='TIME_ID'>
                   <Hierarchy primaryKey='TIME_ID' hasAll='true'>
                     <InlineTable alias='foo'>
                       <ColumnDefs>
@@ -64,9 +64,8 @@
                     </InlineTable>
                     <Level name='Scenario' column='foo'/>
                   </Hierarchy>
-    </Dimension>
+    </Dimension>-->
 
-    <Measure name='Atomic Cell Count' aggregator='count'/> 
 		<Measure name="Quantity" column="QUANTITYORDERED" formatString="#,###" aggregator="sum">
 		</Measure>
 		<Measure name="Sales" column="TOTALPRICE" formatString="#,###" aggregator="sum">
