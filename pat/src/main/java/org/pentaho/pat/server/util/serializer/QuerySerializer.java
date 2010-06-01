@@ -216,8 +216,8 @@ public class QuerySerializer {
     private Element createSelectionsElement(Element rootElement, List<Selection> selections) {
         for (Selection sel : selections) {
             Element selection = dom.createElement("Selection");
-            selection.setAttribute("dimension", sel.getDimension().getUniqueName());
-            selection.setAttribute("member", sel.getMember().getUniqueName());
+            selection.setAttribute("dimension", sel.getDimension().getName());
+            selection.setAttribute("member", sel.getMember().getName());
             selection.setAttribute("operator", sel.getOperator().toString());
             
             if (sel.getSelectionContext() != null && sel.getSelectionContext().size() > 0) {

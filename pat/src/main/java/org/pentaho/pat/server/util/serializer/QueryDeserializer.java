@@ -24,11 +24,13 @@ import org.olap4j.metadata.Schema;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
+import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
 import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
 
@@ -222,7 +224,22 @@ public class QueryDeserializer {
                 }
                 
                 qm.getAxes().get(Axis.Standard.valueOf(location)).getDimensions().add(dim);
-                NodeList dimChildren = dimensions.item(z).getChildNodes();
+                
+                String searchPath = "//Dimension[@name = \"[" + dimName + "]\"]/Inclusions";
+                System.out.println(searchPath);
+                try {
+                    NodeList dimChildren =  (NodeList) xpath.evaluate(searchPath, dimensions.item(z), XPathConstants.NODESET);
+                    for (int k = 0; k < dimChildren.getLength();k++) {
+                        String name = ((Node) xpath.evaluate("//@member", dimChildren.item(k), XPathConstants.NODE)).getNodeValue();
+//                        name = name.substring(1,name.length() - 1);
+                        String operator = ((Node) xpath.evaluate("//@operator", dimChildren.item(k), XPathConstants.NODE)).getNodeValue();
+                        String memberDim = ((Node) xpath.evaluate("//@dimension", dimChildren.item(k), XPathConstants.NODE)).getNodeValue();
+                        dim.include(Selection.Operator.valueOf(operator), memberDim, name);
+                    }
+                } catch (XPathExpressionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 //                for (int h = 0; h < dimChildren.getLength(); h++) {
 //                    if ()
 //                    processInclusions(dim,)
