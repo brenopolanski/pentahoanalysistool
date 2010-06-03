@@ -35,6 +35,7 @@ import org.olap4j.Axis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;
+import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
@@ -42,6 +43,7 @@ import org.olap4j.metadata.Measure;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
 import org.olap4j.metadata.Property;
+import org.olap4j.metadata.Schema;
 import org.olap4j.metadata.Property.StandardMemberProperty;
 import org.olap4j.query.Query;
 import org.olap4j.query.QueryDimension;
@@ -114,27 +116,27 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         if (conn == null) {
             return list;
         }
-         OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
-         try {
-         ResultSet cubesResult = olapDbMeta.getCubes(null, null, null);
-                
-         while(cubesResult.next()) {
-        
-         list.add(new CubeItem(cubesResult.getString("CUBE_NAME"),cubesResult.getString("CATALOG_NAME"),
-                 cubesResult.getString("SCHEMA_NAME")));
+//         OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
+//         try {
+//         ResultSet cubesResult = olapDbMeta.getCubes(null, null, null);
+//                
+//         while(cubesResult.next()) {
+//        
+//         list.add(new CubeItem(cubesResult.getString("CUBE_NAME"),cubesResult.getString("CATALOG_NAME"),
+//                 cubesResult.getString("SCHEMA_NAME")));
+//
+//         }
+//         } catch (SQLException e) {
+//             throw new OlapException(e.getMessage(),e);
+//         }
 
-         }
-         } catch (SQLException e) {
-             throw new OlapException(e.getMessage(),e);
-         }
-
-//        for (Catalog cat : conn.getCatalogs()) {
-//            for(Schema schem : cat.getSchemas()) {
-//                 for (Cube cub : schem.getCubes()) {
-//                      list.add(new CubeItem(cub.getName(), cat.getName(), schem.getName()));
-//                }
-//            }
-//        }
+        for (Catalog cat : conn.getCatalogs()) {
+            for(Schema schem : cat.getSchemas()) {
+                 for (Cube cub : schem.getCubes()) {
+                      list.add(new CubeItem(cub.getName(), cat.getName(), schem.getName()));
+                }
+            }
+        }
         return list;
     }
 
