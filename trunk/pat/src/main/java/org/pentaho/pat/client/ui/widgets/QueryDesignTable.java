@@ -53,7 +53,7 @@ public class QueryDesignTable extends LayoutComposite implements
 		}
 		else if(!isfilter && axis.equals(IAxis.COLUMNS)){
 			int rc = flex.getRowCount();
-			flex.removeRow(coords[1]+1);
+			flex.removeRow(coords[1]);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class QueryDesignTable extends LayoutComposite implements
 			int[] parentcoords = dimPanel.getCoord();
 			final List<StringTree> child = labels.getChildren();
 			removeColsFromFlexTable(flex, parentcoords);
-			flex.insertRow(parentcoords[0] + 1);
+		//s	flex.insertRow(parentcoords[0] + 1);
 
 			if (!(labels.getCaption() == null)) {
 				final Label parentLabel = new Label(labels.getCaption());
@@ -162,7 +162,7 @@ public class QueryDesignTable extends LayoutComposite implements
 
 	public void onSelectionChange(String queryID, Widget sender,
 			StringTree tree, String type) {
-		if (this.queryID.equals(queryID)) {
+		if (this.queryID.equals(queryID)  && this.isAttached()) {
 			MeasureLabel ml = (MeasureLabel) sender;
 			alterSelectionDisplay(ml, tree);
 		}
@@ -170,7 +170,9 @@ public class QueryDesignTable extends LayoutComposite implements
 
 	public void onSelectionCleared(String currQuery, MeasureLabel label,
 			int[] is, IAxis axis) {
+		if (this.queryID.equals(queryID)  && this.isAttached()) {
 		alterSelectionDisplay(label, is, axis);
+		}
 
 	}
 
