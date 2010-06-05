@@ -118,6 +118,7 @@ public class DimensionSimplePanel extends SimplePanel {
 	}
 
 	private int[] getWidgetRow(Widget widget, FlexTable table) {
+		
 		for (int row = 0; row < table.getRowCount(); row++) {
 			for (int col = 0; col < table.getCellCount(row); col++) {
 				Widget w = table.getWidget(row, col);
@@ -126,6 +127,7 @@ public class DimensionSimplePanel extends SimplePanel {
 				}
 			}
 		}
+		
 		return null;
 	}
 }
