@@ -53,7 +53,7 @@ public class QueryDesignTable extends LayoutComposite implements
 		}
 		else if(!isfilter && axis.equals(IAxis.COLUMNS)){
 			int rc = flex.getRowCount();
-			flex.removeRow(coords[1]);
+			flex.removeRow(coords[0]);
 		}
 	}
 
