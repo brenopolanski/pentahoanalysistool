@@ -41,14 +41,19 @@ public class QueryDesignTable extends LayoutComposite implements
 	public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
 		int row = coords[0];
 		if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
-			while (flex.isCellPresent(row, coords[1]) == true) {
-
-				flex.removeCell(row, coords[1]);
-				row++;
-			}
+			//while (flex.isCellPresent(row, coords[1]) == true) {
+				for(int i = 0; i<flex.getRowCount();i++){
+					if (flex.isCellPresent(i, coords[1])){
+						flex.removeCell(i, coords[1]);
+					}
+				}
+				//flex.removeCell(row, coords[1]);
+				//row++;
+			//}
 		}
-		if(!isfilter && axis.equals(IAxis.COLUMNS)){
-			flex.removeRow(coords[0]);
+		else if(!isfilter && axis.equals(IAxis.COLUMNS)){
+			int rc = flex.getRowCount();
+			flex.removeRow(coords[1]+1);
 		}
 	}
 
