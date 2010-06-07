@@ -68,6 +68,11 @@ import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
 import org.pentaho.pat.server.util.OlapUtil;
+import org.pentaho.pat.server.util.serializer.MdxQuery2;
+import org.pentaho.pat.server.util.serializer.PatQuery;
+import org.pentaho.pat.server.util.serializer.QmQuery;
+import org.pentaho.pat.server.util.serializer.QueryDeserializer;
+import org.pentaho.pat.server.util.serializer.QuerySerializer;
 import org.springframework.util.Assert;
 
 /**
@@ -917,6 +922,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Query q = this.getQuery(userId, sessionId, queryId);
         if (q == null)
             throw new OlapException(Messages.getString("Services.Query.NoSuchQuery")); //$NON-NLS-1$
+        
+        
         return q.getSelect().toString();
     }
 
