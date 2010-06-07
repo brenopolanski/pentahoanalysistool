@@ -131,6 +131,12 @@ public class SaveMenuPanel extends LayoutComposite {
 
                 super.onBrowserEvent(event);
                 switch (DOM.eventGetType(event)) {
+                case Event.ONCLICK:
+                    if (listBox.getSelectedIndex() >= 0) {
+                        QuerySaveModel qsm = listBox.getItem(listBox.getSelectedIndex());
+                        saveTextBox.setTextBoxText(qsm.getName());
+                    }
+                    break;
                 case Event.ONDBLCLICK:
                     save();
                     break;
@@ -224,7 +230,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
         table.setHTML(0, 1, "<b>" + item.getName() + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        table.setText(1, 0, "Connection: " + item.getConnection()); //$NON-NLS-1$
+        table.setText(1, 0, "Connection: " + item.getConnection().getName()); //$NON-NLS-1$
         table.setText(2, 0, "Last Updated: " + item.getSavedDate()); //$NON-NLS-1$
 
         return table;
