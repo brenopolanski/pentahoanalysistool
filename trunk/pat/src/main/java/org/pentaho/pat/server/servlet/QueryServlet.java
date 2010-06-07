@@ -20,6 +20,7 @@
 package org.pentaho.pat.server.servlet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -674,11 +675,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                     throw new Exception("Connection for query doesn't exist");
                 }
                 
-                results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), SessionServlet.convert(sc), savedQuery
+                results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), SessionServlet.convert(sc),savedQuery
                         .getCube(), savedQuery.getCubeName(), savedQuery.getUpdatedDate(), savedQuery.getQueryType()));
 
             }
-            
+            Collections.sort(results);
             return results;
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.GetSavedQueriesError"), e); //$NON-NLS-1$

@@ -1145,6 +1145,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
 
         final User user = this.userManager.getUser(userId);
+        user.getSavedQueries().remove(query);
         user.getSavedQueries().add(query);
         this.userManager.updateUser(user);
     }
