@@ -207,9 +207,9 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
             for(int i = 0; i<flex.getRowCount(); i++){
                 flex.insertCell(i, newcol);
                 if(flex.isCellPresent(i, oldcol+1)){
-                    Widget w = flex.getWidget(i, oldcol+2);
+                    Widget w = flex.getWidget(i, oldcol+1);
                     flex.setWidget(i, newcol, w);
-                    flex.removeCell(i, oldcol+2);
+                    flex.removeCell(i, oldcol+1);
                 }
             }
         }

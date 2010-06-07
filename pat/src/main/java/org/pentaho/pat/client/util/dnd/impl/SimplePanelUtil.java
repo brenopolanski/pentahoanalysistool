@@ -485,7 +485,7 @@ public class SimplePanelUtil {
 
     public static void pullUp(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2, Standard axis) {
         if(axis.equals(IAxis.COLUMNS)){
-        ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[1], new AsyncCallback<Object>(){
+        ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0], new AsyncCallback<Object>(){
 
             public void onFailure(Throwable arg0) {
                 MessageBox.error("Bugger", "Bugger");
@@ -502,7 +502,7 @@ public class SimplePanelUtil {
         else if(axis.equals(IAxis.ROWS)){
             final int oldcol = 0;
             final int newcol =0;
-            ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0]-1, new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[1], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");
@@ -511,7 +511,7 @@ public class SimplePanelUtil {
 
                 public void onSuccess(Object arg0) {
                     // TODO Auto-generated method stub
-                    GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord[1]);
+                    GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
                 }
                 
             });
