@@ -95,6 +95,16 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
      * 
      */
     public MdxPanel(final CubeItem cube, final CubeConnection connection) {
+        this(cube,connection,null);
+
+    }
+    
+    public MdxPanel(final String name, final CubeItem cube, final CubeConnection connection, final String mdx) {
+        this(cube, connection,mdx);
+        panelName = name;
+    }
+
+    public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
@@ -105,39 +115,33 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         this.connectionId = connection.getId();
         final String catalog = cube.getCatalog();
 
-        ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,
+        ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,mdx,
                 new AsyncCallback<String>() {
 
-                    public void onFailure(final Throwable arg0) {
+            public void onFailure(final Throwable arg0) {
 
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedCreateQuery(arg0.getLocalizedMessage()));
-                        LogoPanel.spinWheel(false);
+                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        .failedCreateQuery(arg0.getLocalizedMessage()));
+                LogoPanel.spinWheel(false);
 
-                    }
+            }
 
-                    public void onSuccess(final String query) {
-                        queryId = query;
-                        Pat.setCurrQuery(query);
-                        Pat.setCurrConnectionId(connectionId);
-                        Pat.setCurrConnection(connection);
-                        initializeWidget();
-                        LogoPanel.spinWheel(false);
+            public void onSuccess(final String query) {
+                queryId = query;
+                Pat.setCurrQuery(query);
+                Pat.setCurrConnectionId(connectionId);
+                Pat.setCurrConnection(connection);
+                initializeWidget();
+                LogoPanel.spinWheel(false);
 
-                    }
-                });
-
+            }
+        });
+        if (mdx != null) {
+            this.mdxArea.setText(mdx);
+        }
     }
 
-    public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx) {
-        this(cube, connection);
-        this.mdxArea.setText(mdx);
-    }
 
-    public MdxPanel(final String name, final CubeItem cube, final CubeConnection connection, final String mdx) {
-        this(cube, connection,mdx);
-        panelName = name;
-    }
 
     @Override
     protected void initializeWidget() {

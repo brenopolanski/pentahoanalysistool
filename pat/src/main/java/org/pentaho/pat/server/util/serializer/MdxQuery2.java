@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
@@ -39,10 +40,10 @@ import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 
 /**
- * Does X and Y and provides an abstraction for Z.
+ * Implementation of PatQuery interface for MDX Queries
  * @created May 27, 2010 
- * @since X.Y.Z
- * @author pmac
+ * @since 0.8
+ * @author Paul Stoellberger
  * 
  */
 public class MdxQuery2 implements PatQuery {
@@ -67,12 +68,15 @@ public class MdxQuery2 implements PatQuery {
         this.connection = connection;
         this.catalog = catalog;
         this.mdx = mdx;
-        if (this.connection != null) {
+        if (this.connection != null)
+        {
             this.mdxParser = connection.getParserFactory().createMdxParser(connection);
-            select = mdxParser.parseSelect(mdx);
+            if (mdx != null) {
+                select = mdxParser.parseSelect(mdx);
+            }
         }
         else
-            throw new RuntimeException("connection of mdx query "+ name + " can not be null");
+            throw new RuntimeException("connection/mdx statement of mdx query "+ name + " can not be null");
     }
     
     /* (non-Javadoc)
@@ -191,7 +195,9 @@ public class MdxQuery2 implements PatQuery {
      */
     public void setMdx(String mdx) {
         this.mdx = mdx;
-        this.select = mdxParser.parseSelect(mdx);
+        if (StringUtils.isNotBlank(mdx)) {
+            this.select = mdxParser.parseSelect(mdx);
+        }
     }
 
     /* (non-Javadoc)
