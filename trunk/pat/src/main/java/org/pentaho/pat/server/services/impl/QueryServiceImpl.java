@@ -121,12 +121,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        //final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
-        for(int i=0; i<memberNames.size();i++){
-        final Selection selection = OlapUtil.findSelection(memberNames.get(i), qDim);
-        qDim.getInclusions().remove(selection);
+        // final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
+        for (int i = 0; i < memberNames.size(); i++) {
+            final Selection selection = OlapUtil.findSelection(memberNames.get(i), qDim);
+            qDim.getInclusions().remove(selection);
         }
-        
 
     }
 
@@ -178,8 +177,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     for (String namepart : memberNames) {
                         lookup = lookup + namepart;
                     }
-                        
-                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember",lookup));//$NON-NLS-1$
+
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember", lookup));//$NON-NLS-1$
                 }
             }
         }
@@ -217,9 +216,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         sessionService.getSession(userId, sessionId).getQueries().put(generatedId, newQuery);
 
-        
-       
-        
         return generatedId;
     }
 
@@ -247,9 +243,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return generatedId;
     }
 
-    public void alterCell(final String userId,  final String sessionId, final String queryId, final String connectionId,final String scenarioId,  
-	    final String newCellValue){
-	
+    public void alterCell(final String userId, final String sessionId, final String queryId, final String connectionId,
+            final String scenarioId, final String newCellValue) {
+
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -257,30 +253,28 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         List<String> selection = new ArrayList<String>();
         selection.add("0"); //$NON-NLS-1$
         try {
-	    createSelection(userId, sessionId, queryId, "Scenario", selection, Operator.MEMBER); //$NON-NLS-1$
-	} catch (OlapException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	   try {
-		executeQuery(userId, sessionId, queryId);
-	    } catch (OlapException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-        
-        //final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
-        
-	
-	CellSet cellData= OlapUtil.getCellSet(queryId);
-        
-	final Cell cell = cellData.getCell(Arrays.asList(0, 0));
-        
-            cell.setValue(123.00, AllocationPolicy.EQUAL_ALLOCATION);
+            createSelection(userId, sessionId, queryId, "Scenario", selection, Operator.MEMBER); //$NON-NLS-1$
+        } catch (OlapException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            executeQuery(userId, sessionId, queryId);
+        } catch (OlapException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	
+        // final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
+
+        CellSet cellData = OlapUtil.getCellSet(queryId);
+
+        final Cell cell = cellData.getCell(Arrays.asList(0, 0));
+
+        cell.setValue(123.00, AllocationPolicy.EQUAL_ALLOCATION);
+
     }
- 
+
     /*
      * (non-Javadoc)
      * 
@@ -338,45 +332,45 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
 
-        if(memberNames!=null){
-        // First try to resolve the member quick and dirty.
-        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
-
-        if (member == null) {
-            // Let's try with only the dimension name in front.
-            final List<String> dimPlusMemberNames = new ArrayList<String>();
-            dimPlusMemberNames.add(dimensionName);
-            dimPlusMemberNames.addAll(memberNames);
-            member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
+        if (memberNames != null) {
+            // First try to resolve the member quick and dirty.
+            Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
 
             if (member == null) {
-                // Sometimes we need to find it in a different name format.
-                // To make sure we find the member, the first element
-                // will be sent as DimensionName.HierarchyName. Cubes which have
-                // more than one hierarchy in a given dimension will require
-                // this
-                // format anyways.
-                final List<String> completeMemberNames = new ArrayList<String>();
-                completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
-                completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
-                member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+                // Let's try with only the dimension name in front.
+                final List<String> dimPlusMemberNames = new ArrayList<String>();
+                dimPlusMemberNames.add(dimensionName);
+                dimPlusMemberNames.addAll(memberNames);
+                member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
                 if (member == null) {
-                    // We failed to find the member.
-                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                    // Sometimes we need to find it in a different name format.
+                    // To make sure we find the member, the first element
+                    // will be sent as DimensionName.HierarchyName. Cubes which have
+                    // more than one hierarchy in a given dimension will require
+                    // this
+                    // format anyways.
+                    final List<String> completeMemberNames = new ArrayList<String>();
+                    completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+                    completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+                    member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
+
+                    if (member == null) {
+                        // We failed to find the member.
+                        throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                    }
                 }
             }
-        }
-        
-        final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
-        final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-        qDim.include(selectionMode, member);
-        }
-        else{
-        	
+
             final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
             final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-            qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
+            qDim.include(selectionMode, member);
+        } else {
+
+            final QueryDimension qDim = OlapUtil.getQueryDimension(query, dimensionName);
+            final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
+            qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0)
+                    .getDefaultMember());
         }
     }
 
@@ -387,109 +381,109 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
     public List<String> createSelection(final String userId, final String sessionId, final String queryId,
-            final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType)
-            throws OlapException {
+            final String dimensionName, final List<String> memberNames, final String type,
+            final Selection.Operator selectionType) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
         QueryDimension qDim = OlapUtil.getQueryDimension(query, memberNames.get(0));
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-        if(type.equals("dimension")){
-        	  qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember());
-        	  List<String> memberNameList = new ArrayList<String>();
-        	  String name = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember().getUniqueName();
-              memberNameList.add(name);
-        	  return memberNameList;
-        }
-        else if(type.equals("hierarchy")){
-        	qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember());
-        	List<String> memberNameList = new ArrayList<String>(); 
-        	String name = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-1)).getDefaultMember().getUniqueName();
-        	
-      	  memberNameList.add(name);
+        if (type.equals("dimension")) {
+            qDim.include(selectionMode, cube.getDimensions().get(dimensionName).getHierarchies().get(0)
+                    .getDefaultMember());
+            List<String> memberNameList = new ArrayList<String>();
+            String name = cube.getDimensions().get(dimensionName).getHierarchies().get(0).getDefaultMember()
+                    .getUniqueName();
+            memberNameList.add(name);
+            return memberNameList;
+        } else if (type.equals("hierarchy")) {
+            qDim.include(selectionMode, cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(
+                    memberNames.get(memberNames.size() - 1)).getDefaultMember());
+            List<String> memberNameList = new ArrayList<String>();
+            String name = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(
+                    memberNames.get(memberNames.size() - 1)).getDefaultMember().getUniqueName();
 
+            memberNameList.add(name);
 
-        	return memberNameList;
-        }
-        else if(type.equals("level")){
-        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(memberNames.size()-2))
-    		.getLevels().get(memberNames.get(memberNames.size()-1)).getMembers();
-        	List<String> memberNameList = new ArrayList<String>(); 
-        	for (Member member:members){
-            qDim.include(selectionMode, member);
-            String name = member.getUniqueName();
-            
-            memberNameList.add(name);
-        	}
-        	return memberNameList;
-        }
-        else if(type.equals("member")){
-        	List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(memberNames.get(1))
-    		.getLevels().get(memberNames.get(2)).getMembers();
-        	List<String> memberNameList = new ArrayList<String>(); 
-        	for (Member member:members){
-        		if(member.getName().equals(memberNames.get(3))){
-            qDim.include(selectionMode, member);
-        		
-            String name = member.getUniqueName();
-            
-            memberNameList.add(name);
-        		}
-        	}
-        	return memberNameList;
-        }
-        else if(type.equals("measure")){
-        	List<Measure> members = null;
-        	if(memberNames.get(0).equals("Measures")){
-        		members = cube.getMeasures();
-        	}else{
-        		members = new ArrayList<Measure>();
-        		List<Measure> members2 = cube.getMeasures();
-        		for(Measure measure : members2){
-        			if(measure.getName().equals(memberNames.get(1))){
-        				members.add(measure);
-        			}
-        		}
-        	}
-        	
-        	qDim = OlapUtil.getQueryDimension(query, "Measures");
-        	List<String> memberNameList = new ArrayList<String>(); 
-        	for (Measure member:members){
-            qDim.include(selectionMode, member);
-            String name = member.getUniqueName();
-            
-            memberNameList.add(name);
-        	}
-        	return memberNameList;
+            return memberNameList;
+        } else if (type.equals("level")) {
+            List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies().get(
+                    memberNames.get(memberNames.size() - 2)).getLevels().get(memberNames.get(memberNames.size() - 1))
+                    .getMembers();
+            List<String> memberNameList = new ArrayList<String>();
+            for (Member member : members) {
+                qDim.include(selectionMode, member);
+                String name = member.getUniqueName();
+
+                memberNameList.add(name);
+            }
+            return memberNameList;
+        } else if (type.equals("member")) {
+            List<Member> members = cube.getDimensions().get(memberNames.get(0)).getHierarchies()
+                    .get(memberNames.get(1)).getLevels().get(memberNames.get(2)).getMembers();
+            List<String> memberNameList = new ArrayList<String>();
+            for (Member member : members) {
+                if (member.getName().equals(memberNames.get(3))) {
+                    qDim.include(selectionMode, member);
+
+                    String name = member.getUniqueName();
+
+                    memberNameList.add(name);
+                }
+            }
+            return memberNameList;
+        } else if (type.equals("measure")) {
+            List<Measure> members = null;
+            if (memberNames.get(0).equals("Measures")) {
+                members = cube.getMeasures();
+            } else {
+                members = new ArrayList<Measure>();
+                List<Measure> members2 = cube.getMeasures();
+                for (Measure measure : members2) {
+                    if (measure.getName().equals(memberNames.get(1))) {
+                        members.add(measure);
+                    }
+                }
+            }
+
+            qDim = OlapUtil.getQueryDimension(query, "Measures");
+            List<String> memberNameList = new ArrayList<String>();
+            for (Measure member : members) {
+                qDim.include(selectionMode, member);
+                String name = member.getUniqueName();
+
+                memberNameList.add(name);
+            }
+            return memberNameList;
         }
 
         return null;
-        //return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
-        
+        // return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName,
+        // levelName, selectionMode);
+
     }
 
     public StringTree getSpecificMembers(final String userId, final String sessionId, final String queryId,
-            final String dimensionName, final List<String> memberNames, final String type, final Selection.Operator selectionType) throws OlapException{
-    	this.sessionService.validateSession(userId, sessionId);
-    	
-    	String hierarchyName = null;
+            final String dimensionName, final List<String> memberNames, final String type,
+            final Selection.Operator selectionType) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
+
+        String hierarchyName = null;
         String levelName = null;
         final Selection.Operator selectionMode = Selection.Operator.values()[selectionType.ordinal()];
-        if(type.equals("hierarchy")){
-        	hierarchyName = memberNames.get(1);
+        if (type.equals("hierarchy")) {
+            hierarchyName = memberNames.get(1);
+        } else if (type.equals("level")) {
+            hierarchyName = memberNames.get(1);
+            levelName = memberNames.get(2);
+
         }
-        else if(type.equals("level")){
-        	hierarchyName = memberNames.get(1);
-        	levelName = memberNames.get(2);
-        	
-        
-        }
-        
-        
-    	return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName, levelName, selectionMode);
+
+        return discoveryService.getSpecificMembers(userId, sessionId, queryId, memberNames.get(0), hierarchyName,
+                levelName, selectionMode);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -497,8 +491,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String, java.lang.String, java.util.List, org.olap4j.query.Selection.Operator)
      */
     public void createSelection(final String userId, final String sessionId, final String queryId,
-            final String dimensionName, final Selection.Operator selectionType)
-            throws OlapException {
+            final String dimensionName, final Selection.Operator selectionType) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -507,14 +500,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
         Member member = null;
         if (levels != null && levels.size() >= 1 && levels.get(0) != null && levels.get(0).getMembers().size() >= 1) {
-         member = levels.get(0).getMembers().get(0);
+            member = levels.get(0).getMembers().get(0);
         }
 
         if (member == null) {
             // Let's try with only the dimension name in front.
             final List<String> dimPlusMemberNames = new ArrayList<String>();
             dimPlusMemberNames.add(dimensionName);
-            //dimPlusMemberNames.addAll(memberNames);
+            // dimPlusMemberNames.addAll(memberNames);
             member = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
 
             if (member == null) {
@@ -525,8 +518,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 // this
                 // format anyways.
                 final List<String> completeMemberNames = new ArrayList<String>();
-              //  completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
-                //completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
+                //  completeMemberNames.add(dimensionName.concat(".").concat(memberNames.get(0))); //$NON-NLS-1$
+                // completeMemberNames.addAll(memberNames.subList(1, memberNames.size()));
                 member = cube.lookupMember(completeMemberNames.toArray(new String[completeMemberNames.size()]));
 
                 if (member == null) {
@@ -541,25 +534,24 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         qDim.include(selectionMode, member);
     }
 
-    
     /*
      * (non-Javadoc)
      * 
      * @see org.pentaho.pat.server.services.QueryService#drillPosition(java.lang. String, java.lang.String,
      * java.lang.String, org.pentaho.pat.rpc.dto.celltypes.MemberCell)
      */
-    public StringTree drillPosition(final String userId, final String sessionId, final String queryId, DrillType drillType,
-            final MemberCell member) throws OlapException {
+    public StringTree drillPosition(final String userId, final String sessionId, final String queryId,
+            DrillType drillType, final MemberCell member) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = getQuery(userId, sessionId, queryId);
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
 
-//        CellSetFormatter formatter = new  TraditionalCellSetFormatter();
-//        formatter.format(cellSet,new PrintWriter(System.out, true)); 
-//        System.out.flush();
+        // CellSetFormatter formatter = new TraditionalCellSetFormatter();
+        // formatter.format(cellSet,new PrintWriter(System.out, true));
+        // System.out.flush();
         queryDimension = OlapUtil.getQueryDimension(query, member.getParentDimension());
         final Member memberFetched = OlapUtil.getMember(query, queryDimension, member, cellSet);
-//        LOG.error("children: " + memberFetched.getChildMemberCount() + " member expanded:" + member.isExpanded() );
+        // LOG.error("children: " + memberFetched.getChildMemberCount() + " member expanded:" + member.isExpanded() );
         HierarchizeMode hm = queryDimension.getHierarchizeMode();
         if (hm == null) {
             queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
@@ -571,8 +563,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 if (member.getRightOf() == null) {
                     switch (drillType) {
                     case POSITION:
-                        //                        queryDimension.getInclusions().remove(selection);
-//                        queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+                        // queryDimension.getInclusions().remove(selection);
+                        // queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         memberFetched.getChildMembers();
                         break;
@@ -581,7 +573,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         } else {
                         }
 
-                        //queryDimension.getInclusions().remove(selection);
+                        // queryDimension.getInclusions().remove(selection);
                         queryDimension.clearInclusions();
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         memberFetched.getChildMembers();
@@ -605,7 +597,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
                                     .getInclusions());
                         }
-                        LOG.error("REPLACE 2 - parent member: " + member.getParentMember() + " selection:" + currentMemberSelection.toString());
+                        LOG.error("REPLACE 2 - parent member: " + member.getParentMember() + " selection:"
+                                + currentMemberSelection.toString());
                         queryDimension.clearInclusions();
                         final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
@@ -632,7 +625,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             memberdrill = memberdrill.getRightOf();
                         }
 
-                    } 
+                    }
                     if (drillType == DrillType.POSITION) {
                         final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
@@ -658,25 +651,27 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();
                         }
-                        
-
 
                     }
                 }
             } else {
 
-                final Selection collapseSelChildren = queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched);
-                final Selection collapseSelIncludeChildren = queryDimension.createSelection(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+                final Selection collapseSelChildren = queryDimension.createSelection(Selection.Operator.CHILDREN,
+                        memberFetched);
+                final Selection collapseSelIncludeChildren = queryDimension.createSelection(
+                        Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                 MemberCell collapsemember = member;
                 while (collapsemember.getRightOf() != null) {
                     if (collapsemember.getRightOf().getUniqueName() != null
                             && !collapsemember.getRightOf().getUniqueName().equals(collapsemember.getParentMember())) {
 
                         // Get dimension to the left of the current member.
-                        final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, collapsemember.getRightOfDimension());
+                        final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, collapsemember
+                                .getRightOfDimension());
 
                         // Get the Olap4J member.
-                        final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember.getRightOf(), cellSet);
+                        final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember
+                                .getRightOf(), cellSet);
 
                         collapseSelChildren.addContext(queryDimension2.createSelection(memberFetched2));
                         collapseSelIncludeChildren.addContext(queryDimension2.createSelection(memberFetched2));
@@ -687,30 +682,32 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     collapsemember = collapsemember.getRightOf();
                 }
 
-                List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension,collapseSelChildren);
+                List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension, collapseSelChildren);
                 queryDimension.getInclusions().removeAll(childSelections);
-                
-                List<Selection> childSelections2 = OlapUtil.findChildrenSelections(queryDimension,collapseSelIncludeChildren);
+
+                List<Selection> childSelections2 = OlapUtil.findChildrenSelections(queryDimension,
+                        collapseSelIncludeChildren);
                 queryDimension.getInclusions().removeAll(childSelections2);
 
-                
                 Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
                 Integer size = queryDimension.getAxis().getDimensions().size();
-                for (int i = index+1; index >= 0 && i < size; i++) {
+                for (int i = index + 1; index >= 0 && i < size; i++) {
                     QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
                     for (Selection possibleContext : childSelections) {
-                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
+                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
+                                .getSelectionContext());
                         qDim.getInclusions().removeAll(findResult);
                     }
                     for (Selection possibleContext : childSelections2) {
-                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext.getSelectionContext());
+                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
+                                .getSelectionContext());
                         qDim.getInclusions().removeAll(findResult);
                     }
-                    if (member.getRightOf() == null) {        
-                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren.getMember());
+                    if (member.getRightOf() == null) {
+                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren
+                                .getMember());
                         qDim.getInclusions().removeAll(findResult2);
                     }
-
 
                 }
 
@@ -719,72 +716,72 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return null;
     }
 
-    public String[][] drillThrough(final String userId, final String sessionId, final String queryId, final List<Integer> coordinates) throws OlapException {
+    public String[][] drillThrough(final String userId, final String sessionId, final String queryId,
+            final List<Integer> coordinates) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final CellSet cellSet = OlapUtil.getCellSet(queryId);
         Cell cell = cellSet.getCell(coordinates);
 
         if (cell == null) {
-                    // We failed to find the member.
-                    throw new OlapException("Cannot find cell for Drillthrough");//$NON-NLS-1$
+            // We failed to find the member.
+            throw new OlapException("Cannot find cell for Drillthrough");//$NON-NLS-1$
         }
 
-        
-        final ResultSet rs =  cell.drillThrough();
+        final ResultSet rs = cell.drillThrough();
         try {
-        Integer width = 0;
-        Integer height = 0;
-        String[] header = null;
-        List<String[]> rows = new ArrayList<String[]>();
-//        System.out.println("DATASET");
-        while(rs.next()) {
-            if (height == 0) {
-                width = rs.getMetaData().getColumnCount();
-                header = new String[width];
-                for (int s = 0;s<width;s++) {
-                    header[s] =rs.getMetaData().getColumnName(s+1);
-                    
-//                    System.out.print(" |\t" + header[s]);
+            Integer width = 0;
+            Integer height = 0;
+            String[] header = null;
+            List<String[]> rows = new ArrayList<String[]>();
+            // System.out.println("DATASET");
+            while (rs.next()) {
+                if (height == 0) {
+                    width = rs.getMetaData().getColumnCount();
+                    header = new String[width];
+                    for (int s = 0; s < width; s++) {
+                        header[s] = rs.getMetaData().getColumnName(s + 1);
+
+                        // System.out.print(" |\t" + header[s]);
+                    }
+                    if (width > 0) {
+                        rows.add(header);
+                        // System.out.println(" |");
+                    }
                 }
-                if (width > 0) {
-                    rows.add(header);
-//                    System.out.println(" |");
-                }
-            }
-            String[] row = new String[width];
-            for (int i = 0;i<width;i++) {
-                
-                    row[i] = rs.getString(i+1);
-                    if (row[i] == null )
+                String[] row = new String[width];
+                for (int i = 0; i < width; i++) {
+
+                    row[i] = rs.getString(i + 1);
+                    if (row[i] == null)
                         row[i] = "";
-//                    if(height < 10) {
-//                        System.out.print(" |\t" + row[i]);
-//                    }
-                
-            }
-//            if(height < 10) {
-//                System.out.println(" |");
+                    // if(height < 10) {
+                    // System.out.print(" |\t" + row[i]);
+                    // }
+
+                }
+                // if(height < 10) {
+                // System.out.println(" |");
                 rows.add(row);
 
-//            }
-            height++;
-        }
-        height = 11;
-        String[][] result = rows.toArray(new String[height][width]);
-//        for (int i = 0; i<rows.size();i++) {
-//            String[] row = rows.get(i);
-//            result[i] = row;
-//        }
-        LOG.debug("Drill-Through Result: Rows : " + rows.size() + " Width: " + width);
+                // }
+                height++;
+            }
+            height = 11;
+            String[][] result = rows.toArray(new String[height][width]);
+            // for (int i = 0; i<rows.size();i++) {
+            // String[] row = rows.get(i);
+            // result[i] = row;
+            // }
+            LOG.debug("Drill-Through Result: Rows : " + rows.size() + " Width: " + width);
 
-        return result;
-        
+            return result;
+
         } catch (SQLException e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
-            throw new OlapException(e.getMessage(),e); //$NON-NLS-1$
+            throw new OlapException(e.getMessage(), e); //$NON-NLS-1$
         }
-        
+
     }
 
     /*
@@ -881,10 +878,10 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         OlapUtil.storeCellSet(queryId, cellSet);
 
-
         CellDataSet result = OlapUtil.cellSet2Matrix(cellSet);
         Long format = (new Date()).getTime();
-        LOG.info("Size: " + result.getWidth() +"/"+ result.getHeight() + "\tExecute:\t" + (exec-start) + "ms\tFormat:\t" + (format-exec) + "ms\t Total: " + (format-start) + "ms");
+        LOG.info("Size: " + result.getWidth() + "/" + result.getHeight() + "\tExecute:\t" + (exec - start)
+                + "ms\tFormat:\t" + (format - exec) + "ms\t Total: " + (format - start) + "ms");
         return result;
 
     }
@@ -1096,14 +1093,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     private Cube getCube4Guid(final String userId, final String sessionId, final String connectionId,
             final String cubeName) throws OlapException {
         final OlapConnection connection = sessionService.getNativeConnection(userId, sessionId, connectionId);
-        
+
         Cube cube = null;
         final NamedList<Catalog> catalogs = connection.getCatalogs();
         for (int k = 0; k < catalogs.size(); k++) {
             try {
                 connection.setCatalog(catalogs.get(k).getName());
             } catch (SQLException e) {
-                throw new OlapException("Error setting catalog: "+catalogs.get(k).getName(),e);
+                throw new OlapException("Error setting catalog: " + catalogs.get(k).getName(), e);
 
             }
             final NamedList<Schema> schemas = catalogs.get(k).getSchemas();
@@ -1191,18 +1188,18 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return generatedId;
 
     }
-    
+
     public String createSavedQuery(String userId, String sessionId, String connectionId, /* String cubeName, */
-            MdxQuery newMdxQuery) throws OlapException {
-                this.sessionService.validateSession(userId, sessionId);
+    MdxQuery newMdxQuery) throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
-                final String generatedId = String.valueOf(UUID.randomUUID());
+        final String generatedId = String.valueOf(UUID.randomUUID());
 
-                sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
+        sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
 
-                return generatedId;
+        return generatedId;
 
-            }
+    }
 
     public CellDataSet setNonEmpty(String userId, String sessionId, String queryId, boolean flag) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
@@ -1214,38 +1211,39 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         return executeQuery(userId, sessionId, queryId);
     }
 
-    /* (non-Javadoc)
-     * @see org.pentaho.pat.server.services.QueryService#setProperty(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#setProperty(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String)
      */
     public void setProperty(String userId, String sessionId, String queryId, String dimensionName, String levelName,
             String propertyName, Boolean enabled) {
         this.sessionService.validateSession(userId, sessionId);
-       // Query query = this.getQuery(userId, sessionId, queryId);
-        
+        // Query query = this.getQuery(userId, sessionId, queryId);
+
     }
 
-	public void pullUpDimension(String currentUserId, String sessionID,
-			String queryId, Axis iaxis, int position) {
-		this.sessionService.validateSession(currentUserId, sessionID);
-		
-		Query query = this.getQuery(currentUserId, sessionID, queryId);
-		
-		QueryAxis axis = query.getAxis(iaxis);
-		
-		axis.pullUp(position);
-		
-	}
+    public void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int position) {
+        this.sessionService.validateSession(currentUserId, sessionID);
 
-	public void pushDownDimension(String currentUserId, String sessionID,
-			String queryId, Axis iaxis, int position) {
-		this.sessionService.validateSession(currentUserId, sessionID);
-		
-		Query query = this.getQuery(currentUserId, sessionID, queryId);
-		
-		QueryAxis axis = query.getAxis(iaxis);
-		
-		axis.pullUp(position);
-		
-	}
+        Query query = this.getQuery(currentUserId, sessionID, queryId);
+
+        QueryAxis axis = query.getAxis(iaxis);
+
+        axis.pullUp(position);
+
+    }
+
+    public void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int position) {
+        this.sessionService.validateSession(currentUserId, sessionID);
+
+        Query query = this.getQuery(currentUserId, sessionID, queryId);
+
+        QueryAxis axis = query.getAxis(iaxis);
+
+        axis.pullUp(position);
+
+    }
 
 }

@@ -38,4 +38,8 @@ public interface ISelectionListener extends EventListener {
 
 	void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis iAxis);
 
+    void onMoveRow(String currQuery, int oldrow, int newrow);
+
+    void onMoveCol(String currQuery, int oldcol, int newcol);
+
 }

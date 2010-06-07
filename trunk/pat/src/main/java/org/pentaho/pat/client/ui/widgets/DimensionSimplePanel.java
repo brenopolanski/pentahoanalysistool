@@ -38,96 +38,95 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DimensionSimplePanel extends SimplePanel {
 
-	private Boolean horizontal = false;
+    private Boolean horizontal = false;
 
-	private IAxis axis;
+    private IAxis axis;
 
-	private final static String TABLE_CSS_NAME = "pat-DimensionSimplePanel"; //$NON-NLS-1$
+    private final static String TABLE_CSS_NAME = "pat-DimensionSimplePanel"; //$NON-NLS-1$
 
-	private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
+    private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
 
-	SimplePanelDropControllerImpl fTblRowDropCont;
+    SimplePanelDropControllerImpl fTblRowDropCont;
 
-	/**
-	 * Create a flextable widget for the DimensionDropWidget.
-	 * 
-	 */
-	public DimensionSimplePanel(final IAxis axis) {
-		super();
-		this.setStyleName(TABLE_CSS_NAME);
-		this.setSize("100", "100");
-		fTblRowDropCont = new SimplePanelDropControllerImpl(
-				DimensionSimplePanel.this, false);
-		this.setAxis(axis);
-	}
+    /**
+     * Create a flextable widget for the DimensionDropWidget.
+     * 
+     */
+    public DimensionSimplePanel(final IAxis axis) {
+        super();
+        this.setStyleName(TABLE_CSS_NAME);
+        this.setSize("100", "100");
+        fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this, false);
+        this.setAxis(axis);
+    }
 
-	/**
-	 * Create a flextable widget for the DimensionDropWidget.
-	 * 
-	 * @param orientation
-	 * @param axis
-	 */
-	public DimensionSimplePanel(final Boolean orientation, final IAxis axis) {
-		super();
-		this.setStyleName(TABLE_CSS_NAME);
-		this.setAxis(axis);
-		horizontal = orientation;
+    /**
+     * Create a flextable widget for the DimensionDropWidget.
+     * 
+     * @param orientation
+     * @param axis
+     */
+    public DimensionSimplePanel(final Boolean orientation, final IAxis axis) {
+        super();
+        this.setStyleName(TABLE_CSS_NAME);
+        this.setAxis(axis);
+        horizontal = orientation;
 
-	}
+    }
 
-	@Override
-	protected void onLoad() {
+    @Override
+    protected void onLoad() {
 
-		tblRowDragCont.registerDropController(fTblRowDropCont);
-	}
+        tblRowDragCont.registerDropController(fTblRowDropCont);
+    }
 
-	@Override
-	protected void onUnload() {
-		tblRowDragCont.unregisterDropController(fTblRowDropCont);
-	}
+    @Override
+    protected void onUnload() {
+        tblRowDragCont.unregisterDropController(fTblRowDropCont);
+    }
 
-	/**
-	 * Return true if the widget is in horizontal orientation.
-	 * 
-	 * @return the horizontal
-	 */
-	public Boolean getHorizontal() {
-		return horizontal;
-	}
+    /**
+     * Return true if the widget is in horizontal orientation.
+     * 
+     * @return the horizontal
+     */
+    public Boolean getHorizontal() {
+        return horizontal;
+    }
 
-	/**
-	 * Set the mondrian axis for this widget.
-	 * 
-	 * @param axis
-	 */
-	public void setAxis(final IAxis axis) {
-		this.axis = axis;
-	}
+    /**
+     * Set the mondrian axis for this widget.
+     * 
+     * @param axis
+     */
+    public void setAxis(final IAxis axis) {
+        this.axis = axis;
+    }
 
-	/**
-	 * Get the mondrian axis for this widget.
-	 * 
-	 * @return
-	 */
-	public IAxis getAxis() {
-		return axis;
-	}
-	
-	public int[] getCoord() {
-		return getWidgetRow(this, ((FlexTable) this.getParent()));
-	}
+    /**
+     * Get the mondrian axis for this widget.
+     * 
+     * @return
+     */
+    public IAxis getAxis() {
+        return axis;
+    }
 
-	private int[] getWidgetRow(Widget widget, FlexTable table) {
-		
-		for (int row = 0; row < table.getRowCount(); row++) {
-			for (int col = 0; col < table.getCellCount(row); col++) {
-				Widget w = table.getWidget(row, col);
-				if (w == widget) {
-					return new int[] { row, col };
-				}
-			}
-		}
-		
-		return null;
-	}
+    public int[] getCoord() {
+        return getWidgetRow(this, ((FlexTable) this.getParent()));
+    }
+
+    private int[] getWidgetRow(Widget widget, FlexTable table) {
+
+        for (int row = 0; row < table.getRowCount(); row++) {
+            for (int col = 0; col < table.getCellCount(row); col++) {
+                Widget w = table.getWidget(row, col);
+                if (w == widget) {
+                    return new int[] {row, col};
+                }
+            }
+        }
+
+        return null;
+    }
 }
