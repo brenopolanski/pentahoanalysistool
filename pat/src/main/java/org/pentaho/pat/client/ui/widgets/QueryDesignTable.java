@@ -1,6 +1,5 @@
 package org.pentaho.pat.client.ui.widgets;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -204,6 +203,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
 
     public void onMoveCol(String currQuery, int oldcol, int newcol) {
         if (this.queryID.equals(queryID) && this.isAttached() && !this.isfilter) {
+            if(newcol<oldcol){
             for(int i = 0; i<flex.getRowCount(); i++){
                 flex.insertCell(i, newcol);
                 if(flex.isCellPresent(i, oldcol+1)){
@@ -212,6 +212,17 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
                     flex.removeCell(i, oldcol+1);
                 }
             }
+            }
+            else{
+                for(int i = 0; i<flex.getRowCount(); i++){
+                    flex.insertCell(i, newcol+1);
+                    if(flex.isCellPresent(i, oldcol)){
+                        Widget w = flex.getWidget(i, oldcol);
+                        flex.setWidget(i, newcol+1, w);
+                        flex.removeCell(i, oldcol);
+                    }
+                } 
+            }
         }
         
     }
@@ -219,18 +230,29 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
     public void onMoveRow(String currQuery, int oldrow, int newrow) {
         
         if (this.queryID.equals(queryID)  && !this.isfilter && this.isAttached()) {
-            flex.insertRow(newrow);
-            int rc = flex.getRowCount();
+            
+            if(newrow<oldrow){
+                flex.insertRow(newrow);
             for(int i = 0; i<flex.getCellCount(oldrow+1); i++){
                 if(flex.isCellPresent(oldrow+1, i)){
                 Widget w = flex.getWidget(oldrow+1, i);
                 if(w!=null)
-                //w.removeFromParent();
                 flex.setWidget(newrow, i, w);
                 }
-                //flex.setWidget(newrow, i, w);
             }
             flex.removeRow(oldrow+1);
+        }
+            else{
+                flex.insertRow(newrow+1);
+                for(int i = 0; i<flex.getCellCount(oldrow); i++){
+                    if(flex.isCellPresent(oldrow, i)){
+                    Widget w = flex.getWidget(oldrow, i);
+                    if(w!=null)
+                    flex.setWidget(newrow+1, i, w);
+                    }
+                }
+                flex.removeRow(oldrow);
+            }
         }
         
     }
