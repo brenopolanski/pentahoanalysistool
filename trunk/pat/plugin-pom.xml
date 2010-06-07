@@ -306,6 +306,13 @@
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
+									<groupId>jdom</groupId>
+									<artifactId>jdom</artifactId>
+									<version>1.1</version>
+									<outputDirectory>${lib.output.dir}</outputDirectory>
+								</artifactItem>
+
+								<artifactItem>
 									<groupId>org.springframework.security</groupId>
 									<artifactId>spring-security-core</artifactId>
 									<version>${spring.security.version}</version>
