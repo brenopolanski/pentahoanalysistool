@@ -347,11 +347,10 @@ public class OlapUtil {
     public static Member getMember(final Query query, final QueryDimension dimension, final MemberCell member,
             final CellSet cellSet) throws OlapException {
 
-        // FIXME this method doesn't seem to be correct at all, member and memberout swapped?
         final Cube cube = query.getCube();
         Member memberOut = null;
-        if (member.getRawValue() != null)
-            memberOut = cube.lookupMember(member.getRawValue().toString());
+        if (member.getUniqueName() != null)
+            memberOut = cube.lookupMember(QueryDimension.getNameParts(member.getUniqueName()));
 
         if (memberOut == null) {
             // Let's try with only the dimension name in front.
@@ -362,16 +361,10 @@ public class OlapUtil {
                 dimPlusMemberNames.add(member.getRawValue().toString());
                 memberOut = cube.lookupMember(dimPlusMemberNames.toArray(new String[dimPlusMemberNames.size()]));
             }
-            if (memberOut == null) {
-                final String membername = member.getUniqueName().substring(1, member.getUniqueName().length() - 1);
-                final String[] memberNames = membername.split("\\]\\.\\["); //$NON-NLS-1$
 
-                memberOut = cube.lookupMember(memberNames);
-
-                if (memberOut == null)
-                    // We failed to find the member.
-                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
-            }
+            if (memberOut == null)
+                // We failed to find the member.
+                throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
 
         }
 
