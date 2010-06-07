@@ -192,7 +192,28 @@ public class QueryDeserializer {
                     String name = selectionElement.getAttributeValue("member");
                     String operator = selectionElement.getAttributeValue("operator");
                     String memberDim = selectionElement.getAttributeValue("dimension");
-                    dim.include(Selection.Operator.valueOf(operator), QueryDimension.getNameParts(name));
+                    Selection sel = dim.include(Selection.Operator.valueOf(operator), QueryDimension.getNameParts(name));
+                    Element contextElement = selectionElement.getChild("Context");
+                    if (contextElement != null) {
+                        for(int h = 0; h < contextElement.getChildren("Selection").size(); h++) {
+                            Element context = (Element) contextElement.getChildren("Selection").get(h);
+                            String contextname = context.getAttributeValue("member");
+                            String contextoperator = context.getAttributeValue("operator");
+                            String contextDimension = context.getAttributeValue("dimension");
+                            QueryDimension contextDim = qm.getDimension(contextDimension);
+                            if ( contextDim != null ) {
+                            Selection contextSelection = contextDim.createSelection(Selection.Operator.valueOf(contextoperator), QueryDimension.getNameParts(contextname));
+                            if (contextSelection != null ) {
+                                sel.addContext(contextSelection);
+                            }
+                            else
+                                throw new OlapException("Cannot create selection for member: " + contextname + " operator:" + contextoperator + " on dimension: " + dim.getName());
+                            }
+                            else 
+                                throw new OlapException("Cannot find dimension with name:" + contextDim);
+                        }
+                        
+                    }
                     
                     // TODO ADD CONTEXT
 

@@ -116,7 +116,8 @@ public class QuerySerializer {
         
         if (StringUtils.isNotBlank(this.query.getMdx())) {
             Element mdx = dom.createElement("MDX");
-            mdx.setTextContent(this.query.getMdx());
+
+            mdx.setNodeValue(this.query.getMdx());
             rootElement.appendChild(mdx);
         }
         
@@ -216,7 +217,9 @@ public class QuerySerializer {
     private Element createSelectionsElement(Element rootElement, List<Selection> selections) {
         for (Selection sel : selections) {
             Element selection = dom.createElement("Selection");
-            selection.setAttribute("dimension", sel.getDimension().getUniqueName());
+            if (sel.getDimension() != null)
+                selection.setAttribute("dimension", sel.getDimension().getName());
+            
             selection.setAttribute("member", sel.getMember().getUniqueName());
             selection.setAttribute("operator", sel.getOperator().toString());
             
