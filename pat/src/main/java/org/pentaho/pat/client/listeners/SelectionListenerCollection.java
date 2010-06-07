@@ -64,4 +64,20 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
 		
 	}
 
+    public void fireMoveRow(String currQuery, int oldrow, int newrow) {
+        ArrayList<ISelectionListener> moveRowList = (ArrayList<ISelectionListener>) this.clone();
+        for (ISelectionListener listener : moveRowList){
+            listener.onMoveRow(currQuery, oldrow, newrow);
+        }
+        
+    }
+
+    public void fireMoveCol(String currQuery, int oldcol, int newcol) {
+        ArrayList<ISelectionListener> moveColList = (ArrayList<ISelectionListener>) this.clone();
+        for(ISelectionListener listener : moveColList){
+            listener.onMoveCol(currQuery, oldcol, newcol);
+        }
+        
+    }
+
 }

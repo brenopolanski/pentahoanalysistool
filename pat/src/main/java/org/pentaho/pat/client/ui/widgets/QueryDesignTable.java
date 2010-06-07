@@ -1,5 +1,6 @@
 package org.pentaho.pat.client.ui.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -15,209 +16,223 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class QueryDesignTable extends LayoutComposite implements
-		ISelectionListener {
+public class QueryDesignTable extends LayoutComposite implements ISelectionListener {
 
-	FlexTable flex = new FlexTable();
-	private Object queryID;
-	private boolean isfilter;
+    FlexTable flex = new FlexTable();
 
-	public QueryDesignTable(String queryID, boolean isfilter) {
-		this.isfilter = isfilter;
-		if(isfilter){
-		Label filterLabel = new Label(ConstantFactory.getInstance().filter());
-		this.getLayoutPanel().setLayout(new BoxLayout());
-		this.getLayoutPanel().add(filterLabel);
-		}
-		ScrollLayoutPanel slp = new ScrollLayoutPanel();
-		this.queryID = queryID;
-		slp.add(flex);
-		flex.setStylePrimaryName("pat-QueryDesignTable");
-		this.setSize("100%", "100%");
-		
-		this.getLayoutPanel().add(slp);
-	}
+    private Object queryID;
 
-	public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
-		int row = coords[0];
-		if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
-			//while (flex.isCellPresent(row, coords[1]) == true) {
-				for(int i = 0; i<flex.getRowCount();i++){
-					if (flex.isCellPresent(i, coords[1])){
-						flex.removeCell(i, coords[1]);
-					}
-				}
-				//flex.removeCell(row, coords[1]);
-				//row++;
-			//}
-		}
-		else if(!isfilter && axis.equals(IAxis.COLUMNS)){
-			int rc = flex.getRowCount();
-			flex.removeRow(coords[0]);
-		}
-	}
+    private boolean isfilter;
 
-	public void alterSelectionDisplay(MeasureLabel targetLabel,
-			StringTree labels) {
+    public QueryDesignTable(String queryID, boolean isfilter) {
+        this.isfilter = isfilter;
+        if (isfilter) {
+            Label filterLabel = new Label(ConstantFactory.getInstance().filter());
+            this.getLayoutPanel().setLayout(new BoxLayout());
+            this.getLayoutPanel().add(filterLabel);
+        }
+        ScrollLayoutPanel slp = new ScrollLayoutPanel();
+        this.queryID = queryID;
+        slp.add(flex);
+        flex.setStylePrimaryName("pat-QueryDesignTable");
+        this.setSize("100%", "100%");
 
-		if ((targetLabel.getAxis().equals(IAxis.ROWS) && !isfilter)|| (isfilter && targetLabel.getAxis().equals(IAxis.FILTER))) {
+        this.getLayoutPanel().add(slp);
+    }
 
-			DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel
-					.getParent());
+    public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
 
-			int[] parentcoords = dimPanel.getCoord();
-			final List<StringTree> child = labels.getChildren();
-			removeRowsFromFlexTable(flex, parentcoords);
-			if (!flex.isCellPresent(parentcoords[0] + 1, 0)) {
-				flex.insertRow(parentcoords[0] + 1);
-			}
+        if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
 
-			if (!(labels.getCaption() == null)) {
-				final Label parentLabel = new Label(labels.getCaption());
+            for (int i = 0; i < flex.getRowCount(); i++) {
+                if (flex.isCellPresent(i, coords[1])) {
+                    flex.removeCell(i, coords[1]);
+                }
+            }
+        } else if (!isfilter && axis.equals(IAxis.COLUMNS)) {
+            flex.removeRow(coords[0]);
+        }
+    }
 
-				flex.setWidget(parentcoords[0] + 1, parentcoords[1],
-						parentLabel);
+    public void alterSelectionDisplay(MeasureLabel targetLabel, StringTree labels) {
 
-				for (int i = 0; i < 5; i++) {
-					if (i < child.size()) {
-						final Label memberLabel = new Label(child.get(i)
-								.getCaption());
-						if (!flex.isCellPresent(parentcoords[1] + i+2, 0)) {
-							flex.insertRow(parentcoords[0] + i+2);
-						}
+        if ((targetLabel.getAxis().equals(IAxis.ROWS) && !isfilter)
+                || (isfilter && targetLabel.getAxis().equals(IAxis.FILTER))) {
 
-						flex.setWidget(parentcoords[0] + i+2, parentcoords[1],
-								memberLabel);
-					}
+            DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel.getParent());
 
-				}
-			} else {
-				for (int i = 0; i < 5; i++) {
-					if (i < child.size()) {
-						final Label memberLabel = new Label(child.get(i)
-								.getCaption());
-						if (!flex.isCellPresent(parentcoords[1] + i+1, 0)) {
-							flex.insertRow(parentcoords[0] + i+1);
-						}
+            int[] parentcoords = dimPanel.getCoord();
+            final List<StringTree> child = labels.getChildren();
+            removeRowsFromFlexTable(flex, parentcoords);
+            if (!flex.isCellPresent(parentcoords[0] + 1, 0)) {
+                flex.insertRow(parentcoords[0] + 1);
+            }
 
-						flex.setWidget(parentcoords[0] + i+1, parentcoords[1],
-								memberLabel);
-					}
+            if (!(labels.getCaption() == null)) {
+                final Label parentLabel = new Label(labels.getCaption());
 
-				}
+                flex.setWidget(parentcoords[0] + 1, parentcoords[1], parentLabel);
 
-			}
+                for (int i = 0; i < 5; i++) {
+                    if (i < child.size()) {
+                        final Label memberLabel = new Label(child.get(i).getCaption());
+                        if (!flex.isCellPresent(parentcoords[1] + i + 2, 0)) {
+                            flex.insertRow(parentcoords[0] + i + 2);
+                        }
 
-		} else if (!isfilter && targetLabel.getAxis().equals(IAxis.COLUMNS)) {
+                        flex.setWidget(parentcoords[0] + i + 2, parentcoords[1], memberLabel);
+                    }
 
-			DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel
-					.getParent());
+                }
+            } else {
+                for (int i = 0; i < 5; i++) {
+                    if (i < child.size()) {
+                        final Label memberLabel = new Label(child.get(i).getCaption());
+                        if (!flex.isCellPresent(parentcoords[1] + i + 1, 0)) {
+                            flex.insertRow(parentcoords[0] + i + 1);
+                        }
 
-			int[] parentcoords = dimPanel.getCoord();
-			final List<StringTree> child = labels.getChildren();
-			removeColsFromFlexTable(flex, parentcoords);
-		//s	flex.insertRow(parentcoords[0] + 1);
+                        flex.setWidget(parentcoords[0] + i + 1, parentcoords[1], memberLabel);
+                    }
 
-			if (!(labels.getCaption() == null)) {
-				final Label parentLabel = new Label(labels.getCaption());
+                }
 
-				flex.setWidget(parentcoords[0], parentcoords[1] + 1,
-						parentLabel);
+            }
 
-				for (int i = 0; i < 6; i++) {
-					if (i < child.size()) {
-						final Label memberLabel = new Label(child.get(i)
-								.getCaption());
+        } else if (!isfilter && targetLabel.getAxis().equals(IAxis.COLUMNS)) {
 
-						flex.setWidget(parentcoords[0], parentcoords[1] + i+2,
-								memberLabel);
-					}
+            DimensionSimplePanel dimPanel = ((DimensionSimplePanel) targetLabel.getParent());
 
-				}
-			} else {
-				for (int i = 0; i < 5; i++) {
-					if (i < child.size()) {
-						final Label memberLabel = new Label(child.get(i)
-								.getCaption());
+            int[] parentcoords = dimPanel.getCoord();
+            final List<StringTree> child = labels.getChildren();
+            removeColsFromFlexTable(flex, parentcoords);
+            // s flex.insertRow(parentcoords[0] + 1);
 
-						flex.setWidget(parentcoords[0], parentcoords[1] + i+1,
-								memberLabel);
-					}
+            if (!(labels.getCaption() == null)) {
+                final Label parentLabel = new Label(labels.getCaption());
 
-				}
+                flex.setWidget(parentcoords[0], parentcoords[1] + 1, parentLabel);
 
-			}
-		}
-	}
+                for (int i = 0; i < 6; i++) {
+                    if (i < child.size()) {
+                        final Label memberLabel = new Label(child.get(i).getCaption());
 
-	public Widget getWidget(int i, int j) {
-		return this.flex.getWidget(i, j);
-	}
+                        flex.setWidget(parentcoords[0], parentcoords[1] + i + 2, memberLabel);
+                    }
 
-	@Override
-	public void onLoad() {
-		GlobalConnectionFactory.getSelectionInstance().addSelectionListener(
-				QueryDesignTable.this);
-	}
+                }
+            } else {
+                for (int i = 0; i < 5; i++) {
+                    if (i < child.size()) {
+                        final Label memberLabel = new Label(child.get(i).getCaption());
 
-	public void onSelectionChange(String queryID, Widget sender,
-			StringTree tree, String type) {
-		if (this.queryID.equals(queryID)  && this.isAttached()) {
-			MeasureLabel ml = (MeasureLabel) sender;
-			alterSelectionDisplay(ml, tree);
-		}
-	}
+                        flex.setWidget(parentcoords[0], parentcoords[1] + i + 1, memberLabel);
+                    }
 
-	public void onSelectionCleared(String currQuery, MeasureLabel label,
-			int[] is, IAxis axis) {
-		if (this.queryID.equals(queryID)  && this.isAttached()) {
-		alterSelectionDisplay(label, is, axis);
-		}
+                }
 
-	}
+            }
+        }
+    }
 
-	@Override
-	public void onUnload() {
-		GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(
-				QueryDesignTable.this);
-	}
+    public Widget getWidget(int i, int j) {
+        return this.flex.getWidget(i, j);
+    }
 
-	private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords) {
+    @Override
+    public void onLoad() {
+        GlobalConnectionFactory.getSelectionInstance().addSelectionListener(QueryDesignTable.this);
+    }
 
-		for (int z = 0; z < flexTable.getRowCount(); z++) {
-			if (flexTable.isCellPresent(z, coords[1]) == true
-					&& flexTable.getWidget(z, coords[1]) instanceof Label) {
+    public void onSelectionChange(String queryID, Widget sender, StringTree tree, String type) {
+        if (this.queryID.equals(queryID) && this.isAttached()) {
+            MeasureLabel ml = (MeasureLabel) sender;
+            alterSelectionDisplay(ml, tree);
+        }
+    }
 
-				boolean flag = false;
+    public void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis axis) {
+        if (this.queryID.equals(queryID) && this.isAttached()) {
+            alterSelectionDisplay(label, is, axis);
+        }
 
-				Widget w = flexTable.getWidget(z, coords[1]);
-				if (w != null) {
-					w.removeFromParent();
-				}
-				for (int i = 0; i < 100; i++) {
-					if (flexTable.isCellPresent(coords[0] + 1, i)
-							&& flexTable.getWidget(coords[0] + 1, i) != null) {
-						flag = true;
-						break;
-					}
-				}
-				if (flag == false) {
-					flexTable.removeRow(coords[0] + 1);
-				}
+    }
 
-			}
-		}
-	}
-	private void removeColsFromFlexTable(FlexTable flex2, int[] coords) {
+    @Override
+    public void onUnload() {
+        GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(QueryDesignTable.this);
+    }
 
-		while (flex2.isCellPresent(coords[0], coords[1]+1) && flex2.getWidget(coords[0], coords[1]+1) instanceof Label){
-			flex.removeCell(coords[0], coords[1]+1);
-		}
-		
-	}
-	public void setWidget(int i, int j, Widget w) {
-		this.flex.setWidget(i, j, w);
+    private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords) {
 
-	}
+        for (int z = 0; z < flexTable.getRowCount(); z++) {
+            if (flexTable.isCellPresent(z, coords[1]) == true && flexTable.getWidget(z, coords[1]) instanceof Label) {
+
+                boolean flag = false;
+
+                Widget w = flexTable.getWidget(z, coords[1]);
+                if (w != null) {
+                    w.removeFromParent();
+                }
+                for (int i = 0; i < 100; i++) {
+                    if (flexTable.isCellPresent(coords[0] + 1, i) && flexTable.getWidget(coords[0] + 1, i) != null) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag == false) {
+                    flexTable.removeRow(coords[0] + 1);
+                }
+
+            }
+        }
+    }
+
+    private void removeColsFromFlexTable(FlexTable flex2, int[] coords) {
+
+        while (flex2.isCellPresent(coords[0], coords[1] + 1)
+                && flex2.getWidget(coords[0], coords[1] + 1) instanceof Label) {
+            flex.removeCell(coords[0], coords[1] + 1);
+        }
+
+    }
+
+    public void setWidget(int i, int j, Widget w) {
+        this.flex.setWidget(i, j, w);
+
+    }
+
+    public void onMoveCol(String currQuery, int oldcol, int newcol) {
+        if (this.queryID.equals(queryID) && this.isAttached() && !this.isfilter) {
+            for(int i = 0; i<flex.getRowCount(); i++){
+                flex.insertCell(i, newcol);
+                if(flex.isCellPresent(i, oldcol+1)){
+                    Widget w = flex.getWidget(i, oldcol+2);
+                    flex.setWidget(i, newcol, w);
+                    flex.removeCell(i, oldcol+2);
+                }
+            }
+        }
+        
+    }
+
+    public void onMoveRow(String currQuery, int oldrow, int newrow) {
+        
+        if (this.queryID.equals(queryID)  && !this.isfilter && this.isAttached()) {
+            flex.insertRow(newrow);
+            int rc = flex.getRowCount();
+            for(int i = 0; i<flex.getCellCount(oldrow+1); i++){
+                if(flex.isCellPresent(oldrow+1, i)){
+                Widget w = flex.getWidget(oldrow+1, i);
+                if(w!=null)
+                //w.removeFromParent();
+                flex.setWidget(newrow, i, w);
+                }
+                //flex.setWidget(newrow, i, w);
+            }
+            flex.removeRow(oldrow+1);
+        }
+        
+    }
 
 }
