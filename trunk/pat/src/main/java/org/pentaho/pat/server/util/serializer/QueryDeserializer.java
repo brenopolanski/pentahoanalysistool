@@ -1,7 +1,26 @@
+/*
+ * Copyright (C) 2010 Paul Stoellberger
+ *
+ * This program is free software; you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation; either version 2 of the License, or (at your option) 
+ * any later version.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ *
+ */
+
 package org.pentaho.pat.server.util.serializer;
 
 import java.io.ByteArrayInputStream;
-import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.Iterator;
 
@@ -26,10 +45,16 @@ import org.xml.sax.InputSource;
 
 
 
-
+/**
+ * De-Serializes an XML into a PatQuery object
+ * @created May 27, 2010 
+ * @since 0.8
+ * @author Paul Stoellberger
+ * 
+ */
 public class QueryDeserializer {
 
-    private static PatQuery query;
+
     private static Document dom;
     private static Query qm;
     private static String xml;
@@ -45,33 +70,48 @@ public class QueryDeserializer {
 
         //get the dom-document
 
-        source = new InputSource((new ByteArrayInputStream(xml.getBytes())));
+        source = new InputSource((new ByteArrayInputStream(QueryDeserializer.xml.getBytes())));
         dom = parser.build(source);
         Element child =(Element) dom.getRootElement();
-        System.out.println("Root:" + child.getName());
-        System.out.println("Children:" + child.getChildren().size());
         Element qmElement = child.getChild("QueryModel");
         PatQuery returnQuery = null;
         if (qmElement != null) {
             returnQuery = createQmQuery();
             return returnQuery;
         }
-        else
-            System.out.println("No QueryModel");
+        else if (child.getChild("MDX") != null) {
+                 returnQuery = createMdxQuery();
+                 return returnQuery;
+        }
 
-        //        if (child.getChild("MDX") != null) {
-        //            returnQuery = createMdxQuery();
-        //        }
-
-
-
-        return null;
+        throw new Exception("Cant find <QueryModel> nor <MDX> Query");
 
     }
 
-    private static PatQuery createMdxQuery() {
+    private static PatQuery createMdxQuery() throws QueryParseException {
         // TODO Auto-generated method stub
-        return null;
+        Element queryElement = dom.getRootElement();
+        if (queryElement != null && queryElement.getName().equals("Query")) {
+
+            String queryName = queryElement.getAttributeValue("name");
+
+
+            String catalogName = queryElement.getAttributeValue("catalog");
+            if (!StringUtils.isNotBlank(catalogName)) {
+                throw new QueryParseException("Catalog for MDX query not defined");
+            }
+                MdxQuery2 mdxQ = new MdxQuery2(queryName, connection, catalogName);
+                Element qmElement = queryElement.getChild("MDX");
+                if (qmElement != null) {
+                    mdxQ.setMdx(qmElement.getText());
+                }
+                return mdxQ;
+        }
+        else {
+            throw new QueryParseException("Cannot parse MDX Query: Query node not found and/or more than 1 Query node found");
+        }
+
+
     }
 
     private static PatQuery createQmQuery() throws QueryParseException {
@@ -166,8 +206,6 @@ public class QueryDeserializer {
         String dimName = dimension.getAttributeValue("name");
         if (StringUtils.isNotBlank(dimName)) {
 
-            dimName = dimName.substring(1,dimName.length() - 1);
-            System.out.println("dimName:"  + dimName);
             QueryDimension dim = qm.getDimension(dimName);
 
             if (dim == null)
@@ -191,8 +229,9 @@ public class QueryDeserializer {
                     Element selectionElement = (Element) inclusions.getChildren("Selection").get(z);
                     String name = selectionElement.getAttributeValue("member");
                     String operator = selectionElement.getAttributeValue("operator");
-                    String memberDim = selectionElement.getAttributeValue("dimension");
+                    
                     Selection sel = dim.include(Selection.Operator.valueOf(operator), QueryDimension.getNameParts(name));
+                    
                     Element contextElement = selectionElement.getChild("Context");
                     if (contextElement != null) {
                         for(int h = 0; h < contextElement.getChildren("Selection").size(); h++) {
@@ -202,20 +241,18 @@ public class QueryDeserializer {
                             String contextDimension = context.getAttributeValue("dimension");
                             QueryDimension contextDim = qm.getDimension(contextDimension);
                             if ( contextDim != null ) {
-                            Selection contextSelection = contextDim.createSelection(Selection.Operator.valueOf(contextoperator), QueryDimension.getNameParts(contextname));
-                            if (contextSelection != null ) {
-                                sel.addContext(contextSelection);
-                            }
-                            else
-                                throw new OlapException("Cannot create selection for member: " + contextname + " operator:" + contextoperator + " on dimension: " + dim.getName());
+                                Selection contextSelection = contextDim.createSelection(Selection.Operator.valueOf(contextoperator), QueryDimension.getNameParts(contextname));
+                                if (contextSelection != null ) {
+                                    sel.addContext(contextSelection);
+                                }
+                                else
+                                    throw new OlapException("Cannot create selection for member: " + contextname + " operator:" + contextoperator + " on dimension: " + dim.getName());
                             }
                             else 
                                 throw new OlapException("Cannot find dimension with name:" + contextDim);
                         }
                         
                     }
-                    
-                    // TODO ADD CONTEXT
 
                 }
             }
@@ -226,10 +263,8 @@ public class QueryDeserializer {
                     Element selectionElement = (Element) exclusions.getChildren("Selection").get(z);
                     String name = selectionElement.getAttributeValue("member");
                     String operator = selectionElement.getAttributeValue("operator");
-                    String memberDim = selectionElement.getAttributeValue("dimension");
                     dim.exclude(Selection.Operator.valueOf(operator), QueryDimension.getNameParts(name));
-
-                    // TODO ADD CONTEXT
+                    // ADD CONTEXT ?
                 }
             }
 

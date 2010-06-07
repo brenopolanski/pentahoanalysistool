@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Paul Stoellberger
+ * Copyright (C) 2010 Paul Stoellberger
  *
  * This program is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -22,26 +22,25 @@ package org.pentaho.pat.server.util.serializer;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.olap4j.Axis;
 import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 import org.olap4j.query.Selection;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
 
 
 /**
- * Does X and Y and provides an abstraction for Z.
+ * Serializes a PatQuery object to XML
  * @created May 27, 2010 
- * @since X.Y.Z
- * @author pmac
+ * @since 0.8
+ * @author Paul Stoellberger
  * 
  */
 public class QuerySerializer {
@@ -61,14 +60,12 @@ public class QuerySerializer {
             createDocument();
             createDOMTree();
             
-            OutputFormat format = new OutputFormat(dom);
-            format.setIndenting(true);
-            format.setEncoding("UTF-8");
-            format.setVersion("1.0");
-            format.setLineWidth(120);
+            XMLOutputter serializer = new XMLOutputter();
+            Format format = Format.getPrettyFormat();
             StringWriter st = new StringWriter();
-            XMLSerializer serializer = new XMLSerializer(st,format);
-            serializer.serialize(dom);
+            serializer.setFormat(format);
+            serializer.output(dom, st);
+
             return st.getBuffer().toString();
             
         } catch (ParserConfigurationException e) {
@@ -78,20 +75,25 @@ public class QuerySerializer {
     }
     
     private void createDocument() throws ParserConfigurationException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        dom = db.newDocument();
+        dom = new Document();
     }
     
     private void createDOMTree(){
 
-        Element rootEle = dom.createElement("Query");
+        Element rootEle = new Element("Query");
         
         if (StringUtils.isNotBlank(query.getName())) {
             rootEle.setAttribute("name", query.getName());
         }
+
+        // cube name is not yet supported for mdx queries 
+        String cubeName = null;
+        try {
+            cubeName = query.getCubeName();
+        }
+        catch (UnsupportedOperationException e) {}
         
-        if (StringUtils.isNotBlank(query.getCubeName())) {
+        if (StringUtils.isNotBlank(cubeName)) {
             rootEle.setAttribute("cube", query.getCubeName());
         }
         
@@ -101,65 +103,65 @@ public class QuerySerializer {
                         
         rootEle = appendQmQuery(rootEle);
         
-        dom.appendChild(rootEle);
+        dom.setRootElement(rootEle);
 
     }
     
     private Element appendQmQuery(Element rootElement) {
         
         if (this.query.getQuery() != null) {
-            Element qm = dom.createElement("QueryModel");
+            Element qm = new Element("QueryModel");
             
             qm = appendAxes(qm);
-            rootElement.appendChild(qm);
+            rootElement.addContent(qm);
         }
         
+        Element mdx = new Element("MDX");
         if (StringUtils.isNotBlank(this.query.getMdx())) {
-            Element mdx = dom.createElement("MDX");
+            mdx.setText(this.query.getMdx());
 
-            mdx.setNodeValue(this.query.getMdx());
-            rootElement.appendChild(mdx);
         }
+        rootElement.addContent(mdx);
         
         return rootElement;
     }
     
     private Element appendAxes(Element rootElement) {
         
-        Element axes = dom.createElement("Axes");
+        Element axes = new Element("Axes");
         
         QueryAxis rows = this.query.getAxes().get(Axis.ROWS);
         if (rows != null) {
             Element rowsElement = createAxisElement(rows);
-            axes.appendChild(rowsElement);
+            axes.addContent(rowsElement);
         }
         
         QueryAxis columns = this.query.getAxes().get(Axis.COLUMNS);
         if (columns != null) {
             Element columnsElement = createAxisElement(columns);
-            axes.appendChild(columnsElement);
+            axes.addContent(columnsElement);
         }
         
         QueryAxis filters = this.query.getAxes().get(Axis.FILTER);
         if (filters != null) {
             Element filtersElement = createAxisElement(filters);
-            axes.appendChild(filtersElement);
+            axes.addContent(filtersElement);
         }
         
         QueryAxis pages = this.query.getAxes().get(Axis.PAGES);
         if (pages != null) {
             Element pagesElement = createAxisElement(pages);
-            axes.appendChild(pagesElement);
+            axes.addContent(pagesElement);
         }
         
-        rootElement.appendChild(axes);
+        rootElement.addContent(axes);
         return rootElement;
         
         
     }
     
     private Element createAxisElement(QueryAxis axis) {
-        Element axisElement = dom.createElement("Axis");
+        Element axisElement = new Element("Axis");
         axisElement.setAttribute("location",getAxisName(axis));
         
 //        if (axis.isNonEmpty() == true) {
@@ -175,23 +177,23 @@ public class QuerySerializer {
             axisElement.setAttribute("sortEvaluationLiteral", axis.getSortIdentifierNodeName());
         }
         
-        Element dimensions = dom.createElement("Dimensions");
+        Element dimensions = new Element("Dimensions");
         
         
         for (QueryDimension dim : axis.getDimensions()) {
             Element d = createDimensionElement(dim);
-            dimensions.appendChild(d);
+            dimensions.addContent(d);
         }
         if (axis.getDimensions().size() > 0) {
-            axisElement.appendChild(dimensions);
+            axisElement.addContent(dimensions);
         }
         
         return axisElement;
     }
     
     private Element createDimensionElement(QueryDimension dim) {
-        Element dimension = dom.createElement("Dimension");
-        dimension.setAttribute("name", dim.getDimension().getUniqueName());
+        Element dimension = new Element("Dimension");
+        dimension.setAttribute("name", dim.getDimension().getName());
         if (dim.getSortOrder() != null) {
             dimension.setAttribute("sortOrder", dim.getSortOrder().toString());
         }
@@ -199,24 +201,24 @@ public class QuerySerializer {
             dimension.setAttribute("hierarchizeMode", dim.getHierarchizeMode().toString());
         }
         
-        Element inclusionsElement = dom.createElement("Inclusions");
+        Element inclusionsElement = new Element("Inclusions");
         List<Selection> inclusions = dim.getInclusions();
         
         inclusionsElement = createSelectionsElement(inclusionsElement, inclusions);
-        dimension.appendChild(inclusionsElement);
+        dimension.addContent(inclusionsElement);
         
-        Element exclusionsElement = dom.createElement("Exclusions");
+        Element exclusionsElement = new Element("Exclusions");
         List<Selection> exclusions = dim.getExclusions();
         
         inclusionsElement = createSelectionsElement(exclusionsElement, exclusions);
-        dimension.appendChild(inclusionsElement);
+        dimension.addContent(inclusionsElement);
         
         return dimension;
     }
     
     private Element createSelectionsElement(Element rootElement, List<Selection> selections) {
         for (Selection sel : selections) {
-            Element selection = dom.createElement("Selection");
+            Element selection = new Element("Selection");
             if (sel.getDimension() != null)
                 selection.setAttribute("dimension", sel.getDimension().getName());
             
@@ -224,11 +226,11 @@ public class QuerySerializer {
             selection.setAttribute("operator", sel.getOperator().toString());
             
             if (sel.getSelectionContext() != null && sel.getSelectionContext().size() > 0) {
-                Element context = dom.createElement("Context");
+                Element context = new Element("Context");
                 context = createSelectionsElement(context, sel.getSelectionContext());
-                selection.appendChild(context);
+                selection.addContent(context);
             }
-            rootElement.appendChild(selection);
+            rootElement.addContent(selection);
         }
         return rootElement;
     }

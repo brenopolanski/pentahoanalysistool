@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
+import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.query.Query;
 import org.olap4j.query.SortOrder;
@@ -47,8 +48,11 @@ import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
-
-import com.thoughtworks.xstream.XStream;
+import org.pentaho.pat.server.util.serializer.MdxQuery2;
+import org.pentaho.pat.server.util.serializer.PatQuery;
+import org.pentaho.pat.server.util.serializer.QmQuery;
+import org.pentaho.pat.server.util.serializer.QueryDeserializer;
+import org.pentaho.pat.server.util.serializer.QuerySerializer;
 
 /**
  * @author luc Boudreau
@@ -154,7 +158,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         try {
             this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
@@ -172,7 +176,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         try {
             return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
@@ -189,7 +193,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         try {
             return this.queryService.getSpecificMembers(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
@@ -205,7 +209,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         try {
             this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
@@ -222,7 +226,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final List<String> memberNames) throws RpcException {
         try {
             this.queryService.createExclusion(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
@@ -232,7 +236,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final String newCellValue)throws RpcException {
         try {
             this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
@@ -246,7 +250,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     throws RpcException {
         try {
             return this.queryService.getSelection(getCurrentUserId(), sessionId, queryId, dimensionName);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantGetMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantGetMembers")); //$NON-NLS-1$
         }
@@ -261,8 +265,16 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     public void moveDimension(final String sessionId, final String queryId, final IAxis axis, final String dimensionName)
     throws RpcException {
-        this.queryService.moveDimension(getCurrentUserId(), sessionId, queryId,
-                (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), dimensionName);
+        try {
+            this.queryService.moveDimension(getCurrentUserId(), sessionId, queryId,
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), dimensionName);
+
+        } catch (Exception e) {
+            // TODO add localization
+            LOG.error(e.getMessage(), e); //$NON-NLS-1$
+            throw new RpcException(e.getMessage()); //$NON-NLS-1$
+        }
+
     }
 
     /*
@@ -282,7 +294,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
         try {
             this.queryService.setSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName, sortValue);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSort"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSort")); //$NON-NLS-1$
         }
@@ -297,7 +309,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     throws RpcException {
         try {
             this.queryService.clearSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantClearSortOrder"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantClearSortOrder")); //$NON-NLS-1$
         }
@@ -312,7 +324,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     throws RpcException {
         try {
             return this.queryService.getSortOrder(getCurrentUserId(), sessionId, queryId, dimensionName);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantGetSortOrder"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantGetSortOrder")); //$NON-NLS-1$
         }
@@ -336,7 +348,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
         try {
             this.queryService.setHierarchizeMode(getCurrentUserId(), sessionId, queryId, dimensionName, hMode);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSetHierarchizeMode"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSethierarchizeMode")); //$NON-NLS-1$
         }
@@ -352,7 +364,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     throws RpcException {
         try {
             return this.queryService.getHierarchizeMode(getCurrentUserId(), sessionId, queryId, dimensionName);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantGetHierarchizeMode"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantGetHierarchizeMode")); //$NON-NLS-1$
         }
@@ -367,7 +379,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
         try {
             return this.queryService.swapAxis(getCurrentUserId(), sessionId, queryId);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSwapAxis"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSwapAxis")); //$NON-NLS-1$
         }
@@ -384,7 +396,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
         try {
             return this.queryService.setNonEmpty(getCurrentUserId(), sessionId, queryId, flag);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSwapAxis"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSwapAxis")); //$NON-NLS-1$
         }
@@ -402,7 +414,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             // TODO remove this later
             ExportController.exportResult = cd;
             return cd;
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
@@ -418,7 +430,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final MemberCell member) throws RpcException {
         try {
             this.queryService.drillPosition(getCurrentUserId(), sessionId, queryId, drillType, member);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
@@ -427,7 +439,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public String[][] drillThrough(final String sessionId, final String queryId, final List<Integer> coordinates) throws RpcException {
         try {
             return this.queryService.drillThrough(getCurrentUserId(), sessionId, queryId, coordinates);
-        } catch (OlapException e) {
+        } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantExecuteQuery")); //$NON-NLS-1$
         }
@@ -568,12 +580,21 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
             final MdxQuery mdxq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, queryId);
             SavedQuery sc = null;
+            OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
+            if (con == null)
+                throw new Exception("Cannot find open connection with ID:" + connectionId);
+            
             if (qm != null) {
-                sc = this.convert((Object)qm, queryId, queryName, connectionId, cube, cubeName);
+                
+                PatQuery qs = new QmQuery(con,qm);
+                sc = this.convert(qs, queryId, queryName, connectionId, cube, cubeName);
                 sc.setQueryType(QueryType.QM);
+
             }
             else if (mdxq != null) {
-                sc = this.convert((Object)mdxq,queryId, queryName, connectionId, cube, cubeName);
+                MdxQuery2 mdx2 = new MdxQuery2(con, mdxq.getCatalogName());
+                mdx2.setMdx(mdxq.getMdx());
+                sc = this.convert(mdx2,queryId, queryName, connectionId, cube, cubeName);
                 sc.setQueryType(QueryType.MDX);
             }
             if (sc != null ) {
@@ -596,17 +617,24 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @param cubeName
      * @return
      */
-    private SavedQuery convert(final Object cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
+    private SavedQuery convert(final PatQuery cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
-        final XStream xstream = new XStream();
-        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-        xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
-        xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
-        xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
-        xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
-        xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
-        xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
-        final String xml = xstream.toXML(cc);
+//        final XStream xstream = new XStream();
+//        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+//        xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
+//        xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
+//        xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
+//        xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
+//        xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
+//        xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
+//        final String xml = xstream.toXML(cc);
+        QuerySerializer qser = new QuerySerializer(cc);
+        String xml = null;
+        try {
+            xml = qser.createXML();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         final SavedQuery sc = new SavedQuery();
         sc.setQueryId(queryId);
         sc.setCubeName(cubeName);
@@ -693,26 +721,38 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             if (sc == null)
                 throw new Exception("Couldn't load Query with ID: " + savedQueryId);
             
-            final XStream xstream = new XStream();
-
-            xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-            xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
-            xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
-            xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
-            xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
-            xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
-            xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
-            Object oQuery = xstream.fromXML(sc.getXml());
+//            final XStream xstream = new XStream();
+//
+//            xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+//            xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
+//            xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
+//            xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
+//            xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
+//            xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
+//            xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
+            OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, sc.getConnectionId());
+            if (con == null) {
+                this.sessionService.connect(getCurrentUserId(), sessionId, sc.getConnectionId());
+                con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, sc.getConnectionId());
+            }
+            if (con == null)
+                throw new Exception("Cannot find connection with ID:" + sc.getConnectionId() + ". Tried to connect but failed!");
+            
+            PatQuery qs2 = QueryDeserializer.unparse(sc.getXml(), con);
             String createdQueryId = null;
-            if (oQuery instanceof Query) {
+            if (qs2 instanceof QmQuery && qs2.getQuery() != null) {
                 createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, 
-                        sc.getConnectionId(), (Query) oQuery);
+                        sc.getConnectionId(), qs2.getQuery());
 
             }
-            if (oQuery instanceof MdxQuery) {
-                createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, sc.getConnectionId(),(MdxQuery) oQuery);
+            else if (qs2 instanceof MdxQuery2) {
+                MdxQuery mdx = new MdxQuery(qs2.getName(),con, qs2.getCatalogName(),qs2.getMdx());
+                createdQueryId = this.queryService.createSavedQuery(getCurrentUserId(), sessionId, sc.getConnectionId(),mdx);
             }
 
+            if (createdQueryId == null) {
+                throw new Exception("Query could not be loaded");
+            }
             SavedConnection svc = sessionService.getConnection(getCurrentUserId(), sc.getConnectionId());
             if (svc == null) {
                 throw new Exception("Connection for query doesn't exist");

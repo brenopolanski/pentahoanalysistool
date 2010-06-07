@@ -34,10 +34,10 @@ import org.olap4j.query.QueryAxis;
 import org.olap4j.query.QueryDimension;
 
 /**
- * Does X and Y and provides an abstraction for Z.
+ * Implementation of PatQuery interface for Query Model Queries
  * @created May 27, 2010 
- * @since X.Y.Z
- * @author pmac
+ * @since 0.8
+ * @author Paul Stoellberger
  * 
  */
 public class QmQuery implements PatQuery {
