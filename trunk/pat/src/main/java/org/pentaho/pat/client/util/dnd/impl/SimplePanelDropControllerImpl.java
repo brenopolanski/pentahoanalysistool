@@ -29,7 +29,6 @@ import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * FlexTableRowDropConroller allows flextable cell drops.
@@ -141,7 +140,6 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             label.setDragController(originalLabel.getDragController());
             label.makeDraggable();
             label.setDownButtonVisible(true);
-            // label.enableSinkEvents();
             dropTarget.setWidget(label);
 
             originalLabel.makeNotDraggable();

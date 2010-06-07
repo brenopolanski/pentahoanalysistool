@@ -1224,26 +1224,31 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
     }
 
-    public void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int position) {
+    public void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int currentposition, int newposition) {
         this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.getQuery(currentUserId, sessionID, queryId);
 
         QueryAxis axis = query.getAxis(iaxis);
-
-        axis.pullUp(position);
-
+        int difference = currentposition - newposition;
+        for (int i=0;i<difference;i++){
+        axis.pullUp(currentposition);
+        currentposition--;
+        }
     }
 
-    public void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int position) {
+    public void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis iaxis, int currentposition, int newposition) {
         this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.getQuery(currentUserId, sessionID, queryId);
 
         QueryAxis axis = query.getAxis(iaxis);
 
-        axis.pullUp(position);
-
+        int difference = newposition- currentposition;
+        for (int i=0;i<difference;i++){
+        axis.pushDown(currentposition);
+        currentposition++;
+        }
     }
 
 }

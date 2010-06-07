@@ -449,9 +449,9 @@ public interface IQuery extends RemoteService {
     void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException;
     
     @Secured( {"Users"})
-	void pullUpDimension(String sessionID, String queryId, IAxis iaxis, int position) throws RpcException;
+	void pullUpDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
     
 	@Secured( {"Users"})
-    void pushDownDimension(String sessionID, String queryId, IAxis iaxis, int position) throws RpcException;
+    void pushDownDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
 
 }

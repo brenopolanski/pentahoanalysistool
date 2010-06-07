@@ -637,8 +637,8 @@ public interface QueryService extends Service {
     void setProperty(String currentUserId, String sessionID, String queryId, String dimensionName, String levelName, String propertyName, Boolean enabled);
     
     @Secured( {"Users"})
-    void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position);
+    void pushDownDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position, int newposition);
     
     @Secured( {"Users"})
-    void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position);
+    void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position, int newposition);
 }
