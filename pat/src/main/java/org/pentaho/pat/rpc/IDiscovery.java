@@ -110,10 +110,10 @@ public interface IDiscovery extends RemoteService {
     List<MemberLabelItem> getHierarchies(String sessionId, String queryId, String dimensionName) throws RpcException;
     
     @Secured( {"Users"})
-    List<MemberLabelItem> getLevels(String sessionId, String queryId, String dimensionName, String hierarchyName) throws RpcException;
+    List<MemberLabelItem> getLevels(String sessionId, String queryId, String uniqueName) throws RpcException;
 
     @Secured( {"Users"})
-    List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName) throws RpcException;
+    List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String uniqueName) throws RpcException;
 
     @Secured( {"Users"})
     List<MemberLabelItem> getMeasures(String sessionID, String currQuery) throws RpcException;

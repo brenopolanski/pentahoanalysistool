@@ -12,6 +12,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.IAxis.Standard;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -49,7 +51,7 @@ public class SimplePanelUtil {
     public static void clearDimension(DragContext context, Widget draggable, final int[] is, final IAxis iAxis) {
         final MeasureLabel label = ((MeasureLabel) draggable);
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -58,7 +60,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                         ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getValue().get(0), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                                label.getActualName(), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
@@ -82,7 +84,7 @@ public class SimplePanelUtil {
 
         final MeasureLabel label = ((MeasureLabel) draggable);
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -91,7 +93,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                         ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getValue().get(0), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                                label.getActualName(), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
@@ -114,7 +116,7 @@ public class SimplePanelUtil {
     public static void clearLevel(DragContext context, Widget draggable, final int[] coord, final IAxis axis) {
         final MeasureLabel label = ((MeasureLabel) draggable);
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -123,7 +125,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                         ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getValue().get(0), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                                label.getActualName(), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
@@ -159,11 +161,11 @@ public class SimplePanelUtil {
                         dimension.add(label.getText());
                         if (createSelection) {
 
-                            label.setSelectionType("MEMBER");
+                            label.setSelectionType(SelectionType.MEMBER);
                             label.setAxis(((DimensionSimplePanel) context.finalDropController.getDropTarget())
                                     .getAxis());
                             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    label.getText(), dimension, "dimension", "MEMBER",
+                                    label.getActualName(), ObjectType.DIMENSION, SelectionType.MEMBER,
                                     new AsyncCallback<List<String>>() {
 
                                         public void onFailure(Throwable arg0) {
@@ -183,7 +185,7 @@ public class SimplePanelUtil {
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
                         ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getText(), dimension, "dimension", "MEMBER", new AsyncCallback<StringTree>() {
+                                label.getActualName(), ObjectType.DIMENSION, SelectionType.MEMBER, new AsyncCallback<StringTree>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
@@ -211,7 +213,7 @@ public class SimplePanelUtil {
             final boolean createSelection, final int[] is, final IAxis iAxis) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         MessageBox.error("Error", "move to axis failed");
@@ -219,11 +221,11 @@ public class SimplePanelUtil {
                     }
 
                     public void onSuccess(Object arg0) {
-                        label.setSelectionType("MEMBER");
+                        label.setSelectionType(SelectionType.MEMBER);
                         label.setAxis(((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis());
                         if (createSelection) {
                             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    label.getValue().get(0), label.getValue(), "hierarchy", "MEMBER",
+                                    label.getActualName(), ObjectType.HIERARCHY, SelectionType.MEMBER,
                                     new AsyncCallback<List<String>>() {
 
                                         public void onFailure(Throwable arg0) {
@@ -243,7 +245,7 @@ public class SimplePanelUtil {
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
                         ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getValue().get(0), label.getValue(), "hierarchy", "MEMBER",
+                                label.getActualName(), ObjectType.HIERARCHY, SelectionType.MEMBER,
                                 new AsyncCallback<StringTree>() {
 
                                     public void onFailure(Throwable arg0) {
@@ -271,7 +273,7 @@ public class SimplePanelUtil {
             final int[] is, final IAxis iAxis) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         MessageBox.error("Error", "move to axis failed");
@@ -281,7 +283,7 @@ public class SimplePanelUtil {
                     public void onSuccess(Object arg0) {
                         if (createSelection) {
                             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    label.getText(), label.getValue(), "level", "MEMBER",
+                                    label.getActualName(), ObjectType.LEVEL, SelectionType.CHILDREN,
                                     new AsyncCallback<List<String>>() {
 
                                         public void onFailure(Throwable arg0) {
@@ -291,7 +293,7 @@ public class SimplePanelUtil {
 
                                         public void onSuccess(List<String> arg0) {
                                             label.setCurrentSelection(arg0);
-                                            label.setSelectionType("MEMBER");
+                                            label.setSelectionType(SelectionType.CHILDREN);
                                             label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                     .getDropTarget()).getAxis());
 
@@ -303,7 +305,7 @@ public class SimplePanelUtil {
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
                         ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getText(), label.getValue(), "level", "CHILDREN",
+                                label.getActualName(), ObjectType.LEVEL, SelectionType.CHILDREN,
                                 new AsyncCallback<StringTree>() {
 
                                     public void onFailure(Throwable arg0) {
@@ -329,7 +331,7 @@ public class SimplePanelUtil {
             final int[] is, final IAxis iAxis) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
 
@@ -341,7 +343,7 @@ public class SimplePanelUtil {
                                 final List<String> list = new ArrayList<String>();
                                 list.add("Measures");
                                 ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
-                                        Pat.getCurrQuery(), "Measures", list, "measure", "MEMBER",
+                                        Pat.getCurrQuery(), label.getActualName(), ObjectType.MEASURE, SelectionType.MEMBER,
                                         new AsyncCallback<List<String>>() {
 
                                             public void onFailure(Throwable arg0) {
@@ -351,12 +353,12 @@ public class SimplePanelUtil {
 
                                             public void onSuccess(List<String> arg0) {
                                                 label.setCurrentSelection(arg0);
-                                                label.setSelectionType("MEMBER");
+                                                label.setSelectionType(SelectionType.MEMBER);
                                                 label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                         .getDropTarget()).getAxis());
                                                 ServiceFactory.getQueryInstance().getSpecificMembers(
-                                                        Pat.getSessionID(), Pat.getCurrQuery(), "Measures", list,
-                                                        "measures", "CHILDREN", new AsyncCallback<StringTree>() {
+                                                        Pat.getSessionID(), Pat.getCurrQuery(), label.getActualName(),
+                                                        ObjectType.MEASURE, SelectionType.MEMBER, new AsyncCallback<StringTree>() {
 
                                                             public void onFailure(Throwable arg0) {
                                                                 // TODO Auto-generated method stub
@@ -386,7 +388,7 @@ public class SimplePanelUtil {
                                 list.add("dummy");
                                 list.add(label.getActualName());
                                 ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(),
-                                        Pat.getCurrQuery(), "Measures", list, "measure", "MEMBER",
+                                        Pat.getCurrQuery(), label.getActualName(), ObjectType.MEASURE, SelectionType.MEMBER,
                                         new AsyncCallback<List<String>>() {
 
                                             public void onFailure(Throwable arg0) {
@@ -396,7 +398,7 @@ public class SimplePanelUtil {
 
                                             public void onSuccess(List<String> arg0) {
                                                 label.setCurrentSelection(arg0);
-                                                label.setSelectionType("MEMBER");
+                                                label.setSelectionType(SelectionType.MEMBER);
                                                 label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                         .getDropTarget()).getAxis());
                                             }
@@ -416,7 +418,7 @@ public class SimplePanelUtil {
 
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         MessageBox.error("Error", "move to axis failed");
@@ -426,7 +428,7 @@ public class SimplePanelUtil {
                     public void onSuccess(Object arg0) {
                         if (createSelection) {
                             ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    label.getText(), label.getValue(), "member", "MEMBER",
+                                    label.getActualName(), ObjectType.MEMBER, SelectionType.MEMBER,
                                     new AsyncCallback<List<String>>() {
 
                                         public void onFailure(Throwable arg0) {
@@ -436,7 +438,7 @@ public class SimplePanelUtil {
 
                                         public void onSuccess(List<String> arg0) {
                                             label.setCurrentSelection(arg0);
-                                            label.setSelectionType("MEMBER");
+                                            label.setSelectionType(SelectionType.MEMBER);
                                             label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                     .getDropTarget()).getAxis());
 
@@ -454,7 +456,7 @@ public class SimplePanelUtil {
     public static void clearMember(DragContext context, Widget draggable, final int[] coord, final IAxis axis) {
         final MeasureLabel label = ((MeasureLabel) draggable);
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
-                label.getValue().get(0), new AsyncCallback<Object>() {
+                label.getActualName(), new AsyncCallback<Object>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
@@ -463,7 +465,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                         ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getValue().get(0), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                                label.getActualName(), new AsyncCallback<Object>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
