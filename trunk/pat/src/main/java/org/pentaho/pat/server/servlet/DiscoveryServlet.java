@@ -135,9 +135,9 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
     }
 
 	public List<MemberLabelItem> getHierarchies(String sessionId, String queryId,
-			String dimensionName) throws RpcException {
+			String uniqueName) throws RpcException {
 		try {
-			return this.discoveryService.getHierarchies(getCurrentUserId(), sessionId, queryId, dimensionName);
+			return this.discoveryService.getHierarchies(getCurrentUserId(), sessionId, queryId, uniqueName);
             
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
@@ -145,20 +145,18 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
         }
 	}
 
-	public List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String dimensionName, String hierarchyName,
-			String levelName) throws RpcException {
+	public List<MemberLabelItem> getLevelMembers(String sessionId, String queryId, String uniqueNames) throws RpcException {
 		try {
-			return this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName,  levelName);
+			return this.discoveryService.getLevelMembers(getCurrentUserId(), sessionId, queryId, uniqueNames);
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
         }
 	}
 
-	public List<MemberLabelItem> getLevels(String sessionId, String queryId, String dimensionName,
-			String hierarchyName) throws RpcException {
+	public List<MemberLabelItem> getLevels(String sessionId, String queryId, String uniqueName) throws RpcException {
 		try {
-			return this.discoveryService.getLevels(getCurrentUserId(), sessionId, queryId, dimensionName, hierarchyName);
+			return this.discoveryService.getLevels(getCurrentUserId(), sessionId, queryId, uniqueName);
             
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$

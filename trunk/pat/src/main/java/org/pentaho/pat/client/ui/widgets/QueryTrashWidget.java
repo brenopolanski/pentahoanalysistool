@@ -16,12 +16,13 @@ public class QueryTrashWidget extends LayoutComposite{
     
 	public QueryTrashWidget(){
 		 SimplePanel trashPanel = new SimplePanel();
-		 trashPanel.setSize("100", "100");
-		 this.getLayoutPanel().setSize("100", "100");
+		 trashPanel.setSize("50", "50");
+		 this.getLayoutPanel().setSize("50", "50");
 	     //trashPanel.setWidget(Pat.IMAGES.stock_delete().createImage());
 	     fTblRowDropCont = new SimplePanelDropControllerImpl(trashPanel, true);
 	     trashPanel.setStylePrimaryName("pat-QueryTrashWidget");
 	     this.getLayoutPanel().add(trashPanel);
+	     
 	}
 	
 

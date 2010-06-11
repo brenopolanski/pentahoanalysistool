@@ -28,6 +28,8 @@ import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
@@ -41,61 +43,68 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface IQuery extends RemoteService {
 
-    /**
-     * Tells the server that we want to create a new query. It will create a new query against the currently selected
-     * cube. It returns a unique identification string to identify the query created.
-     * 
-     * @param sessionId
-     *            The window session id.
-     * @param connectionId
-     * @param cubeName
-     * @return The unique ame of the created query.
-     * @throws RpcException
-     *             If something goes sour.
-     */
     @Secured( {"Users"})
-    String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException;
+    void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException;
+
+    @Secured( {"Users"})
+    void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
+	    String newCellValue)throws RpcException;
 
     /**
-     * Returns the list of currently created queries.
-     * 
-     * @param sessionId
-     *            The window session id.
-     * @return An array of query unique names.
-     * @throws RpcException
-     *             If something goes sour.
-     */
-    @Secured( {"Users"})
-    String[] getQueries(String sessionId) throws RpcException;
-
-    /**
-     * Closes and releases a given query.
-     * 
-     * @param sessionId
-     *            The window session id.
-     * @param queryId
-     *            The query we want to close and release.
-     * @return True if all is good.
-     */
-    @Secured( {"Users"})
-    void deleteQuery(String sessionId, String queryId) throws RpcException;
-
-    /**
-     * Moves a dimension to a different axis.
+     * Removes the selection status of members inside a given dimension.
      * 
      * @param sessionId
      *            Identifies the window session id that requested the operation.
      * @param queryId
      *            Identifies on which query to perform the operation.
-     * @param axis
-     *            The destination axis.
      * @param dimensionName
-     *            The name of the dimension to move.
+     *            Name of the dimension that includes the members to remove selection status.
+     * @param memberNames
+     *            The actual member names of which we want to remove the selection status.
+     * @return True if all is well.
      * @throws RpcException
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    void moveDimension(String sessionId, String queryId, IAxis axis, String dimensionName) throws RpcException;
+    void clearExclusion(String sessionId, String queryId, String dimensionName) throws RpcException;
+
+    /**
+     * Removes the selection status of members inside a given dimension.
+     * 
+     * @param sessionId
+     *            Identifies the window session id that requested the operation.
+     * @param queryId
+     *            Identifies on which query to perform the operation.
+     * @param dimensionName
+     *            Name of the dimension that includes the members to remove selection status.
+     * @param memberNames
+     *            The actual member names of which we want to remove the selection status.
+     * @return True if all is well.
+     * @throws RpcException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    void clearSelection(String sessionId, String queryId, String uniqueName)
+            throws RpcException;
+
+    /**
+     * 
+     * Clears the sort order on a dimension.
+     * 
+     * @param sessionId
+     *            The session id.
+     * @param queryId
+     *            The query id.
+     * @param dimensionName
+     *            The dimension in question.
+     * @throws RpcException
+     *             If something turns sour.
+     */
+    @Secured( {"Users"})
+    void clearSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException;
+
+
+
 
     /**
      * Performs a selection of certain members in a dimension.
@@ -117,137 +126,86 @@ public interface IQuery extends RemoteService {
     void createExclusion(String sessionId, String queryId, String dimensionName, List<String> memberNames)
             throws RpcException;
 
-
-    /**
-     * Performs a selection of the first member in a dimension.
-     * 
-     * @param sessionId
-     *            Identifies the window session id that requested the operation.
-     * @param queryId
-     *            Identifies on which query to perform the operation.
-     * @param dimensionName
-     *            The name of the dimension on which we want to select members.
-     * @param memberNames
-     *            The actual names of the members to perform a selection on.
-     * @param selectionType
-     *            The type of selection to perform.
-     * @throws RpcException
-     *             If something goes sour.
-     */
     @Secured( {"Users"})
-    void createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames,
-            String selectionType) throws RpcException;
-
-    /**
-     * Performs a selection of the first member in a dimension.
-     * 
-     * @param sessionId
-     *            Identifies the window session id that requested the operation.
-     * @param queryId
-     *            Identifies on which query to perform the operation.
-     * @param dimensionName
-     *            The name of the dimension on which we want to select members.
-     * @param memberNames
-     *            The actual names of the members to perform a selection on.
-     * @param selectionType
-     *            The type of selection to perform.
-     * @throws RpcException
-     *             If something goes sour.
-     */
-    @Secured( {"Users"})
-    List<String> createSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
-            String selectionType) throws RpcException;
+    String createNewMdxQuery(String sessionId, String connectionId, String catalogName) throws RpcException;
 
     @Secured( {"Users"})
-    StringTree getSpecificMembers(String sessionId, String queryId, String dimensionName, List<String> memberNames, String type,
-            String selectionType) throws RpcException;
-
-    /**
-     * Performs a selection of the first member in a dimension.
-     * 
-     * @param sessionId
-     *            Identifies the window session id that requested the operation.
-     * @param queryId
-     *            Identifies on which query to perform the operation.
-     * @param dimensionName
-     *            The name of the dimension on which we want to select members.
-     * @param memberNames
-     *            The actual names of the members to perform a selection on.
-     * @param selectionType
-     *            The type of selection to perform.
-     * @throws RpcException
-     *             If something goes sour.
-     */
-    @Secured( {"Users"})
-    void createSelection(String sessionId, String queryId, String dimensionName,
-            String selectionType) throws RpcException;
+    String createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx) throws RpcException;
 
 
     
     /**
-     * Removes the selection status of members inside a given dimension.
+     * Tells the server that we want to create a new query. It will create a new query against the currently selected
+     * cube. It returns a unique identification string to identify the query created.
+     * 
+     * @param sessionId
+     *            The window session id.
+     * @param connectionId
+     * @param cubeName
+     * @return The unique ame of the created query.
+     * @throws RpcException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    String createNewQuery(String sessionId, String connectionId, String cubeName) throws RpcException;
+
+    /**
+     * Performs a selection of the first member in a dimension.
      * 
      * @param sessionId
      *            Identifies the window session id that requested the operation.
      * @param queryId
      *            Identifies on which query to perform the operation.
      * @param dimensionName
-     *            Name of the dimension that includes the members to remove selection status.
+     *            The name of the dimension on which we want to select members.
      * @param memberNames
-     *            The actual member names of which we want to remove the selection status.
-     * @return True if all is well.
+     *            The actual names of the members to perform a selection on.
+     * @param selectionType
+     *            The type of selection to perform.
      * @throws RpcException
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    void clearSelection(String sessionId, String queryId, String dimensionName, List<String> memberNames)
-            throws RpcException;
+    List<String> createSelection(String sessionId, String queryId, String uniqueName, ObjectType type,
+            SelectionType selectionType) throws RpcException;
+
+
+    @Secured( {"Users"})
+    void deleteMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
 
     /**
-     * Removes the selection status of members inside a given dimension.
+     * Closes and releases a given query.
      * 
      * @param sessionId
-     *            Identifies the window session id that requested the operation.
+     *            The window session id.
      * @param queryId
-     *            Identifies on which query to perform the operation.
-     * @param dimensionName
-     *            Name of the dimension that includes the members to remove selection status.
-     * @param memberNames
-     *            The actual member names of which we want to remove the selection status.
-     * @return True if all is well.
-     * @throws RpcException
-     *             If something goes sour.
+     *            The query we want to close and release.
+     * @return True if all is good.
      */
     @Secured( {"Users"})
-    void clearExclusion(String sessionId, String queryId, String dimensionName) throws RpcException;
+    void deleteQuery(String sessionId, String queryId) throws RpcException;
 
     /**
-     * Executes the current query.
+     * 
+     * Perform a drill position drill on a member.
      * 
      * @param sessionId
-     *            Identifies the window session id that requested the operation.
+     *            The session id.
      * @param queryId
-     *            Identifies on which query to perform the operation.
-     * @return The result of the query execution.
-     * @throws RpcException
-     *             If something goes sour.
-     */
-    @Secured( {"Users"})
-    CellDataSet executeQuery(String sessionId, String queryId) throws RpcException;
-
-    /**
-     * Returns the MDX coresponding to a query.
-     * 
-     * @param sessionId
-     *            The window session id
-     * @param queryId
-     *            The query id for which we want the MDX code.
-     * @return An MDX String.
+     *            The query id.
+     * @param member
+     *            The member cell.
      * @throws RpcException
      *             If something turns sour.
      */
     @Secured( {"Users"})
-    String getMdxForQuery(String sessionId, String queryId) throws RpcException;
+    void drillPosition(String sessionId, String queryId, DrillType drillType, MemberCell member) throws RpcException;
+
+    @Secured( {"Users"})
+    String[][] drillThrough(String sessionId, String queryId, List<Integer> coordinates) throws RpcException;
+
+    @Secured( {"Users"})
+    CellDataSet executeMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
 
     /**
      * 
@@ -268,105 +226,21 @@ public interface IQuery extends RemoteService {
     CellDataSet executeMdxQuery(String sessionId, String connectionId, String mdx) throws RpcException;
 
     /**
-     * 
-     * Gets the selection status for a dimension.
+     * Executes the current query.
      * 
      * @param sessionId
-     *            The current session id.
+     *            Identifies the window session id that requested the operation.
      * @param queryId
-     *            The current query id.
-     * @param dimensionName
-     *            The dimension in question.
-     * @return A String Array.
+     *            Identifies on which query to perform the operation.
+     * @return The result of the query execution.
      * @throws RpcException
-     *             If something turns sour.
+     *             If something goes sour.
      */
     @Secured( {"Users"})
-    String[][] getSelection(String sessionId, String queryId, String dimensionName) throws RpcException;
+    CellDataSet executeQuery(String sessionId, String queryId) throws RpcException;
 
-    /**
-     * 
-     * Swaps the axis of the data set.
-     * 
-     * @param sessionId
-     *            The current session id.
-     * @param queryId
-     *            The current query id.
-     * @return A CellDataSet
-     * @throws RpcException
-     *             If something turns sour.
-     */
     @Secured( {"Users"})
-    CellDataSet swapAxis(String sessionId, String queryId) throws RpcException;
-
-    /**
-     * 
-     * Sets the sort order of a dimension.
-     * 
-     * @param sessionId
-     *            The current session id.
-     * @param queryId
-     *            The current query id.
-     * @param dimensionName
-     *            The dimension in question.
-     * @param sort
-     *            The sort type.
-     * @throws RpcException
-     *             If something turns sour.
-     */
-    @Secured( {"Users"})
-    void setSortOrder(String sessionId, String queryId, String dimensionName, String sort) throws RpcException;
-
-    /**
-     * 
-     * Clears the sort order on a dimension.
-     * 
-     * @param sessionId
-     *            The session id.
-     * @param queryId
-     *            The query id.
-     * @param dimensionName
-     *            The dimension in question.
-     * @throws RpcException
-     *             If something turns sour.
-     */
-    @Secured( {"Users"})
-    void clearSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException;
-
-    /**
-     * 
-     * Gets the sort order for a dimension.
-     * 
-     * @param sessionId
-     *            The session id.
-     * @param queryId
-     *            The query id.
-     * @param dimensionName
-     *            The dimension in question.
-     * @return A String.
-     * @throws RpcException
-     *             If something turns sour.
-     */
-    @Secured( {"Users"})
-    String getSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException;
-
-    /**
-     * 
-     * Set the hierarchize mode for a dimension.
-     * 
-     * @param sessionId
-     *            The session id.
-     * @param queryId
-     *            The query id.
-     * @param dimensionName
-     *            The dimension in question.
-     * @param mode
-     *            The hierarchize mode.
-     * @throws RpcException
-     *             If something turns sour.
-     */
-    @Secured( {"Users"})
-    void setHierarchizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException;
+    List<QuerySaveModel> getActiveQueries(final String sessionId) throws RpcException;
 
     /**
      * 
@@ -386,72 +260,163 @@ public interface IQuery extends RemoteService {
     String getHierarchizeMode(String sessionId, String queryId, String dimensionName) throws RpcException;
 
     /**
+     * Returns the MDX coresponding to a query.
      * 
-     * Perform a drill position drill on a member.
+     * @param sessionId
+     *            The window session id
+     * @param queryId
+     *            The query id for which we want the MDX code.
+     * @return An MDX String.
+     * @throws RpcException
+     *             If something turns sour.
+     */
+    @Secured( {"Users"})
+    String getMdxForQuery(String sessionId, String queryId) throws RpcException;
+
+    @Secured( {"Users"})
+    String[] getMdxQueries(String sessionId) throws RpcException;
+    
+    @Secured( {"Users"})
+    String getMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
+
+    /**
+     * Returns the list of currently created queries.
+     * 
+     * @param sessionId
+     *            The window session id.
+     * @return An array of query unique names.
+     * @throws RpcException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    String[] getQueries(String sessionId) throws RpcException;
+
+    @Secured( {"Users"})
+    List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;
+
+    /**
+     * 
+     * Gets the selection status for a dimension.
+     * 
+     * @param sessionId
+     *            The current session id.
+     * @param queryId
+     *            The current query id.
+     * @param dimensionName
+     *            The dimension in question.
+     * @return A String Array.
+     * @throws RpcException
+     *             If something turns sour.
+     */
+    @Secured( {"Users"})
+    String[][] getSelection(String sessionId, String queryId, String dimensionName) throws RpcException;
+
+    /**
+     * 
+     * Gets the sort order for a dimension.
      * 
      * @param sessionId
      *            The session id.
      * @param queryId
      *            The query id.
-     * @param member
-     *            The member cell.
+     * @param dimensionName
+     *            The dimension in question.
+     * @return A String.
      * @throws RpcException
      *             If something turns sour.
      */
     @Secured( {"Users"})
-    void drillPosition(String sessionId, String queryId, DrillType drillType, MemberCell member) throws RpcException;
+    String getSortOrder(String sessionId, String queryId, String dimensionName) throws RpcException;
 
     @Secured( {"Users"})
-    String[][] drillThrough(String sessionId, String queryId, List<Integer> coordinates) throws RpcException;
+    StringTree getSpecificMembers(String sessionId, String queryId, String uniqueName, ObjectType type,
+            SelectionType selectionType) throws RpcException;
     
     @Secured( {"Users"})
-    String createNewMdxQuery(String sessionId, String connectionId, String catalogName) throws RpcException;
+    QuerySaveModel loadQuery(String sessioinId, String queryId) throws RpcException;
+
+    /**
+     * Moves a dimension to a different axis.
+     * 
+     * @param sessionId
+     *            Identifies the window session id that requested the operation.
+     * @param queryId
+     *            Identifies on which query to perform the operation.
+     * @param axis
+     *            The destination axis.
+     * @param dimensionName
+     *            The name of the dimension to move.
+     * @throws RpcException
+     *             If something goes sour.
+     */
+    @Secured( {"Users"})
+    void moveDimension(String sessionId, String queryId, IAxis axis, String dimensionName) throws RpcException;
 
     @Secured( {"Users"})
-    String createNewMdxQuery(String sessionId, String connectionId, String catalogName, String mdx) throws RpcException;
+	void pullUpDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
 
     @Secured( {"Users"})
-    String[] getMdxQueries(String sessionId) throws RpcException;
-
-    @Secured( {"Users"})
-    void deleteMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
-
-    @Secured( {"Users"})
-    CellDataSet executeMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
-
-    @Secured( {"Users"})
-    String getMdxQuery(String sessionId, String mdxQueryId) throws RpcException;
+    void pushDownDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
     
-    @Secured( {"Users"})
-    void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
-
     @Secured( {"Users"})
     void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cube,
             String cubeName) throws RpcException;
 
+    /**
+     * 
+     * Set the hierarchize mode for a dimension.
+     * 
+     * @param sessionId
+     *            The session id.
+     * @param queryId
+     *            The query id.
+     * @param dimensionName
+     *            The dimension in question.
+     * @param mode
+     *            The hierarchize mode.
+     * @throws RpcException
+     *             If something turns sour.
+     */
     @Secured( {"Users"})
-    QuerySaveModel loadQuery(String sessioinId, String queryId) throws RpcException;
-
-    @Secured( {"Users"})
-    List<QuerySaveModel> getSavedQueries(String sessionId) throws RpcException;
+    void setHierarchizeMode(String sessionId, String queryId, String dimensionName, String mode) throws RpcException;
     
     @Secured( {"Users"})
-    List<QuerySaveModel> getActiveQueries(final String sessionId) throws RpcException;
-
+    void setMdxQuery(String sessionId, String mdxQueryId, String mdx) throws RpcException;
+    
     @Secured( {"Users"})
     CellDataSet setNonEmpty(String sessionId, String queryId, boolean flag) throws RpcException;
     
+    /**
+     * 
+     * Sets the sort order of a dimension.
+     * 
+     * @param sessionId
+     *            The current session id.
+     * @param queryId
+     *            The current query id.
+     * @param dimensionName
+     *            The dimension in question.
+     * @param sort
+     *            The sort type.
+     * @throws RpcException
+     *             If something turns sour.
+     */
     @Secured( {"Users"})
-    void alterCell(String sessionId, String queryId, String connectionId, String scenarioId, 
-	    String newCellValue)throws RpcException;
+    void setSortOrder(String sessionId, String queryId, String dimensionName, String sort) throws RpcException;
     
+	/**
+     * 
+     * Swaps the axis of the data set.
+     * 
+     * @param sessionId
+     *            The current session id.
+     * @param queryId
+     *            The current query id.
+     * @return A CellDataSet
+     * @throws RpcException
+     *             If something turns sour.
+     */
     @Secured( {"Users"})
-    void addProperty(String sessionID, String currQuery, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException;
-    
-    @Secured( {"Users"})
-	void pullUpDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
-    
-	@Secured( {"Users"})
-    void pushDownDimension(String sessionID, String queryId, IAxis iaxis, int currentposition, int newposition) throws RpcException;
+    CellDataSet swapAxis(String sessionId, String queryId) throws RpcException;
 
 }

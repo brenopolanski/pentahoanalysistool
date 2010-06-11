@@ -32,6 +32,8 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.util.MdxQuery;
@@ -125,25 +127,23 @@ public interface QueryService extends Service {
      *            The session id into which the query is stored.
      * @param dimensionName
      *            The name of the dimension onto which to apply the selection.
-     * @param memberNames
+     * @param uniqueName
      *            A list of member names to select.
      * @param selectionType
      *            The type of selection to perform.
      * @throws OlapException
      *             If something goes sour.
      */
-    @Secured( {"Users"})
-    void createSelection(String userId, String sessionId, String queryId, String dimensionName,
-            List<String> memberNames, Selection.Operator selectionType) throws OlapException;
+   
 
 
     @Secured( {"Users"})
-    List<String> createSelection(String userId, String sessionId, String queryId, String dimensionName,
-            List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
+    List<String> createSelection(String userId, String sessionId, String queryId,
+            String uniqueName, ObjectType type, SelectionType selectionType) throws OlapException;
 
     @Secured( {"Users"})
     StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName,
-            List<String> memberNames, String type, Selection.Operator selectionType) throws OlapException;
+            ObjectType type, Selection.Operator selectionType) throws OlapException;
 
     /**
      * Creates a selection of members on a given dimension. You must first specify onto which query to perform the
@@ -162,6 +162,7 @@ public interface QueryService extends Service {
      * @throws OlapException
      *             If something goes sour.
      */
+    @Deprecated
     @Secured( {"Users"})
     void createSelection(String userId, String sessionId, String queryId, String dimensionName,
             Selection.Operator selectionType) throws OlapException;
@@ -197,11 +198,9 @@ public interface QueryService extends Service {
      *            The session id into which the query is stored.
      * @param dimensionName
      *            The name of the dimension that contains the members to deselect.
-     * @param memberNames
-     *            A list of member names to deselect.
      */
     @Secured( {"Users"})
-    void clearSelection(String userId, String sessionId, String queryId, String dimensionName, List<String> memberNames);
+    void clearSelection(String userId, String sessionId, String queryId, String dimensionName);
 
     /**
      * Unselects members from a dimension inside a query. You must first specify onto which query to perform the

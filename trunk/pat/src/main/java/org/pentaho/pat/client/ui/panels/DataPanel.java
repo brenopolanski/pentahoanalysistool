@@ -29,6 +29,7 @@ import org.gwt.mosaic.ui.client.layout.FillLayout;
 import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
@@ -101,7 +102,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
                 
         dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS));
         dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS));
-        dropTable.setSize("100%", "100%");
+        //dropTable.setSize("100%", "100%");
         
         filterTable.setWidget(0, 0, new DimensionSimplePanel(IAxis.FILTER));
         QueryTrashWidget trashPanel = new QueryTrashWidget();
@@ -109,7 +110,8 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
         subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
         subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
         mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
-        mainLayoutPanel.add(trashPanel, new BoxLayoutData(200.0, 200.0));
+        mainLayoutPanel.add(trashPanel, new BoxLayoutData(100.0, 100.0));
+        ((BoxLayout) mainLayoutPanel.getLayout()).setAlignment(Alignment.END);
         baseLayoutPanel.add(mainLayoutPanel);
         }
 

@@ -68,8 +68,7 @@ public class SelectionModeMenu extends PopupMenu {
             final String dimName = targetLabel.getDimension();
             final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                    dimSelections, new AsyncCallback<Object>() {
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName, new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
@@ -116,26 +115,25 @@ public class SelectionModeMenu extends PopupMenu {
             final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
             final String selection = setSelectionMode(selectionMode);
-            ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                    dimSelections, selection, new AsyncCallback<StringTree>() {
+    //        ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), , selection, new AsyncCallback<StringTree>() {
 
-                        public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                    .noSelectionSet(arg0.getLocalizedMessage()));
+                   //     public void onFailure(final Throwable arg0) {
+                   //         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                  //                  .noSelectionSet(arg0.getLocalizedMessage()));
 
-                        }
+                  //      }
 
-                        public void onSuccess(final StringTree arg0) {
-                            targetLabel.setSelectionMode(selectionMode);
-                            if(dimensionSimplePanel == null){
-                            DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
-                            }
-                            if(dimensionSimplePanel != null){
+                  //      public void onSuccess(final StringTree arg0) {
+                  //          targetLabel.setSelectionMode(selectionMode);
+                    //        if(dimensionSimplePanel == null){
+                   //         DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, selectionMode);
+                   //         }
+                   //         if(dimensionSimplePanel != null){
     //                        	updateChildren(selection);
-                            }
-                        }
+                  //          }
+                  //      }
 
-                    });
+                //    });
 
             SelectionModeMenu.this.hide();
         }

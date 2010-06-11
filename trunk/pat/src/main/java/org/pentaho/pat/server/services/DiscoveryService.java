@@ -29,6 +29,7 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.springframework.security.annotation.Secured;
 
 /**
@@ -151,13 +152,13 @@ public interface DiscoveryService extends Service {
 	List<MemberLabelItem> getHierarchies(String currentUserId, String sessionId,	String queryId, String dimensionName) throws OlapException;
 
 	List<MemberLabelItem> getLevels(String currentUserId, String sessionId,
-			String queryId, String dimensionName, String hierarchy) throws OlapException;
+			String queryId, String dimensionName) throws OlapException;
 	
 	List<MemberLabelItem> getLevelMembers(String currentUserId, String sessionId,
-			String queryId, String dimensionName, String hierarchyName, String levelName) throws OlapException;
+			String queryId, String dimensionName) throws OlapException;
 	
-	StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName, String hierarchyName, String levelName,
-			Selection.Operator selectionType) throws OlapException;
+	StringTree getSpecificMembers(String userId, String sessionId, String queryId, String dimensionName,
+			ObjectType type, Selection.Operator selectionType) throws OlapException;
 
 	List<MemberLabelItem> getMeasures(String currentUserId, String sessionID, String currQuery) throws OlapException;
 

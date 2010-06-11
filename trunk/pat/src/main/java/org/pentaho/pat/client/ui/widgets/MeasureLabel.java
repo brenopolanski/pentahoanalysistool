@@ -11,6 +11,8 @@ import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -29,20 +31,14 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 @SuppressWarnings("deprecation")
 public class MeasureLabel extends FocusPanel implements ILabelListener{
 
-    public enum LabelType {
-        DIMENSION, MEASURE, ALLMEMBER, HIERARCHY, LEVEL, MEMBER
-    }
-
     private boolean isUniqueName;
     private final static String TABLE_DRAG_WIDGET = "dragDimension"; //$NON-NLS-1$
 
     private SimplePanelDragControllerImpl dragController;
 
     private Label text = new Label();
-    
-    private List<String> value;
 
-    private LabelType type;
+    private ObjectType type;
 
 	private String actualname;
 
@@ -54,17 +50,17 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 
 	private List<String> currentSelection;
 
-	private String selectionType;
+	private SelectionType selectionType;
 
 	private FastTreeItem parentNode;
 
 	private Image image;
-    public MeasureLabel(final List<String> parents, final String name, 
-    		final String caption, final LabelType lType, FastTreeItem parentNode, boolean isuniquename) {
+    public MeasureLabel(final String uniquename, 
+    		final String caption, final ObjectType lType, FastTreeItem parentNode, boolean isuniquename) {
         super();
         this.setParentNode(parentNode);
         if(isuniquename){
-        	text.setText(name);
+        	text.setText(uniquename);
         }else{
         	text.setText(caption);
         }
@@ -92,11 +88,10 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
          image.setVisible(false);
         container.add(image);
         this.add(container);
-        this.setActualName(name);
+        this.setActualName(uniquename);
         this.setCaption(caption);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
         this.setType(lType);
-        this.setValue(parents);
         GlobalConnectionFactory.getLabelInstance().addLabelListener(MeasureLabel.this);
     }
     public void setIsUniqueName(boolean isuniquename) {
@@ -149,7 +144,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
      * Return the labels type.
      * @return
      */
-    public LabelType getType() {
+    public ObjectType getType() {
         return type;
     }
 
@@ -192,18 +187,10 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
      * Set the type.
      * @param type
      */
-    public void setType(final LabelType type) {
+    public void setType(final ObjectType type) {
         this.type = type;
     }
-
-	public void setValue(List<String> value) {
-		this.value = value;
-	}
-
-	public List<String> getValue() {
-		return value;
-	}
-	
+    
 	public void setDownButtonVisible(boolean isVisible){
 		this.image.setVisible(isVisible);
 	}
@@ -222,7 +209,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 		
 	}
 
-	public void setSelectionType(String string) {
+	public void setSelectionType(SelectionType string) {
 		this.selectionType=string;
 		
 	}
@@ -231,7 +218,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
 		return this.currentSelection;
 	}
 	
-	public String getSelectionType(){
+	public SelectionType getSelectionType(){
 		return this.selectionType;
 	}
 

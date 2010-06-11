@@ -28,11 +28,12 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
-import org.pentaho.pat.client.ui.widgets.MeasureLabel.LabelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
@@ -66,11 +67,9 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         public final void execute() {
 
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
-            final String dimName = targetLabel.getText();
-            final List<String> dimSelections = (targetLabel.getValue());
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName,
-                    dimSelections, new AsyncCallback<Object>() {
+
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
@@ -100,7 +99,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 		public void execute() {
 			final MeasureLabel targetLabel = (MeasureLabel) getSource();
 		    
-            final String dimName1 = targetLabel.getValue().get(0);
+            final String dimName1 = targetLabel.getActualName();
     
 			ServiceFactory.getQueryInstance().setSortOrder(Pat.getSessionID(), Pat.getCurrQuery(), 
 					dimName1, sortMode, new AsyncCallback<Object>(){
@@ -147,32 +146,9 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         public final void execute() {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
     
-            List<String> hierarchySelections =null;
-            final String selection = setSelectionMode(selectionMode);
-            final String dimName1 = targetLabel.getValue().get(0);
-            String type = null;
-            if(targetLabel.getType() == MeasureLabel.LabelType.DIMENSION){
-            	type = "dimension";
-            	hierarchySelections = new ArrayList<String>();
-            	hierarchySelections.add(targetLabel.getValue().get(0));
-            }
-            else if(targetLabel.getType() == MeasureLabel.LabelType.HIERARCHY){
-            	hierarchySelections = new ArrayList<String>();
-            	hierarchySelections.add(targetLabel.getValue().get(0));
-            	hierarchySelections.add(targetLabel.getValue().get(1));	
-            	type = "hierarchy";
-            }
-            else if(targetLabel.getType() == MeasureLabel.LabelType.LEVEL){
-            	hierarchySelections = new ArrayList<String>();
-            	hierarchySelections.add(targetLabel.getValue().get(0));
-            	hierarchySelections.add(targetLabel.getValue().get(1));
-            	hierarchySelections.add(targetLabel.getValue().get(2));
-            	type="level";
-            }
-            final String finalType = type;
-            final List<String> finalHierarchySelections = hierarchySelections;
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-            		targetLabel.getCurrentSelection(), new AsyncCallback<Object>(){
+            final SelectionType selection = setSelectionMode(selectionMode);
+
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(),new AsyncCallback<Object>(){
 
 						public void onFailure(Throwable arg0) {
 							// TODO Auto-generated method stub
@@ -180,8 +156,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 						}
 
 						public void onSuccess(Object arg0) {
-							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-				                    finalHierarchySelections, finalType, selection, new AsyncCallback<List<String>>() {
+							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getType(), selection, new AsyncCallback<List<String>>() {
 
 				                        public void onFailure(final Throwable arg0) {
 				                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
@@ -190,8 +165,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 				                        }
 
 				                        public void onSuccess(final List<String> arg0) {
-				                        	ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), dimName1,
-								                    finalHierarchySelections, finalType, selection, new AsyncCallback<StringTree>() {
+				                        	ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getType(), selection, new AsyncCallback<StringTree>() {
 
 														public void onFailure(
 																Throwable arg0) {
@@ -256,10 +230,10 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         source = source2;
     }
 
-	private LabelType setType;
+	private ObjectType setType;
 
 
-	public MeasureLabelSelectionModeMenu(LabelType labelType) {
+	public MeasureLabelSelectionModeMenu(ObjectType labelType) {
         super();
         this.setType = labelType;
         init();
@@ -279,7 +253,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
        
         MenuBar selectionMenu = new MenuBar(true);
         MenuBar sortMenu = new MenuBar(true);
-        if(this.setType == MeasureLabel.LabelType.LEVEL){
+        if(this.setType == ObjectType.LEVEL){
         	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
         	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
        }else{
@@ -303,26 +277,26 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 	
 	
   
-    public final String setSelectionMode(final int selectionMode) {
-        String selection = ""; //$NON-NLS-1$
+    public final SelectionType setSelectionMode(final int selectionMode) {
+        SelectionType selection = null; //$NON-NLS-1$
         switch (selectionMode) {
         case 0:
-            selection = "MEMBER"; //$NON-NLS-1$
+            selection = SelectionType.MEMBER; //$NON-NLS-1$
             break;
         case 1:
-            selection = "CHILDREN"; //$NON-NLS-1$
+            selection = SelectionType.CHILDREN; //$NON-NLS-1$
             break;
         case 2:
-            selection = "INCLUDE_CHILDREN"; //$NON-NLS-1$
+            selection = SelectionType.INCLUDE_CHILDREN; //$NON-NLS-1$
             break;
         case 3:
-            selection = "SIBLINGS"; //$NON-NLS-1$
+            selection = SelectionType.SIBLINGS; //$NON-NLS-1$
             break;
         case 4:
-            selection = "DESCENDANTS"; //$NON-NLS-1$
+            selection = SelectionType.DESCENDANTS; //$NON-NLS-1$
             break;
         case 5:
-            selection = "ANCESTORS"; //$NON-NLS-1$
+            selection = SelectionType.ANCESTORS; //$NON-NLS-1$
 
         default:
             break;

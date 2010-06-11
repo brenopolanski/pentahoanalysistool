@@ -41,7 +41,9 @@ import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.QueryType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
@@ -127,15 +129,15 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         return list.toArray(new String[list.size()]);
     }
 
+    
     /*
      * (non-Javadoc)
      * 
      * @see org.pentaho.pat.rpc.IQuery#clearSelection(java.lang.String, java.lang.String, java.lang.String,
      * java.util.List)
      */
-    public void clearSelection(final String sessionId, final String queryId, final String dimensionName,
-            final List<String> memberNames) throws RpcException {
-        this.queryService.clearSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames);
+    public void clearSelection(final String sessionId, final String queryId, final String dimensionName) throws RpcException {
+        this.queryService.clearSelection(getCurrentUserId(), sessionId, queryId, dimensionName);
     }
 
     /*
@@ -148,22 +150,6 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         this.queryService.clearExclusion(getCurrentUserId(), sessionId, queryId, dimensionName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
-     * java.util.List, java.lang.String)
-     */
-    public void createSelection(final String sessionId, final String queryId, final String dimensionName,
-            final List<String> memberNames, final String selectionType) throws RpcException {
-        try {
-            this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames,
-                    org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (Exception e) {
-            LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
-        }
-    }
 
 
     /*
@@ -172,16 +158,19 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
      * java.util.List, java.lang.String)
      */
-    public List<String> createSelection(final String sessionId, final String queryId, final String dimensionName,
-            final List<String> memberNames, String type, final String selectionType) throws RpcException {
+    public List<String> createSelection(final String sessionId, final String queryId, String uniqueName,
+            ObjectType type, final SelectionType selectionType) throws RpcException {
         try {
-            return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
-                    org.olap4j.query.Selection.Operator.valueOf(selectionType));
+            
+            return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, uniqueName, type,
+                    selectionType);
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
     }
+
+
     
     /*
      * (non-Javadoc)
@@ -189,32 +178,18 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
      * java.util.List, java.lang.String)
      */
-    public StringTree getSpecificMembers(final String sessionId, final String queryId, final String dimensionName,
-            final List<String> memberNames, String type, final String selectionType) throws RpcException {
+    public StringTree getSpecificMembers(final String sessionId, final String queryId, String uniqueName,
+            ObjectType type, final SelectionType selectionType) throws RpcException {
         try {
-            return this.queryService.getSpecificMembers(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames, type,
-                    org.olap4j.query.Selection.Operator.valueOf(selectionType));
+            return this.queryService.getSpecificMembers(getCurrentUserId(), sessionId, queryId, uniqueName, type,
+                    org.olap4j.query.Selection.Operator.valueOf(selectionType.toString()));
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
         }
     }
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pentaho.pat.rpc.IQuery#createSelection(java.lang.String, java.lang.String, java.lang.String,
-     * java.util.List, java.lang.String)
-     */
-    public void createSelection(final String sessionId, final String queryId, final String dimensionName,
-            final String selectionType) throws RpcException {
-        try {
-            this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, dimensionName,
-                    org.olap4j.query.Selection.Operator.valueOf(selectionType));
-        } catch (Exception e) {
-            LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
-            throw new RpcException(Messages.getString("Servlet.Query.CantSelectMembers")); //$NON-NLS-1$
-        }
-    }
+
+    
 
     
     /*
@@ -791,4 +766,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
     	
     }
+
+  
+
+
+
+
+
+
 }
