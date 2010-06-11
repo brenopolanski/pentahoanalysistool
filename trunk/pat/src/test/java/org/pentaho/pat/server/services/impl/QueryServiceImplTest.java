@@ -10,6 +10,8 @@ import org.olap4j.Axis;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
+import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.server.services.DiscoveryService;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
@@ -120,13 +122,14 @@ public class QueryServiceImplTest extends AbstractServiceTest {
 		// Select members 
 		List<String> departmentSelections = new ArrayList<String>();
 		departmentSelections.add("Finance"); //$NON-NLS-1$
-		this.queryService.createSelection(userId, sessionId, queryId, "Department", departmentSelections, Selection.Operator.SIBLINGS); //$NON-NLS-1$
+		//this.queryService.createSelection(userId, sessionId, queryId, "Department", departmentSelections, Selection.Operator.SIBLINGS); //$NON-NLS-1$
+		this.queryService.createSelection(userId, sessionId, queryId, "[Department].[Finance]", ObjectType.MEMBER, SelectionType.SIBLINGS);
 		List<String> positionSelections = new ArrayList<String>();
 		positionSelections.add("CTO"); //$NON-NLS-1$
-		this.queryService.createSelection(userId, sessionId, queryId, "Positions", positionSelections, Selection.Operator.MEMBER); //$NON-NLS-1$
+		this.queryService.createSelection(userId, sessionId, queryId, "[Positions].[CTO]", ObjectType.MEMBER, SelectionType.MEMBER); //$NON-NLS-1$
 		List<String> regionSelections = new ArrayList<String>();
 		regionSelections.add("Central"); //$NON-NLS-1$
-		this.queryService.createSelection(userId, sessionId, queryId, "Region", regionSelections, Selection.Operator.INCLUDE_CHILDREN); //$NON-NLS-1$
+		this.queryService.createSelection(userId, sessionId, queryId, "[Region].[Central]", ObjectType.MEMBER, SelectionType.INCLUDE_CHILDREN); //$NON-NLS-1$
 		
 		// Verify MDX
 		Query query = this.queryService.getQuery(userId, sessionId, queryId);
