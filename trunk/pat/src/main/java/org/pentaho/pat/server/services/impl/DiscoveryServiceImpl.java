@@ -70,9 +70,9 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
     private QueryService queryService = null;
 
     private JdbcDriverFinder driverFinder = null;
-    
+
     private Locale loc = Locale.getDefault();
-    
+
     public void setSessionService(final SessionService sessionService) {
         this.sessionService = sessionService;
     }
@@ -114,24 +114,24 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         if (conn == null) {
             return list;
         }
-//         OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
-//         try {
-//         ResultSet cubesResult = olapDbMeta.getCubes(null, null, null);
-//                
-//         while(cubesResult.next()) {
-//        
-//         list.add(new CubeItem(cubesResult.getString("CUBE_NAME"),cubesResult.getString("CATALOG_NAME"),
-//                 cubesResult.getString("SCHEMA_NAME")));
-//
-//         }
-//         } catch (SQLException e) {
-//             throw new OlapException(e.getMessage(),e);
-//         }
+        // OlapDatabaseMetaData olapDbMeta = conn.getMetaData();
+        // try {
+        // ResultSet cubesResult = olapDbMeta.getCubes(null, null, null);
+        //                
+        // while(cubesResult.next()) {
+        //        
+        // list.add(new CubeItem(cubesResult.getString("CUBE_NAME"),cubesResult.getString("CATALOG_NAME"),
+        // cubesResult.getString("SCHEMA_NAME")));
+        //
+        // }
+        // } catch (SQLException e) {
+        // throw new OlapException(e.getMessage(),e);
+        // }
 
         for (Catalog cat : conn.getCatalogs()) {
-            for(Schema schem : cat.getSchemas()) {
-                 for (Cube cub : schem.getCubes()) {
-                      list.add(new CubeItem(cub.getName(), cat.getName(), schem.getName()));
+            for (Schema schem : cat.getSchemas()) {
+                for (Cube cub : schem.getCubes()) {
+                    list.add(new CubeItem(cub.getName(), cat.getName(), schem.getName()));
                 }
             }
         }
@@ -162,175 +162,174 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return dimNames;
     }
 
-	public List<MemberLabelItem> getDimensionList(String userId, String sessionId,
-			String queryId, Axis.Standard axis) throws OlapException {
-		this.sessionService.validateSession(userId, sessionId);
-
-		Query query = this.queryService.getQuery(userId, sessionId, queryId);
-
-		Axis targetAxis = null;
-		if (axis != null) {
-			targetAxis = axis;
-		}
-		List<QueryDimension> dimList = query.getAxes().get(targetAxis)
-				.getDimensions();
-		List<MemberLabelItem> dimNames = new ArrayList<MemberLabelItem>();
-		for (QueryDimension dim : dimList) {
-			dimNames.add(new MemberLabelItem(dim.getName(), dim.getName(), null));
-		}
-		return dimNames;
-	}
-    private String getDimensionName(String[] named){
-        String dimName;
-        if(named[0].contains(".")){
-            int index = named[0].indexOf(".");
-            dimName = named[0].substring(0, index);
-        }
-        else {
-            dimName = named[0];
-        }
-        
-        return dimName;
-    }
-    
-    private String getHierarchyName(String[] named){
-        String hierarchyName;
-        if(named[0].contains(".")){
-            int index = named[0].indexOf(".");
-            hierarchyName = named[0].substring(index+1, named[0].length());
-        }
-        else {
-            hierarchyName = named[0];
-        }
-        
-        return hierarchyName;
-    }
-	public StringTree getSpecificMembers(String userId, String sessionId, String queryId, String uniqueName, ObjectType type,
-			Selection.Operator selectionType) throws OlapException{
-
-		this.sessionService.validateSession(userId, sessionId);
+    public List<MemberLabelItem> getDimensionList(String userId, String sessionId, String queryId, Axis.Standard axis)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
-		String[] parts = QueryDimension.getNameParts(uniqueName);
-        
+
+        Axis targetAxis = null;
+        if (axis != null) {
+            targetAxis = axis;
+        }
+        List<QueryDimension> dimList = query.getAxes().get(targetAxis).getDimensions();
+        List<MemberLabelItem> dimNames = new ArrayList<MemberLabelItem>();
+        for (QueryDimension dim : dimList) {
+            dimNames.add(new MemberLabelItem(dim.getName(), dim.getName(), null));
+        }
+        return dimNames;
+    }
+
+    private String getDimensionName(String[] named) {
+        String dimName;
+        if (named[0].contains(".")) {
+            int index = named[0].indexOf(".");
+            dimName = named[0].substring(0, index);
+        } else {
+            dimName = named[0];
+        }
+
+        return dimName;
+    }
+
+    private String getHierarchyName(String[] named) {
+        String hierarchyName;
+        if (named[0].contains(".")) {
+            int index = named[0].indexOf(".");
+            hierarchyName = named[0].substring(index + 1, named[0].length());
+        } else {
+            hierarchyName = named[0];
+        }
+
+        return hierarchyName;
+    }
+
+    public StringTree getSpecificMembers(String userId, String sessionId, String queryId, String uniqueName,
+            ObjectType type, Selection.Operator selectionType) throws OlapException {
+
+        this.sessionService.validateSession(userId, sessionId);
+
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+        String[] parts = QueryDimension.getNameParts(uniqueName);
+
         StringTree st = null;
-        if(parts[0].equals("Measures")){
-        	List<Measure> measures = query.getCube().getMeasures();
-        	st = new StringTree("", "", null);
-        	
-    		for (Measure mem : measures){
-    			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-    		}
-        }
-        else if(selectionType==(Selection.Operator.MEMBER)){
-        	if(type.equals(ObjectType.DIMENSION)){
-        	    NamedList<? extends Member> members = query.getDimension(parts[0]).getDimension().getDefaultHierarchy().getRootMembers();
-        		st = new StringTree(null, null, null);
-                for (Member mem : members){
+        if (parts[0].equals("Measures")) {
+            List<Measure> measures = query.getCube().getMeasures();
+            st = new StringTree("", "", null);
+
+            for (Measure mem : measures) {
+                new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+            }
+        } else if (selectionType == (Selection.Operator.MEMBER)) {
+            if (type.equals(ObjectType.DIMENSION)) {
+                NamedList<? extends Member> members = query.getDimension(parts[0]).getDimension().getDefaultHierarchy()
+                        .getRootMembers();
+                st = new StringTree(null, null, null);
+                for (Member mem : members) {
                     new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
                 }
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        	    NamedList<? extends Member> members = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getRootMembers();
-        	    st = new StringTree(null, null, null);
-        	    for (Member mem : members){
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                NamedList<? extends Member> members = query.getDimension(getDimensionName(parts)).getDimension()
+                        .getHierarchies().get(parts[0]).getRootMembers();
+                st = new StringTree(null, null, null);
+                for (Member mem : members) {
                     new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
                 }
-        	}
-        	else{
-        		Member members = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(getHierarchyName(parts)).getLevels().get(parts[1]).getMembers().get(0);
-        		st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
-        	}
+            } else {
+                Member members = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(
+                        getHierarchyName(parts)).getLevels().get(parts[1]).getMembers().get(0);
+                st = new StringTree(members.getUniqueName(), members.getCaption(loc), null);
+            }
+        } else if (selectionType.equals(Selection.Operator.CHILDREN)) {
+            if (type.equals(ObjectType.DIMENSION)) {
+                Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy()
+                        .getDefaultMember();
+                NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree(null, null, null);
+                for (Member mem : members) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(
+                        parts[0]).getDefaultMember();
+                NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree(null, null, null);
+                for (Member mem : members) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            } else {
+                List<Member> parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies()
+                        .get(parts[0]).getLevels().get(parts[1]).getMembers();
+                // NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree(null, null, null);
+                for (Member mem : parentMember) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            }
+        } else if (selectionType.equals(Selection.Operator.INCLUDE_CHILDREN)) {
+            if (type.equals(ObjectType.DIMENSION)) {
+                Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy()
+                        .getDefaultMember();
+                NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
+                for (Member mem : members) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(
+                        parts[0]).getDefaultMember();
+                NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
+                for (Member mem : members) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            } else {
+                List<Member> parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies()
+                        .get(parts[0]).getLevels().get(parts[1]).getMembers();
+                // NamedList<? extends Member> members = parentMember.getChildMembers();
+                st = new StringTree("", "", null);
+                for (Member mem : parentMember) {
+                    new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
+                }
+            }
+        } else if (selectionType.equals(Selection.Operator.DESCENDANTS)) {
+            if (type.equals(ObjectType.DIMENSION)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember()
+                        .getName();
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0])
+                        .getDefaultMember().getName();
+            } else {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels()
+                        .get(parts[1]);
+            }
+        } else if (selectionType.equals(Selection.Operator.SIBLINGS)) {
+            if (type.equals(ObjectType.HIERARCHY)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember()
+                        .getName();
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0])
+                        .getDefaultMember().getName();
+            } else {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels()
+                        .get(parts[1]);
+            }
+        } else if (selectionType.equals(Selection.Operator.ANCESTORS)) {
+            if (type.equals(ObjectType.HIERARCHY)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember()
+                        .getName();
+            } else if (type.equals(ObjectType.HIERARCHY)) {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0])
+                        .getDefaultMember().getName();
+            } else {
+                query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels()
+                        .get(parts[1]);
+            }
         }
-        else if(selectionType.equals(Selection.Operator.CHILDREN)){
-        	if(type.equals(ObjectType.DIMENSION)){
-        		Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember();
-        		NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree(null, null, null);
-        		for (Member mem : members){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        		Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getDefaultMember();
-        		NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree(null, null, null);
-        		for (Member mem : members){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        	else{
-        		List<Member> parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels().get(parts[1]).getMembers();
-        		//NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree(null, null, null);
-        		for (Member mem : parentMember){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        }
-        else if(selectionType.equals(Selection.Operator.INCLUDE_CHILDREN)){
-        	if(type.equals(ObjectType.DIMENSION)){
-        		Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember();
-        		NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
-        		for (Member mem : members){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        		Member parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getDefaultMember();
-        		NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree(parentMember.getUniqueName(), parentMember.getCaption(loc), null);
-        		for (Member mem : members){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        	else{
-        		List<Member> parentMember = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels().get(parts[1]).getMembers();
-        		//NamedList<? extends Member> members = parentMember.getChildMembers();
-        		st = new StringTree("", "", null);
-        		for (Member mem : parentMember){
-        			new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);
-        		}
-        	}
-        }
-        else if(selectionType.equals(Selection.Operator.DESCENDANTS)){
-        	if(type.equals(ObjectType.DIMENSION)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember().getName();
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getDefaultMember().getName();
-        	}
-        	else{
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels().get(parts[1]);
-        	}	
-        }
-        else if(selectionType.equals(Selection.Operator.SIBLINGS)){
-        	if(type.equals(ObjectType.HIERARCHY)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember().getName();
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getDefaultMember().getName();
-        	}
-        	else{
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels().get(parts[1]);
-        	}	
-        }
-        else if(selectionType.equals(Selection.Operator.ANCESTORS)){
-        	if(type.equals(ObjectType.HIERARCHY)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getDefaultHierarchy().getDefaultMember().getName();
-        	}
-        	else if(type.equals(ObjectType.HIERARCHY)){
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getDefaultMember().getName();
-        	}
-        	else{
-        		query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getLevels().get(parts[1]);
-        	}	
-        }
-		return st;
-	}
-	
-	@Deprecated
+        return st;
+    }
+
+    @Deprecated
     public StringTree getMembers(String userId, String sessionId, String queryId, String dimensionName)
             throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
@@ -342,7 +341,6 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         // FIXME Only uses the first hierarchy for now.
         NamedList<Level> levels = query.getDimension(dimensionName).getDimension().getHierarchies().get(0).getLevels();
 
-        
         for (Level level : levels) {
             List<Member> levelMembers = level.getMembers();
             for (Member member : levelMembers) {
@@ -418,31 +416,31 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return null;
     }
 
-	public List<MemberLabelItem> getHierarchies(String userId, String sessionId,
-			String queryId, String dimensionName) throws OlapException {
-		this.sessionService.validateSession(userId, sessionId);
+    public List<MemberLabelItem> getHierarchies(String userId, String sessionId, String queryId, String dimensionName)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
         List<Hierarchy> hierarchyList = query.getCube().getDimensions().get(dimensionName).getHierarchies();
-        
+
         List<MemberLabelItem> hNames = new ArrayList<MemberLabelItem>();
         Locale loc = Locale.getDefault();
         for (Hierarchy dim : hierarchyList) {
-        	List<String> lst = new ArrayList<String>();
-        	 String dimunique = dim.getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-             .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        	lst.add(dim.getDimension().getName());
-        	lst.add(dimunique);
+            List<String> lst = new ArrayList<String>();
+            String dimunique = dim.getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            lst.add(dim.getDimension().getName());
+            lst.add(dimunique);
             hNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
         }
         return hNames;
 
-	}
+    }
 
-	public List<MemberLabelItem> getLevels(String userId, String sessionId,
-			String queryId, String uniqueName) throws OlapException {
-		this.sessionService.validateSession(userId, sessionId);
+    public List<MemberLabelItem> getLevels(String userId, String sessionId, String queryId, String uniqueName)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
 
@@ -450,51 +448,51 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         List<Level> levelList = query.getCube().getHierarchies().get(parts[0]).getLevels();
         List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Level dim : levelList) {
-        	List<String> lst = new ArrayList<String>();
-        	String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        	lst.add(dim.getDimension().getName());
-        	lst.add(hierarchyunique);
-        	lst.add(dim.getName());
+            List<String> lst = new ArrayList<String>();
+            String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            lst.add(dim.getDimension().getName());
+            lst.add(hierarchyunique);
+            lst.add(dim.getName());
             levelNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
         }
         return levelNames;
-	}
+    }
 
-	public List<MemberLabelItem> getLevelMembers(String userId, String sessionId,
-			String queryId, String uniqueName) throws OlapException {
-		this.sessionService.validateSession(userId, sessionId);
+    public List<MemberLabelItem> getLevelMembers(String userId, String sessionId, String queryId, String uniqueName)
+            throws OlapException {
+        this.sessionService.validateSession(userId, sessionId);
 
         Query query = this.queryService.getQuery(userId, sessionId, queryId);
         String[] parts = QueryDimension.getNameParts(uniqueName);
         List<Member> levelList = query.getCube().getHierarchies().get(parts[0]).getLevels().get(parts[1]).getMembers();
-        
+
         List<MemberLabelItem> levelNames = new ArrayList<MemberLabelItem>();
         for (Member dim : levelList) {
-        	List<String> lst = new ArrayList<String>();
-        	String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-            .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        	lst.add(dim.getDimension().getName());
-        	lst.add(hierarchyunique);
-        	//lst.add(levelName);
-        	lst.add(dim.getName());
+            List<String> lst = new ArrayList<String>();
+            String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            lst.add(dim.getDimension().getName());
+            lst.add(hierarchyunique);
+            // lst.add(levelName);
+            lst.add(dim.getName());
             levelNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
         }
         return levelNames;
 
-	}
+    }
 
-	public List<MemberLabelItem> getMeasures(String currentUserId, String sessionID,
-			String currQuery) throws OlapException {
-		this.sessionService.validateSession(currentUserId, sessionID);
+    public List<MemberLabelItem> getMeasures(String currentUserId, String sessionID, String currQuery)
+            throws OlapException {
+        this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.queryService.getQuery(currentUserId, sessionID, currQuery);
-        
+
         List<Measure> measureList = query.getCube().getMeasures();
         List<MemberLabelItem> measureNames = new ArrayList<MemberLabelItem>();
         for (Measure measure : measureList) {
-            measureNames.add(new MemberLabelItem(measure.getName(), measure.getCaption(loc), null));
+            measureNames.add(new MemberLabelItem(measure.getUniqueName(), measure.getCaption(loc), null));
         }
         return measureNames;
-	}
+    }
 }
