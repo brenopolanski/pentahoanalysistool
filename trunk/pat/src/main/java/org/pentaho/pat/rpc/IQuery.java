@@ -84,7 +84,7 @@ public interface IQuery extends RemoteService {
      *             If something goes sour.
      */
     @Secured( {"Users"})
-    void clearSelection(String sessionId, String queryId, String uniqueName)
+    void clearSelection(String sessionId, String queryId, String uniqueName, List<String> currentSelections)
             throws RpcException;
 
     /**

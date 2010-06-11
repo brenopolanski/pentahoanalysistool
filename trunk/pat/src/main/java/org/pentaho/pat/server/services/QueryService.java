@@ -198,9 +198,10 @@ public interface QueryService extends Service {
      *            The session id into which the query is stored.
      * @param dimensionName
      *            The name of the dimension that contains the members to deselect.
+     * @param currentSelections 
      */
     @Secured( {"Users"})
-    void clearSelection(String userId, String sessionId, String queryId, String dimensionName);
+    void clearSelection(String userId, String sessionId, String queryId, String dimensionName, List<String> currentSelections);
 
     /**
      * Unselects members from a dimension inside a query. You must first specify onto which query to perform the
