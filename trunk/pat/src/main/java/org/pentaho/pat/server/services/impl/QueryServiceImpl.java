@@ -430,7 +430,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         } else if (type.equals(ObjectType.MEMBER)) {
             List<String> memberNameList = new ArrayList<String>();
             Member member = cube.lookupMember(memberNames);
-            qDim.include(member);
+            qDim.include(selectionMode, member);
             memberNameList.add(member.getUniqueName());
             /*
              * List<Member> members = cube.getHierarchies()
