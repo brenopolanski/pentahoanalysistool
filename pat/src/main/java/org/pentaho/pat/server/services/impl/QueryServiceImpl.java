@@ -44,7 +44,6 @@ import org.olap4j.OlapStatement;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Measure;
@@ -121,16 +120,19 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String, java.lang.String, java.util.List)
      */
     public void clearSelection(final String userId, final String sessionId, final String queryId,
-            final String uniqueName) {
+            final String uniqueName, final List<String> currentSelections) {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
         String[] named = QueryDimension.getNameParts(uniqueName);
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, getDimensionName(named));
         // final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
-        //for (int i = 0; i < memberNames.size(); i++) {
-            final Selection selection = OlapUtil.findSelection(named[1], qDim);
+        for (int i = 0; i < currentSelections.size(); i++) {
+
+            final Selection selection = OlapUtil.findSelection(currentSelections.get(i), qDim);
+            if(selection != null){
             qDim.getInclusions().remove(selection);
-        //}
+            }
+        }
 
     }
 
@@ -404,8 +406,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             memberNameList.add(name);
             return memberNameList;
         } else if (type.equals(ObjectType.HIERARCHY)) {
-            /*qDim.include(selectionMode, cube.getDimensions().get("Region Dimension").getHierarchies().get(
-                    "Region Hierarchy").getDefaultMember());*/
             Hierarchy h = cube.getHierarchies().get(memberNames[0]);
             List<String> memberNameList = new ArrayList<String>();
             for(int i =0; i< h.getRootMembers().size(); i++){
@@ -417,9 +417,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             
             return memberNameList;
         } else if (type.equals(ObjectType.LEVEL)) {
-            Member m = cube.lookupMember(memberNames);
-            List<Member> members = cube.getDimensions().get(memberNames[0]).getHierarchies().get(
-                    memberNames[1]).getLevels().get(memberNames[2])
+            List<Member> members = cube.getHierarchies().get(
+                    memberNames[0]).getLevels().get(memberNames[1])
                     .getMembers();
             List<String> memberNameList = new ArrayList<String>();
             for (Member member : members) {
@@ -430,8 +429,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             }
             return memberNameList;
         } else if (type.equals(ObjectType.MEMBER)) {
-            List<Member> members = cube.getDimensions().get(memberNames[0]).getHierarchies()
-                    .get(memberNames[1]).getLevels().get(memberNames[2]).getMembers();
+            List<Member> members = cube.getHierarchies()
+                    .get(memberNames[0]).getLevels().get(memberNames[1]).getMembers();
             List<String> memberNameList = new ArrayList<String>();
             for (Member member : members) {
                 if (member.getName().equals(memberNames[3])) {

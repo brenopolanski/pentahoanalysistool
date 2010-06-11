@@ -22,21 +22,14 @@ package org.pentaho.pat.client.ui.popups;
 import java.util.Arrays;
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
-import org.pentaho.pat.client.ui.windows.DimensionBrowserWindow;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.StringTree;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Tree;
@@ -68,7 +61,7 @@ public class SelectionModeMenu extends PopupMenu {
             final String dimName = targetLabel.getDimension();
             final List<String> dimSelections = Arrays.asList(targetLabel.getFullPath());
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName, new AsyncCallback<Object>() {
+/*            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName, new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
@@ -80,7 +73,7 @@ public class SelectionModeMenu extends PopupMenu {
                             DimensionBrowserWindow.getDimensionMenuPanel().syncTreeAndList(targetLabel, CLEAR);
 
                         }
-                    });
+                    });*/
             SelectionModeMenu.this.hide();
         }
     }

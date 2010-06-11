@@ -136,8 +136,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#clearSelection(java.lang.String, java.lang.String, java.lang.String,
      * java.util.List)
      */
-    public void clearSelection(final String sessionId, final String queryId, final String dimensionName) throws RpcException {
-        this.queryService.clearSelection(getCurrentUserId(), sessionId, queryId, dimensionName);
+    public void clearSelection(final String sessionId, final String queryId, final String dimensionName, List<String> currentSelections) throws RpcException {
+        this.queryService.clearSelection(getCurrentUserId(), sessionId, queryId, dimensionName, currentSelections);
     }
 
     /*

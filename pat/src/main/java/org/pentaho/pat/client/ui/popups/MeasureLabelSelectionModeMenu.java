@@ -19,7 +19,6 @@
  */
 package org.pentaho.pat.client.ui.popups;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.MessageBox;
@@ -69,7 +68,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
 
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), new AsyncCallback<Object>() {
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
                             MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
@@ -148,7 +147,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     
             final SelectionType selection = setSelectionMode(selectionMode);
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(),new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Object>(){
 
 						public void onFailure(Throwable arg0) {
 							// TODO Auto-generated method stub
