@@ -429,9 +429,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             }
             return memberNameList;
         } else if (type.equals(ObjectType.MEMBER)) {
-            List<Member> members = cube.getHierarchies()
-                    .get(memberNames[0]).getLevels().get(memberNames[1]).getMembers();
             List<String> memberNameList = new ArrayList<String>();
+            Member member = cube.lookupMember(memberNames);
+            qDim.include(member);
+            memberNameList.add(member.getUniqueName());
+            /*List<Member> members = cube.getHierarchies()
+                    .get(memberNames[0]).getLevels().get(memberNames[1]).getMembers();
+            
             for (Member member : members) {
                 if (member.getName().equals(memberNames[3])) {
                     qDim.include(selectionMode, member);
@@ -440,7 +444,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                     memberNameList.add(name);
                 }
-            }
+            }*/
             return memberNameList;
         } else if (type.equals(ObjectType.MEASURE)) {
             List<Measure> members = null;

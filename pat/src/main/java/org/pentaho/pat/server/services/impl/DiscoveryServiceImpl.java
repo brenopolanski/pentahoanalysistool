@@ -34,7 +34,6 @@ import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Measure;
@@ -232,11 +231,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
                 }
         	}
         	else if(type.equals(ObjectType.HIERARCHY)){
-        	    String dimname = getDimensionName(parts);
-        	    String hierarcy = getHierarchyName(parts); 
-        	    Dimension dim = query.getDimension(getDimensionName(parts)).getDimension();
-        	    Hierarchy h = dim.getHierarchies().get(parts[0]);
-        	    NamedList<? extends Member> members = h.getRootMembers();
+        	    NamedList<? extends Member> members = query.getDimension(getDimensionName(parts)).getDimension().getHierarchies().get(parts[0]).getRootMembers();
         	    st = new StringTree(null, null, null);
         	    for (Member mem : members){
                     new StringTree(mem.getUniqueName(), mem.getCaption(loc), st);

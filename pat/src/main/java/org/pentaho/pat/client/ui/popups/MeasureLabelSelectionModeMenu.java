@@ -174,6 +174,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
 														public void onSuccess(
 																StringTree labels) {
+														    targetLabel.setSelectionType(selection);
 															QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
 								                        			.getParent().getParent().getParent());
 								                        	flexTable.alterSelectionDisplay(targetLabel, labels);

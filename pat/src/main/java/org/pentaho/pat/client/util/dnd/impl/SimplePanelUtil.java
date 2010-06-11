@@ -185,7 +185,7 @@ public class SimplePanelUtil {
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
                         ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getActualName(), ObjectType.DIMENSION, SelectionType.MEMBER, new AsyncCallback<StringTree>() {
+                                label.getActualName(), ObjectType.DIMENSION, label.getSelectionType(), new AsyncCallback<StringTree>() {
 
                                     public void onFailure(Throwable arg0) {
                                         // TODO Auto-generated method stub
@@ -245,7 +245,7 @@ public class SimplePanelUtil {
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
                         ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
-                                label.getActualName(), ObjectType.HIERARCHY, SelectionType.MEMBER,
+                                label.getActualName(), ObjectType.HIERARCHY, label.getSelectionType(),
                                 new AsyncCallback<StringTree>() {
 
                                     public void onFailure(Throwable arg0) {
@@ -294,8 +294,9 @@ public class SimplePanelUtil {
                                         public void onSuccess(List<String> arg0) {
                                             label.setCurrentSelection(arg0);
                                             label.setSelectionType(SelectionType.CHILDREN);
-                                            
-                                            ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
+                                            label.setAxis(((DimensionSimplePanel) context.finalDropController
+                                                    .getDropTarget()).getAxis());
+                                            /*ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                                                     label.getActualName(), ObjectType.LEVEL, SelectionType.CHILDREN,
                                                     new AsyncCallback<StringTree>() {
 
@@ -305,13 +306,13 @@ public class SimplePanelUtil {
                                                         }
 
                                                         public void onSuccess(StringTree arg0) {
+                                                           
                                                             GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
                                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
-                                                            label.setAxis(((DimensionSimplePanel) context.finalDropController
-                                                                    .getDropTarget()).getAxis());
+                                                            
                                                         }
 
-                                                    });
+                                                    });*/
                                         }
 
                                     });
@@ -319,6 +320,28 @@ public class SimplePanelUtil {
                             GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
                                     Pat.getCurrQuery(), label, is, iAxis);
                         }
+                        if(label.getSelectionType() == null){
+                            label.setSelectionType(SelectionType.CHILDREN);
+                        }
+                        ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
+                                label.getActualName(), ObjectType.LEVEL, label.getSelectionType(),
+                                new AsyncCallback<StringTree>() {
+
+                                    public void onFailure(Throwable arg0) {
+                                        // TODO Auto-generated method stub
+
+                                    }
+
+                                    public void onSuccess(StringTree arg0) {
+                                        label.setAxis(((DimensionSimplePanel) context.finalDropController
+                                                .getDropTarget()).getAxis());
+                                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                                .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
+                                        
+                                    }
+
+                                });
+                    
                       
                     }
                 });
