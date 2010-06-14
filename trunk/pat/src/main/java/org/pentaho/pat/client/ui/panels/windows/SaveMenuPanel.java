@@ -26,6 +26,7 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ListBox;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.ListBox.CellRenderer;
+import org.gwt.mosaic.ui.client.MessageBox.ConfirmationCallback;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
@@ -35,6 +36,8 @@ import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.list.Filter;
 import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.LabelTextBox;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -101,7 +104,7 @@ public class SaveMenuPanel extends LayoutComposite {
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
 
-        
+
         layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
@@ -111,10 +114,10 @@ public class SaveMenuPanel extends LayoutComposite {
         this.getLayoutPanel().add(layoutPanel);
 
     }
-    
+
     @Override
     protected void onAttach() {
-     
+
         super.onAttach();
         if (filtertextBox != null) {
             filtertextBox.setText("");
@@ -144,7 +147,7 @@ public class SaveMenuPanel extends LayoutComposite {
 
             }
         };
-        
+
         listBox.setCellRenderer(new CellRenderer<QuerySaveModel>() {
             public void renderCell(final ListBox<QuerySaveModel> listBox, final int row, final int column,
                     final QuerySaveModel item) {
@@ -176,43 +179,76 @@ public class SaveMenuPanel extends LayoutComposite {
         ServiceFactory.getQueryInstance().getSavedQueries(Pat.getSessionID(),
                 new AsyncCallback<List<QuerySaveModel>>() {
 
-                    public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                .failedGetQueryList(arg0.getLocalizedMessage()));
-                    }
+            public void onFailure(final Throwable arg0) {
+                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        .failedGetQueryList(arg0.getLocalizedMessage()));
+            }
 
-                    public void onSuccess(final List<QuerySaveModel> arg0) {
-                        listBox.setModel(model);
-                        if (arg0 != null) {
-                            model.clear();
-                            for (int i = 0; i < arg0.size(); i++) {
-                                model.add(arg0.get(i));
-                            }
-                            listBox.setModel(filterModel);
-
-                        }
+            public void onSuccess(final List<QuerySaveModel> arg0) {
+                listBox.setModel(model);
+                if (arg0 != null) {
+                    model.clear();
+                    for (int i = 0; i < arg0.size(); i++) {
+                        model.add(arg0.get(i));
                     }
-                });
+                    listBox.setModel(filterModel);
+
+                }
+            }
+        });
 
     }
 
     public void save() {
         if (saveTextBox != null && saveTextBox.getTextBoxText().length() > 0) {
-            ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), saveTextBox.getTextBoxText(),
-                    Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
+            boolean exists = false;
+            for (int i = 0; !exists && i < model.getSize();i++) {
+                QuerySaveModel item = model.getElementAt(i);
 
-                public void onFailure(final Throwable arg0) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                            .failedSaveQuery(arg0.getLocalizedMessage()));
+                if (item.getName().equals(saveTextBox.getTextBoxText())) {
+                    exists = true;
                 }
+            }
+            if (exists) {
+                MessageBox.confirm(ConstantFactory.getInstance().warning(),
+                        MessageFactory.getInstance().confirmQueryOverwrite(), new ConfirmationCallback() {
 
-                public void onSuccess(final Object arg0) {
-                    loadSavedQueries();
+                    public void onResult(boolean result) {
+                        if (result) {
+                            saveInternal();
+                        }
+                    }
 
-                }
+                });
+            }
+            else {
+                saveInternal();
+            }
 
-            });
+
         }
+    }
+
+    private void saveInternal() {
+        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), saveTextBox.getTextBoxText(),
+                Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
+
+            public void onFailure(final Throwable arg0) {
+                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        .failedSaveQuery(arg0.getLocalizedMessage()));
+            }
+
+            public void onSuccess(final Object arg0) {
+                Widget widget = MainTabPanel.getSelectedWidget();
+                if (widget instanceof AbstractDataWidget) {
+                    ((AbstractDataWidget) widget).setTitle(saveTextBox.getTextBoxText());
+                }
+                
+
+            }
+
+        });
+
     }
 
     private Widget createRichListBoxCell(final QuerySaveModel item) {

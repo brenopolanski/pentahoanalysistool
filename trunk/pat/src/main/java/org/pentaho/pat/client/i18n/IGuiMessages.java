@@ -271,4 +271,6 @@ public interface IGuiMessages extends com.google.gwt.i18n.client.Messages {
     String validationEmpty(String fields);
 
     String failedDrillThrough(String message);
+    
+    String confirmQueryOverwrite();
 }
