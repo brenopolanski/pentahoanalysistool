@@ -395,10 +395,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
             public void onClick(ClickEvent arg0) {
                 
                 
-                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
+                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().schemaFile());
                 final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                 wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
-                RichTextArea schemaArea = new RichTextArea();
+                final RichTextArea schemaArea = new RichTextArea();
                 String newStr = schemaData + "";
                 newStr = newStr.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;").replaceAll(" ", "&nbsp;");
                 newStr = newStr.replaceAll("\t", "&nbsp;&nbsp;&nbsp;");
@@ -407,6 +407,20 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 schemaArea.setHTML(newStr + "");
                 
                 wpLayoutPanel.add(schemaArea, new BoxLayoutData(1, 0.9));
+                final ToolButton saveBtn = new ToolButton(ConstantFactory.getInstance().save());
+                saveBtn.addClickHandler(new ClickHandler() {
+                    public void onClick(final ClickEvent arg0) {
+                        String newStr = schemaArea.getHTML();
+                        newStr = newStr.replaceAll("&lt;","\\<").replaceAll("&gt;","\\>").replaceAll("&nbsp;"," ");
+                        newStr = newStr.replaceAll("&nbsp;&nbsp;&nbsp;","\t");
+                        newStr = newStr.replaceAll("<br>","\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                        schemaData = newStr;
+                        winPanel.hide();
+                        ConnectionManagerWindow.display(false);
+                    }
+
+                });
+
                 final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
                 closeBtn.addClickHandler(new ClickHandler() {
                     public void onClick(final ClickEvent arg0) {
@@ -417,6 +431,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 });
                 final LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
+                wpButtonPanel.add(saveBtn);
                 wpButtonPanel.add(closeBtn);
                 wpLayoutPanel.add(wpButtonPanel);
                 wpLayoutPanel.layout();
