@@ -25,10 +25,13 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
+import org.pentaho.pat.server.data.pojo.ConnectionType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -197,7 +200,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
         if (this.getRawValue() != null) {
 
             Image drillButton = null;
-            if ((MemberCell.this).getChildMemberCount() > 0) {
+            if ((MemberCell.this).getChildMemberCount() > 0 && MainTabPanel.getSelectedWidget() instanceof OlapPanel) {
                 drillButton = new Image() {
 
                     public void onBrowserEvent(final Event event) {
