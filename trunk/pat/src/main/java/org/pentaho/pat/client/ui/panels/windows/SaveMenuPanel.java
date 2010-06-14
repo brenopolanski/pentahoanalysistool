@@ -243,7 +243,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 if (widget instanceof AbstractDataWidget) {
                     ((AbstractDataWidget) widget).setTitle(saveTextBox.getTextBoxText());
                 }
-                
+
 
             }
 
@@ -270,5 +270,23 @@ public class SaveMenuPanel extends LayoutComposite {
         table.setText(2, 0, "Last Updated: " + item.getSavedDate()); //$NON-NLS-1$
 
         return table;
+    }
+
+    public void delete() {
+        if (listBox.getSelectedIndex() >= 0) {
+            QuerySaveModel delItem = listBox.getItem(listBox.getSelectedIndex());
+            ServiceFactory.getQueryInstance().deleteSavedQuery(Pat.getSessionID(), delItem.getName(), new AsyncCallback<Object>() {
+
+                public void onFailure(final Throwable arg0) {
+                    MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());
+                }
+
+                public void onSuccess(final Object arg0) {
+                    loadSavedQueries();
+                }
+
+            });
+        }
+
     }
 }

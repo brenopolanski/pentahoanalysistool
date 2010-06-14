@@ -123,6 +123,8 @@ public interface IQueryAsync {
     void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cubeItem,
             String cubeName, AsyncCallback<Object> callback);
 
+    void deleteSavedQuery(String sessionId, String queryName, AsyncCallback<Object> callback);
+    
     void setHierarchizeMode(String sessionId, String queryId, String dimensionName, String mode,
             AsyncCallback<Object> callback);
     

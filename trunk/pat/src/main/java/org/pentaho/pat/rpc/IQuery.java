@@ -362,6 +362,9 @@ public interface IQuery extends RemoteService {
     void saveQuery(String sessionId, String queryId, String queryName, String connectionId, CubeItem cube,
             String cubeName) throws RpcException;
 
+    @Secured( {"Users"})
+    void deleteSavedQuery(String sessionId, String queryName) throws RpcException;
+    
     /**
      * 
      * Set the hierarchize mode for a dimension.
