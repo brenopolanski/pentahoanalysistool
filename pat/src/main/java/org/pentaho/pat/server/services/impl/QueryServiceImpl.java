@@ -1156,6 +1156,21 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         user.getSavedQueries().add(query);
         this.userManager.updateUser(user);
     }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pentaho.pat.server.services.QueryService#deleteQuery(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void deleteQuery(String userId, String sessionId, String queryName) {
+        this.sessionService.validateSession(userId, sessionId);
+
+        final User user = this.userManager.getUser(userId);
+        SavedQuery dummy = new SavedQuery();
+        dummy.setName(queryName);
+        user.getSavedQueries().remove(dummy);
+        this.userManager.updateUser(user);
+    }
 
     /*
      * (non-Javadoc)

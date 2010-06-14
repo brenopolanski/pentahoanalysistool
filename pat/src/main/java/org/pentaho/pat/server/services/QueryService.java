@@ -435,6 +435,19 @@ public interface QueryService extends Service {
     void saveQuery(String currentUserId, String sessionId, SavedQuery queryId);
 
     /**
+     *TODO JAVADOC
+     * 
+     * @param currentUserId
+     * @param sessionId
+     * @param queryId
+     * @param connectionId
+     * @param queryName
+     */
+    @Secured( {"Users"})
+    void deleteQuery(String currentUserId, String sessionId, String queryName);
+
+    
+    /**
      * Creates a new mdx query for a given session.
      * 
      * @param userId

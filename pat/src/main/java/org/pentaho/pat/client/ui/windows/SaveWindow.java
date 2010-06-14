@@ -122,6 +122,14 @@ public class SaveWindow extends WindowPanel {
 
         });
         
+        Button deleteButton = new Button("Delete");
+        deleteButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                SAVEMENUPANEL.delete();
+            }
+        });
+        
         
         final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
         cancelButton.addClickHandler(new ClickHandler() {
@@ -133,7 +141,7 @@ public class SaveWindow extends WindowPanel {
 
         });
 
-        return ButtonBarFactory.buildOKCancelBar(saveButton, cancelButton);
+        return ButtonBarFactory.buildAddRemovePropertiesBar(saveButton, deleteButton, cancelButton);
     }
     
     public static void setSaveEnabled(boolean enabled) {

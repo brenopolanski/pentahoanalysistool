@@ -581,6 +581,17 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             throw new RpcException(Messages.getString("Servlet.Query.QuerySaveError"), e); //$NON-NLS-1$
         }
     }
+    
+    public void deleteSavedQuery(final String sessionId, final String queryName) throws RpcException {
+        try {
+            if (queryName != null ) {
+                this.queryService.deleteQuery(getCurrentUserId(), sessionId, queryName);
+            }
+        } catch (Exception e) {
+            LOG.error(Messages.getString("Services.Query.QueryDeleteError"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Services.Query.QueryDeleteError"), e); //$NON-NLS-1$
+        }
+    }
 
     /**
      * 
