@@ -58,6 +58,8 @@ public class CubeConnection implements Serializable, IsSerializable {
     
     private boolean connected = false;
     
+    private String role = null;
+    
 
     public enum ConnectionType implements IsSerializable {
         XMLA, Mondrian
@@ -158,5 +160,13 @@ public class CubeConnection implements Serializable, IsSerializable {
 
     public void setConnected(boolean connected) {
         this.connected = connected;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
@@ -196,12 +197,17 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 }
                 throw new OlapException(Messages.getString("Services.Session.NullConnection")); //$NON-NLS-1$
             } else {
-
+                try {
+                
+                if (StringUtils.isNotBlank(sc.getRole())) {
+                    olapConnection.setRoleName(sc.getRole());
+                }
+                
                 sessions.get(userId).get(sessionId).putConnection(sc.getId(), olapConnection);
 
                 // Obtaining a connection object doesn't mean that the
                 // credentials are ok or whatever. We'll test it.
-                try {
+
                     this.discoveryService.getCubes(userId, sessionId, sc.getId());
                 }
                 catch (Exception e) {

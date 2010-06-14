@@ -160,6 +160,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
     /** File upload widget. */
     private final FileUpload fileUpload;
 
+    private final TextBox roleTextBox;
+    
     /** Schema upload button. */
     private final Button uploadButton;
 
@@ -197,6 +199,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
+        roleTextBox = new TextBox();
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
@@ -223,6 +226,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
         
         if (cc.getDriverClassName() != null) {
             initDriverListBox(cc.getDriverClassName());
+        }
+        
+        if (cc.getRole() != null) {
+            roleTextBox.setText(cc.getRole());
         }
         schemaData = cc.getSchemaData();
         startupCheckbox.setValue(cc.isConnectOnStartup());
@@ -302,6 +309,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         }
         cubeConn.setSchemaData(schemaData);
         cubeConn.setConnectOnStartup(startupCheckbox.getValue());
+        cubeConn.setRole(roleTextBox.getText());
         return cubeConn;
     }
 
@@ -352,7 +360,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
-        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -426,9 +434,12 @@ public class ConnectMondrianPanel extends LayoutComposite {
         viewSchemaButton.setText(ConstantFactory.getInstance().noSchema());
         builder.add(viewSchemaButton, CellConstraints.xy(7, 13));
         
-        builder.add(startupCheckbox,CellConstraints.xy(3,15));
+        builder.addLabel(ConstantFactory.getInstance().role() + LABEL_SUFFIX, CellConstraints.xy(1, 15));
+        builder.add(roleTextBox,CellConstraints.xyw(3,15,5));
         
-
+        builder.add(startupCheckbox,CellConstraints.xy(3,17));
+        
+        
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final CubeConnection cc = getCubeConnection();
@@ -457,14 +468,14 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
         saveButton.setEnabled(false);
         
-        builder.add(saveButton, CellConstraints.xy(3, 17));
+        builder.add(saveButton, CellConstraints.xy(3, 19));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton, CellConstraints.xy(7, 17));
+        builder.add(cancelButton, CellConstraints.xy(7, 19));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         formPanel.add(layoutPanel);

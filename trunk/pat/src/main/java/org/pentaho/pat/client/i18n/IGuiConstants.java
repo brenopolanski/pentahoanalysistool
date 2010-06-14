@@ -972,5 +972,7 @@ public interface IGuiConstants extends Constants {
      String viewSchema();
      
      String noSchema();
+     
+     String role();
 
 }
