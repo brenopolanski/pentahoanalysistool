@@ -306,7 +306,7 @@
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>jdom</groupId>
+									<groupId>org.jdom</groupId>
 									<artifactId>jdom</artifactId>
 									<version>1.1</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
