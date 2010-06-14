@@ -189,7 +189,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
         cc.setSchemaData(sc.getSchemaData());
         cc.setId(sc.getId());
         cc.setConnectOnStartup(sc.isConnectOnStartup());
-
+        cc.setRole(sc.getRole());
         return cc;
     }
 
@@ -206,6 +206,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
         sc.setType(org.pentaho.pat.server.data.pojo.ConnectionType.getInstance(cc.getConnectionType().name()));
         sc.setSchemaData(cc.getSchemaData());
         sc.setConnectOnStartup(cc.isConnectOnStartup());
+        sc.setRole(cc.getRole());
         return sc;
     }
     

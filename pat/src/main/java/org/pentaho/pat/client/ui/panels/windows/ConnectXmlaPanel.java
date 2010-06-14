@@ -79,6 +79,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
 
     /** Password Textbox. */
     private final PasswordTextBox passwordTextBox;
+    
+    private final TextBox roleTextBox;
 
     private final CheckBox startupCheckbox;
 
@@ -101,6 +103,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
+        roleTextBox = new TextBox();
         catalogTextBox = new TextBox();
         startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
         this.setStyleName(CONNECT_XMLA_PANEL);
@@ -119,6 +122,10 @@ public class ConnectXmlaPanel extends LayoutComposite {
         if (cc.getCatalog() != null)
             catalogTextBox.setText(cc.getCatalog());
         startupCheckbox.setValue(cc.isConnectOnStartup());
+        
+        if (cc.getRole() != null) {
+            roleTextBox.setText(cc.getRole());
+        }
     }
     
     
@@ -154,6 +161,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
             cubeConn.setCatalog(catalogTextBox.getText());
         }
         cubeConn.setConnectOnStartup(startupCheckbox.getValue());
+        cubeConn.setRole(roleTextBox.getText());
+        
         return cubeConn;
     }
 
@@ -164,7 +173,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
         final FormLayout layout = new FormLayout("right:[40dlu,pref], 3dlu, 70dlu, 7dlu, " //$NON-NLS-1$
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
-        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
+        "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
         builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
@@ -176,7 +185,9 @@ public class ConnectXmlaPanel extends LayoutComposite {
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
         builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
         builder.add(catalogTextBox, CellConstraints.xyw(3, 7, 5));
-        builder.add(startupCheckbox,CellConstraints.xy(3,9));
+        builder.addLabel(ConstantFactory.getInstance().role() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
+        builder.add(roleTextBox, CellConstraints.xyw(3, 9, 5));
+        builder.add(startupCheckbox,CellConstraints.xy(3,11));
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 final CubeConnection cc = getCubeConnection();
@@ -201,14 +212,14 @@ public class ConnectXmlaPanel extends LayoutComposite {
             }
         });
 
-        builder.add(saveButton, CellConstraints.xy(3, 11));
+        builder.add(saveButton, CellConstraints.xy(3, 13));
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 ConnectionManagerWindow.closeTabs();
             }
         });
-        builder.add(cancelButton, CellConstraints.xy(7, 11));
+        builder.add(cancelButton, CellConstraints.xy(7, 13));
         final LayoutPanel layoutPanel = builder.getPanel();
         layoutPanel.setPadding(15);
         this.getLayoutPanel().add(layoutPanel);
