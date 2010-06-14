@@ -89,7 +89,19 @@ public class ConnectionManagerWindow extends WindowPanel {
      * Display.
      */
     public static void display() {
-        closeTabs();
+        display(true);
+    }
+    
+    public static void display(Boolean refresh) {
+        if (refresh) {
+            closeTabs();
+        }
+        else
+            CONNMANGRWINDOW.showModal();
+            
+    }
+    public static void close() {
+        CONNMANGRWINDOW.hide();
     }
 
     /**

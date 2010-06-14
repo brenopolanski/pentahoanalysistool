@@ -25,8 +25,13 @@ import org.gwt.mosaic.forms.client.layout.CellConstraints;
 import org.gwt.mosaic.forms.client.layout.FormLayout;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
+import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
+import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.i18n.IGuiConstants;
@@ -48,6 +53,7 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
@@ -157,6 +163,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
     /** Schema upload button. */
     private final Button uploadButton;
 
+    private final Button viewSchemaButton;
+    
     private final CheckBox startupCheckbox;
     
     private final CheckBox schemaValCheckbox;
@@ -183,6 +191,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         nameTextBox = new TextBox();
         saveButton = new Button(ConstantFactory.getInstance().save());
         uploadButton = new Button(ConstantFactory.getInstance().upload());
+        viewSchemaButton = new Button(ConstantFactory.getInstance().viewSchema());
         cancelButton = new Button(ConstantFactory.getInstance().cancel());
         driverListBox = new ListBox();
         urlTextBox = new TextBox();
@@ -218,6 +227,12 @@ public class ConnectMondrianPanel extends LayoutComposite {
         schemaData = cc.getSchemaData();
         startupCheckbox.setValue(cc.isConnectOnStartup());
         saveButton.setEnabled(true);
+        if (schemaData != null && schemaData.length() > 0) {
+            viewSchemaButton.setEnabled(true);
+            viewSchemaButton.setText(ConstantFactory.getInstance().viewSchema());
+        }
+        else
+            viewSchemaButton.setText(ConstantFactory.getInstance().noSchema());
     }
     
 
@@ -320,6 +335,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                 arg0.getResults().indexOf(SCHEMA_END));
                         schemaData = decode(tmp);
                         saveButton.setEnabled(true);
+                        viewSchemaButton.setEnabled(true);
+                        viewSchemaButton.setText(ConstantFactory.getInstance().viewSchema());
                         // TODO remove this later
 
                         Application.showInfoPanel(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success());
@@ -363,7 +380,52 @@ public class ConnectMondrianPanel extends LayoutComposite {
             }
         });
 
-        builder.add(uploadButton, CellConstraints.xyw(3, 13, 5));
+        builder.add(uploadButton, CellConstraints.xy(3, 13));
+        
+        viewSchemaButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                
+                
+                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
+                final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+                wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
+                RichTextArea schemaArea = new RichTextArea();
+                String newStr = schemaData + "";
+                newStr = newStr.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;").replaceAll(" ", "&nbsp;");
+                newStr = newStr.replaceAll("\t", "&nbsp;&nbsp;&nbsp;");
+                newStr = newStr.replaceAll("(\r\n)", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+//                newStr = newStr.replaceAll("[\r\n\t\f]", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                schemaArea.setHTML(newStr + "");
+                
+                wpLayoutPanel.add(schemaArea, new BoxLayoutData(1, 0.9));
+                final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                closeBtn.addClickHandler(new ClickHandler() {
+                    public void onClick(final ClickEvent arg0) {
+                        winPanel.hide();
+                        ConnectionManagerWindow.display(false);
+                    }
+
+                });
+                final LayoutPanel wpButtonPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+
+                wpButtonPanel.add(closeBtn);
+                wpLayoutPanel.add(wpButtonPanel);
+                wpLayoutPanel.layout();
+                winPanel.add(wpLayoutPanel);
+                winPanel.layout();
+                winPanel.pack();
+                winPanel.setSize("700px", "520px"); //$NON-NLS-1$ //$NON-NLS-2$
+                
+                ConnectionManagerWindow.close();
+                winPanel.center();
+                
+            }
+        });
+        viewSchemaButton.setEnabled(false);
+        viewSchemaButton.setText(ConstantFactory.getInstance().noSchema());
+        builder.add(viewSchemaButton, CellConstraints.xy(7, 13));
+        
         builder.add(startupCheckbox,CellConstraints.xy(3,15));
         
 
@@ -394,6 +456,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         });
 
         saveButton.setEnabled(false);
+        
         builder.add(saveButton, CellConstraints.xy(3, 17));
 
         cancelButton.addClickHandler(new ClickHandler() {
