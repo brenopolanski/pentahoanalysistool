@@ -968,5 +968,9 @@ public interface IGuiConstants extends Constants {
      String drillThroughPanel();
      
      String aboutPat();
+     
+     String viewSchema();
+     
+     String noSchema();
 
 }
