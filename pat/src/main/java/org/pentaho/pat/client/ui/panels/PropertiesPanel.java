@@ -55,6 +55,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -82,6 +83,11 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 	
 	private final ToolButton drillPositionButton;
 	
+	private final ToolButton drillUpButton;
+	
+	private final ToolButton drillNoneButton;
+    
+    
 	private final ToolButton drillThroughButton;
 	
 	private final String queryId;
@@ -380,7 +386,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
         
-        drillPositionButton = new ToolButton(ConstantFactory.getInstance().drillPosition());
+        drillPositionButton = new ToolButton("Position");
         drillPositionButton.setStyle(ToolButtonStyle.RADIO);
         drillPositionButton.setEnabled(false);
         drillPositionButton.setChecked(true);
@@ -388,49 +394,64 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             
             public void onClick(ClickEvent arg0) {
                 drillReplaceButton.setChecked(false);
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(false);
                 drillPositionButton.setChecked(true);
 
                 (new DrillCommand(DrillType.POSITION)).execute();
+                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.POSITION);
             }
         });
         
-        drillReplaceButton = new ToolButton(ConstantFactory.getInstance().drillReplace());
+        drillReplaceButton = new ToolButton("Replace");
         drillReplaceButton.setStyle(ToolButtonStyle.RADIO);
         drillReplaceButton.setEnabled(false);
         drillReplaceButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
                 drillPositionButton.setChecked(false);
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(false);
                 drillReplaceButton.setChecked(true);
-
+                
                 (new DrillCommand(DrillType.REPLACE)).execute();
+                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.REPLACE);
             }
         });
         
+        drillUpButton = new ToolButton("Up");
+        drillUpButton.setStyle(ToolButtonStyle.RADIO);
+        drillUpButton.setEnabled(false);
+        drillUpButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                drillPositionButton.setChecked(false);
+                drillReplaceButton.setChecked(false);
+                drillNoneButton.setChecked(false);
+                drillUpButton.setChecked(true);
 
-//        drillPositionButton = new RadioButton(ConstantFactory.getInstance().drillPosition(),ConstantFactory.getInstance().drillPosition());
-//        drillPositionButton.addClickHandler(new ClickHandler() {
-//            
-//            public void onClick(ClickEvent arg0) {
-//                drillPositionButton.setValue(true);
-//                drillReplaceButton.setValue(false);
-//                
-//                (new DrillCommand(DrillType.POSITION)).execute();
-//            }
-//        });
-//        drillPositionButton.setName("DRILLSTYLE");
-//        
-//        drillReplaceButton = new RadioButton(ConstantFactory.getInstance().drillReplace(),ConstantFactory.getInstance().drillReplace());
-//        drillReplaceButton.addClickHandler(new ClickHandler() {
-//            
-//            public void onClick(ClickEvent arg0) {
-//                drillReplaceButton.setValue(true);
-//                drillPositionButton.setValue(false);
-//                
-//                (new DrillCommand(DrillType.REPLACE)).execute();
-//            }
-//        });
-//        drillReplaceButton.setName("DRILLSTYLE");
+                (new DrillCommand(DrillType.UP)).execute();
+                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.UP);
+            }
+        });
+        
+        drillNoneButton = new ToolButton("None");
+        drillNoneButton.setStyle(ToolButtonStyle.RADIO);
+        drillNoneButton.setEnabled(false);
+        drillNoneButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                drillPositionButton.setChecked(false);
+                drillReplaceButton.setChecked(false);
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(true);
+
+                (new DrillCommand(DrillType.NONE)).execute();
+                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.NONE);
+            }
+        });
+
+
 
         drillThroughButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
         drillThroughButton.setEnabled(false);
@@ -458,8 +479,12 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            Label drillStyleLabel = new Label(ConstantFactory.getInstance().drillStyle() + ":");
+            mainPanel.add(drillStyleLabel, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillReplaceButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(drillUpButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(drillNoneButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -475,18 +500,37 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
     protected void onLoad() {
         super.onLoad();
         if (Pat.getCurrDrillType() != null ) {
-        if (Pat.getCurrDrillType().equals(DrillType.POSITION)) {
-            drillReplaceButton.setChecked(false);
-            drillPositionButton.setChecked(true);
-        }
-        if (Pat.getCurrDrillType().equals(DrillType.REPLACE)) {
-            drillPositionButton.setChecked(false);
-            drillReplaceButton.setChecked(true);
-        }
+            if (Pat.getCurrDrillType().equals(DrillType.POSITION)) {
+                drillReplaceButton.setChecked(false);
+                drillPositionButton.setChecked(true);
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(false);
+            }
+            if (Pat.getCurrDrillType().equals(DrillType.REPLACE)) {
+                drillReplaceButton.setChecked(true);
+                drillPositionButton.setChecked(false);            
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(false);
+            }
+            if (Pat.getCurrDrillType().equals(DrillType.UP)) {
+                drillReplaceButton.setChecked(false);
+                drillPositionButton.setChecked(false);            
+                drillUpButton.setChecked(true);
+                drillNoneButton.setChecked(false);
+            }
+            if (Pat.getCurrDrillType().equals(DrillType.NONE)) {
+                drillReplaceButton.setChecked(false);
+                drillPositionButton.setChecked(false);            
+                drillUpButton.setChecked(false);
+                drillNoneButton.setChecked(true);
+            }
+
         }
         else {
             drillReplaceButton.setChecked(false);
-            drillPositionButton.setChecked(true);
+            drillPositionButton.setChecked(true);            
+            drillUpButton.setChecked(false);
+            drillNoneButton.setChecked(false);
         }
     }
     
@@ -505,6 +549,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             layoutMenuButton.setEnabled(true);
             drillPositionButton.setEnabled(true);
             drillReplaceButton.setEnabled(true);
+            drillUpButton.setEnabled(true);
+            drillNoneButton.setEnabled(true);
             if (Pat.getCurrConnection().getConnectionType().equals(CubeConnection.ConnectionType.Mondrian)) {
                 drillThroughButton.setEnabled(true);
             }

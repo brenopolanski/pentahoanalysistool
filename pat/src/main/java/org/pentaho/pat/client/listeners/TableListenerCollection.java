@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -54,6 +55,13 @@ public class TableListenerCollection extends ArrayList<ITableListener> {
         ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
         for (ITableListener listener : tableList) {
             listener.onDrillThroughExecuted(queryId, result);
+        }
+    }
+    
+    public void fireDrillStyleChanged(final Widget sender, String queryId, DrillType drillType) {
+        ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
+        for (ITableListener listener : tableList) {
+            listener.onDrillStyleChanged(queryId, drillType);
         }
     }
 
