@@ -13,6 +13,7 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -112,6 +113,14 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
                 this.clear();
             }
         }
+    }
+
+
+
+
+    public void onDrillStyleChanged(String queryId, DrillType drillType) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

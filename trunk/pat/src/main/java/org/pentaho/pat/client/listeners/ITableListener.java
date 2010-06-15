@@ -22,6 +22,7 @@ package org.pentaho.pat.client.listeners;
 import java.util.EventListener;
 
 import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 /**
  * The Interface TableListener.
@@ -33,4 +34,7 @@ public interface ITableListener extends EventListener {
     void onOperationExecuted(String queryId, Operation operation);
     
     void onDrillThroughExecuted(String queryId, String[][] drillThroughResult);
+    
+    void onDrillStyleChanged(String queryId, DrillType drillType);
+    
 }

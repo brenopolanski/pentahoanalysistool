@@ -19,13 +19,28 @@
  */
 package org.pentaho.pat.client.ui.widgets;
 
+import org.gwt.mosaic.ui.client.MessageBox;
+import org.pentaho.pat.client.Pat;
+import org.pentaho.pat.client.listeners.ITableListener;
+import org.pentaho.pat.client.ui.panels.LogoPanel;
+import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
+import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.MessageFactory;
+import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
@@ -34,9 +49,11 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class CellLabelPanel extends HorizontalPanel {
+public class CellLabelPanel extends HorizontalPanel implements ITableListener {
     private MemberCell memCell = null;
 
+    private Image drillButton;
+    
     private final static String CELL_LABEL_PANEL = "pat-cellLabel"; //$NON-NLS-1$
     
     /**
@@ -48,8 +65,75 @@ public class CellLabelPanel extends HorizontalPanel {
         this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         this.setStyleName(CELL_LABEL_PANEL);
+        
+        GlobalConnectionFactory.getOperationInstance().addTableListener(this);
+        
+        drillButton = null;
+        if (memCell != null && memCell.getRawValue() != null && MainTabPanel.getSelectedWidget() instanceof OlapPanel) {
+            drillButton = new Image() {
+
+                public void onBrowserEvent(final Event event) {
+                    if (DOM.eventGetType(event) == Event.ONCLICK) {
+                        LogoPanel.spinWheel(true);
+                        ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+                                Pat.getCurrDrillType(), memCell, new AsyncCallback<Object>() {
+
+                            public void onFailure(Throwable arg0) {
+                                LogoPanel.spinWheel(false);
+                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                        .getInstance().failedDrill(arg0.getLocalizedMessage()));
+                            }
+
+                            public void onSuccess(Object arg0) {
+                                Pat.executeQuery(CellLabelPanel.this,Pat.getCurrQuery());
+                            }
+
+                        });
+                    }
+                }
+            };
+
+            setDrillIcon(Pat.getCurrDrillType());
+            this.add(drillButton);
+
+        }
+        
+        
+        
     }
 
+    private void setDrillIcon(DrillType drillType) {
+
+        if (drillButton != null) {
+            boolean setIcon = false;
+            if (drillType != null && memCell.getRawValue() != null) {
+                if (drillType.equals(DrillType.POSITION) && memCell.getChildMemberCount() > 0) {
+                    if (memCell.isExpanded()) {
+                        drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
+                    } else {
+                        drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
+                    }
+                    setIcon = true;
+                }
+                if (memCell.getChildMemberCount() > 0 && drillType.equals(DrillType.REPLACE)) {
+                    drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_down.png"); //$NON-NLS-1$
+                    setIcon = true;
+                }
+
+                if (memCell.getParentMember() != null && drillType.equals(DrillType.UP)) {
+                    drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_up.png"); //$NON-NLS-1$
+                    setIcon = true;
+                }
+
+                if (drillType.equals(DrillType.NONE)) {
+                    setIcon = false;
+                }
+            }
+
+            drillButton.setVisible(setIcon);
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
@@ -72,6 +156,24 @@ public class CellLabelPanel extends HorizontalPanel {
         default:
             break;
         }
+    }
+
+
+    public void onDrillStyleChanged(String queryId, DrillType drillType) {
+        if (Pat.getCurrQuery().equals(queryId)) {
+            setDrillIcon(drillType);
+        }
+        
+    }
+
+    public void onDrillThroughExecuted(String queryId, String[][] drillThroughResult) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void onOperationExecuted(String queryId, Operation operation) {
+        // TODO Auto-generated method stub
+        
     }
 
     /**

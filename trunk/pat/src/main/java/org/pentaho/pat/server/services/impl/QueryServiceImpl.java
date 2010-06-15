@@ -334,7 +334,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     @Deprecated
     public void createSelection(final String userId, final String sessionId, final String queryId,
             final String dimensionName, final List<String> memberNames, final Selection.Operator selectionType)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -402,7 +402,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                     .getDefaultMember());
             List<String> memberNameList = new ArrayList<String>();
             String name = cube.getDimensions().get(memberNames[0]).getHierarchies().get(0).getDefaultMember()
-                    .getUniqueName();
+            .getUniqueName();
             memberNameList.add(name);
             return memberNameList;
         } else if (type.equals(ObjectType.HIERARCHY)) {
@@ -418,7 +418,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             return memberNameList;
         } else if (type.equals(ObjectType.LEVEL)) {
             List<Member> members = cube.getHierarchies().get(memberNames[0]).getLevels().get(memberNames[1])
-                    .getMembers();
+            .getMembers();
             List<String> memberNameList = new ArrayList<String>();
             for (Member member : members) {
                 qDim.include(selectionMode, member);
@@ -554,7 +554,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         if (hm == null) {
             queryDimension.setHierarchizeMode(HierarchizeMode.PRE);
         }
-        if (memberFetched.getChildMemberCount() > 0) {
+        // Top Down Drilling
+        if (memberFetched.getChildMemberCount() > 0 && ( (drillType.equals(DrillType.POSITION)) || (drillType.equals(DrillType.REPLACE)))) {
             if (!member.isExpanded()) {
                 // If its the left most dimension don't do anything apart from
                 // include.
@@ -564,39 +565,21 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                         // queryDimension.getInclusions().remove(selection);
                         // queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
-                        memberFetched.getChildMembers();
                         break;
                     case REPLACE:
-                        if (member.getParentMember() != null) {
-                        } else {
-                        }
-
-                        // queryDimension.getInclusions().remove(selection);
                         queryDimension.clearInclusions();
                         queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
-                        memberFetched.getChildMembers();
                         break;
                     default:
                         break;
                     }
 
                 }
-
                 else {
                     // Get the drilling member
                     MemberCell memberdrill = member;
 
                     if (drillType == DrillType.REPLACE) {
-                        final Selection currentMemberSelection;
-                        if (member.getParentMember() != null) {
-                            currentMemberSelection = OlapUtil.findSelection(member.getParentMember(), queryDimension
-                                    .getInclusions());
-                        } else {
-                            currentMemberSelection = OlapUtil.findSelection(member.getUniqueName(), queryDimension
-                                    .getInclusions());
-                        }
-                        LOG.error("REPLACE 2 - parent member: " + member.getParentMember() + " selection:"
-                                + currentMemberSelection.toString());
                         queryDimension.clearInclusions();
                         final Selection selection = queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
                         // Test to see if there are populated cells to its left
@@ -654,62 +637,99 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
             } else {
 
-                final Selection collapseSelChildren = queryDimension.createSelection(Selection.Operator.CHILDREN,
-                        memberFetched);
-                final Selection collapseSelIncludeChildren = queryDimension.createSelection(
-                        Selection.Operator.INCLUDE_CHILDREN, memberFetched);
-                MemberCell collapsemember = member;
-                while (collapsemember.getRightOf() != null) {
-                    if (collapsemember.getRightOf().getUniqueName() != null
-                            && !collapsemember.getRightOf().getUniqueName().equals(collapsemember.getParentMember())) {
+                if (drillType.equals(DrillType.POSITION)) {
+                    
+                    final Selection collapseSelChildren = queryDimension.createSelection(Selection.Operator.CHILDREN,
+                            memberFetched);
+                    final Selection collapseSelIncludeChildren = queryDimension.createSelection(
+                            Selection.Operator.INCLUDE_CHILDREN, memberFetched);
+                    MemberCell collapsemember = member;
+                    while (collapsemember.getRightOf() != null) {
+                        if (collapsemember.getRightOf().getUniqueName() != null
+                                && !collapsemember.getRightOf().getUniqueName().equals(collapsemember.getParentMember())) {
+
+                            // Get dimension to the left of the current member.
+                            final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, collapsemember
+                                    .getRightOfDimension());
+
+                            // Get the Olap4J member.
+                            final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember
+                                    .getRightOf(), cellSet);
+
+                            collapseSelChildren.addContext(queryDimension2.createSelection(memberFetched2));
+                            collapseSelIncludeChildren.addContext(queryDimension2.createSelection(memberFetched2));
+
+                        }
+
+                        // Get next member.
+                        collapsemember = collapsemember.getRightOf();
+                    }
+
+                    List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension, collapseSelChildren);
+                    queryDimension.getInclusions().removeAll(childSelections);
+
+                    List<Selection> childSelections2 = OlapUtil.findChildrenSelections(queryDimension,
+                            collapseSelIncludeChildren);
+                    queryDimension.getInclusions().removeAll(childSelections2);
+
+                    Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
+                    Integer size = queryDimension.getAxis().getDimensions().size();
+                    for (int i = index + 1; index >= 0 && i < size; i++) {
+                        QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
+                        for (Selection possibleContext : childSelections) {
+                            List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
+                                    .getSelectionContext());
+                            qDim.getInclusions().removeAll(findResult);
+                        }
+                        for (Selection possibleContext : childSelections2) {
+                            List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
+                                    .getSelectionContext());
+                            qDim.getInclusions().removeAll(findResult);
+                        }
+                        if (member.getRightOf() == null) {
+                            List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren
+                                    .getMember());
+                            qDim.getInclusions().removeAll(findResult2);
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        if (drillType.equals(DrillType.UP) && memberFetched.getParentMember() != null) {
+
+            if (memberFetched != null && memberFetched.getParentMember() != null) {
+                queryDimension.clearInclusions();
+                final Selection selection = queryDimension.include(Selection.Operator.MEMBER, memberFetched.getParentMember());
+                MemberCell memberdrill = member;
+                // Test to see if there are populated cells to its left
+                while (memberdrill.getRightOf() != null) {
+
+                    // If yes test to make sure its not name isn't null and
+                    // it hasn't just skipped back to its all member level
+                    if (memberdrill.getRightOf().getUniqueName() != null
+                            && !memberdrill.getRightOf().getUniqueName().equals(memberdrill.getParentMember())) {
 
                         // Get dimension to the left of the current member.
-                        final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, collapsemember
+                        final QueryDimension queryDimension2 = OlapUtil.getQueryDimension(query, memberdrill
                                 .getRightOfDimension());
 
                         // Get the Olap4J member.
-                        final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, collapsemember
+                        final Member memberFetched2 = OlapUtil.getMember(query, queryDimension2, memberdrill
                                 .getRightOf(), cellSet);
 
-                        collapseSelChildren.addContext(queryDimension2.createSelection(memberFetched2));
-                        collapseSelIncludeChildren.addContext(queryDimension2.createSelection(memberFetched2));
+                        selection.addContext(queryDimension2.createSelection(memberFetched2));
 
                     }
 
                     // Get next member.
-                    collapsemember = collapsemember.getRightOf();
+                    memberdrill = memberdrill.getRightOf();
                 }
-
-                List<Selection> childSelections = OlapUtil.findChildrenSelections(queryDimension, collapseSelChildren);
-                queryDimension.getInclusions().removeAll(childSelections);
-
-                List<Selection> childSelections2 = OlapUtil.findChildrenSelections(queryDimension,
-                        collapseSelIncludeChildren);
-                queryDimension.getInclusions().removeAll(childSelections2);
-
-                Integer index = queryDimension.getAxis().getDimensions().indexOf(queryDimension);
-                Integer size = queryDimension.getAxis().getDimensions().size();
-                for (int i = index + 1; index >= 0 && i < size; i++) {
-                    QueryDimension qDim = queryDimension.getAxis().getDimensions().get(i);
-                    for (Selection possibleContext : childSelections) {
-                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
-                                .getSelectionContext());
-                        qDim.getInclusions().removeAll(findResult);
-                    }
-                    for (Selection possibleContext : childSelections2) {
-                        List<Selection> findResult = OlapUtil.findSelectionsByContext(qDim, possibleContext
-                                .getSelectionContext());
-                        qDim.getInclusions().removeAll(findResult);
-                    }
-                    if (member.getRightOf() == null) {
-                        List<Selection> findResult2 = OlapUtil.findSelectionByParent(qDim, collapseSelChildren
-                                .getMember());
-                        qDim.getInclusions().removeAll(findResult2);
-                    }
-
-                }
-
             }
+
+
         }
         return null;
     }
@@ -803,7 +823,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         sessionService.validateSession(userId, sessionId);
         final List<String> names = new ArrayList<String>();
         final Set<Entry<String, MdxQuery>> entries = sessionService.getSession(userId, sessionId).getMdxQueries()
-                .entrySet();
+        .entrySet();
         for (final Entry<String, MdxQuery> entry : entries) {
             names.add(entry.getKey());
         }
@@ -832,7 +852,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String)
      */
     public CellDataSet executeMdxQuery(final String userId, final String sessionId, final String mdxQueryId)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final MdxQuery mdxQuery = this.getMdxQuery(userId, sessionId, mdxQueryId);
@@ -864,7 +884,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String)
      */
     public CellDataSet executeQuery(final String userId, final String sessionId, final String queryId)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query mdx = this.getQuery(userId, sessionId, queryId);
         mdx.validate();
@@ -910,7 +930,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String)
      */
     public String getMdxForQuery(final String userId, final String sessionId, final String queryId)
-            throws OlapException {
+    throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         final Query q = this.getQuery(userId, sessionId, queryId);
         if (q == null)
@@ -1156,7 +1176,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         user.getSavedQueries().add(query);
         this.userManager.updateUser(user);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -1203,7 +1223,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * java.lang.String, java.lang.String, org.olap4j.query.Query)
      */
     public String createSavedQuery(String userId, String sessionId, String connectionId, /* String cubeName, */
-    Query newQuery) throws OlapException {
+            Query newQuery) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         // if (cubeName == null)
@@ -1220,7 +1240,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     }
 
     public String createSavedQuery(String userId, String sessionId, String connectionId, /* String cubeName, */
-    MdxQuery newMdxQuery) throws OlapException {
+            MdxQuery newMdxQuery) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
         final String generatedId = String.valueOf(UUID.randomUUID());

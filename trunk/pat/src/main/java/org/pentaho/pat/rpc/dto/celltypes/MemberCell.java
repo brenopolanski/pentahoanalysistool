@@ -22,24 +22,10 @@ package org.pentaho.pat.rpc.dto.celltypes;
 import java.io.Serializable;
 import java.util.List;
 
-import org.gwt.mosaic.ui.client.MessageBox;
-import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.LogoPanel;
-import org.pentaho.pat.client.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.MessageFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.server.data.pojo.ConnectionType;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 public class MemberCell extends AbstractBaseCell implements Serializable, IsSerializable {
@@ -81,7 +67,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
      * @param c
      */
     public MemberCell(final boolean right, final boolean sameAsPrev) {
-        super();
+        this();
         this.right = right;
         this.sameAsPrev = sameAsPrev;
     }
@@ -199,44 +185,7 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
          */
         if (this.getRawValue() != null) {
 
-            Image drillButton = null;
-            if ((MemberCell.this).getChildMemberCount() > 0 && MainTabPanel.getSelectedWidget() instanceof OlapPanel) {
-                drillButton = new Image() {
-
-                    public void onBrowserEvent(final Event event) {
-                        if (DOM.eventGetType(event) == Event.ONCLICK) {
-                            LogoPanel.spinWheel(true);
-                            ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    Pat.getCurrDrillType(), MemberCell.this, new AsyncCallback<Object>() {
-
-                                        public void onFailure(Throwable arg0) {
-                                            LogoPanel.spinWheel(false);
-                                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
-                                                    .getInstance().failedDrill(arg0.getLocalizedMessage()));
-                                        }
-
-                                        public void onSuccess(Object arg0) {
-                                            Pat.executeQuery(cellPanel,Pat.getCurrQuery());;
-                                        }
-
-                                    });
-                        }
-                    }
-                };
-
-                if (isExpanded()) {
-                    drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
-                } else {
-                    drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
-                }
-
-            }
             final Label cellLabel = new Label(getFormattedValue());
-
-
-            if (drillButton != null) {
-                cellPanel.add(drillButton);
-            }
             cellLabel.setStyleName("pat-MemberCellLabel");
             cellLabel.setWidth("100%");
             cellPanel.add(cellLabel);
@@ -273,13 +222,13 @@ public class MemberCell extends AbstractBaseCell implements Serializable, IsSeri
     /*public void setProperty(String name, String value){
         properties.put(name, value);
     }
-    
+
     public HashMap<String, String> getProperties(){
         return properties;
     }
-    
+
     public String getProperty(String name){
         return properties.get(name);
     }*/
-    
+
 }

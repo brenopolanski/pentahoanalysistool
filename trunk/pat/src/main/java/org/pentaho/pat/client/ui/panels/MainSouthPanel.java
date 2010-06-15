@@ -34,6 +34,7 @@ import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.TableDataSet;
+import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 /**
  * Collapsable Southpanel for MainTabPanel
@@ -137,6 +138,11 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
             dtp.setData(tds);
             WidgetHelper.revalidate(this);
         }
+    }
+
+    public void onDrillStyleChanged(String queryId, DrillType drillType) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
