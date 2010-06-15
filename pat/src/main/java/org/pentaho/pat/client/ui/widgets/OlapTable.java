@@ -254,4 +254,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
         //table.fillWidth();
         this.layout();
     }
+    public void onQueryFailed(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
 }

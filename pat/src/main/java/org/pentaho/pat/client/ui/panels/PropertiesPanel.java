@@ -571,4 +571,9 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         // TODO Auto-generated method stub
         
     }
+
+    public void onQueryFailed(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
 }

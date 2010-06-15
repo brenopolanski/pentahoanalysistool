@@ -263,4 +263,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		// TODO Auto-generated method stub
 		
 	}
+
+    public void onQueryFailed(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
 }

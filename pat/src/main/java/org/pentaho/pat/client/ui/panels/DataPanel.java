@@ -250,5 +250,21 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
             baseLayoutPanel.layout();
         }
     }
+
+    public void onQueryFailed(String queryId) {
+        if (this.queryId.equals(queryId) && this.isAttached()) {
+            if (throbberLabel.isAttached()) {
+                baseLayoutPanel.remove(throbberLabel);
+            }
+            if (mainLayoutPanel.isAttached()) {
+                baseLayoutPanel.remove(fillLayoutPanel);
+            }
+            baseLayoutPanel.setLayout(new BorderLayout());
+            baseLayoutPanel.add(mainLayoutPanel);
+            baseLayoutPanel.layout();
+            
+        }
+        
+    }
 }
 
