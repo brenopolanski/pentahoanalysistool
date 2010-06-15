@@ -322,5 +322,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     	baselayoutPanel.invalidate();
     	baselayoutPanel.layout();
     }
+
+    public void onQueryFailed(String queryId) {
+        // TODO Auto-generated method stub
+        
+    }
 }
 

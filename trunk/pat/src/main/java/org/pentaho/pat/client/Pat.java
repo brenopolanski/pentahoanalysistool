@@ -426,6 +426,8 @@ public class Pat implements EntryPoint {
                     public void onFailure(final Throwable arg0) {
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                 .failedQuery(arg0.getLocalizedMessage()));
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(
+                                sender, queryId);
                     }
 
                     public void onSuccess(final CellDataSet result1) {
