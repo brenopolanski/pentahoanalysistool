@@ -27,18 +27,24 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.Viewport;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.FillLayout;
+import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.MainMenuBar;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
+import org.pentaho.pat.client.ui.panels.MdxPanel;
+import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
+import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.enums.QueryType;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -94,7 +100,7 @@ public class Application extends Viewport {
 
     private MainMenuBar menuBar = null;
 
-
+    private static LayoutPanel tableOnlyPanel = null;
     
     public static SimplePanelDragControllerImpl SimplePanelDrgCont;
 
@@ -129,8 +135,14 @@ public class Application extends Viewport {
             MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
         }
 
-        mainTabPanel = new MainTabPanel();
-        rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
+        if (Pat.getApplicationState().getMode().isShowOnlyOnePanel()) {
+            tableOnlyPanel = new LayoutPanel(new FillLayout());
+            rootPanel.add(tableOnlyPanel, new BoxLayoutData(FillStyle.BOTH));
+        }
+        else {
+            mainTabPanel = new MainTabPanel();
+            rootPanel.add(mainTabPanel, new BoxLayoutData(FillStyle.BOTH));
+        }
         
         
     }
@@ -184,5 +196,58 @@ public class Application extends Viewport {
 
     public static void showInfoPanel(String title, String content){
 	InfoPanel.show(title, content);
+    }
+
+    public static void loadQuery() {
+        String queryName = Pat.getApplicationState().getLoadQueryName(); 
+        if (queryName != null && queryName.length() > 0 ) {
+            ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), queryName, new AsyncCallback<QuerySaveModel>() {
+
+                public void onFailure(final Throwable arg0) {
+                }
+
+                public void onSuccess(final QuerySaveModel qsm) {
+                    if (qsm.getQueryType().equals(QueryType.QM)) {
+                        final OlapPanel olapPanel = new OlapPanel(qsm.getQueryId(), qsm);
+                        Application.displayWidget(olapPanel);
+
+                    }
+                    if (qsm.getQueryType().equals(QueryType.MDX)) {
+                        ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), qsm.getId(), new AsyncCallback<String>() {
+
+                            public void onFailure(Throwable arg0) {
+                                // if it fails we still want to try to load the mdx panel
+                                MdxPanel mdxPanel = new MdxPanel(qsm.getQueryId(), qsm , "");
+                                Application.displayWidget(mdxPanel);
+                            }
+
+                            public void onSuccess(String arg0) {
+                                MdxPanel mdxPanel = new MdxPanel(qsm.getQueryId(), qsm ,arg0);
+                                Application.displayWidget(mdxPanel);
+
+                            }
+
+                        });
+
+
+                    }
+
+                }
+
+            });
+        }
+        
+    }
+
+    protected static void displayWidget(AbstractDataWidget widget) {
+        if (!Pat.getApplicationState().getMode().isShowOnlyOnePanel()) {
+            MainTabPanel.displayContentWidget(widget);
+        }
+        else {
+            tableOnlyPanel.clear();
+            tableOnlyPanel.add(widget, new FillLayoutData(true));
+            tableOnlyPanel.layout();
+        }
+        
     }
 }

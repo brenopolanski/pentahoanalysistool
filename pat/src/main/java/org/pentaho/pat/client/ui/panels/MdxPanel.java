@@ -36,6 +36,7 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.PanelUtil;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -44,6 +45,7 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -80,65 +82,102 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     private final MDXRichTextArea mdxArea = new MDXRichTextArea();
 
-    public MdxPanel() {
-        super();
-
-    }
-
-    @Override
-    public void onLoad(){
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(MdxPanel.this);
-    }
-    
     /**
      * Mdx Panel Constructor.
      * 
      */
     public MdxPanel(final CubeItem cube, final CubeConnection connection) {
-        this(cube,connection,null);
+        this(cube,connection,null, null);
+
+    }
+    
+    public MdxPanel(final String queryId, final QuerySaveModel qsm, final String mdx) {
+        this(qsm.getCube(),qsm.getConnection(),mdx, queryId);
+        Pat.setCurrCube(qsm.getCube());
+        Pat.setCurrCubeName(qsm.getCubeName());
+        Pat.setCurrConnectionId(qsm.getConnection().getId());
+        Pat.setCurrConnection(qsm.getConnection());
+        Pat.setCurrPanelType(PanelType.MDX);
 
     }
     
     public MdxPanel(final String name, final CubeItem cube, final CubeConnection connection, final String mdx) {
-        this(cube, connection,mdx);
+        this(cube, connection,mdx, null);
         panelName = name;
     }
 
-    public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx) {
+    public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx, final String _queryId) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
         panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
-
+        this.queryId = _queryId;
         this.cubeItem = cube;
         this.cube = cube.getName();
         this.connection = connection;
         this.connectionId = connection.getId();
         final String catalog = cube.getCatalog();
+        Pat.setCurrCube(cube);
+        Pat.setCurrCubeName(cube.getName());
+        Pat.setCurrConnectionId(connection.getId());
+        Pat.setCurrConnection(connection);
+        Pat.setCurrPanelType(PanelType.MDX);
 
-        ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,mdx,
-                new AsyncCallback<String>() {
+        if (queryId == null) {
+            ServiceFactory.getQueryInstance().createNewMdxQuery(Pat.getSessionID(), connectionId, catalog,mdx,
+                    new AsyncCallback<String>() {
 
-            public void onFailure(final Throwable arg0) {
+                public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                        .failedCreateQuery(arg0.getLocalizedMessage()));
-                LogoPanel.spinWheel(false);
+                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            .failedCreateQuery(arg0.getLocalizedMessage()));
+                    LogoPanel.spinWheel(false);
 
+                }
+
+                public void onSuccess(final String query) {
+                    queryId = query;
+                    Pat.setCurrQuery(query);
+                    Pat.setCurrConnectionId(connectionId);
+                    Pat.setCurrConnection(connection);
+                    Pat.setCurrPanelType(PanelType.MDX);
+                    initializeWidget();
+                    LogoPanel.spinWheel(false);
+                    if (mdx != null) {
+                        ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdx,
+                                new AsyncCallback<Object>() {
+
+                            public void onFailure(final Throwable arg0) {
+                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                        .failedQuery(arg0.getLocalizedMessage()));
+                            }
+
+                            public void onSuccess(final Object arg0) {
+                                if (Pat.getApplicationState().isExecuteQuery()) {
+                                    Pat.executeQuery(MdxPanel.this,getQueryId());
+                                }
+                            }
+                        });
+
+
+                    }
+
+                }
+            });
+        }
+        else {
+            Pat.setCurrQuery(queryId);
+            initializeWidget();
+            if (Pat.getApplicationState().isExecuteQuery()) {
+                if (mdx != null) {
+                    executeMdx(mdx);
+                }
             }
-
-            public void onSuccess(final String query) {
-                queryId = query;
-                Pat.setCurrQuery(query);
-                Pat.setCurrConnectionId(connectionId);
-                Pat.setCurrConnection(connection);
-                initializeWidget();
-                LogoPanel.spinWheel(false);
-
-            }
-        });
+        }
+        
         if (mdx != null) {
             this.mdxArea.setText(mdx);
         }
+
     }
 
 
@@ -206,33 +245,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                 
                 GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(MdxPanel.this, queryId);
                 mdxArea.formatMDX();
-                ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdxArea.getText(),
-                        new AsyncCallback<Object>() {
-
-                            public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
-                                        .failedQuery(arg0.getLocalizedMessage()));
-                            }
-
-                            public void onSuccess(final Object arg0) {
-                                ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(),
-                                        queryId, new AsyncCallback<CellDataSet>() {
-
-                                            public void onFailure(final Throwable arg0) {
-                                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
-                                                        .getInstance().failedQuery(arg0.getLocalizedMessage()));
-                                            }
-
-                                            public void onSuccess(final CellDataSet result1) {
-                                                GlobalConnectionFactory.getQueryInstance().getQueryListeners()
-                                                        .fireQueryExecuted(MdxPanel.this, queryId, result1);
-                                            }
-
-                                        });
-                            }
-
-                        });
-
+                executeMdx(mdxArea.getText());
             }
 
         });
@@ -243,6 +256,37 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     }
 
+    private void executeMdx(String mdx) {
+        ServiceFactory.getQueryInstance().setMdxQuery(Pat.getSessionID(), queryId, mdx,
+                new AsyncCallback<Object>() {
+
+                    public void onFailure(final Throwable arg0) {
+                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                .failedQuery(arg0.getLocalizedMessage()));
+                    }
+
+                    public void onSuccess(final Object arg0) {
+                        ServiceFactory.getQueryInstance().executeMdxQuery(Pat.getSessionID(),
+                                queryId, new AsyncCallback<CellDataSet>() {
+
+                                    public void onFailure(final Throwable arg0) {
+                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                                .getInstance().failedQuery(arg0.getLocalizedMessage()));
+                                    }
+
+                                    public void onSuccess(final CellDataSet result1) {
+                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                                .fireQueryExecuted(MdxPanel.this, queryId, result1);
+                                    }
+
+                                });
+                    }
+
+                });
+
+
+    }
+    
     public CubeItem getCubeItem() {
         return cubeItem;
     }
@@ -349,6 +393,16 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     public void onQueryFailed(String queryId) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public CubeConnection getCubeConnection() {
+        return connection;
+    }
+
+    @Override
+    public PanelType getPanelType() {
+        return PanelType.MDX;
     }
 
 }

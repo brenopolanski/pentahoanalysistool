@@ -34,13 +34,13 @@ public class State {
 	 *
 	 */
     public static enum Mode {
-        BISERVERPUC("BISERVERPUC", false, false, false, false, false, false, false, false, false), //$NON-NLS-1$
-        DEFAULT("DEFAULT", false, true, true, false, true, true, true, true, true), //$NON-NLS-1$
-        STANDALONE("STANDALONE", true, true, true, false, true, true, true, true, true), //$NON-NLS-1$
-        USER("USER", true, false, true, false, true, true, true, true, true), //$NON-NLS-1$
-        BUSINESSUSER("BUSINESSUSER", false, false, true, false, true, true, true, false, true), //$NON-NLS-1$
-        ONECUBE("ONECUBE", false, false, false, false, true, false, true, false, true), //$NON-NLS-1$
-        OLAPTABLE("OLAPTABLE", false, false, false, true, false, false, false, false, false); //$NON-NLS-1$
+        BISERVERPUC("BISERVERPUC", false, false, false, false, false, false, false, false, false, true), //$NON-NLS-1$
+        DEFAULT("DEFAULT", false, true, true, false, true, true, true, true, true, false), //$NON-NLS-1$
+        STANDALONE("STANDALONE", true, true, true, false, true, true, true, true, true, false), //$NON-NLS-1$
+        USER("USER", true, false, true, false, true, true, true, true, true, false), //$NON-NLS-1$
+        BUSINESSUSER("BUSINESSUSER", false, false, true, false, true, true, true, false, true, false), //$NON-NLS-1$
+        ONECUBE("ONECUBE", false, false, false, false, true, false, true, false, true, false), //$NON-NLS-1$
+        OLAPTABLE("OLAPTABLE", false, false, false, true, false, false, false, false, false, true); //$NON-NLS-1$
         public static Mode getModeByParameter(final String param) {
             for (final Mode s : values()) {
                 if (s.getParam().equals(param)) {
@@ -71,6 +71,8 @@ public class State {
 
         private boolean allowQmQuery;
 
+        private boolean showOnlyOnePanel;
+
         /**
          * 
          * @param param
@@ -83,11 +85,12 @@ public class State {
          * @param showDimensionMenu
          * @param allowMdxQuery
          * @param allowQmQuery
+         * @param showOnlyOnePanel
          */
         private Mode(final String param, final boolean showConnections, final boolean manageConnections,
                 final boolean showCubeMenu, final boolean showOnlyTable, final boolean showMenu,
                 final boolean showWelcomePanel, final boolean showDimensionMenu, final boolean allowMdxQuery,
-                final boolean allowQmQuery) {
+                final boolean allowQmQuery, final boolean showOnlyOnePanel) {
             this.param = param;
             this.showConnections = showConnections;
             this.manageConnections = manageConnections;
@@ -98,6 +101,7 @@ public class State {
             this.showDimensionMenu = showDimensionMenu;
             this.allowMdxQuery = allowMdxQuery;
             this.allowQmQuery = allowQmQuery;
+            this.showOnlyOnePanel = showOnlyOnePanel;
         }
         
         /**
@@ -179,6 +183,10 @@ public class State {
         public boolean isShowWelcomePanel() {
             return showWelcomePanel;
         }
+
+        public boolean isShowOnlyOnePanel() {
+            return showOnlyOnePanel;
+        }
     }
 
     private Mode mode = null;
@@ -186,6 +194,11 @@ public class State {
     private String sessionId = null;
 
     private boolean connected = false;
+    
+    private String loadQueryName = null;
+
+    private boolean executeQuery = false;
+ 
 
     /**
      * 
@@ -233,5 +246,21 @@ public class State {
      */
     public void setSession(final String session) {
         sessionId = session;
+    }
+
+    public String getLoadQueryName() {
+        return loadQueryName;
+    }
+
+    public void setLoadQueryName(String loadQueryName) {
+        this.loadQueryName = loadQueryName;
+    }
+    
+    public Boolean isExecuteQuery() {
+        return executeQuery;
+    }
+
+    public void setExecuteQuery(Boolean executeQuery) {
+        this.executeQuery = executeQuery;
     }
 }

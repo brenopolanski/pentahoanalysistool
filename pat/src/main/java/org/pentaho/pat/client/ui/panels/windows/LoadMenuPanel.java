@@ -104,17 +104,17 @@ public class LoadMenuPanel extends LayoutComposite {
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
 
-        
+
         layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
         this.getLayoutPanel().add(layoutPanel);
 
     }
-    
+
     @Override
     protected void onAttach() {
-     
+
         super.onAttach();
         if (filtertextBox != null) {
             filtertextBox.setText("");
@@ -130,7 +130,7 @@ public class LoadMenuPanel extends LayoutComposite {
                 case Event.ONCLICK:
                     LoadWindow.setLoadEnabled(true);
                     break;
-                
+
                 }
 
             }
@@ -172,20 +172,20 @@ public class LoadMenuPanel extends LayoutComposite {
         if (qsm !=  null ) {
             LoadWindow.close();
             ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(),
-                    qsm.getId(), new AsyncCallback<QuerySaveModel>() {
+                    qsm.getName(), new AsyncCallback<QuerySaveModel>() {
 
                 public void onFailure(final Throwable arg0) {
                     MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                             .failedOpenQuery(arg0.getLocalizedMessage()));
                 }
 
-                public void onSuccess(final QuerySaveModel arg0) {
-                    if (arg0.getQueryType().equals(QueryType.QM)) {
-                        final OlapPanel olapPanel = new OlapPanel(arg0.getId(), arg0);
+                public void onSuccess(final QuerySaveModel _qsm) {
+                    if (_qsm.getQueryType().equals(QueryType.QM)) {
+                        final OlapPanel olapPanel = new OlapPanel(_qsm.getQueryId(), _qsm);
                         MainTabPanel.displayContentWidget(olapPanel);
                     }
-                    if (arg0.getQueryType().equals(QueryType.MDX)) {
-                        ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), arg0.getId(), new AsyncCallback<String>() {
+                    if (_qsm.getQueryType().equals(QueryType.MDX)) {
+                        ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), _qsm.getQueryId(), new AsyncCallback<String>() {
 
                             public void onFailure(Throwable arg0) {
                                 MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
@@ -193,7 +193,7 @@ public class LoadMenuPanel extends LayoutComposite {
                             }
 
                             public void onSuccess(String arg0) {
-                                MdxPanel mdxPanel = new MdxPanel(qsm.getName(),qsm.getCube(),qsm.getConnection(),arg0);
+                                MdxPanel mdxPanel = new MdxPanel(_qsm.getQueryId(), _qsm ,arg0);
                                 MainTabPanel.displayContentWidget(mdxPanel);
 
                             }
@@ -253,4 +253,6 @@ public class LoadMenuPanel extends LayoutComposite {
 
         return table;
     }
+
+
 }

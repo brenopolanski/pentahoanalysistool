@@ -100,12 +100,12 @@ public class UserManagerImpl extends AbstractManager implements UserManager, Ini
      * 
      * @see org.pentaho.pat.server.data.UserManager#getSavedQuery(java.lang.String, java.lang.String)
      */
-    public SavedQuery getSavedQuery(String userId, String savedQueryId) {
+    public SavedQuery getSavedQuery(String userId, String savedQueryName) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", userId); //$NON-NLS-1$
         if (users != null && users.size() == 1) {
             final Set<SavedQuery> savedQueries = users.get(0).getSavedQueries();
             for (SavedQuery query : savedQueries)
-                if (query.getId().equals(savedQueryId)) {
+                if (query.getName().equals(savedQueryName)) {
                     return query;
                 }
         }

@@ -23,10 +23,9 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
-import org.pentaho.pat.client.ui.panels.MainTabPanel;
-import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
 import org.pentaho.pat.client.util.Operation;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -69,7 +68,7 @@ public class CellLabelPanel extends HorizontalPanel implements ITableListener {
         GlobalConnectionFactory.getOperationInstance().addTableListener(this);
         
         drillButton = null;
-        if (memCell != null && memCell.getRawValue() != null && MainTabPanel.getSelectedWidget() instanceof OlapPanel) {
+        if (memCell != null && memCell.getRawValue() != null && PanelType.QM.equals(Pat.getCurrPanelType())) {
             drillButton = new Image() {
 
                 public void onBrowserEvent(final Event event) {
