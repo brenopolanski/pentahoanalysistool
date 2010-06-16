@@ -58,7 +58,7 @@ import org.pentaho.pat.server.util.serializer.QueryDeserializer;
 import org.pentaho.pat.server.util.serializer.QuerySerializer;
 
 /**
- * @author luc Boudreau
+ * @author Paul Stoellberger, Tom Barber
  * 
  */
 public class QueryServlet extends AbstractServlet implements IQuery {
@@ -700,23 +700,14 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * 
      * @see org.pentaho.pat.rpc.IQuery#loadQuery(java.lang.String, java.lang.String)
      */
-    public QuerySaveModel loadQuery(final String sessionId, final String savedQueryId) throws RpcException {
+    public QuerySaveModel loadQuery(final String sessionId, final String savedQueryName) throws RpcException {
         try {
 
-            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessionId, savedQueryId);
+            final SavedQuery sc = this.queryService.loadQuery(getCurrentUserId(), sessionId, savedQueryName);
 
             if (sc == null)
-                throw new Exception("Couldn't load Query with ID: " + savedQueryId);
+                throw new Exception("Couldn't load Query with Name: " + savedQueryName);
             
-//            final XStream xstream = new XStream();
-//
-//            xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-//            xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
-//            xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
-//            xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
-//            xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
-//            xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
-//            xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
             OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, sc.getConnectionId());
             if (con == null) {
                 this.sessionService.connect(getCurrentUserId(), sessionId, sc.getConnectionId());
@@ -738,14 +729,14 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             }
 
             if (createdQueryId == null) {
-                throw new Exception("Query could not be loaded");
+                throw new Exception("Query could not be loaded. Query Creation Failed");
             }
             SavedConnection svc = sessionService.getConnection(getCurrentUserId(), sc.getConnectionId());
             if (svc == null) {
                 throw new Exception("Connection for query doesn't exist");
             }
 
-            return new QuerySaveModel(createdQueryId, sc.getQueryId(), sc.getName(), SessionServlet.convert(svc), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
+            return new QuerySaveModel(createdQueryId, createdQueryId, sc.getName(), SessionServlet.convert(svc), sc.getCube(), sc.getCubeName(), sc.getUpdatedDate(), sc.getQueryType());
 
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.LoadQueryError"), e); //$NON-NLS-1$

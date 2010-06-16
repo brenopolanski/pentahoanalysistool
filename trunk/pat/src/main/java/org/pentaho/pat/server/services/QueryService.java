@@ -581,10 +581,10 @@ public interface QueryService extends Service {
      * 
      * @param currentUserId
      * @param sessioinId
-     * @param string
+     * @param queryName
      */
     @Secured( {"Users"})
-    SavedQuery loadQuery(String currentUserId, String sessioinId, String savedQueryId);
+    SavedQuery loadQuery(String currentUserId, String sessioinId, String savedQueryName);
 
     /**
      *TODO JAVADOC

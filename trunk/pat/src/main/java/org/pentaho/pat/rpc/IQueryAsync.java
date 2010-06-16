@@ -111,7 +111,7 @@ public interface IQueryAsync {
     void getSpecificMembers(String sessionId, String queryId, String uniqueName, ObjectType type,
             SelectionType selectionType, AsyncCallback<StringTree> asyncCallback);
     
-    void loadQuery(String sessionID, String currQuery, AsyncCallback<QuerySaveModel> asyncCallback);
+    void loadQuery(String sessionID, String queryName, AsyncCallback<QuerySaveModel> asyncCallback);
 
     void moveDimension(String sessionId, String queryId, IAxis axis, String dimensionName,
             AsyncCallback<Object> callback);

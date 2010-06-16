@@ -333,7 +333,7 @@ public interface IQuery extends RemoteService {
             SelectionType selectionType) throws RpcException;
     
     @Secured( {"Users"})
-    QuerySaveModel loadQuery(String sessioinId, String queryId) throws RpcException;
+    QuerySaveModel loadQuery(String sessioinId, String queryName) throws RpcException;
 
     /**
      * Moves a dimension to a different axis.

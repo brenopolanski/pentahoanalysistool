@@ -103,5 +103,5 @@ public interface UserManager {
     SavedConnection getSavedConnection(String userId, String connectionName);
 
     @Secured( {"Users"})
-    SavedQuery getSavedQuery(String userId, String savedQueryId);
+    SavedQuery getSavedQuery(String userId, String savedQueryName);
 }

@@ -29,10 +29,12 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
+import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.PanelUtil;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -117,7 +119,12 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
                         Pat.setCurrCubeName(cubeName);
                         Pat.setCurrCube(cubeItem);
                         Pat.setCurrConnection(connection);
+                        Pat.setCurrPanelType(PanelType.QM);
                         initializeWidget();
+                        if (Pat.getApplicationState().isExecuteQuery()) {
+                            Pat.executeQuery(OlapPanel.this,getQueryId());
+                        }
+
                     }
                 });
 
@@ -138,12 +145,17 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         Pat.setCurrCubeName(qsm.getCubeName());
         Pat.setCurrConnectionId(qsm.getConnection().getId());
         Pat.setCurrConnection(qsm.getConnection());
+        Pat.setCurrPanelType(PanelType.QM);
 
         panelName = qsm.getName();
         cubeItem = qsm.getCube();
         connectionId = qsm.getConnection().getId();
         connection = qsm.getConnection();
         initializeWidget();
+        if (Pat.getApplicationState().isExecuteQuery()) {
+            Pat.executeQuery(OlapPanel.this,getQueryId());
+        }
+
 
     }
 
@@ -183,10 +195,6 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     @Override
     public String getName() {
         return panelName;
-    }
-
-    public String getQuery() {
-        return queryId;
     }
 
     /**
@@ -300,10 +308,11 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     public void onQueryExecuted(String _queryId, CellDataSet matrix) {
         if (queryId != null && queryId.equals(_queryId) && this.isAttached()) {
-            //baselayoutPanel.setCollapsed(westPanel, true);
             westPanel.setVisible(false);
             msPanel.setVisible(false);
+            baselayoutPanel.invalidate();
             baselayoutPanel.layout();
+
         }
     }
 
@@ -312,10 +321,6 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 		
 	}
 
-    public void onQueryStartExecution(String queryId) {
-        // TODO Auto-generated method stub
-        
-    }
 
     public void setWestPanelVisible(boolean istrue){
     	westPanel.setVisible(istrue);
@@ -327,5 +332,27 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public CubeConnection getCubeConnection() {
+        return connection;
+    }
+
+    @Override
+    public PanelType getPanelType() {
+        return PanelType.QM;
+    }
+
+    public void onQueryStartExecution(String _queryId) {
+        if (queryId != null && queryId.equals(_queryId) && this.isAttached()) {
+            westPanel.setVisible(false);
+            msPanel.setVisible(false);
+            baselayoutPanel.invalidate();
+            baselayoutPanel.layout();
+
+        }
+        
+    }
+
 }
 

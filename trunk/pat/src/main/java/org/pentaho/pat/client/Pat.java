@@ -30,6 +30,7 @@ import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MainMenuBar;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.StyleSheetLoader;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
@@ -97,6 +98,8 @@ public class Pat implements EntryPoint {
     private static String currCubeName;
     
     private static String currScenario;
+    
+    private static PanelType currPanelType = null;
     
     private static IAxis measuresAxis;
 
@@ -295,6 +298,7 @@ public class Pat implements EntryPoint {
                 public void onSuccess(final String sessionId) {
                     applicationState.setSession(sessionId);
                     setupPat();
+                    Application.loadQuery();
                     Application.setupActiveQueries();
                     
                 }
@@ -343,6 +347,9 @@ public class Pat implements EntryPoint {
             applicationState.setMode(mode);
         }
         final String _sessionParam = loadURL.getParameter("SESSION"); //$NON-NLS-1$
+        applicationState.setLoadQueryName(loadURL.getParameter("QUERY"));
+        String exec = loadURL.getParameter("EXECUTE");
+        applicationState.setExecuteQuery(Boolean.valueOf(exec));
         applicationState.setSession(_sessionParam);
 
     }
@@ -485,6 +492,14 @@ public class Pat implements EntryPoint {
     
     public static String getCurrScenario(){
 	return currScenario;
+    }
+
+    public static PanelType getCurrPanelType() {
+        return currPanelType;
+    }
+
+    public static void setCurrPanelType(PanelType currPanelType) {
+        Pat.currPanelType = currPanelType;
     }
 
     public static void setMeasuresAxis(IAxis measuresDimension) {

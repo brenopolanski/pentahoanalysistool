@@ -18,6 +18,9 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
+import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 /**
  * A widget used to show the examples in the content panel. It includes a tab bar with options to view the example, view
@@ -63,6 +66,13 @@ public abstract class AbstractDataWidget extends LayoutComposite {
      * @return a name for this example
      */
     public abstract String getName();
+    
+    public abstract String getQueryId();
+    public abstract String getConnectionId();
+    public abstract String getCube();
+    public abstract CubeItem getCubeItem();
+    public abstract CubeConnection getCubeConnection();
+    public abstract PanelType getPanelType();
 
     /**
      * When the widget is first initialized, this method is called. If it returns a Widget, the widget will be added as

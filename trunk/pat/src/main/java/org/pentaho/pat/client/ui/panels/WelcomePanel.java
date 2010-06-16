@@ -20,6 +20,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
+import org.pentaho.pat.client.util.PanelUtil.PanelType;
+import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.core.client.GWT;
 
@@ -150,5 +153,41 @@ public class WelcomePanel extends AbstractDataWidget {
     protected void initializeWidget() {
         getLayoutPanel().add(onInitialize());
 
+    }
+
+    @Override
+    public String getConnectionId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getCube() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CubeConnection getCubeConnection() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CubeItem getCubeItem() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PanelType getPanelType() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getQueryId() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

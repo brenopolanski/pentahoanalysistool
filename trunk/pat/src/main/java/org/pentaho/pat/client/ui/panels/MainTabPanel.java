@@ -69,17 +69,17 @@ public class MainTabPanel extends LayoutComposite {
         CONTENTWRAPPER.addSelectionHandler(new SelectionHandler<Integer>() {
             public void onSelection(final SelectionEvent<Integer> selectEvent) {
                 CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
-                final Widget widget = CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
+                final Widget _widget = CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
 
-                if (widget instanceof OlapPanel || widget instanceof MdxPanel) {
+                if (_widget instanceof OlapPanel || _widget instanceof MdxPanel) {
                     MainMenuBar.enableSave(true);
-                    if (widget instanceof OlapPanel) {
-                        Pat.setCurrQuery(((OlapPanel) widget).getQueryId());
-                        Pat.setCurrConnectionId(((OlapPanel) widget).getConnectionId());
-                    } else {
-                        Pat.setCurrQuery(((MdxPanel) widget).getQueryId());
-                        Pat.setCurrConnectionId(((MdxPanel) widget).getConnectionId());
-                    }
+                    AbstractDataWidget widget = (AbstractDataWidget) _widget;
+                    Pat.setCurrQuery(widget.getQueryId());
+                    Pat.setCurrConnectionId(widget.getConnectionId());
+                    Pat.setCurrCubeName(widget.getCube());
+                    Pat.setCurrCube(widget.getCubeItem());
+                    Pat.setCurrConnection(widget.getCubeConnection());
+                    Pat.setCurrPanelType(widget.getPanelType());
 
                 } else {
                     MainMenuBar.enableSave(false);
