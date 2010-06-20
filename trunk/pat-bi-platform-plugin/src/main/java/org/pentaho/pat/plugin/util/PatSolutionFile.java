@@ -33,8 +33,8 @@ public class PatSolutionFile {
     private String author = null;
     private String icon = "pat-icon.png";
     
+    private String queryXml = null;
     private String connectionId = null;
-    private String queryId = null;
     
     public PatSolutionFile() {
         
@@ -46,12 +46,12 @@ public class PatSolutionFile {
         this.author = author;
     }
 
-    public PatSolutionFile(String title, String description, String author, String connectionId, String queryId) {
+    public PatSolutionFile(String title, String description, String author, String connectionId, String queryXml) {
         this.title = title;
         this.description = description;
         this.author = author;
         this.connectionId = connectionId;
-        this.queryId = queryId;
+        this.queryXml = queryXml;
     }
 
     public String getTitle() {
@@ -78,28 +78,28 @@ public class PatSolutionFile {
         this.author = author;
     }
 
-    public String getConnectionId() {
-        return connectionId;
-    }
-
-    public void setConnectionId(String connectionId) {
-        this.connectionId = connectionId;
-    }
-
-    public String getQueryId() {
-        return queryId;
-    }
-
-    public void setQueryId(String queryId) {
-        this.queryId = queryId;
-    }
-    
     public void setIcon(String icon) {
         this.icon = icon;
     }
     
     public String getIcon() {
         return icon;
+    }
+
+    public String getQueryXml() {
+        return queryXml;
+    }
+
+    public void setQueryXml(String queryXml) {
+        this.queryXml = queryXml;
+    }
+
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
     }
 
     public String toXml() {

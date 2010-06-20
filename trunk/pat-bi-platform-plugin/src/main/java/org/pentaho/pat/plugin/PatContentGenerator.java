@@ -31,6 +31,7 @@ import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.server.servlet.ExportController;
 import org.pentaho.pat.server.servlet.QueryServlet;
+import org.pentaho.pat.server.servlet.SessionServlet;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IServiceManager;
 import org.pentaho.platform.api.repository.IContentItem;
@@ -87,11 +88,13 @@ public class PatContentGenerator extends SimpleContentGenerator {
             try {
                 IServiceManager serviceManager = (IServiceManager) PentahoSystem.get(IServiceManager.class, PentahoSessionHolder.getSession());
                 QueryServlet targetQueryBean = (QueryServlet)serviceManager.getServiceBean("gwt","query.rpc");
-                targetQueryBean.addBootstrapQuery(solutionFile.getQueryId());
+                SessionServlet targetSessionBean = (SessionServlet)serviceManager.getServiceBean("gwt","session.rpc");
+                String sessionId = targetSessionBean.createSession();
+                targetQueryBean.addBootstrapQuery(sessionId, solutionFile.getConnectionId(), solutionFile.getTitle(), solutionFile.getQueryXml());
                 super.createContent();
             }
             catch (Exception e) {
-                LOG.error(Messages.getString("ContentGenerator.CantInjectQuery")); //$NON-NLS-1$
+                LOG.error(Messages.getString("ContentGenerator.CantInjectQuery"),e); //$NON-NLS-1$
                 throw new NullPointerException(Messages.getString("ContentGenerator.CantInjectQuery"));  //$NON-NLS-1$
             }
 

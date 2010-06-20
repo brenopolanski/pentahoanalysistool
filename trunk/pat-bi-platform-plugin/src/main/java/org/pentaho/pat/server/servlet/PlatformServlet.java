@@ -25,6 +25,8 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.olap4j.OlapConnection;
+import org.olap4j.query.Query;
 import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.IPlatform;
@@ -34,6 +36,10 @@ import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
 import org.pentaho.pat.server.services.SessionService;
 import org.pentaho.pat.server.util.MdxQuery;
+import org.pentaho.pat.server.util.serializer.MdxQuery2;
+import org.pentaho.pat.server.util.serializer.PatQuery;
+import org.pentaho.pat.server.util.serializer.QmQuery;
+import org.pentaho.pat.server.util.serializer.QuerySerializer;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
@@ -72,7 +78,26 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
             //String fullPath = ActionInfo.buildSolutionPath(solution, path, name);
             ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
             try {
-                PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId,queryId);
+
+                final Query qm = this.queryService.getQuery(getCurrentUserId(), sessionId, queryId);
+                final MdxQuery mdxq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, queryId);
+                OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
+                if (con == null)
+                    throw new Exception("Cannot find open connection with ID:" + connectionId);
+                
+
+                PatQuery patQuery = null;
+                if (qm != null) {
+                    patQuery = new QmQuery(con,qm);
+                }
+                else if (mdxq != null) {
+                    patQuery = new MdxQuery2(con, mdxq.getCatalogName());
+                }
+                QuerySerializer qser = new QuerySerializer(patQuery);
+                String queryXml = null;
+                
+                queryXml = qser.createXML();
+                PatSolutionFile solutionFile = new PatSolutionFile(name,name,"",connectionId, queryXml);
                 String xml = "" + solutionFile.toXml();
 
                 if (!name.endsWith(".xpav")) {
