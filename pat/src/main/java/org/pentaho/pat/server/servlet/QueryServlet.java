@@ -74,8 +74,41 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     // THIS IS DIRTY AND JUST A QUICK HACK
     private static final List<String> bootstrapQueries = new ArrayList<String>();
 
-    public void addBootstrapQuery(String queryId) {
-        bootstrapQueries.add(queryId);
+    public void addBootstrapQuery(String sessionId, String connectionId, String queryName,  String queryXml) throws Exception {
+        
+        OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
+        PatQuery qs2 = QueryDeserializer.unparse(queryXml, con);
+        SavedQuery sq = new SavedQuery();
+        if (qs2 instanceof QmQuery && qs2.getQuery() != null) {
+            sq.setConnectionId(connectionId);
+            sq.setQueryId(qs2.getQuery().getName());
+            sq.setCubeName(qs2.getCubeName());
+            sq.setCube(new CubeItem(qs2.getCubeName(),qs2.getCatalogName(), qs2.getCube().getSchema().getName()));
+            sq.setName(queryName);
+            sq.setUsername(getCurrentUserId());
+            sq.setXml(queryXml);
+            sq.setUpdatedDate(new Date());
+            sq.setQueryType(QueryType.QM);
+            
+        }
+        else if (qs2 instanceof MdxQuery2) {
+            MdxQuery mdx = new MdxQuery(qs2.getName(),con, qs2.getCatalogName(),qs2.getMdx());
+            sq.setConnectionId(connectionId);
+            sq.setQueryId(mdx.getId());
+            sq.setCubeName("");
+            sq.setCube(new CubeItem("",qs2.getCatalogName(), ""));
+            sq.setName(queryName);
+            sq.setUsername(getCurrentUserId());
+            sq.setXml(queryXml);
+            sq.setUpdatedDate(new Date());
+            sq.setQueryType(QueryType.MDX);
+        }
+        
+        if (sq != null ) {
+            this.queryService.saveQuery(getCurrentUserId(), sessionId, sq);
+        }
+        
+        bootstrapQueries.add(sq.getName());
     }
 
     public List<String> getBootstrapQueries() {
@@ -604,7 +637,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @param cubeName
      * @return
      */
-    private SavedQuery convert(final PatQuery cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
+    protected SavedQuery convert(final PatQuery cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
 //        final XStream xstream = new XStream();
 //        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
@@ -679,7 +712,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             final List<QuerySaveModel> results = getSavedQueries(sessionId);
             for (int i=0 ; i<results.size();i++) {
                 for (int k = 0;k<bootstrapQueries.size();k++) {
-                    if(bootstrapQueries.get(k).equals(results.get(i).getQueryId())) {
+                    if(bootstrapQueries.get(k).equals(results.get(i).getName())) {
                         activeQueries.add(results.get(i));
                     }
                 }

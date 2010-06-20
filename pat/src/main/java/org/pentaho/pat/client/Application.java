@@ -239,7 +239,7 @@ public class Application extends Viewport {
         
     }
 
-    protected static void displayWidget(AbstractDataWidget widget) {
+    public static void displayWidget(AbstractDataWidget widget) {
         if (!Pat.getApplicationState().getMode().isShowOnlyOnePanel()) {
             MainTabPanel.displayContentWidget(widget);
         }
