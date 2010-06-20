@@ -34,8 +34,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.gwt.mosaic.ui.client.list.Filter;
 import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
+import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
@@ -182,7 +182,7 @@ public class LoadMenuPanel extends LayoutComposite {
                 public void onSuccess(final QuerySaveModel _qsm) {
                     if (_qsm.getQueryType().equals(QueryType.QM)) {
                         final OlapPanel olapPanel = new OlapPanel(_qsm.getQueryId(), _qsm);
-                        MainTabPanel.displayContentWidget(olapPanel);
+                        Application.displayWidget(olapPanel);
                     }
                     if (_qsm.getQueryType().equals(QueryType.MDX)) {
                         ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), _qsm.getQueryId(), new AsyncCallback<String>() {
@@ -194,7 +194,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
                             public void onSuccess(String arg0) {
                                 MdxPanel mdxPanel = new MdxPanel(_qsm.getQueryId(), _qsm ,arg0);
-                                MainTabPanel.displayContentWidget(mdxPanel);
+                                Application.displayWidget(mdxPanel);
 
                             }
 
