@@ -146,7 +146,7 @@ public class SimplePanelUtil {
     }
 
     public static void moveDimension(final DragContext context, final MeasureLabel label, final Widget w,
-            final boolean createSelection, final int[] is, final IAxis iAxis) {
+            final boolean createSelection, final int[] is, final IAxis iAxis, boolean createnewdroptarget) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(), label.getText(),
                 new AsyncCallback<Object>() {
@@ -205,12 +205,13 @@ public class SimplePanelUtil {
 
                 });
 
+        if(createnewdroptarget)
         addNewDropTargets(context);
 
     }
 
     public static void moveHierarchy(final DragContext context, final MeasureLabel label,
-            final boolean createSelection, final int[] is, final IAxis iAxis) {
+            final boolean createSelection, final int[] is, final IAxis iAxis, boolean createnewdroptarget) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
                 label.getActualName(), new AsyncCallback<Object>() {
@@ -264,13 +265,13 @@ public class SimplePanelUtil {
                     }
 
                 });
-
+        if(createnewdroptarget)
         addNewDropTargets(context);
 
     }
 
     public static void moveLevel(final DragContext context, final MeasureLabel label, final boolean createSelection,
-            final int[] is, final IAxis iAxis) {
+            final int[] is, final IAxis iAxis, boolean createnewdroptarget) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
                 label.getActualName(), new AsyncCallback<Object>() {
@@ -345,13 +346,13 @@ public class SimplePanelUtil {
                       
                     }
                 });
-
+        if(createnewdroptarget)
         addNewDropTargets(context);
 
     }
 
     public static void moveMeasure(final DragContext context, final MeasureLabel label, final boolean createSelection,
-            final int[] is, final IAxis iAxis) {
+            final int[] is, final IAxis iAxis, final boolean createnewdroptarget) {
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
                 label.getActualName(), new AsyncCallback<Object>() {
@@ -429,7 +430,7 @@ public class SimplePanelUtil {
                                         });
                             }
                         }
-
+                        if(createnewdroptarget)
                         addNewDropTargets(context);
                     }
                 });
@@ -437,7 +438,7 @@ public class SimplePanelUtil {
     }
 
     public static void moveMember(final DragContext context, final MeasureLabel label, final boolean createSelection,
-            final int[] is, final IAxis iAxis) {
+            final int[] is, final IAxis iAxis, boolean createnewdroptarget) {
 
         ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(),
                 ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis(),
@@ -472,6 +473,7 @@ public class SimplePanelUtil {
                     }
                 });
 
+        if(createnewdroptarget)
         addNewDropTargets(context);
 
     }
@@ -508,9 +510,9 @@ public class SimplePanelUtil {
 
     }
 
-    public static void pullUp(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2, Standard axis) {
+    public static void pullUp(DragContext context, MeasureLabel originalLabel, final int[] currentPos, final int[] newPos, IAxis axis, final boolean firelistener) {
         if(axis.equals(IAxis.COLUMNS)){
-        ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0], coord2[0], new AsyncCallback<Object>(){
+        ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[0], newPos[0], new AsyncCallback<Object>(){
 
             public void onFailure(Throwable arg0) {
                 MessageBox.error("Bugger", "Bugger");
@@ -518,13 +520,14 @@ public class SimplePanelUtil {
             }
 
             public void onSuccess(Object arg0) {
-                GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
+            	if(firelistener)
+            		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
             }
             
         });
         }
         else if(axis.equals(IAxis.ROWS)){
-            ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[1], coord2[1], new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pullUpDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[1], newPos[1], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");
@@ -532,14 +535,15 @@ public class SimplePanelUtil {
                 }
 
                 public void onSuccess(Object arg0) {
-                    GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
+                	if(firelistener)
+                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
                 }
                 
             });
         }
     }
 
-    public static void pushDown(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2, Standard axis) {
+    public static void pushDown(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2, IAxis axis, final boolean firelistener) {
 
         if(axis.equals(IAxis.COLUMNS)){
             ServiceFactory.getQueryInstance().pushDownDimension(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0], coord2[0], new AsyncCallback<Object>(){
@@ -550,7 +554,8 @@ public class SimplePanelUtil {
                 }
 
                 public void onSuccess(Object arg0) {
-                    GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
+                	if(firelistener)
+                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
                 }
                 
             });
@@ -564,7 +569,8 @@ public class SimplePanelUtil {
                     }
 
                     public void onSuccess(Object arg0) {
-                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
+                    	if(firelistener)
+                    		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
                     }
                     
                 });
