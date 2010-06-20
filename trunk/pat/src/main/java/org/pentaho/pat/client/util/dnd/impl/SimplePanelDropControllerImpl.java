@@ -90,7 +90,10 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 enableDrag(fti.getChild(i));
 
             }
-        } else if (originalLabel.getParent() instanceof DimensionSimplePanel && (((MeasureLabel)context.draggable.getParent().getParent()).getAxis() != ((DimensionSimplePanel)this.dropTarget).getAxis())) {
+        } else if (originalLabel.getParent() instanceof DimensionSimplePanel && 
+        		(((MeasureLabel)context.draggable.getParent().getParent()).getAxis() != ((DimensionSimplePanel)this.dropTarget).getAxis())) {
+        	DimensionSimplePanel dp = null;
+        	boolean createdrop = true;
             DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
             if(dropTarget.getWidget()==null){
             dropTarget.setWidget(originalLabel);
@@ -104,33 +107,76 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             		for(int i = 0; i<ft.getRowCount(); i++){
             		ft.insertCell(i,col);
             		}
-            		DimensionSimplePanel dp = new DimensionSimplePanel(dropTarget.getAxis());
+            		dp = new DimensionSimplePanel(dropTarget.getAxis());
         			dp.setWidget(originalLabel);
             		ft.setWidget(row, col, dp);
+            		createdrop = false;
             	}
             	else if(dropTarget.getAxis().equals(IAxis.COLUMNS)){
             		ft.insertRow(row);
-            		DimensionSimplePanel dp = new DimensionSimplePanel(dropTarget.getAxis());
+            		dp = new DimensionSimplePanel(dropTarget.getAxis());
         			dp.setWidget(originalLabel);
         			ft.setWidget(row, col, dp);
+        			createdrop = false;
             	}
             }
+            
+            
             if (originalLabel.getType() == ObjectType.DIMENSION) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                SimplePanelUtil.moveDimension(context, originalLabel, originalLabel, false, panel.getCoord(), panel
-                        .getAxis());
+                SimplePanelUtil.moveDimension(context, originalLabel, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
+                if(dp!=null){
+                	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
+                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                	else{
+                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                }
             } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                SimplePanelUtil.moveHierarchy(context, originalLabel, false, panel.getCoord(), panel.getAxis());
+                SimplePanelUtil.moveHierarchy(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
+                if(dp!=null){
+                	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
+                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                	else{
+                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                }
             } else if (originalLabel.getType() == ObjectType.LEVEL) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                SimplePanelUtil.moveLevel(context, originalLabel, false, panel.getCoord(), panel.getAxis());
+                SimplePanelUtil.moveLevel(context, originalLabel, false, panel.getCoord(), panel.getAxis(), false);
+                if(dp!=null){
+                	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
+                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                	else{
+                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                }
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                SimplePanelUtil.moveMember(context, originalLabel, false, panel.getCoord(), panel.getAxis());
+                SimplePanelUtil.moveMember(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
+                if(dp!=null){
+                	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
+                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                	else{
+                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                }
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis());
+                SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
+                if(dp!=null){
+                	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
+                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                	else{
+                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                	}
+                }
             }
 
         } else if(originalLabel.getParent() instanceof DimensionSimplePanel && (((MeasureLabel)context.draggable.getParent().getParent()).getAxis() == ((DimensionSimplePanel)this.dropTarget).getAxis())){
@@ -138,21 +184,21 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             if(panel.getAxis().equals(IAxis.COLUMNS)){
             if(panel.getCoord()[0] > ((DimensionSimplePanel)this.dropTarget).getCoord()[0]){
                 //pushup
-                SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS);
+                SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
             } 
             else {
                 //pulldown
-                SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS);
+                SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
             }
         }
             else if(panel.getAxis().equals(IAxis.ROWS)){
                 if(panel.getCoord()[1] > ((DimensionSimplePanel)this.dropTarget).getCoord()[1]){
                     //pushup
-                    SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS);
+                    SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
                 } 
                 else {
                     //pulldown
-                    SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS);
+                    SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
                 }   
             }
         }
@@ -177,7 +223,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                     disableDrag(fti.getChild(i));
 
                 }
-                SimplePanelUtil.moveDimension(context, label, originalLabel, true, null, null);
+                SimplePanelUtil.moveDimension(context, label, originalLabel, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
                 FastTreeItem fti = originalLabel.getParentNode();
 
@@ -187,7 +233,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                     disableDrag(fti.getChild(i));
 
                 }
-                SimplePanelUtil.moveHierarchy(context, label, true, null, null);
+                SimplePanelUtil.moveHierarchy(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.LEVEL) {
                 FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem();
 
@@ -197,7 +243,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                     disableDrag(fti.getChild(i));
 
                 }
-                SimplePanelUtil.moveLevel(context, label, true, null, null);
+                SimplePanelUtil.moveLevel(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
                 FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem().getParentItem();
 
@@ -207,9 +253,9 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                     disableDrag(fti.getChild(i));
 
                 }
-                SimplePanelUtil.moveMember(context, label, true, null, null);
+                SimplePanelUtil.moveMember(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
-                SimplePanelUtil.moveMeasure(context, label, true, null, null);
+                SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
             }
 
         }
