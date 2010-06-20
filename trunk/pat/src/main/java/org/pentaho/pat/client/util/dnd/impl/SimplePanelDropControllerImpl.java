@@ -29,6 +29,7 @@ import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -38,11 +39,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class SimplePanelDropControllerImpl extends SimpleDropController implements SimplePanelDropController {
 
-    private final SimplePanel dropTarget;
+    private final DimensionSimplePanel dropTarget;
 
     private boolean trash;
 
-    public SimplePanelDropControllerImpl(SimplePanel dropTarget, boolean trash) {
+    public SimplePanelDropControllerImpl(DimensionSimplePanel dropTarget, boolean trash) {
         super(dropTarget);
         this.dropTarget = dropTarget;
         this.trash = trash;
@@ -91,7 +92,29 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             }
         } else if (originalLabel.getParent() instanceof DimensionSimplePanel && (((MeasureLabel)context.draggable.getParent().getParent()).getAxis() != ((DimensionSimplePanel)this.dropTarget).getAxis())) {
             DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
+            if(dropTarget.getWidget()==null){
             dropTarget.setWidget(originalLabel);
+            }
+            else{
+            	FlexTable ft = ((FlexTable) ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getParent());
+            	int row = dropTarget.getCoord()[0];
+        		int col = dropTarget.getCoord()[1];
+        		
+            	if(dropTarget.getAxis().equals(IAxis.ROWS)|| dropTarget.getAxis().equals(IAxis.FILTER)){
+            		for(int i = 0; i<ft.getRowCount(); i++){
+            		ft.insertCell(i,col);
+            		}
+            		DimensionSimplePanel dp = new DimensionSimplePanel(dropTarget.getAxis());
+        			dp.setWidget(originalLabel);
+            		ft.setWidget(row, col, dp);
+            	}
+            	else if(dropTarget.getAxis().equals(IAxis.COLUMNS)){
+            		ft.insertRow(row);
+            		DimensionSimplePanel dp = new DimensionSimplePanel(dropTarget.getAxis());
+        			dp.setWidget(originalLabel);
+        			ft.setWidget(row, col, dp);
+            	}
+            }
             if (originalLabel.getType() == ObjectType.DIMENSION) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
                 SimplePanelUtil.moveDimension(context, originalLabel, originalLabel, false, panel.getCoord(), panel
