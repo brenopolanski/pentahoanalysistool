@@ -92,6 +92,8 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 }
                 else if (mdxq != null) {
                     patQuery = new MdxQuery2(con, mdxq.getCatalogName());
+                    patQuery.setMdx(mdxq.getMdx());
+
                 }
                 QuerySerializer qser = new QuerySerializer(patQuery);
                 String queryXml = null;
