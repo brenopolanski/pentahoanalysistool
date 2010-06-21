@@ -33,6 +33,8 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.gwt.mosaic.ui.client.util.ButtonHelper;
+import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
@@ -386,7 +388,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
         
-        drillPositionButton = new ToolButton("Position");
+        drillPositionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.drill(),"", ButtonLabelType.NO_TEXT));
+        drillPositionButton.setTitle(ConstantFactory.getInstance().drillPosition());
         drillPositionButton.setStyle(ToolButtonStyle.RADIO);
         drillPositionButton.setEnabled(false);
         drillPositionButton.setChecked(true);
@@ -403,7 +406,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        drillReplaceButton = new ToolButton("Replace");
+        drillReplaceButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.arrow_down(),"", ButtonLabelType.NO_TEXT));
+        drillReplaceButton.setTitle(ConstantFactory.getInstance().drillReplace());
         drillReplaceButton.setStyle(ToolButtonStyle.RADIO);
         drillReplaceButton.setEnabled(false);
         drillReplaceButton.addClickHandler(new ClickHandler() {
@@ -419,7 +423,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        drillUpButton = new ToolButton("Up");
+        drillUpButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.arrow_up(),"", ButtonLabelType.NO_TEXT));
+        drillUpButton.setTitle(ConstantFactory.getInstance().drillUp());
         drillUpButton.setStyle(ToolButtonStyle.RADIO);
         drillUpButton.setEnabled(false);
         drillUpButton.addClickHandler(new ClickHandler() {
@@ -435,7 +440,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        drillNoneButton = new ToolButton("None");
+        drillNoneButton = new ToolButton(ConstantFactory.getInstance().drillNone());
         drillNoneButton.setStyle(ToolButtonStyle.RADIO);
         drillNoneButton.setEnabled(false);
         drillNoneButton.addClickHandler(new ClickHandler() {
@@ -479,12 +484,12 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            Label drillStyleLabel = new Label(ConstantFactory.getInstance().drillStyle() + ":");
-            mainPanel.add(drillStyleLabel, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(new Label("  "), new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillReplaceButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillUpButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillNoneButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(new Label("  "), new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));

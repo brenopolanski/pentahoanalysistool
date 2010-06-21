@@ -97,4 +97,8 @@ public interface IGuiImages extends ImageBundle {
     AbstractImagePrototype donate();
     
     AbstractImagePrototype stock_delete();
+    
+    AbstractImagePrototype arrow_up();
+    
+    AbstractImagePrototype arrow_down();
 }
