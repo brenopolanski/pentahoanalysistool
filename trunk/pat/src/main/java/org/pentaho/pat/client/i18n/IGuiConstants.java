@@ -335,6 +335,9 @@ public interface IGuiConstants extends Constants {
      */
     String drillReplace();
 
+    String drillUp();
+    
+    String drillNone();
     /**
      *TODO JAVADOC
      * 
