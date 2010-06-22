@@ -328,8 +328,15 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
     	baselayoutPanel.layout();
     }
 
-    public void onQueryFailed(String queryId) {
-        // TODO Auto-generated method stub
+    public void onQueryFailed(String _queryId) {
+        if (queryId != null && queryId.equals(_queryId) && this.isAttached()) {
+            westPanel.setVisible(true);
+            msPanel.setVisible(false);
+            baselayoutPanel.invalidate();
+            baselayoutPanel.layout();
+
+        }
+
         
     }
 

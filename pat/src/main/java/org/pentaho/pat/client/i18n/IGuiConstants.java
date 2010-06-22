@@ -302,6 +302,8 @@ public interface IGuiConstants extends Constants {
      * @return
      */
     String executeQuery();
+    
+    String editQuery();
 
     /**
      *TODO JAVADOC
