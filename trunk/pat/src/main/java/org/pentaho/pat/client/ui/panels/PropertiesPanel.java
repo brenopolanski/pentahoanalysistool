@@ -71,6 +71,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 	private boolean executemode = false;
+	
+	private final Button executeButton;
+	
 	private final ToolButton exportButton;
 
 	private final ToolButton mdxButton;
@@ -182,19 +185,17 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         curQuery.setValue(queryId);
         formPanel.add(curQuery);
         
-        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        executeButton = new Button(ConstantFactory.getInstance().executeQuery());
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
             	if(executemode==false){
             		Pat.executeQuery(PropertiesPanel.this, queryId);
-            		executemode=true;
+            		setExecuteButton(true);
             		dPanel.swapWindows();
-            		executeButton.setText("Edit Query");
             	}
             	else{
-            		executeButton.setText(ConstantFactory.getInstance().executeQuery());
-            		executemode=false;
+            	    setExecuteButton(false);
             		dPanel.swapWindows();
             	}
             }
@@ -484,12 +485,10 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            mainPanel.add(new Label("  "), new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillReplaceButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillUpButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillNoneButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            mainPanel.add(new Label("  "), new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
@@ -499,6 +498,17 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
 
+    }
+    
+    private void setExecuteButton(boolean execute) {
+        if(execute==true){
+            executemode=true;
+            executeButton.setText(ConstantFactory.getInstance().editQuery());
+        }
+        else{
+            executeButton.setText(ConstantFactory.getInstance().executeQuery());
+            executemode=false;
+        }
     }
 
     @Override
@@ -560,8 +570,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                 drillThroughButton.setEnabled(true);
             }
             drillThroughButton.setChecked(false);
-            // TODO Enable the listener again, dunno why it breaks other stuff
-//            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(this, Operation.DISABLE_DRILLTHROUGH);
+            executeButton.setEnabled(true);
+            setExecuteButton(true);
         }
 
     }
@@ -573,12 +583,17 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 
     public void onQueryStartExecution(String queryId) {
-        // TODO Auto-generated method stub
+        if(queryId == this.queryId) {
+            executeButton.setEnabled(false);
+        }
         
     }
 
     public void onQueryFailed(String queryId) {
-        // TODO Auto-generated method stub
+        if(queryId == this.queryId) {
+            executeButton.setEnabled(true);
+            setExecuteButton(false);
+        }
         
     }
 }
