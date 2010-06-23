@@ -208,39 +208,41 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	private void lazyCreateChild(final FastTreeItem parent, final int index,
 			final int children) {
 
-		ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(),
-				Pat.getCurrQuery(), IAxis.UNUSED,
-				new AsyncCallback<String[]>() {
+	    for ( IAxis.Standard  axis : IAxis.Standard.values()) {
+	        ServiceFactory.getDiscoveryInstance().getDimensions(Pat.getSessionID(),
+	                Pat.getCurrQuery(), axis,
+	                new AsyncCallback<String[]>() {
 
-					public void onFailure(Throwable arg0) {
-						// TODO Auto-generated method stub
+	                    public void onFailure(Throwable arg0) {
+	                        // TODO Auto-generated method stub
 
-					}
+	                    }
 
-					public void onSuccess(String[] arg0) {
+	                    public void onSuccess(String[] arg0) {
 
-						for (int i = 0; i < arg0.length; i++) {
-							ArrayList<String> path = new ArrayList<String>();
-							path.add(arg0[i]);
-							MeasureLabel label;
-							final FastTreeItem item = new FastTreeItem();
-							if(arg0[i].equals("Measures")){
-								label = new MeasureLabel(arg0[i], arg0[i],
-								        ObjectType.MEASURE, item, parentPanel.isUniqueNameLabel());
-							}else{
-								label = new MeasureLabel(arg0[i], arg0[i],
-								        ObjectType.DIMENSION, item, parentPanel.isUniqueNameLabel());
-							}
-							label.setDragController(dragController);
-							label.makeDraggable();
-							item.setWidget(label);
-							item.becomeInteriorNode();
-							parent.addItem(item);
-						}
+	                        for (int i = 0; i < arg0.length; i++) {
+	                            ArrayList<String> path = new ArrayList<String>();
+	                            path.add(arg0[i]);
+	                            MeasureLabel label;
+	                            final FastTreeItem item = new FastTreeItem();
+	                            if(arg0[i].equals("Measures")){
+	                                label = new MeasureLabel(arg0[i], arg0[i],
+	                                        ObjectType.MEASURE, item, parentPanel.isUniqueNameLabel());
+	                            }else{
+	                                label = new MeasureLabel(arg0[i], arg0[i],
+	                                        ObjectType.DIMENSION, item, parentPanel.isUniqueNameLabel());
+	                            }
+	                            label.setDragController(dragController);
+	                            label.makeDraggable();
+	                            item.setWidget(label);
+	                            item.becomeInteriorNode();
+	                            parent.addItem(item);
+	                        }
 
-					}
+	                    }
 
-				});
+	                });
+	    }
 	}
 
 	public void onQueryChange(Widget sender, int sourceRow,
