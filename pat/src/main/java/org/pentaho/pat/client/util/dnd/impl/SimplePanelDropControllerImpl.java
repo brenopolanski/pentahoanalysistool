@@ -43,6 +43,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 
     private boolean trash;
 
+    private String measureAxis;
+    
     public SimplePanelDropControllerImpl(DimensionSimplePanel dropTarget, boolean trash) {
         super(dropTarget);
         this.dropTarget = dropTarget;
@@ -168,6 +170,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 }
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
+                measureAxis.equals(panel.getAxis());
                 SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
                 	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){

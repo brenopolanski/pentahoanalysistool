@@ -22,28 +22,56 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SimplePanelUtil {
 
-    private static void addNewDropTargets(DragContext context) {
-        int[] coordinate = ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getCoord();
+    private static void addNewDropTargets(DragContext context, ObjectType ot) {
+    	int[] coordinate = ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getCoord();
         FlexTable ft = ((FlexTable) ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getParent());
+    	
+        
         if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.ROWS) {
-            for (int i = 0; i < ft.getRowCount(); i++) {
+        	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+             	ft.insertRow(coordinate[0]+1);
+         		ft.insertCell(coordinate[0]+1, coordinate[1]);
+         		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.ROWS));
+         	}
+        	 if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
+        			 && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
+        	for (int i = 0; i < ft.getRowCount(); i++) {
                 ft.insertCell(i, coordinate[1] + 1);
             }
             ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(IAxis.ROWS));
+        	 }
+           
         }
 
         else if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.COLUMNS) {
 
+        	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+         		ft.insertCell(coordinate[0], coordinate[1]+1);
+         		ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.COLUMNS));
+         	}
+        	 if(!ft.isCellPresent(coordinate[0], coordinate[1]-1)|| !(ft.getWidget(coordinate[0], coordinate[1]-1) instanceof DimensionSimplePanel)){
             ft.insertRow(coordinate[0] + 1);
             ft.setWidget(coordinate[0] + 1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS));
+        	 }
 
+           
         }
 
         else if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.FILTER) {
-            for (int i = 0; i < ft.getRowCount(); i++) {
+            
+        	if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+            	ft.insertRow(coordinate[0]+1);
+        		ft.insertCell(coordinate[0]+1, coordinate[1]);
+        		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.FILTER));
+        	}
+        	 if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
+        			 && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
+        	for (int i = 0; i < ft.getRowCount(); i++) {
                 ft.insertCell(i, coordinate[1] + 1);
             }
             ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(IAxis.FILTER));
+            
+        	 }
         }
 
     }
@@ -223,7 +251,7 @@ public class SimplePanelUtil {
                 });
 
         if(createnewdroptarget)
-        addNewDropTargets(context);
+        addNewDropTargets(context, label.getType());
 
     }
 
@@ -299,7 +327,7 @@ public class SimplePanelUtil {
 
                 });
         if(createnewdroptarget)
-        addNewDropTargets(context);
+        addNewDropTargets(context, label.getType());
 
     }
 
@@ -384,7 +412,7 @@ public class SimplePanelUtil {
                     }
                 });
         if(createnewdroptarget)
-        addNewDropTargets(context);
+        addNewDropTargets(context, label.getType());
 
     }
 
@@ -468,7 +496,7 @@ public class SimplePanelUtil {
                             }
                         }
                         if(createnewdroptarget)
-                        addNewDropTargets(context);
+                        addNewDropTargets(context, label.getType());
                     }
                 });
 
@@ -511,7 +539,7 @@ public class SimplePanelUtil {
                 });
 
         if(createnewdroptarget)
-        addNewDropTargets(context);
+        addNewDropTargets(context, label.getType());
 
     }
 
