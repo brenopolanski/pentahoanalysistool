@@ -1061,7 +1061,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         String[] named = QueryDimension.getNameParts(dimensionName);
 
         QueryDimension dim = query.getDimension(getDimensionName(named));
-        query.getAxes().get(axis).getDimensions().add(dim);
+        if(!query.getAxes().get(axis).getDimensions().contains(dim)){
+        	query.getAxes().get(axis).getDimensions().add(dim);
+        }
     }
 
     private String getDimensionName(String[] named) {
