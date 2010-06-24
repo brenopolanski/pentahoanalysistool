@@ -36,20 +36,32 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		this.getLayoutPanel().add(onInitialize());
 	}
 
+	FastTreeItem parentItem;
+	
 	protected Widget onInitialize() {
 		t = new FastTree();
 		lazyCreateChild(t.getTreeRoot(), 0, 50);
 
 		t.addBeforeOpenHandler(new BeforeOpenHandler<FastTreeItem>() {
-			FastTreeItem parentItem;
-
-			private Timer t = new Timer() {
-				public void run() {
+			
+			public void onBeforeOpen(BeforeOpenEvent<FastTreeItem> event) {
+				parentItem = (FastTreeItem) event.getTarget();
+				if (event.isFirstTime()) {
 					lazyCreateChilds();
 				}
-			};
+			}
+		});
 
-			private void lazyCreateChilds() {
+
+			
+		final ScrollPanel panel = new ScrollPanel();
+		panel.add(t);
+
+		return panel;
+			}
+
+			
+	private void lazyCreateChilds() {
 				try {
 					final MeasureLabel parentlabel = (MeasureLabel) parentItem
 							.getWidget();
@@ -114,8 +126,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 											fti.becomeInteriorNode();
 											parentItem.addItem(fti);
 										}
+									
 									}
-
 								});
 					} else if (labelType != null
 							&& labelType == ObjectType.LEVEL) {
@@ -190,20 +202,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 				}
 			}
 
-			public void onBeforeOpen(BeforeOpenEvent<FastTreeItem> event) {
-				parentItem = (FastTreeItem) event.getTarget();
-				if (event.isFirstTime()) {
-					parentItem.addStyleName("gwt-FastTreeItem-loading");
-					t.schedule(333);
-				}
-			}
-		});
+			
+		
 
-		final ScrollPanel panel = new ScrollPanel();
-		panel.add(t);
-
-		return panel;
-	}
 
 	private void lazyCreateChild(final FastTreeItem parent, final int index,
 			final int children) {
