@@ -6,12 +6,11 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.listeners.ISelectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
+import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -37,9 +36,28 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		this.getLayoutPanel().add(onInitialize());
 	}
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onLoad()
+     */
+    @Override
+    public void onLoad(){
+        GlobalConnectionFactory.getSelectionInstance().addSelectionListener(DimensionTreeWidget.this);
+    }
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.Widget#onUnload()
+     */
+    @Override
+    public void onUnload(){
+        GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(DimensionTreeWidget.this);
+    }
+
+    
 	FastTreeItem parentItem;
 	
 	protected Widget onInitialize() {
+		
 		t = new FastTree();
 		lazyCreateChild(t.getTreeRoot(), 0, 50);
 
@@ -234,6 +252,28 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	    }
 	}
 
+	private void enableDrag(FastTreeItem fti) {
+        ((MeasureLabel) fti.getWidget()).makeDraggable();
+        for (int i = 0; i < fti.getChildCount(); i++) {
+
+            ((MeasureLabel) fti.getChild(i).getWidget()).makeDraggable();
+            for (int j = 0; j < fti.getChild(i).getChildCount(); j++) {
+                enableDrag(fti.getChild(i).getChild(j));
+            }
+        }
+    }
+
+    private void disableDrag(FastTreeItem fti) {
+        ((MeasureLabel) fti.getWidget()).makeNotDraggable();
+        for (int i = 0; i < fti.getChildCount(); i++) {
+
+            ((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
+            for (int j = 0; j < fti.getChild(i).getChildCount(); j++) {
+                disableDrag(fti.getChild(i).getChild(j));
+            }
+        }
+    }
+
 	public void onMoveCol(String currQuery, int oldcol, int newcol) {
 		// TODO Auto-generated method stub
 		
@@ -246,13 +286,37 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 	public void onSelectionChange(String queryID, Widget sender,
 			StringTree tree, String type) {
-		// TODO Auto-generated method stub
+		String name=((MeasureLabel)sender).getActualName();
+		
+		String[] split = name.split("\\[*.?\\]");
+		
+		for(int i =0; i<t.getChildCount(); i++){
+			MeasureLabel l = (MeasureLabel)t.getChild(i).getWidget();
+			if(l.getActualName().equals(split[0])){
+				l.makeNotDraggable();
+				for (int j =0; j<t.getChild(i).getChildCount(); j++){
+					disableDrag(t.getChild(i).getChild(j));
+				}
+			}
+		}
 		
 	}
 
 	public void onSelectionCleared(String currQuery, MeasureLabel label,
 			int[] is, IAxis iAxis) {
-		// TODO Auto-generated method stub
+		String name=label.getActualName();
+		
+		String[] split = name.split("\\[*.?\\]");
+		
+		for(int i =0; i<t.getChildCount(); i++){
+			MeasureLabel l = (MeasureLabel)t.getChild(i).getWidget();
+			if(l.getActualName().equals(split[0])){
+				l.makeDraggable();
+				for (int j =0; j<t.getChild(i).getChildCount(); j++){
+					enableDrag(t.getChild(i).getChild(j));
+				}
+			}
+		}
 		
 	}
 }
