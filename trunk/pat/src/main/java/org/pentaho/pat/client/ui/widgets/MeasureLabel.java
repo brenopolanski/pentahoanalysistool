@@ -111,6 +111,14 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     public String getActualName(){
     	return actualname;
     }
+    
+    public String getDimensionName(){
+    	String name=this.getActualName();
+		
+		String[] split = name.split("\\[*.?\\]");
+		
+		return split[0];
+    }
 
     public void setCaption(String name) {
 		caption = name;
