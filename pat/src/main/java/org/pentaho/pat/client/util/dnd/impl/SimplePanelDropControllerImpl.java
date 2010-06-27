@@ -79,6 +79,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
             }
 
+            dtw.setDimensionLocation(panel.getAxis(), "");
         } 
         /*
          * If the widget is dropped and the target axis != the widgets current axis. IE move dimension from rows to columns.
@@ -196,6 +197,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 	}
                 }
             }
+            
+            dtw.setDimensionLocation(dropTarget.getAxis(), "");
 
         } 
         /*
@@ -280,6 +283,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
             }
 
+            dtw.setDimensionLocation(dropTarget.getAxis(), "");
         }
         super.onDrop(context);
     }

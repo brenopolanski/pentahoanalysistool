@@ -6,8 +6,6 @@ import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
 import org.pentaho.pat.rpc.dto.IAxis;
 
-import com.google.gwt.user.client.ui.SimplePanel;
-
 public class QueryTrashWidget extends LayoutComposite{
 
 	private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
