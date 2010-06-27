@@ -641,4 +641,76 @@ public class SimplePanelUtil {
             }
     }
 
+	public static void pushdownMeasember(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2,IAxis axis, final boolean firelistener) {
+
+		if(axis.equals(IAxis.COLUMNS)){
+            ServiceFactory.getQueryInstance().pushDownMeasember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0], coord2[0], new AsyncCallback<Object>(){
+
+                public void onFailure(Throwable arg0) {
+                    MessageBox.error("Bugger", "Bugger");
+                    
+                }
+
+                public void onSuccess(Object arg0) {
+                	if(firelistener)
+                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
+                }
+                
+            });
+            }
+            else if(axis.equals(IAxis.ROWS)){
+                ServiceFactory.getQueryInstance().pushDownMeasember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[1], coord2[1], new AsyncCallback<Object>(){
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.error("Bugger", "Bugger");
+                        
+                    }
+
+                    public void onSuccess(Object arg0) {
+                    	if(firelistener)
+                    		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
+                    }
+                    
+                });
+            }
+
+		
+	}
+
+	public static void pullUpMeasember(DragContext context, MeasureLabel originalLabel, final int[] currentPos, final int[] newPos, IAxis axis, final boolean firelistener) {
+
+		if(axis.equals(IAxis.COLUMNS)){
+	        ServiceFactory.getQueryInstance().pullUpMeasember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[0], newPos[0], new AsyncCallback<Object>(){
+
+	            public void onFailure(Throwable arg0) {
+	                MessageBox.error("Bugger", "Bugger");
+	                
+	            }
+
+	            public void onSuccess(Object arg0) {
+	            	if(firelistener)
+	            		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
+	            }
+	            
+	        });
+	        }
+	        else if(axis.equals(IAxis.ROWS)){
+	            ServiceFactory.getQueryInstance().pullUpMeasember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[1], newPos[1], new AsyncCallback<Object>(){
+
+	                public void onFailure(Throwable arg0) {
+	                    MessageBox.error("Bugger", "Bugger");
+	                    
+	                }
+
+	                public void onSuccess(Object arg0) {
+	                	if(firelistener)
+	                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
+	                }
+	                
+	            });
+	        }
+
+		
+	}
+
 }

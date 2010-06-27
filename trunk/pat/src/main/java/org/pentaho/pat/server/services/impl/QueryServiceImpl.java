@@ -41,6 +41,7 @@ import org.olap4j.CellSet;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.olap4j.OlapStatement;
+import org.olap4j.Axis.Standard;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.metadata.Catalog;
 import org.olap4j.metadata.Cube;
@@ -1343,4 +1344,40 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         }
     }
 
+
+	public void pullUpMeasember(String currentUserId, String sessionID,
+			String queryId, Standard standard, int currentposition,
+			int newposition) {
+		this.sessionService.validateSession(currentUserId, sessionID);
+
+        Query query = this.getQuery(currentUserId, sessionID, queryId);
+        
+        List<Selection> sellist =query.getDimension("Measures").getInclusions();
+        
+        Selection selection = sellist.get(currentposition);
+        
+        sellist.remove(currentposition);
+        
+        sellist.add(newposition, selection);
+
+		
+	}
+
+	public void pushDownMeasember(String currentUserId, String sessionID,
+			String queryId, Standard standard, int currentposition,
+			int newposition) {
+		this.sessionService.validateSession(currentUserId, sessionID);
+
+        Query query = this.getQuery(currentUserId, sessionID, queryId);
+        
+        List<Selection> sellist =query.getDimension("Measures").getInclusions();
+        
+        Selection selection = sellist.get(currentposition);
+        
+        sellist.remove(currentposition);
+        
+        sellist.add(newposition, selection);
+
+		
+	}
 }

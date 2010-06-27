@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.olap4j.Axis;
 import org.olap4j.OlapException;
+import org.olap4j.Axis.Standard;
 import org.olap4j.query.Query;
 import org.olap4j.query.Selection;
 import org.olap4j.query.SortOrder;
@@ -654,4 +655,14 @@ public interface QueryService extends Service {
     
     @Secured( {"Users"})
     void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position, int newposition);
+
+    @Secured( {"Users"})
+	void pullUpMeasember(String currentUserId, String sessionID,
+			String queryId, Standard standard, int currentposition,
+			int newposition);
+    
+    @Secured( {"Users"})
+	void pushDownMeasember(String currentUserId, String sessionID,
+			String currQuery, Standard standard, int currentposition,
+			int newposition);
 }
