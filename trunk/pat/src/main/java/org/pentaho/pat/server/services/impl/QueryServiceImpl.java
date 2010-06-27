@@ -1370,7 +1370,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         Query query = this.getQuery(currentUserId, sessionID, queryId);
         
-        List<Selection> sellist =query.getDimension("Measures").getInclusions();
+        List<Selection> sellist = query.getDimension("Measures").getInclusions();
         
         Selection selection = sellist.get(currentposition-1);
         
