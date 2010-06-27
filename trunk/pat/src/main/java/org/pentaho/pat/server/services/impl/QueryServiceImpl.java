@@ -1354,11 +1354,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         
         List<Selection> sellist =query.getDimension("Measures").getInclusions();
         
-        Selection selection = sellist.get(currentposition);
+        Selection selection = sellist.get(currentposition-1);
         
-        sellist.remove(currentposition);
+        sellist.remove(currentposition-1);
         
-        sellist.add(newposition, selection);
+        sellist.add(newposition-1, selection);
 
 		
 	}
@@ -1372,11 +1372,11 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         
         List<Selection> sellist =query.getDimension("Measures").getInclusions();
         
-        Selection selection = sellist.get(currentposition);
+        Selection selection = sellist.get(currentposition-1);
         
-        sellist.remove(currentposition);
+        sellist.remove(currentposition-1);
         
-        sellist.add(newposition, selection);
+        sellist.add(newposition-1, selection);
 
 		
 	}
