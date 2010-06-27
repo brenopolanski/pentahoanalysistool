@@ -28,7 +28,6 @@ import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
-import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -58,40 +57,21 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
             context.draggable.removeFromParent();
 
-            FastTreeItem fti = null;
-
             originalLabel.makeDraggable();
 
 
             if (originalLabel.getType() == ObjectType.DIMENSION) {
-                fti = originalLabel.getParentNode();
-
                 SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
-                fti = originalLabel.getParentNode();
-
                 SimplePanelUtil.clearHierarchy(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.LEVEL) {
-                fti = originalLabel.getParentNode().getParentItem().getParentItem();
-
                 SimplePanelUtil.clearLevel(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
-                fti = originalLabel.getParentNode().getParentItem().getParentItem().getParentItem();
-
                 SimplePanelUtil.clearMember(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
-                fti = originalLabel.getParentNode();
-
                 SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
             }
 
-            ((MeasureLabel) fti.getWidget()).makeDraggable();
-
-            for (int i = 0; i < fti.getChildCount(); i++) {
-
-                enableDrag(fti.getChild(i));
-
-            }
         } else if (originalLabel.getParent() instanceof DimensionSimplePanel && 
         		(((MeasureLabel)context.draggable.getParent().getParent()).getAxis() != ((DimensionSimplePanel)this.dropTarget).getAxis())) {
         	DimensionSimplePanel dp = null;
@@ -218,44 +198,12 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             originalLabel.makeNotDraggable();
 
             if (originalLabel.getType() == ObjectType.DIMENSION) {
-                FastTreeItem fti = originalLabel.getParentNode();
-
-                ((MeasureLabel) fti.getWidget()).makeNotDraggable();
-                for (int i = 0; i < fti.getChildCount(); i++) {
-
-                    disableDrag(fti.getChild(i));
-
-                }
                 SimplePanelUtil.moveDimension(context, label, originalLabel, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
-                FastTreeItem fti = originalLabel.getParentNode();
-
-                ((MeasureLabel) fti.getParentItem().getWidget()).makeNotDraggable();
-                for (int i = 0; i < fti.getChildCount(); i++) {
-
-                    disableDrag(fti.getChild(i));
-
-                }
                 SimplePanelUtil.moveHierarchy(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.LEVEL) {
-                FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem();
-
-                ((MeasureLabel) fti.getWidget()).makeNotDraggable();
-                for (int i = 0; i < fti.getChildCount(); i++) {
-
-                    disableDrag(fti.getChild(i));
-
-                }
                 SimplePanelUtil.moveLevel(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
-                FastTreeItem fti = originalLabel.getParentNode().getParentItem().getParentItem().getParentItem();
-
-                ((MeasureLabel) fti.getWidget()).makeNotDraggable();
-                for (int i = 0; i < fti.getChildCount(); i++) {
-
-                    disableDrag(fti.getChild(i));
-
-                }
                 SimplePanelUtil.moveMember(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
                 SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
@@ -278,26 +226,5 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 
     }
 
-    private void enableDrag(FastTreeItem fti) {
-        ((MeasureLabel) fti.getWidget()).makeDraggable();
-        for (int i = 0; i < fti.getChildCount(); i++) {
-
-            ((MeasureLabel) fti.getChild(i).getWidget()).makeDraggable();
-            for (int j = 0; j < fti.getChild(i).getChildCount(); j++) {
-                enableDrag(fti.getChild(i).getChild(j));
-            }
-        }
-    }
-
-    private void disableDrag(FastTreeItem fti) {
-        ((MeasureLabel) fti.getWidget()).makeNotDraggable();
-        for (int i = 0; i < fti.getChildCount(); i++) {
-
-            ((MeasureLabel) fti.getChild(i).getWidget()).makeNotDraggable();
-            for (int j = 0; j < fti.getChild(i).getChildCount(); j++) {
-                disableDrag(fti.getChild(i).getChild(j));
-            }
-        }
-    }
-
+    
 }
