@@ -60,7 +60,28 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		return panel;
 			}
 
-			
+	private FastTreeItem createChildLabel(String name, String caption, ObjectType objecttype,  boolean isuniquename, SimplePanelDragControllerImpl controller, 
+			boolean draggable){
+		
+		FastTreeItem fti = new FastTreeItem();
+		
+		MeasureLabel label = new MeasureLabel(name, caption, objecttype, fti, isuniquename);
+		
+		label.setDragController(controller);
+		
+		if(draggable){
+			label.makeDraggable();
+		}
+		if(objecttype.equals(ObjectType.MEASURE)||objecttype.equals(ObjectType.MEMBER)){
+			fti.becomeLeaf();
+		}
+		else{
+			fti.becomeInteriorNode();
+		}
+		fti.setWidget(label);
+		return fti;
+		
+	}
 	private void lazyCreateChilds() {
 				try {
 					final MeasureLabel parentlabel = (MeasureLabel) parentItem
@@ -80,17 +101,11 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(List<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
-											FastTreeItem fti = new FastTreeItem();
-											MeasureLabel label = new MeasureLabel(arg0.get(i).getName(),
-													arg0.get(i).getCaption(),
-													ObjectType.HIERARCHY,fti, parentPanel.isUniqueNameLabel());
-											label.setDragController(dragController);
-											if(parentlabel.isDraggable()){
-											label.makeDraggable();
-											}
-											fti.setWidget(label);
-											fti.becomeInteriorNode();
-											parentItem.addItem(fti);
+											
+											
+											parentItem.addItem(createChildLabel(arg0.get(i).getName(), arg0.get(i).getCaption(), ObjectType.HIERARCHY, parentPanel.isUniqueNameLabel(), dragController,
+													parentlabel.isDraggable()));
+											
 										}
 
 									}
@@ -114,17 +129,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(ArrayList<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
-											FastTreeItem fti = new FastTreeItem();
-											MeasureLabel label = new MeasureLabel(arg0.get(i).getName(),
-													arg0.get(i).getCaption(),
-													ObjectType.LEVEL, fti, parentPanel.isUniqueNameLabel());
-											label.setDragController(dragController);
-											if(w.isDraggable()){
-											label.makeDraggable();
-											}
-											fti.setWidget(label);
-											fti.becomeInteriorNode();
-											parentItem.addItem(fti);
+											parentItem.addItem(createChildLabel(arg0.get(i).getName(), arg0.get(i).getCaption(), ObjectType.LEVEL, parentPanel.isUniqueNameLabel(), dragController,
+													parentlabel.isDraggable()));
 										}
 									
 									}
@@ -146,19 +152,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 									public void onSuccess(List<MemberLabelItem> arg0) {
 										for (int i = 0; i < arg0.size(); i++) {
-											ArrayList<String> path = new ArrayList<String>();
-											path.addAll(arg0.get(0).getParents());
-
-											FastTreeItem fti = new FastTreeItem();
-											MeasureLabel label = new MeasureLabel(arg0.get(i).getName(),arg0.get(i).getCaption(),
-													ObjectType.MEMBER, fti, parentPanel.isUniqueNameLabel());
-											label.setDragController(dragController);
-											if(w.isDraggable()){
-											label.makeDraggable();
-											}
-											fti.setWidget(label);
-											fti.becomeLeaf();
-											parentItem.addItem(fti);
+											parentItem.addItem(createChildLabel(arg0.get(i).getName(), arg0.get(i).getCaption(), ObjectType.MEMBER, parentPanel.isUniqueNameLabel(), dragController,
+													parentlabel.isDraggable()));
 										}
 
 									}
@@ -181,14 +176,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 								List<String> list = new ArrayList<String>();
 								list.add("Measures");
 								for (int i = 0; i< arg0.size(); i++){
-								FastTreeItem fti = new FastTreeItem();
-								MeasureLabel label = new MeasureLabel(arg0.get(i).getName(), arg0.get(i).getCaption(), 
-								        ObjectType.MEASURE, fti, parentPanel.isUniqueNameLabel());
-								label.setDragController(dragController);
-								label.makeDraggable();
-								fti.setWidget(label);
-								fti.becomeLeaf();
-								parentItem.addItem(fti);
+									parentItem.addItem(createChildLabel(arg0.get(i).getName(), arg0.get(i).getCaption(), ObjectType.MEASURE, parentPanel.isUniqueNameLabel(), dragController,
+											parentlabel.isDraggable()));
 								}
 							}
 							
