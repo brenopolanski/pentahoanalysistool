@@ -57,8 +57,6 @@ import org.pentaho.pat.server.util.serializer.QmQuery;
 import org.pentaho.pat.server.util.serializer.QueryDeserializer;
 import org.pentaho.pat.server.util.serializer.QuerySerializer;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 /**
  * @author Paul Stoellberger, Tom Barber
  * 

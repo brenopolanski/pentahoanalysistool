@@ -15,7 +15,6 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
-import org.pentaho.pat.rpc.dto.IAxis.Standard;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenEvent;

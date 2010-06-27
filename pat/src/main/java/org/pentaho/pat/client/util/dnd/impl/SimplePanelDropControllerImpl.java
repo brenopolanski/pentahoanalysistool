@@ -33,7 +33,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
- * FlexTableRowDropConroller allows flextable cell drops.
+ * SimplePanelDropConterllerImpl, allows users to drop labels, 
+ * on DimensionSimplePanels to alter the query.
  * 
  * @author tom(at)wamonline.org.uk
  */
@@ -52,13 +53,20 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     @Override
     public void onDrop(final DragContext context) {
         MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
+        DimensionTreeWidget dtw = (DimensionTreeWidget) originalLabel.getParentNode().getTree().getParent().getParent().getParent();
+        /*
+         * If the widget is dropped on the trash can.
+         * 
+         */
         if (trash) {
             DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
             context.draggable.removeFromParent();
 
             originalLabel.makeDraggable();
 
-
+            /*
+             * Remove the widget.
+             */
             if (originalLabel.getType() == ObjectType.DIMENSION) {
                 SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
@@ -71,14 +79,24 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
             }
 
-        } else if (originalLabel.getParent() instanceof DimensionSimplePanel && 
+        } 
+        /*
+         * If the widget is dropped and the target axis != the widgets current axis. IE move dimension from rows to columns.
+         */
+        else if (originalLabel.getParent() instanceof DimensionSimplePanel && 
         		(((MeasureLabel)context.draggable.getParent().getParent()).getAxis() != ((DimensionSimplePanel)this.dropTarget).getAxis())) {
         	DimensionSimplePanel dp = null;
         	boolean createdrop = true;
             DimensionSimplePanel panel = (DimensionSimplePanel) originalLabel.getParent();
+            /*
+             * If the drop target does not contain a widget then add the original label.
+             */
             if(dropTarget.getWidget()==null){
             dropTarget.setWidget(originalLabel);
             }
+            /*
+             * Else create a new drop target.
+             */
             else{
             	FlexTable ft = ((FlexTable) ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getParent());
             	int row = dropTarget.getCoord()[0];
@@ -102,7 +120,9 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             	}
             }
             
-            
+            /*
+             * If the widget is a Dimension.
+             */
             if (originalLabel.getType() == ObjectType.DIMENSION) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
                 SimplePanelUtil.moveDimension(context, originalLabel, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
@@ -114,7 +134,11 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 }
-            } else if (originalLabel.getType() == ObjectType.HIERARCHY) {
+            } 
+            /*
+             * If the widget is a hierarchy.
+             */
+            else if (originalLabel.getType() == ObjectType.HIERARCHY) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
                 SimplePanelUtil.moveHierarchy(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
@@ -125,7 +149,11 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 }
-            } else if (originalLabel.getType() == ObjectType.LEVEL) {
+            } 
+            /*
+             * If the widget is a level.
+             */
+            else if (originalLabel.getType() == ObjectType.LEVEL) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
                 SimplePanelUtil.moveLevel(context, originalLabel, false, panel.getCoord(), panel.getAxis(), false);
                 if(dp!=null){
@@ -136,75 +164,96 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 }
-            } else if (originalLabel.getType() == ObjectType.MEMBER) {
+            } 
+            /*
+             * If the widget is a Member.
+             */
+            else if (originalLabel.getType() == ObjectType.MEMBER) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
                 SimplePanelUtil.moveMember(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
                 	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
-                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                		SimplePanelUtil.pullUpMeasember(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 	else{
-                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                		SimplePanelUtil.pushdownMeasember(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 }
-            } else if (originalLabel.getType() == ObjectType.MEASURE) {
+            } 
+            /*
+             * if the widget is a measure.
+             */
+            else if (originalLabel.getType() == ObjectType.MEASURE) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                DimensionTreeWidget dtw = (DimensionTreeWidget) originalLabel.getParentNode().getTree().getParent().getParent().getParent();
             	dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
                 	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
-                		SimplePanelUtil.pullUp(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                		SimplePanelUtil.pullUpMeasember(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 	else{
-                		SimplePanelUtil.pushDown(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
+                		SimplePanelUtil.pushdownMeasember(context, originalLabel, dropTarget.getCoord(), dp.getCoord(), dropTarget.getAxis(),false);
                 	}
                 }
             }
 
-        } else if(originalLabel.getParent() instanceof DimensionSimplePanel && (((MeasureLabel)context.draggable.getParent().getParent()).getAxis() == ((DimensionSimplePanel)this.dropTarget).getAxis())){
-            DimensionSimplePanel panel = ((DimensionSimplePanel)originalLabel.getParent());
+        } 
+        /*
+         * If the drop is on the same axis, then pushdown or pull up.
+         */
+        else if(originalLabel.getParent() instanceof DimensionSimplePanel && 
+        		(((MeasureLabel)context.draggable.getParent().getParent()).getAxis() == this.dropTarget.getAxis())){
+            		DimensionSimplePanel panel = ((DimensionSimplePanel)originalLabel.getParent());
+            /*
+             * For Columns.
+             */
             if(panel.getAxis().equals(IAxis.COLUMNS)){
             if(panel.getCoord()[0] > ((DimensionSimplePanel)this.dropTarget).getCoord()[0]){
             	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
-            		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.COLUMNS, true);
             	}
             	else{
                 //pushup
-                SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+                SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.COLUMNS, true);
             	}
             } 
             else {
             	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
-            		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.COLUMNS, true);
             	}
             	else{
                 //pulldown
-                SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+                SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.COLUMNS, true);
             	}
             }
         }
+            /*
+             * For Rows.
+             */
             else if(panel.getAxis().equals(IAxis.ROWS)){
                 if(panel.getCoord()[1] > ((DimensionSimplePanel)this.dropTarget).getCoord()[1]){
                 	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
-                		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.ROWS, true);
                 	}
                 	else{
                     //pushup
-                    SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                    SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.ROWS, true);
                 	}
                 } 
                 else {
                 	if(originalLabel.getType().equals(ObjectType.MEASURE)||originalLabel.getType().equals(ObjectType.MEMBER)){
-                		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.ROWS, true);
                 	}
                 	else{
                     //pulldown
-                    SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                    SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.ROWS, true);
                 	}
                 }   
             }
         }
+        /*
+         * If a standard widget is dropped on an empty drop target.
+         */
         else {
 
             MeasureLabel label = new MeasureLabel(originalLabel.getActualName(),
@@ -226,7 +275,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
                 SimplePanelUtil.moveMember(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
-            	DimensionTreeWidget dtw = (DimensionTreeWidget) originalLabel.getParentNode().getTree().getParent().getParent().getParent();
+            	
             	dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
             }
@@ -237,13 +286,13 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
 
     @Override
     public void onPreviewDrop(DragContext context) throws VetoDragException {
-       /** if (dropTarget.getWidget() != null) {
-            throw new VetoDragException();
-        }*/
+       
     	MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
     	DimensionTreeWidget dtw = (DimensionTreeWidget)originalLabel.getParentNode().getTree().getParent().getParent().getParent();
     	
-    	
+    	/*
+    	 * If the a measure widget is dropped and the axis is not the same axis as the Measure Dimension.
+    	 */
     	if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
     		throw new VetoDragException();
