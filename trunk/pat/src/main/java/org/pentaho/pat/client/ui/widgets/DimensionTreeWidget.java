@@ -332,4 +332,16 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	public IAxis getMeasureAxis() {
 		return measureAxis;
 	}
+	
+	public void setDimensionLocation(IAxis axis, String dimension){
+		
+		IAxis ax = dimensionLocations.get(dimension);
+		if(ax != null){
+			dimensionLocations.put(dimension, axis);
+		}
+	}
+	
+	public IAxis getDimensionLocation(String dimension){
+		return dimensionLocations.get(dimension);
+	}
 }
