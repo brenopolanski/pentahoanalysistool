@@ -29,6 +29,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 	private SimplePanelDragControllerImpl dragController;
 	private FastTree t;
+	private IAxis measureAxis = IAxis.UNUSED;
 	private DimensionPanel parentPanel;
 	public DimensionTreeWidget(SimplePanelDragControllerImpl dragController, DimensionPanel dimensionPanel) {
 		this.parentPanel = dimensionPanel;
@@ -318,5 +319,13 @@ public class DimensionTreeWidget extends LayoutComposite implements
 			}
 		}
 		
+	}
+
+	public void setMeasureAxis(IAxis measureAxis) {
+		this.measureAxis = measureAxis;
+	}
+
+	public IAxis getMeasureAxis() {
+		return measureAxis;
 	}
 }

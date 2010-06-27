@@ -20,6 +20,7 @@
 package org.pentaho.pat.client.util.dnd.impl;
 
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
+import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.util.dnd.SimplePanelDropController;
 import org.pentaho.pat.rpc.dto.IAxis;
@@ -206,6 +207,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
                 SimplePanelUtil.moveMember(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
+            	DimensionTreeWidget dtw = (DimensionTreeWidget) originalLabel.getParentNode().getTree().getParent().getParent().getParent();
+            	dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
             }
 
@@ -218,6 +221,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
        /** if (dropTarget.getWidget() != null) {
             throw new VetoDragException();
         }*/
+    	MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
+    	DimensionTreeWidget dtw = (DimensionTreeWidget)originalLabel.getParentNode().getTree().getParent().getParent().getParent();
+    	
+    	
+    	if((dtw.getMeasureAxis()!=dropTarget.getAxis())){
+    		
+    		throw new VetoDragException();
+    	}
         super.onPreviewDrop(context);
     }
 
