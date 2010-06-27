@@ -192,7 +192,9 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     }
     
 	public void setDownButtonVisible(boolean isVisible){
-		this.image.setVisible(isVisible);
+		if(!type.equals(ObjectType.MEASURE) && !type.equals(ObjectType.MEMBER)){
+			this.image.setVisible(isVisible);
+		}
 	}
 
 	public void setAxis(IAxis axis) {
