@@ -1,6 +1,7 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -14,6 +15,7 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.IAxis.Standard;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenEvent;
@@ -24,9 +26,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+
 public class DimensionTreeWidget extends LayoutComposite implements
 		ISelectionListener {
 
+	HashMap<String, IAxis> dimensionLocations = new HashMap<String, IAxis>();
 	private SimplePanelDragControllerImpl dragController;
 	private FastTree t;
 	private IAxis measureAxis = IAxis.UNUSED;
@@ -229,7 +233,8 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	                    public void onSuccess(String[] arg0) {
 
 	                        for (int i = 0; i < arg0.length; i++) {
-	                            ArrayList<String> path = new ArrayList<String>();
+	                            dimensionLocations.put(arg0[i], IAxis.UNUSED);
+	                        	ArrayList<String> path = new ArrayList<String>();
 	                            path.add(arg0[i]);
 	                            MeasureLabel label;
 	                            final FastTreeItem item = new FastTreeItem();

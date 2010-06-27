@@ -42,8 +42,6 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     private final DimensionSimplePanel dropTarget;
 
     private boolean trash;
-
-    private String measureAxis;
     
     public SimplePanelDropControllerImpl(DimensionSimplePanel dropTarget, boolean trash) {
         super(dropTarget);
@@ -151,7 +149,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 }
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-                measureAxis.equals(panel.getAxis());
+                DimensionTreeWidget dtw = (DimensionTreeWidget) originalLabel.getParentNode().getTree().getParent().getParent().getParent();
+            	dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
                 	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
@@ -167,22 +166,42 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             DimensionSimplePanel panel = ((DimensionSimplePanel)originalLabel.getParent());
             if(panel.getAxis().equals(IAxis.COLUMNS)){
             if(panel.getCoord()[0] > ((DimensionSimplePanel)this.dropTarget).getCoord()[0]){
+            	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
+            		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            	}
+            	else{
                 //pushup
                 SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            	}
             } 
             else {
+            	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
+            		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            	}
+            	else{
                 //pulldown
                 SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.COLUMNS, true);
+            	}
             }
         }
             else if(panel.getAxis().equals(IAxis.ROWS)){
                 if(panel.getCoord()[1] > ((DimensionSimplePanel)this.dropTarget).getCoord()[1]){
+                	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
+                		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                	}
+                	else{
                     //pushup
                     SimplePanelUtil.pullUp(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                	}
                 } 
                 else {
+                	if(originalLabel.getType().equals(ObjectType.MEASURE)||originalLabel.getType().equals(ObjectType.MEMBER)){
+                		SimplePanelUtil.pushdownMeasember(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                	}
+                	else{
                     //pulldown
                     SimplePanelUtil.pushDown(context, originalLabel, panel.getCoord(), ((DimensionSimplePanel)this.dropTarget).getCoord(), IAxis.ROWS, true);
+                	}
                 }   
             }
         }
@@ -225,7 +244,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     	DimensionTreeWidget dtw = (DimensionTreeWidget)originalLabel.getParentNode().getTree().getParent().getParent().getParent();
     	
     	
-    	if((dtw.getMeasureAxis()!=dropTarget.getAxis())){
+    	if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
     		throw new VetoDragException();
     	}

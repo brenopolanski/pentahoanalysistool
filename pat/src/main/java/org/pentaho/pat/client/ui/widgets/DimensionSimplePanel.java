@@ -48,6 +48,7 @@ public class DimensionSimplePanel extends SimplePanel {
 
     SimplePanelDropControllerImpl fTblRowDropCont;
 
+    
     /**
      * Create a flextable widget for the DimensionDropWidget.
      * 

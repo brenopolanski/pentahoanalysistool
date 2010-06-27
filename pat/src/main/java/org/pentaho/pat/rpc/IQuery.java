@@ -33,6 +33,7 @@ import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
@@ -422,4 +423,12 @@ public interface IQuery extends RemoteService {
     @Secured( {"Users"})
     CellDataSet swapAxis(String sessionId, String queryId) throws RpcException;
 
+	@Secured( {"Users"})
+    void pushDownMeasember(String sessionID, String currQuery, IAxis axis,
+			int i, int j) throws RpcException;
+
+	@Secured( {"Users"})
+	void pullUpMeasember(String sessionID, String currQuery, IAxis axis, 
+			int i, int j) throws RpcException;
 }
+

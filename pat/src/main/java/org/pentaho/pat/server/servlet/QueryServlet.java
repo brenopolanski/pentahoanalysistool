@@ -57,6 +57,8 @@ import org.pentaho.pat.server.util.serializer.QmQuery;
 import org.pentaho.pat.server.util.serializer.QueryDeserializer;
 import org.pentaho.pat.server.util.serializer.QuerySerializer;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 /**
  * @author Paul Stoellberger, Tom Barber
  * 
@@ -801,6 +803,22 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
     	
     }
+
+    
+	public void pullUpMeasember(String sessionID, String queryId, IAxis axis,
+			int currentposition, int newposition) throws RpcException {
+		this.queryService.pullUpMeasember(getCurrentUserId(), sessionID, queryId, 
+    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+		
+	}
+
+	public void pushDownMeasember(String sessionID, String currQuery,
+			IAxis axis, int currentposition, int newposition) throws RpcException {
+		this.queryService.pushDownMeasember(getCurrentUserId(), sessionID, currQuery, 
+    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+		
+		
+	}
 
   
 
