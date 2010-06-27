@@ -7,25 +7,26 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
+import org.pentaho.pat.client.listeners.ISelectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenEvent;
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenHandler;
 import com.google.gwt.gen2.complexpanel.client.FastTree;
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DimensionTreeWidget extends LayoutComposite implements
-		IQueryListener {
+		ISelectionListener {
 
 	private SimplePanelDragControllerImpl dragController;
 	private FastTree t;
@@ -87,8 +88,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 					final MeasureLabel parentlabel = (MeasureLabel) parentItem
 							.getWidget();
 					ObjectType labelType = parentlabel.getType();
-					
-					if (labelType != null && labelType == ObjectType.DIMENSION) {
+					if(labelType == null){
+						
+					}
+					else if (labelType == ObjectType.DIMENSION) {
 						ServiceFactory.getDiscoveryInstance().getHierarchies(
 								Pat.getSessionID(), Pat.getCurrQuery(),
 								parentlabel.getText(),
@@ -111,8 +114,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 									}
 
 								});
-					} else if (labelType != null
-							&& labelType == ObjectType.HIERARCHY) {
+					} else if (labelType == ObjectType.HIERARCHY) {
 						//MeasureLabel
 						final MeasureLabel w =(MeasureLabel) parentItem.getWidget();
 						String name = w.getActualName();
@@ -135,8 +137,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 									
 									}
 								});
-					} else if (labelType != null
-							&& labelType == ObjectType.LEVEL) {
+					} else if (labelType == ObjectType.LEVEL) {
 						final MeasureLabel w =(MeasureLabel) parentItem.getWidget();
 
 						ServiceFactory.getDiscoveryInstance().getLevelMembers(
@@ -159,11 +160,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 									}
 
 								});
-					} else if (labelType != null
-							&& labelType == ObjectType.ALLMEMBER) {
+					} else if (labelType == ObjectType.ALLMEMBER) {
 
-					} else if (labelType != null
-							&& labelType == ObjectType.MEASURE) {
+					} else if (labelType == ObjectType.MEASURE) {
 						ServiceFactory.getDiscoveryInstance().getMeasures(Pat.getSessionID(), Pat.getCurrQuery(),
 								new AsyncCallback<List<MemberLabelItem>>(){
 
@@ -235,29 +234,25 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	    }
 	}
 
-	public void onQueryChange(Widget sender, int sourceRow,
-			boolean isSourceRow, IAxis sourceAxis, IAxis targetAxis) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onQueryExecuted(String queryId, CellDataSet matrix) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onQueryPivoted(String queryId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onQueryStartExecution(String queryId) {
+	public void onMoveCol(String currQuery, int oldcol, int newcol) {
 		// TODO Auto-generated method stub
 		
 	}
 
-    public void onQueryFailed(String queryId) {
-        // TODO Auto-generated method stub
-        
-    }
+	public void onMoveRow(String currQuery, int oldrow, int newrow) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onSelectionChange(String queryID, Widget sender,
+			StringTree tree, String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onSelectionCleared(String currQuery, MeasureLabel label,
+			int[] is, IAxis iAxis) {
+		// TODO Auto-generated method stub
+		
+	}
 }
