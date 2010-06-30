@@ -297,7 +297,10 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     	/*
     	 * If the a measure widget is dropped and the axis is not the same axis as the Measure Dimension.
     	 */
-    	if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE) && originalLabel.getParentNode().getParentItem()!=null){
+    	if(dropTarget.getAxis()==IAxis.UNUSED){
+    	    
+    	}
+    	else if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
     		throw new VetoDragException();
     	}
