@@ -29,7 +29,6 @@ import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
-import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
@@ -295,7 +294,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         baselayoutPanel.setCollapsed(westPanel, false);
 
         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
-
+        if (Pat.getApplicationState().isExecuteQuery() && Pat.getApplicationState().getLoadQueryName() != null) {
+            westPanel.setVisible(false);
+            msPanel.setVisible(false);
+        }
         getLayoutPanel().add(baselayoutPanel);
         getLayoutPanel().layout();
         LogoPanel.spinWheel(false);

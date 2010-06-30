@@ -83,40 +83,45 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
      * @param query
      *
      */
-    public DataPanel(final String query, final PanelUtil.PanelType pType, OlapPanel parent) {
-        super();
-        this.olapPanel = parent;
-        this.queryId = query;
-        this.dPaneltype = pType;
-        QueryDesignTable dropTable = new QueryDesignTable(this.queryId, false);
-        QueryDesignTable filterTable = new QueryDesignTable(this.queryId, true);
-        olapTable = new OlapTable();
-        fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
-        // FIXME remove that and use style
-        DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+	public DataPanel(final String query, final PanelUtil.PanelType pType, OlapPanel parent) {
+	    super();
+	    this.olapPanel = parent;
+	    this.queryId = query;
+	    this.dPaneltype = pType;
+	    QueryDesignTable dropTable = new QueryDesignTable(this.queryId, false);
+	    QueryDesignTable filterTable = new QueryDesignTable(this.queryId, true);
+	    olapTable = new OlapTable();
+	    fillLayoutPanel.add(olapTable, new BorderLayoutData(Region.CENTER));
+	    // FIXME remove that and use style
+	    DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+	    DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if (pType == PanelUtil.PanelType.QM) {
-            mainLayoutPanel.setPadding(0);
+	    if (pType == PanelUtil.PanelType.QM) {
+	        mainLayoutPanel.setPadding(0);
 
-                
-        dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS));
-        dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS));
-        //dropTable.setSize("100%", "100%");
-        
-        filterTable.setWidget(0, 0, new DimensionSimplePanel(IAxis.FILTER));
-        QueryTrashWidget trashPanel = new QueryTrashWidget();
-        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-        subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
-        subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
-        mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
-        mainLayoutPanel.add(trashPanel, new BoxLayoutData(100.0, 100.0));
-        ((BoxLayout) mainLayoutPanel.getLayout()).setAlignment(Alignment.END);
-        baseLayoutPanel.add(mainLayoutPanel);
-        }
 
-        
-    }
+	        dropTable.setWidget(0, 1, new DimensionSimplePanel(IAxis.COLUMNS));
+	        dropTable.setWidget(1, 0, new DimensionSimplePanel(IAxis.ROWS));
+	        //dropTable.setSize("100%", "100%");
+
+	        filterTable.setWidget(0, 0, new DimensionSimplePanel(IAxis.FILTER));
+	        QueryTrashWidget trashPanel = new QueryTrashWidget();
+	        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
+	        subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
+	        subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
+	        mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
+	        mainLayoutPanel.add(trashPanel, new BoxLayoutData(100.0, 100.0));
+	        ((BoxLayout) mainLayoutPanel.getLayout()).setAlignment(Alignment.END);
+	        if (Pat.getApplicationState().isExecuteQuery() && Pat.getApplicationState().getLoadQueryName() != null) {
+	            onQueryStartExecution(queryId);
+	        }
+	        else {
+	            baseLayoutPanel.add(mainLayoutPanel);
+	        }
+	    }
+
+
+	}
 
     @Override
     public void onLoad(){
