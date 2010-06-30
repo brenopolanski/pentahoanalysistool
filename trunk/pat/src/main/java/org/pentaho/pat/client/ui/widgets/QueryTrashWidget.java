@@ -14,7 +14,7 @@ public class QueryTrashWidget extends LayoutComposite{
 	SimplePanelDropControllerImpl fTblRowDropCont;
     
 	public QueryTrashWidget(){
-		 DimensionSimplePanel trashPanel = new DimensionSimplePanel(IAxis.FILTER);
+		 DimensionSimplePanel trashPanel = new DimensionSimplePanel(IAxis.UNUSED);
 		 trashPanel.setSize("50", "50");
 		 this.getLayoutPanel().setSize("50", "50");
 	     //trashPanel.setWidget(Pat.IMAGES.stock_delete().createImage());
