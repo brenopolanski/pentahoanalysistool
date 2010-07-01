@@ -29,6 +29,7 @@ import javax.servlet.ServletException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.pentaho.pat.plugin.messages.Messages;
@@ -53,7 +54,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
@@ -108,12 +108,15 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 final Configuration pentahoHibConfig = new Configuration();
                 pentahoHibConfig.configure(new File(pentahoHibConfigPath));
 
-                final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
-                patHibConfig.configure(patHibConfigUrl);
+               
 
                 applicationContext.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
 
                     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
+                        
+                        final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
+                        patHibConfig.configure(patHibConfigUrl);
+                        
                         factory.setBeanClassLoader(pluginClassloader);
                         factory.setTempClassLoader(pluginClassloader);
 
@@ -123,21 +126,31 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         dsBean.setUsername(pentahoHibConfig.getProperty("connection.username"));
                         dsBean.setPassword(pentahoHibConfig.getProperty("connection.password"));
 
-                        patHibConfig.getProperties().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("dialect"));
+                        patHibConfig.getProperties().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("hibernate.dialect"));
                         patHibConfig.getProperties().setProperty("dialect", pentahoHibConfig.getProperty("dialect"));
-                        patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
-                        patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
-                        patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
+                        System.out.println("dialect:" + pentahoHibConfig.getProperty("dialect"));
+//                        patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
+//                        patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
+//                        patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
 
-                        LocalSessionFactoryBean lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
-                        lsfBean.setBeanClassLoader(pluginClassloader);
-//                        lsfBean.setConfigLocation(null);
+                        LocalSessionFactoryBean lsfBean = null;
+                        try {
+                            lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
+                        }
+                        catch (Throwable e) {
+                            // expected syntax exception
+                        }
                         
+                        lsfBean.setBeanClassLoader(pluginClassloader);
+
+                        lsfBean.getConfiguration().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("hibernate.dialect"));
+
                         lsfBean.setHibernateProperties(patHibConfig.getProperties());
+                            
                         lsfBean.setDataSource(dsBean);
                         try {
                             if (lsfBean.getConfiguration() == null)
-                                LOG.error("config is null");
+                                LOG.error("PAT Plugin - SessionFactory Configuration is null");
                             
                             lsfBean.afterPropertiesSet();
                         } catch (Exception e) {
@@ -148,8 +161,9 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                             };
                         }
 //
-//                        Object sfBean = factory.getBean("sessionFactory");
 //                        sfBean = lsfBean.getObject();
+                        SessionFactory sf =  (SessionFactory)factory.getBean("sessionFactory");
+                        
                     }
 
                 });
