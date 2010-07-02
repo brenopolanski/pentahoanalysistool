@@ -9,25 +9,14 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        default-autowire="byName">
 
-
-  <bean id="propertiesConfigurator" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="ignoreResourceNotFound" value="true"/>
-    <property name="locations"> 
-      <list>
-        <value>/WEB-INF/application.properties</value>
-        <value>/src/main/webapp/WEB-INF/application.properties</value>
-        <value>classpath:application.properties</value>
-      </list>
-    </property>
-  </bean>
 	
-	<!-- ############################################################################# -->
-	<!-- ########  SERVLET LAYER ##################################################### -->
-	<!-- ############################################################################# -->
+	<!-- #############################################################################-->
+	<!-- ########  SERVLET LAYER #####################################################-->
+	<!-- #############################################################################-->
 
   <!-- The application servlet are either instanciated by GWT itself, as defined
       in Pat.gwt.xml, or from the web context loader, in web.xml. 
-      Extra servlet mappings can also be found there. -->
+      Extra servlet mappings can also be found there.-->
 	
 	<bean id="fileUploadController"
     class="org.pentaho.pat.server.servlet.FileUploadController">
@@ -66,9 +55,9 @@
   
 	
 	
-	<!-- ############################################################################# -->
-	<!-- ########  SERVICE LAYER ##################################################### -->
-	<!-- ############################################################################# -->
+	<!-- #############################################################################-->
+	<!-- ########  SERVICE LAYER #####################################################-->
+	<!-- #############################################################################-->
 	
 	<bean id="discoveryService" class="org.pentaho.pat.server.services.impl.DiscoveryServiceImpl">
 		<property name="sessionService" ref="sessionService" />
@@ -102,9 +91,9 @@
     <property name="loadDefaultData" value="true"/>
   </bean>
   
-	<!-- ############################################################################# -->
-  <!-- ########  PERSISTENCE LAYER ################################################# -->
-  <!-- ############################################################################# -->
+	<!-- #############################################################################-->
+  <!-- ########  PERSISTENCE LAYER #################################################-->
+  <!-- #############################################################################-->
 
   <tx:annotation-driven transaction-manager="txManager"/>
   
@@ -112,12 +101,8 @@
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
-  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="${jdbc.driver}"/>
-    <property name="url" value="${jdbc.url}"/>
-    <property name="username" value="${jdbc.username}"/>
-    <property name="password" value="${jdbc.password}"/>
-  </bean>
+
+
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
