@@ -95,10 +95,12 @@ public interface IGuiImages extends ImageBundle {
     AbstractImagePrototype disk();
     
     AbstractImagePrototype donate();
-    
-    AbstractImagePrototype stock_delete();
-    
+        
     AbstractImagePrototype arrow_up();
     
     AbstractImagePrototype arrow_down();
+    
+    AbstractImagePrototype bin_empty();
+    
+    AbstractImagePrototype bin_full();
 }
