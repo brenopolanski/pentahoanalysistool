@@ -304,7 +304,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     		
     		throw new VetoDragException();
     	}
-    	else if(dtw.getMeasureAxis()!=IAxis.UNUSED && !dropTarget.isMeasurebox()){
+    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
     		throw new VetoDragException();
     	}
         super.onPreviewDrop(context);

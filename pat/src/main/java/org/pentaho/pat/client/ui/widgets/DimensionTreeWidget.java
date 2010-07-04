@@ -320,7 +320,9 @@ public class DimensionTreeWidget extends LayoutComposite implements
 			StringTree tree, String type) {
 		String name=((MeasureLabel)sender).getActualName();
 		
-		String[] split = name.split("\\[*.?\\]");
+		String[] split = name.split("[*.?]");
+		split[0]=split[0].substring(1);
+
 		
 		for(int i =0; i<t.getChildCount(); i++){
 			MeasureLabel l = (MeasureLabel)t.getChild(i).getWidget();
