@@ -107,14 +107,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             		for(int i = 0; i<ft.getRowCount(); i++){
             		ft.insertCell(i,col);
             		}
-            		dp = new DimensionSimplePanel(dropTarget.getAxis());
+            		dp = new DimensionSimplePanel(false, dropTarget.getAxis());
         			dp.setWidget(originalLabel);
             		ft.setWidget(row, col, dp);
             		createdrop = false;
             	}
             	else if(dropTarget.getAxis().equals(IAxis.COLUMNS)){
             		ft.insertRow(row);
-            		dp = new DimensionSimplePanel(dropTarget.getAxis());
+            		dp = new DimensionSimplePanel(false, dropTarget.getAxis());
         			dp.setWidget(originalLabel);
         			ft.setWidget(row, col, dp);
         			createdrop = false;
@@ -302,6 +302,9 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     	}
     	else if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
+    		throw new VetoDragException();
+    	}
+    	else if(dtw.getMeasureAxis()!=IAxis.UNUSED && !dropTarget.isMeasurebox()){
     		throw new VetoDragException();
     	}
         super.onPreviewDrop(context);
