@@ -21,15 +21,16 @@
 package org.pentaho.pat.plugin;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.pentaho.pat.plugin.messages.Messages;
@@ -49,19 +50,31 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianCatalog;
 import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianCatalogHelper;
 import org.pentaho.platform.plugin.services.pluginmgr.PluginClassLoader;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 
 public class PatLifeCycleListener implements IPluginLifecycleListener {
 
     private static final String PAT_PLUGIN_NAME = PluginConfig.PAT_PLUGIN_NAME;
     private static final String PAT_APP_CONTEXT = "pat-applicationContext.xml";
     private static final String PAT_HIBERNATE_CONFIG = "pat-hibernate.cfg.xml";
-
+    private static final String PAT_PLUGIN_PROPERTIES = "pat-plugin.properties";
+    private static final String PAT_DATASOURCE_JDBC = "pat-datasource-jdbc.xml";
+    private static final String PAT_DATASOURCE_JNDI = "pat-datasource-jndi.xml";
+    private static final String PAT_SESSIONFACTORY = "pat-sessionfactory.xml";
+    
+    
     private final static Log LOG = LogFactory.getLog(PatLifeCycleListener.class);
+
 
     private SessionServlet sessionBean = null;
     private QueryServlet queryBean = null;
@@ -92,11 +105,17 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
             Thread.currentThread().setContextClassLoader(pluginClassloader);
             final URL contextUrl = pluginClassloader.getResource(PAT_APP_CONTEXT); 
-            final URL patHibConfigUrl = pluginClassloader.getResource(PAT_HIBERNATE_CONFIG);    
+            final URL patHibConfigUrl = pluginClassloader.getResource(PAT_HIBERNATE_CONFIG);
+            final URL patPluginPropertiesUrl = pluginClassloader.getResource(PAT_PLUGIN_PROPERTIES);
             if(patHibConfigUrl == null)
-                throw new ServiceException("Can't find PAT Hibernate Config");
+                throw new ServiceException("File not found: PAT Hibernate Config : " + PAT_HIBERNATE_CONFIG);
             else
                 LOG.debug(PAT_PLUGIN_NAME + ": PAT Hibernate Config:" + patHibConfigUrl.toString());
+
+            if(patPluginPropertiesUrl == null)
+                throw new ServiceException("File not found: PAT Plugin properties : " + PAT_PLUGIN_PROPERTIES);
+            else
+                LOG.debug(PAT_PLUGIN_NAME + ": PAT Plugin Properties:" + patPluginPropertiesUrl.toString());
 
             if ( contextUrl!= null ) {
                 String appContextUrl = contextUrl.toString();
@@ -108,68 +127,60 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 final Configuration pentahoHibConfig = new Configuration();
                 pentahoHibConfig.configure(new File(pentahoHibConfigPath));
 
-               
+                final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
+                patHibConfig.configure(patHibConfigUrl);
 
-                applicationContext.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
-
-                    public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
-                        
-                        final AnnotationConfiguration patHibConfig = new AnnotationConfiguration();
-                        patHibConfig.configure(patHibConfigUrl);
-                        
-                        factory.setBeanClassLoader(pluginClassloader);
-                        factory.setTempClassLoader(pluginClassloader);
-
-                        BasicDataSource dsBean = (BasicDataSource)factory.getBean("dataSource");                        
-                        dsBean.setDriverClassName(pentahoHibConfig.getProperty("connection.driver_class"));
-                        dsBean.setUrl(pentahoHibConfig.getProperty("connection.url"));
-                        dsBean.setUsername(pentahoHibConfig.getProperty("connection.username"));
-                        dsBean.setPassword(pentahoHibConfig.getProperty("connection.password"));
-
-                        patHibConfig.getProperties().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("hibernate.dialect"));
-                        patHibConfig.getProperties().setProperty("dialect", pentahoHibConfig.getProperty("dialect"));
-                        System.out.println("dialect:" + pentahoHibConfig.getProperty("dialect"));
-//                        patHibConfig.getProperties().setProperty("connection.url", pentahoHibConfig.getProperty("connection.url"));
-//                        patHibConfig.getProperties().setProperty("connection.username", pentahoHibConfig.getProperty("connection.username"));
-//                        patHibConfig.getProperties().setProperty("connection.password", pentahoHibConfig.getProperty("connection.password"));
-
-                        LocalSessionFactoryBean lsfBean = null;
-                        try {
-                            lsfBean = (LocalSessionFactoryBean) factory.getBean("&sessionFactory");
-                        }
-                        catch (Throwable e) {
-                            // expected syntax exception
-                        }
-                        
-                        lsfBean.setBeanClassLoader(pluginClassloader);
-
-                        lsfBean.getConfiguration().setProperty("hibernate.dialect", pentahoHibConfig.getProperty("hibernate.dialect"));
-
-                        lsfBean.setHibernateProperties(patHibConfig.getProperties());
-                            
-                        lsfBean.setDataSource(dsBean);
-                        try {
-                            if (lsfBean.getConfiguration() == null)
-                                LOG.error("PAT Plugin - SessionFactory Configuration is null");
-                            
-                            lsfBean.afterPropertiesSet();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            LOG.error(e.getMessage(),e);
-                            throw new BeansException(e.getMessage(),e){
-                                private static final long serialVersionUID = 1L;
-                            };
-                        }
-//
-//                        sfBean = lsfBean.getObject();
-                        SessionFactory sf =  (SessionFactory)factory.getBean("sessionFactory");
-                        
+                Properties properties = new Properties();
+                properties.load(pluginClassloader.getResourceAsStream(PAT_PLUGIN_PROPERTIES));
+                String hibernateDialectCfg = (String) properties.get("pat.plugin.datasource.hibernate.dialect");
+                String hibernateDialect = null;
+                if (StringUtils.isNotBlank(hibernateDialectCfg)) {
+                    if (hibernateDialectCfg.equals("auto")) {
+                        hibernateDialect = pentahoHibConfig.getProperty("dialect");
                     }
+                    else {
+                        hibernateDialect = hibernateDialectCfg;
+                    }
+                }
+                
+                if (StringUtils.isNotBlank(hibernateDialect)) {
+                    patHibConfig.setProperty("hibernate.dialect", hibernateDialect);
+                    LOG.info(PAT_PLUGIN_NAME + " : using hibernate dialect: " + hibernateDialect);
+                }
 
-                });
+                String dataSourceType = (String) properties.get("pat.plugin.datasource.type");
+                String datasourceResource = null;
+                if (StringUtils.isNotEmpty(dataSourceType) && dataSourceType.equals("jdbc")) {
+                    datasourceResource = PAT_DATASOURCE_JDBC;
+                    LOG.info(PAT_PLUGIN_NAME + " : using JDBC connection");
+
+                }
+                if (StringUtils.isNotEmpty(dataSourceType) && dataSourceType.equals("jndi")) {
+                    datasourceResource = PAT_DATASOURCE_JNDI;
+                    LOG.info(PAT_PLUGIN_NAME + " : using JNDI : " + (String) properties.get("jndi.name") );
+                }
+                
+                XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource(datasourceResource));
+                PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
+                cfg.setLocation(new ClassPathResource(PAT_PLUGIN_PROPERTIES));
+                cfg.postProcessBeanFactory(factory);
+
+                XmlBeanFactory bfSession = new XmlBeanFactory(new ClassPathResource(PAT_SESSIONFACTORY),factory);
+
+                PropertyPlaceholderConfigurer cfgSession = new PropertyPlaceholderConfigurer();
+                cfgSession.setProperties(patHibConfig.getProperties());
+                cfgSession.postProcessBeanFactory(bfSession);
+                
+                ClassPathXmlApplicationContext tmpCtxt = new ClassPathXmlApplicationContext();
+                tmpCtxt.refresh();
+                DefaultListableBeanFactory tmpBf = (DefaultListableBeanFactory) tmpCtxt.getBeanFactory();
+
+                tmpBf.setParentBeanFactory(bfSession);
+
                 applicationContext.setClassLoader(pluginClassloader);
+                applicationContext.setParent(tmpCtxt);
                 applicationContext.refresh();
-
+                
 
                 sessionBean.setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
