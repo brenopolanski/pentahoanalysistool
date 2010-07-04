@@ -34,6 +34,8 @@ public abstract class AbstractServiceTest extends TestCase {
 
     private final String[] contextFiles = new String[] { 
         "/src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
+        "/src/main/webapp/WEB-INF/pat-sessionfactory.xml", //$NON-NLS-1$
+        "/src/main/webapp/WEB-INF/pat-datasource.xml", //$NON-NLS-1$
         "/src/test/resources/org/pentaho/pat/server/services/impl/applicationContextOverrides.xml" //$NON-NLS-1$
     };
 

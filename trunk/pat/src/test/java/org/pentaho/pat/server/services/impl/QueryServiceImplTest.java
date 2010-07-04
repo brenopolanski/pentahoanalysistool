@@ -9,7 +9,6 @@ import java.util.List;
 import org.olap4j.Axis;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.query.Query;
-import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.server.services.DiscoveryService;

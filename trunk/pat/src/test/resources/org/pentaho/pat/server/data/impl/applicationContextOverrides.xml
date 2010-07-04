@@ -8,5 +8,10 @@
       <value>pat-app</value>
     </property>
   </bean>
-
+  
+	<bean id="propertiesConfigurator"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="false" />
+	    <property name="location" value="/src/test/resources/pat-test.properties" />
+	</bean>
 </beans>

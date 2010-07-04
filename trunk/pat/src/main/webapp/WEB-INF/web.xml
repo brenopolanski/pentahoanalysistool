@@ -17,6 +17,7 @@
 			/WEB-INF/pat-applicationContext.xml
 			/WEB-INF/pat-securityContext.xml
 			/WEB-INF/pat-datasource.xml
+			/WEB-INF/pat-sessionfactory.xml
 	  </param-value>
   </context-param>
 

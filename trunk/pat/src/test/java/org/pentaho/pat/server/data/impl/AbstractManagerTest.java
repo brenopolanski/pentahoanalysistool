@@ -19,13 +19,19 @@ import junit.framework.TestCase;
 
 import org.hsqldb.jdbc.jdbcDataSource;
 import org.junit.Assert;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
 public abstract class AbstractManagerTest extends TestCase {
 
     private final String[] contextFiles = new String[] { 
         "/src/main/webapp/WEB-INF/pat-applicationContext.xml", //$NON-NLS-1$
+        "/src/main/webapp/WEB-INF/pat-sessionfactory.xml", //$NON-NLS-1$
+        "/src/main/webapp/WEB-INF/pat-datasource.xml", //$NON-NLS-1$
         "/src/test/resources/org/pentaho/pat/server/data/impl/applicationContextOverrides.xml" //$NON-NLS-1$
     };
 
@@ -57,6 +63,18 @@ public abstract class AbstractManagerTest extends TestCase {
                 // default schema
                 applicationContext = new FileSystemXmlApplicationContext(
                         contextFiles);
+                
+
+                
+                ConfigurableListableBeanFactory bf = ((FileSystemXmlApplicationContext)applicationContext).getBeanFactory();
+
+                XmlBeanFactory bfSession = new XmlBeanFactory(new ClassPathResource("pat-sessionfactory.xml"));
+                PropertyPlaceholderConfigurer cfgSession = new PropertyPlaceholderConfigurer();
+                cfgSession.setLocation(new ClassPathResource("pat-test.properties"));
+                cfgSession.postProcessBeanFactory(bfSession);
+                
+                bf.setParentBeanFactory(bfSession);
+
                 
                 IS_INIT_DONE=true;
                 
