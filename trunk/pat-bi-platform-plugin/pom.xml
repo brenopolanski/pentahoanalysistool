@@ -58,6 +58,8 @@
 								</copy>
 								<copy file="${basedir}/src/main/resources/plugin.xml"
 									todir="${project.build.directory}/pat-plugin/" />
+								<copy file="${basedir}/src/main/resources/pat-plugin.properties"
+									todir="${project.build.directory}/pat-plugin/" />
 								<mkdir dir="${project.build.directory}/pat-plugin/jdbc" />
 								<mkdir dir="${project.build.directory}/pat-plugin/schema_temp" />
 								<zip
