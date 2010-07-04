@@ -9,7 +9,13 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        default-autowire="byName">
 
-	
+
+	<bean id="propertiesConfigurator"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+	    <property name="location" value="WEB-INF/pat.properties" />
+	</bean>
+		
 	<!-- #############################################################################-->
 	<!-- ########  SERVLET LAYER #####################################################-->
 	<!-- #############################################################################-->
@@ -101,15 +107,6 @@
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
-
-
-
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-    <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
-    <property name="configLocation" value="classpath:pat-hibernate.cfg.xml"/>
-    <property name="dataSource" ref="dataSource"/>
-  </bean>
-  
   <bean id="userManager" class="org.pentaho.pat.server.data.impl.UserManagerImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>

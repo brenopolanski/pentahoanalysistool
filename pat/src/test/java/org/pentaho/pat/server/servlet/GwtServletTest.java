@@ -1,12 +1,9 @@
 package org.pentaho.pat.server.servlet;
 
-import java.util.ArrayList;
-
 import org.junit.Assert;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.messages.Messages;
 
 
 /**
