@@ -76,17 +76,17 @@ public class MDXRichTextArea extends RichTextArea {
             "(Union)|(UniqueName)|(Val)|(ValidMeasure)|(Value)|(Var)|(VarP)|(Variance)|(VarianceP)|(VisualTotals)|" + //$NON-NLS-1$
             "(Weekday)|(WeekdayName)|(Wtd)|(XOR)|(Year)|(Ytd)|(_CaseMatch)|(_CaseTest)"; //$NON-NLS-1$
 
-    private final String startBlue = " <span style=\"color: blue;\">";//note starting space is important! //$NON-NLS-1$
+    private static final String startBlue = " <span style=\"color: blue;\">";//note starting space is important! //$NON-NLS-1$
 
-    private final String startGreen = " <span style=\"color: green;\">"; //$NON-NLS-1$
+    private static final String startGreen = " <span style=\"color: green;\">"; //$NON-NLS-1$
 
-    private final String endColor = " </span>"; //$NON-NLS-1$
+    private static final String endColor = " </span>"; //$NON-NLS-1$
 
-    private final String startIndent = " <div style=\"margin-left: 10px;\">"; //$NON-NLS-1$
+    private static final String startIndent = " <div style=\"margin-left: 10px;\">"; //$NON-NLS-1$
 
-    private final String endIndent = " </div>"; //$NON-NLS-1$
+    private static final String endIndent = " </div>"; //$NON-NLS-1$
 
-    private final String aftrThisKwrdNewLine = "(column?s? )"; //$NON-NLS-1$
+    private static final String aftrThisKwrdNewLine = "(column?s? )"; //$NON-NLS-1$
 
     /**
      * JAVADOC this will set the text of the MDXRichTextArea, and insert some fancy formatting.
