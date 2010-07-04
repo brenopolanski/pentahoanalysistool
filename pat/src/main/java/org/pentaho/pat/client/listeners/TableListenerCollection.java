@@ -23,8 +23,6 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 
 import org.pentaho.pat.client.util.Operation;
-import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.user.client.ui.Widget;

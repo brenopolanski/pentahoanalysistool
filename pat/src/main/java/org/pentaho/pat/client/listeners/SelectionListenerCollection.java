@@ -23,7 +23,6 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
-import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
 

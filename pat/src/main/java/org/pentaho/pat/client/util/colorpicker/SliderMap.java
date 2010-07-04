@@ -184,15 +184,12 @@ package org.pentaho.pat.client.util.colorpicker;
 
 import org.pentaho.pat.client.util.colorpicker.images.ColorPickerImageBundle;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
-
-import com.google.gwt.user.client.Window;
 
 /**
  * Implements the SliderMap control.

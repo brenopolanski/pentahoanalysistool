@@ -26,7 +26,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
-import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.CubeMenu;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
@@ -34,7 +33,6 @@ import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.client.util.factory.ServiceFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -18,14 +18,12 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Alignment;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
-
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 
