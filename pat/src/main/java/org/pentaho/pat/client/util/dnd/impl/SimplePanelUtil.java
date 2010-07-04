@@ -30,14 +30,14 @@ public class SimplePanelUtil {
         	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
              	ft.insertRow(coordinate[0]+1);
          		ft.insertCell(coordinate[0]+1, coordinate[1]);
-         		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.ROWS));
+         		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(true, IAxis.ROWS));
          	}
         	 if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
         			 && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
         	for (int i = 0; i < ft.getRowCount(); i++) {
                 ft.insertCell(i, coordinate[1] + 1);
             }
-            ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(IAxis.ROWS));
+            ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(false, IAxis.ROWS));
         	 }
            
         }
@@ -46,11 +46,11 @@ public class SimplePanelUtil {
 
         	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
          		ft.insertCell(coordinate[0], coordinate[1]+1);
-         		ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(IAxis.COLUMNS));
+         		ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(true, IAxis.COLUMNS));
          	}
         	 if(!ft.isCellPresent(coordinate[0], coordinate[1]-1)|| !(ft.getWidget(coordinate[0], coordinate[1]-1) instanceof DimensionSimplePanel)){
             ft.insertRow(coordinate[0] + 1);
-            ft.setWidget(coordinate[0] + 1, coordinate[1], new DimensionSimplePanel(IAxis.COLUMNS));
+            ft.setWidget(coordinate[0] + 1, coordinate[1], new DimensionSimplePanel(false, IAxis.COLUMNS));
         	 }
 
            
@@ -61,14 +61,14 @@ public class SimplePanelUtil {
         	if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
             	ft.insertRow(coordinate[0]+1);
         		ft.insertCell(coordinate[0]+1, coordinate[1]);
-        		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(IAxis.FILTER));
+        		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(false, IAxis.FILTER));
         	}
         	 if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
         			 && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
         	for (int i = 0; i < ft.getRowCount(); i++) {
                 ft.insertCell(i, coordinate[1] + 1);
             }
-            ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(IAxis.FILTER));
+            ft.setWidget(coordinate[0], coordinate[1] + 1, new DimensionSimplePanel(false, IAxis.FILTER));
             
         	 }
         }
