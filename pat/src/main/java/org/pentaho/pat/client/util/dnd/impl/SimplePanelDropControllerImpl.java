@@ -186,7 +186,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
              */
             else if (originalLabel.getType() == ObjectType.MEASURE) {
                 originalLabel.setAxis(((DimensionSimplePanel) this.dropTarget).getAxis());
-            	dtw.setMeasureAxis(dropTarget.getAxis());
+            	//dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, originalLabel, false, panel.getCoord(), panel.getAxis(), createdrop);
                 if(dp!=null){
                 	if(dp.getCoord()[0]<dropTarget.getCoord()[0]||dp.getCoord()[1]<dropTarget.getCoord()[1]){
@@ -279,7 +279,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 SimplePanelUtil.moveMember(context, label, true, null, null, true);
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
             	
-            	dtw.setMeasureAxis(dropTarget.getAxis());
+            	//dtw.setMeasureAxis(dropTarget.getAxis());
                 SimplePanelUtil.moveMeasure(context, label, true, null, null, true);
             }
 
@@ -300,11 +300,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     	if(dropTarget.getAxis()==IAxis.UNUSED){
     	    
     	}
-    	else if(dtw.getMeasureAxis()!=IAxis.UNUSED &&(dtw.getMeasureAxis()!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
+    	else if(dtw.getDimensionLocation("Measures")!=IAxis.UNUSED &&(dtw.getDimensionLocation("Measures")!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
     		throw new VetoDragException();
     	}
     	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
+    		throw new VetoDragException();
+    	}
+    	else if(dropTarget.getDimensionAssociation()!=null && !dropTarget.getDimensionAssociation().equals(originalLabel.getDimensionName())){
     		throw new VetoDragException();
     	}
         super.onPreviewDrop(context);

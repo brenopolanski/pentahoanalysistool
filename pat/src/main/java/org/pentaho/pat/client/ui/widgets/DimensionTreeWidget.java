@@ -59,7 +59,6 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	HashMap<String, IAxis> dimensionLocations = new HashMap<String, IAxis>();
 	private SimplePanelDragControllerImpl dragController;
 	private FastTree t;
-	private IAxis measureAxis = IAxis.UNUSED;
 	private DimensionPanel parentPanel;
 	public DimensionTreeWidget(SimplePanelDragControllerImpl dragController, DimensionPanel dimensionPanel) {
 		this.parentPanel = dimensionPanel;
@@ -352,14 +351,6 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		
 	}
 
-	public void setMeasureAxis(IAxis measureAxis) {
-		this.measureAxis = measureAxis;
-	}
-
-	public IAxis getMeasureAxis() {
-		return measureAxis;
-	}
-	
 	public void setDimensionLocation(IAxis axis, String dimension){
 		
 		IAxis ax = dimensionLocations.get(dimension);
