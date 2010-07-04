@@ -24,13 +24,13 @@ public class SimplePanelUtil {
     private static void addNewDropTargets(DragContext context, ObjectType ot) {
     	int[] coordinate = ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getCoord();
         FlexTable ft = ((FlexTable) ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getParent());
-    	
+        MeasureLabel originalLabel = ((MeasureLabel) context.selectedWidgets.get(0).getParent().getParent());
         
         if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.ROWS) {
         	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
              	ft.insertRow(coordinate[0]+1);
          		ft.insertCell(coordinate[0]+1, coordinate[1]);
-         		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(true, IAxis.ROWS));
+         		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(true, originalLabel.getDimensionName(), IAxis.ROWS));
          	}
         	 if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
         			 && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
@@ -46,7 +46,7 @@ public class SimplePanelUtil {
 
         	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
          		ft.insertCell(coordinate[0], coordinate[1]+1);
-         		ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(true, IAxis.COLUMNS));
+         		ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(true, originalLabel.getDimensionName(), IAxis.COLUMNS));
          	}
         	 if(!ft.isCellPresent(coordinate[0], coordinate[1]-1)|| !(ft.getWidget(coordinate[0], coordinate[1]-1) instanceof DimensionSimplePanel)){
             ft.insertRow(coordinate[0] + 1);

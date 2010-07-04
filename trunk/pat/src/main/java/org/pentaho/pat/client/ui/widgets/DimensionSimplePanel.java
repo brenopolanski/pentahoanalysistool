@@ -50,6 +50,8 @@ public class DimensionSimplePanel extends SimplePanel {
 
 	private boolean measurebox;
 
+	private String dimensionAssociation;
+
     
     /**
      * Create a flextable widget for the DimensionDropWidget.
@@ -63,6 +65,17 @@ public class DimensionSimplePanel extends SimplePanel {
         this.setAxis(axis);
         this.setMeasurebox(measurebox);
     }
+    
+    public DimensionSimplePanel(final boolean measurebox, final String dimensionAssociation, final IAxis axis) {
+        super();
+        this.setStyleName(TABLE_CSS_NAME);
+        this.setSize("100", "50");
+        fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this, false);
+        this.setAxis(axis);
+        this.setMeasurebox(measurebox);
+        this.setDimensionAssociation(dimensionAssociation);
+    }
+
     
     public void removeSize(){
         this.setSize(null, null);
@@ -144,5 +157,13 @@ public class DimensionSimplePanel extends SimplePanel {
 
 	public boolean isMeasurebox() {
 		return measurebox;
+	}
+
+	public void setDimensionAssociation(String dimensionAssociation) {
+		this.dimensionAssociation = dimensionAssociation;
+	}
+
+	public String getDimensionAssociation() {
+		return dimensionAssociation;
 	}
 }
