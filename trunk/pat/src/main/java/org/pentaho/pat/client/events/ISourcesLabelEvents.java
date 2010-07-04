@@ -20,7 +20,6 @@
 package org.pentaho.pat.client.events;
 
 import org.pentaho.pat.client.listeners.ILabelListener;
-import org.pentaho.pat.client.listeners.IQueryListener;
 
 /**
  * A widget that implements this interface sources the events defined by the

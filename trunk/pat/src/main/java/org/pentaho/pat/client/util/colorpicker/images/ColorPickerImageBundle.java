@@ -1,7 +1,7 @@
 package org.pentaho.pat.client.util.colorpicker.images;
 
-import com.google.gwt.user.client.ui.ImageBundle;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.ImageBundle;
 
 /* Images for the ColorPicker
  Copyright (c) 2007 John Dyer (http://johndyer.name)
