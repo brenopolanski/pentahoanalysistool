@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,6 @@ import org.olap4j.query.QueryDimension.HierarchizeMode;
 import org.pentaho.pat.rpc.IQuery;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -44,6 +44,8 @@ import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.QueryType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
@@ -817,6 +819,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 		
 		
 	}
+
+    public Map<IAxis, PatQueryAxis> getSelections(String sessionId, String queryId) throws RpcException {
+        return this.queryService.getSelections(getCurrentUserId(),sessionId, queryId);
+
+    }
 
   
 

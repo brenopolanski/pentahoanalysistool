@@ -19,11 +19,14 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.Map;
+
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
+import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
@@ -41,8 +44,9 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -275,16 +279,6 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
         centerPanel.add(msPanel,new BorderLayoutData(Region.SOUTH,0.3, 20, 300, true));
         
-//        final ImageButton collapseBtnSouth = new ImageButton(Caption.IMAGES.toolCollapseDown());
-//        msPanel.getHeader().add(collapseBtnSouth, CaptionRegion.RIGHT);
-//
-//        collapseBtnSouth.addClickHandler(new ClickHandler() {
-//            public void onClick(final ClickEvent event) {
-//                centerPanel.setCollapsed(msPanel, !centerPanel.isCollapsed(msPanel));
-//                centerPanel.layout();
-//            }
-//        });
-
         msPanel.setVisible(false);
         
         final MainMenuPanel mainMenuPanel = new MainMenuPanel(dPanel);

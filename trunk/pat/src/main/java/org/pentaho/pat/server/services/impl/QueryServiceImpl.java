@@ -27,8 +27,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
@@ -64,6 +66,10 @@ import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryDimension;
+import org.pentaho.pat.rpc.dto.query.PatQuerySelection;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.data.pojo.User;
 import org.pentaho.pat.server.messages.Messages;
@@ -405,7 +411,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             String name = cube.getDimensions().get(memberNames[0]).getHierarchies().get(0).getDefaultMember()
             .getUniqueName();
             memberNameList.add(name);
+            
             return memberNameList;
+            
         } else if (type.equals(ObjectType.HIERARCHY)) {
             Hierarchy h = cube.getHierarchies().get(memberNames[0]);
             List<String> memberNameList = new ArrayList<String>();
@@ -1380,4 +1388,64 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
 		
 	}
+
+    public Map<IAxis, PatQueryAxis> getSelections(String currentUserId, String sessionId, String queryId) {
+        this.sessionService.validateSession(currentUserId, sessionId);
+        final Query query = this.getQuery(currentUserId, sessionId, queryId);
+        
+        Map<IAxis,PatQueryAxis> axes = new HashMap<IAxis,PatQueryAxis>();
+        if (query != null) {
+            if (query.getAxes().get(Axis.ROWS) != null) {
+                QueryAxis olap4jAxis = query.getAxes().get(Axis.ROWS);
+                PatQueryAxis axis = populateAxis(new PatQueryAxis(IAxis.ROWS),olap4jAxis);
+                axes.put(IAxis.ROWS, axis);
+            }
+            if (query.getAxes().get(Axis.COLUMNS) != null) {
+                QueryAxis olap4jAxis = query.getAxes().get(Axis.COLUMNS);
+                PatQueryAxis axis = populateAxis(new PatQueryAxis(IAxis.COLUMNS),olap4jAxis);
+                axes.put(IAxis.COLUMNS, axis);
+            }
+            if (query.getAxes().get(Axis.FILTER) != null) {
+                QueryAxis olap4jAxis = query.getAxes().get(Axis.FILTER);
+                PatQueryAxis axis = populateAxis(new PatQueryAxis(IAxis.FILTER),olap4jAxis);
+                axes.put(IAxis.FILTER, axis);
+            }
+
+        }
+        return axes;
+    }
+    
+    private static PatQueryAxis populateAxis(PatQueryAxis patAxis, QueryAxis olap4jAxis) {
+        for (QueryDimension qDim : olap4jAxis.getDimensions()) {
+            PatQueryDimension dimension = new PatQueryDimension(qDim.getName());
+            
+            for (Selection selection : qDim.getInclusions()) {
+                String caption = selection.getMember().getCaption(null);
+                String uniqueName = selection.getMember().getUniqueName();
+                SelectionType operator = SelectionType.MEMBER;
+                
+                Operator olap4jOperator = selection.getOperator();
+                if (Operator.ANCESTORS.equals(olap4jOperator)) {
+                    operator = SelectionType.ANCESTORS;
+                } else if (Operator.CHILDREN.equals(olap4jOperator)) {
+                    operator = SelectionType.CHILDREN;
+                } else if (Operator.DESCENDANTS.equals(olap4jOperator)) {
+                    operator = SelectionType.DESCENDANTS;
+                } else if (Operator.INCLUDE_CHILDREN.equals(olap4jOperator)) {
+                    operator = SelectionType.INCLUDE_CHILDREN;
+                } else if (Operator.MEMBER.equals(olap4jOperator)) {
+                    operator = SelectionType.MEMBER;
+                } else if (Operator.SIBLINGS.equals(olap4jOperator)) {
+                    operator = SelectionType.SIBLINGS;
+                } 
+                
+                PatQuerySelection patSelection = new PatQuerySelection(uniqueName, caption, operator);
+                dimension.addInclusion(patSelection);
+            }
+            
+            patAxis.addDimension(dimension);
+        }
+        return patAxis;
+    }
+    
 }

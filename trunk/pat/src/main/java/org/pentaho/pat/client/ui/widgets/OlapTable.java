@@ -33,8 +33,8 @@ import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.table.PatColDef;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.gen2.table.client.DefaultTableDefinition;
 import com.google.gwt.gen2.table.client.IterableTableModel;

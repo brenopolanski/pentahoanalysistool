@@ -36,8 +36,8 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.LevelProperties;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;

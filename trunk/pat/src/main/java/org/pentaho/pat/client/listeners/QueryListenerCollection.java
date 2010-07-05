@@ -23,7 +23,7 @@ package org.pentaho.pat.client.listeners;
 import java.util.ArrayList;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.ui.Widget;
 

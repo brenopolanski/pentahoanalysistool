@@ -44,8 +44,8 @@ import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

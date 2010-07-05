@@ -30,7 +30,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.ui.panels.windows.DimensionMenu;
 import org.pentaho.pat.client.ui.panels.windows.PropertiesMenu;
 import org.pentaho.pat.client.util.factory.ConstantFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

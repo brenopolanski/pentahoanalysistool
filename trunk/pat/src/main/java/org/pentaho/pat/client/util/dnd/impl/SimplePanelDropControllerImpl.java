@@ -23,8 +23,8 @@ import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.util.dnd.SimplePanelDropController;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;

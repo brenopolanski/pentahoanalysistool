@@ -4,7 +4,7 @@ import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
-import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 public class QueryTrashWidget extends LayoutComposite{
 

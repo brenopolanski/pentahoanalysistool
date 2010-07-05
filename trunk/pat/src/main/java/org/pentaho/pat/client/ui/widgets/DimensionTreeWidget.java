@@ -32,10 +32,10 @@ import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenEvent;
 import com.google.gwt.gen2.commonevent.shared.BeforeOpenHandler;

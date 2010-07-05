@@ -20,6 +20,8 @@
 
 package org.pentaho.pat.client.ui.panels;
 
+import java.util.Map;
+
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
@@ -29,6 +31,7 @@ import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
@@ -46,8 +49,9 @@ import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeConnection;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -476,12 +480,36 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
+        ToolButton syncButton = new ToolButton("Synchronize query");
+        syncButton.addClickHandler(new ClickHandler() {
+            
+            public void onClick(ClickEvent arg0) {
+                ServiceFactory.getQueryInstance().getSelections(Pat.getSessionID(), queryId, new AsyncCallback<Map<IAxis,PatQueryAxis>>() {
+
+                    public void onFailure(Throwable arg0) {
+                        MessageBox.alert("ERROR", "ERROR");
+                        
+                    }
+
+                    public void onSuccess(Map<IAxis, PatQueryAxis> arg0) {
+                        Integer rows = arg0.get(IAxis.ROWS) != null ? arg0.get(IAxis.ROWS).getDimensions().size() : 0;
+                        Integer cols = arg0.get(IAxis.COLUMNS) != null ? arg0.get(IAxis.COLUMNS).getDimensions().size() : 0;
+                        Integer filter = arg0.get(IAxis.FILTER) != null ? arg0.get(IAxis.FILTER).getDimensions().size() : 0;
+                        MessageBox.alert("OK", "rows: "+ rows + " cols:" + cols + " filter:"+ filter);
+                    }
+                    
+                });
+                
+            }
+        });
+        
         if (pType == PanelUtil.PanelType.MDX) {
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));    
         }
         if (pType == PanelUtil.PanelType.QM) {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            mainPanel.add(syncButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));

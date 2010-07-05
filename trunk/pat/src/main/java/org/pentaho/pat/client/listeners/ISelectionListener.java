@@ -22,8 +22,8 @@ package org.pentaho.pat.client.listeners;
 import java.util.EventListener;
 
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.StringTree;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.ui.Widget;
 

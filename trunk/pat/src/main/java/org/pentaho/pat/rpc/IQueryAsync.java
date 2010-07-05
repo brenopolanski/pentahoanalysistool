@@ -20,16 +20,18 @@
 package org.pentaho.pat.rpc;
 
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -105,7 +107,7 @@ public interface IQueryAsync {
     void getSavedQueries(String sessionId, AsyncCallback<List<QuerySaveModel>> callback);
 
     void getSelection(String sessionId, String queryId, String dimensionName, AsyncCallback<String[][]> callback);
-
+    
     void getSortOrder(String sessionId, String queryId, String dimensionName, AsyncCallback<String> callback);
 
     void getSpecificMembers(String sessionId, String queryId, String uniqueName, ObjectType type,
@@ -142,5 +144,8 @@ public interface IQueryAsync {
 
 	void pullUpMeasember(String sessionID, String currQuery, IAxis axis, 
 			int i, int j, AsyncCallback<Object> asyncCallback);
+	
+	
+	void getSelections(String sessionId, String queryId, AsyncCallback<Map<IAxis,PatQueryAxis>> callback);
 
 }
