@@ -20,11 +20,13 @@
 package org.pentaho.pat.client.ui.widgets;
 
 import org.pentaho.pat.client.Application;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
 import org.pentaho.pat.rpc.dto.IAxis;
 
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,6 +54,11 @@ public class DimensionSimplePanel extends SimplePanel {
 
 	private String dimensionAssociation;
 
+    private boolean isTrash;
+    
+    Image nonengagedimage = Pat.IMAGES.bin_empty().createImage();
+    
+    Image engagedimage = Pat.IMAGES.bin_full().createImage();
     
     /**
      * Create a flextable widget for the DimensionDropWidget.
@@ -166,4 +173,30 @@ public class DimensionSimplePanel extends SimplePanel {
 	public String getDimensionAssociation() {
 		return dimensionAssociation;
 	}
+
+    public void setTrash(boolean isTrash) {
+        this.isTrash = isTrash;
+        if(isTrash){
+            this.setWidget(nonengagedimage);
+        }
+        else{
+            this.remove(nonengagedimage);
+        }
+    }
+
+    public boolean isTrash() {
+        return isTrash;
+    }
+
+    public void setEngaged(boolean b) {
+        if(b){
+            this.remove(nonengagedimage);
+            this.setWidget(engagedimage);
+        }
+        else{
+            this.remove(engagedimage);
+            this.setWidget(nonengagedimage);
+        }
+        
+    }
 }
