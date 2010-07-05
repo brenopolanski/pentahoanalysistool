@@ -23,7 +23,7 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDropControllerImpl;
-import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;

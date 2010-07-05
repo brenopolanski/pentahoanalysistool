@@ -20,16 +20,18 @@
 package org.pentaho.pat.rpc;
 
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.springframework.security.annotation.Secured;
 
@@ -429,5 +431,9 @@ public interface IQuery extends RemoteService {
 	@Secured( {"Users"})
 	void pullUpMeasember(String sessionID, String currQuery, IAxis axis, 
 			int i, int j) throws RpcException;
+	
+	@Secured( {"Users"})
+	Map<IAxis,PatQueryAxis> getSelections(String sessionId, String queryId) throws RpcException;
+	
 }
 

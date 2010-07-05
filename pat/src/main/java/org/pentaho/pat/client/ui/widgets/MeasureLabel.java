@@ -26,9 +26,9 @@ import org.pentaho.pat.client.listeners.ILabelListener;
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
-import org.pentaho.pat.rpc.dto.IAxis;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.gen2.complexpanel.client.FastTreeItem;
 import com.google.gwt.user.client.ui.ClickListener;

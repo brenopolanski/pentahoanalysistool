@@ -20,6 +20,7 @@
 package org.pentaho.pat.server.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.olap4j.Axis;
@@ -35,6 +36,8 @@ import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
+import org.pentaho.pat.rpc.dto.query.IAxis;
+import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.data.pojo.SavedQuery;
 import org.pentaho.pat.server.util.MdxQuery;
@@ -665,4 +668,7 @@ public interface QueryService extends Service {
 	void pushDownMeasember(String currentUserId, String sessionID,
 			String currQuery, Standard standard, int currentposition,
 			int newposition);
+
+    @Secured( {"Users"})
+    Map<IAxis, PatQueryAxis> getSelections(String currentUserId, String sessionId, String queryId);
 }

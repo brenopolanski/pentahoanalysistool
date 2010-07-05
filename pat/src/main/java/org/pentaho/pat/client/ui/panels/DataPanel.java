@@ -42,7 +42,7 @@ import org.pentaho.pat.client.ui.widgets.QueryTrashWidget;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
-import org.pentaho.pat.rpc.dto.IAxis;
+import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
