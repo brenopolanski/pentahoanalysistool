@@ -185,8 +185,14 @@ public class ResolverUtil<T> {
                     }
                     eurl = new URL(urlPath);
                 }
+                String criteria = "";
+                for (int i = 0; i < tests.length ; i++) {
+                    if (tests[i] != null) {
+                        criteria.concat(tests[i].toString()).concat(";");
+                    }
+                }
                 LOG.trace("Scanning for classes in [" + urlPath //$NON-NLS-1$
-                        + "] matching criteria: " + tests); //$NON-NLS-1$
+                        + "] matching criteria: " + criteria); //$NON-NLS-1$
 
                 // is it a file?
                 final File file = new File(URLDecoder.decode(eurl.getFile(), "UTF-8")); //$NON-NLS-1$
