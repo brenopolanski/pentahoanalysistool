@@ -206,7 +206,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         
 
         exportButton = new ToolButton(ConstantFactory.getInstance().export());
-
+        exportButton.setTitle(ConstantFactory.getInstance().export());
 
         exportButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
@@ -216,7 +216,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
         exportButton.setEnabled(false);
         
-        mdxButton = new ToolButton(ConstantFactory.getInstance().showMDX());
+        mdxButton = new ToolButton(ConstantFactory.getInstance().mdx());
+        mdxButton.setTitle(ConstantFactory.getInstance().showMDX());
         mdxButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -279,6 +280,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });
 
         hideBlanksButton = new ToolButton(ConstantFactory.getInstance().showBlankCells());
+        hideBlanksButton.setTitle(ConstantFactory.getInstance().showBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
         hideBlanksButton.setChecked(true);
         hideBlanksButton.addClickHandler(new ClickHandler() {
@@ -298,8 +300,13 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
                         if (hideBlanksButton.isChecked()) {
                             hideBlanksButton.setText(ConstantFactory.getInstance().showBlankCells());
+                            hideBlanksButton.setTitle(ConstantFactory.getInstance().showBlankCells());
+
                         } else {
                             hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
+                            hideBlanksButton.setTitle(ConstantFactory.getInstance().hideBlankCells());
+
+
                         }
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, queryId, arg0);
@@ -347,6 +354,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });
         
         pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
+        pivotButton.setTitle(ConstantFactory.getInstance().pivot());
         pivotButton.setStyle(ToolButtonStyle.CHECKBOX);
         pivotButton.addClickHandler(new ClickHandler() {
 
@@ -377,7 +385,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });        
         pivotButton.setEnabled(false);
 
-        layoutMenuButton = new ToolButton(ConstantFactory.getInstance().chart());
+        layoutMenuButton = new ToolButton(Pat.IMAGES.chart_pie().getHTML());
+        layoutMenuButton.setTitle(ConstantFactory.getInstance().chart());
         layoutMenuButton.setStyle(ToolButtonStyle.MENU);
         layoutMenuButton.setEnabled(false);
         
@@ -463,6 +472,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 
         drillThroughButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
+        drillThroughButton.setTitle(ConstantFactory.getInstance().drillThrough());
         drillThroughButton.setEnabled(false);
         drillThroughButton.setStyle(ToolButtonStyle.CHECKBOX);
         
