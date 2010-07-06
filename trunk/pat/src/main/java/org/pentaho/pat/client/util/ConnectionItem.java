@@ -41,25 +41,7 @@ public class ConnectionItem {
         this.connected = isConnected;
     }
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        final ConnectionItem other = (ConnectionItem) obj;
-        if (!connId.equals(other.connId)) {
-            return false;
-        }
-        return true;
-    }
-
+  
     public String getId() {
         return connId;
     }
@@ -79,4 +61,36 @@ public class ConnectionItem {
     public void setName(final String name) {
         this.name = name;
     }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((connId == null) ? 0 : connId.hashCode());
+        result = prime * result + ((connected == null) ? 0 : connected.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final ConnectionItem other = (ConnectionItem) obj;
+        if (!connId.equals(other.connId)) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -614,14 +614,14 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
     }
 
     public void onQueryStartExecution(String queryId) {
-        if(queryId == this.queryId) {
+        if(queryId != null && queryId.equals(this.queryId)) {
             executeButton.setEnabled(false);
         }
         
     }
 
     public void onQueryFailed(String queryId) {
-        if(queryId == this.queryId) {
+        if (queryId != null && queryId.equals(this.queryId)) {
             executeButton.setEnabled(true);
             setExecuteButton(false);
         }
