@@ -202,13 +202,14 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
                 if (StringUtils.isNotBlank(sc.getRole())) {
                     olapConnection.setRoleName(sc.getRole());
                 }
-                
-                sessions.get(userId).get(sessionId).putConnection(sc.getId(), olapConnection);
 
                 // Obtaining a connection object doesn't mean that the
                 // credentials are ok or whatever. We'll test it.
 
-                    this.discoveryService.getCubes(userId, sessionId, sc.getId());
+                if (olapConnection.getCatalogs().size() >= 0) {
+                    sessions.get(userId).get(sessionId).putConnection(sc.getId(), olapConnection);
+                }
+
                 }
                 catch (Exception e) {
                     sessions.get(userId).get(sessionId).closeConnection(sc.getId());
