@@ -43,21 +43,21 @@ public class TableListenerCollection extends ArrayList<ITableListener> {
 
 
     public void fireOperationExecuted(final Widget sender, String queryId, Operation operation) {
-    	ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
+    	ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
         for (ITableListener listener : tableList) {
             listener.onOperationExecuted(queryId, operation);
         }
     }
 
     public void fireDrillThroughExecuted(final Widget sender, String queryId, String[][] result) {
-        ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
+        ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
         for (ITableListener listener : tableList) {
             listener.onDrillThroughExecuted(queryId, result);
         }
     }
     
     public void fireDrillStyleChanged(final Widget sender, String queryId, DrillType drillType) {
-        ArrayList<ITableListener> tableList = (ArrayList<ITableListener>) this.clone();
+        ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
         for (ITableListener listener : tableList) {
             listener.onDrillStyleChanged(queryId, drillType);
         }

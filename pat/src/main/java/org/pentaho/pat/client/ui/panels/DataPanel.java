@@ -229,10 +229,6 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
     	}
         
     }
-    
-	public void onQueryPivoted(String queryId) {
-		
-	}
 
     public void onQueryStartExecution(String queryId) {
         if (queryId.equals(this.queryId)) {

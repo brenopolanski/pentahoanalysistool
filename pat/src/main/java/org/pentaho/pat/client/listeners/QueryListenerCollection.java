@@ -46,7 +46,7 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
      * @param iAxis 
      */
     public void fireQueryChanged(final Widget sender, final int sourceRow, final boolean isSourceRow, final IAxis sourceAxis, IAxis targetAxis) {
-    	ArrayList<IQueryListener> queryChangedList = (ArrayList<IQueryListener>) this.clone();
+    	ArrayList<IQueryListener> queryChangedList = new ArrayList<IQueryListener>(this);
         for (IQueryListener listener : queryChangedList) {
             listener.onQueryChange(sender, sourceRow, isSourceRow, sourceAxis, targetAxis);
         }
@@ -63,31 +63,23 @@ public class QueryListenerCollection extends ArrayList<IQueryListener> {
      *            The {@link CellDataSet} result of the query
      */
     public void fireQueryExecuted(final Widget sender, final String queryId, final CellDataSet matrix) {
-    	ArrayList<IQueryListener> queryExecutedList = (ArrayList<IQueryListener>) this.clone();
+    	ArrayList<IQueryListener> queryExecutedList = new ArrayList<IQueryListener>(this);
         for (IQueryListener listener : queryExecutedList) {
             listener.onQueryExecuted(queryId, matrix);
         }
     }
 
     public void fireQueryStartsExecution(final Widget sender, final String queryId) {
-        ArrayList<IQueryListener> queryExecutedList = (ArrayList<IQueryListener>) this.clone();
+        ArrayList<IQueryListener> queryExecutedList = new ArrayList<IQueryListener>(this);
         for (IQueryListener listener : queryExecutedList) {
             listener.onQueryStartExecution(queryId);
         }
     }
     
     public void fireQueryFailedExecution(final Widget sender, final String queryId) {
-        ArrayList<IQueryListener> queryExecutedList = (ArrayList<IQueryListener>) this.clone();
+        ArrayList<IQueryListener> queryExecutedList = new ArrayList<IQueryListener>(this);
         for (IQueryListener listener : queryExecutedList) {
             listener.onQueryFailed(queryId);
-        }
-    }
-
-    
-    public void fireQueryPivoted(final Widget sender, final String queryId) {
-    	ArrayList<IQueryListener> queryPivotedList = (ArrayList<IQueryListener>) this.clone();
-        for (IQueryListener listener : queryPivotedList) {
-            listener.onQueryPivoted(queryId);
         }
     }
 

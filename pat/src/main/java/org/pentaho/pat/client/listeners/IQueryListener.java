@@ -40,6 +40,4 @@ public interface IQueryListener extends EventListener {
     void onQueryFailed(String queryId);
     
     void onQueryStartExecution(String queryId);
-
-    void onQueryPivoted(String queryId);
 }

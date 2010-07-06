@@ -31,7 +31,6 @@ import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
-import org.gwt.mosaic.ui.client.layout.FillLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BorderLayout.Region;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
@@ -278,7 +277,6 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
             }
         });
-        //mdxButton.setEnabled(false);
 
         hideBlanksButton = new ToolButton(ConstantFactory.getInstance().showBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
@@ -286,12 +284,12 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         hideBlanksButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-
+                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
                 ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), queryId,
                         hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
-
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedNonEmpty());
 
                     }
@@ -353,11 +351,14 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         pivotButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
+                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
+                
                 ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), queryId,
                         new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
 
+                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
                         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
                                 .failedPivot(arg0.getLocalizedMessage()));
                     }
@@ -367,7 +368,6 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, queryId, arg0);
                         
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryPivoted(PropertiesPanel.this, queryId);
 
                     }
 
@@ -602,12 +602,6 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         }
 
     }
-
-    public void onQueryPivoted(String queryId) {
-        // TODO Auto-generated method stub
-        
-    }
-
 
     public void onQueryStartExecution(String queryId) {
         if(queryId == this.queryId) {
