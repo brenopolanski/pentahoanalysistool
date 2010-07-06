@@ -68,7 +68,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     private static final long serialVersionUID = 1L;
 
     private QueryService queryService;
-    
+
     private SessionService sessionService; 
 
     private final static Logger LOG = Logger.getLogger(QueryServlet.class);
@@ -77,7 +77,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     private static final List<String> bootstrapQueries = new ArrayList<String>();
 
     public void addBootstrapQuery(String sessionId, String connectionId, String queryName,  String queryXml) throws Exception {
-        
+
         OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
         PatQuery qs2 = QueryDeserializer.unparse(queryXml, con);
         SavedQuery sq = new SavedQuery();
@@ -91,7 +91,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             sq.setXml(queryXml);
             sq.setUpdatedDate(new Date());
             sq.setQueryType(QueryType.QM);
-            
+
         }
         else if (qs2 instanceof MdxQuery2) {
             MdxQuery mdx = new MdxQuery(qs2.getName(),con, qs2.getCatalogName(),qs2.getMdx());
@@ -105,11 +105,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             sq.setUpdatedDate(new Date());
             sq.setQueryType(QueryType.MDX);
         }
-        
+
         if (sq != null ) {
             this.queryService.saveQuery(getCurrentUserId(), sessionId, sq);
         }
-        
+
         bootstrapQueries.add(sq.getName());
     }
 
@@ -164,7 +164,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         return list.toArray(new String[list.size()]);
     }
 
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -196,7 +196,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public List<String> createSelection(final String sessionId, final String queryId, String uniqueName,
             ObjectType type, final SelectionType selectionType) throws RpcException {
         try {
-            
+
             return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, uniqueName, type,
                     selectionType);
         } catch (Exception e) {
@@ -206,7 +206,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
 
 
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -224,9 +224,9 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
-    
 
-    
+
+
     /*
      * (non-Javadoc)
      * 
@@ -456,7 +456,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -494,8 +494,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#getMdxQueries(java.lang.String)
      */
     public String[] getMdxQueries(final String sessionId) throws RpcException {
-        final List<String> list = queryService.getMdxQueries(getCurrentUserId(), sessionId);
-        return list.toArray(new String[list.size()]);
+        try {
+            final List<String> list = queryService.getMdxQueries(getCurrentUserId(), sessionId);
+            return list.toArray(new String[list.size()]);
+        } catch (Exception e) {
+            LOG.error("Can not get Mdx Queries", e); //$NON-NLS-1$
+            throw new RpcException("Can not get Mdx Queries", e); //$NON-NLS-1$
+        }
     }
 
     /*
@@ -504,7 +509,12 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#deleteMdxQuery(java.lang.String, java.lang.String)
      */
     public void deleteMdxQuery(final String sessionId, final String mdxQueryId) throws RpcException {
-        queryService.releaseMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
+        try {
+            queryService.releaseMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
+        } catch (Exception e) {
+            LOG.error("Can not delete Mdx Query", e); //$NON-NLS-1$
+            throw new RpcException("Can not delete Mdx Query", e); //$NON-NLS-1$
+        }
     }
 
     /*
@@ -555,13 +565,18 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
     public String getMdxQuery(final String sessionId, final String mdxQueryId) throws RpcException {
 
-        MdxQuery mq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
-        if (mq != null) {
-            return mq.getMdx();
-        }
+        try {
+            MdxQuery mq = this.queryService.getMdxQuery(getCurrentUserId(), sessionId, mdxQueryId);
+            if (mq != null) {
+                return mq.getMdx();
+            }
 
-        LOG.error("can't get mdx query"); //$NON-NLS-1$
-        throw new RpcException("can't get mdx query"); //$NON-NLS-1$
+            throw new Exception("MdxQuery with id " + mdxQueryId + " can not be found"); //$NON-NLS-1$
+        }
+        catch (Exception e) {
+            LOG.error("Can't get mdx query",e); //$NON-NLS-1$    
+            throw new RpcException("Can't get mdx query"); //$NON-NLS-1$    
+        }
     }
 
     /*
@@ -594,9 +609,9 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
             if (con == null)
                 throw new Exception("Cannot find open connection with ID:" + connectionId);
-            
+
             if (qm != null) {
-                
+
                 PatQuery qs = new QmQuery(con,qm);
                 sc = this.convert(qs, queryId, queryName, connectionId, cube, cubeName);
                 sc.setQueryType(QueryType.QM);
@@ -616,7 +631,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             throw new RpcException(Messages.getString("Servlet.Query.QuerySaveError"), e); //$NON-NLS-1$
         }
     }
-    
+
     public void deleteSavedQuery(final String sessionId, final String queryName) throws RpcException {
         try {
             if (queryName != null ) {
@@ -641,15 +656,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     protected SavedQuery convert(final PatQuery cc,final String queryId, final String queryName, final String connectionId, final CubeItem cube,
             final String cubeName) {
-//        final XStream xstream = new XStream();
-//        xstream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
-//        xstream.alias("query", org.olap4j.query.Query.class); //$NON-NLS-1$
-//        xstream.alias("axis", org.olap4j.query.QueryAxis.class); //$NON-NLS-1$
-//        xstream.alias("axisstandard", org.olap4j.Axis.Standard.class); //$NON-NLS-1$
-//        xstream.alias("querydimension", org.olap4j.query.QueryDimension.class); //$NON-NLS-1$
-//        xstream.alias("selection", org.olap4j.query.Selection.class); //$NON-NLS-1$
-//        xstream.setClassLoader(org.olap4j.query.Query.class.getClassLoader());
-//        final String xml = xstream.toXML(cc);
+
         QuerySerializer qser = new QuerySerializer(cc);
         String xml = null;
         try {
@@ -666,16 +673,6 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         sc.setXml(xml);
         sc.setConnectionId(connectionId);
         sc.setUpdatedDate(new Date());
-
-
-        /*String file = "file.txt";
-        try{
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(xml);
-                out.close();
-        }catch(IOException ex){
-                ex.printStackTrace();
-        }*/
 
         return sc;
     }
@@ -695,7 +692,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
                 if (sc == null) {
                     throw new Exception("Connection for query doesn't exist");
                 }
-                
+
                 results.add(new QuerySaveModel(savedQuery.getId(), savedQuery.getQueryId(), savedQuery.getName(), SessionServlet.convert(sc),savedQuery
                         .getCube(), savedQuery.getCubeName(), savedQuery.getUpdatedDate(), savedQuery.getQueryType()));
 
@@ -742,7 +739,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
 
             if (sc == null)
                 throw new Exception("Couldn't load Query with Name: " + savedQueryName);
-            
+
             OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, sc.getConnectionId());
             if (con == null) {
                 this.sessionService.connect(getCurrentUserId(), sessionId, sc.getConnectionId());
@@ -750,7 +747,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
             }
             if (con == null)
                 throw new Exception("Cannot find connection with ID:" + sc.getConnectionId() + ". Tried to connect but failed!");
-            
+
             PatQuery qs2 = QueryDeserializer.unparse(sc.getXml(), con);
             String createdQueryId = null;
             if (qs2 instanceof QmQuery && qs2.getQuery() != null) {
@@ -784,48 +781,74 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#addProperty(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     public void addProperty(String sessionID, String queryId, String dimensionName, String levelName, String propertyName, Boolean enabled) throws RpcException {
-
-        this.queryService.setProperty(getCurrentUserId(), sessionID, queryId, dimensionName, levelName, propertyName, enabled);
-
+        try {
+            this.queryService.setProperty(getCurrentUserId(), sessionID, queryId, dimensionName, levelName, propertyName, enabled);
+        } catch (Exception e) {
+            LOG.error("Error adding property", e); //$NON-NLS-1$
+            throw new RpcException("Error adding property", e); //$NON-NLS-1$
+        }
     }
 
 
 
-    
-    public void pushDownDimension(String sessionID, String queryId, IAxis axis, int currentposition, int newposition){
-    	this.queryService.pushDownDimension(getCurrentUserId(), sessionID, queryId, 
-    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
-    }
-    
-    
-    public void pullUpDimension(String sessionID, String queryId, IAxis axis, int currentposition, int newposition){
-    	this.queryService.pullUpDimension(getCurrentUserId(), sessionID, queryId, 
-    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
-    	
+
+    public void pushDownDimension(String sessionID, String queryId, IAxis axis, int currentposition, int newposition) throws RpcException{
+        try {
+            this.queryService.pushDownDimension(getCurrentUserId(), sessionID, queryId, 
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+        } catch (Exception e) {
+            LOG.error("Error pushing down dimension", e); //$NON-NLS-1$
+            throw new RpcException("Error pushing down dimension", e); //$NON-NLS-1$
+        }
     }
 
-    
-	public void pullUpMeasember(String sessionID, String queryId, IAxis axis,
-			int currentposition, int newposition) throws RpcException {
-		this.queryService.pullUpMeasember(getCurrentUserId(), sessionID, queryId, 
-    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
-		
-	}
 
-	public void pushDownMeasember(String sessionID, String currQuery,
-			IAxis axis, int currentposition, int newposition) throws RpcException {
-		this.queryService.pushDownMeasember(getCurrentUserId(), sessionID, currQuery, 
-    			(axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
-		
-		
-	}
+    public void pullUpDimension(String sessionID, String queryId, IAxis axis, int currentposition, int newposition) throws RpcException {
+        try {
+            this.queryService.pullUpDimension(getCurrentUserId(), sessionID, queryId, 
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+        } catch (Exception e) {
+            LOG.error("Error pulling up dimension", e); //$NON-NLS-1$
+            throw new RpcException("Error pulling up dimension", e); //$NON-NLS-1$
+        }
+
+    }
+
+
+    public void pullUpMeasureMember(String sessionID, String queryId, IAxis axis,
+            int currentposition, int newposition) throws RpcException {
+        try {
+            this.queryService.pullUpMeasureMember(getCurrentUserId(), sessionID, queryId, 
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+        } catch (Exception e) {
+            LOG.error("Error pulling up measure member", e); //$NON-NLS-1$
+            throw new RpcException("Error pulling up measure member", e); //$NON-NLS-1$
+        }
+    }
+
+    public void pushDownMeasureMember(String sessionID, String currQuery,
+            IAxis axis, int currentposition, int newposition) throws RpcException {
+        try {
+            this.queryService.pushDownMeasureMember(getCurrentUserId(), sessionID, currQuery, 
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+        } catch (Exception e) {
+            LOG.error("Error pushing down measure member", e); //$NON-NLS-1$
+            throw new RpcException("Error pushing down measure member", e); //$NON-NLS-1$
+        }
+
+    }
 
     public Map<IAxis, PatQueryAxis> getSelections(String sessionId, String queryId) throws RpcException {
-        return this.queryService.getSelections(getCurrentUserId(),sessionId, queryId);
+        try {
+            return this.queryService.getSelections(getCurrentUserId(),sessionId, queryId);
+        } catch (Exception e) {
+            LOG.error("Error receiving query selections", e); //$NON-NLS-1$
+            throw new RpcException("Error receiving query selections", e); //$NON-NLS-1$
+        }
 
     }
 
-  
+
 
 
 

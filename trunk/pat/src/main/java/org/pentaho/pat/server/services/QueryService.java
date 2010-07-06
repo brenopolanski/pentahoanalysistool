@@ -660,12 +660,12 @@ public interface QueryService extends Service {
     void pullUpDimension(String currentUserId, String sessionID, String queryId, Axis axis, int position, int newposition);
 
     @Secured( {"Users"})
-	void pullUpMeasember(String currentUserId, String sessionID,
+	void pullUpMeasureMember(String currentUserId, String sessionID,
 			String queryId, Standard standard, int currentposition,
 			int newposition);
     
     @Secured( {"Users"})
-	void pushDownMeasember(String currentUserId, String sessionID,
+	void pushDownMeasureMember(String currentUserId, String sessionID,
 			String currQuery, Standard standard, int currentposition,
 			int newposition);
 
