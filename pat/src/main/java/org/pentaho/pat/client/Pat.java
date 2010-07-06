@@ -188,6 +188,7 @@ public class Pat implements EntryPoint {
                 com.google.gwt.user.client.DOM.getElementById("splash").getStyle().setProperty("display", "none"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         };
+        setupJsHooks();
     }
 
     /**
@@ -409,6 +410,13 @@ public class Pat implements EntryPoint {
 
     }
     
+    public static native void setupJsHooks()
+    /*-{
+        top.patGwtSave = function(name, solution, path, myType, myOverwrite ) {
+            @org.pentaho.pat.client.Pat::saveQueryToSolution(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(solution,path,name,name);
+        }
+    }-*/;
+    
     public static native void refreshSolutionRepo()
     /*-{
     if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
@@ -416,6 +424,26 @@ public class Pat implements EntryPoint {
         }
     }-*/;
     
+    public static native void enableSaveButtons()
+    /*-{
+        var console_enabled = false;
+        console_enabled = top.parent != null && top.parent.mantle_initialized == true;
+        
+        if( console_enabled && top.parent.enableAdhocSave ) {
+            top.parent.enableAdhocSave( true );
+        }
+    }-*/;
+    
+    public static native void disableSaveButtons()
+    /*-{
+        var console_enabled = false;
+        console_enabled = top.parent != null && top.parent.mantle_initialized == true;
+        
+        if( console_enabled && top.parent.enableAdhocSave ) {
+            top.parent.enableAdhocSave( false );
+        }
+    }-*/;
+
     public static Boolean isPlugin() {
         // TODO maybe add a more secure way to check if PAT is running as plugin or standalone
         String moduleUrl = GWT.getModuleBaseURL();

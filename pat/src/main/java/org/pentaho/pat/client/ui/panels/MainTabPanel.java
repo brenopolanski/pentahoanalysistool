@@ -72,6 +72,7 @@ public class MainTabPanel extends LayoutComposite {
                 final Widget _widget = CONTENTWRAPPER.getWidget(selectEvent.getSelectedItem());
 
                 if (_widget instanceof OlapPanel || _widget instanceof MdxPanel) {
+                    Pat.enableSaveButtons();
                     MainMenuBar.enableSave(true);
                     AbstractDataWidget widget = (AbstractDataWidget) _widget;
                     Pat.setCurrQuery(widget.getQueryId());
@@ -82,6 +83,7 @@ public class MainTabPanel extends LayoutComposite {
                     Pat.setCurrPanelType(widget.getPanelType());
 
                 } else {
+                    Pat.disableSaveButtons();
                     MainMenuBar.enableSave(false);
                 }
 
