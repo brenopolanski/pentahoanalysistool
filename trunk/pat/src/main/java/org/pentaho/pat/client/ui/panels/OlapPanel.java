@@ -34,7 +34,7 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -85,7 +85,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
     @Override
     public void onLoad(){
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(OlapPanel.this);
+        EventFactory.getQueryInstance().addQueryListener(OlapPanel.this);
     }
     /**
      * OLAP Panel Constructor.
@@ -222,7 +222,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
 
         });
-        GlobalConnectionFactory.getQueryInstance().removeQueryListener(OlapPanel.this);
+        EventFactory.getQueryInstance().removeQueryListener(OlapPanel.this);
     }
 
     public void setConnectionId(final String connectionId) {

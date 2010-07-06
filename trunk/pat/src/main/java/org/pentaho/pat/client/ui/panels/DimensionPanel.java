@@ -32,7 +32,7 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.ui.widgets.DimensionTreeWidget;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -82,10 +82,10 @@ public class DimensionPanel extends LayoutComposite {
 			
 			public void onClick(ClickEvent arg0) {
 				if(checkButton1.isChecked()){
-					GlobalConnectionFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, true);
+					EventFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, true);
 				}
 				else{
-					GlobalConnectionFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, false);
+					EventFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, false);
 				}
 				
 			}

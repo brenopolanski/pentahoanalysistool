@@ -25,11 +25,11 @@ import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 /**
- * The Interface TableListener.
+ * The Interface OperationListener.
  * 
  * @author Paul Stoellberger
  */
-public interface ITableListener extends EventListener {
+public interface IOperationListener extends EventListener {
 
     void onOperationExecuted(String queryId, Operation operation);
     

@@ -134,7 +134,7 @@ public class DimensionBrowserWindow extends WindowPanel {
 	 * MessageFactory.getInstance() .failedQuery(arg0.getLocalizedMessage())); }
 	 * 
 	 * public void onSuccess(final CellDataSet arg0) {
-	 * GlobalConnectionFactory.getQueryInstance
+	 * EventFactory.getQueryInstance
 	 * ().getQueryListeners().fireQueryExecuted( DimensionBrowserWindow.this,
 	 * Pat.getCurrQuery(), arg0); DBW.hide(); }
 	 * 

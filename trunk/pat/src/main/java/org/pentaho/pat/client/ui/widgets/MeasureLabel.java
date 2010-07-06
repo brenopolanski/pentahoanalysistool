@@ -25,7 +25,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ILabelListener;
 import org.pentaho.pat.client.ui.popups.MeasureLabelSelectionModeMenu;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.dto.query.IAxis;
@@ -108,7 +108,7 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
         this.setCaption(caption);
         setStylePrimaryName(TABLE_DRAG_WIDGET);
         this.setType(lType);
-        GlobalConnectionFactory.getLabelInstance().addLabelListener(MeasureLabel.this);
+        EventFactory.getLabelInstance().addLabelListener(MeasureLabel.this);
     }
     public void setIsUniqueName(boolean isuniquename) {
 		this.isUniqueName= isuniquename;

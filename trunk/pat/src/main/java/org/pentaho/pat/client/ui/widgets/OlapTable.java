@@ -29,7 +29,7 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.table.PatColDef;
 import org.pentaho.pat.client.util.table.PatTableModel;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -78,7 +78,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      */
     @Override
     public void onLoad(){
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(
+        EventFactory.getQueryInstance().addQueryListener(
                 OlapTable.this);
     }
     /*
@@ -87,7 +87,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
      */
     @Override
     public void onUnload(){
-        GlobalConnectionFactory.getQueryInstance().removeQueryListener(
+        EventFactory.getQueryInstance().removeQueryListener(
                 OlapTable.this);
     }
     /**

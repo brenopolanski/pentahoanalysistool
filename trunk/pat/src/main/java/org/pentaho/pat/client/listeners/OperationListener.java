@@ -29,24 +29,24 @@ package org.pentaho.pat.client.listeners;
  * @author Paul Stoellberger
  * 
  */
-public class TableListener {
+public class OperationListener {
     
 
-    private final TableListenerCollection tableListeners = new TableListenerCollection();
+    private final OperationListenerCollection tableListeners = new OperationListenerCollection();
 
-    public void addTableListener(final ITableListener listener) {
+    public void addOperationListener(final IOperationListener listener) {
         tableListeners.add(listener);
     }
 
-    public void clearAllTableListeners() {
+    public void clearAllOperationListeners() {
         this.tableListeners.clear();
     }
 
-    public TableListenerCollection getTableListeners() {
+    public OperationListenerCollection getOperationListeners() {
         return this.tableListeners;
     }
 
-    public void removeTableListener(final ITableListener listener) {
+    public void removeOperationListener(final IOperationListener listener) {
         this.tableListeners.remove(listener);
     }
 

@@ -6,9 +6,9 @@ import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.ITableListener;
+import org.pentaho.pat.client.listeners.IOperationListener;
 import org.pentaho.pat.client.util.Operation;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  * @author tom(at)wamonline.org.uk
  *
  */
-public class DataCellPanel extends HorizontalPanel implements ITableListener {
+public class DataCellPanel extends HorizontalPanel implements IOperationListener {
 
     private Number cellNum;
     
@@ -50,7 +50,7 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
         sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
         cellNum = rawNumber;
         this.setStyleName(DATA_CELL_PANEL);
-        GlobalConnectionFactory.getOperationInstance().addTableListener(this);
+        EventFactory.getOperationInstance().addOperationListener(this);
         queryId = Pat.getCurrQuery();
         this.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     }
@@ -87,7 +87,7 @@ public class DataCellPanel extends HorizontalPanel implements ITableListener {
                     ServiceFactory.getQueryInstance().drillThrough(Pat.getSessionID(), Pat.getCurrQuery(),coordinates, new AsyncCallback<String[][]>() {
 
                         public void onSuccess(String[][] arg0) {
-                            GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillThroughExecuted(DataCellPanel.this, Pat.getCurrQuery(), arg0);
+                            EventFactory.getOperationInstance().getOperationListeners().fireDrillThroughExecuted(DataCellPanel.this, Pat.getCurrQuery(), arg0);
                         }
 
                         public void onFailure(Throwable arg0) {

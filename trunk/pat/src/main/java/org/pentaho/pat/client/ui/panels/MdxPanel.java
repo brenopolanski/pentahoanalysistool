@@ -37,7 +37,7 @@ import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -242,7 +242,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
             public void onClick(final ClickEvent arg0) {
                 
-                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(MdxPanel.this, queryId);
+                EventFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(MdxPanel.this, queryId);
                 mdxArea.formatMDX();
                 executeMdx(mdxArea.getText());
             }
@@ -274,7 +274,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                                     }
 
                                     public void onSuccess(final CellDataSet result1) {
-                                        GlobalConnectionFactory.getQueryInstance().getQueryListeners()
+                                        EventFactory.getQueryInstance().getQueryListeners()
                                                 .fireQueryExecuted(MdxPanel.this, queryId, result1);
                                     }
 
@@ -340,7 +340,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
             }
 
         });
-        GlobalConnectionFactory.getQueryInstance().removeQueryListener(MdxPanel.this);
+        EventFactory.getQueryInstance().removeQueryListener(MdxPanel.this);
     }
 
     public void setCube(final String name) {

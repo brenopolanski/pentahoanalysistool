@@ -29,12 +29,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This subclass of {@link ArrayList} assumes
- * that all objects added to it will be of type {@link org.pentaho.pat.client.listeners.ITableListener}.
+ * that all objects added to it will be of type {@link org.pentaho.pat.client.listeners.IOperationListener}.
  * 
  * @created Apr 14, 2010
  * @author Paul Stoellberger
  */
-public class TableListenerCollection extends ArrayList<ITableListener> {
+public class OperationListenerCollection extends ArrayList<IOperationListener> {
 
     /**
      * 
@@ -43,22 +43,22 @@ public class TableListenerCollection extends ArrayList<ITableListener> {
 
 
     public void fireOperationExecuted(final Widget sender, String queryId, Operation operation) {
-    	ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
-        for (ITableListener listener : tableList) {
+    	ArrayList<IOperationListener> operationList = new ArrayList<IOperationListener>(this);
+        for (IOperationListener listener : operationList) {
             listener.onOperationExecuted(queryId, operation);
         }
     }
 
     public void fireDrillThroughExecuted(final Widget sender, String queryId, String[][] result) {
-        ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
-        for (ITableListener listener : tableList) {
+        ArrayList<IOperationListener> operationList = new ArrayList<IOperationListener>(this);
+        for (IOperationListener listener : operationList) {
             listener.onDrillThroughExecuted(queryId, result);
         }
     }
     
     public void fireDrillStyleChanged(final Widget sender, String queryId, DrillType drillType) {
-        ArrayList<ITableListener> tableList = new ArrayList<ITableListener>(this);
-        for (ITableListener listener : tableList) {
+        ArrayList<IOperationListener> operationList = new ArrayList<IOperationListener>(this);
+        for (IOperationListener listener : operationList) {
             listener.onDrillStyleChanged(queryId, drillType);
         }
     }
