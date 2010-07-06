@@ -1353,7 +1353,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
     }
 
 
-	public void pullUpMeasember(String currentUserId, String sessionID,
+	public void pullUpMeasureMember(String currentUserId, String sessionID,
 			String queryId, Standard standard, int currentposition,
 			int newposition) {
 		this.sessionService.validateSession(currentUserId, sessionID);
@@ -1371,7 +1371,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 		
 	}
 
-	public void pushDownMeasember(String currentUserId, String sessionID,
+	public void pushDownMeasureMember(String currentUserId, String sessionID,
 			String queryId, Standard standard, int currentposition,
 			int newposition) {
 		this.sessionService.validateSession(currentUserId, sessionID);
