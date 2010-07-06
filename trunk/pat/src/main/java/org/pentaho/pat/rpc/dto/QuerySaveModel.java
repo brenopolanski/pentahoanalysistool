@@ -209,8 +209,11 @@ public class QuerySaveModel  implements Serializable, Comparable<QuerySaveModel>
     }
 
     public int compareTo(QuerySaveModel o) {
-        if (this.name != null)
-            return this.name.compareToIgnoreCase(o.getName());
+        if (this.name != null) {
+            if (o != null)
+                return this.name.compareToIgnoreCase(o.getName());
+        }
+            
         
         return 0;
     }

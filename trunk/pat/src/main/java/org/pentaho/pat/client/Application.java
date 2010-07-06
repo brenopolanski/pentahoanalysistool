@@ -243,6 +243,7 @@ public class Application extends Viewport {
             MainTabPanel.displayContentWidget(widget);
         }
         else {
+            Pat.enableSaveButtons();
             tableOnlyPanel.clear();
             tableOnlyPanel.add(widget, new FillLayoutData(true));
             tableOnlyPanel.layout();

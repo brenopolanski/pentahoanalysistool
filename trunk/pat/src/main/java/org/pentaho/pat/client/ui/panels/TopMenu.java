@@ -91,8 +91,10 @@ public class TopMenu extends MenuBar {
         // Create a menu bar
         this.setAnimationEnabled(true);
 
-        final MenuBar fileMenu = createFileMenu();
-        this.addItem(new MenuItem(Pat.CONSTANTS.file(),fileMenu));
+        if (!Pat.isPlugin()) {
+            final MenuBar fileMenu = createFileMenu();
+            this.addItem(new MenuItem(Pat.CONSTANTS.file(),fileMenu));
+        }
         
         final MenuBar conMenu = createConnectionMenu();
         conMenu.setAnimationEnabled(true);
