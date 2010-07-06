@@ -133,7 +133,9 @@ public class PatContentGenerator extends SimpleContentGenerator {
             StringBuilder html = new StringBuilder();
             html.append("<html>");
             html.append("<head>");
-
+            html.append("<script type=\"text/javascript\" src=\"/pentaho/content/pat-res/puc.js\"></script>");
+            html.append("<script type=\"text/javascript\"> " );
+            html.append("</script>");
             html.append("<meta name='gwt:module' content='org.pentaho.pat.Pat'/>");
             html.append("     <meta name=\"gwt:property\" content=\"locale=<%= request.getLocale() %>\">");
             html.append("</head>");
