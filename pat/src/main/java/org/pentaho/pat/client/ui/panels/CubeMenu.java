@@ -31,7 +31,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.Application.ApplicationImages;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
@@ -112,7 +111,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedActiveConnection(arg0.getLocalizedMessage()));
                     }
 
@@ -133,7 +132,7 @@ public class CubeMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         cubeTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedCubeList(arg0.getLocalizedMessage()));
                     }
 
@@ -155,7 +154,7 @@ public class CubeMenu extends LayoutComposite {
             ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
                     new AsyncCallback<CubeItem[]>() {
                         public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedCubeList(arg0.getLocalizedMessage()));
                         }
 

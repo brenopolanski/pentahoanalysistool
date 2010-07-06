@@ -42,7 +42,6 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -187,7 +186,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         curQuery.setValue(queryId);
         formPanel.add(curQuery);
         
-        executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        executeButton = new Button(Pat.IMAGES.execute_no_ds().getHTML());
+        executeButton.setTitle(Pat.CONSTANTS.executeQuery());
         executeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -205,8 +205,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });
         
 
-        exportButton = new ToolButton(ConstantFactory.getInstance().export());
-        exportButton.setTitle(ConstantFactory.getInstance().export());
+        exportButton = new ToolButton(Pat.CONSTANTS.export());
+        exportButton.setTitle(Pat.CONSTANTS.export());
 
         exportButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
@@ -216,8 +216,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
         exportButton.setEnabled(false);
         
-        mdxButton = new ToolButton(ConstantFactory.getInstance().mdx());
-        mdxButton.setTitle(ConstantFactory.getInstance().showMDX());
+        mdxButton = new ToolButton(Pat.CONSTANTS.mdx());
+        mdxButton.setTitle(Pat.CONSTANTS.showMDX());
         mdxButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -225,11 +225,11 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                         new AsyncCallback<String>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(),arg0.getLocalizedMessage());
+                        MessageBox.error(Pat.CONSTANTS.error(),arg0.getLocalizedMessage());
                     }
 
                     public void onSuccess(final String mdx) {
-                        final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().mdx());
+                        final WindowPanel winPanel = new WindowPanel(Pat.CONSTANTS.mdx());
                         final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                         wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                         final MDXRichTextArea mdxArea = new MDXRichTextArea();
@@ -237,14 +237,14 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                         mdxArea.setText(mdx);
 
                         wpLayoutPanel.add(mdxArea, new BoxLayoutData(1, 0.9));
-                        final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                        final ToolButton closeBtn = new ToolButton(Pat.CONSTANTS.close());
                         closeBtn.addClickHandler(new ClickHandler() {
                             public void onClick(final ClickEvent arg0) {
                                 winPanel.hide();
                             }
 
                         });
-                        final ToolButton mdxBtn = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
+                        final ToolButton mdxBtn = new ToolButton(Pat.CONSTANTS.newMdxQuery());
                         mdxBtn.addClickHandler(new ClickHandler() {
                             public void onClick(final ClickEvent arg0) {
 
@@ -279,8 +279,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
 
-        hideBlanksButton = new ToolButton(ConstantFactory.getInstance().showBlankCells());
-        hideBlanksButton.setTitle(ConstantFactory.getInstance().showBlankCells());
+        hideBlanksButton = new ToolButton(Pat.IMAGES.zero().getHTML());
+        hideBlanksButton.setTitle(Pat.CONSTANTS.showBlankCells());
         hideBlanksButton.setStyle(ToolButtonStyle.CHECKBOX);
         hideBlanksButton.setChecked(true);
         hideBlanksButton.addClickHandler(new ClickHandler() {
@@ -292,21 +292,17 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
                     public void onFailure(final Throwable arg0) {
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedNonEmpty());
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedNonEmpty());
 
                     }
 
                     public void onSuccess(final CellDataSet arg0) {
 
                         if (hideBlanksButton.isChecked()) {
-                            hideBlanksButton.setText(ConstantFactory.getInstance().showBlankCells());
-                            hideBlanksButton.setTitle(ConstantFactory.getInstance().showBlankCells());
+                            hideBlanksButton.setTitle(Pat.CONSTANTS.showBlankCells());
 
                         } else {
-                            hideBlanksButton.setText(ConstantFactory.getInstance().hideBlankCells());
-                            hideBlanksButton.setTitle(ConstantFactory.getInstance().hideBlankCells());
-
-
+                            hideBlanksButton.setTitle(Pat.CONSTANTS.hideBlankCells());
                         }
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, queryId, arg0);
@@ -342,7 +338,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
                 /*ServiceFactory.getSessionInstance().createNewScenario(Pat.getSessionID(), Pat.getCurrConnection(), new AsyncCallback<String>(){
                     public void onFailure(final Throwable arg0){
-                	MessageBox.error(ConstantFactory.getInstance().error(), "Failed to set scenario");
+                	MessageBox.error(Pat.CONSTANTS.error(), "Failed to set scenario");
                     }
 
                     public void onSuccess(String scenario){
@@ -353,8 +349,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        pivotButton = new ToolButton(ConstantFactory.getInstance().pivot());
-        pivotButton.setTitle(ConstantFactory.getInstance().pivot());
+        pivotButton = new ToolButton(Pat.CONSTANTS.pivot());
+        pivotButton.setTitle(Pat.CONSTANTS.pivot());
         pivotButton.setStyle(ToolButtonStyle.CHECKBOX);
         pivotButton.addClickHandler(new ClickHandler() {
 
@@ -367,7 +363,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                     public void onFailure(final Throwable arg0) {
 
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedPivot(arg0.getLocalizedMessage()));
                     }
 
@@ -386,23 +382,23 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         pivotButton.setEnabled(false);
 
         layoutMenuButton = new ToolButton(Pat.IMAGES.chart_pie().getHTML());
-        layoutMenuButton.setTitle(ConstantFactory.getInstance().chart());
+        layoutMenuButton.setTitle(Pat.CONSTANTS.chart());
         layoutMenuButton.setStyle(ToolButtonStyle.MENU);
         layoutMenuButton.setEnabled(false);
         
         final PopupMenu layoutMenuBtnMenu = new PopupMenu();
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().grid(), new LayoutCommand(null));
-        // layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().chart(), new LayoutCommand(Region.CENTER));
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().top(), new LayoutCommand(Region.NORTH));
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().bottom(), new LayoutCommand(Region.SOUTH));
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().left(), new LayoutCommand(Region.WEST));
-        layoutMenuBtnMenu.addItem(ConstantFactory.getInstance().right(), new LayoutCommand(Region.EAST));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.grid(), new LayoutCommand(null));
+        // layoutMenuBtnMenu.addItem(Pat.CONSTANTS.chart(), new LayoutCommand(Region.CENTER));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.top(), new LayoutCommand(Region.NORTH));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.bottom(), new LayoutCommand(Region.SOUTH));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.left(), new LayoutCommand(Region.WEST));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.right(), new LayoutCommand(Region.EAST));
 
         layoutMenuButton.setMenu(layoutMenuBtnMenu);
 
         
         drillPositionButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.drill(),"", ButtonLabelType.NO_TEXT));
-        drillPositionButton.setTitle(ConstantFactory.getInstance().drillPosition());
+        drillPositionButton.setTitle(Pat.CONSTANTS.drillPosition());
         drillPositionButton.setStyle(ToolButtonStyle.RADIO);
         drillPositionButton.setEnabled(false);
         drillPositionButton.setChecked(true);
@@ -420,7 +416,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });
         
         drillReplaceButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.arrow_down(),"", ButtonLabelType.NO_TEXT));
-        drillReplaceButton.setTitle(ConstantFactory.getInstance().drillReplace());
+        drillReplaceButton.setTitle(Pat.CONSTANTS.drillReplace());
         drillReplaceButton.setStyle(ToolButtonStyle.RADIO);
         drillReplaceButton.setEnabled(false);
         drillReplaceButton.addClickHandler(new ClickHandler() {
@@ -437,7 +433,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         });
         
         drillUpButton = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.arrow_up(),"", ButtonLabelType.NO_TEXT));
-        drillUpButton.setTitle(ConstantFactory.getInstance().drillUp());
+        drillUpButton.setTitle(Pat.CONSTANTS.drillUp());
         drillUpButton.setStyle(ToolButtonStyle.RADIO);
         drillUpButton.setEnabled(false);
         drillUpButton.addClickHandler(new ClickHandler() {
@@ -453,7 +449,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        drillNoneButton = new ToolButton(ConstantFactory.getInstance().drillNone());
+        drillNoneButton = new ToolButton(Pat.CONSTANTS.drillNone());
         drillNoneButton.setStyle(ToolButtonStyle.RADIO);
         drillNoneButton.setEnabled(false);
         drillNoneButton.addClickHandler(new ClickHandler() {
@@ -471,8 +467,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
 
 
-        drillThroughButton = new ToolButton(ConstantFactory.getInstance().drillThrough());
-        drillThroughButton.setTitle(ConstantFactory.getInstance().drillThrough());
+        drillThroughButton = new ToolButton(Pat.CONSTANTS.drillThrough());
+        drillThroughButton.setTitle(Pat.CONSTANTS.drillThrough());
         drillThroughButton.setEnabled(false);
         drillThroughButton.setStyle(ToolButtonStyle.CHECKBOX);
         
@@ -490,7 +486,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             }
         });
         
-        ToolButton syncButton = new ToolButton("Synchronize query");
+        ToolButton syncButton = new ToolButton(Pat.IMAGES.arrow_refresh().getHTML());
+        syncButton.setTitle("Refresh Query");
         syncButton.addClickHandler(new ClickHandler() {
             
             public void onClick(ClickEvent arg0) {
@@ -540,10 +537,13 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
     private void setExecuteButton(boolean execute) {
         if(execute==true){
             executemode=true;
-            executeButton.setText(ConstantFactory.getInstance().editQuery());
+            executeButton.setTitle(Pat.CONSTANTS.editQuery());
+            executeButton.setHTML(Pat.IMAGES.edit_query().getHTML());
         }
         else{
-            executeButton.setText(ConstantFactory.getInstance().executeQuery());
+            executeButton.setTitle(Pat.CONSTANTS.executeQuery());
+            executeButton.setHTML(Pat.IMAGES.execute_no_ds().getHTML());
+            
             executemode=false;
         }
     }

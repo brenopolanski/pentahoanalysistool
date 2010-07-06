@@ -26,8 +26,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.SaveMenuPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,9 +42,9 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class SaveWindow extends WindowPanel {
 
-    private static final String SAVE_TITLE = ConstantFactory.getInstance().save();
+    private static final String SAVE_TITLE = Pat.CONSTANTS.save();
 
-    private final static Button saveButton = new Button(ConstantFactory.getInstance().save());
+    private final static Button saveButton = new Button(Pat.CONSTANTS.save());
     
     private final static SaveMenuPanel SAVEMENUPANEL = new SaveMenuPanel();
 
@@ -131,7 +131,7 @@ public class SaveWindow extends WindowPanel {
         });
         
         
-        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        final Button cancelButton = new Button(Pat.CONSTANTS.cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {

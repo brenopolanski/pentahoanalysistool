@@ -31,7 +31,6 @@ import org.pentaho.pat.client.ui.panels.MainMenuBar;
 import org.pentaho.pat.client.util.State;
 import org.pentaho.pat.client.util.StyleSheetLoader;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -64,6 +63,8 @@ public class Pat implements EntryPoint {
      * PatImages ImageBundle.
      */
     public static final IGuiImages IMAGES = (IGuiImages) GWT.create(IGuiImages.class);
+    
+    public static final IGuiConstants CONSTANTS = (IGuiConstants) GWT.create(IGuiConstants.class);
 
     /**
      * The current style theme.
@@ -291,7 +292,7 @@ public class Pat implements EntryPoint {
         if (session == null && Pat.getSessionID() == null) {
             ServiceFactory.getSessionInstance().createSession(new AsyncCallback<String>() {
                 public void onFailure(final Throwable exception) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                    MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                             .failedSessionID(exception.getLocalizedMessage()));
                 }
 
@@ -365,7 +366,7 @@ public class Pat implements EntryPoint {
                 Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedSaveQuery(arg0.getLocalizedMessage()));
                     }
 
@@ -373,7 +374,7 @@ public class Pat implements EntryPoint {
                         ServiceFactory.getPlatformInstance().saveQueryToSolution(getSessionID(), getCurrQuery(), getCurrConnectionId(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
                             public void onFailure(Throwable arg0) {
-                                MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
+                                MessageBox.info(Pat.CONSTANTS.error(), "ERROR");
                                 
                             }
 
@@ -394,7 +395,7 @@ public class Pat implements EntryPoint {
         ServiceFactory.getPlatformInstance().saveQueryAsCda(getSessionID(), getCurrQuery(), getCurrConnectionId(), solution, path, name, localizedFileName, new AsyncCallback<Object>() {
 
             public void onFailure(Throwable arg0) {
-                MessageBox.info(ConstantFactory.getInstance().error(), "ERROR");
+                MessageBox.info(Pat.CONSTANTS.error(), "ERROR");
 
             }
 
@@ -431,7 +432,7 @@ public class Pat implements EntryPoint {
                 new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedQuery(arg0.getLocalizedMessage()));
                         GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(
                                 sender, queryId);

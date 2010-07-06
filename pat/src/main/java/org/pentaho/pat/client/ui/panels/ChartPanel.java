@@ -32,7 +32,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.windows.ChartOptionsWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.charts.ChartFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -293,7 +292,7 @@ public class ChartPanel extends LayoutComposite {
 //        final ToolButton optionsButton = new ToolButton(ButtonHelper.createButtonLabel(MessageBox.MESSAGEBOX_IMAGES
 //                .dialogInformation(), ConstantFactory.getInstance().chartOptions(), ButtonLabelType.TEXT_ON_TOP));
 
-        final ToolButton optionsButton = new ToolButton(ConstantFactory.getInstance().chartOptions());
+        final ToolButton optionsButton = new ToolButton(Pat.CONSTANTS.chartOptions());
         optionsButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent arg0) {
                 ChartOptionsWindow.display(ChartPanel.this);

@@ -27,9 +27,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.DimensionMenu;
 import org.pentaho.pat.client.ui.panels.windows.PropertiesMenu;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -48,8 +48,7 @@ import com.google.gwt.user.client.ui.Button;
 public class DimensionBrowserWindow extends WindowPanel {
 
 	/** The Window Title. */
-	private final static String TITLE = ConstantFactory.getInstance()
-			.titleDimensionBrowser();
+	private final static String TITLE = Pat.CONSTANTS.titleDimensionBrowser();
 
 	private static DimensionMenu dimMenuPanel = new DimensionMenu();
 	
@@ -96,10 +95,8 @@ public class DimensionBrowserWindow extends WindowPanel {
 		winContentpanel.add(tabPanel, new BoxLayoutData(FillStyle.BOTH));
 		final LayoutPanel buttons = new LayoutPanel(new BoxLayout(
 				Orientation.VERTICAL));
-		final Button updateQueryButton = new Button(ConstantFactory
-				.getInstance().ok());
-		final Button cancelButton = new Button(ConstantFactory.getInstance()
-				.cancel());
+		final Button updateQueryButton = new Button(Pat.CONSTANTS.ok());
+		final Button cancelButton = new Button(Pat.CONSTANTS.cancel());
 		buttons.add(updateQueryButton, new BoxLayoutData(FillStyle.HORIZONTAL));
 		buttons.add(cancelButton);
 
@@ -133,7 +130,7 @@ public class DimensionBrowserWindow extends WindowPanel {
 	 * Pat.getCurrQuery(), new AsyncCallback<CellDataSet>() {
 	 * 
 	 * public void onFailure(final Throwable arg0) {
-	 * MessageBox.error(ConstantFactory.getInstance().error(),
+	 * MessageBox.error(Pat.CONSTANTS.error(),
 	 * MessageFactory.getInstance() .failedQuery(arg0.getLocalizedMessage())); }
 	 * 
 	 * public void onSuccess(final CellDataSet arg0) {

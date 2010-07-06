@@ -28,7 +28,6 @@ import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
 import org.pentaho.pat.client.ui.windows.SaveWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
@@ -93,24 +92,24 @@ public class TopMenu extends MenuBar {
         this.setAnimationEnabled(true);
 
         final MenuBar fileMenu = createFileMenu();
-        this.addItem(new MenuItem(ConstantFactory.getInstance().file(),fileMenu));
+        this.addItem(new MenuItem(Pat.CONSTANTS.file(),fileMenu));
         
         final MenuBar conMenu = createConnectionMenu();
         conMenu.setAnimationEnabled(true);
-        final MenuItem conItem = new MenuItem(ConstantFactory.getInstance().connections(),conMenu);
+        final MenuItem conItem = new MenuItem(Pat.CONSTANTS.connections(),conMenu);
         this.addItem(conItem);
 
         final MenuBar cubeMenu = createCubesMenu();
         cubeMenu.setAnimationEnabled(true);
         cubeMenu.setAutoOpen(true);
-        final MenuItem cubeItem = new MenuItem(ConstantFactory.getInstance().cubes(), cubeMenu);
+        final MenuItem cubeItem = new MenuItem(Pat.CONSTANTS.cubes(), cubeMenu);
         this.addItem(cubeItem);
 
 
         // Create the help menu
         MenuBar helpMenu = new MenuBar(true);
         helpMenu.clearItems();
-        this.addItem(new MenuItem(ConstantFactory.getInstance().help(),helpMenu));
+        this.addItem(new MenuItem(Pat.CONSTANTS.help(),helpMenu));
 
 
         helpMenu.addItem("Donate", new Command(){
@@ -121,7 +120,7 @@ public class TopMenu extends MenuBar {
 
         });
         
-        helpMenu.addItem(ConstantFactory.getInstance().about(), new Command(){
+        helpMenu.addItem(Pat.CONSTANTS.about(), new Command(){
 
             public void execute() {
                    AboutWindow.display();
@@ -169,7 +168,7 @@ public class TopMenu extends MenuBar {
             FileMenu.this.setAnimationEnabled(true);
             
             
-            HTML openWidget = new HTML(Pat.IMAGES.folder().getHTML() +" "+ConstantFactory.getInstance().openQuery());
+            HTML openWidget = new HTML(Pat.IMAGES.folder().getHTML() +" "+Pat.CONSTANTS.openQuery());
             MenuItem openQuery = new MenuItem(openWidget.getHTML(),true,new Command() {
                public void execute() {
                     LoadWindow.display();
@@ -177,7 +176,7 @@ public class TopMenu extends MenuBar {
             });
             FileMenu.this.addItem(openQuery);
 
-            HTML saveWidget = new HTML(Pat.IMAGES.disk().getHTML() +" "+ConstantFactory.getInstance().saveQuery());
+            HTML saveWidget = new HTML(Pat.IMAGES.disk().getHTML() +" "+Pat.CONSTANTS.saveQuery());
             MenuItem saveQuery = new MenuItem(saveWidget.getHTML(),true,new Command() {
                 public void execute() {
                      SaveWindow.display();
@@ -186,7 +185,7 @@ public class TopMenu extends MenuBar {
             
             FileMenu.this.addItem(saveQuery);
             
-            MenuItem logout = new MenuItem(ConstantFactory.getInstance().logout(),new Command() {
+            MenuItem logout = new MenuItem(Pat.CONSTANTS.logout(),new Command() {
                 public void execute() {
                     if (!Pat.isPlugin()) {
                         Window.Location.assign(Pat.getBaseUrl()+"logout");
@@ -218,7 +217,7 @@ public class TopMenu extends MenuBar {
 
         public void refresh() {
             ConnectionsMenu.this.clearItems();
-            MenuItem item = new MenuItem("("+ConstantFactory.getInstance().loading()+" ...)",new Command() {
+            MenuItem item = new MenuItem("("+Pat.CONSTANTS.loading()+" ...)",new Command() {
                 public void execute() {};
             });
             ConnectionsMenu.this.addItem(item);
@@ -227,13 +226,13 @@ public class TopMenu extends MenuBar {
                     new AsyncCallback<CubeConnection[]>() {
 
                         public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedLoadConnection(arg0.getLocalizedMessage()));
                         }
 
                         public void onSuccess(final CubeConnection[] connections) {
                             ConnectionsMenu.this.clearItems();
-                            MenuItem newconitem = new MenuItem(ConstantFactory.getInstance().newConnection(),new Command() {
+                            MenuItem newconitem = new MenuItem(Pat.CONSTANTS.newConnection(),new Command() {
                                 public void execute() {
                                     ConnectionManagerWindow.showNewConnection();
                                 };
@@ -256,14 +255,14 @@ public class TopMenu extends MenuBar {
                             }
 
                             if (connections.length < 1) {
-                                MenuItem item = new MenuItem("("+ConstantFactory.getInstance().noConnections()+")",new Command() {
+                                MenuItem item = new MenuItem("("+Pat.CONSTANTS.noConnections()+")",new Command() {
                                     public void execute() {};
                                 });
                                 ConnectionsMenu.this.addItem(item);
                             }
 
                             ConnectionsMenu.this.addSeparator();
-                            ConnectionsMenu.this.addItem(ConstantFactory.getInstance().manageConnections(), new Command() {
+                            ConnectionsMenu.this.addItem(Pat.CONSTANTS.manageConnections(), new Command() {
                                 public void execute() {
                                     ConnectionManagerWindow.display();
                                 }
@@ -290,7 +289,7 @@ public class TopMenu extends MenuBar {
 
         public void refresh() {
             CubesMenu.this.clearItems();
-            MenuItem item = new MenuItem("("+ConstantFactory.getInstance().loading()+" ...)",new Command() {
+            MenuItem item = new MenuItem("("+Pat.CONSTANTS.loading()+" ...)",new Command() {
                 public void execute() {};
             });
             CubesMenu.this.addItem(item);
@@ -300,7 +299,7 @@ public class TopMenu extends MenuBar {
 
                         public void onFailure(final Throwable arg0) {
                             CubesMenu.this.clearItems();
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedLoadConnection(arg0.getLocalizedMessage()));
                         }
 
@@ -330,7 +329,7 @@ public class TopMenu extends MenuBar {
                                 ServiceFactory.getDiscoveryInstance().getCubes(Pat.getSessionID(), connection.getId(),
                                         new AsyncCallback<CubeItem[]>() {
                                             public void onFailure(final Throwable arg0) {
-                                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                                         .failedCubeList(arg0.getLocalizedMessage()));
                                             }
 
@@ -349,8 +348,8 @@ public class TopMenu extends MenuBar {
                                                     };
 
                                                     MenuBar newQuery = new MenuBar(true);
-                                                    newQuery.addItem(new MenuItem(ConstantFactory.getInstance().newQuery(), cmd));
-                                                    newQuery.addItem(new MenuItem(ConstantFactory.getInstance().newMdxQuery(), new Command() {
+                                                    newQuery.addItem(new MenuItem(Pat.CONSTANTS.newQuery(), cmd));
+                                                    newQuery.addItem(new MenuItem(Pat.CONSTANTS.newMdxQuery(), new Command() {
 
                                                         public void execute() {
                                                             LogoPanel.spinWheel(true);
@@ -369,14 +368,14 @@ public class TopMenu extends MenuBar {
                                                 
                                                 // if there are no  cubes we'll add a nocube item to the menu
                                                 if (cubeItm.length == 0) {
-                                                    MenuItem noitem = new MenuItem("("+ConstantFactory.getInstance().noCubes()+")",new Command() {
+                                                    MenuItem noitem = new MenuItem("("+Pat.CONSTANTS.noCubes()+")",new Command() {
                                                         public void execute() {};
                                                     });
                                                     CubesMenu.this.insertItem(noitem,CubesMenu.this.getItemIndex(indexItem)+1);
                                                 }
                                                 else if(connections[connections.length-1].equals(connection)) {
                                                     CubesMenu.this.addSeparator();
-                                                    CubesMenu.this.addItem(ConstantFactory.getInstance().cubeWindow(), new Command() {
+                                                    CubesMenu.this.addItem(Pat.CONSTANTS.cubeWindow(), new Command() {
 
                                                         public void execute() {
                                                             CubeBrowserWindow.display();
@@ -395,7 +394,7 @@ public class TopMenu extends MenuBar {
 
                             // if there are no connections we'll add a nocube item to the menu
                             if (connections.length == 0) {
-                                MenuItem noitem = new MenuItem("("+ConstantFactory.getInstance().noCubes()+")",new Command() {
+                                MenuItem noitem = new MenuItem("("+Pat.CONSTANTS.noCubes()+")",new Command() {
                                     public void execute() {};
                                 });
                                 CubesMenu.this.addItem(noitem);

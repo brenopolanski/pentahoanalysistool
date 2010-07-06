@@ -40,7 +40,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.util.ConnectionItem;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
@@ -109,14 +108,14 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         if (ci.isConnected()) {
                             connectionButton.invalidate();
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
-                                    ConstantFactory.getInstance().disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
+                                    Pat.CONSTANTS.disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
                             connectionButton.layout();
                         }
                         else
                         {
                             connectionButton.invalidate();
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
-                                    ConstantFactory.getInstance().connect(), ButtonLabelType.TEXT_ON_RIGHT));
+                                    Pat.CONSTANTS.connect(), ButtonLabelType.TEXT_ON_RIGHT));
                             connectionButton.layout();
                         }
 
@@ -174,7 +173,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                     new AsyncCallback<Object>() {
 
                                 public void onFailure(final Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(),
+                                    MessageBox.alert(Pat.CONSTANTS.error(),
                                             MessageFactory.getInstance().failedDisconnection(
                                                     arg0.getLocalizedMessage()));
 
@@ -186,8 +185,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                                             new AsyncCallback<Object>() {
 
                                                 public void onFailure(final Throwable arg0) {
-                                                    MessageBox.alert(ConstantFactory.getInstance()
-                                                            .error(), MessageFactory.getInstance()
+                                                    MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                                             .failedDeleteConnection(
                                                                     arg0.getLocalizedMessage()));
 
@@ -222,7 +220,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
 
                     public void onFailure(Throwable arg0) {
                         ConnectionManagerWindow.closeTabs();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().unexpectedError());
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance().unexpectedError());
                     }
 
                     public void onSuccess(final CubeConnection cc) {
@@ -231,7 +229,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                             ServiceFactory.getSessionInstance().disconnect(Pat.getSessionID(), cc.getId(), new AsyncCallback<Object>() {
 
                                 public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(
+                                    MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedConnection(
                                             arg0.getLocalizedMessage()));
                                 }
 
@@ -266,7 +264,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
         
         ServiceFactory.getSessionInstance().getConnections(Pat.getSessionID(), new AsyncCallback<CubeConnection[]>() {
             public void onFailure(final Throwable arg0) {
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedConnection(
+                MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedConnection(
                         arg0.getLocalizedMessage()));
 
             }
@@ -313,11 +311,11 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         connectEvent(ci.getId(),ci.isConnected(),true);
                         if (ci.isConnected()) {
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.disconnect(),
-                                    ConstantFactory.getInstance().disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
+                                    Pat.CONSTANTS.disconnect(), ButtonLabelType.TEXT_ON_RIGHT));
                         }
                         else
                             connectionButton.setHTML(ButtonHelper.createButtonLabel(Pat.IMAGES.connect(),
-                                    ConstantFactory.getInstance().connect(), ButtonLabelType.TEXT_ON_RIGHT));
+                                    Pat.CONSTANTS.connect(), ButtonLabelType.TEXT_ON_RIGHT));
                     }
                 }
                 
@@ -373,7 +371,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                         new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                        MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory
                                 .getInstance().failedDisconnection(arg0.getLocalizedMessage()));
                         LogoPanel.spinWheel(false);
                     }
@@ -393,7 +391,7 @@ public class ConnectionManagerPanel extends LayoutComposite {
                     public void onFailure(final Throwable arg0) {
                         LogoPanel.spinWheel(false);
                         MessageBox.alert(
-                                ConstantFactory.getInstance().error(),
+                                Pat.CONSTANTS.error(),
                                 MessageFactory.getInstance().failedConnect(arg0.getMessage())); //$NON-NLS-1$
                     }
 

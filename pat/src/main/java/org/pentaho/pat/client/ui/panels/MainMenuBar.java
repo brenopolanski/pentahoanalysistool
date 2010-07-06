@@ -36,7 +36,6 @@ import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
 import org.pentaho.pat.client.ui.windows.CubeBrowserWindow;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
 import org.pentaho.pat.client.ui.windows.SaveWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -56,22 +55,22 @@ public class MainMenuBar extends LayoutComposite {
     private final LayoutPanel rootPanel = getLayoutPanel();
 
     private final static ToolButton SAVEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
-            ConstantFactory.getInstance().save(), ButtonLabelType.TEXT_ON_BOTTOM));
+            Pat.CONSTANTS.save(), ButtonLabelType.TEXT_ON_BOTTOM));
 
     private final static ToolButton SAVECDABUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(),
-            ConstantFactory.getInstance().save() + " as CDA", ButtonLabelType.TEXT_ON_BOTTOM));
+            Pat.CONSTANTS.save() + " as CDA", ButtonLabelType.TEXT_ON_BOTTOM));
     // TODO replace with proper icon set; connections icon(create a button widget that can be duplicated across all
     // cases)
     final static ToolButton CONNECTIONBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.databases(),
-            ConstantFactory.getInstance().connections(), ButtonLabelType.TEXT_ON_BOTTOM));
+            Pat.CONSTANTS.connections(), ButtonLabelType.TEXT_ON_BOTTOM));
 
-    final static ToolButton CUBEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-            .getInstance().cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
+    final static ToolButton CUBEBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), 
+            Pat.CONSTANTS.cubes(), ButtonLabelType.TEXT_ON_BOTTOM));
 
-    final static ToolButton LOADBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), ConstantFactory
-            .getInstance().load(), ButtonLabelType.TEXT_ON_BOTTOM));
+    final static ToolButton LOADBUTTON = new ToolButton(ButtonHelper.createButtonLabel(Pat.IMAGES.cube(), 
+            Pat.CONSTANTS.load(), ButtonLabelType.TEXT_ON_BOTTOM));
 
-    final static ToolButton LOGOUTBUTTON = new ToolButton(ConstantFactory.getInstance().logout());
+    final static ToolButton LOGOUTBUTTON = new ToolButton(Pat.CONSTANTS.logout());
 
     private static MenuBar menu = null;
 

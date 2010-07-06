@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.PopupMenu;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.MemberSelectionLabel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
@@ -63,7 +63,7 @@ public class SelectionModeMenu extends PopupMenu {
 
 /*            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), dimName, new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
 
                         }
@@ -111,7 +111,7 @@ public class SelectionModeMenu extends PopupMenu {
     //        ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), , selection, new AsyncCallback<StringTree>() {
 
                    //     public void onFailure(final Throwable arg0) {
-                   //         MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                   //         MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                   //                  .noSelectionSet(arg0.getLocalizedMessage()));
 
                   //      }
@@ -183,14 +183,14 @@ public class SelectionModeMenu extends PopupMenu {
 
 	private void init() {
         this.setAutoOpen(true);
-        this.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
+        this.addItem(new MenuItem(Pat.CONSTANTS.member(), new SelectionModeCommand(MEMBER)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.children(), new SelectionModeCommand(CHILDREN)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.includeChildren(), new SelectionModeCommand(
                 INCLUDE_CHILDREN)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+        this.addItem(new MenuItem(Pat.CONSTANTS.siblings(), new SelectionModeCommand(SIBLINGS)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.descendants(), new SelectionModeCommand(DESCENDANTS)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.ancestors(), new SelectionModeCommand(ANCESTORS)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.clearSelections(), new SelectionModeClearCommand()));
     }
 
     public final String setSelectionMode(final int selectionMode) {

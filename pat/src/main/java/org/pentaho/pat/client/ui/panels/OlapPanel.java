@@ -19,14 +19,11 @@
  */
 package org.pentaho.pat.client.ui.panels;
 
-import java.util.Map;
-
 import org.gwt.mosaic.core.client.DOM;
 import org.gwt.mosaic.ui.client.Caption;
 import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.ImageButton;
 import org.gwt.mosaic.ui.client.MessageBox;
-import org.gwt.mosaic.ui.client.ToolButton;
 import org.gwt.mosaic.ui.client.Caption.CaptionRegion;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.BorderLayoutData;
@@ -37,7 +34,6 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -46,7 +42,6 @@ import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.query.IAxis;
-import org.pentaho.pat.rpc.dto.query.PatQueryAxis;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -110,7 +105,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
                     public void onFailure(final Throwable arg0) {
 
-                        MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedCreateQuery(arg0.getLocalizedMessage()));
                         LogoPanel.spinWheel(false);
                     }
@@ -216,7 +211,7 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(
+                MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedDeleteQuery(
                         arg0.getLocalizedMessage()));
                 LogoPanel.spinWheel(false);
             }

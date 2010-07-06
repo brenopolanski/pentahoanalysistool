@@ -26,8 +26,8 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,9 +42,9 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class LoadWindow extends WindowPanel {
 
-    private static final String LOAD_TITLE = ConstantFactory.getInstance().load();
+    private static final String LOAD_TITLE = Pat.CONSTANTS.load();
     
-    final static Button okButton = new Button(ConstantFactory.getInstance().ok());
+    final static Button okButton = new Button(Pat.CONSTANTS.ok());
 
 
     private final static LoadMenuPanel LOADMENUPANEL = new LoadMenuPanel();
@@ -92,7 +92,7 @@ public class LoadWindow extends WindowPanel {
         });
         okButton.setEnabled(false);
         
-        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        final Button cancelButton = new Button(Pat.CONSTANTS.cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {

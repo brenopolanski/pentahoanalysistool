@@ -36,7 +36,6 @@ import org.pentaho.pat.client.Application;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
@@ -191,10 +190,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
         super(new BorderLayout());
         idHidden = new Hidden();
         nameTextBox = new TextBox();
-        saveButton = new Button(ConstantFactory.getInstance().save());
-        uploadButton = new Button(ConstantFactory.getInstance().upload());
-        viewSchemaButton = new Button(ConstantFactory.getInstance().viewSchema());
-        cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        saveButton = new Button(Pat.CONSTANTS.save());
+        uploadButton = new Button(Pat.CONSTANTS.upload());
+        viewSchemaButton = new Button(Pat.CONSTANTS.viewSchema());
+        cancelButton = new Button(Pat.CONSTANTS.cancel());
         driverListBox = new ListBox();
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
@@ -202,9 +201,9 @@ public class ConnectMondrianPanel extends LayoutComposite {
         roleTextBox = new TextBox();
         fileUpload = new FileUpload();
         schemaData = ""; //$NON-NLS-1$
-        startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
+        startupCheckbox = new CheckBox(Pat.CONSTANTS.connectStartup());
         startupCheckbox.setValue(true);
-        schemaValCheckbox = new CheckBox(ConstantFactory.getInstance().validateSchema());
+        schemaValCheckbox = new CheckBox(Pat.CONSTANTS.validateSchema());
         this.setStyleName(CONNECT_MONDRIAN_PANEL);
         init();
         if (initData) {
@@ -236,10 +235,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
         saveButton.setEnabled(true);
         if (schemaData != null && schemaData.length() > 0) {
             viewSchemaButton.setEnabled(true);
-            viewSchemaButton.setText(ConstantFactory.getInstance().viewSchema());
+            viewSchemaButton.setText(Pat.CONSTANTS.viewSchema());
         }
         else
-            viewSchemaButton.setText(ConstantFactory.getInstance().noSchema());
+            viewSchemaButton.setText(Pat.CONSTANTS.noSchema());
     }
     
 
@@ -263,7 +262,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
         driverListBox.clear();
         ServiceFactory.getDiscoveryInstance().getDrivers(new AsyncCallback<String[]>() {
             public void onFailure(final Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());
+                MessageBox.error(Pat.CONSTANTS.error(), arg0.getMessage());
             }
 
             public void onSuccess(final String[] arg0) {
@@ -277,8 +276,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         }
                     }
                 } else {
-                    MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                            .noJdbcDriverFound());
+                    MessageBox.error(Pat.CONSTANTS.error(),Pat.CONSTANTS.noJdbcDriverFound());
                 }
             }
         });
@@ -332,7 +330,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                                 arg0.getResults().indexOf(VALIDATION_END));
                         if(tmp != null && tmp.length() > 0) {
                             if (schemaValCheckbox.getValue()) { 
-                                MessageBox.info(ConstantFactory.getInstance().warning(), MessageFactory.getInstance()
+                                MessageBox.info(Pat.CONSTANTS.warning(), MessageFactory.getInstance()
                                     .schemaFileInvalid() + "<br>" + tmp); //$NON-NLS-1$
                             }
                         }
@@ -344,17 +342,15 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         schemaData = decode(tmp);
                         saveButton.setEnabled(true);
                         viewSchemaButton.setEnabled(true);
-                        viewSchemaButton.setText(ConstantFactory.getInstance().viewSchema());
+                        viewSchemaButton.setText(Pat.CONSTANTS.viewSchema());
                         // TODO remove this later
 
-                        Application.showInfoPanel(ConstantFactory.getInstance().fileUpload(), ConstantFactory.getInstance().success());
+                        Application.showInfoPanel(Pat.CONSTANTS.fileUpload(), Pat.CONSTANTS.success());
                     } else {
-                        MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                                .fileUploadFailed());
+                        MessageBox.error(Pat.CONSTANTS.error(), Pat.CONSTANTS.fileUploadFailed());
                     }
                 } else {
-                    MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                            .checkErrorLog());
+                    MessageBox.error(Pat.CONSTANTS.error(), Pat.CONSTANTS.checkErrorLog());
                 }
             }
         });
@@ -362,17 +358,17 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 + "right:[40dlu,pref], 3dlu, 70dlu", //$NON-NLS-1$
         "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
-        builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+        builder.addLabel(Pat.CONSTANTS.name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
-        builder.addLabel(ConstantFactory.getInstance().jdbcDriver() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+        builder.addLabel(Pat.CONSTANTS.jdbcDriver() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
         builder.add(driverListBox, CellConstraints.xyw(3, 3, 5));
-        builder.addLabel(ConstantFactory.getInstance().jdbcUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
+        builder.addLabel(Pat.CONSTANTS.jdbcUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
         builder.add(urlTextBox, CellConstraints.xyw(3, 5, 5));
-        builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+        builder.addLabel(Pat.CONSTANTS.username() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
         builder.add(userTextBox, CellConstraints.xy(3, 7));
-        builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 7));
+        builder.addLabel(Pat.CONSTANTS.password() + LABEL_SUFFIX, CellConstraints.xy(5, 7));
         builder.add(passwordTextBox, CellConstraints.xy(7, 7));
-        builder.addLabel(ConstantFactory.getInstance().schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
+        builder.addLabel(Pat.CONSTANTS.schemaFile() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
         fileUpload.setName(FORM_NAME_FILE);
         builder.add(fileUpload, CellConstraints.xyw(3, 9, 5));
         builder.add(schemaValCheckbox, CellConstraints.xyw(3, 11, 5));
@@ -380,8 +376,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
             public void onClick(final ClickEvent event) {
                 final String filename = fileUpload.getFilename();
                 if (filename == null || filename.length() == 0) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), ConstantFactory.getInstance()
-                            .fileUploadNoFile());
+                    MessageBox.error(Pat.CONSTANTS.error(), Pat.CONSTANTS.fileUploadNoFile());
                 } else {
                     formPanel.submit();
                 }
@@ -395,7 +390,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
             public void onClick(ClickEvent arg0) {
                 
                 
-                final WindowPanel winPanel = new WindowPanel(ConstantFactory.getInstance().schemaFile());
+                final WindowPanel winPanel = new WindowPanel(Pat.CONSTANTS.schemaFile());
                 final LayoutPanel wpLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
                 wpLayoutPanel.setSize("450px", "200px"); //$NON-NLS-1$ //$NON-NLS-2$
                 final RichTextArea schemaArea = new RichTextArea();
@@ -407,7 +402,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                 schemaArea.setHTML(newStr + "");
                 
                 wpLayoutPanel.add(schemaArea, new BoxLayoutData(1, 0.9));
-                final ToolButton saveBtn = new ToolButton(ConstantFactory.getInstance().save());
+                final ToolButton saveBtn = new ToolButton(Pat.CONSTANTS.save());
                 saveBtn.addClickHandler(new ClickHandler() {
                     public void onClick(final ClickEvent arg0) {
                         String newStr = schemaArea.getHTML();
@@ -421,7 +416,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
                 });
 
-                final ToolButton closeBtn = new ToolButton(ConstantFactory.getInstance().close());
+                final ToolButton closeBtn = new ToolButton(Pat.CONSTANTS.close());
                 closeBtn.addClickHandler(new ClickHandler() {
                     public void onClick(final ClickEvent arg0) {
                         winPanel.hide();
@@ -446,10 +441,10 @@ public class ConnectMondrianPanel extends LayoutComposite {
             }
         });
         viewSchemaButton.setEnabled(false);
-        viewSchemaButton.setText(ConstantFactory.getInstance().noSchema());
+        viewSchemaButton.setText(Pat.CONSTANTS.noSchema());
         builder.add(viewSchemaButton, CellConstraints.xy(7, 13));
         
-        builder.addLabel(ConstantFactory.getInstance().role() + LABEL_SUFFIX, CellConstraints.xy(1, 15));
+        builder.addLabel(Pat.CONSTANTS.role() + LABEL_SUFFIX, CellConstraints.xy(1, 15));
         builder.add(roleTextBox,CellConstraints.xyw(3,15,5));
         
         builder.add(startupCheckbox,CellConstraints.xy(3,17));
@@ -464,7 +459,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                     ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), cc,
                             new AsyncCallback<String>() {
                         public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedLoadConnection(arg0.getLocalizedMessage()));
                             saveButton.setEnabled(true);
                         }
@@ -501,8 +496,8 @@ public class ConnectMondrianPanel extends LayoutComposite {
 
         if (cc.getDriverClassName().length() == 0 || cc.getName().length() == 0  || cc.getUrl().length() == 0) {
             if (idHidden.getValue() == null && cc.getSchemaData().length() == 0) {
-            IGuiConstants inst = ConstantFactory.getInstance();
-            MessageBox.error(ConstantFactory.getInstance().error(),
+            IGuiConstants inst = Pat.CONSTANTS;
+            MessageBox.error(Pat.CONSTANTS.error(),
                     MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.jdbcDriver()).concat(",").concat(inst.jdbcUrl())));
             return false;
             }

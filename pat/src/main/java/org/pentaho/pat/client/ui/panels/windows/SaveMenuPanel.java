@@ -39,7 +39,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.LabelTextBox;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -99,7 +98,7 @@ public class SaveMenuPanel extends LayoutComposite {
             }
         });
 
-        final Label filterText = new Label(ConstantFactory.getInstance().filter() + ":"); //$NON-NLS-1$
+        final Label filterText = new Label(Pat.CONSTANTS.filter() + ":"); //$NON-NLS-1$
         final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
@@ -108,7 +107,7 @@ public class SaveMenuPanel extends LayoutComposite {
         layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
-        saveTextBox.setTextBoxLabelText(ConstantFactory.getInstance().save());
+        saveTextBox.setTextBoxLabelText(Pat.CONSTANTS.save());
         layoutPanel.add(saveTextBox);
 
         this.getLayoutPanel().add(layoutPanel);
@@ -154,7 +153,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 if (column == 0) {
                     listBox.setWidget(row, column, createRichListBoxCell(item));
                 } else {
-                    throw new RuntimeException(ConstantFactory.getInstance().shouldnthappen());
+                    throw new RuntimeException(Pat.CONSTANTS.shouldnthappen());
                 }
             }
         });
@@ -180,7 +179,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 new AsyncCallback<List<QuerySaveModel>>() {
 
             public void onFailure(final Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                         .failedGetQueryList(arg0.getLocalizedMessage()));
             }
 
@@ -210,7 +209,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 }
             }
             if (exists) {
-                MessageBox.confirm(ConstantFactory.getInstance().warning(),
+                MessageBox.confirm(Pat.CONSTANTS.warning(),
                         MessageFactory.getInstance().confirmQueryOverwrite(), new ConfirmationCallback() {
 
                     public void onResult(boolean result) {
@@ -234,7 +233,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
             public void onFailure(final Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                         .failedSaveQuery(arg0.getLocalizedMessage()));
             }
 
@@ -278,7 +277,7 @@ public class SaveMenuPanel extends LayoutComposite {
             ServiceFactory.getQueryInstance().deleteSavedQuery(Pat.getSessionID(), delItem.getName(), new AsyncCallback<Object>() {
 
                 public void onFailure(final Throwable arg0) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), arg0.getMessage());
+                    MessageBox.error(Pat.CONSTANTS.error(), arg0.getMessage());
                 }
 
                 public void onSuccess(final Object arg0) {

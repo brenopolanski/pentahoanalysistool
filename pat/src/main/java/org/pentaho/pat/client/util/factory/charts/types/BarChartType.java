@@ -12,7 +12,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ChartPanel;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.client.util.factory.charts.axis.ChartAxis;
@@ -145,7 +144,7 @@ public class BarChartType {
 
                                         public void onFailure(Throwable arg0) {
                                             LogoPanel.spinWheel(false);
-                                            MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory
+                                            MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory
                                                     .getInstance().failedDrill(arg0.getLocalizedMessage()));
                                         }
 

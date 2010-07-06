@@ -26,9 +26,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.ChartPanel;
 import org.pentaho.pat.client.ui.panels.windows.ChartOptionsPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,7 +42,7 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class ChartOptionsWindow extends WindowPanel {
 
-    private static final String TITLE = ConstantFactory.getInstance().chartOptions();
+    private static final String TITLE = Pat.CONSTANTS.chartOptions();
 
     private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
@@ -79,7 +79,7 @@ public class ChartOptionsWindow extends WindowPanel {
         winContentpanel.add(CHRTOPTIONSPANEL, new BoxLayoutData(FillStyle.BOTH));
         this.setWidget(winContentpanel);
 
-        final Button okButton = new Button(ConstantFactory.getInstance().ok());
+        final Button okButton = new Button(Pat.CONSTANTS.ok());
         okButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -93,7 +93,7 @@ public class ChartOptionsWindow extends WindowPanel {
             }
 
         });
-        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        final Button cancelButton = new Button(Pat.CONSTANTS.cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {

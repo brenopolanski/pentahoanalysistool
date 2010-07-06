@@ -31,7 +31,6 @@ import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ITableListener;
 import org.pentaho.pat.client.util.Operation;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.TableDataSet;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
@@ -113,7 +112,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
     public void onOperationExecuted(String queryId, Operation operation) {
         if (this.queryId.equals(queryId) && this.isAttached()) {
             if (operation.equals(Operation.ENABLE_DRILLTHROUGH)) {
-                this.getHeader().setText(ConstantFactory.getInstance().drillThroughPanel());
+                this.getHeader().setText(Pat.CONSTANTS.drillThroughPanel());
                 simple.clear();
                 simple.add(dtp);
                 parent.setCollapsed(this,false);

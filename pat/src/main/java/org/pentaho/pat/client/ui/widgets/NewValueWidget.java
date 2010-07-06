@@ -8,7 +8,6 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 
@@ -68,7 +67,7 @@ public class NewValueWidget extends WindowPanel {
     }
     
     public LayoutPanel buttonBar() {
-        final Button okButton = new Button(ConstantFactory.getInstance().ok());
+        final Button okButton = new Button(Pat.CONSTANTS.ok());
         okButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
@@ -87,7 +86,7 @@ public class NewValueWidget extends WindowPanel {
         }
 
         });
-        final Button cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        final Button cancelButton = new Button(Pat.CONSTANTS.cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
