@@ -40,7 +40,7 @@ import org.pentaho.pat.client.ui.widgets.OlapTable;
 import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
 import org.pentaho.pat.client.ui.widgets.QueryTrashWidget;
 import org.pentaho.pat.client.util.PanelUtil;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 
@@ -125,12 +125,12 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 
     @Override
     public void onLoad(){
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(DataPanel.this);
+        EventFactory.getQueryInstance().addQueryListener(DataPanel.this);
     }
     
     @Override
     public void onUnload(){
-        GlobalConnectionFactory.getQueryInstance().removeQueryListener(DataPanel.this);   
+        EventFactory.getQueryInstance().removeQueryListener(DataPanel.this);   
     }
     public void chartPosition(final Region chartPos) {
 

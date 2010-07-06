@@ -7,7 +7,7 @@ import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ISelectionListener;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 
@@ -140,7 +140,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
 
     @Override
     public void onLoad() {
-        GlobalConnectionFactory.getSelectionInstance().addSelectionListener(QueryDesignTable.this);
+        EventFactory.getSelectionInstance().addSelectionListener(QueryDesignTable.this);
     }
 
     public void onSelectionChange(String queryID, Widget sender, StringTree tree, String type) {
@@ -159,7 +159,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
 
     @Override
     public void onUnload() {
-        GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(QueryDesignTable.this);
+        EventFactory.getSelectionInstance().removeSelectionListener(QueryDesignTable.this);
     }
 
     private void removeRowsFromFlexTable(FlexTable flexTable, int[] coords) {

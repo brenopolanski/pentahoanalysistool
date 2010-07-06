@@ -7,7 +7,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
@@ -95,7 +95,7 @@ public class SimplePanelUtil {
                                     }
 
                                     public void onSuccess(Object arg0) {
-                                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                        EventFactory.getSelectionInstance().getQueryListeners()
                                                 .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis);
                                     }
 
@@ -128,7 +128,7 @@ public class SimplePanelUtil {
                                     }
 
                                     public void onSuccess(Object arg0) {
-                                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                        EventFactory.getSelectionInstance().getQueryListeners()
                                                 .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
                                     }
 
@@ -160,7 +160,7 @@ public class SimplePanelUtil {
                                     }
 
                                     public void onSuccess(Object arg0) {
-                                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                        EventFactory.getSelectionInstance().getQueryListeners()
                                                 .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
                                     }
 
@@ -212,7 +212,7 @@ public class SimplePanelUtil {
 
                                                         public void onSuccess(StringTree arg0) {
 
-                                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
 
                                                         }
@@ -223,7 +223,7 @@ public class SimplePanelUtil {
                                     });
 
                         } else {
-                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
+                            EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
                                     Pat.getCurrQuery(), label, is, iAxis);
                             
                             ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
@@ -236,7 +236,7 @@ public class SimplePanelUtil {
 
                                         public void onSuccess(StringTree arg0) {
 
-                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
 
                                         }
@@ -290,7 +290,7 @@ public class SimplePanelUtil {
                                                         }
 
                                                         public void onSuccess(StringTree arg0) {
-                                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
 
                                                         }
@@ -301,7 +301,7 @@ public class SimplePanelUtil {
                                     });
 
                         } else {
-                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
+                            EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
                                     Pat.getCurrQuery(), label, is, iAxis);
                             ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                                     label.getActualName(), ObjectType.HIERARCHY, label.getSelectionType(),
@@ -313,7 +313,7 @@ public class SimplePanelUtil {
                                         }
 
                                         public void onSuccess(StringTree arg0) {
-                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
 
                                         }
@@ -370,7 +370,7 @@ public class SimplePanelUtil {
                                                         public void onSuccess(StringTree arg0) {
                                                             label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                                     .getDropTarget()).getAxis());
-                                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
                                                             
                                                         }
@@ -381,7 +381,7 @@ public class SimplePanelUtil {
 
                                     });
                         } else {
-                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
+                            EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
                                     Pat.getCurrQuery(), label, is, iAxis);
                             ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                                     label.getActualName(), ObjectType.LEVEL, label.getSelectionType(),
@@ -395,7 +395,7 @@ public class SimplePanelUtil {
                                         public void onSuccess(StringTree arg0) {
                                             label.setAxis(((DimensionSimplePanel) context.finalDropController
                                                     .getDropTarget()).getAxis());
-                                            GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                            EventFactory.getSelectionInstance().getQueryListeners()
                                                     .fireSelectionChanged(Pat.getCurrQuery(), label, arg0, "MEMBER");
                                             
                                         }
@@ -454,7 +454,7 @@ public class SimplePanelUtil {
                                                             }
 
                                                             public void onSuccess(StringTree arg0) {
-                                                                GlobalConnectionFactory.getSelectionInstance()
+                                                                EventFactory.getSelectionInstance()
                                                                         .getQueryListeners().fireSelectionChanged(
                                                                                 Pat.getCurrQuery(), label, arg0,
                                                                                 "MEMBER");
@@ -469,7 +469,7 @@ public class SimplePanelUtil {
                             }
                         } else {
                             if (!createSelection)
-                                GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                EventFactory.getSelectionInstance().getQueryListeners()
                                         .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis);
                             else {
                                 List<String> list = new ArrayList<String>();
@@ -562,7 +562,7 @@ public class SimplePanelUtil {
                                     }
 
                                     public void onSuccess(Object arg0) {
-                                        GlobalConnectionFactory.getSelectionInstance().getQueryListeners()
+                                        EventFactory.getSelectionInstance().getQueryListeners()
                                                 .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
                                     }
 
@@ -585,7 +585,7 @@ public class SimplePanelUtil {
 
             public void onSuccess(Object arg0) {
             	if(firelistener)
-            		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
+            		EventFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
             }
             
         });
@@ -600,7 +600,7 @@ public class SimplePanelUtil {
 
                 public void onSuccess(Object arg0) {
                 	if(firelistener)
-                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
+                		EventFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
                 }
                 
             });
@@ -619,7 +619,7 @@ public class SimplePanelUtil {
 
                 public void onSuccess(Object arg0) {
                 	if(firelistener)
-                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
+                		EventFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
                 }
                 
             });
@@ -634,7 +634,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                     	if(firelistener)
-                    		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
+                    		EventFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
                     }
                     
                 });
@@ -653,7 +653,7 @@ public class SimplePanelUtil {
 
                 public void onSuccess(Object arg0) {
                 	if(firelistener)
-                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
+                		EventFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), coord[1], coord2[1]);
                 }
                 
             });
@@ -668,7 +668,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Object arg0) {
                     	if(firelistener)
-                    		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
+                    		EventFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), coord[0], coord2[0]);
                     }
                     
                 });
@@ -689,7 +689,7 @@ public class SimplePanelUtil {
 
 	            public void onSuccess(Object arg0) {
 	            	if(firelistener)
-	            		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
+	            		EventFactory.getSelectionInstance().getQueryListeners().fireMoveCol(Pat.getCurrQuery(), currentPos[1], newPos[1]);
 	            }
 	            
 	        });
@@ -704,7 +704,7 @@ public class SimplePanelUtil {
 
 	                public void onSuccess(Object arg0) {
 	                	if(firelistener)
-	                		GlobalConnectionFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
+	                		EventFactory.getSelectionInstance().getQueryListeners().fireMoveRow(Pat.getCurrQuery(), currentPos[0], newPos[0]);
 	                }
 	                
 	            });

@@ -30,7 +30,7 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ISelectionListener;
 import org.pentaho.pat.client.ui.panels.DimensionPanel;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -72,7 +72,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
      */
     @Override
     public void onLoad(){
-        GlobalConnectionFactory.getSelectionInstance().addSelectionListener(DimensionTreeWidget.this);
+        EventFactory.getSelectionInstance().addSelectionListener(DimensionTreeWidget.this);
     }
     /*
      * (non-Javadoc)
@@ -80,7 +80,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
      */
     @Override
     public void onUnload(){
-        GlobalConnectionFactory.getSelectionInstance().removeSelectionListener(DimensionTreeWidget.this);
+        EventFactory.getSelectionInstance().removeSelectionListener(DimensionTreeWidget.this);
     }
 
     

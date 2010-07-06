@@ -15,7 +15,7 @@ package org.pentaho.pat.client.util.factory;
 import org.pentaho.pat.client.listeners.LabelChangeListeners;
 import org.pentaho.pat.client.listeners.QueryChangeListeners;
 import org.pentaho.pat.client.listeners.SelectionChangeListeners;
-import org.pentaho.pat.client.listeners.TableListener;
+import org.pentaho.pat.client.listeners.OperationListener;
 
 import com.google.gwt.core.client.GWT;
 
@@ -25,7 +25,7 @@ import com.google.gwt.core.client.GWT;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class GlobalConnectionFactory {
+public class EventFactory {
 
     protected static QueryChangeListeners qcl;
 
@@ -36,11 +36,11 @@ public class GlobalConnectionFactory {
         return qcl;
     }
     
-    protected static TableListener tl;
+    protected static OperationListener tl;
 
-    public static TableListener getOperationInstance() {
+    public static OperationListener getOperationInstance() {
         if (tl == null) {
-            tl = (TableListener) GWT.create(TableListener.class);
+            tl = (OperationListener) GWT.create(OperationListener.class);
         }
         return tl;
     }

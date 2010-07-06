@@ -21,12 +21,12 @@ package org.pentaho.pat.client.ui.widgets;
 
 import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.ITableListener;
+import org.pentaho.pat.client.listeners.IOperationListener;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.popups.CellModeMenu;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
@@ -47,7 +47,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  * @author tom(at)wamonline.org.uk
  * 
  */
-public class CellLabelPanel extends HorizontalPanel implements ITableListener {
+public class CellLabelPanel extends HorizontalPanel implements IOperationListener {
     private MemberCell memCell = null;
 
     private Image drillButton;
@@ -64,7 +64,7 @@ public class CellLabelPanel extends HorizontalPanel implements ITableListener {
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         this.setStyleName(CELL_LABEL_PANEL);
         
-        GlobalConnectionFactory.getOperationInstance().addTableListener(this);
+        EventFactory.getOperationInstance().addOperationListener(this);
         
         drillButton = null;
         if (memCell != null && memCell.getRawValue() != null && PanelType.QM.equals(Pat.getCurrPanelType())) {

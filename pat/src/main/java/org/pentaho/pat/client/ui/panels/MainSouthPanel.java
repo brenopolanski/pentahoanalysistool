@@ -29,9 +29,9 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.listeners.ITableListener;
+import org.pentaho.pat.client.listeners.IOperationListener;
 import org.pentaho.pat.client.util.Operation;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.rpc.dto.TableDataSet;
 import org.pentaho.pat.rpc.dto.enums.DrillType;
 
@@ -42,7 +42,7 @@ import org.pentaho.pat.rpc.dto.enums.DrillType;
  * @author Paul Stoellberger
  * 
  */
-public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener {
+public class MainSouthPanel extends CaptionLayoutPanel implements IOperationListener {
 
     private DrillThroughPanel dtp = new DrillThroughPanel();
     private LayoutPanel baselayoutPanel = getLayoutPanel();
@@ -65,7 +65,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
         if (parent != null) {
             parent.layout();
         }
-        GlobalConnectionFactory.getOperationInstance().addTableListener(MainSouthPanel.this);
+        EventFactory.getOperationInstance().addOperationListener(MainSouthPanel.this);
     };
     
    
@@ -77,7 +77,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
             parent.layout();
         }
        
-        GlobalConnectionFactory.getOperationInstance().removeTableListener(MainSouthPanel.this);
+        EventFactory.getOperationInstance().removeOperationListener(MainSouthPanel.this);
     };
 
     private void initializeWidget() {
@@ -107,7 +107,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements ITableListener
     
     
     /* (non-Javadoc)
-     * @see org.pentaho.pat.client.listeners.ITableListener#onOperationExecuted(org.pentaho.pat.client.util.Operation)
+     * @see org.pentaho.pat.client.listeners.IOperationListener#onOperationExecuted(org.pentaho.pat.client.util.Operation)
      */
     public void onOperationExecuted(String queryId, Operation operation) {
         if (this.queryId.equals(queryId) && this.isAttached()) {

@@ -42,7 +42,7 @@ import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil;
-import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
+import org.pentaho.pat.client.util.factory.EventFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CellDataSet;
@@ -168,7 +168,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         this.dataPanel = dPanel;
         this.queryId = Pat.getCurrQuery();
         
-        GlobalConnectionFactory.getQueryInstance().addQueryListener(this);
+        EventFactory.getQueryInstance().addQueryListener(this);
         
         final LayoutPanel rootPanel = getLayoutPanel();
 
@@ -286,12 +286,12 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         hideBlanksButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
+                EventFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
                 ServiceFactory.getQueryInstance().setNonEmpty(Pat.getSessionID(), queryId,
                         hideBlanksButton.isChecked(), new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
+                        EventFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
                         MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedNonEmpty());
 
                     }
@@ -304,7 +304,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                         } else {
                             hideBlanksButton.setTitle(Pat.CONSTANTS.hideBlankCells());
                         }
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                        EventFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, queryId, arg0);
                     }
 
@@ -355,21 +355,21 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         pivotButton.addClickHandler(new ClickHandler() {
 
             public void onClick(final ClickEvent arg0) {
-                GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
+                EventFactory.getQueryInstance().getQueryListeners().fireQueryStartsExecution(PropertiesPanel.this, queryId);
                 
                 ServiceFactory.getQueryInstance().swapAxis(Pat.getSessionID(), queryId,
                         new AsyncCallback<CellDataSet>() {
 
                     public void onFailure(final Throwable arg0) {
 
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
+                        EventFactory.getQueryInstance().getQueryListeners().fireQueryFailedExecution(PropertiesPanel.this, queryId);
                         MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedPivot(arg0.getLocalizedMessage()));
                     }
 
                     public void onSuccess(final CellDataSet arg0) {
 
-                        GlobalConnectionFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
+                        EventFactory.getQueryInstance().getQueryListeners().fireQueryExecuted(
                                 PropertiesPanel.this, queryId, arg0);
                         
 
@@ -411,7 +411,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                 drillPositionButton.setChecked(true);
 
                 (new DrillCommand(DrillType.POSITION)).execute();
-                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.POSITION);
+                EventFactory.getOperationInstance().getOperationListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.POSITION);
             }
         });
         
@@ -428,7 +428,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                 drillReplaceButton.setChecked(true);
                 
                 (new DrillCommand(DrillType.REPLACE)).execute();
-                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.REPLACE);
+                EventFactory.getOperationInstance().getOperationListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.REPLACE);
             }
         });
         
@@ -445,7 +445,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                 drillUpButton.setChecked(true);
 
                 (new DrillCommand(DrillType.UP)).execute();
-                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.UP);
+                EventFactory.getOperationInstance().getOperationListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.UP);
             }
         });
         
@@ -461,7 +461,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
                 drillNoneButton.setChecked(true);
 
                 (new DrillCommand(DrillType.NONE)).execute();
-                GlobalConnectionFactory.getOperationInstance().getTableListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.NONE);
+                EventFactory.getOperationInstance().getOperationListeners().fireDrillStyleChanged(PropertiesPanel.this, queryId, DrillType.NONE);
             }
         });
 
@@ -476,11 +476,11 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             
             public void onClick(ClickEvent arg0) {
                 if (drillThroughButton.isChecked()) {
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, queryId,  Operation.ENABLE_DRILLTHROUGH);
+                    EventFactory.getOperationInstance().getOperationListeners().fireOperationExecuted(PropertiesPanel.this, queryId,  Operation.ENABLE_DRILLTHROUGH);
                 }
                 else
                 {
-                    GlobalConnectionFactory.getOperationInstance().getTableListeners().fireOperationExecuted(PropertiesPanel.this, queryId, Operation.DISABLE_DRILLTHROUGH);
+                    EventFactory.getOperationInstance().getOperationListeners().fireOperationExecuted(PropertiesPanel.this, queryId, Operation.DISABLE_DRILLTHROUGH);
                 }
                 
             }
