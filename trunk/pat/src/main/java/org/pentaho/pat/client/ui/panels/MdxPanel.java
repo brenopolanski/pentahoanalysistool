@@ -383,10 +383,6 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
     }
 
-	public void onQueryPivoted(String queryId) {
-		
-	}
-
     public void onQueryStartExecution(String queryId) {
     }
 

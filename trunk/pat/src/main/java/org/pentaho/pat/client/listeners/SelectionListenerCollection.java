@@ -48,7 +48,7 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
      * @param iAxis 
      */
     public void fireSelectionChanged(final String queryID, final Widget sender, StringTree tree, final String type) {
-    	ArrayList<ISelectionListener> queryChangedList = (ArrayList<ISelectionListener>) this.clone();
+    	ArrayList<ISelectionListener> queryChangedList = new ArrayList<ISelectionListener>(this);
         for (ISelectionListener listener : queryChangedList) {
             listener.onSelectionChange(queryID, sender, tree, type);
         }
@@ -56,7 +56,7 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
 
 	public void fireSelectionCleared(String currQuery, MeasureLabel label,
 			int[] is, IAxis iAxis) {
-		ArrayList<ISelectionListener> queryChangedList = (ArrayList<ISelectionListener>) this.clone();
+		ArrayList<ISelectionListener> queryChangedList = new ArrayList<ISelectionListener>(this);
         for (ISelectionListener listener : queryChangedList) {
             listener.onSelectionCleared(currQuery, label, is, iAxis);
         }
@@ -64,7 +64,7 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
 	}
 
     public void fireMoveRow(String currQuery, int oldrow, int newrow) {
-        ArrayList<ISelectionListener> moveRowList = (ArrayList<ISelectionListener>) this.clone();
+        ArrayList<ISelectionListener> moveRowList = new ArrayList<ISelectionListener>(this);
         for (ISelectionListener listener : moveRowList){
             listener.onMoveRow(currQuery, oldrow, newrow);
         }
@@ -72,7 +72,7 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
     }
 
     public void fireMoveCol(String currQuery, int oldcol, int newcol) {
-        ArrayList<ISelectionListener> moveColList = (ArrayList<ISelectionListener>) this.clone();
+        ArrayList<ISelectionListener> moveColList = new ArrayList<ISelectionListener>(this);
         for(ISelectionListener listener : moveColList){
             listener.onMoveCol(currQuery, oldcol, newcol);
         }

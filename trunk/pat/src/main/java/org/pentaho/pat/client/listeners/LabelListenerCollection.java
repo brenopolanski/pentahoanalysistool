@@ -36,7 +36,7 @@ public class LabelListenerCollection extends ArrayList<ILabelListener> {
     private static final long serialVersionUID = 1L;
 
     public void fireUniqueNameChange(final Widget sender, final boolean isUnique) {
-    	ArrayList<ILabelListener> labelChangeList = (ArrayList<ILabelListener>) this.clone();
+    	ArrayList<ILabelListener> labelChangeList = new ArrayList<ILabelListener>(this);
         for (ILabelListener listener : labelChangeList) {
             listener.onUniqueNameChange(sender, isUnique);
         }
