@@ -33,7 +33,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.LevelProperties;
@@ -140,7 +139,7 @@ public class PropertiesMenu extends LayoutComposite {
                 new AsyncCallback<String[]>() {
 
                     public void onFailure(Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedMemberFetch(arg0.getLocalizedMessage()));
 
                     }
@@ -157,7 +156,7 @@ public class PropertiesMenu extends LayoutComposite {
 
                     public void onFailure(final Throwable arg0) {
                         // dimensionTree.clear();
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedMemberFetch(arg0.getLocalizedMessage()));
                     }
 

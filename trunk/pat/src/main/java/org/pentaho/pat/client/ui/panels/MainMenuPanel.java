@@ -24,7 +24,7 @@ import org.gwt.mosaic.ui.client.CaptionLayoutPanel;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.BorderLayout;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
+import org.pentaho.pat.client.Pat;
 
 /**
  * The MainMenuPanel is the holder for the properties, and dimension panels.
@@ -56,7 +56,7 @@ public class MainMenuPanel extends LayoutComposite {
         // FIXME remove that and use style
         DOM.setStyleAttribute(dimPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel(ConstantFactory.getInstance().dimensions());
+        final CaptionLayoutPanel centerPanel = new CaptionLayoutPanel(Pat.CONSTANTS.dimensions());
         // FIXME remove that and use style
         DOM.setStyleAttribute(centerPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -37,7 +37,6 @@ import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
@@ -109,7 +108,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
     public MdxPanel(final CubeItem cube, final CubeConnection connection, final String mdx, final String _queryId) {
         super();
         // Needs working out so it accounts for multiple cubes of the same name.
-        panelName = ConstantFactory.getInstance().mdx() + " : " + cube.getName(); //$NON-NLS-1$
+        panelName = Pat.CONSTANTS.mdx() + " : " + cube.getName(); //$NON-NLS-1$
         this.queryId = _queryId;
         this.cubeItem = cube;
         this.cube = cube.getName();
@@ -128,7 +127,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
                 public void onFailure(final Throwable arg0) {
 
-                    MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                    MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                             .failedCreateQuery(arg0.getLocalizedMessage()));
                     LogoPanel.spinWheel(false);
 
@@ -147,7 +146,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                                 new AsyncCallback<Object>() {
 
                             public void onFailure(final Throwable arg0) {
-                                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                         .failedQuery(arg0.getLocalizedMessage()));
                             }
 
@@ -200,11 +199,11 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
         final ScrollPanel spMdx = new ScrollPanel(mdxArea);
         northPanel.add(spMdx, new BoxLayoutData(FillStyle.HORIZONTAL));
 
-        final Button executeButton = new Button(ConstantFactory.getInstance().executeQuery());
+        final Button executeButton = new Button(Pat.CONSTANTS.executeQuery());
 
         northPanel.add(executeButton);
 
-        final CaptionLayoutPanel collapsePanel = new CaptionLayoutPanel(ConstantFactory.getInstance().mdx());
+        final CaptionLayoutPanel collapsePanel = new CaptionLayoutPanel(Pat.CONSTANTS.mdx());
 
         final ImageButton collapseBtn = new ImageButton(Caption.IMAGES.toolCollapseUp());
         collapsePanel.getHeader().add(collapseBtn, CaptionRegion.RIGHT);
@@ -261,7 +260,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                 new AsyncCallback<Object>() {
 
                     public void onFailure(final Throwable arg0) {
-                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                 .failedQuery(arg0.getLocalizedMessage()));
                     }
 
@@ -270,7 +269,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
                                 queryId, new AsyncCallback<CellDataSet>() {
 
                                     public void onFailure(final Throwable arg0) {
-                                        MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory
+                                        MessageBox.error(Pat.CONSTANTS.error(), MessageFactory
                                                 .getInstance().failedQuery(arg0.getLocalizedMessage()));
                                     }
 
@@ -331,7 +330,7 @@ public class MdxPanel extends AbstractDataWidget implements IQueryListener {
 
             public void onFailure(final Throwable arg0) {
 
-                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedDeleteQuery(
+                MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedDeleteQuery(
                         arg0.getLocalizedMessage()));
                 LogoPanel.spinWheel(false);
             }

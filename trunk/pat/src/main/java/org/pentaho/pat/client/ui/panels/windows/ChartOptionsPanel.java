@@ -34,8 +34,8 @@ import org.gwt.mosaic.ui.client.WindowPanel;
 import org.gwt.mosaic.ui.client.ToolButton.ToolButtonStyle;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.list.DefaultListModel;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.util.colorpicker.ColorPicker;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -77,9 +77,9 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private BaseDot bDot;
 
-    private final ToolButton legendTopButton = new ToolButton(ConstantFactory.getInstance().top());
+    private final ToolButton legendTopButton = new ToolButton(Pat.CONSTANTS.top());
 
-    private final ToolButton legendRightButton = new ToolButton(ConstantFactory.getInstance().right());
+    private final ToolButton legendRightButton = new ToolButton(Pat.CONSTANTS.right());
 
     private Map<String, Object> optionsMap = new HashMap<String, Object>();
 
@@ -109,9 +109,9 @@ public class ChartOptionsPanel extends LayoutComposite {
         super();
         final TabLayoutPanel tabPanel = new DecoratedTabLayoutPanel();
         this.setStyleName(CHART_OPTIONS_PANEL);
-        tabPanel.add(generalOptionsPanel(), ConstantFactory.getInstance().generalOptions());
-        tabPanel.add(barOptionsPanel(), ConstantFactory.getInstance().barChartOptions());
-        tabPanel.add(lineOptionsPanel(), ConstantFactory.getInstance().lineChartOptions());
+        tabPanel.add(generalOptionsPanel(), Pat.CONSTANTS.generalOptions());
+        tabPanel.add(barOptionsPanel(), Pat.CONSTANTS.barChartOptions());
+        tabPanel.add(lineOptionsPanel(), Pat.CONSTANTS.lineChartOptions());
         this.getLayoutPanel().add(tabPanel);
 
     }
@@ -163,67 +163,67 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         final PanelBuilder builder = new PanelBuilder(layout);
 
-        builder.addSeparator(ConstantFactory.getInstance().titles());
+        builder.addSeparator(Pat.CONSTANTS.titles());
 
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().chartTitle());
+        builder.addLabel(Pat.CONSTANTS.chartTitle());
         builder.nextColumn(2);
         builder.add(chartTitleTextBox);
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().xaxisLabel());
+        builder.addLabel(Pat.CONSTANTS.xaxisLabel());
         builder.nextColumn(2);
         builder.add(xAxisTextBox);
         builder.nextColumn(2);
-        builder.addLabel(ConstantFactory.getInstance().yaxisLabel());
+        builder.addLabel(Pat.CONSTANTS.yaxisLabel());
         builder.nextColumn(2);
         builder.add(yAxisTextBox);
         builder.nextLine(2);
-        builder.addLabel(ConstantFactory.getInstance().legend());
+        builder.addLabel(Pat.CONSTANTS.legend());
         builder.nextColumn(2);
         builder.add(legendTopButton);
         builder.nextColumn(2);
         builder.nextColumn(2);
         builder.add(legendRightButton);
         builder.nextLine(2);
-        builder.addLabel(ConstantFactory.getInstance().backgroundColor());
+        builder.addLabel(Pat.CONSTANTS.backgroundColor());
         builder.nextColumn(2);
         builder.add(bgColorTextBox);
         builder.nextLine(2);
-        builder.addLabel(ConstantFactory.getInstance().yaxisColor());
+        builder.addLabel(Pat.CONSTANTS.yaxisColor());
         builder.nextColumn(2);
         builder.add(yaxisColorTextBox);
         builder.nextColumn(2);
-        builder.addLabel(ConstantFactory.getInstance().yaxisGridColor());
+        builder.addLabel(Pat.CONSTANTS.yaxisGridColor());
         builder.nextColumn(2);
         builder.add(yAxisGridColorTextBox);
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().yaxisMin());
+        builder.addLabel(Pat.CONSTANTS.yaxisMin());
         builder.nextColumn(2);
         builder.add(yAxisMinTextBox);
         builder.nextColumn(2);
-        builder.addLabel(ConstantFactory.getInstance().yaxisMax());
+        builder.addLabel(Pat.CONSTANTS.yaxisMax());
         builder.nextColumn(2);
         builder.add(yAxisMaxTextBox);
         builder.nextLine(2);
 
         builder.nextLine(2);
-        builder.addLabel(ConstantFactory.getInstance().xaxisColor());
+        builder.addLabel(Pat.CONSTANTS.xaxisColor());
         builder.nextColumn(2);
         builder.add(xaxisColorTextBox);
         builder.nextColumn(2);
-        builder.addLabel(ConstantFactory.getInstance().xaxisGridColor());
+        builder.addLabel(Pat.CONSTANTS.xaxisGridColor());
         builder.nextColumn(2);
         builder.add(xaxisGridColorTextBox);
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().xaxisMin());
+        builder.addLabel(Pat.CONSTANTS.xaxisMin());
         builder.nextColumn(2);
         builder.add(xaxisMinTextBox);
         builder.nextColumn(2);
-        builder.addLabel(ConstantFactory.getInstance().xaxisMax());
+        builder.addLabel(Pat.CONSTANTS.xaxisMax());
         builder.nextColumn(2);
         builder.add(xaxisMaxTextBox);
         builder.nextLine(2);
@@ -251,9 +251,9 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
 
-        model.add(ConstantFactory.getInstance().glass());
-        model.add(ConstantFactory.getInstance().normal());
-        model.add(ConstantFactory.getInstance().threed());
+        model.add(Pat.CONSTANTS.glass());
+        model.add(Pat.CONSTANTS.normal());
+        model.add(Pat.CONSTANTS.threed());
 
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
             public void onRowSelection(final RowSelectionEvent event) {
@@ -278,11 +278,11 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         final PanelBuilder builder = new PanelBuilder(layout);
 
-        builder.addSeparator(ConstantFactory.getInstance().barChartOptions());
+        builder.addSeparator(Pat.CONSTANTS.barChartOptions());
 
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().barStyle());
+        builder.addLabel(Pat.CONSTANTS.barStyle());
         builder.nextColumn(2);
         builder.add(listBox);
         builder.nextLine(2);
@@ -311,9 +311,9 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         final DefaultListModel<String> model = (DefaultListModel<String>) listBox.getModel();
 
-        model.add(ConstantFactory.getInstance().normal());
-        model.add(ConstantFactory.getInstance().hollow());
-        model.add(ConstantFactory.getInstance().star());
+        model.add(Pat.CONSTANTS.normal());
+        model.add(Pat.CONSTANTS.hollow());
+        model.add(Pat.CONSTANTS.star());
 
         listBox.addRowSelectionHandler(new RowSelectionHandler() {
             public void onRowSelection(final RowSelectionEvent event) {
@@ -338,11 +338,11 @@ public class ChartOptionsPanel extends LayoutComposite {
 
         final PanelBuilder builder = new PanelBuilder(layout);
 
-        builder.addSeparator(ConstantFactory.getInstance().lineChartOptions());
+        builder.addSeparator(Pat.CONSTANTS.lineChartOptions());
 
         builder.nextLine(2);
 
-        builder.addLabel(ConstantFactory.getInstance().dotStyle());
+        builder.addLabel(Pat.CONSTANTS.dotStyle());
         builder.nextColumn(2);
         builder.add(listBox);
         builder.nextLine(2);
@@ -453,7 +453,7 @@ public class ChartOptionsPanel extends LayoutComposite {
 
     private void createBasicWindowPanel() {
 
-        basic = new WindowPanel(ConstantFactory.getInstance().backgroundColor());
+        basic = new WindowPanel(Pat.CONSTANTS.backgroundColor());
         basic.setSize("500px", "500px"); //$NON-NLS-1$ //$NON-NLS-2$
         basic.setAnimationEnabled(true);
         final ColorPicker colorPick = new ColorPicker();

@@ -30,7 +30,6 @@ import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.i18n.IGuiConstants;
 import org.pentaho.pat.client.ui.windows.ConnectionManagerWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
@@ -97,15 +96,15 @@ public class ConnectXmlaPanel extends LayoutComposite {
     public ConnectXmlaPanel() {
         super(new BorderLayout());
         idHidden = new Hidden();
-        saveButton = new Button(ConstantFactory.getInstance().save());
-        cancelButton = new Button(ConstantFactory.getInstance().cancel());
+        saveButton = new Button(Pat.CONSTANTS.save());
+        cancelButton = new Button(Pat.CONSTANTS.cancel());
         urlTextBox = new TextBox();
         userTextBox = new TextBox();
         nameTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
         roleTextBox = new TextBox();
         catalogTextBox = new TextBox();
-        startupCheckbox = new CheckBox(ConstantFactory.getInstance().connectStartup());
+        startupCheckbox = new CheckBox(Pat.CONSTANTS.connectStartup());
         this.setStyleName(CONNECT_XMLA_PANEL);
         init();
     }
@@ -175,17 +174,17 @@ public class ConnectXmlaPanel extends LayoutComposite {
                 // "12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px, pref, 12px");
         "p, 3dlu, p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p, 3dlu,p"); //$NON-NLS-1$
         final PanelBuilder builder = new PanelBuilder(layout);
-        builder.addLabel(ConstantFactory.getInstance().name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
+        builder.addLabel(Pat.CONSTANTS.name() + LABEL_SUFFIX, CellConstraints.xy(1, 1));
         builder.add(nameTextBox, CellConstraints.xyw(3, 1, 5));
-        builder.addLabel(ConstantFactory.getInstance().xmlaUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
+        builder.addLabel(Pat.CONSTANTS.xmlaUrl() + LABEL_SUFFIX, CellConstraints.xy(1, 3));
         builder.add(urlTextBox, CellConstraints.xyw(3, 3, 5));
-        builder.addLabel(ConstantFactory.getInstance().username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
+        builder.addLabel(Pat.CONSTANTS.username() + LABEL_SUFFIX, CellConstraints.xy(1, 5));
         builder.add(userTextBox, CellConstraints.xy(3, 5));
-        builder.addLabel(ConstantFactory.getInstance().password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
+        builder.addLabel(Pat.CONSTANTS.password() + LABEL_SUFFIX, CellConstraints.xy(5, 5));
         builder.add(passwordTextBox, CellConstraints.xy(7, 5));
-        builder.addLabel(ConstantFactory.getInstance().catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
+        builder.addLabel(Pat.CONSTANTS.catalog() + LABEL_SUFFIX, CellConstraints.xy(1, 7));
         builder.add(catalogTextBox, CellConstraints.xyw(3, 7, 5));
-        builder.addLabel(ConstantFactory.getInstance().role() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
+        builder.addLabel(Pat.CONSTANTS.role() + LABEL_SUFFIX, CellConstraints.xy(1, 9));
         builder.add(roleTextBox, CellConstraints.xyw(3, 9, 5));
         builder.add(startupCheckbox,CellConstraints.xy(3,11));
         saveButton.addClickHandler(new ClickHandler() {
@@ -196,7 +195,7 @@ public class ConnectXmlaPanel extends LayoutComposite {
                     ServiceFactory.getSessionInstance().saveConnection(Pat.getSessionID(), cc,
                             new AsyncCallback<String>() {
                         public void onFailure(final Throwable arg0) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedLoadConnection(arg0.getLocalizedMessage()));
                             saveButton.setEnabled(true);
                         }
@@ -228,8 +227,8 @@ public class ConnectXmlaPanel extends LayoutComposite {
     public boolean validateConnection(CubeConnection cc) {
 
         if (cc.getName().length() == 0 || cc.getUrl().length() == 0) {
-            IGuiConstants inst = ConstantFactory.getInstance();
-            MessageBox.error(ConstantFactory.getInstance().error(),
+            IGuiConstants inst = Pat.CONSTANTS;
+            MessageBox.error(Pat.CONSTANTS.error(),
                     MessageFactory.getInstance().validationEmpty(inst.name().concat(",").concat(inst.xmlaUrl()))); //$NON-NLS-1$
             return false;
             //MessageFactory.getInstance().failedLoadConnection(arg0.getLocalizedMessage()));

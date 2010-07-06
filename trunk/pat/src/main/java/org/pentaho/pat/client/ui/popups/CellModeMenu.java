@@ -25,7 +25,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.gwt.mosaic.ui.client.PopupMenu;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.CellLabelPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 
@@ -142,7 +141,7 @@ public class CellModeMenu extends PopupMenu {
 
                         public void onFailure(final Throwable arg0) {
 
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .failedSetSortOrder(arg0.getLocalizedMessage()));
                         }
 
@@ -174,10 +173,10 @@ public class CellModeMenu extends PopupMenu {
 
     private void init() {
         this.setAutoOpen(true);
-        this.addItem(new MenuItem(ConstantFactory.getInstance().sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
-        this.addItem(new MenuItem(ConstantFactory.getInstance().sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
-        this.addItem(new MenuItem(ConstantFactory.getInstance().exclude(), new ExcludeCommand()));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().clearExclusions(), new ClearExcludeCommand()));
+        this.addItem(new MenuItem(Pat.CONSTANTS.sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
+        this.addItem(new MenuItem(Pat.CONSTANTS.sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
+        this.addItem(new MenuItem(Pat.CONSTANTS.exclude(), new ExcludeCommand()));
+        this.addItem(new MenuItem(Pat.CONSTANTS.clearExclusions(), new ClearExcludeCommand()));
     }
 
     /**

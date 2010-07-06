@@ -34,7 +34,6 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.gwt.mosaic.ui.client.util.ButtonHelper;
 import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -51,7 +50,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
  */
 public class AboutWindow extends WindowPanel {
 
-    private static final String TITLE = ConstantFactory.getInstance().aboutPat();
+    private static final String TITLE = Pat.CONSTANTS.aboutPat();
     
     private static final AboutWindow ABOUTWINDOW = new AboutWindow();
     

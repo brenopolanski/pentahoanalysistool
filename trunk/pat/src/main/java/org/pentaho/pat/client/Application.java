@@ -40,7 +40,6 @@ import org.pentaho.pat.client.ui.panels.WelcomePanel;
 import org.pentaho.pat.client.ui.panels.windows.LoadMenuPanel;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
 import org.pentaho.pat.client.util.dnd.impl.SimplePanelDragControllerImpl;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -132,7 +131,7 @@ public class Application extends Viewport {
         }
 
         if (Pat.getApplicationState().getMode().isShowWelcomePanel()) {
-            MainTabPanel.displayContentWidget(new WelcomePanel(ConstantFactory.getInstance().welcome()));
+            MainTabPanel.displayContentWidget(new WelcomePanel(Pat.CONSTANTS.welcome()));
         }
 
         if (Pat.getApplicationState().getMode().isShowOnlyOnePanel()) {
@@ -151,7 +150,7 @@ public class Application extends Viewport {
         ServiceFactory.getQueryInstance().getActiveQueries(Pat.getSessionID(), new AsyncCallback<List<QuerySaveModel>> () {
 
             public void onFailure(Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                         .failedGetQueryList(arg0.getLocalizedMessage()));
 
             }

@@ -26,13 +26,13 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.CubeMenu;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.widgets.CubeTreeItem;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -48,17 +48,17 @@ import com.google.gwt.event.dom.client.ClickHandler;
 public class CubeBrowserWindow extends WindowPanel {
 
     /** The Window Title. */
-    private static final String TITLE = ConstantFactory.getInstance().titleCubeBrowser();
+    private static final String TITLE = Pat.CONSTANTS.titleCubeBrowser();
 
     private final static CubeMenu CUBEMENUPANEL = new CubeMenu();
 
     private final LayoutPanel winContentpanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
 
-    private final static ToolButton QMQUERYBUTTON = new ToolButton(ConstantFactory.getInstance().newQuery());
+    private final static ToolButton QMQUERYBUTTON = new ToolButton(Pat.CONSTANTS.newQuery());
 
-    private final static ToolButton MDXQUERYBUTTON = new ToolButton(ConstantFactory.getInstance().newMdxQuery());
+    private final static ToolButton MDXQUERYBUTTON = new ToolButton(Pat.CONSTANTS.newMdxQuery());
 
-    private final ToolButton cancelButton = new ToolButton(ConstantFactory.getInstance().cancel());
+    private final ToolButton cancelButton = new ToolButton(Pat.CONSTANTS.cancel());
 
     private final static CubeBrowserWindow CBW = new CubeBrowserWindow();
 

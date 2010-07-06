@@ -100,7 +100,15 @@ public interface IGuiImages extends ImageBundle {
     
     AbstractImagePrototype arrow_down();
     
+    AbstractImagePrototype arrow_refresh();
+    
     AbstractImagePrototype bin_empty();
     
     AbstractImagePrototype bin_full();
+    
+    AbstractImagePrototype execute_no_ds();
+    
+    AbstractImagePrototype edit_query();
+    
+    AbstractImagePrototype zero();
 }

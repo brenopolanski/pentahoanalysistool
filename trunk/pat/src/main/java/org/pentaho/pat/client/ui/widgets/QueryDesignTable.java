@@ -5,8 +5,8 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ISelectionListener;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.GlobalConnectionFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.query.IAxis;
@@ -26,7 +26,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
     public QueryDesignTable(String queryID, boolean isfilter) {
         this.isfilter = isfilter;
         if (isfilter) {
-            Label filterLabel = new Label(ConstantFactory.getInstance().filter());
+            Label filterLabel = new Label(Pat.CONSTANTS.filter());
             this.getLayoutPanel().setLayout(new BoxLayout());
             this.getLayoutPanel().add(filterLabel);
         }

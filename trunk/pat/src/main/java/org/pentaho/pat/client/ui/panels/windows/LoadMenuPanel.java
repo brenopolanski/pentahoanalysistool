@@ -39,7 +39,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MdxPanel;
 import org.pentaho.pat.client.ui.panels.OlapPanel;
 import org.pentaho.pat.client.ui.windows.LoadWindow;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -99,7 +98,7 @@ public class LoadMenuPanel extends LayoutComposite {
             }
         });
 
-        final Label filterText = new Label(ConstantFactory.getInstance().filter() + ":"); //$NON-NLS-1$
+        final Label filterText = new Label(Pat.CONSTANTS.filter() + ":"); //$NON-NLS-1$
         final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
         filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
         filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
@@ -142,7 +141,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
                     listBox.setWidget(row, column, createRichListBoxCell(item));
                 } else {
-                    throw new RuntimeException(ConstantFactory.getInstance().shouldnthappen());
+                    throw new RuntimeException(Pat.CONSTANTS.shouldnthappen());
                 }
             }
         });
@@ -175,7 +174,7 @@ public class LoadMenuPanel extends LayoutComposite {
                     qsm.getName(), new AsyncCallback<QuerySaveModel>() {
 
                 public void onFailure(final Throwable arg0) {
-                    MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                    MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                             .failedOpenQuery(arg0.getLocalizedMessage()));
                 }
 
@@ -188,7 +187,7 @@ public class LoadMenuPanel extends LayoutComposite {
                         ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), _qsm.getQueryId(), new AsyncCallback<String>() {
 
                             public void onFailure(Throwable arg0) {
-                                MessageBox.alert(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
+                                MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedOpenQuery(arg0.getLocalizedMessage()));
 
                             }
 
@@ -214,7 +213,7 @@ public class LoadMenuPanel extends LayoutComposite {
                 new AsyncCallback<List<QuerySaveModel>>() {
 
             public void onFailure(final Throwable arg0) {
-                MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                         .failedGetQueryList(arg0.getLocalizedMessage()));
             }
 

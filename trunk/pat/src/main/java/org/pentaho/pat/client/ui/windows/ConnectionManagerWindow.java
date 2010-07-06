@@ -26,10 +26,10 @@ import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout.Orientation;
 import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
+import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.windows.ConnectMondrianPanel;
 import org.pentaho.pat.client.ui.panels.windows.ConnectXmlaPanel;
 import org.pentaho.pat.client.ui.panels.windows.ConnectionManagerPanel;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.rpc.dto.CubeConnection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -47,7 +47,7 @@ import com.google.gwt.user.client.ui.Button;
 public class ConnectionManagerWindow extends WindowPanel {
 
     /** The Window Title. */
-    private static final String TITLE = ConstantFactory.getInstance().registerNewConnection();
+    private static final String TITLE = Pat.CONSTANTS.registerNewConnection();
 
     /** Mondrian Panel. */
     private static ConnectMondrianPanel connectMondrian;
@@ -55,7 +55,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
 
-    private final Button cmCancelButton = new Button(ConstantFactory.getInstance().close());
+    private final Button cmCancelButton = new Button(Pat.CONSTANTS.close());
 
     private final static LayoutPanel MAINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 
@@ -113,11 +113,11 @@ public class ConnectionManagerWindow extends WindowPanel {
         
         if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
             connectMondrian = new ConnectMondrianPanel(cc);
-            TABPANEL.add(connectMondrian, ConstantFactory.getInstance().mondrian());
+            TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
         }
         if (cc.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
             connectXmla = new ConnectXmlaPanel(cc);
-            TABPANEL.add(connectXmla, ConstantFactory.getInstance().xmla());
+            TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
             
         }
         TABPANEL.selectTab(0);
@@ -133,8 +133,8 @@ public class ConnectionManagerWindow extends WindowPanel {
         if (TABPANEL.getWidgetCount() == 0) {
             connectMondrian = new ConnectMondrianPanel();
             connectXmla = new ConnectXmlaPanel();
-            TABPANEL.add(connectMondrian, ConstantFactory.getInstance().mondrian());
-            TABPANEL.add(connectXmla, ConstantFactory.getInstance().xmla());
+            TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
+            TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
             TABPANEL.selectTab(0);
             WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
             refreshWindow();

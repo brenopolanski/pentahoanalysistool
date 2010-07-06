@@ -27,7 +27,6 @@ import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.widgets.DimensionSimplePanel;
 import org.pentaho.pat.client.ui.widgets.MeasureLabel;
 import org.pentaho.pat.client.ui.widgets.QueryDesignTable;
-import org.pentaho.pat.client.util.factory.ConstantFactory;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.StringTree;
@@ -70,7 +69,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 
             ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Object>() {
                         public void onFailure(final Throwable caught) {
-                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
 
                         }
@@ -104,7 +103,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 					dimName1, sortMode, new AsyncCallback<Object>(){
 
 						public void onFailure(Throwable arg0) {
-							MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance().failedSetSortOrder(arg0.getLocalizedMessage()));
+							MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance().failedSetSortOrder(arg0.getLocalizedMessage()));
 							
 						}
 
@@ -158,7 +157,7 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
 							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getType(), selection, new AsyncCallback<List<String>>() {
 
 				                        public void onFailure(final Throwable arg0) {
-				                            MessageBox.error(ConstantFactory.getInstance().error(), MessageFactory.getInstance()
+				                            MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
 				                                    .noSelectionSet(arg0.getLocalizedMessage()));
 
 				                        }
@@ -254,25 +253,25 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
         MenuBar selectionMenu = new MenuBar(true);
         MenuBar sortMenu = new MenuBar(true);
         if(this.setType == ObjectType.LEVEL){
-        	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-        	selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+        	selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.member(), new SelectionModeCommand(MEMBER)));
+        	selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.clearSelections(), new SelectionModeClearCommand()));
        }else{
-    	   sortMenu.addItem(new MenuItem(ConstantFactory.getInstance().sortAscending(), new SortModeCommand("ASC")));
-    	   sortMenu.addItem(new MenuItem(ConstantFactory.getInstance().sortDescending(), new SortModeCommand("DESC")));
-    	   //this.addItem(new MenuItem(ConstantFactory.getInstance().exclude(), new SelectionModeCommand(EXCLUDE)));
-    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().member(), new SelectionModeCommand(MEMBER)));
-    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().children(), new SelectionModeCommand(CHILDREN)));
-    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().includeChildren(), new SelectionModeCommand(
+    	   sortMenu.addItem(new MenuItem(Pat.CONSTANTS.sortAscending(), new SortModeCommand("ASC")));
+    	   sortMenu.addItem(new MenuItem(Pat.CONSTANTS.sortDescending(), new SortModeCommand("DESC")));
+    	   //this.addItem(new MenuItem(Pat.CONSTANTS.exclude(), new SelectionModeCommand(EXCLUDE)));
+    	   selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.member(), new SelectionModeCommand(MEMBER)));
+    	   selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.children(), new SelectionModeCommand(CHILDREN)));
+    	   selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.includeChildren(), new SelectionModeCommand(
                 INCLUDE_CHILDREN)));
-        /*this.addItem(new MenuItem(ConstantFactory.getInstance().siblings(), new SelectionModeCommand(SIBLINGS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().descendants(), new SelectionModeCommand(DESCENDANTS)));
-        this.addItem(new MenuItem(ConstantFactory.getInstance().ancestors(), new SelectionModeCommand(ANCESTORS)));*/
-    	   selectionMenu.addItem(new MenuItem(ConstantFactory.getInstance().clearSelections(), new SelectionModeClearCommand()));
+        /*this.addItem(new MenuItem(Pat.CONSTANTS.siblings(), new SelectionModeCommand(SIBLINGS)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.descendants(), new SelectionModeCommand(DESCENDANTS)));
+        this.addItem(new MenuItem(Pat.CONSTANTS.ancestors(), new SelectionModeCommand(ANCESTORS)));*/
+    	   selectionMenu.addItem(new MenuItem(Pat.CONSTANTS.clearSelections(), new SelectionModeClearCommand()));
        }
         
 		
         this.addItem("Selections", selectionMenu);
-        this.addItem(ConstantFactory.getInstance().sort(), sortMenu);
+        this.addItem(Pat.CONSTANTS.sort(), sortMenu);
     }
 	
 	
