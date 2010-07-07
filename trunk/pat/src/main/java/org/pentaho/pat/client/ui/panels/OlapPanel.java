@@ -269,6 +269,10 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         
 
         msPanel = new MainSouthPanel(centerPanel);
+        if (Pat.getApplicationState().isExecuteQuery()) {
+            westPanel.setVisible(false);
+            msPanel.setVisible(false);
+        }
         centerPanel.clear();
         centerPanel.add(pPanel, new BorderLayoutData(Region.NORTH,true));
         centerPanel.add(dPanel,new BorderLayoutData(Region.CENTER,true));
@@ -280,13 +284,16 @@ public class OlapPanel extends AbstractDataWidget implements IQueryListener{
         westPanel.add(mainMenuPanel);
 
         baselayoutPanel.add(westPanel, new BorderLayoutData(Region.WEST, 0.2, 10, 200, true));
-        baselayoutPanel.setCollapsed(westPanel, false);
+        if (Pat.getApplicationState().isExecuteQuery() && Pat.getApplicationState().getLoadQueryName() != null) {
+            baselayoutPanel.setCollapsed(westPanel, true); 
+        }
+        else {
+            baselayoutPanel.setCollapsed(westPanel, false);
+        }
+        
 
         baselayoutPanel.add(centerPanel, new BorderLayoutData(Region.CENTER, true));
-        if (Pat.getApplicationState().isExecuteQuery() && Pat.getApplicationState().getLoadQueryName() != null) {
-            westPanel.setVisible(false);
-            msPanel.setVisible(false);
-        }
+        
         getLayoutPanel().add(baselayoutPanel);
         getLayoutPanel().layout();
         LogoPanel.spinWheel(false);

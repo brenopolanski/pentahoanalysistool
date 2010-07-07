@@ -478,6 +478,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
             lst.add(dim.getName());
             levelNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
         }
+        Collections.sort(levelNames);
         return levelNames;
 
     }
@@ -493,6 +494,7 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         for (Measure measure : measureList) {
             measureNames.add(new MemberLabelItem(measure.getUniqueName(), measure.getCaption(loc), null));
         }
+        Collections.sort(measureNames);
         return measureNames;
     }
 }

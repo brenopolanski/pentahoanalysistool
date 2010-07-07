@@ -3,7 +3,7 @@ package org.pentaho.pat.rpc.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class MemberLabelItem implements Serializable {
+public class MemberLabelItem implements Serializable, Comparable<MemberLabelItem> {
 
 	
 	/**
@@ -49,4 +49,14 @@ public class MemberLabelItem implements Serializable {
 	public String getCaption() {
 		return caption;
 	}
+
+    public int compareTo(MemberLabelItem o) {
+        if (this.caption != null)
+            if (o != null)
+                return this.caption.compareTo(o.getName());
+        if (this.name != null)
+            if (o != null)
+                return this.name.compareTo(o.getName());
+        return 0;
+    }
 }
