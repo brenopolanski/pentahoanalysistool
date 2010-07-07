@@ -96,6 +96,10 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 	    DOM.setStyleAttribute(baseLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 	    DOM.setStyleAttribute(mainLayoutPanel.getElement(), "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
 
+	    if (Pat.getApplicationState().isExecuteQuery()) {
+            onQueryStartExecution(queryId);
+        }
+	    
 	    if (pType == PanelUtil.PanelType.QM) {
 	        mainLayoutPanel.setPadding(0);
 
@@ -112,10 +116,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 	        mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
 	        mainLayoutPanel.add(trashPanel, new BoxLayoutData(100.0, 100.0));
 	        ((BoxLayout) mainLayoutPanel.getLayout()).setAlignment(Alignment.END);
-	        if (Pat.getApplicationState().isExecuteQuery() && Pat.getApplicationState().getLoadQueryName() != null) {
-	            onQueryStartExecution(queryId);
-	        }
-	        else {
+	        if (!Pat.getApplicationState().isExecuteQuery()) {
 	            baseLayoutPanel.add(mainLayoutPanel);
 	        }
 	    }
