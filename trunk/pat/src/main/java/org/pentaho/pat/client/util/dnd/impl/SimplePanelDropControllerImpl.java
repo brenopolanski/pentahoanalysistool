@@ -300,19 +300,25 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     	/*
     	 * If the a measure widget is dropped and the axis is not the same axis as the Measure Dimension.
     	 */
-    	if(dropTarget.getAxis()==IAxis.UNUSED){
+    	if(dropTarget.getAxis()==IAxis.UNUSED && (originalLabel.getAxis()!=(null))){
     	    
     	}
+    	else if(dropTarget.isTrash() && originalLabel.getAxis()==null){
+            throw new VetoDragException();
+        }
+
     	else if(dtw.getDimensionLocation("Measures")!=IAxis.UNUSED &&(dtw.getDimensionLocation("Measures")!=dropTarget.getAxis()) && originalLabel.getType().equals(ObjectType.MEASURE)){
     		
     		throw new VetoDragException();
     	}
-    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
+    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER)) && originalLabel.getParentNode().getParentItem()!=null){
     		throw new VetoDragException();
     	}
     	else if(dropTarget.getDimensionAssociation()!=null && !dropTarget.getDimensionAssociation().equals(originalLabel.getDimensionName())){
     		throw new VetoDragException();
     	}
+    	
+    	
         super.onPreviewDrop(context);
     }
 

@@ -28,7 +28,10 @@ public class SimplePanelUtil {
         
         if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.ROWS) {
         	 if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+        	     int i = ft.getRowCount();
+        	     if(ft.getRowCount()<(coordinate[0]+2)){
              	ft.insertRow(coordinate[0]+1);
+        	     }
          		ft.insertCell(coordinate[0]+1, coordinate[1]);
          		ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(true, originalLabel.getDimensionName(), IAxis.ROWS));
          	}
