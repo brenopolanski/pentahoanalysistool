@@ -41,7 +41,7 @@ public interface IAxis extends Serializable {
 
     String getCaption();
 
-    public enum Standard implements IAxis, IsSerializable {
+    public enum Standard implements IAxis, IsSerializable, Serializable {
         FILTER, COLUMNS, ROWS, UNUSED;
 
         public int axisOrdinal() {

@@ -345,7 +345,7 @@ public class ConnectMondrianPanel extends LayoutComposite {
                         viewSchemaButton.setText(Pat.CONSTANTS.viewSchema());
                         // TODO remove this later
 
-                        Application.showInfoPanel(Pat.CONSTANTS.fileUpload(), Pat.CONSTANTS.success());
+                        Application.INSTANCE.showInfoPanel(Pat.CONSTANTS.fileUpload(), Pat.CONSTANTS.success());
                     } else {
                         MessageBox.error(Pat.CONSTANTS.error(), Pat.CONSTANTS.fileUploadFailed());
                     }

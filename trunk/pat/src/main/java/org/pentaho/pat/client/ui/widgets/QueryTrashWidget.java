@@ -8,7 +8,7 @@ import org.pentaho.pat.rpc.dto.query.IAxis;
 
 public class QueryTrashWidget extends LayoutComposite{
 
-	private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
+	private SimplePanelDragControllerImpl tblRowDragCont = Application.INSTANCE.getSimplePanelDrgCont();
 	
 
 	SimplePanelDropControllerImpl fTblRowDropCont;

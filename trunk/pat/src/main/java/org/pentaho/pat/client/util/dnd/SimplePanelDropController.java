@@ -31,5 +31,5 @@ import com.google.gwt.user.client.ui.SimplePanel;
 public interface SimplePanelDropController {
 	 
 
-	  public abstract void SetWidgetDropController(SimplePanel dropTarget);
+	  public abstract void setWidgetDropController(SimplePanel dropTarget);
 }

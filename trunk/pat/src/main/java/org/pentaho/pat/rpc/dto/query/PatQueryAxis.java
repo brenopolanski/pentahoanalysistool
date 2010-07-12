@@ -69,7 +69,7 @@ public class PatQueryAxis implements Serializable, IsSerializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((location == null) ? 0 : location.axisOrdinal());
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
         return result;
     }
 
@@ -89,5 +89,6 @@ public class PatQueryAxis implements Serializable, IsSerializable {
             return false;
         return true;
     }
+
 
 }

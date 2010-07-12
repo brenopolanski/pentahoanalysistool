@@ -188,7 +188,7 @@ public class ResolverUtil<T> {
                 String criteria = "";
                 for (int i = 0; i < tests.length ; i++) {
                     if (tests[i] != null) {
-                        criteria.concat(tests[i].toString()).concat(";");
+                        criteria = criteria.concat(tests[i].toString()).concat(";");
                     }
                 }
                 LOG.trace("Scanning for classes in [" + urlPath //$NON-NLS-1$

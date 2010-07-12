@@ -46,7 +46,7 @@ public class DimensionSimplePanel extends SimplePanel {
 
     private final static String TABLE_CSS_NAME = "pat-DimensionSimplePanel"; //$NON-NLS-1$
 
-    private SimplePanelDragControllerImpl tblRowDragCont = Application.SimplePanelDrgCont;
+    private SimplePanelDragControllerImpl tblRowDragCont = Application.INSTANCE.getSimplePanelDrgCont();
 
     SimplePanelDropControllerImpl fTblRowDropCont;
 

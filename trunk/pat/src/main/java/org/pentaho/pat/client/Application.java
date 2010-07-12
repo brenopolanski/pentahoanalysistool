@@ -71,7 +71,7 @@ public class Application extends Viewport {
      */
     public interface ApplicationImages extends TreeImages {
 
-	public static final InfoPanel INFOPANEL = new InfoPanel();
+	public final InfoPanel INFOPANEL = new InfoPanel();
         /**
          * An image indicating a leaf.
          * 
@@ -95,28 +95,29 @@ public class Application extends Viewport {
         void onMenuItemSelected(com.google.gwt.user.client.ui.TreeItem item);
     }
 
-    private static MainTabPanel mainTabPanel = null;
+    private MainTabPanel mainTabPanel = null;
 
     private MainMenuBar menuBar = null;
 
-    private static LayoutPanel tableOnlyPanel = null;
+    private LayoutPanel tableOnlyPanel = null;
     
-    public static SimplePanelDragControllerImpl SimplePanelDrgCont;
+    private SimplePanelDragControllerImpl simplePanelDrgCont;
 
-    private static LayoutPanel rootPanel;
+    private LayoutPanel rootPanel;
 
+    public static Application INSTANCE = new Application();
     /**
      * Constructor.
      */
 
-    public Application() {
+    private Application() {
         super();
         rootPanel = getLayoutPanel();
         rootPanel.setLayout(new BoxLayout(Orientation.VERTICAL));
 
 
         
-        SimplePanelDrgCont = new SimplePanelDragControllerImpl(Application.getMainPanel(),false);
+        simplePanelDrgCont = new SimplePanelDragControllerImpl(rootPanel,false);
 
         // Add the main menu
         if (Pat.getApplicationState().getMode().isShowMenu()) {
@@ -146,7 +147,7 @@ public class Application extends Viewport {
         
     }
 
-    public static void setupActiveQueries() {
+    public void setupActiveQueries() {
         ServiceFactory.getQueryInstance().getActiveQueries(Pat.getSessionID(), new AsyncCallback<List<QuerySaveModel>> () {
 
             public void onFailure(Throwable arg0) {
@@ -179,8 +180,13 @@ public class Application extends Viewport {
         return (LayoutPanel) super.getWidget();
     }
 
+    public SimplePanelDragControllerImpl getSimplePanelDrgCont() {
+        return simplePanelDrgCont;
+    }
+
+    
     // TODO remove if not needed
-    public static MainTabPanel getMainTabPanel() {
+    public  MainTabPanel getMainTabPanel() {
         return mainTabPanel;
     }
 
@@ -189,15 +195,15 @@ public class Application extends Viewport {
      * 
      * @return the bottom panel
      */
-    public static LayoutPanel getMainPanel() {
+    public LayoutPanel getMainPanel() {
         return rootPanel;
     }
 
-    public static void showInfoPanel(String title, String content){
+    public void showInfoPanel(String title, String content){
 	InfoPanel.show(title, content);
     }
 
-    public static void loadQuery() {
+    public void loadQuery() {
         String queryName = Pat.getApplicationState().getLoadQueryName(); 
         if (queryName != null && queryName.length() > 0 ) {
             ServiceFactory.getQueryInstance().loadQuery(Pat.getSessionID(), queryName, new AsyncCallback<QuerySaveModel>() {
@@ -208,7 +214,7 @@ public class Application extends Viewport {
                 public void onSuccess(final QuerySaveModel qsm) {
                     if (qsm.getQueryType().equals(QueryType.QM)) {
                         final OlapPanel olapPanel = new OlapPanel(qsm.getQueryId(), qsm);
-                        Application.displayWidget(olapPanel);
+                        displayWidget(olapPanel);
 
                     }
                     if (qsm.getQueryType().equals(QueryType.MDX)) {
@@ -217,12 +223,12 @@ public class Application extends Viewport {
                             public void onFailure(Throwable arg0) {
                                 // if it fails we still want to try to load the mdx panel
                                 MdxPanel mdxPanel = new MdxPanel(qsm.getQueryId(), qsm , "");
-                                Application.displayWidget(mdxPanel);
+                                displayWidget(mdxPanel);
                             }
 
                             public void onSuccess(String arg0) {
                                 MdxPanel mdxPanel = new MdxPanel(qsm.getQueryId(), qsm ,arg0);
-                                Application.displayWidget(mdxPanel);
+                                displayWidget(mdxPanel);
 
                             }
 
@@ -238,7 +244,7 @@ public class Application extends Viewport {
         
     }
 
-    public static void displayWidget(AbstractDataWidget widget) {
+    public void displayWidget(AbstractDataWidget widget) {
         if (!Pat.getApplicationState().getMode().isShowOnlyOnePanel()) {
             MainTabPanel.displayContentWidget(widget);
         }
@@ -250,4 +256,5 @@ public class Application extends Viewport {
         }
         
     }
+    
 }

@@ -181,7 +181,7 @@ public class LoadMenuPanel extends LayoutComposite {
                 public void onSuccess(final QuerySaveModel _qsm) {
                     if (_qsm.getQueryType().equals(QueryType.QM)) {
                         final OlapPanel olapPanel = new OlapPanel(_qsm.getQueryId(), _qsm);
-                        Application.displayWidget(olapPanel);
+                        Application.INSTANCE.displayWidget(olapPanel);
                     }
                     if (_qsm.getQueryType().equals(QueryType.MDX)) {
                         ServiceFactory.getQueryInstance().getMdxQuery(Pat.getSessionID(), _qsm.getQueryId(), new AsyncCallback<String>() {
@@ -193,7 +193,7 @@ public class LoadMenuPanel extends LayoutComposite {
 
                             public void onSuccess(String arg0) {
                                 MdxPanel mdxPanel = new MdxPanel(_qsm.getQueryId(), _qsm ,arg0);
-                                Application.displayWidget(mdxPanel);
+                                Application.INSTANCE.displayWidget(mdxPanel);
 
                             }
 

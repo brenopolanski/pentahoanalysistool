@@ -170,7 +170,7 @@ public class Pat implements EntryPoint {
         // parse possible parameters
         parseInitialStateFromParameter();
         
-        app = new Application();
+        app = Application.INSTANCE;
         assignSessionID(null);
     }
 
@@ -300,8 +300,8 @@ public class Pat implements EntryPoint {
                 public void onSuccess(final String sessionId) {
                     applicationState.setSession(sessionId);
                     setupPat();
-                    Application.loadQuery();
-                    Application.setupActiveQueries();
+                    Application.INSTANCE.loadQuery();
+                    Application.INSTANCE.setupActiveQueries();
                     
                 }
             });
