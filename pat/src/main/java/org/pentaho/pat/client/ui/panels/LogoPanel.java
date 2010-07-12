@@ -21,11 +21,9 @@ package org.pentaho.pat.client.ui.panels;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.pentaho.pat.client.Pat;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -71,13 +69,11 @@ public class LogoPanel extends LayoutComposite {
         final Grid logoGrid = new Grid(1, 2);
         throbberLabel.setStyleName("Throbber-loading"); //$NON-NLS-1$
         throbberLabel.addStyleName("throbber"); //$NON-NLS-1$
-        throbberLabel.setSize("100px", "100px"); //$NON-NLS-1$ //$NON-NLS-2$
+        throbberLabel.setSize("20px", "20px"); //$NON-NLS-1$ //$NON-NLS-2$
         throbberLabel.setPixelSize(100, 100);
 
-        final Image patlogo = Pat.IMAGES.pat_orange_banner().createImage();
         logoGrid.setWidget(0, 1, throbberLabel);
-
-//        logoGrid.setWidget(0, 0, patlogo);
+        
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
         logoGrid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);
         rootPanel.add(logoGrid);

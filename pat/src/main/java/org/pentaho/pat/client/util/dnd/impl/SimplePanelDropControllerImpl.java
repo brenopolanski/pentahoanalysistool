@@ -31,7 +31,6 @@ import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * SimplePanelDropConterllerImpl, allows users to drop labels, 
@@ -40,8 +39,6 @@ import com.google.gwt.user.client.ui.Widget;
  * @author tom(at)wamonline.org.uk
  */
 public class SimplePanelDropControllerImpl extends SimpleDropController implements SimplePanelDropController {
-
-    private static final String CSS_DEMO_BIN_DRAGGABLE_ENGAGE = null;
 
     private final DimensionSimplePanel dropTarget;
 
@@ -322,7 +319,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
         super.onPreviewDrop(context);
     }
 
-    public void SetWidgetDropController(SimplePanel dropTarget) {
+    public void setWidgetDropController(SimplePanel dropTarget) {
         // TODO Auto-generated method stub
 
     }
@@ -330,18 +327,12 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     @Override
     public void onEnter(DragContext context){
         super.onEnter(context);
-        for (Widget widget : context.selectedWidgets) {
-          //widget.addStyleName(CSS_DEMO_BIN_DRAGGABLE_ENGAGE);
-        }
         if(dropTarget.isTrash())
         dropTarget.setEngaged(true);        
     }
 
     @Override
     public void onLeave(DragContext context) {
-      for (Widget widget : context.selectedWidgets) {
-       // widget.removeStyleName(CSS_DEMO_BIN_DRAGGABLE_ENGAGE);
-      }
       if(dropTarget.isTrash())
       dropTarget.setEngaged(false);
       

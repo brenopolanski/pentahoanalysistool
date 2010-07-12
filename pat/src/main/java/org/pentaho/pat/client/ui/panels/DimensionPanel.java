@@ -49,7 +49,7 @@ public class DimensionPanel extends LayoutComposite {
 
 	private final ToolButton checkButton1 = new ToolButton("Show Unique Names");
 	
-    private final SimplePanelDragControllerImpl tRDragController = Application.SimplePanelDrgCont;
+    private final SimplePanelDragControllerImpl tRDragController = Application.INSTANCE.getSimplePanelDrgCont();
 
     private final static String ROOT_STYLE_NAME = "pat-DimensionPanel"; //$NON-NLS-1$
 

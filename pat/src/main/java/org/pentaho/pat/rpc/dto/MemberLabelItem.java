@@ -53,7 +53,7 @@ public class MemberLabelItem implements Serializable, Comparable<MemberLabelItem
     public int compareTo(MemberLabelItem o) {
         if (this.caption != null)
             if (o != null)
-                return this.caption.compareTo(o.getName());
+                return this.caption.compareTo(o.getCaption());
         if (this.name != null)
             if (o != null)
                 return this.name.compareTo(o.getName());
