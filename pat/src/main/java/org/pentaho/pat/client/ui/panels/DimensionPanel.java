@@ -47,7 +47,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  */
 public class DimensionPanel extends LayoutComposite {
 
-	private final ToolButton checkButton1 = new ToolButton("Show Unique Names");
+	private final ToolButton uniqueNameBtn = new ToolButton("Show Unique Names");
 	
     private final SimplePanelDragControllerImpl tRDragController = Application.INSTANCE.getSimplePanelDrgCont();
 
@@ -76,22 +76,18 @@ public class DimensionPanel extends LayoutComposite {
         mainPanel.addStyleName(ROOT_STYLE_NAME);
 
         
-        checkButton1.setStyle(ToolButtonStyle.CHECKBOX);
+        uniqueNameBtn.setStyle(ToolButtonStyle.CHECKBOX);
         
-        checkButton1.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent arg0) {
-				if(checkButton1.isChecked()){
-					EventFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, true);
-				}
-				else{
-					EventFactory.getLabelInstance().getLabelListeners().fireUniqueNameChange(DimensionPanel.this, false);
-				}
-				
-			}
-		});
+        uniqueNameBtn.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent arg0) {
+                EventFactory.getLabelInstance().getLabelListeners()
+                    .fireUniqueNameChange(DimensionPanel.this, uniqueNameBtn.isChecked());
+
+            }
+        });
         final DimensionTreeWidget dimDropUnused = new DimensionTreeWidget(tRDragController, this);
-        mainPanel.add(checkButton1);
+        mainPanel.add(uniqueNameBtn);
         mainPanel.add(dimDropUnused, new BoxLayoutData(FillStyle.BOTH, true));
         
         rootPanel.add(mainPanel);
@@ -99,7 +95,7 @@ public class DimensionPanel extends LayoutComposite {
     }
     
     public boolean isUniqueNameLabel(){
-    	return checkButton1.isChecked();
+    	return uniqueNameBtn.isChecked();
     }
 
 

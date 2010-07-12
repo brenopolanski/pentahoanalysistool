@@ -21,13 +21,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SimplePanelUtil {
 
-    private static void addNewDropTargets(DragContext context, ObjectType ot) {
+    private static void addNewDropTargets(DragContext context, ObjectType objectType) {
         int[] coordinate = ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getCoord();
         FlexTable ft = ((FlexTable) ((DimensionSimplePanel) context.finalDropController.getDropTarget()).getParent());
         MeasureLabel originalLabel = ((MeasureLabel) context.selectedWidgets.get(0).getParent().getParent());
 
         if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.ROWS) {
-            if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+            if(objectType.equals(ObjectType.MEMBER)|| objectType.equals(ObjectType.MEASURE)){
                 if(ft.getRowCount()<(coordinate[0]+2)){
                     ft.insertRow(coordinate[0]+1);
                 }
@@ -46,7 +46,7 @@ public class SimplePanelUtil {
 
         else if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.COLUMNS) {
 
-            if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+            if(objectType.equals(ObjectType.MEMBER)|| objectType.equals(ObjectType.MEASURE)){
                 ft.insertCell(coordinate[0], coordinate[1]+1);
                 ft.setWidget(coordinate[0], coordinate[1]+1, new DimensionSimplePanel(true, originalLabel.getDimensionName(), IAxis.COLUMNS));
             }
@@ -60,7 +60,7 @@ public class SimplePanelUtil {
 
         else if (((DimensionSimplePanel) context.finalDropController.getDropTarget()).getAxis() == IAxis.FILTER) {
 
-            if(ot.equals(ObjectType.MEMBER)|| ot.equals(ObjectType.MEASURE)){
+            if(objectType.equals(ObjectType.MEMBER)|| objectType.equals(ObjectType.MEASURE)){
                 ft.insertRow(coordinate[0]+1);
                 ft.insertCell(coordinate[0]+1, coordinate[1]);
                 ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(false, IAxis.FILTER));
