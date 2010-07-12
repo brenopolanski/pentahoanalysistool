@@ -6,7 +6,9 @@ import java.util.List;
 public class MemberLabelItem implements Serializable, Comparable<MemberLabelItem> {
 
 	
-	/**
+	
+
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = -5090483873584711899L;
@@ -58,5 +60,36 @@ public class MemberLabelItem implements Serializable, Comparable<MemberLabelItem
             if (o != null)
                 return this.name.compareTo(o.getName());
         return 0;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((caption == null) ? 0 : caption.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MemberLabelItem other = (MemberLabelItem) obj;
+        if (caption == null) {
+            if (other.caption != null)
+                return false;
+        } else if (!caption.equals(other.caption))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
     }
 }

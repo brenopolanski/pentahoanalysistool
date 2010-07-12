@@ -52,19 +52,19 @@ public class CellDataSet implements IsSerializable, Serializable {
     }
 
     public AbstractBaseCell[][] getCellSetHeaders() {
-        return cellSetHeader;
+        return cellSetHeader.clone();
     }
 
     public void setCellSetHeaders(final AbstractBaseCell[][] cellSet) {
-        this.cellSetHeader = cellSet;
+        this.cellSetHeader = cellSet.clone();
     }
 
     public AbstractBaseCell[][] getCellSetBody() {
-        return cellSetBody;
+        return cellSetBody.clone();
     }
 
     public void setCellSetBody(final AbstractBaseCell[][] cellSet) {
-        this.cellSetBody = cellSet;
+        this.cellSetBody = cellSet.clone();
     }
 
     public void setOffset(final int offset) {
