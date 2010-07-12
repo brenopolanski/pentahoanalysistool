@@ -92,8 +92,8 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             /*
              * If the drop target does not contain a widget then add the original label.
              */
-            if(dropTarget.getWidget()==null){
-            dropTarget.setWidget(originalLabel);
+            if(dropTarget.getWidget()== null){
+                dropTarget.setWidget(originalLabel);
             }
             /*
              * Else create a new drop target.

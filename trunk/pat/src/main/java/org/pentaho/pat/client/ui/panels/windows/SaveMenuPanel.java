@@ -38,7 +38,6 @@ import org.gwt.mosaic.ui.client.list.FilterProxyListModel;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.ui.panels.MainTabPanel;
 import org.pentaho.pat.client.ui.widgets.AbstractDataWidget;
-import org.pentaho.pat.client.ui.widgets.LabelTextBox;
 import org.pentaho.pat.client.util.factory.MessageFactory;
 import org.pentaho.pat.client.util.factory.ServiceFactory;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -66,13 +65,13 @@ public class SaveMenuPanel extends LayoutComposite {
 
     /**
      */
-    private final TextBox filtertextBox;
+    
 
     private DefaultListModel<QuerySaveModel> model;
 
     private ListBox<QuerySaveModel> listBox = null;
 
-    private LabelTextBox saveTextBox = new LabelTextBox();
+    private TextBox saveTextBox = new TextBox();
 
     private final static String SAVE_MENU_PANEL = "pat-SaveMenuPanel"; //$NON-NLS-1$
     /**
@@ -82,7 +81,7 @@ public class SaveMenuPanel extends LayoutComposite {
     private final Timer filterTimer = new Timer() {
         @Override
         public void run() {
-            filterModel.filter(filtertextBox.getText());
+            filterModel.filter(saveTextBox.getText());
         }
     };
 
@@ -91,25 +90,22 @@ public class SaveMenuPanel extends LayoutComposite {
         final LayoutPanel layoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
         layoutPanel.setPadding(0);
         this.setStyleName(SAVE_MENU_PANEL);
-        filtertextBox = new TextBox();
-        filtertextBox.addKeyPressHandler(new KeyPressHandler() {
+        saveTextBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(final KeyPressEvent event) {
                 filterTimer.schedule(CoreConstants.DEFAULT_DELAY_MILLIS);
             }
         });
 
-        final Label filterText = new Label(Pat.CONSTANTS.filter() + ":"); //$NON-NLS-1$
-        final LayoutPanel filterPanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-        filterPanel.add(filterText, new BoxLayoutData(FillStyle.VERTICAL));
-        filterPanel.add(filtertextBox, new BoxLayoutData(FillStyle.BOTH));
+        final Label saveText = new Label(Pat.CONSTANTS.save() + ":"); //$NON-NLS-1$
+        final LayoutPanel savePanel = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
+        savePanel.add(saveText, new BoxLayoutData(FillStyle.VERTICAL));
+        savePanel.add(saveTextBox, new BoxLayoutData(FillStyle.BOTH));
 
 
-        layoutPanel.add(filterPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
+
         layoutPanel.add(createListBox(), new BoxLayoutData(FillStyle.BOTH));
 
-        saveTextBox.setTextBoxLabelText(Pat.CONSTANTS.save());
-        layoutPanel.add(saveTextBox);
-
+        layoutPanel.add(savePanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         this.getLayoutPanel().add(layoutPanel);
 
     }
@@ -118,12 +114,10 @@ public class SaveMenuPanel extends LayoutComposite {
     protected void onAttach() {
 
         super.onAttach();
-        if (filtertextBox != null) {
-            filtertextBox.setText("");
-        }
         if (saveTextBox != null) {
-            saveTextBox.setTextBoxText("");
+            saveTextBox.setText("");
         }
+        filterTimer.schedule(1);
     }
 
     public ListBox<?> createListBox() {
@@ -136,7 +130,7 @@ public class SaveMenuPanel extends LayoutComposite {
                 case Event.ONCLICK:
                     if (listBox.getSelectedIndex() >= 0) {
                         QuerySaveModel qsm = listBox.getItem(listBox.getSelectedIndex());
-                        saveTextBox.setTextBoxText(qsm.getName());
+                        saveTextBox.setText(qsm.getName());
                     }
                     break;
                 case Event.ONDBLCLICK:
@@ -191,6 +185,8 @@ public class SaveMenuPanel extends LayoutComposite {
                         model.add(arg0.get(i));
                     }
                     listBox.setModel(filterModel);
+                    filterTimer.schedule(1);
+
 
                 }
             }
@@ -199,12 +195,12 @@ public class SaveMenuPanel extends LayoutComposite {
     }
 
     public void save() {
-        if (saveTextBox != null && saveTextBox.getTextBoxText().length() > 0) {
+        if (saveTextBox != null && saveTextBox.getText().length() > 0) {
             boolean exists = false;
             for (int i = 0; !exists && i < model.getSize();i++) {
                 QuerySaveModel item = model.getElementAt(i);
 
-                if (item.getName().equals(saveTextBox.getTextBoxText())) {
+                if (item.getName().equals(saveTextBox.getText())) {
                     exists = true;
                 }
             }
@@ -229,7 +225,7 @@ public class SaveMenuPanel extends LayoutComposite {
     }
 
     private void saveInternal() {
-        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), saveTextBox.getTextBoxText(),
+        ServiceFactory.getQueryInstance().saveQuery(Pat.getSessionID(), Pat.getCurrQuery(), saveTextBox.getText(),
                 Pat.getCurrConnectionId(), Pat.getCurrCube(), Pat.getCurrCubeName(), new AsyncCallback<Object>() {
 
             public void onFailure(final Throwable arg0) {
@@ -240,7 +236,7 @@ public class SaveMenuPanel extends LayoutComposite {
             public void onSuccess(final Object arg0) {
                 Widget widget = MainTabPanel.getSelectedWidget();
                 if (widget instanceof AbstractDataWidget) {
-                    ((AbstractDataWidget) widget).setTitle(saveTextBox.getTextBoxText());
+                    ((AbstractDataWidget) widget).setTitle(saveTextBox.getText());
                 }
 
 
