@@ -31,11 +31,11 @@ import com.google.gwt.i18n.client.Constants;
 public interface IGuiConstants extends Constants {
 
     /** The Constant CURRENT_QUERY_NAME. */
-    String CURRENT_QUERY_NAME = "current-query-name"; //$NON-NLS-1$
+    static final String CURRENT_QUERY_NAME = "current-query-name"; //$NON-NLS-1$
     /** The Constant CURRENT_CUBE_NAME. */
-    String CURRENT_CUBE_NAME = "current-cube-name"; //$NON-NLS-1$
+    static final String CURRENT_CUBE_NAME = "current-cube-name"; //$NON-NLS-1$
     /** The STYLE_THEMES. */
-    String[] STYLE_THEMES = {"aegean", "standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    static final String[] STYLE_THEMES = {"aegean", "standard", "chrome", "dark"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     String sortAscending();
 

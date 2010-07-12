@@ -105,7 +105,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
         		
             	if(dropTarget.getAxis().equals(IAxis.ROWS)|| dropTarget.getAxis().equals(IAxis.FILTER)){
             		for(int i = 0; i<ft.getRowCount(); i++){
-            		ft.insertCell(i,col);
+            		    ft.insertCell(i,col);
             		}
             		dp = new DimensionSimplePanel(false, dropTarget.getAxis());
         			dp.setWidget(originalLabel);

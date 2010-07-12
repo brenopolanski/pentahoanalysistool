@@ -105,7 +105,7 @@ public class Application extends Viewport {
 
     private LayoutPanel rootPanel;
 
-    public static Application INSTANCE = new Application();
+    public static final Application INSTANCE = new Application();
     /**
      * Constructor.
      */
