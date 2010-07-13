@@ -113,6 +113,7 @@
 					<logLevel>WARN</logLevel>
 					<style>OBF</style>
 					<extraJvmArgs>-Xss1024k -Xms64M -Xmx512M -XX:PermSize=256m -XX:MaxPermSize=512m </extraJvmArgs>
+					<localWorkers>1</localWorkers>
 					<gwtVersion>${gwtVersion}</gwtVersion>
 					<debugSuspend>false</debugSuspend>
 					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
