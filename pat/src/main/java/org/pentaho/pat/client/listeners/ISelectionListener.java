@@ -36,7 +36,7 @@ public interface ISelectionListener extends EventListener {
 
     void onSelectionChange(String queryID, Widget sender, StringTree tree, String type);
 
-	void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis iAxis);
+	void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis iAxis, boolean entiredimension);
 
     void onMoveRow(String currQuery, int oldrow, int newrow);
 
