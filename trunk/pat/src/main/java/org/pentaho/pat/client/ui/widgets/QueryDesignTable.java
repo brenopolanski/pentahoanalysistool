@@ -44,7 +44,7 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
 
             for (int i = 0; i < flex.getRowCount(); i++) {
-                if (flex.isCellPresent(i, coords[1])) {
+                if (flex.isCellPresent(i, coords[1])&& !(flex.getWidget(i, coords[1]) instanceof MeasureLabel)) {
                     flex.removeCell(i, coords[1]);
                 }
             }

@@ -59,7 +59,7 @@ public interface IQueryAsync {
 
     void clearExclusion(String sessionId, String queryId, String dimensionName, AsyncCallback<Object> callback);
 
-    void clearSelection(String sessionId, String queryId, String uniqueName, List<String> currentSelections, AsyncCallback<Object> callback);
+    void clearSelection(String sessionId, String queryId, String uniqueName, List<String> currentSelections, AsyncCallback<Integer> callback);
     
     void clearSortOrder(String sessionId, String queryId, String dimensionName, AsyncCallback<Object> callback);
     

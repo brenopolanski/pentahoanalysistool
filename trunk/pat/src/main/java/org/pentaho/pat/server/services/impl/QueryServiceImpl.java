@@ -126,7 +126,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
      * @see org.pentaho.pat.server.services.QueryService#clearSelection(java.lang .String, java.lang.String,
      * java.lang.String, java.lang.String, java.util.List)
      */
-    public void clearSelection(final String userId, final String sessionId, final String queryId,
+    public int clearSelection(final String userId, final String sessionId, final String queryId,
             final String uniqueName, final List<String> currentSelections) {
         this.sessionService.validateSession(userId, sessionId);
         final Query query = this.getQuery(userId, sessionId, queryId);
@@ -140,6 +140,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 qDim.getInclusions().remove(selection);
             }
         }
+        
+        return qDim.getInclusions().size();
 
     }
 

@@ -76,7 +76,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
             } else if (originalLabel.getType() == ObjectType.MEMBER) {
                 SimplePanelUtil.clearMember(context, originalLabel, panel.getCoord(), panel.getAxis());
             } else if (originalLabel.getType() == ObjectType.MEASURE) {
-                SimplePanelUtil.clearDimension(context, originalLabel, panel.getCoord(), panel.getAxis());
+                SimplePanelUtil.clearMember(context, originalLabel, panel.getCoord(), panel.getAxis());
             }
 
             dtw.setDimensionLocation(panel.getAxis(), originalLabel.getDimensionName());
