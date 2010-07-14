@@ -815,11 +815,11 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
 
 
-    public void pullUpMeasureMember(String sessionID, String queryId, IAxis axis,
+    public void pullUpMeasureMember(String sessionID, String queryId, IAxis axis, String dimension,
             int currentposition, int newposition) throws RpcException {
         try {
             this.queryService.pullUpMeasureMember(getCurrentUserId(), sessionID, queryId, 
-                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), dimension, currentposition, newposition);
         } catch (Exception e) {
             LOG.error("Error pulling up measure member", e); //$NON-NLS-1$
             throw new RpcException("Error pulling up measure member", e); //$NON-NLS-1$
@@ -827,10 +827,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     }
 
     public void pushDownMeasureMember(String sessionID, String currQuery,
-            IAxis axis, int currentposition, int newposition) throws RpcException {
+            IAxis axis, String dimension, int currentposition, int newposition) throws RpcException {
         try {
             this.queryService.pushDownMeasureMember(getCurrentUserId(), sessionID, currQuery, 
-                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), currentposition, newposition);
+                    (axis.equals(IAxis.UNUSED)) ? null : org.olap4j.Axis.Standard.valueOf(axis.name()), dimension, currentposition, newposition);
         } catch (Exception e) {
             LOG.error("Error pushing down measure member", e); //$NON-NLS-1$
             throw new RpcException("Error pushing down measure member", e); //$NON-NLS-1$

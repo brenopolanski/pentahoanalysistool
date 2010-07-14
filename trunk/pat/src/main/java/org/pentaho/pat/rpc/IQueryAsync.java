@@ -139,10 +139,10 @@ public interface IQueryAsync {
     
     void swapAxis(String sessionId, String queryId, AsyncCallback<CellDataSet> callback);
 
-	void pushDownMeasureMember(String sessionID, String currQuery, IAxis axis,
+	void pushDownMeasureMember(String sessionID, String currQuery, IAxis axis, String dimension,
 			int i, int j, AsyncCallback<Object> asyncCallback);
 
-	void pullUpMeasureMember(String sessionID, String currQuery, IAxis axis, 
+	void pullUpMeasureMember(String sessionID, String currQuery, IAxis axis, String dimension, 
 			int i, int j, AsyncCallback<Object> asyncCallback);
 	
 	

@@ -1356,13 +1356,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
 
 	public void pullUpMeasureMember(String currentUserId, String sessionID,
-			String queryId, Standard standard, int currentposition,
+			String queryId, Standard standard, String dimension, int currentposition,
 			int newposition) {
 		this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.getQuery(currentUserId, sessionID, queryId);
         
-        List<Selection> sellist =query.getDimension("Measures").getInclusions();
+        List<Selection> sellist =query.getDimension(dimension).getInclusions();
         
         Selection selection = sellist.get(currentposition-1);
         
@@ -1374,13 +1374,13 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 	}
 
 	public void pushDownMeasureMember(String currentUserId, String sessionID,
-			String queryId, Standard standard, int currentposition,
+			String queryId, Standard standard, String dimension, int currentposition,
 			int newposition) {
 		this.sessionService.validateSession(currentUserId, sessionID);
 
         Query query = this.getQuery(currentUserId, sessionID, queryId);
         
-        List<Selection> sellist = query.getDimension("Measures").getInclusions();
+        List<Selection> sellist = query.getDimension(dimension).getInclusions();
         
         Selection selection = sellist.get(currentposition-1);
         

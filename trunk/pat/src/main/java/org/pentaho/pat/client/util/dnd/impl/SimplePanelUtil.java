@@ -655,7 +655,7 @@ public class SimplePanelUtil {
     public static void pushdownMeasember(DragContext context, MeasureLabel originalLabel, final int[] coord, final int[] coord2,IAxis axis, final boolean firelistener) {
 
         if(axis.equals(IAxis.COLUMNS)){
-            ServiceFactory.getQueryInstance().pushDownMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[1], coord2[1], new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pushDownMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), originalLabel.getDimensionName(), coord[1], coord2[1], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");
@@ -670,7 +670,7 @@ public class SimplePanelUtil {
             });
         }
         else if(axis.equals(IAxis.ROWS)){
-            ServiceFactory.getQueryInstance().pushDownMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), coord[0], coord2[0], new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pushDownMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), originalLabel.getDimensionName(), coord[0], coord2[0], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");
@@ -691,7 +691,7 @@ public class SimplePanelUtil {
     public static void pullUpMeasember(DragContext context, MeasureLabel originalLabel, final int[] currentPos, final int[] newPos, IAxis axis, final boolean firelistener) {
 
         if(axis.equals(IAxis.COLUMNS)){
-            ServiceFactory.getQueryInstance().pullUpMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[1], newPos[1], new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pullUpMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), originalLabel.getDimensionName(), currentPos[1], newPos[1], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");
@@ -706,7 +706,7 @@ public class SimplePanelUtil {
             });
         }
         else if(axis.equals(IAxis.ROWS)){
-            ServiceFactory.getQueryInstance().pullUpMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), currentPos[0], newPos[0], new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().pullUpMeasureMember(Pat.getSessionID(), Pat.getCurrQuery(), originalLabel.getAxis(), originalLabel.getDimensionName(), currentPos[0], newPos[0], new AsyncCallback<Object>(){
 
                 public void onFailure(Throwable arg0) {
                     MessageBox.error("Bugger", "Bugger");

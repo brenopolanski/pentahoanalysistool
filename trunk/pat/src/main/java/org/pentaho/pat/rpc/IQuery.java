@@ -425,11 +425,11 @@ public interface IQuery extends RemoteService {
     CellDataSet swapAxis(String sessionId, String queryId) throws RpcException;
 
 	@Secured( {"Users"})
-    void pushDownMeasureMember(String sessionID, String currQuery, IAxis axis,
+    void pushDownMeasureMember(String sessionID, String currQuery, IAxis axis, String dimension,
 			int i, int j) throws RpcException;
 
 	@Secured( {"Users"})
-	void pullUpMeasureMember(String sessionID, String currQuery, IAxis axis, 
+	void pullUpMeasureMember(String sessionID, String currQuery, IAxis axis, String dimension,
 			int i, int j) throws RpcException;
 	
 	@Secured( {"Users"})
