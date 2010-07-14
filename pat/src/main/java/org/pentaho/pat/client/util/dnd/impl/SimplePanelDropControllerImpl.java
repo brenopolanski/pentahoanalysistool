@@ -234,7 +234,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
              * For Rows.
              */
             else if(panel.getAxis().equals(IAxis.ROWS)){
-                if(panel.getCoord()[1] > ((DimensionSimplePanel)this.dropTarget).getCoord()[1]){
+                if(panel.getCoord()[0] > ((DimensionSimplePanel)this.dropTarget).getCoord()[0]){
                 	if(originalLabel.getType().equals(ObjectType.MEASURE) || originalLabel.getType().equals(ObjectType.MEMBER)){
                 		SimplePanelUtil.pullUpMeasember(context, originalLabel, panel.getCoord(), this.dropTarget.getCoord(), IAxis.ROWS, true);
                 	}
@@ -308,9 +308,14 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     		
     		throw new VetoDragException();
     	}
-    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER)) && originalLabel.getParentNode().getParentItem()!=null){
+    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.getAxis().equals(originalLabel.getAxis())
+    	        && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)) && originalLabel.getParentNode().getParentItem()!=null){
     		throw new VetoDragException();
     	}
+    	else if(dtw.getDimensionLocation(originalLabel.getDimensionName())!=IAxis.UNUSED && !dropTarget.getAxis().equals(originalLabel.getAxis())
+                && !dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEMBER))){
+            throw new VetoDragException();
+        }
     	else if(dropTarget.getDimensionAssociation()!=null && !dropTarget.getDimensionAssociation().equals(originalLabel.getDimensionName())){
     		throw new VetoDragException();
     	}

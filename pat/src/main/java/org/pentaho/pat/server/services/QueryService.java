@@ -661,12 +661,12 @@ public interface QueryService extends Service {
 
     @Secured( {"Users"})
 	void pullUpMeasureMember(String currentUserId, String sessionID,
-			String queryId, Standard standard, int currentposition,
+			String queryId, Standard standard, String dimension, int currentposition,
 			int newposition);
     
     @Secured( {"Users"})
 	void pushDownMeasureMember(String currentUserId, String sessionID,
-			String currQuery, Standard standard, int currentposition,
+			String currQuery, Standard standard, String dimension, int currentposition,
 			int newposition);
 
     @Secured( {"Users"})
