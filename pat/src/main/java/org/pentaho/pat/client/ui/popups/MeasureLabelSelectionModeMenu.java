@@ -67,14 +67,14 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
             final MeasureLabel targetLabel = (MeasureLabel) getSource();
 
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Object>() {
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Integer>() {
                         public void onFailure(final Throwable caught) {
                             MessageBox.error(Pat.CONSTANTS.error(), MessageFactory.getInstance()
                                     .noSelectionCleared(caught.getLocalizedMessage()));
 
                         }
 
-                        public void onSuccess(final Object result) {
+                        public void onSuccess(final Integer result) {
                         	StringTree sl= new StringTree();
                         	QueryDesignTable flexTable = ((QueryDesignTable)targetLabel.getParent().getParent()
                         			.getParent().getParent().getParent());
@@ -146,14 +146,14 @@ public class MeasureLabelSelectionModeMenu extends PopupMenu {
     
             final SelectionType selection = setSelectionMode(selectionMode);
 
-            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Object>(){
+            ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getCurrentSelection(), new AsyncCallback<Integer>(){
 
 						public void onFailure(Throwable arg0) {
 							// TODO Auto-generated method stub
 							
 						}
 
-						public void onSuccess(Object arg0) {
+						public void onSuccess(Integer arg0) {
 							ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(), targetLabel.getActualName(), targetLabel.getType(), selection, new AsyncCallback<List<String>>() {
 
 				                        public void onFailure(final Throwable arg0) {

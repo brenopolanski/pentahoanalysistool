@@ -89,14 +89,14 @@ public class SimplePanelUtil {
 
             public void onSuccess(Object arg0) {
                 ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Integer>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
 
                     }
 
-                    public void onSuccess(Object arg0) {
+                    public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
                         .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis);
                     }
@@ -122,14 +122,14 @@ public class SimplePanelUtil {
 
             public void onSuccess(Object arg0) {
                 ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Integer>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
 
                     }
 
-                    public void onSuccess(Object arg0) {
+                    public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
                         .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
                     }
@@ -154,14 +154,14 @@ public class SimplePanelUtil {
 
             public void onSuccess(Object arg0) {
                 ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Object>() {
+                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Integer>() {
 
                     public void onFailure(Throwable arg0) {
                         // TODO Auto-generated method stub
 
                     }
 
-                    public void onSuccess(Object arg0) {
+                    public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
                         .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
                     }
@@ -546,33 +546,38 @@ public class SimplePanelUtil {
 
     public static void clearMember(DragContext context, Widget draggable, final int[] coord, final IAxis axis) {
         final MeasureLabel label = ((MeasureLabel) draggable);
-        ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
-                label.getActualName(), new AsyncCallback<Object>() {
+
+        ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
+                label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Integer>() {
 
             public void onFailure(Throwable arg0) {
                 // TODO Auto-generated method stub
 
             }
 
-            public void onSuccess(Object arg0) {
-                ServiceFactory.getQueryInstance().clearSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                        label.getActualName(), label.getCurrentSelection(), new AsyncCallback<Object>() {
+            public void onSuccess(Integer arg0) {
+                if(arg0==0){
+                    ServiceFactory.getQueryInstance().moveDimension(Pat.getSessionID(), Pat.getCurrQuery(), IAxis.UNUSED,
+                            label.getActualName(), new AsyncCallback<Object>() {
 
-                    public void onFailure(Throwable arg0) {
-                        // TODO Auto-generated method stub
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
 
-                    }
+                        }
 
-                    public void onSuccess(Object arg0) {
-                        EventFactory.getSelectionInstance().getQueryListeners()
-                        .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
-                    }
+                        public void onSuccess(Object arg0) {
+                            
+                        }
 
-                });
-
+                    });
+                }
+                EventFactory.getSelectionInstance().getQueryListeners()
+                .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
             }
 
         });
+
+      
 
     }
 
