@@ -39,17 +39,32 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         this.getLayoutPanel().add(slp);
     }
 
-    public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis) {
+    public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis, boolean entiredimension) {
 
+        if(entiredimension){
         if ((axis.equals(IAxis.ROWS) && !isfilter) || (isfilter && axis.equals(IAxis.FILTER))) {
 
             for (int i = 0; i < flex.getRowCount(); i++) {
-                if (flex.isCellPresent(i, coords[1])&& !(flex.getWidget(i, coords[1]) instanceof MeasureLabel)) {
+                if (flex.isCellPresent(i, coords[1])) {
                     flex.removeCell(i, coords[1]);
                 }
             }
         } else if (!isfilter && axis.equals(IAxis.COLUMNS)) {
             flex.removeRow(coords[0]);
+        }
+        }
+        else{
+            boolean othercells = false;
+            flex.remove(flex.getWidget(coords[0], coords[1]));
+           /* for(int i=0; i<flex.getCellCount(coords[0]); i++){
+                if(flex.getWidget(coords[0], coords[1]) != null){
+                    othercells=true;
+                    break;
+                }
+            }
+            if(!othercells){
+                flex.removeRow(coords[0]);
+            }*/
         }
     }
 
@@ -150,9 +165,9 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         }
     }
 
-    public void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis axis) {
+    public void onSelectionCleared(String currQuery, MeasureLabel label, int[] is, IAxis axis, boolean entiredimension) {
         if (this.queryID.equals(queryID) && this.isAttached()) {
-            alterSelectionDisplay(label, is, axis);
+            alterSelectionDisplay(label, is, axis, entiredimension);
         }
 
     }

@@ -55,10 +55,10 @@ public class SelectionListenerCollection extends ArrayList<ISelectionListener> {
     }
 
 	public void fireSelectionCleared(String currQuery, MeasureLabel label,
-			int[] is, IAxis iAxis) {
+			int[] is, IAxis iAxis, boolean entiredimension) {
 		ArrayList<ISelectionListener> queryChangedList = new ArrayList<ISelectionListener>(this);
         for (ISelectionListener listener : queryChangedList) {
-            listener.onSelectionCleared(currQuery, label, is, iAxis);
+            listener.onSelectionCleared(currQuery, label, is, iAxis, entiredimension);
         }
 		
 	}

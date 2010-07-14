@@ -98,7 +98,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
-                        .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis);
+                        .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis, true);
                     }
 
                 });
@@ -131,7 +131,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
-                        .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
+                        .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis, true);
                     }
 
                 });
@@ -163,7 +163,7 @@ public class SimplePanelUtil {
 
                     public void onSuccess(Integer arg0) {
                         EventFactory.getSelectionInstance().getQueryListeners()
-                        .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
+                        .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis, true);
                     }
 
                 });
@@ -226,7 +226,7 @@ public class SimplePanelUtil {
 
                 } else {
                     EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
-                            Pat.getCurrQuery(), label, is, iAxis);
+                            Pat.getCurrQuery(), label, is, iAxis, true);
 
                     ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                             label.getActualName(), ObjectType.DIMENSION, label.getSelectionType(), new AsyncCallback<StringTree>() {
@@ -304,7 +304,7 @@ public class SimplePanelUtil {
 
                 } else {
                     EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
-                            Pat.getCurrQuery(), label, is, iAxis);
+                            Pat.getCurrQuery(), label, is, iAxis, true);
                     ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                             label.getActualName(), ObjectType.HIERARCHY, label.getSelectionType(),
                             new AsyncCallback<StringTree>() {
@@ -384,7 +384,7 @@ public class SimplePanelUtil {
                     });
                 } else {
                     EventFactory.getSelectionInstance().getQueryListeners().fireSelectionCleared(
-                            Pat.getCurrQuery(), label, is, iAxis);
+                            Pat.getCurrQuery(), label, is, iAxis, true);
                     ServiceFactory.getQueryInstance().getSpecificMembers(Pat.getSessionID(), Pat.getCurrQuery(),
                             label.getActualName(), ObjectType.LEVEL, label.getSelectionType(),
                             new AsyncCallback<StringTree>() {
@@ -472,7 +472,7 @@ public class SimplePanelUtil {
                 } else {
                     if (!createSelection)
                         EventFactory.getSelectionInstance().getQueryListeners()
-                        .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis);
+                        .fireSelectionCleared(Pat.getCurrQuery(), label, is, iAxis, true);
                     else {
                         List<String> list = new ArrayList<String>();
                         list.add("dummy");
@@ -566,13 +566,17 @@ public class SimplePanelUtil {
                         }
 
                         public void onSuccess(Object arg0) {
-                            
+                            EventFactory.getSelectionInstance().getQueryListeners()
+                            .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis, true);
                         }
 
                     });
                 }
-                EventFactory.getSelectionInstance().getQueryListeners()
-                .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis);
+                else{
+                    EventFactory.getSelectionInstance().getQueryListeners()
+                    .fireSelectionCleared(Pat.getCurrQuery(), label, coord, axis, false);
+                }
+                
             }
 
         });

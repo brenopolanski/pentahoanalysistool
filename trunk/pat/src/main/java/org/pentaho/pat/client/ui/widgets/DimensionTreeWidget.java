@@ -336,7 +336,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	}
 
 	public void onSelectionCleared(String currQuery, MeasureLabel label,
-			int[] is, IAxis iAxis) {
+			int[] is, IAxis iAxis, boolean entiredimension) {
 		String name=label.getDimensionName();
 		
 		for(int i =0; i<t.getChildCount(); i++){
