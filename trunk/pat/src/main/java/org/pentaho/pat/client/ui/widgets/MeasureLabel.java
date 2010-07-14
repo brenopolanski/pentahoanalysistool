@@ -132,8 +132,11 @@ public class MeasureLabel extends FocusPanel implements ILabelListener{
     	String name=this.getActualName();
 		
 		String[] split = name.split("[*.?]");
-		
+		char c = split[0].charAt(0);
+		String s1 = Character.toString(c);
+		if(s1.equals("[")){
 			split[0] = split[0].substring(1);
+		}
 //			split[0] = split[0].replaceAll("[", "");
 			split[0] = split[0].replaceAll("]", "");
 		return split[0];
