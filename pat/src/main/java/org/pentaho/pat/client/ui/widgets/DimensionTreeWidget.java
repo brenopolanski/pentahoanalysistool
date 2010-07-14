@@ -317,10 +317,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 	public void onSelectionChange(String queryID, Widget sender,
 			StringTree tree, String type) {
-		String name=((MeasureLabel)sender).getActualName();
+		String name=((MeasureLabel)sender).getDimensionName();
 		
 		String[] split = name.split("[*.?]");
-		split[0]=split[0].substring(1);
+		//split[0]=split[0].substring(1);
 
 		
 		for(int i =0; i<dimensionTree.getChildCount(); i++){
