@@ -516,7 +516,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         }
         if (pType == PanelUtil.PanelType.QM) {
             mainPanel.add(executeButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            mainPanel.add(syncButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+            // TODO enable sync button when implemented routines
+            //            mainPanel.add(syncButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(exportButton, new BoxLayoutData(FillStyle.HORIZONTAL));        
             mainPanel.add(layoutMenuButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(drillPositionButton, new BoxLayoutData(FillStyle.HORIZONTAL));
