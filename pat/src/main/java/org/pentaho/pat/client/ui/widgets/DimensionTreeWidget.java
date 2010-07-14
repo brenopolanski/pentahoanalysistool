@@ -58,7 +58,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	 */
 	HashMap<String, IAxis> dimensionLocations = new HashMap<String, IAxis>();
 	private SimplePanelDragControllerImpl dragController;
-	private FastTree t;
+	private FastTree dimensionTree;
 	private DimensionPanel parentPanel;
 	public DimensionTreeWidget(SimplePanelDragControllerImpl dragController, DimensionPanel dimensionPanel) {
 		this.parentPanel = dimensionPanel;
@@ -88,10 +88,10 @@ public class DimensionTreeWidget extends LayoutComposite implements
 	
 	protected Widget onInitialize() {
 		
-		t = new FastTree();
-		lazyCreateChild(t.getTreeRoot(), 0, 50);
+		dimensionTree = new FastTree();
+		lazyCreateChild(dimensionTree.getTreeRoot(), 0, 50);
 
-		t.addBeforeOpenHandler(new BeforeOpenHandler<FastTreeItem>() {
+		dimensionTree.addBeforeOpenHandler(new BeforeOpenHandler<FastTreeItem>() {
 			
 			public void onBeforeOpen(BeforeOpenEvent<FastTreeItem> event) {
 				parentItem = (FastTreeItem) event.getTarget();
@@ -104,7 +104,7 @@ public class DimensionTreeWidget extends LayoutComposite implements
 
 			
 		final ScrollPanel panel = new ScrollPanel();
-		panel.add(t);
+		panel.add(dimensionTree);
 
 		return panel;
 			}
@@ -323,12 +323,12 @@ public class DimensionTreeWidget extends LayoutComposite implements
 		split[0]=split[0].substring(1);
 
 		
-		for(int i =0; i<t.getChildCount(); i++){
-			MeasureLabel l = (MeasureLabel)t.getChild(i).getWidget();
+		for(int i =0; i<dimensionTree.getChildCount(); i++){
+			MeasureLabel l = (MeasureLabel)dimensionTree.getChild(i).getWidget();
 			if(l.getActualName().equals(split[0])){
 				l.makeNotDraggable();
-				for (int j =0; j<t.getChild(i).getChildCount(); j++){
-					disableDrag(t.getChild(i).getChild(j));
+				for (int j =0; j<dimensionTree.getChild(i).getChildCount(); j++){
+					disableDrag(dimensionTree.getChild(i).getChild(j));
 				}
 			}
 		}
@@ -339,12 +339,12 @@ public class DimensionTreeWidget extends LayoutComposite implements
 			int[] is, IAxis iAxis, boolean entiredimension) {
 		String name=label.getDimensionName();
 		
-		for(int i =0; i<t.getChildCount(); i++){
-			MeasureLabel l = (MeasureLabel)t.getChild(i).getWidget();
+		for(int i =0; i<dimensionTree.getChildCount(); i++){
+			MeasureLabel l = (MeasureLabel)dimensionTree.getChild(i).getWidget();
 			if(l.getActualName().equals(name)){
 				l.makeDraggable();
-				for (int j =0; j<t.getChild(i).getChildCount(); j++){
-					enableDrag(t.getChild(i).getChild(j));
+				for (int j =0; j<dimensionTree.getChild(i).getChildCount(); j++){
+					enableDrag(dimensionTree.getChild(i).getChild(j));
 				}
 			}
 		}

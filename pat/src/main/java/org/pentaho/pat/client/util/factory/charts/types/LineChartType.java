@@ -20,7 +20,6 @@ import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
 import org.pentaho.pat.rpc.dto.celltypes.DataCell;
 import org.pentaho.pat.rpc.dto.celltypes.MemberCell;
-import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.rednels.ofcgwt.client.event.ChartClickEvent;
@@ -135,7 +134,7 @@ public class LineChartType {
                         public void onClick(final ChartClickEvent event) {
                             LogoPanel.spinWheel(true);
                             ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
-                                    DrillType.POSITION, memberCellLabelList[row], new AsyncCallback<Object>() {
+                                    Pat.getCurrDrillType(), memberCellLabelList[row], new AsyncCallback<Object>() {
 
                                         public void onFailure(Throwable arg0) {
                                             LogoPanel.spinWheel(false);
