@@ -55,7 +55,9 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         }
         else{
             boolean othercells = false;
+            if(flex.isCellPresent(coords[0], coords[1]) && flex.getWidget(coords[0], coords[1])!=null){
             flex.remove(flex.getWidget(coords[0], coords[1]));
+            }
            /* for(int i=0; i<flex.getCellCount(coords[0]); i++){
                 if(flex.getWidget(coords[0], coords[1]) != null){
                     othercells=true;
