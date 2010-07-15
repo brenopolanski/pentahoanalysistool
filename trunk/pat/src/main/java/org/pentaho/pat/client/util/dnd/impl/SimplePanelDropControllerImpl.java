@@ -29,6 +29,7 @@ import org.pentaho.pat.rpc.dto.query.IAxis;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -332,14 +333,29 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     @Override
     public void onEnter(DragContext context){
         super.onEnter(context);
+        MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
+        
         if(dropTarget.isTrash())
-        dropTarget.setEngaged(true);        
+        dropTarget.setEngaged(true);  
+        
+        
+        if(dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
+            
+            dropTarget.addStyleName("pat-validDropTarget");
+        }
     }
 
     @Override
     public void onLeave(DragContext context) {
       if(dropTarget.isTrash())
       dropTarget.setEngaged(false);
+      
+      MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
+      
+      if(dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
+          
+          dropTarget.removeStyleName("pat-validDropTarget");
+      }
       
       super.onLeave(context);
     }
