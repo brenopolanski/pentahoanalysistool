@@ -79,7 +79,7 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
                 SimplePanelUtil.clearMember(context, originalLabel, panel.getCoord(), panel.getAxis());
             }
 
-            dtw.setDimensionLocation(panel.getAxis(), originalLabel.getDimensionName());
+            dtw.setDimensionLocation(dropTarget.getAxis(), originalLabel.getDimensionName());
         } 
         /*
          * If the widget is dropped and the target axis != the widgets current axis. IE move dimension from rows to columns.
