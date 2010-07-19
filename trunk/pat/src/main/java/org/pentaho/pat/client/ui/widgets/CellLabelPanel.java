@@ -117,14 +117,14 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
             if (drillType != null && memCell.getRawValue() != null) {
                 if (drillType.equals(DrillType.POSITION) && memCell.getChildMemberCount() > 0) {
                     if (memCell.isExpanded()) {
-                    	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
+                    	if(browserType.contains("MSIE")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
                     	}
                     	else{
                     		drillButton = Pat.IMAGES.closeButton().createImage();
                     	}
                     } else {
-                    	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
+                    	if(browserType.contains("MSIE")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
                     	}
                     	else{
@@ -134,7 +134,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
                     setIcon = true;
                 }
                 if (memCell.getChildMemberCount() > 0 && drillType.equals(DrillType.REPLACE)) {
-                	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
+                	if(browserType.contains("MSIE")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_down.png"); //$NON-NLS-1$
                 	}
                 	else{
@@ -144,7 +144,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
                 }
 
                 if (memCell.getParentMember() != null && drillType.equals(DrillType.UP)) {
-                	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
+                	if(browserType.contains("MSIE")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_up.png"); //$NON-NLS-1$
                 	}
                 	else{
@@ -171,7 +171,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
     	                     }
 
     	                     public void onSuccess(Object arg0) {
-    	                         Pat.executeQuery(CellLabelPanel.this,Pat.getCurrQuery());
+    	                         Pat.executeQuery(CellLabelPan
     	                     }
 
     	                 });
