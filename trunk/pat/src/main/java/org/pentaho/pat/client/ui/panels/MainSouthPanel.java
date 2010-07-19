@@ -117,7 +117,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements IOperationList
                 simple.add(dtp);
                 parent.setCollapsed(this,false);
                 this.setVisible(true);
-                WidgetHelper.revalidate(this);
+                //WidgetHelper.revalidate(this);
             }
 
             if (operation.equals(Operation.DISABLE_DRILLTHROUGH)) {
@@ -125,7 +125,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements IOperationList
                 this.getHeader().setText("");
                 parent.setCollapsed(this,false);
                 this.setVisible(false);
-                WidgetHelper.revalidate(this);
+               //WidgetHelper.revalidate(this);
             }
         }
     }
@@ -135,7 +135,7 @@ public class MainSouthPanel extends CaptionLayoutPanel implements IOperationList
             TableDataSet tds = new TableDataSet();
             tds.setData(result);
             dtp.setData(tds);
-            WidgetHelper.revalidate(this);
+            //WidgetHelper.revalidate(this);
         }
     }
 

@@ -34,6 +34,8 @@ import org.pentaho.pat.rpc.dto.enums.DrillType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -51,6 +53,8 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
     private MemberCell memCell = null;
 
     private Image drillButton;
+
+	private String browserType;
     
     private final static String CELL_LABEL_PANEL = "pat-cellLabel"; //$NON-NLS-1$
     
@@ -63,7 +67,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
         this.memCell = memCell;
         this.sinkEvents(NativeEvent.BUTTON_LEFT | NativeEvent.BUTTON_RIGHT | Event.ONCONTEXTMENU);
         this.setStyleName(CELL_LABEL_PANEL);
-        
+        this.browserType = getUserAgent();
         EventFactory.getOperationInstance().addOperationListener(this);
         
         drillButton = null;
@@ -91,6 +95,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
                 }
             };
 
+           
             setDrillIcon(Pat.getCurrDrillType());
             this.add(drillButton);
 
@@ -100,6 +105,11 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
         
     }
 
+    public static native String getUserAgent() /*-{
+    return navigator.userAgent.toLowerCase();
+    }-*/;
+    
+   
     private void setDrillIcon(DrillType drillType) {
 
         if (drillButton != null) {
@@ -107,25 +117,68 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
             if (drillType != null && memCell.getRawValue() != null) {
                 if (drillType.equals(DrillType.POSITION) && memCell.getChildMemberCount() > 0) {
                     if (memCell.isExpanded()) {
+                    	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
+                    	}
+                    	else{
+                    		drillButton = Pat.IMAGES.closeButton().createImage();
+                    	}
                     } else {
+                    	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
+                    	}
+                    	else{
+                    		drillButton = Pat.IMAGES.drill().createImage();
+                    	}
                     }
                     setIcon = true;
                 }
                 if (memCell.getChildMemberCount() > 0 && drillType.equals(DrillType.REPLACE)) {
+                	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_down.png"); //$NON-NLS-1$
+                	}
+                	else{
+                		drillButton = Pat.IMAGES.arrow_down().createImage();
+                	}
                     setIcon = true;
                 }
 
                 if (memCell.getParentMember() != null && drillType.equals(DrillType.UP)) {
+                	if(browserType.contains("MSIE 6,0")||browserType.contains("MSIE 6.0")|| browserType.contains("MSIE 6.1")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_up.png"); //$NON-NLS-1$
+                	}
+                	else{
+                		drillButton = Pat.IMAGES.arrow_up().createImage();
+                	}
                     setIcon = true;
                 }
 
                 if (drillType.equals(DrillType.NONE)) {
                     setIcon = false;
                 }
+                
+                drillButton.addClickHandler(new ClickHandler(){
+
+    				public void onClick(ClickEvent arg0) {
+    					 LogoPanel.spinWheel(true);
+    	                 ServiceFactory.getQueryInstance().drillPosition(Pat.getSessionID(), Pat.getCurrQuery(),
+    	                         Pat.getCurrDrillType(), memCell, new AsyncCallback<Object>() {
+
+    	                     public void onFailure(Throwable arg0) {
+    	                         LogoPanel.spinWheel(false);
+    	                         MessageBox.alert(Pat.CONSTANTS.error(), MessageFactory
+    	                                 .getInstance().failedDrill(arg0.getLocalizedMessage()));
+    	                     }
+
+    	                     public void onSuccess(Object arg0) {
+    	                         Pat.executeQuery(CellLabelPanel.this,Pat.getCurrQuery());
+    	                     }
+
+    	                 });
+    					
+    				}
+                	
+                });
             }
 
             drillButton.setVisible(setIcon);
@@ -136,7 +189,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
      * (non-Javadoc)
      * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
      */
-    @Override
+   /* @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
         switch (DOM.eventGetType(event)) {
@@ -154,7 +207,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
         default:
             break;
         }
-    }
+    }*/
 
 
     public void onDrillStyleChanged(String queryId, DrillType drillType) {
