@@ -171,7 +171,8 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
     	                     }
 
     	                     public void onSuccess(Object arg0) {
-    	                         Pat.executeQuery(CellLabelPan
+    	                         Pat.executeQuery(CellLabelPanel.this,Pat.getCurrQuery());
+
     	                     }
 
     	                 });
