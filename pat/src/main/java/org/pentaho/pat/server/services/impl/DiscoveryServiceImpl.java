@@ -487,31 +487,35 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
                 if (hierarchy == null) {
                     throw new OlapException("Hierarchy not found: " + parts[0]);
                 }
-
-                if (parts.length >= 2) {
-                    Level level = hierarchy.getLevels().get(parts[1]);
-                    if (level == null) {
-                        level = hierarchy.getLevels().get("[" + parts[1] + "]");
-                        if (level == null) {
-                            throw new OlapException("Level not found" + uniqueName);
-                        }
-                    }
-                    List<Member> levelList = level.getMembers();
-
-
-                    for (Member dim : levelList) {
-                        List<String> lst = new ArrayList<String>();
-                        String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
-                        .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        lst.add(dim.getDimension().getName());
-                        lst.add(hierarchyunique);
-                        // lst.add(levelName);
-                        lst.add(dim.getName());
-                        levelNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
-                    }
-                    Collections.sort(levelNames);
-                }
             }
+
+            if (parts.length >= 2) {
+                Level level = hierarchy.getLevels().get(parts[1]);
+                if (level == null) {
+                    level = hierarchy.getLevels().get("[" + parts[1] + "]");
+                    if (level == null) {
+                        throw new OlapException("Level not found" + uniqueName);
+                    }
+                }
+                List<Member> levelList = level.getMembers();
+
+
+                for (Member dim : levelList) {
+                    List<String> lst = new ArrayList<String>();
+                    String hierarchyunique = dim.getHierarchy().getUniqueName().replaceAll("\\[", "") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replaceAll("\\]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                    lst.add(dim.getDimension().getName());
+                    lst.add(hierarchyunique);
+                    // lst.add(levelName);
+                    lst.add(dim.getName());
+                    levelNames.add(new MemberLabelItem(dim.getUniqueName(), dim.getCaption(loc), lst));
+                }
+                Collections.sort(levelNames);
+            }
+            else {
+                throw new OlapException("Level Information in object not found" + uniqueName);
+            }
+
 
         }
 
