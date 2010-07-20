@@ -21,6 +21,7 @@ package org.pentaho.pat.client.ui.widgets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.gwt.mosaic.ui.client.LayoutComposite;
@@ -41,6 +42,7 @@ import com.google.gwt.gen2.table.client.IterableTableModel;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
+import com.google.gwt.gen2.table.client.TableModelHelper.Response;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -98,7 +100,10 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
     public void initTable() {
         // Not sure what the effect of this is, but at least something is
         // happening now. Not just frozen
-        layoutPanel.clear();
+
+        long startTime = System.currentTimeMillis();
+        // run your code here
+
         patTableModel = new PatTableModel(olapData);
         final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel
                 .getRowData());
@@ -111,10 +116,10 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 return data.size();
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             public void requestRows(final Request request,
                     final Callback<AbstractBaseCell[]> callback) {
+                long startTime = System.currentTimeMillis();
                 final int numRows = Math.min(request.getNumRows(), data.size()
                         - request.getStartRow());
 
@@ -122,18 +127,39 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 for (int i = 0, n = numRows; i < n; i++) {
                     list.add(data.get(request.getStartRow() + i));
                 }
-                final SerializableResponse response = new SerializableResponse(
-                        list);
+                final Response<AbstractBaseCell[]> response = new Response<AbstractBaseCell[]>() {
+                    @Override
+                    public Iterator<AbstractBaseCell[]> getRowValues() {
+                      return list.iterator();
+                    }
+                  };
                 callback.onRowsReady(request, response);
+                long stopTime = System.currentTimeMillis();
+                long runTime = stopTime - startTime;
+                System.out.println("Get rows time: " + runTime);
             }
         };
 
+     
+     
         table = new LiveTable<AbstractBaseCell[]>(tableModel,
                 createTableDefinition());
 
+        long stopTime = System.currentTimeMillis();
+        long runTime = stopTime - startTime;
+        System.out.println("Create table time: " + runTime);
+
+        startTime = System.currentTimeMillis();
+        // run your code here
+        
+        layoutPanel.clear();
+        
         layoutPanel.add(table);
         //table.fillWidth();
         layoutPanel.layout();
+        stopTime = System.currentTimeMillis();
+        runTime = stopTime - startTime;
+        System.out.println("Layouting time: " + runTime);
 
     }
 
