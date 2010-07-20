@@ -114,6 +114,7 @@ public class DataPanel extends LayoutComposite implements IQueryListener {
 	        LayoutPanel subMainLayoutPanel = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
 	        subMainLayoutPanel.add(dropTable, new BoxLayoutData(FillStyle.BOTH));
 	        subMainLayoutPanel.add(filterTable, new BoxLayoutData(FillStyle.HORIZONTAL));
+	        filterTable.setWidth("100%");
 	        mainLayoutPanel.add(subMainLayoutPanel, new BoxLayoutData(FillStyle.BOTH));
 	        mainLayoutPanel.add(trashPanel, new BoxLayoutData(100.0, 100.0));
 	        ((BoxLayout) mainLayoutPanel.getLayout()).setAlignment(Alignment.END);
