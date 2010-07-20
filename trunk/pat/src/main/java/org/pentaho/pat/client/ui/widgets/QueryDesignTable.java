@@ -5,6 +5,8 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.ScrollLayoutPanel;
 import org.gwt.mosaic.ui.client.layout.BoxLayout;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData;
+import org.gwt.mosaic.ui.client.layout.BoxLayoutData.FillStyle;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.ISelectionListener;
 import org.pentaho.pat.client.util.factory.EventFactory;
@@ -36,7 +38,12 @@ public class QueryDesignTable extends LayoutComposite implements ISelectionListe
         flex.setStylePrimaryName("pat-QueryDesignTable");
         this.setSize("100%", "100%");
 
-        this.getLayoutPanel().add(slp);
+        if(isfilter){
+        this.getLayoutPanel().add(slp, new BoxLayoutData(FillStyle.BOTH));
+        }
+        else{
+            this.getLayoutPanel().add(slp);
+        }
     }
 
     public void alterSelectionDisplay(MeasureLabel ml, int[] coords, IAxis axis, boolean entiredimension) {

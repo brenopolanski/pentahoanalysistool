@@ -32,6 +32,7 @@ import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * SimplePanelDropConterllerImpl, allows users to drop labels, 
@@ -349,14 +350,17 @@ public class SimplePanelDropControllerImpl extends SimpleDropController implemen
     public void onLeave(DragContext context) {
       if(dropTarget.isTrash())
       dropTarget.setEngaged(false);
-      
-      MeasureLabel originalLabel = ((MeasureLabel) context.draggable.getParent().getParent());
-      
-      if(dropTarget.isMeasurebox() && (originalLabel.getType().equals(ObjectType.MEASURE)|| originalLabel.getType().equals(ObjectType.MEMBER))){
+      Widget w=null;
+      if(context.draggable.getParent()!=null){
+       w =  context.draggable.getParent().getParent();
+      }
+      if(w != null){
+        
+      if(dropTarget.isMeasurebox() && (((MeasureLabel)w).getType().equals(ObjectType.MEASURE)|| ((MeasureLabel)w).getType().equals(ObjectType.MEMBER))){
           
           dropTarget.removeStyleName("pat-validDropTarget");
       }
-      
+      }
       super.onLeave(context);
     }
 }
