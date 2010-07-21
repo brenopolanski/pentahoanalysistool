@@ -5,7 +5,7 @@
 	<artifactId>pat-server-assembly</artifactId>
 	<packaging>pom</packaging>
 	<name>PAT Standalone Server Assembly</name>
-	<version>0.8</version>
+	<version>0.9-SNAPSHOT</version>
 	<url>http://code.google.com/p/pentahoanalysistool/</url>
 	<properties>
 		<tomcat.version>apache-tomcat-6.0.24</tomcat.version>
