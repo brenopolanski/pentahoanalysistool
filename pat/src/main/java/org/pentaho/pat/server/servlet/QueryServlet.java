@@ -77,8 +77,10 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     private static final List<String> bootstrapQueries = new ArrayList<String>();
 
     public void addBootstrapQuery(String sessionId, String connectionId, String queryName,  String queryXml) throws Exception {
-
+        LOG.debug("Add query to bootstrap - SessionId: " + sessionId + " ConnectionId: " + connectionId + " Query Name: "+ queryName);
         OlapConnection con = this.sessionService.getNativeConnection(getCurrentUserId(), sessionId, connectionId);
+        if (con == null)
+            throw new OlapException("Connection is null - Session: " + sessionId + " Connection: " + connectionId);
         PatQuery qs2 = QueryDeserializer.unparse(queryXml, con);
         SavedQuery sq = new SavedQuery();
         if (qs2 instanceof QmQuery && qs2.getQuery() != null) {
@@ -138,6 +140,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public String createNewQuery(final String sessionId, final String connectionId, final String cubeName)
     throws RpcException {
         try {
+            LOG.debug("Create new query - SessionId: " + sessionId + " ConnectionId: " + connectionId + " Cube: "+ cubeName);
             return queryService.createNewQuery(getCurrentUserId(), sessionId, connectionId, cubeName);
         } catch (OlapException e) {
             LOG.error(Messages.getString("Servlet.Query.CantCreateQuery"), e); //$NON-NLS-1$
@@ -151,7 +154,13 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#deleteQuery(java.lang.String, java.lang.String)
      */
     public void deleteQuery(final String sessionId, final String queryId) throws RpcException {
-        queryService.releaseQuery(getCurrentUserId(), sessionId, queryId);
+        try {
+            LOG.debug("Delete query - SessionId: " + sessionId + " QueryId: " + queryId);
+            queryService.releaseQuery(getCurrentUserId(), sessionId, queryId);
+        } catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Query.CantDeleteQuery") + ":" + queryId, e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantDeleteQuery"), e); //$NON-NLS-1$
+        }
     }
 
     /*
@@ -160,8 +169,14 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * @see org.pentaho.pat.rpc.IQuery#getQueries(java.lang.String)
      */
     public String[] getQueries(final String sessionId) throws RpcException {
-        final List<String> list = queryService.getQueries(getCurrentUserId(), sessionId);
-        return list.toArray(new String[list.size()]);
+        try {
+            LOG.debug("Get Queries - SessionId: " + sessionId);
+            final List<String> list = queryService.getQueries(getCurrentUserId(), sessionId);
+            return list.toArray(new String[list.size()]);
+        } catch (Exception e) {
+            LOG.error(Messages.getString("Servlet.Query.CantFetchQueries"), e); //$NON-NLS-1$
+            throw new RpcException(Messages.getString("Servlet.Query.CantFetchQueries"), e); //$NON-NLS-1$
+        }
     }
 
 
@@ -172,6 +187,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      * java.util.List)
      */
     public int clearSelection(final String sessionId, final String queryId, final String dimensionName, List<String> currentSelections) throws RpcException {
+        LOG.debug("Clear Selection - SessionId: " + sessionId + " QueryId: " + queryId + " Dimension: " + dimensionName);
         return this.queryService.clearSelection(getCurrentUserId(), sessionId, queryId, dimensionName, currentSelections);
     }
 
@@ -182,6 +198,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
      */
     public void clearExclusion(final String sessionId, final String queryId, final String dimensionName)
     throws RpcException {
+        LOG.debug("Clear Exclusion - SessionId: " + sessionId + " QueryId: " + queryId + " Dimension: " + dimensionName);
         this.queryService.clearExclusion(getCurrentUserId(), sessionId, queryId, dimensionName);
     }
 
@@ -196,6 +213,8 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public List<String> createSelection(final String sessionId, final String queryId, String uniqueName,
             ObjectType type, final SelectionType selectionType) throws RpcException {
         try {
+            LOG.debug("Create Selection - SessionId: " + sessionId + " QueryId: " + queryId + " UniqueName: " + uniqueName 
+                    + " Type: " + type == null ? " NULL" : type.toString() + " SelectionType: " + selectionType.toString());
 
             return this.queryService.createSelection(getCurrentUserId(), sessionId, queryId, uniqueName, type,
                     selectionType);
@@ -216,6 +235,9 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public StringTree getSpecificMembers(final String sessionId, final String queryId, String uniqueName,
             ObjectType type, final SelectionType selectionType) throws RpcException {
         try {
+            LOG.debug("Get Specific Members - SessionId: " + sessionId + " QueryId: " + queryId + " UniqueName: " + uniqueName
+                    + " Type: " + type == null ? " NULL" : type.toString() + " SelectionType: " + selectionType.toString());
+
             return this.queryService.getSpecificMembers(getCurrentUserId(), sessionId, queryId, uniqueName, type,
                     org.olap4j.query.Selection.Operator.valueOf(selectionType.toString()));
         } catch (Exception e) {
@@ -236,6 +258,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public void createExclusion(final String sessionId, final String queryId, final String dimensionName,
             final List<String> memberNames) throws RpcException {
         try {
+            LOG.debug("Create Exclusion - SessionId: " + sessionId + " QueryId: " + queryId + " Dimension: " + dimensionName);
             this.queryService.createExclusion(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames);
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantSelectMembers"), e); //$NON-NLS-1$
@@ -246,6 +269,7 @@ public class QueryServlet extends AbstractServlet implements IQuery {
     public void alterCell(final String sessionId, final String queryId, final String connectionId, final String scenarioId,  
             final String newCellValue)throws RpcException {
         try {
+            LOG.debug("Create Exclusion - SessionId: " + sessionId + " QueryId: " + queryId + " Scenario: " + scenarioId);
             this.queryService.alterCell(getCurrentUserId(), queryId, sessionId, scenarioId, connectionId, newCellValue);
         } catch (Exception e) {
             LOG.error(Messages.getString("Servlet.Query.CantExecuteQuery"), e); //$NON-NLS-1$
