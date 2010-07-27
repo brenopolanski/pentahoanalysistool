@@ -132,7 +132,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         final Query query = this.getQuery(userId, sessionId, queryId);
         String[] named = QueryDimension.getNameParts(uniqueName);
         final QueryDimension qDim = OlapUtil.getQueryDimension(query, getDimensionName(named));
-        // final String path = OlapUtil.normalizeMemberNames(memberNames.toArray(new String[memberNames.size()]));
         for (int i = 0; i < currentSelections.size(); i++) {
 
             final Selection selection = OlapUtil.findSelection(currentSelections.get(i), qDim);
@@ -1200,14 +1199,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 }
             }
         }
-        // if (catalog != null) {
-        // try {
-        // connection.setCatalog(catalog.getName());
-        // } catch (SQLException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        // }
         if (cube != null)
             return cube;
 
@@ -1277,15 +1268,8 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
             Query newQuery) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
 
-        // if (cubeName == null)
-        //    throw new OlapException(Messages.getString("Services.Session.NoCubeSelected")); //$NON-NLS-1$
-
-        // final Cube cube = this.getCube4Guid(userId, sessionId, connectionId,
-        // cubeName);
         final String generatedId = String.valueOf(UUID.randomUUID());
-
         sessionService.getSession(userId, sessionId).getQueries().put(generatedId, newQuery);
-
         return generatedId;
 
     }
@@ -1295,9 +1279,7 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
         this.sessionService.validateSession(userId, sessionId);
 
         final String generatedId = String.valueOf(UUID.randomUUID());
-
         sessionService.getSession(userId, sessionId).getMdxQueries().put(generatedId, newMdxQuery);
-
         return generatedId;
 
     }
