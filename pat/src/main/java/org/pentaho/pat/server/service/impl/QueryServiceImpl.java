@@ -7,7 +7,7 @@ import org.pentaho.pat.server.service.QueryService;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 
-public class QueryServiceImpl implements QueryService{
+public class QueryServiceImpl/* implements QueryService*/{
     SessionServlet ss = new SessionServlet();
     QueryServlet qs = new QueryServlet();
     String sessionId;
