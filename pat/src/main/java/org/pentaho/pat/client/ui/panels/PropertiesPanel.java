@@ -388,7 +388,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         
         final PopupMenu layoutMenuBtnMenu = new PopupMenu();
         layoutMenuBtnMenu.addItem(Pat.CONSTANTS.grid(), new LayoutCommand(null));
-        // layoutMenuBtnMenu.addItem(Pat.CONSTANTS.chart(), new LayoutCommand(Region.CENTER));
+        layoutMenuBtnMenu.addItem(Pat.CONSTANTS.chart(), new LayoutCommand(Region.CENTER));
         layoutMenuBtnMenu.addItem(Pat.CONSTANTS.top(), new LayoutCommand(Region.NORTH));
         layoutMenuBtnMenu.addItem(Pat.CONSTANTS.bottom(), new LayoutCommand(Region.SOUTH));
         layoutMenuBtnMenu.addItem(Pat.CONSTANTS.left(), new LayoutCommand(Region.WEST));

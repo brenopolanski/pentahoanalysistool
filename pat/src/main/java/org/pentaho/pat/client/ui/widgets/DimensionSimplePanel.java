@@ -27,6 +27,7 @@ import org.pentaho.pat.rpc.dto.query.IAxis;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -71,6 +72,15 @@ public class DimensionSimplePanel extends SimplePanel {
         fTblRowDropCont = new SimplePanelDropControllerImpl(DimensionSimplePanel.this, false);
         this.setAxis(axis);
         this.setMeasurebox(measurebox);
+        if(axis==IAxis.ROWS){
+        this.setWidget(Pat.IMAGES.arrow_right().createImage());
+        }
+        else if(axis ==IAxis.COLUMNS){
+            this.setWidget(Pat.IMAGES.arrow_down().createImage());
+        }
+        if(measurebox==true){
+            this.setWidget(new Label("Measure/Member"));
+        }
     }
     
     public DimensionSimplePanel(final boolean measurebox, final String dimensionAssociation, final IAxis axis) {
