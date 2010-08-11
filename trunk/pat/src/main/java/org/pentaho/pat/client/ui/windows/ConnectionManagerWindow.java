@@ -48,21 +48,14 @@ public class ConnectionManagerWindow extends WindowPanel {
 
     /** The Window Title. */
     private static final String TITLE = Pat.CONSTANTS.registerNewConnection();
-
     /** Mondrian Panel. */
     private static ConnectMondrianPanel connectMondrian;
-
     /** Xmla Panel. */
     private static ConnectXmlaPanel connectXmla;
-
     private final Button cmCancelButton = new Button(Pat.CONSTANTS.close());
-
     private final static LayoutPanel MAINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.VERTICAL));
-
     private final static LayoutPanel WINCONTENTPANEL = new LayoutPanel(new BoxLayout(Orientation.HORIZONTAL));
-
     private final static ConnectionManagerWindow CONNMANGRWINDOW = new ConnectionManagerWindow();
-
     /** A Tab Layout Panel. */
     private final static TabLayoutPanel TABPANEL = new TabLayoutPanel();
 
@@ -72,6 +65,7 @@ public class ConnectionManagerWindow extends WindowPanel {
     public static void closeTabs() {
         closeTabs(true);
     }
+
     /**
      * Close the tabs, optional refresh.
      * @param refresh
@@ -81,8 +75,9 @@ public class ConnectionManagerWindow extends WindowPanel {
             TABPANEL.remove(i);
         }
         WINCONTENTPANEL.remove(TABPANEL);
-        if (refresh)
+        if (refresh) {
             refreshWindow();
+        }
     }
 
     /**
@@ -91,15 +86,16 @@ public class ConnectionManagerWindow extends WindowPanel {
     public static void display() {
         display(true);
     }
-    
+
     public static void display(Boolean refresh) {
         if (refresh) {
             closeTabs();
-        }
-        else
+        } else {
             CONNMANGRWINDOW.showModal();
-            
+        }
+
     }
+
     public static void close() {
         CONNMANGRWINDOW.hide();
     }
@@ -110,19 +106,19 @@ public class ConnectionManagerWindow extends WindowPanel {
      */
     public static void display(final CubeConnection cc) {
         if (TABPANEL.getWidgetCount() == 0) {
-        
-        if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
-            connectMondrian = new ConnectMondrianPanel(cc);
-            TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
-        }
-        if (cc.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
-            connectXmla = new ConnectXmlaPanel(cc);
-            TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
-            
-        }
-        TABPANEL.selectTab(0);
-        WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));        
-        refreshWindow();
+
+            if (cc.getConnectionType() == CubeConnection.ConnectionType.Mondrian) {
+                connectMondrian = new ConnectMondrianPanel(cc);
+                TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
+            }
+            if (cc.getConnectionType() == CubeConnection.ConnectionType.XMLA) {
+                connectXmla = new ConnectXmlaPanel(cc);
+                TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
+
+            }
+            TABPANEL.selectTab(0);
+            WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
+            refreshWindow();
         }
     }
 
@@ -135,13 +131,16 @@ public class ConnectionManagerWindow extends WindowPanel {
             connectXmla = new ConnectXmlaPanel();
             TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
             TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
-            TABPANEL.selectTab(0);
             WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
-            refreshWindow();
         }
+        if (TABPANEL.getWidgetCount() > 0) {
+            TABPANEL.selectTab(0);
+        }
+        refreshWindow();
     }
 
     private static void refreshWindow() {
+        TABPANEL.selectTab(0);
         CONNMANGRWINDOW.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
         CONNMANGRWINDOW.showModal();
@@ -155,6 +154,7 @@ public class ConnectionManagerWindow extends WindowPanel {
         super(TITLE);
 
         cmCancelButton.addClickHandler(new ClickHandler() {
+
             public void onClick(final ClickEvent arg0) {
 
                 ConnectionManagerWindow.this.hide();
@@ -168,5 +168,4 @@ public class ConnectionManagerWindow extends WindowPanel {
         this.layout();
 
     }
-
 }
