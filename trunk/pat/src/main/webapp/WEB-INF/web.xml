@@ -83,14 +83,40 @@
     <servlet-name>QueryServlet</servlet-name>
     <servlet-class>org.pentaho.pat.server.servlet.QueryServlet</servlet-class>
   </servlet>
+  
   <servlet>
     <servlet-name>DiscoveryServlet</servlet-name>
     <servlet-class>org.pentaho.pat.server.servlet.DiscoveryServlet</servlet-class>
   </servlet>
-
   
-  <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
+   <servlet>
+	<servlet-name>RestServlet</servlet-name>
+    <servlet-class>org.pentaho.pat.server.servlet.RestServlet</servlet-class>
+  </servlet>
+	 
+	<!--  <servlet>
+	<servlet-name>JersyServlet</servlet-name>
+   <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+   </servlet> --> 
+   <servlet>
+		<servlet-name>Jersey Spring Servlet</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+			<init-param>
+				<param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+				<param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
+			</init-param>
+			<init-param>
+				<param-name>com.sun.jersey.config.property.packages</param-name>
+				<param-value>org.pentaho.pat.server.service</param-value>
+			</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	 <servlet-mapping>
+	<servlet-name>Jersey Spring Servlet</servlet-name>
+	<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+  <servlet-mapping>  
+     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/pat/schemaupload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -112,6 +138,10 @@
   <servlet-mapping>
     <servlet-name>DiscoveryServlet</servlet-name>
     <url-pattern>/pat/discovery.rpc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RestServlet</servlet-name>
+    <url-pattern>/pat/rest.rpc</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   <servlet-name>jsp</servlet-name>

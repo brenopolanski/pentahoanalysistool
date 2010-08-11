@@ -35,7 +35,8 @@
 	<servlet path="/session.rpc" class="org.pentaho.pat.server.servlet.SessionServlet"/>
 	<servlet path="/query.rpc" class="org.pentaho.pat.server.servlet.QueryServlet"/>
 	<servlet path="/discovery.rpc" class="org.pentaho.pat.server.servlet.DiscoveryServlet"/>
-	
+	<servlet path="/query.rpc" class="org.pentaho.pat.server.servlet.QueryServlet"/>
+	<servlet path="/rest.rpc" class="org.pentaho.pat.server.servlet.RestServlet"/>
 
 	
 	   

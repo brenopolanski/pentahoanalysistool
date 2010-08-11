@@ -9,7 +9,7 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        default-autowire="byName">
 
-
+	
 	<bean id="propertiesConfigurator"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="ignoreResourceNotFound" value="true" />
@@ -89,6 +89,10 @@
 	</bean>
 	
 	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
+	</bean>
+	
+	<bean id="restService" class="org.pentaho.pat.server.services.impl.RestServiceImpl">
+	<property name="sessionService" ref="sessionService" />
 	</bean>
 	
   <bean id="defaultDataLoader" class="org.pentaho.pat.server.services.impl.DefaultDataLoader">
