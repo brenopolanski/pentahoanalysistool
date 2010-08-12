@@ -10,7 +10,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 import org.springframework.context.annotation.Scope;
@@ -24,9 +26,8 @@ public class QueryService
     
     SessionServlet ss = new SessionServlet();
     QueryServlet qs = new QueryServlet();
-    //String sessionId;
-    //String connectionId;
-    //String cubeName;
+    DiscoveryServlet ds = new DiscoveryServlet();
+
     
     
     
@@ -43,9 +44,9 @@ public class QueryService
  @GET
  @Path("getActiveConnections")
  @Produces({"application/xml","application/json"})
-@Resource // to make it spring set the response type
+ @Resource // to make it spring set the response type
  public ConnectionObject getActiveConnections(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId) throws RpcException, ServletException{
-    //ss.init();
+    ss.init();
     
     
     CubeConnection[] ret = ss.getActiveConnections(sessionId);
@@ -57,6 +58,27 @@ public class QueryService
     }
     return cob;
  }
+ 
+ @GET
+ @Path("getAvailableCubes")
+ @Produces({"application/xml","application/json"})
+ @Resource // to make it spring set the response type
+ public CubeObject getAvailableCubes(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId) throws RpcException, ServletException{
+    ss.init();
+    ds.init();
+    
+    CubeConnection[] ret = ss.getActiveConnections(sessionId);
+    //sessionId = ss.createSession();
+    CubeObject cob = new CubeObject();
+    for(int i=0; i<ret.length; i++){
+    	CubeItem[] out = ds.getCubes(sessionId, ret[i].getId());
+    	for(int j=0; j<out.length; j++){
+    	cob.addCube(ret[i].getId(), out[i].getCatalog(), out[i].getName(), out[i].getSchema());
+    	}
+    }
+    return cob;
+ }
+ 
  
  @GET
  @Path("newQuery")
