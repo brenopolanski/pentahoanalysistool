@@ -44,7 +44,7 @@ public class QueryService
  @Path("getActiveConnections")
  @Produces({"application/xml","application/json"})
 @Resource // to make it spring set the response type
- public ConnectionObject createSession(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId) throws RpcException, ServletException{
+ public ConnectionObject getActiveConnections(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId) throws RpcException, ServletException{
     //ss.init();
     
     
