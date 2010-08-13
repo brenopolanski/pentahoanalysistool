@@ -88,12 +88,7 @@
     <servlet-name>DiscoveryServlet</servlet-name>
     <servlet-class>org.pentaho.pat.server.servlet.DiscoveryServlet</servlet-class>
   </servlet>
-  
-   <servlet>
-	<servlet-name>RestServlet</servlet-name>
-    <servlet-class>org.pentaho.pat.server.servlet.RestServlet</servlet-class>
-  </servlet>
-	 
+   
 	<!--  <servlet>
 	<servlet-name>JersyServlet</servlet-name>
    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
@@ -107,7 +102,7 @@
 			</init-param>
 			<init-param>
 				<param-name>com.sun.jersey.config.property.packages</param-name>
-				<param-value>org.pentaho.pat.server.service</param-value>
+				<param-value>org.pentaho.pat.server.restservice</param-value>
 			</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -138,10 +133,6 @@
   <servlet-mapping>
     <servlet-name>DiscoveryServlet</servlet-name>
     <url-pattern>/pat/discovery.rpc</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>RestServlet</servlet-name>
-    <url-pattern>/pat/rest.rpc</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   <servlet-name>jsp</servlet-name>

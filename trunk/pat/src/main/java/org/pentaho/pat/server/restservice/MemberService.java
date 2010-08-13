@@ -1,4 +1,4 @@
-package org.pentaho.pat.server.service;
+package org.pentaho.pat.server.restservice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 @Resource // to make it spring set the response type
 @Path("/foo") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
-public class DimensionService
+public class MemberService
 {
 @GET // to be accessed using http get method
 @Path("hello")
