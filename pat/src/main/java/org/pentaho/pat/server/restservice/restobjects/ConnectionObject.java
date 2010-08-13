@@ -1,4 +1,4 @@
-package org.pentaho.pat.server.service;
+package org.pentaho.pat.server.restservice.restobjects;
 
 import java.util.ArrayList;
 import java.util.List;

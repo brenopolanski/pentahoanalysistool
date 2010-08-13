@@ -3,7 +3,7 @@ package org.pentaho.pat.server.service.impl;
 import javax.servlet.http.HttpServletRequest;
 
 import org.pentaho.pat.rpc.exceptions.RpcException;
-import org.pentaho.pat.server.service.QueryService;
+import org.pentaho.pat.server.restservice.QueryService;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 

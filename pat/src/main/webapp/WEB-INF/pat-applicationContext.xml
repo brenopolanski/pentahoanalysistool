@@ -91,10 +91,6 @@
 	<bean id="sessionService" class="org.pentaho.pat.server.services.impl.SessionServiceImpl">
 	</bean>
 	
-	<bean id="restService" class="org.pentaho.pat.server.services.impl.RestServiceImpl">
-	<property name="sessionService" ref="sessionService" />
-	</bean>
-	
   <bean id="defaultDataLoader" class="org.pentaho.pat.server.services.impl.DefaultDataLoader">
     <property name="userManager" ref="userManager"/>
     <property name="groupManager" ref="groupManager"/>
