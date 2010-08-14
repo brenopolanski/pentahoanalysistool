@@ -1,0 +1,86 @@
+<html>
+<body>
+<script type="text/javascript" src="jquery.js"></script>
+   <script>
+
+var msg1;
+var connectionXml;
+var connection;
+var queryId1;
+function getSessionId()
+{
+$.ajax({
+        url: 'http://localhost:8080/rest/service/createSession',
+        type: 'GET',
+        data: '', // or $('#myform').serializeArray()
+	username: 'admin',
+	password: 'admin',
+        success: function(msg) { msg1 = msg; 
+		getActiveConnections(); }
+}); 
+}
+
+function getActiveConnections()
+{
+$.ajax({
+        url: 'http://localhost:8080/rest/service/getActiveConnections',
+        type: 'GET',
+        data: 'sessionId='+msg1, // or $('#myform').serializeArray()
+        username: 'admin',
+        password: 'admin',
+        success: function(connectionXml) { $(connectionXml).find('connectionId').each(function(){
+	 connection = $(this).text();
+	}); 
+	createQuery();
+	}
+}); 
+}
+
+function createQuery()
+{
+$.ajax({
+        url: 'http://localhost:8080/rest/query/newQuery',
+        type: 'GET',
+        data: 'sessionId='+msg1+'&connectionId='+connection+'&cubeName=SteelWheelsSales', 
+        username: 'admin',
+        password: 'admin',
+        success: function(queryId) { queryId1 = queryId;
+	moveDimension('Product', 'ROWS');
+	moveDimension('Customers','COLUMNS');
+	 }
+});
+}
+
+function moveDimension(name, newaxis)
+{
+$.ajax({
+        url: 'http://localhost:8080/rest/dimension/moveDimension',
+        type: 'GET',
+        data: 'sessionId='+msg1+'&queryID='+queryId1+'&axis='+newaxis+'&dimensionName='+name, 
+        username: 'admin',
+        password: 'admin',
+        success: function(queryId) { 
+	if(name=='Customers'){executeQuery();}; }
+});
+}
+
+function executeQuery()
+{
+$.ajax({
+	url: 'http://localhost:8080/rest/query/executeQuery',  
+        type: 'GET',
+        data: 'sessionId='+msg1+'&queryID='+queryId1,
+        username: 'admin',
+        password: 'admin',
+        success: function(queryId) {  }
+});
+}
+
+
+getSessionId();
+
+
+//executeQuery(); 
+</script>
+</body>
+</html>
