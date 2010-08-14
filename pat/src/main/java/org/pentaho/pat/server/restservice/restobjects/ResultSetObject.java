@@ -13,6 +13,24 @@ import org.pentaho.pat.server.restservice.restobjects.ResultSetObject.Row;
 @XmlRootElement
 public class ResultSetObject {
 
+public static class Row{
+        
+        @XmlElement(name = "ROW", required = true)
+        List<String> contents = new ArrayList<String>();
+        
+        @XmlElement(name = "CONTENT", required = true)
+        String name;
+    
+        
+        public void setContents(String name){
+            contents.add(name);
+        }
+        
+        public void setName(String name){
+            this.name = name;
+        }
+    }
+
 	CellDataSet cds;
 	
 	@XmlElement(name = "result", required = true)
@@ -36,28 +54,12 @@ public class ResultSetObject {
 			Row row = new Row();
 			for(int j=0; j<body[i].length; j++){
 				AbstractBaseCell cell = body[i][j];
-				row.setContents(cell.getRawValue());
+				row.setContents(cell.getFormattedValue());
 			}
 			result.add(row);
 		}
 	}
 	
 	
-	public static class Row{
-		
-		@XmlElement(name = "ROW")
-		List<String> contents = new ArrayList<String>();
-		
-		@XmlElement(name = "CONTENT")
-		String name;
 	
-		
-		public void setContents(String name){
-			contents.add(name);
-		}
-		
-		public void setName(String name){
-			this.name = name;
-		}
-	}
 }
