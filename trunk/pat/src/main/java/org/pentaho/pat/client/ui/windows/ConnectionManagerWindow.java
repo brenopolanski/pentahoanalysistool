@@ -126,21 +126,17 @@ public class ConnectionManagerWindow extends WindowPanel {
      * Show new connection.
      */
     public static void showNewConnection() {
-        if (TABPANEL.getWidgetCount() == 0) {
-            connectMondrian = new ConnectMondrianPanel();
-            connectXmla = new ConnectXmlaPanel();
-            TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
-            TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
-            WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
-        }
-        if (TABPANEL.getWidgetCount() > 0) {
-            TABPANEL.selectTab(0);
-        }
+        closeTabs(false);
+        connectMondrian = new ConnectMondrianPanel();
+        connectXmla = new ConnectXmlaPanel();
+        TABPANEL.add(connectMondrian, Pat.CONSTANTS.mondrian());
+        TABPANEL.add(connectXmla, Pat.CONSTANTS.xmla());
+        TABPANEL.selectTab(0);
+        WINCONTENTPANEL.add(TABPANEL, new BoxLayoutData(FillStyle.VERTICAL));
         refreshWindow();
     }
 
     private static void refreshWindow() {
-        TABPANEL.selectTab(0);
         CONNMANGRWINDOW.invalidate();
         ConnectionManagerPanel.refreshConnectionList();
         CONNMANGRWINDOW.showModal();
