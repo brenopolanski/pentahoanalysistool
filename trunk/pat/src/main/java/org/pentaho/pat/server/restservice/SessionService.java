@@ -37,7 +37,7 @@ public class SessionService {
     
  @GET
  @Path("createSession")
- @Produces("application/x-javascript") // it is to set the response type
+ @Produces({"application/x-javascript","application/xml","application/json"}) // it is to set the response type
 @Resource // to make it spring set the response type
  public JSONWithPadding createSession(@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException, ServletException{
     ss.init();
@@ -53,9 +53,9 @@ public class SessionService {
  
  @GET
  @Path("getActiveConnections")
- @Produces({"application/xml","application/json"})
+ @Produces({"application/x-javascript", "application/xml","application/json"})
  @Resource // to make it spring set the response type
- public ConnectionObject getActiveConnections(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId) throws RpcException, ServletException{
+ public JSONWithPadding getActiveConnections(@QueryParam("sessionId") String sessionId, @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException, ServletException{
     ss.init();
     
     
@@ -66,7 +66,7 @@ public class SessionService {
     	cob.addConnection(ret[i].getId(), ret[i].getName());
     	
     }
-    return cob;
+    return new JSONWithPadding(new GenericEntity<ConnectionObject>(cob) {}, jsoncallback);
  }
  
  @GET
