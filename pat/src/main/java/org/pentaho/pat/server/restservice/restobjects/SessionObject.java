@@ -7,13 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SessionObject {
 
     
-    @XmlElement(name = "sessionId", required = true)
+    
     private String sessionId;
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 
+    @XmlElement(name = "session", required = true)
     public String getSessionId() {
         return sessionId;
     }
