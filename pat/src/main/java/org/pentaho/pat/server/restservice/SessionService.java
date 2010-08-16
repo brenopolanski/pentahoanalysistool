@@ -3,21 +3,26 @@ package org.pentaho.pat.server.restservice;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.ConnectionObject;
 import org.pentaho.pat.server.restservice.restobjects.CubeObject;
+import org.pentaho.pat.server.restservice.restobjects.SessionObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 import org.springframework.context.annotation.Scope;
+
+import com.sun.jersey.api.json.JSONWithPadding;
 
 @Path("/service") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
@@ -32,12 +37,18 @@ public class SessionService {
     
  @GET
  @Path("createSession")
- @Produces( { "text/plain" }) // it is to set the response type
+ @Produces("application/x-javascript") // it is to set the response type
 @Resource // to make it spring set the response type
- public String createSession(@Context HttpServletRequest request) throws RpcException, ServletException{
+ public JSONWithPadding createSession(@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException, ServletException{
     ss.init();
     //sessionId = ss.createSession();
-    return ss.createSession();
+    //return ss.createSession();
+    
+    SessionObject string = new SessionObject();
+    string.setSessionId(ss.createSession());
+    
+            return new JSONWithPadding(new GenericEntity<SessionObject>(string) {}, jsoncallback);
+    //return new JSONWithPadding(string, jsoncallback);
  }
  
  @GET
