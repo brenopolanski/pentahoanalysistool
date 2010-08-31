@@ -70,7 +70,7 @@ public class PieChartType {
         pie.setNoLabels(true);
 
         // TODO Allow user defined tooltips.
-        pie.setTooltip("#label# $#val#<br>#percent#"); //$NON-NLS-1$
+        pie.setTooltip("#label# #val#<br>#percent#"); //$NON-NLS-1$
         pie.setGradientFill(true);
         pie.setColours(ChartUtils.getRandomColor(), ChartUtils.getRandomColor(), ChartUtils.getRandomColor(),
                 ChartUtils.getRandomColor(), ChartUtils.getRandomColor());

@@ -122,7 +122,7 @@ public class BarChartType {
             final int row = i;
 
             // TODO Allow user defined tooltips.
-            bchart2.setTooltip("$#val#"); //$NON-NLS-1$
+            bchart2.setTooltip("#val#"); //$NON-NLS-1$
 
             for (int j = rowColCount; j < cell.length; j++) {
 
