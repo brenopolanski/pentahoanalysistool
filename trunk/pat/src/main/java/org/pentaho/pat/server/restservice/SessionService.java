@@ -64,7 +64,7 @@ public class SessionService {
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public JSONWithPadding getSessionInfo(
+	public JSONWithPadding createNewSession(
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
@@ -119,7 +119,7 @@ public class SessionService {
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public JSONWithPadding login(
+	public JSONWithPadding createNewQuery(
 			@QueryParam("sessionId") String sessionId,
 			@QueryParam("connectionId") String connectionId,
 			@QueryParam("cubeName") String cubeName,
