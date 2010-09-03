@@ -103,7 +103,7 @@ public class SessionService {
 	 *
 	 * This method allows you to get a query object in one request,
 	 * as per the idea of Tiemonster.
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/createQuery?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
 	 * @param cubeName
@@ -113,7 +113,7 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@GET
-	@Path("createQuery")
+	@Path("query")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
