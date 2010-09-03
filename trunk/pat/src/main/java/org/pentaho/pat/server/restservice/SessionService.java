@@ -103,7 +103,7 @@ public class SessionService {
 	 *
 	 * This method allows you to get a query object in one request,
 	 * as per the idea of Tiemonster.
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/create?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/createQuery?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
 	 * @param cubeName
@@ -113,7 +113,7 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@GET
-	@Path("create")
+	@Path("createQuery")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
@@ -154,7 +154,7 @@ public class SessionService {
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@Deprecated
+	
 	@GET
 	@Path("createSession")
 	@Produces({ "application/x-javascript", "application/xml",
@@ -162,6 +162,7 @@ public class SessionService {
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
+	@Deprecated
 	public JSONWithPadding createSession(
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
@@ -186,13 +187,14 @@ public class SessionService {
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@Deprecated
+	
 	@GET
 	@Path("getActiveConnections")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	@Resource
 	// to make it spring set the response type
+	@Deprecated
 	public JSONWithPadding getActiveConnections(
 			@QueryParam("sessionId") String sessionId,
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
@@ -220,12 +222,13 @@ public class SessionService {
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@Deprecated
+	
 	@GET
 	@Path("getAvailableCubes")
 	@Produces({ "application/xml", "application/json" })
 	@Resource
 	// to make it spring set the response type
+	@Deprecated
 	public CubeObject getAvailableCubes(@Context HttpServletRequest request,
 			@QueryParam("sessionId") String sessionId,
 			@QueryParam("connectionId") String connectionId)
