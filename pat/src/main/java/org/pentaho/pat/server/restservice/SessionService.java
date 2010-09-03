@@ -54,14 +54,14 @@ public class SessionService {
 
 	/**
 	 * This method allows you to login and get a session object in one request,
-	 * as per the idea of Tiemonster.
-	 * curl --basic -u "admin:admin" http://localhost:8080/rest/service/createSession
+	 * as per the idea of Tiemonster.<br>
+	 * curl --basic -u "admin:admin" http://localhost:8080/rest/service/createSession<br>
 	 * @param jsoncallback
 	 * @return
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@GET
+	@POST
 	@Path("createSession")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
@@ -106,8 +106,8 @@ public class SessionService {
 	/**
 	 *
 	 * This method allows you to get a query object in one request,
-	 * as per the idea of Tiemonster.
-	 * HTTP POST.
+	 * as per the idea of Tiemonster.<br>
+	 * HTTP POST.<br>
 	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
@@ -154,8 +154,8 @@ public class SessionService {
 	/**
 	 *
 	 * This method allows you to delete a query,
-	 * as per the idea of Tiemonster.
-	 * HTTP DELETE
+	 * as per the idea of Tiemonster.<br>
+	 * HTTP DELETE<br>
 	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
@@ -185,8 +185,8 @@ public class SessionService {
 	/**
 	 *
 	 * This method allows you to overwrite a query object in one request,
-	 * as per the idea of Tiemonster.
-	 * HTTP PUT.
+	 * as per the idea of Tiemonster.<br>
+	 * HTTP PUT.<br>
 	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
@@ -216,8 +216,8 @@ public class SessionService {
 	/**
 	 *
 	 * This method allows you to get a query object in one request,
-	 * as per the idea of Tiemonster.
-	 * HTTP GET.
+	 * as per the idea of Tiemonster.<br>
+	 * HTTP GET.<br>
 	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
