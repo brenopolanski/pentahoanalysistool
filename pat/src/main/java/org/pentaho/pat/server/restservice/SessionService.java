@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -56,14 +57,14 @@ public class SessionService {
 	/**
 	 * This method allows you to login and get a session object in one request,
 	 * as per the idea of Tiemonster.<br>
-	 * <pre>curl --basic -u "admin:admin" http://localhost:8080/rest/service/createSession</pre><br>
+	 * <pre>curl --basic -u "admin:admin" http://localhost:8080/rest/service/session</pre><br>
 	 * @param jsoncallback
 	 * @return
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
 	@POST
-	@Path("createSession")
+	@Path("session")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
@@ -126,10 +127,10 @@ public class SessionService {
 	@Resource
 	// to make it spring set the response type
 	public synchronized JSONWithPadding createNewQuery(
-			@QueryParam("sessionId") String sessionId,
-			@QueryParam("connectionId") String connectionId,
-			@QueryParam("cubeName") String cubeName,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+			@FormParam("sessionId") String sessionId,
+			@FormParam("connectionId") String connectionId,
+			@FormParam("cubeName") String cubeName,
+			@FormParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
 		qs.init();
