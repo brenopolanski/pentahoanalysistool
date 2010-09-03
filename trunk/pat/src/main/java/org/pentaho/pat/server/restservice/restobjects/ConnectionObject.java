@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.server.servlet.DiscoveryServlet;
 
 @XmlRootElement
 public class ConnectionObject {
@@ -22,7 +23,7 @@ public class ConnectionObject {
 		String id;
 		
 		@XmlElement(name = "cubes", required = false)
-		List<CubeItem> cubes;
+		CubeObject cubes;
 		
 	    public void setText(String text) {
 	        this.name = text;
@@ -32,8 +33,8 @@ public class ConnectionObject {
 	        this.id = text;
 	    }
 
-        public void setCubes(CubeItem[] out) {
-        this.cubes = Arrays.asList(out);    
+        public void setCubes(CubeObject out) {
+        this.cubes = out;    
             
         }
 	    
@@ -53,16 +54,20 @@ public class ConnectionObject {
 		}
 
 
-        public void addConnection(String id, String name, CubeItem[] out) {
+        public void addConnection(String id, String name, CubeObject cubeobj) {
             SubCob sub = new SubCob();
             sub.setId(id);
             sub.setText(name);
-            sub.setCubes(out);
+            
+            
+            sub.setCubes(cubeobj);
             names.add(sub);
             
             
         }
 
+
+	
 
 
 

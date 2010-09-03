@@ -9,6 +9,7 @@ public class QueryObject {
     
     
     private String queryId;
+	private DimensionObject dob;
 
     public void setQueryId(String queryId) {
         this.queryId = queryId;
@@ -18,6 +19,14 @@ public class QueryObject {
     public String getQueryId() {
         return queryId;
     }
+
+	public void setDimensions(DimensionObject dob) {
+		this.dob = dob;		
+	}
     
+	@XmlElement(name = "Dimensions", required = true)
+    public DimensionObject getDimensions(){
+    	return dob;
+    }
     
 }

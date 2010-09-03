@@ -20,6 +20,8 @@ public class CubeObject {
 		@XmlElement(name = "schema", required = true)
 		private String schema;
 
+		@XmlElement(name = "dimensions", required = true)
+		private DimensionObject dob;
 		
 	    public void setConnectionId(String text) {
 	        this.id = text;
@@ -40,6 +42,10 @@ public class CubeObject {
 			
 		}
 		
+		public void setDimensions(DimensionObject dob) {
+			this.dob = dob;
+			
+		}
 	}
 		//@XmlElementWrapper(name = "cube")
     	@XmlElement(name = "cube", required = true)
@@ -55,6 +61,15 @@ public class CubeObject {
 			names.add(sub);
 		}
 
+		public void addCube(String connectionId, String catalog, String name, String schema, DimensionObject dimensionList){
+			SubCube sub = new SubCube();
+			sub.setConnectionId(connectionId);
+			sub.setCatalog(catalog);
+			sub.setcubeName(name);
+			sub.setCubeSchema(schema);
+			sub.setDimensions(dimensionList);
+			names.add(sub);
+		}
 
 
 
