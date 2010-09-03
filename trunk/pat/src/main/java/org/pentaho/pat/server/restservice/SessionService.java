@@ -3,8 +3,12 @@ package org.pentaho.pat.server.restservice;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -103,6 +107,7 @@ public class SessionService {
 	 *
 	 * This method allows you to get a query object in one request,
 	 * as per the idea of Tiemonster.
+	 * HTTP POST.
 	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
 	 * @param sessionId
 	 * @param connectionId
@@ -112,14 +117,14 @@ public class SessionService {
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@GET
+	@POST
 	@Path("query")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public JSONWithPadding createNewQuery(
+	public synchronized JSONWithPadding createNewQuery(
 			@QueryParam("sessionId") String sessionId,
 			@QueryParam("connectionId") String connectionId,
 			@QueryParam("cubeName") String cubeName,
@@ -146,6 +151,98 @@ public class SessionService {
 		}, jsoncallback);
 	}
 
+	/**
+	 *
+	 * This method allows you to delete a query,
+	 * as per the idea of Tiemonster.
+	 * HTTP DELETE
+	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * @param sessionId
+	 * @param connectionId
+	 * @param cubeName
+	 * @param jsoncallback
+	 * @return
+	 * @throws RpcException
+	 * @throws ServletException
+	 */
+	@DELETE
+	@Path("query")
+	@Consumes({ "application/x-javascript", "application/xml",
+			"application/json" })
+	// it is to set the response type
+	@Resource
+	// to make it spring set the response type
+	public synchronized void deleteQuery(String queryId,
+			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+			throws RpcException, ServletException {
+		ss.init();
+		qs.init();
+		ds.init();
+
+
+	}
+	
+	/**
+	 *
+	 * This method allows you to overwrite a query object in one request,
+	 * as per the idea of Tiemonster.
+	 * HTTP PUT.
+	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * @param sessionId
+	 * @param connectionId
+	 * @param cubeName
+	 * @param jsoncallback
+	 * @return
+	 * @throws RpcException
+	 * @throws ServletException
+	 */
+	@PUT
+	@Path("query")
+	@Consumes({ "application/x-javascript", "application/xml",
+			"application/json" })
+	// it is to set the response type
+	@Resource
+	// to make it spring set the response type
+	public synchronized void saveQuery(QueryObject qob,
+			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+			throws RpcException, ServletException {
+		ss.init();
+		qs.init();
+		ds.init();
+
+
+	}
+	
+	/**
+	 *
+	 * This method allows you to get a query object in one request,
+	 * as per the idea of Tiemonster.
+	 * HTTP GET.
+	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * @param sessionId
+	 * @param connectionId
+	 * @param cubeName
+	 * @param jsoncallback
+	 * @return
+	 * @throws RpcException
+	 * @throws ServletException
+	 */
+	@GET
+	@Path("query")
+	@Consumes({ "application/x-javascript", "application/xml",
+			"application/json" })
+	// it is to set the response type
+	@Resource
+	// to make it spring set the response type
+	public synchronized void loadQuery(QueryObject qob,
+			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+			throws RpcException, ServletException {
+		ss.init();
+		qs.init();
+		ds.init();
+
+
+	}
 	/**
 	 * Create a session via the http api.
 	 * 
