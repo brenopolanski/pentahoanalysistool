@@ -17,16 +17,18 @@ public class GlobalObject {
     @XmlElement(name = "connectionObject", required = true)
     ConnectionObject cob;
     
+    private GlobalObject(){}
+    
     public GlobalObject(SessionObject string) {
         sob = string;
     }
     
     public void setActiveConnections(ConnectionObject activeConnections){
-        
+        this.cob=activeConnections;
     }
     
     public ConnectionObject getActiveConnections(){
-        return null;
+        return cob;
         
     }
 

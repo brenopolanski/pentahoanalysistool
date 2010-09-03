@@ -23,6 +23,12 @@ import org.springframework.context.annotation.Scope;
 
 import com.sun.jersey.api.json.JSONWithPadding;
 
+/**
+ * The Query Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT AS A FINSIHED API.
+ * 
+ * @author tombarber
+ * @since 0.9.0
+ */
 @Path("/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
 public class QueryService
@@ -37,9 +43,9 @@ public class QueryService
  
  
  @GET
- @Path("newQuery")
+ @Path("createQuery")
  @Produces({"application/x-javascript", "application/xml","application/json"})
- public JSONWithPadding newQuery(@Context HttpServletRequest request,@QueryParam("sessionId") String sessionId, @QueryParam("connectionId") String connectionId,@QueryParam("cubeName") String cubeName
+ public JSONWithPadding createQuery(@Context HttpServletRequest request,@QueryParam("sessionId") String sessionId, @QueryParam("connectionId") String connectionId,@QueryParam("cubeName") String cubeName
 		 , @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws ServletException{
 	 qs.init();
 	 try {

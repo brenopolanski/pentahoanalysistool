@@ -25,6 +25,12 @@ import org.springframework.context.annotation.Scope;
 
 import com.sun.jersey.api.json.JSONWithPadding;
 
+/**
+ * The Session Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT AS A FINSIHED API.
+ * 
+ * @author tombarber
+ * @since 0.9.0
+ */
 @SuppressWarnings("restriction")
 @Path("/service") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
@@ -34,7 +40,13 @@ public class SessionService {
     QueryServlet qs = new QueryServlet();
     DiscoveryServlet ds = new DiscoveryServlet();
 
-    
+    /**
+     * This method allows you to login and get a session object in one request, as per the idea of Tiemonster.
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
     @GET
     @Path("login")
     @Produces({"application/x-javascript","application/xml","application/json"}) // it is to set the response type
@@ -50,6 +62,22 @@ public class SessionService {
        string.setSessionId(ss.createSession());
        
        GlobalObject gob = new GlobalObject(string);
+       
+       CubeConnection[] ret = ss.getActiveConnections(string.getSessionId());
+       //sessionId = ss.createSession();
+       ConnectionObject cob = new ConnectionObject();
+       for(int i=0; i<ret.length; i++){
+           CubeItem[] out = ds.getCubes(string.getSessionId(), ret[i].getId());
+           
+           cob.addConnection(ret[i].getId(), ret[i].getName(), out);
+           
+       }
+       
+       gob.setActiveConnections(cob);   
+       
+       
+       
+       
        
                return new JSONWithPadding(new GenericEntity<GlobalObject>(gob) {}, jsoncallback);
        //return new JSONWithPadding(string, jsoncallback);
@@ -117,19 +145,18 @@ public class SessionService {
  @Path("getAvailableCubes")
  @Produces({"application/xml","application/json"})
  @Resource // to make it spring set the response type
- public CubeObject getAvailableCubes(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId, @QueryParam("queryId") String queryId) throws RpcException, ServletException{
+ public CubeObject getAvailableCubes(@Context HttpServletRequest request, @QueryParam("sessionId") String sessionId, @QueryParam("connectionId") String connectionId) throws RpcException, ServletException{
     ss.init();
     ds.init();
     
-    CubeConnection[] ret = ss.getActiveConnections(sessionId);
     //sessionId = ss.createSession();
     CubeObject cob = new CubeObject();
-    for(int i=0; i<ret.length; i++){
-    	CubeItem[] out = ds.getCubes(sessionId, ret[i].getId());
+    CubeItem[] out = ds.getCubes(sessionId, connectionId);
+ 
     	for(int j=0; j<out.length; j++){
-    	cob.addCube(ret[i].getId(), out[i].getCatalog(), out[i].getName(), out[i].getSchema());
+    	cob.addCube(connectionId, out[j].getCatalog(), out[j].getName(), out[j].getSchema());
     	}
-    }
+    
     return cob;
  }
  
