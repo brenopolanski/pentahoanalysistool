@@ -55,7 +55,7 @@ public class SessionService {
 	/**
 	 * This method allows you to login and get a session object in one request,
 	 * as per the idea of Tiemonster.<br>
-	 * curl --basic -u "admin:admin" http://localhost:8080/rest/service/createSession<br>
+	 * <pre>curl --basic -u "admin:admin" http://localhost:8080/rest/service/createSession</pre><br>
 	 * @param jsoncallback
 	 * @return
 	 * @throws RpcException
@@ -108,7 +108,7 @@ public class SessionService {
 	 * This method allows you to get a query object in one request,
 	 * as per the idea of Tiemonster.<br>
 	 * HTTP POST.<br>
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * <pre>curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"</pre>
 	 * @param sessionId
 	 * @param connectionId
 	 * @param cubeName
@@ -156,7 +156,7 @@ public class SessionService {
 	 * This method allows you to delete a query,
 	 * as per the idea of Tiemonster.<br>
 	 * HTTP DELETE<br>
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * 
 	 * @param sessionId
 	 * @param connectionId
 	 * @param cubeName
@@ -187,7 +187,7 @@ public class SessionService {
 	 * This method allows you to overwrite a query object in one request,
 	 * as per the idea of Tiemonster.<br>
 	 * HTTP PUT.<br>
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+	 * 
 	 * @param sessionId
 	 * @param connectionId
 	 * @param cubeName
