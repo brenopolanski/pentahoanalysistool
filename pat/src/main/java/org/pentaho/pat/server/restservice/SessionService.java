@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -105,7 +106,7 @@ public class SessionService {
 
 	/**
 	 *
-	 * This method allows you to get a query object in one request,
+	 * This method allows you to create a query object in one request,
 	 * as per the idea of Tiemonster.<br>
 	 * HTTP POST.<br>
 	 * <pre>curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"</pre>
@@ -166,13 +167,13 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@DELETE
-	@Path("query")
+	@Path("query/{queryId}")
 	@Consumes({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public synchronized void deleteQuery(String queryId,
+	public synchronized void deleteQuery(@PathParam("queryId") String queryId,
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
@@ -197,14 +198,13 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@PUT
-	@Path("query")
+	@Path("query/{queryId}")
 	@Consumes({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public synchronized void saveQuery(QueryObject qob,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+	public synchronized void saveQuery(@PathParam("queryId") String queryId, @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
 		qs.init();
@@ -227,14 +227,14 @@ public class SessionService {
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
-	@GET
-	@Path("query")
-	@Consumes({ "application/x-javascript", "application/xml",
+/*	@GET
+	@Path("query/{queryId}")
+	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public synchronized void loadQuery(QueryObject qob,
+	public synchronized void loadQuery(@PathParam("queryId") String queryId,
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
@@ -242,7 +242,7 @@ public class SessionService {
 		ds.init();
 
 
-	}
+	}*/
 	/**
 	 * Create a session via the http api.
 	 * 
