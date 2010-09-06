@@ -2,29 +2,18 @@ package org.pentaho.pat.server.restservice;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.ConnectionObject;
 import org.pentaho.pat.server.restservice.restobjects.CubeObject;
-import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
-import org.pentaho.pat.server.restservice.restobjects.QueryObject;
 import org.pentaho.pat.server.restservice.restobjects.SessionObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
@@ -37,7 +26,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * The Session Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT
  * AS A FINSIHED API.
  * 
- * @author tombarber
+ * @author tom(at)wamonline.org.uk
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
@@ -57,7 +46,7 @@ public class SessionService {
 	/**
 	 * This method allows you to login and get a session object in one request,
 	 * as per the idea of Tiemonster.<br>
-	 * <pre>curl --basic -u "admin:admin" http://localhost:8080/rest/service/session</pre><br>
+	 * <pre>curl --basic -u "admin:admin" -XPOST http://localhost:8080/rest/service/session</pre><br>
 	 * @param jsoncallback
 	 * @return
 	 * @throws RpcException
@@ -102,248 +91,6 @@ public class SessionService {
 
 		return new JSONWithPadding(new GenericEntity<SessionObject>(string) {
 		}, jsoncallback);
-		// return new JSONWithPadding(string, jsoncallback);
-	}
-
-	/**
-	 *
-	 * This method allows you to create a query object in one request,
-	 * as per the idea of Tiemonster.<br>
-	 * HTTP POST.<br>
-	 * <pre>curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"</pre>
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@POST
-	@Path("query")
-	@Produces({ "application/x-javascript", "application/xml",
-			"application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized JSONWithPadding createNewQuery(
-			@FormParam("sessionId") String sessionId,
-			@FormParam("connectionId") String connectionId,
-			@FormParam("cubeName") String cubeName,
-			@FormParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
-
-		QueryObject qob = new QueryObject();
-		qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cubeName));
-
-		DimensionObject dob = new DimensionObject();
-
-		String[] dims = ds.getDimensions(sessionId, qob.getQueryId(),
-				IAxis.Standard.valueOf("UNUSED"));
-		for (int i = 0; i < dims.length; i++) {
-			dob.newDimension(dims[i], "UNUSED");
-		}
-
-		qob.setDimensions(dob);
-
-		return new JSONWithPadding(new GenericEntity<QueryObject>(qob) {
-		}, jsoncallback);
-	}
-
-	/**
-	 *
-	 * This method allows you to delete a query,
-	 * as per the idea of Tiemonster.<br>
-	 * HTTP DELETE<br>
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@DELETE
-	@Path("query/{queryId}")
-	@Consumes({ "application/x-javascript", "application/xml",
-			"application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void deleteQuery(@PathParam("queryId") String queryId,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
-
-
-	}
-	
-	/**
-	 *
-	 * This method allows you to overwrite a query object in one request,
-	 * as per the idea of Tiemonster.<br>
-	 * HTTP PUT.<br>
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@PUT
-	@Path("query/{queryId}")
-	@Consumes({ "application/x-javascript", "application/xml",
-			"application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void saveQuery(@PathParam("queryId") String queryId, @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
-
-
-	}
-	
-	/**
-	 *
-	 * This method allows you to get a query object in one request,
-	 * as per the idea of Tiemonster.<br>
-	 * HTTP GET.<br>
-	 * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-/*	@GET
-	@Path("query/{queryId}")
-	@Produces({ "application/x-javascript", "application/xml",
-			"application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void loadQuery(@PathParam("queryId") String queryId,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
-
-
-	}*/
-	/**
-	 * Create a session via the http api.
-	 * 
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	
-	@GET
-	@Path("createSession")
-	@Produces({ "application/x-javascript", "application/xml",
-			"application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	@Deprecated
-	public JSONWithPadding createSession(
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		// sessionId = ss.createSession();
-		// return ss.createSession();
-
-		SessionObject string = new SessionObject();
-		string.setSessionId(ss.createSession());
-
-		return new JSONWithPadding(new GenericEntity<SessionObject>(string) {
-		}, jsoncallback);
-		// return new JSONWithPadding(string, jsoncallback);
-	}
-
-	/**
-	 * Return the active connections.
-	 * 
-	 * @param sessionId
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	
-	@GET
-	@Path("getActiveConnections")
-	@Produces({ "application/x-javascript", "application/xml",
-			"application/json" })
-	@Resource
-	// to make it spring set the response type
-	@Deprecated
-	public JSONWithPadding getActiveConnections(
-			@QueryParam("sessionId") String sessionId,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-
-		CubeConnection[] ret = ss.getActiveConnections(sessionId);
-		// sessionId = ss.createSession();
-		ConnectionObject cob = new ConnectionObject();
-		for (int i = 0; i < ret.length; i++) {
-			cob.addConnection(ret[i].getId(), ret[i].getName());
-
-		}
-		return new JSONWithPadding(new GenericEntity<ConnectionObject>(cob) {
-		}, jsoncallback);
-	}
-
-	/**
-	 * Return the available cubes for a connection.x
-	 * 
-	 * @param request
-	 * @param sessionId
-	 * @param queryId
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	
-	@GET
-	@Path("getAvailableCubes")
-	@Produces({ "application/xml", "application/json" })
-	@Resource
-	// to make it spring set the response type
-	@Deprecated
-	public CubeObject getAvailableCubes(@Context HttpServletRequest request,
-			@QueryParam("sessionId") String sessionId,
-			@QueryParam("connectionId") String connectionId)
-			throws RpcException, ServletException {
-		ss.init();
-		ds.init();
-
-		// sessionId = ss.createSession();
-		CubeObject cob = new CubeObject();
-		CubeItem[] out = ds.getCubes(sessionId, connectionId);
-
-		for (int j = 0; j < out.length; j++) {
-			cob.addCube(connectionId, out[j].getCatalog(), out[j].getName(),
-					out[j].getSchema());
-		}
-
-		return cob;
 	}
 
 }

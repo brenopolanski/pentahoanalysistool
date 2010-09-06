@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tombarber
  *
  */
+@SuppressWarnings("restriction")
 @XmlRootElement
 public class GlobalObject {
 
@@ -17,6 +18,7 @@ public class GlobalObject {
     @XmlElement(name = "connectionObject", required = true)
     ConnectionObject cob;
     
+    @SuppressWarnings("unused")
     private GlobalObject(){}
     
     public GlobalObject(SessionObject string) {

@@ -1,16 +1,12 @@
 package org.pentaho.pat.server.restservice.restobjects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.pentaho.pat.rpc.dto.CubeItem;
-import org.pentaho.pat.server.servlet.DiscoveryServlet;
-
+@SuppressWarnings("restriction")
 @XmlRootElement
 public class ConnectionObject {
 	 
