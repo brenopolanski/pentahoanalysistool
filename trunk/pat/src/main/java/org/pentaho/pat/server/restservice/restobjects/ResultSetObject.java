@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.pentaho.pat.rpc.dto.CellDataSet;
 import org.pentaho.pat.rpc.dto.celltypes.AbstractBaseCell;
-import org.pentaho.pat.server.restservice.restobjects.ResultSetObject.Row;
 
+@SuppressWarnings("restriction")
 @XmlRootElement
 public class ResultSetObject {
 

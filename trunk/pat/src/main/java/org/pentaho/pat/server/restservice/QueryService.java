@@ -1,21 +1,25 @@
 package org.pentaho.pat.server.restservice;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 
-import org.pentaho.pat.rpc.dto.CellDataSet;
+import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
-import org.pentaho.pat.server.restservice.restobjects.ResultSetObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
@@ -26,9 +30,10 @@ import com.sun.jersey.api.json.JSONWithPadding;
 /**
  * The Query Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT AS A FINSIHED API.
  * 
- * @author tombarber
+ * @author tom(at)wamonline.org.uk
  * @since 0.9.0
  */
+@SuppressWarnings("restriction")
 @Path("/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
 public class QueryService
@@ -42,84 +47,185 @@ public class QueryService
     
  
  
- @GET
- @Path("createQuery")
- @Produces({"application/x-javascript", "application/xml","application/json"})
- public JSONWithPadding createQuery(@Context HttpServletRequest request,@QueryParam("sessionId") String sessionId, @QueryParam("connectionId") String connectionId,@QueryParam("cubeName") String cubeName
-		 , @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws ServletException{
-	 qs.init();
-	 try {
-    	 QueryObject qob = new QueryObject();
-    	 qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cubeName));
-         return new JSONWithPadding(new GenericEntity<QueryObject>(qob) {}, jsoncallback);
-     } catch (RpcException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-         return null;
-     }
-     
- }
- 
- //@GET
- //@Path("loadQuery")
-// public boolean loadQuery(@Context HttpServletRequest request,@QueryParam("queryID") String queryID);
- 
- //@GET
- //@Path("saveQuery")
- //public boolean saveQuery(@Context HttpServletRequest request,@QueryParam("queryID") String queryID);
- 
- @GET
- @Path("executeQuery")
- @Produces({"application/x-javascript", "application/xml","application/json"})
- public JSONWithPadding executeQuery(@Context HttpServletRequest request,@QueryParam("sessionId") String sessionId, @QueryParam("queryID") String queryID
-		 , @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback){
-	 try {
-		qs.init();
-	} catch (ServletException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-	 
-	 CellDataSet result = null;
-	try {
-		result = qs.executeQuery(sessionId, queryID);
-	} catch (RpcException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	 ResultSetObject rso = new ResultSetObject(result);
-	 return new JSONWithPadding(new GenericEntity<ResultSetObject>(rso) {}, jsoncallback);
-	 
- }
- 
- /*@GET
- @Path("getDimensions")
- @Produces({"application/xml","application/json"})
- public DimensionObject getDimensions(@Context HttpServletRequest request,@QueryParam("queryID") String queryID){
-	 return null;
- }*/
- 
- @GET
- @Path("getDimensions")
- @Produces({"application/xml","application/json"})
- public DimensionObject getDimensions(@Context HttpServletRequest request,@QueryParam("sessionId") String sessionId, @QueryParam("queryID") String queryID, @QueryParam("axis") String axis){
-	 try {
-		ds.init();
-	} catch (ServletException e1) {
-		e1.printStackTrace();
-	}
-	 
-	 DimensionObject dob = new DimensionObject();
-	 
-	 try {
-		String[] dims = ds.getDimensions(sessionId, queryID, IAxis.Standard.valueOf(axis));
-		for (int i = 0; i<dims.length; i++){
-			dob.newDimension(dims[i], axis);
-		}
-	} catch (RpcException e) {
-		e.printStackTrace();
-	}
-	
-	return dob;
- }
+
+    /**
+     *
+     * This method allows you to create a query object in one request,
+     * as per the idea of Tiemonster.<br>
+     * To use this method you need to have a Session Object available.<br>
+     * HTTP POST.<br>
+     * <pre>curl --basic -u "admin:admin" -XPOST -d sessionId=sessionId -d connectionId=connectionId -d cubeName=cubeName "http://localhost:8080/rest/service/query"</pre>
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @POST
+    @Produces({ "application/x-javascript", "application/xml",
+            "application/json" })
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized JSONWithPadding createNewQuery(
+            @FormParam("sessionId") String sessionId,
+            @FormParam("connectionId") String connectionId,
+            @FormParam("cubeName") String cubeName,
+            @FormParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            throws RpcException, ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
+
+        QueryObject qob = new QueryObject();
+        qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cubeName));
+
+        DimensionObject dob = new DimensionObject();
+
+        String[] dims = ds.getDimensions(sessionId, qob.getQueryId(),
+                IAxis.Standard.valueOf("UNUSED"));
+        for (int i = 0; i < dims.length; i++) {
+            dob.newDimension(dims[i], "UNUSED");
+        }
+
+        qob.setDimensions(dob);
+
+        return new JSONWithPadding(new GenericEntity<QueryObject>(qob) {
+        }, jsoncallback);
+    }
+
+    /**
+     *
+     * This method allows you to delete a query,
+     * as per the idea of Tiemonster.<br>
+     * HTTP DELETE<br>
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @DELETE
+    @Path("{queryId}")
+    @Consumes({ "application/x-javascript", "application/xml",
+            "application/json" })
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized void deleteQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            throws RpcException, ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
+
+        this.qs.deleteQuery(sessionId, queryId);
+    }
+    
+    /**
+     *
+     * This method allows you to overwrite a query object in one request,
+     * as per the idea of Tiemonster.<br>
+     * HTTP PUT.<br>
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @PUT
+    @Path("{queryId}")
+    @Consumes({ "application/x-javascript", "application/xml",
+            "application/json" })
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized void saveQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+            @FormParam("queryName") String queryName, @FormParam("connectionId") String connectionId,
+            @FormParam("cubeCatalog") String catalog, @FormParam("cubeName") String cubeName, @FormParam("schema") String schema,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            throws RpcException, ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
+        CubeItem ci = new CubeItem(cubeName, catalog, schema);
+        
+        this.qs.saveQuery(sessionId, queryId, queryName, connectionId, ci, cubeName);
+    }
+    
+    /**
+     *
+     * This method allows you to get a query object in one request,
+     * as per the idea of Tiemonster.<br>
+     * HTTP GET.<br>
+     * curl --basic -u "admin:admin" "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+  /*  @GET
+    @Path("{queryId}")
+    @Produces({ "application/x-javascript", "application/xml",
+            "application/json" })
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized void loadQuery(@PathParam("queryId") String queryId,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            throws RpcException, ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
+
+
+    }*/
+    
+    /**
+     * This method moves a query from axis to axis.
+     */
+    @PUT
+    @Path("{queryId}/{dimensionName}/axis/{axis}")
+    @Consumes({ "application/x-javascript", "application/xml",
+            "application/json" })
+    @Resource
+    public synchronized void moveDimension(@PathParam("queryId") String queryId,  
+            @QueryParam("sessionId") String sessionId,
+            @PathParam("axis") String axisName,
+            @PathParam("dimensionName") String dimensionName,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+    throws RpcException, ServletException{
+        
+        qs.init();
+        this.qs.moveDimension(sessionId, queryId, IAxis.Standard.valueOf(axisName), dimensionName);
+    }
+    
+    /**
+     * This method returns the axis a dimension is on.
+     * @param sessionId
+     * @param queryID
+     * @param axis
+     * @param dimensionName
+     * @param jsoncallback
+     * @return
+     */
+    @GET
+    @Path("{queryId}/{dimensionName}/axis")
+    @Produces({"application/x-javascript", "application/xml","application/json"})
+    public JSONWithPadding getDimension(@QueryParam("sessionId") String sessionId, 
+            @PathParam("queryId") String queryID, @PathParam("dimensionName") String dimensionName, 
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback){
+        return null;
+    }
 }
