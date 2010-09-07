@@ -30,7 +30,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
-@Path("/service")
+@Path("/session")
 /*
  * to set the path on which the service will be accessed e.g.
  * http://{serverIp}/{contextPath}/foo
@@ -53,7 +53,6 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@POST
-	@Path("session")
 	@Produces({ "application/x-javascript", "application/xml",
 			"application/json" })
 	// it is to set the response type

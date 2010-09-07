@@ -34,7 +34,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
-@Path("/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
+@Path("/{sessionId}/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
 public class QueryService
 {
@@ -54,7 +54,7 @@ public class QueryService
      * as per the idea of Tiemonster.<br>
      * To use this method you need to have a Session Object available.<br>
      * HTTP POST.<br>
-     * <pre>curl --basic -u "admin:admin" -XPOST -d sessionId=sessionId -d connectionId=connectionId -d cubeName=cubeName "http://localhost:8080/rest/service/query"</pre>
+     * <pre>curl -XPOST -d "connectionId=792bcd2d-41c5-4af5-84b6-16fd65c4f7bb" -d "cubeName=SteelWheelsSales"  --basic -u "admin:admin" "http://localhost:8080/rest/53c72f85-7ff2-4a63-b4d2-dbd55a56255f/query"</pre>
      * @param sessionId
      * @param connectionId
      * @param cubeName
@@ -70,10 +70,10 @@ public class QueryService
     @Resource
     // to make it spring set the response type
     public synchronized JSONWithPadding createNewQuery(
-            @FormParam("sessionId") String sessionId,
+            @PathParam("sessionId") String sessionId,
             @FormParam("connectionId") String connectionId,
             @FormParam("cubeName") String cubeName,
-            @FormParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
         ss.init();
         qs.init();
@@ -117,7 +117,8 @@ public class QueryService
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized void deleteQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+    public synchronized void deleteQuery(@PathParam("queryId") String queryId, 
+    		@PathParam("sessionId") String sessionId,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
         ss.init();
@@ -148,7 +149,8 @@ public class QueryService
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized void saveQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+    public synchronized void saveQuery(@PathParam("queryId") String queryId, 
+    		@PathParam("sessionId") String sessionId,
             @FormParam("queryName") String queryName, @FormParam("connectionId") String connectionId,
             @FormParam("cubeCatalog") String catalog, @FormParam("cubeName") String cubeName, @FormParam("schema") String schema,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
@@ -201,7 +203,7 @@ public class QueryService
             "application/json" })
     @Resource
     public synchronized void moveDimension(@PathParam("queryId") String queryId,  
-            @QueryParam("sessionId") String sessionId,
+            @PathParam("sessionId") String sessionId,
             @PathParam("axis") String axisName,
             @PathParam("dimensionName") String dimensionName,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
@@ -223,7 +225,7 @@ public class QueryService
     @GET
     @Path("{queryId}/{dimensionName}/axis")
     @Produces({"application/x-javascript", "application/xml","application/json"})
-    public JSONWithPadding getDimension(@QueryParam("sessionId") String sessionId, 
+    public JSONWithPadding getDimension(@PathParam("sessionId") String sessionId, 
             @PathParam("queryId") String queryID, @PathParam("dimensionName") String dimensionName, 
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback){
         return null;
