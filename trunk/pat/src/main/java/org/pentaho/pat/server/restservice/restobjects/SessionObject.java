@@ -1,9 +1,10 @@
 package org.pentaho.pat.server.restservice.restobjects;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name = "session")
 public class SessionObject {
 
     
@@ -17,7 +18,7 @@ public class SessionObject {
         this.sessionId = sessionId;
     }
 
-    @XmlElement(name = "session", required = true)
+    @XmlAttribute(name = "id")
     public String getSessionId() {
         return sessionId;
     }

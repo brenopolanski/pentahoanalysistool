@@ -1,5 +1,9 @@
 package org.pentaho.pat.server.restservice;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.ws.rs.DefaultValue;
@@ -14,6 +18,7 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.ConnectionObject;
 import org.pentaho.pat.server.restservice.restobjects.CubeObject;
+import org.pentaho.pat.server.restservice.restobjects.SchemaObject;
 import org.pentaho.pat.server.restservice.restobjects.SessionObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
@@ -30,7 +35,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
-@Path("/session")
+@Path("{user}/session")
 /*
  * to set the path on which the service will be accessed e.g.
  * http://{serverIp}/{contextPath}/foo
@@ -73,18 +78,30 @@ public class SessionService {
 
 		ConnectionObject cob = new ConnectionObject();
 
-		for (int i = 0; i < ret.length; i++) {
+		for (int i = 0; i < ret.length; i++){
 			CubeItem[] out = ds.getCubes(string.getSessionId(), ret[i].getId());
-			CubeObject cubeobj = new CubeObject();
-			for (CubeItem item : out) {
-
-				cubeobj.addCube(ret[i].getId(), item.getCatalog(),
-						item.getName(), item.getSchema());
-
+			SchemaObject sob = new SchemaObject();
+			
+			Set<String> schemas = new HashSet<String>();
+			for (CubeItem item : out){
+				schemas.add(item.getSchema());
 			}
-			cob.addConnection(ret[i].getId(), ret[i].getName(), cubeobj);
-
+			
+			Iterator<String> it = schemas.iterator(); 
+			while (it.hasNext()) { 
+				String name = it.next().toString();
+				CubeObject cube = new CubeObject();
+				for(int k =0; k<out.length; k++){
+					if(out[k].getSchema().equals(name)){
+						cube.addCube(out[k].getName());
+					}
+				}
+			sob.addSchema(name, cube);
+			}
+			cob.addConnection(ret[i].getId(), ret[i].getName(), sob);
 		}
+		
+	
 
 		string.setConnectionObject(cob);
 
