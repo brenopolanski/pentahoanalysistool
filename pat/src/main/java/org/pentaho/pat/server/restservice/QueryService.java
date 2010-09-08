@@ -75,7 +75,7 @@ public class QueryService
             @FormParam("cubeName") String cubeName,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
-        ss.init();
+        //ss.init();
         qs.init();
         ds.init();
 

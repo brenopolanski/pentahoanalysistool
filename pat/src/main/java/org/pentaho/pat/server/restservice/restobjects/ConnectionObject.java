@@ -3,6 +3,7 @@ package org.pentaho.pat.server.restservice.restobjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,14 +13,15 @@ public class ConnectionObject {
 	 
 	private static class SubCob{
 		
-		@XmlElement(name = "connectionName", required = true)
+		@XmlAttribute(name = "name", required = true)
 		String name;
 		
-		@XmlElement(name = "connectionId", required = true)
+		@XmlAttribute(name = "id", required = true)
 		String id;
+
 		
-		@XmlElement(name = "cubes", required = false)
-		CubeObject cubes;
+		@XmlElement(name = "schemas", required = false)
+		SchemaObject schemas;
 		
 	    public void setText(String text) {
 	        this.name = text;
@@ -29,9 +31,9 @@ public class ConnectionObject {
 	        this.id = text;
 	    }
 
-        public void setCubes(CubeObject out) {
-        this.cubes = out;    
-            
+        public void setSchemas(SchemaObject out) {
+        this.schemas = out;    
+        
         }
 	    
 
@@ -50,13 +52,13 @@ public class ConnectionObject {
 		}
 
 
-        public void addConnection(String id, String name, CubeObject cubeobj) {
+        public void addConnection(String id, String name, SchemaObject cubeobj) {
             SubCob sub = new SubCob();
             sub.setId(id);
             sub.setText(name);
             
             
-            sub.setCubes(cubeobj);
+            sub.setSchemas(cubeobj);
             names.add(sub);
             
             
