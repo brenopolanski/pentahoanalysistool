@@ -3,6 +3,7 @@ package org.pentaho.pat.server.restservice.restobjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,12 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DimensionObject {
 
 	public static class Dimension{
-	@XmlElement(name = "name", required = true)
+	@XmlAttribute(name = "name", required = true)
 	String name;
 	
 	@XmlElement(name = "axis", required = true)
 	String axis;
 	
+	@XmlElement(name = "selection")
+	List<String> selection;
+	
+	@XmlElement(name = "exclusion")
+    List<String> exclusion;
 	
 	public void setName(String name){
 		this.name = name;
@@ -27,8 +33,8 @@ public class DimensionObject {
 	}
 	}
 	
-	//@XmlElementWrapper(name = "cube")
-	@XmlElement(name = "cube", required = true)
+	
+	@XmlElement(name = "dimension", required = true)
 	private List<Dimension> names = new ArrayList<Dimension>();
 	
 	public void newDimension(String name, String axis){

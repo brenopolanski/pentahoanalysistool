@@ -15,7 +15,7 @@ public class SchemaObject {
 		@XmlAttribute(name = "name", required = true)
 		String name;
 		
-		@XmlElement(name="cube")
+		@XmlElement(name="cubes")
 		CubeObject cob;
 		
 

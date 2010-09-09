@@ -2,6 +2,7 @@ package org.pentaho.pat.server.restservice;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -13,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 
 import org.pentaho.pat.rpc.dto.CubeItem;
@@ -34,7 +36,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
-@Path("/{sessionId}/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
+@Path("/{user}/{schema}/{cube}/{queryname}") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
 public class QueryService
 {
@@ -70,9 +72,12 @@ public class QueryService
     @Resource
     // to make it spring set the response type
     public synchronized JSONWithPadding createNewQuery(
-            @PathParam("sessionId") String sessionId,
+            @FormParam("sessionId") String sessionId,
             @FormParam("connectionId") String connectionId,
-            @FormParam("cubeName") String cubeName,
+            @PathParam("cube") String cube,
+            @PathParam("user") String user,
+            @PathParam("schema") String schema,
+            @PathParam("queryname") String queryname,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
         //ss.init();
@@ -80,7 +85,7 @@ public class QueryService
         ds.init();
 
         QueryObject qob = new QueryObject();
-        qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cubeName));
+        qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cube));
 
         DimensionObject dob = new DimensionObject();
 
@@ -118,7 +123,7 @@ public class QueryService
     @Resource
     // to make it spring set the response type
     public synchronized void deleteQuery(@PathParam("queryId") String queryId, 
-    		@PathParam("sessionId") String sessionId,
+    		@FormParam("sessionId") String sessionId,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
         ss.init();
@@ -150,7 +155,7 @@ public class QueryService
     @Resource
     // to make it spring set the response type
     public synchronized void saveQuery(@PathParam("queryId") String queryId, 
-    		@PathParam("sessionId") String sessionId,
+    		@FormParam("sessionId") String sessionId,
             @FormParam("queryName") String queryName, @FormParam("connectionId") String connectionId,
             @FormParam("cubeCatalog") String catalog, @FormParam("cubeName") String cubeName, @FormParam("schema") String schema,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
@@ -174,7 +179,9 @@ public class QueryService
      * @param cubeName
      * @param jsoncallback
      * @return
+     * @throws RpcException 
      * @throws RpcException
+     * @throws ServletException 
      * @throws ServletException
      */
   /*  @GET
@@ -194,40 +201,30 @@ public class QueryService
 
     }*/
     
+  
     /**
-     * This method moves a query from axis to axis.
+     * curl --basic -u "admin:admin" -XPUT -H 'Content-Type: application/json' -d '' http://localhost:8080/rest/admin/SteelWheels/SteelWheelsSales/tomsquery/run?sessionId=10 -v
      */
-    @PUT
-    @Path("{queryId}/{dimensionName}/axis/{axis}")
-    @Consumes({ "application/x-javascript", "application/xml",
-            "application/json" })
-    @Resource
-    public synchronized void moveDimension(@PathParam("queryId") String queryId,  
-            @PathParam("sessionId") String sessionId,
-            @PathParam("axis") String axisName,
-            @PathParam("dimensionName") String dimensionName,
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-    throws RpcException, ServletException{
-        
+    @PUT // to be accessed using http get method
+    @Path("run")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public JSONWithPadding run(QueryObject qob, @QueryParam("sessionId") String sessionId,
+            @PathParam("cube") String cube,
+            @PathParam("user") String user,
+            @PathParam("schema") String schema,
+            @PathParam("queryname") String queryname,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException, ServletException
+    {
+    
         qs.init();
-        this.qs.moveDimension(sessionId, queryId, IAxis.Standard.valueOf(axisName), dimensionName);
+        
+        
+        //qs.executeQuery(sessionId, qob.getQueryId());
+        
+        return null;
+        
     }
     
-    /**
-     * This method returns the axis a dimension is on.
-     * @param sessionId
-     * @param queryID
-     * @param axis
-     * @param dimensionName
-     * @param jsoncallback
-     * @return
-     */
-    @GET
-    @Path("{queryId}/{dimensionName}/axis")
-    @Produces({"application/x-javascript", "application/xml","application/json"})
-    public JSONWithPadding getDimension(@PathParam("sessionId") String sessionId, 
-            @PathParam("queryId") String queryID, @PathParam("dimensionName") String dimensionName, 
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback){
-        return null;
-    }
+    
 }
