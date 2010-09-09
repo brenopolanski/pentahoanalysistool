@@ -70,7 +70,9 @@ public class SessionService {
 		qs.init();
 		ds.init();
 		
+		
 		SessionObject string = new SessionObject();
+		
 		string.setSessionId(ss.createSession());
 
 		CubeConnection[] ret = ss.getActiveConnections(string.getSessionId());
