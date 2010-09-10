@@ -58,12 +58,12 @@ public class SessionService {
 	 * @throws ServletException
 	 */
 	@POST
-	@Produces({ "application/x-javascript", "application/xml",
+	@Produces({"application/xml",
 			"application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
-	public JSONWithPadding createNewSession(
+	public SessionObject createNewSession(
 			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
 			throws RpcException, ServletException {
 		ss.init();
@@ -107,8 +107,7 @@ public class SessionService {
 
 		string.setConnectionObject(cob);
 
-		return new JSONWithPadding(new GenericEntity<SessionObject>(string) {
-		}, jsoncallback);
+		return string;
 	}
 
 }
