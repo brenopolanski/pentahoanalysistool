@@ -17,11 +17,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 
+import org.olap4j.query.Query;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
+import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
@@ -66,12 +68,12 @@ public class QueryService
      * @throws ServletException
      */
     @POST
-    @Produces({ "application/x-javascript", "application/xml",
+    @Produces({"application/xml",
             "application/json" })
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized JSONWithPadding createNewQuery(
+    public synchronized QueryObject createNewQuery(
             @FormParam("sessionId") String sessionId,
             @FormParam("connectionId") String connectionId,
             @PathParam("cube") String cube,
@@ -97,8 +99,7 @@ public class QueryService
 
         qob.setDimensions(dob);
 
-        return new JSONWithPadding(new GenericEntity<QueryObject>(qob) {
-        }, jsoncallback);
+        return qob;
     }
 
     /**
@@ -117,7 +118,7 @@ public class QueryService
      */
     @DELETE
     @Path("{queryId}")
-    @Consumes({ "application/x-javascript", "application/xml",
+    @Consumes({"application/xml",
             "application/json" })
     // it is to set the response type
     @Resource
@@ -149,7 +150,7 @@ public class QueryService
      */
     @PUT
     @Path("{queryId}")
-    @Consumes({ "application/x-javascript", "application/xml",
+    @Consumes({"application/xml",
             "application/json" })
     // it is to set the response type
     @Resource
@@ -219,8 +220,12 @@ public class QueryService
     
         qs.init();
         
+        for (int i=0; i<qob.getDimensions().getDimensionList().size(); i++){
+            Dimension dimObj = qob.getDimensions().getDimensionList().get(i);
+            qs.moveDimension(sessionId, qob.getQueryId(), IAxis.Standard.valueOf(dimObj.getAxis()), dimObj.getName());
+        }
         
-        //qs.executeQuery(sessionId, qob.getQueryId());
+        qs.executeQuery(sessionId, qob.getQueryId());
         
         return null;
         

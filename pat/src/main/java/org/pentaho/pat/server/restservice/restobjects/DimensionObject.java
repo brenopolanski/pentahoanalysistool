@@ -12,10 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DimensionObject {
 
 	public static class Dimension{
-	@XmlAttribute(name = "name", required = true)
+	
 	String name;
 	
-	@XmlElement(name = "axis", required = true)
+	
 	String axis;
 	
 	@XmlElement(name = "selection")
@@ -31,6 +31,16 @@ public class DimensionObject {
 	public void setAxis(String axis){
 		this.axis = axis;
 	}
+	
+	@XmlAttribute(name = "name", required = true)
+	public String getName(){
+	    return name;
+	}
+	
+	@XmlElement(name = "axis", required = true)
+	public String getAxis(){
+	    return axis;
+	}
 	}
 	
 	
@@ -43,6 +53,10 @@ public class DimensionObject {
 		dim.setAxis(axis);
 		
 		names.add(dim);
+	}
+	
+	public List<Dimension> getDimensionList(){
+	    return names;
 	}
 	
 }
