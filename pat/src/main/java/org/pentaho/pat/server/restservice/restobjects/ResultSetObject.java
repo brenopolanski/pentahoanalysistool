@@ -15,10 +15,10 @@ public class ResultSetObject {
 
 public static class Row{
         
-        @XmlElement(name = "ROW", required = true)
+        
         List<String> contents = new ArrayList<String>();
         
-        @XmlElement(name = "CONTENT", required = true)
+        
         String name;
     
         
@@ -28,6 +28,16 @@ public static class Row{
         
         public void setName(String name){
             this.name = name;
+        }
+        
+        @XmlElement(name = "ROW", required = true)
+        public List<String> getContents(){
+        	return contents;
+        }
+        
+        @XmlElement(name = "CONTENT", required = true)
+        public String getName(){
+        	return name;
         }
     }
 
@@ -46,7 +56,7 @@ public static class Row{
 	}
 	
 	
-	public void generate(){
+	private void generate(){
 		//AbstractBaseCell[][] headers = cds.getCellSetHeaders();
 		AbstractBaseCell[][] body = cds.getCellSetBody();
 		

@@ -24,6 +24,7 @@ import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
+import org.pentaho.pat.server.restservice.restobjects.ResultSetObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
@@ -210,7 +211,7 @@ public class QueryService
     @Path("run")
     @Consumes("application/json")
     @Produces("application/json")
-    public JSONWithPadding run(QueryObject qob, @QueryParam("sessionId") String sessionId,
+    public ResultSetObject run(QueryObject qob, @QueryParam("sessionId") String sessionId,
             @PathParam("cube") String cube,
             @PathParam("user") String user,
             @PathParam("schema") String schema,
@@ -225,9 +226,10 @@ public class QueryService
             qs.moveDimension(sessionId, qob.getQueryId(), IAxis.Standard.valueOf(dimObj.getAxis()), dimObj.getName());
         }
         
-        qs.executeQuery(sessionId, qob.getQueryId());
         
-        return null;
+        
+        ResultSetObject rso = new ResultSetObject(qs.executeQuery(sessionId, qob.getQueryId()));
+        return rso;
         
     }
     
