@@ -346,7 +346,7 @@ public class SimplePanelUtil {
             public void onSuccess(Object arg0) {
                 if (createSelection) {
                     ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
-                            label.getActualName(), ObjectType.LEVEL, SelectionType.CHILDREN,
+                            label.getActualName(), ObjectType.LEVEL, SelectionType.MEMBER,
                             new AsyncCallback<List<String>>() {
 
                         public void onFailure(Throwable arg0) {
@@ -356,7 +356,7 @@ public class SimplePanelUtil {
 
                         public void onSuccess(List<String> arg0) {
                             label.setCurrentSelection(arg0);
-                            label.setSelectionType(SelectionType.CHILDREN);
+                            label.setSelectionType(SelectionType.MEMBER);
                             label.setAxis(((DimensionSimplePanel) context.finalDropController
                                     .getDropTarget()).getAxis());
 
