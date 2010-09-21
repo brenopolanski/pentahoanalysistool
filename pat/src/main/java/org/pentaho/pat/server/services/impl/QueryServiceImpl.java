@@ -572,9 +572,9 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                 if (member.getRightOf() == null) {
                     switch (drillType) {
                     case POSITION:
-                        // queryDimension.getInclusions().remove(selection);
-                        // queryDimension.include(Selection.Operator.INCLUDE_CHILDREN, memberFetched);
-                        queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        if (!queryDimension.getInclusions().contains(queryDimension.createSelection(Selection.Operator.CHILDREN, memberFetched))) {
+                            queryDimension.include(Selection.Operator.CHILDREN, memberFetched);
+                        }
                         break;
                     case REPLACE:
                         queryDimension.clearInclusions();
@@ -642,7 +642,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
                             // Get next member.
                             memberdrill = memberdrill.getRightOf();
                         }
-
                     }
                 }
             } else {
