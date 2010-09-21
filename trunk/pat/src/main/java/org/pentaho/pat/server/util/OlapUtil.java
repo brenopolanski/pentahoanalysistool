@@ -364,7 +364,12 @@ public class OlapUtil {
 
             if (memberOut == null)
                 // We failed to find the member.
-                throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                if (member == null) {
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember"));//$NON-NLS-1$
+                }
+                else {
+                    throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember",member.getUniqueName()));//$NON-NLS-1$
+                }
 
         }
 

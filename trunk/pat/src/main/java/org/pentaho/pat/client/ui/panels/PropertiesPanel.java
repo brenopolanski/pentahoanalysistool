@@ -527,7 +527,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(mdxButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(hideBlanksButton, new BoxLayoutData(FillStyle.HORIZONTAL));
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
-            mainPanel.add(drillThroughButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+//            mainPanel.add(drillThroughButton, new BoxLayoutData(FillStyle.HORIZONTAL));
 //            mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
