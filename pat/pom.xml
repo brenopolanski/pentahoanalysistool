@@ -724,7 +724,11 @@
         		</exclusion>
       		</exclusions>
 		</dependency>
-
+		<dependency>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-core</artifactId>
+                        <version>1.4</version>
+                </dependency>	
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
