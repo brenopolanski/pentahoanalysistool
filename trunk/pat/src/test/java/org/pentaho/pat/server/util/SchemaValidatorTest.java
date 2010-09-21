@@ -33,8 +33,8 @@ public class SchemaValidatorTest extends AbstractServiceTest {
 
 	private void initTest() {
 		initTestContext();
-		if (schema==null){
-			try {
+		if (schema==null) {
+		    try {
 				this.schema=readFileAsString(new File(
 					SchemaValidatorTest.class.getResource("SampleData.mondrian.xml").toURI())); //$NON-NLS-1$
 			} catch (URISyntaxException e) {

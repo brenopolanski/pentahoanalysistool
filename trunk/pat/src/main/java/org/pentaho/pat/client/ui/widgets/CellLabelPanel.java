@@ -23,7 +23,6 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IOperationListener;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
-import org.pentaho.pat.client.ui.popups.CellModeMenu;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.EventFactory;
@@ -41,7 +40,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
  * Creates the panel for Cell Labels.
@@ -106,7 +104,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
     }
 
     public static native String getUserAgent() /*-{
-    return navigator.userAgent.toLowerCase();
+        return navigator.userAgent.toLowerCase();
     }-*/;
     
    
@@ -117,46 +115,25 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
             if (drillType != null && memCell.getRawValue() != null) {
                 if (drillType.equals(DrillType.POSITION) && memCell.getChildMemberCount() > 0) {
                     if (memCell.isExpanded()) {
-                    	if(browserType.contains("MSIE")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "closeButton.png"); //$NON-NLS-1$
-                    	}
-                    	else{
-                    		drillButton = Pat.IMAGES.closeButton().createImage();
-                    	}
                     } else {
-                    	if(browserType.contains("MSIE")){
                         drillButton.setUrl(GWT.getModuleBaseURL() + "drill.png"); //$NON-NLS-1$
-                    	}
-                    	else{
-                    		drillButton = Pat.IMAGES.drill().createImage();
-                    	}
                     }
                     setIcon = true;
                 }
                 if (memCell.getChildMemberCount() > 0 && drillType.equals(DrillType.REPLACE)) {
-                	if(browserType.contains("MSIE")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_down.png"); //$NON-NLS-1$
-                	}
-                	else{
-                		drillButton = Pat.IMAGES.arrow_down().createImage();
-                	}
                     setIcon = true;
                 }
 
                 if (memCell.getParentMember() != null && drillType.equals(DrillType.UP)) {
-                	if(browserType.contains("MSIE")){
                     drillButton.setUrl(GWT.getModuleBaseURL() + "arrow_up.png"); //$NON-NLS-1$
-                	}
-                	else{
-                		drillButton = Pat.IMAGES.arrow_up().createImage();
-                	}
                     setIcon = true;
                 }
 
                 if (drillType.equals(DrillType.NONE)) {
                     setIcon = false;
                 }
-                
                 drillButton.addClickHandler(new ClickHandler(){
 
     				public void onClick(ClickEvent arg0) {
