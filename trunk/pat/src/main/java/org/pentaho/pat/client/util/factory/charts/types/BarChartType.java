@@ -3,7 +3,6 @@
  */
 package org.pentaho.pat.client.util.factory.charts.types;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -88,13 +87,15 @@ public class BarChartType {
             cd.setLegend(new Legend(pos, true));
         }
         final List<AbstractBaseCell[]> data = Arrays.asList(patTableModel.getRowData());
-        int dataColCount = data.get(0).length - rowColCount;
-        final List<Label> labels = new ArrayList<Label>();
+        final Label[] labels = new Label[data.size()];
         final MemberCell[] memberCellLabelList = new MemberCell[data.size()];
         for (int i = 0; i < data.size(); i++) {
             final AbstractBaseCell[] cell = data.get(i);
+            int rc = 0;
+            while (cell[rc].getRawValue() == null)
+                rc++;
 
-            List<String> path = ((MemberCell) cell[rowColCount - 1]).getMemberPath();
+            List<String> path = ((MemberCell) cell[rc]).getMemberPath();
             StringBuffer buf = new StringBuffer();
             for (int j = 0; j < path.size(); j++) {
                 buf.append(path.get(j));
@@ -104,11 +105,9 @@ public class BarChartType {
             }
             String label = buf.toString();
 
-            memberCellLabelList[i] = (MemberCell) cell[rowColCount - 1];
+            memberCellLabelList[i] = (MemberCell) cell[rc];
+            labels[i] = new Label(label, 45);
 
-            for (int j = 0; j < dataColCount; j++) {
-                labels.add(new Label(label, 45));
-            }
         }
 
         xa.addLabels(labels);
