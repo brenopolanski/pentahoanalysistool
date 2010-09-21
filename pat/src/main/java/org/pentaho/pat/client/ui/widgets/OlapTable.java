@@ -27,7 +27,6 @@ import java.util.List;
 import org.gwt.mosaic.ui.client.LayoutComposite;
 import org.gwt.mosaic.ui.client.LiveTable;
 import org.gwt.mosaic.ui.client.layout.LayoutPanel;
-import org.gwt.mosaic.ui.client.util.WidgetHelper;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.util.factory.EventFactory;
@@ -43,8 +42,6 @@ import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.TableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.Response;
-import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -127,6 +124,8 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                 for (int i = 0, n = numRows; i < n; i++) {
                     list.add(data.get(request.getStartRow() + i));
                 }
+                long midTime = System.currentTimeMillis();
+                System.out.println("MidTime: " + (midTime - startTime));
                 final Response<AbstractBaseCell[]> response = new Response<AbstractBaseCell[]>() {
                     @Override
                     public Iterator<AbstractBaseCell[]> getRowValues() {
@@ -237,7 +236,7 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
                     group = colData.get(offset - j - 1);
 
                     if (group != null) {
-                        HorizontalPanel groupPanel = null;
+                        Widget groupPanel = null;
                         if (group[i].getFormattedValue() == null || group[i].sameAsPrev) {
                             colDef0.setHeader(j, groupPanel);
                         } else {
@@ -249,7 +248,6 @@ public class OlapTable extends LayoutComposite implements IQueryListener {
             }
 
             //  CellEditor cellEditor = new DataCellEditor();
-
 
             //		colDef0.setCellEditor(cellEditor);
             colDef0.setHeaderTruncatable(false);

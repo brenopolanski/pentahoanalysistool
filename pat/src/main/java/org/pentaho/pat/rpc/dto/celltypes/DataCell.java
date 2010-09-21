@@ -19,12 +19,10 @@ package org.pentaho.pat.rpc.dto.celltypes;
 import java.io.Serializable;
 import java.util.List;
 
-import org.pentaho.pat.client.ui.widgets.DataCellPanel;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The Class CellInfo.
@@ -118,18 +116,18 @@ public class DataCell extends AbstractBaseCell implements Serializable, IsSerial
     }
 
     @Override
-    public HorizontalPanel getLabel() {
-        
+    public Widget getLabel() {
         final Label cellLabel = new Label(getFormattedValue());
-        final HorizontalPanel hp = new HorizontalPanel();
-        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber, coordinates);
-        cellPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-//        hp.setWidth("100%"); //$NON-NLS-1$
-        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        hp.add(cellPanel);
-        hp.setCellHorizontalAlignment(cellPanel, HasHorizontalAlignment.ALIGN_LEFT);
-        hp.add(cellLabel);
-        return hp;
+//        final HorizontalPanel hp = new HorizontalPanel();
+//        final DataCellPanel cellPanel = new DataCellPanel(parentColMember, parentRowMember, rawNumber, coordinates);
+//        cellPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+////        hp.setWidth("100%"); //$NON-NLS-1$
+//        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//        hp.add(cellPanel);
+//        hp.setCellHorizontalAlignment(cellPanel, HasHorizontalAlignment.ALIGN_LEFT);
+//        hp.add(cellLabel);
+        cellLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        return cellLabel;
 
     }
 

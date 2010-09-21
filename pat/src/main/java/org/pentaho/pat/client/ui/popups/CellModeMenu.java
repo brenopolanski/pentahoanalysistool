@@ -173,8 +173,8 @@ public class CellModeMenu extends PopupMenu {
 
     private void init() {
         this.setAutoOpen(true);
-        this.addItem(new MenuItem(Pat.CONSTANTS.sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
-        this.addItem(new MenuItem(Pat.CONSTANTS.sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
+//        this.addItem(new MenuItem(Pat.CONSTANTS.sortAZ(), new SortOrderCommand("ASC"))); //$NON-NLS-1$
+//        this.addItem(new MenuItem(Pat.CONSTANTS.sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
         this.addItem(new MenuItem(Pat.CONSTANTS.exclude(), new ExcludeCommand()));
         this.addItem(new MenuItem(Pat.CONSTANTS.clearExclusions(), new ClearExcludeCommand()));
     }

@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public abstract class AbstractBaseCell implements Serializable, IsSerializable {
 
@@ -144,7 +144,7 @@ public abstract class AbstractBaseCell implements Serializable, IsSerializable {
         return parentDimension;
     }
 
-    public HorizontalPanel getLabel() {
+    public Widget getLabel() {
         return null;
 
     }

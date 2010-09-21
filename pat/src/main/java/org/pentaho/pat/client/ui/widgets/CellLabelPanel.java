@@ -23,6 +23,7 @@ import org.gwt.mosaic.ui.client.MessageBox;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IOperationListener;
 import org.pentaho.pat.client.ui.panels.LogoPanel;
+import org.pentaho.pat.client.ui.popups.CellModeMenu;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil.PanelType;
 import org.pentaho.pat.client.util.factory.EventFactory;
@@ -40,6 +41,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
  * Creates the panel for Cell Labels.
@@ -167,7 +169,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
      * (non-Javadoc)
      * @see com.google.gwt.user.client.ui.Widget#onBrowserEvent(com.google.gwt.user.client.Event)
      */
-   /* @Override
+    @Override
     public void onBrowserEvent(final Event event) {
         super.onBrowserEvent(event);
         switch (DOM.eventGetType(event)) {
@@ -185,7 +187,7 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
         default:
             break;
         }
-    }*/
+    }
 
 
     public void onDrillStyleChanged(String queryId, DrillType drillType) {
