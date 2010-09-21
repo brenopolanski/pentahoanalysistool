@@ -12,10 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SchemaObject {
 	 
 	private static class SubSchema{
-		@XmlAttribute(name = "name", required = true)
+		
 		String name;
 		
-		@XmlElement(name="cubes")
+		
 		CubeObject cob;
 		
 
@@ -29,7 +29,16 @@ public class SchemaObject {
 			this.cob = schema;
 			
 		}
-
+		
+		@XmlAttribute(name = "schemaname", required = true)
+		public String getSchemaName(){
+			return name;
+		}
+		
+		@XmlElement(name="cubes")
+		public CubeObject getCubeName(){
+			return cob;
+		}
 	}
 		//@XmlElementWrapper(name = "cube")
     	@XmlElement(name = "schema", required = true)

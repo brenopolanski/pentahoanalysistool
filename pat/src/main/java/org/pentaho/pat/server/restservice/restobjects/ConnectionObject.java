@@ -13,10 +13,10 @@ public class ConnectionObject {
 	 
 	private static class SubCob{
 		
-		@XmlAttribute(name = "name", required = true)
+		@XmlAttribute(name = "connectionname", required = true)
 		String name;
 		
-		@XmlAttribute(name = "id", required = true)
+		@XmlAttribute(name = "connectionid", required = true)
 		String id;
 
 		

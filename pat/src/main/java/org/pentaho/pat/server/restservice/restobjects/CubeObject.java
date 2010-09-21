@@ -3,6 +3,7 @@ package org.pentaho.pat.server.restservice.restobjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CubeObject {
 	 
 	private static class SubCube{
-		@XmlElement(name = "name", required = true)
+		
 		String name;
 
 		public void setcubeName(String name) {
@@ -19,6 +20,10 @@ public class CubeObject {
 			
 		}
 
+		@XmlAttribute(name = "cubename", required = true)
+		public String getCubeName(){
+			return name;
+		}
 
 	}
 		//@XmlElementWrapper(name = "cube")

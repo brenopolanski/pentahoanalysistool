@@ -18,7 +18,7 @@ public class SessionObject {
         this.sessionId = sessionId;
     }
 
-    @XmlAttribute(name = "id")
+    @XmlAttribute(name = "sessionid")
     public String getSessionId() {
         return sessionId;
     }
