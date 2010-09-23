@@ -163,9 +163,14 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
         final Query query = this.getQuery(userId, sessionId, queryId);
         final Cube cube = query.getCube();
+        
+        String lookup = "";
+        for (String namepart : memberNames) {
+            lookup = lookup + namepart;
+        }
 
-        // First try to resolve the member quick and dirty.
-        Member member = cube.lookupMember(memberNames.toArray(new String[memberNames.size()]));
+        // First try to resolve the member quick
+        Member member = cube.lookupMember(QueryDimension.getNameParts(lookup));
 
         if (member == null) {
             // Let's try with only the dimension name in front.
@@ -188,10 +193,6 @@ public class QueryServiceImpl extends AbstractService implements QueryService {
 
                 if (member == null) {
                     // We failed to find the member.
-                    String lookup = "";
-                    for (String namepart : memberNames) {
-                        lookup = lookup + namepart;
-                    }
 
                     throw new OlapException(Messages.getString("Services.Query.Selection.CannotFindMember", lookup));//$NON-NLS-1$
                 }
