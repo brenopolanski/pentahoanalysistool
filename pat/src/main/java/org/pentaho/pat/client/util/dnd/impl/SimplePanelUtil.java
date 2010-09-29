@@ -63,7 +63,7 @@ public class SimplePanelUtil {
             if(objectType.equals(ObjectType.MEMBER)|| objectType.equals(ObjectType.MEASURE)){
                 ft.insertRow(coordinate[0]+1);
                 ft.insertCell(coordinate[0]+1, coordinate[1]);
-                ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(false, IAxis.FILTER));
+                ft.setWidget(coordinate[0]+1, coordinate[1], new DimensionSimplePanel(true, IAxis.FILTER));
             }
             if(!ft.isCellPresent(coordinate[0]-1, coordinate[1]+1) || ft.getWidget(coordinate[0]-1, coordinate[1]+1) instanceof DimensionSimplePanel
                     && ((DimensionSimplePanel)ft.getWidget(coordinate[0]-1, coordinate[1]+1)).getAxis().equals(IAxis.COLUMNS)){
@@ -516,7 +516,7 @@ public class SimplePanelUtil {
             }
 
             public void onSuccess(Object arg0) {
-                if (createSelection) {
+            	if (createSelection) {
                     ServiceFactory.getQueryInstance().createSelection(Pat.getSessionID(), Pat.getCurrQuery(),
                             label.getActualName(), ObjectType.MEMBER, SelectionType.MEMBER,
                             new AsyncCallback<List<String>>() {
@@ -539,7 +539,7 @@ public class SimplePanelUtil {
             }
         });
 
-        if(createnewdroptarget)
+	        if(createnewdroptarget)
             addNewDropTargets(context, label.getType());
 
     }

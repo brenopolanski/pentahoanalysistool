@@ -211,12 +211,11 @@ public class QueryService
     @Path("run")
     @Consumes("application/json")
     @Produces("application/json")
-    public ResultSetObject run(QueryObject qob, @QueryParam("sessionId") String sessionId,
+    public ResultSetObject run(@FormParam("queryObject") QueryObject qob, @QueryParam("sessionId") String sessionId,
             @PathParam("cube") String cube,
             @PathParam("user") String user,
             @PathParam("schema") String schema,
-            @PathParam("queryname") String queryname,
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException, ServletException
+            @PathParam("queryname") String queryname) throws RpcException, ServletException
     {
     
         qs.init();
