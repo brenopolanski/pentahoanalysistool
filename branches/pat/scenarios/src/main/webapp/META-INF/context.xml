@@ -1,0 +1,7 @@
+<Context path="pat">
+<Resource name="jdbc/pat-hibernate" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory" maxActive="20" maxIdle="5"
+		maxWait="10000" username="sa" password=""
+		driverClassName="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:mem:pat_app;default_schema=true;type=cached;write_delay=false"
+		validationQuery="select count(*) from INFORMATION_SCHEMA.SYSTEM_SEQUENCES"/>
+</Context>

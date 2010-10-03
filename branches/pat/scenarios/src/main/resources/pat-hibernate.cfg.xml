@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="show_sql">false</property>
+		<property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
+		<!--
+			<property name="hibernate.jdbc.batch_size">0</property> uncomment
+			this to see better exception messages
+		-->
+		<property name="hibernate.cache.use_query_cache">false</property>
+		<property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>
+		<mapping class="org.pentaho.pat.server.data.pojo.SavedConnection" />
+		<mapping class="org.pentaho.pat.server.data.pojo.SavedQuery" />
+		<mapping class="org.pentaho.pat.server.data.pojo.User" />
+		<mapping class="org.pentaho.pat.server.data.pojo.Group" />
+	</session-factory>
+</hibernate-configuration>
