@@ -251,17 +251,57 @@
 						<defaultsDescriptor>src/main/servers/jetty/dev/webdefault.xml</defaultsDescriptor>
 					</webAppConfig>
 				</configuration>
+				        <executions>
+                <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                                <goal>run-exploded</goal>
+                        </goals>
+                        <configuration>
+                                <scanIntervalSeconds>0</scanIntervalSeconds>
+                                <daemon>true</daemon>
+                        </configuration>
+                </execution>
+                <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                                <goal>stop</goal>
+                        </goals>
+                </execution>
+        </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+                <stopKey>foo</stopKey>
+                <stopPort>9999</stopPort>
 					<excludes>
 						<exclude>**/AbstractServiceTest.java</exclude>
 						<exclude>**/AbstractManagerTest.java</exclude>
 					</excludes>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
+				 <executions>
+               <execution>
+            <id>integration-test</id>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+                <excludes>
+                    <exclude>none</exclude>
+                </excludes>
+                <includes>
+                    <include>**/*IntegrationTest*.java</include>
+                </includes>
+            </configuration>
+        </execution>
+        </executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -307,8 +347,8 @@
 			<url>http://repo.analytical-labs.com/libs-releases</url>
 		</repository>
 		<repository>
-			<id>A2nalytical Labs</id>
-			<url>http://download.java.net/maven/2</url>
+			<id>Java</id>
+			<url>http://download.java.net/maven/2/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -734,6 +774,23 @@
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<dependency>
+            <groupId>com.sun.jersey.jersey-test-framework</groupId>
+            <artifactId>jersey-test-framework-core</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+       <dependency>
+            <groupId>com.sun.jersey.jersey-test-framework</groupId>
+            <artifactId>jersey-test-framework-grizzly</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+<dependency>
+            <groupId>com.sun.grizzly</groupId>
+            <artifactId>grizzly-servlet-webserver</artifactId>
+            <version>1.9.18-i</version>
+        </dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>

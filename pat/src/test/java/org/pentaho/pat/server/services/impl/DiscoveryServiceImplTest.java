@@ -148,8 +148,65 @@ public class DiscoveryServiceImplTest extends AbstractServiceTest {
 		finishTest();
 	}
 	
+	public void testGetDimensionList(){
+	    initTest();
+        
+        finishTest();
+	}
 	
+	private void testGetDimensionName(){
+	    initTest();
+        
+        finishTest();
+	}
 	
+	private void testGetHierarchyName(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetSpecificMembers(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetAllLevelProperties(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetNamedLevelProperties(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetHierarchies(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetLevels(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetLevelMembers(){
+	    initTest();
+        
+        finishTest();
+	}
+	
+	private void testGetMeasures(){
+	    initTest();
+        
+        finishTest();
+	}
 	
 	private void initTest() {
 		initTestContext();
