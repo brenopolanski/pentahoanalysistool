@@ -29,7 +29,7 @@ Example:
 
 ==Query==
 
-URL: http://demo.analytical-labs.com/rest/admin/SteelWheels/SteelWheelsSales/query/tomsquery
+URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
 
 Params: sessionId=uuid -d connectionId=uuid
 
