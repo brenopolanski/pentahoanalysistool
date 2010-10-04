@@ -1,4 +1,5 @@
 #summary All the information regarding the rest interface.
+#labels Phase-Design,Phase-Requirements
 
 = Introduction =
 
@@ -31,7 +32,7 @@ Example:
 
 URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
 
-Params: sessionId=uuid -d connectionId=uuid
+Params: sessionId=uuid, connectionId=uuid
 
 Headers: Accept, json or xml
 
