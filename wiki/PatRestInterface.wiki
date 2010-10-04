@@ -29,4 +29,19 @@ Example:
 
 ==Query==
 
+URL: http://demo.analytical-labs.com/rest/admin/SteelWheels/SteelWheelsSales/query/tomsquery
+
+Params: sessionId=uuid -d connectionId=uuid
+
+Headers: Accept, json or xml
+
+Type: POST
+
+Result:Query Id, Dimensions, Members
+
+Example:
+
+{"@id":"20fff419-0557-4f7b-ad05-e38f7ec76e24","dimensions":{"dimension":[{"@name":"Measures","axis":"UNUSED"},{"@name":"Markets","axis":"UNUSED"},{"@name":"Customers","axis":"UNUSED"},{"@name":"Product","axis":"UNUSED"},{"@name":"Time","axis":"UNUSED"},{"@name":"Order Status","axis":"UNUSED"}]}}
+
+
 ==Resultset==
