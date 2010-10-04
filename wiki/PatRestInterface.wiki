@@ -1,0 +1,13 @@
+#summary All the information regarding the rest interface.
+
+= Introduction =
+
+Here you can find all the documentation about the restful interface PAT provides. If you feel that it should be altered or extended in anyway please file a change request, or ask nicely ;)
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
