@@ -28,7 +28,7 @@ Example:
 
 `{"@sessionid":"66834b32-cb7d-4f31-b51d-684381962024","connections":{"connection":[{"@connectionid":"1603c5ef-990d-486f-86c9-53596165bc68","@connectionname":"Steelwheels","schemas":{"schema":{"@schemaname":"SteelWheels","cubes":{"cube":{"@cubename":"SteelWheelsSales"}}}}},{"@connectionid":"d7523714-f287-41a4-acbc-4c8d1c119fa1","@connectionname":"SampleData","schemas":{"schema":{"@schemaname":"SampleData","cubes":{"cube":{"@cubename":"Quadrant Analysis"}}}}}]}}`
 
-==Query==
+==Create Query==
 
 URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
 
@@ -44,5 +44,34 @@ Example:
 
 `{"@id":"20fff419-0557-4f7b-ad05-e38f7ec76e24","dimensions":{"dimension":[{"@name":"Measures","axis":"UNUSED"},{"@name":"Markets","axis":"UNUSED"},{"@name":"Customers","axis":"UNUSED"},{"@name":"Product","axis":"UNUSED"},{"@name":"Time","axis":"UNUSED"},{"@name":"Order Status","axis":"UNUSED"}]}}`
 
+==Delete Query==
+
+URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
+
+Params: sessionId=uuid
+
+Type: DELETE
+
+Result: HTTP 200
+
+==Save Query==
+
+URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
+
+Params: sessionId=uuid
+
+Type: PUT
+
+Result: HTTP 200
+
+==Run Query==
+
+URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery/run?sessionid=uuid
+
+Params: queryobject = queryobject
+
+Type: PUT
+
+Result: Resultset
 
 ==Resultset==
