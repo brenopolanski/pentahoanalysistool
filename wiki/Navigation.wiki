@@ -8,6 +8,7 @@
       * [MavenGoals Maven Goals]
       * [http://pentahoanalysistool.googlecode.com/svn/javadoc/apidocs/index.html Javadoc]
       * [CodeGuidelines Code Guidelines]
+      * [PatRestInterface Pat Restful Interface]
   * [Goals PAT Roadmap]
   * [DevelopmentSprints Development Sprints]
     * [DevelopmentSprint050 0.5.0]
