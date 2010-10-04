@@ -1,8 +1,9 @@
 package org.pentaho.pat.server.restservice;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -14,23 +15,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 
-import org.olap4j.query.Query;
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
-import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
 import org.pentaho.pat.server.restservice.restobjects.ResultSetObject;
+import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 import org.springframework.context.annotation.Scope;
-
-import com.sun.jersey.api.json.JSONWithPadding;
 
 /**
  * The Query Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT AS A FINSIHED API.
@@ -39,7 +36,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @since 0.9.0
  */
 @SuppressWarnings("restriction")
-@Path("/{user}/{schema}/{cube}/{queryname}") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
+@Path("/{user}/query") /* to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo */
 @Scope("request") // to set the scope of service
 public class QueryService
 {
@@ -69,6 +66,7 @@ public class QueryService
      * @throws ServletException
      */
     @POST
+    @Path("/{schema}/{cube}/{queryname}")
     @Produces({"application/xml",
             "application/json" })
     // it is to set the response type
@@ -80,8 +78,7 @@ public class QueryService
             @PathParam("cube") String cube,
             @PathParam("user") String user,
             @PathParam("schema") String schema,
-            @PathParam("queryname") String queryname,
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+            @PathParam("queryname") String queryname)
             throws RpcException, ServletException {
         //ss.init();
         qs.init();
@@ -118,13 +115,13 @@ public class QueryService
      * @throws ServletException
      */
     @DELETE
-    @Path("{queryId}")
+    @Path("/{schema}/{cube}/{queryname}")
     @Consumes({"application/xml",
             "application/json" })
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized void deleteQuery(@PathParam("queryId") String queryId, 
+    public synchronized void deleteQuery(@PathParam("queryname") String queryname, 
     		@FormParam("sessionId") String sessionId,
             @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
             throws RpcException, ServletException {
@@ -132,7 +129,20 @@ public class QueryService
         qs.init();
         ds.init();
 
-        this.qs.deleteQuery(sessionId, queryId);
+        List<QuerySaveModel> queries = this.qs.getActiveQueries(sessionId);
+        String id = null;
+        for(int q = 0; q < queries.size(); q++){
+            
+        
+        if(queries.get(q).getName().equals(queryname)){
+            id = queries.get(q).getQueryId();
+            queries.remove(q);
+            break;
+        }
+        }
+        if(id!=null){
+        this.qs.deleteQuery(sessionId, id);
+        }
     }
     
     /**
@@ -150,7 +160,7 @@ public class QueryService
      * @throws ServletException
      */
     @PUT
-    @Path("{queryId}")
+    @Path("/{schema}/{cube}/{queryname}")
     @Consumes({"application/xml",
             "application/json" })
     // it is to set the response type
@@ -186,29 +196,28 @@ public class QueryService
      * @throws ServletException 
      * @throws ServletException
      */
-  /*  @GET
-    @Path("{queryId}")
-    @Produces({ "application/x-javascript", "application/xml",
+    @GET
+    @Produces({"application/xml",
             "application/json" })
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized void loadQuery(@PathParam("queryId") String queryId,
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
+    public synchronized void loadQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId)
             throws RpcException, ServletException {
         ss.init();
         qs.init();
         ds.init();
+        
+        this.qs.getQueries(sessionId);
 
-
-    }*/
+    }
     
   
     /**
      * curl --basic -u "admin:admin" -XPUT -H 'Content-Type: application/json' -d '' http://localhost:8080/rest/admin/SteelWheels/SteelWheelsSales/tomsquery/run?sessionId=10 -v
      */
     @PUT // to be accessed using http get method
-    @Path("run")
+    @Path("/{schema}/{cube}/{queryname}/run")
     @Consumes("application/json")
     @Produces("application/json")
     public ResultSetObject run(@FormParam("queryObject") QueryObject qob, @QueryParam("sessionId") String sessionId,
