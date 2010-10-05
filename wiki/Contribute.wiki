@@ -12,7 +12,10 @@ Now this contribution could be anything like:
   * Documenting
   * Testing
   * Maintaining the translations
-  * ......
+  * Sort out Analytical Labs website
+  * Create PAT Admin Console
+  * Setup TRAC ticket system
+  * Create server backup procedure to our backup facility
 
 If you want to do anything that is or is not listed above just [ContactUs contact us]
 
