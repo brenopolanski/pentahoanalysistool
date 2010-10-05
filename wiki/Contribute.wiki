@@ -5,17 +5,17 @@
 We are always looking for people who are willing to help us. We do need every helping hand!
 Now this contribution could be anything like:
 
-  * Coding
-  * CSS Layouting
-  * Designing a nice Icon Set
-  * Designing a PAT logo
-  * Documenting
-  * Testing
+  * Coding - New Features/Code Cleanup/Bug Fixing
+  * CSS Layouting - Make PAT look cool
+  * Designing a nice Icon Set - Ask on mailing list and irc for more details
+  * Designing a PAT logo - We need something distinctive
+  * Documenting - We have a couple of documents in our repo that need padding out and turning into a definitive manual(http://ci.analytical-labs.com/job/CI-End-User-Docs/)
+  * Testing - Find out whats broken and file bugs on jira
   * Maintaining the translations
-  * Sort out Analytical Labs website
-  * Create PAT Admin Console
-  * Setup TRAC ticket system
-  * Create server backup procedure to our backup facility
+  * Sort out Analytical Labs website - We need the website looking shit hot, and minus the stupid spam, volunteers please(I hate webdev)
+  * Create PAT Admin Console - The Console needs to manage users, roles and database connections for the PAT server
+  * Setup TRAC ticket system - We are planning to move to our internal repository, ticketing and tracking system, this needs setting up properly.
+  * Create server backup procedure to our backup facility - When we move to our own servers we need nightly backups.
 
 If you want to do anything that is or is not listed above just [ContactUs contact us]
 
