@@ -282,11 +282,12 @@
 					<excludes>
 						<exclude>**/AbstractServiceTest.java</exclude>
 						<exclude>**/AbstractManagerTest.java</exclude>
+						<exclude>**/*IntegrationTest*.java</exclude>
 					</excludes>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 				 <executions>
-               <execution>
+            <!--    <execution>
             <id>integration-test</id>
             <goals>
                 <goal>test</goal>
@@ -300,7 +301,7 @@
                     <include>**/*IntegrationTest*.java</include>
                 </includes>
             </configuration>
-        </execution>
+        </execution> -->
         </executions>
 			</plugin>
 		</plugins>
