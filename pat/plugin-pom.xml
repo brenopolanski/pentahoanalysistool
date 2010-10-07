@@ -142,7 +142,7 @@
 								<artifactItem>
 									<groupId>org.olap4j</groupId>
 									<artifactId>olap4j</artifactId>
-									<version>0.9.8-SNAPSHOT</version>
+									<version>0.9.9-SNAPSHOT</version>
 									<outputDirectory>${lib.output.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -654,7 +654,7 @@
 		<dependency>
 			<groupId>org.olap4j</groupId>
 			<artifactId>olap4j</artifactId>
-			<version>0.9.8-SNAPSHOT</version>
+			<version>0.9.9-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>asm</groupId>
