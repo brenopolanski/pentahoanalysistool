@@ -615,6 +615,7 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
         if(queryId == this.queryId) {
             exportButton.setEnabled(true);
             mdxButton.setEnabled(true);
+            exportCdaButton.setEnabled(true);
             hideBlanksButton.setEnabled(true);
             pivotButton.setEnabled(true);
             layoutMenuButton.setEnabled(true);
