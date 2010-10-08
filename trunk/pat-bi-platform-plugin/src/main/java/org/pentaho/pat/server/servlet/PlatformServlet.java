@@ -142,6 +142,17 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
 
             ISolutionRepository repository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
             try {
+                if (!name.endsWith(".cda")) {
+                    name = name + ".cda";
+                }
+
+                String base = PentahoSystem.getApplicationContext().getSolutionRootPath();
+                String parentPath = ActionInfo.buildSolutionPath(solution, path, "");
+                ISolutionFile parentFile = repository.getSolutionFile(parentPath, ISolutionRepository.ACTION_CREATE);
+                String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
+                String mondrianfilePath = parentPath + ISolutionRepository.SEPARATOR + name + "mondrian.xml";
+                ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
+
                 final SavedConnection sc = sessionService.getConnection(getCurrentUserId(), connectionId);
                 Object query = null;
                 String mdx = "";
@@ -177,15 +188,15 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                     final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PluginConfig.PAT_PLUGIN_NAME);
                     File pluginDir = pluginClassloader.getPluginDir();
                     String tmpFilename = String.valueOf(UUID.randomUUID());
-                    File schema = new File(pluginDir,"/tmp_cda/" + tmpFilename); //$NON-NLS-1$
-                    schema.createNewFile();
-                    final FileWriter fw = new FileWriter(schema);
-                    final BufferedWriter bw = new BufferedWriter(fw);
-                    bw.write(sc.getSchemaData());
-                    bw.close();
-                    fw.close();
+//                    File schema = new File(pluginDir,"/tmp_cda/" + tmpFilename); //$NON-NLS-1$
+//                    schema.createNewFile();
+//                    final FileWriter fw = new FileWriter(schema);
+//                    final BufferedWriter bw = new BufferedWriter(fw);
+//                    bw.write(sc.getSchemaData());
+//                    bw.close();
+//                    fw.close();
 
-                    xml.append("<Property name=\"Catalog\">" + schema.getAbsolutePath() + "</Property>\n");
+                    xml.append("<Property name=\"Catalog\">solution:" + mondrianfilePath + "</Property>\n");
 
                 }
                 if (sc.getType().equals(ConnectionType.XMLA)) {
@@ -211,19 +222,10 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                     xml.append("</Query>\n");
                 xml.append("</DataAccess>\n");
                 xml.append("</CDADescriptor>");
-                    
-
-                if (!name.endsWith(".cda")) {
-                    name = name + ".cda";
-                }
-                String base = PentahoSystem.getApplicationContext().getSolutionRootPath();
-                String parentPath = ActionInfo.buildSolutionPath(solution, path, "");
-                ISolutionFile parentFile = repository.getSolutionFile(parentPath, ISolutionRepository.ACTION_CREATE);
-                String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
-                ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
 
                 if (fileToSave != null || (!repository.resourceExists(filePath) && parentFile != null)) {
                     repository.publish(base, '/' + parentPath, name, xml.toString().getBytes(), true);
+                    repository.publish(base, '/' + parentPath, name + ".mondrian.xml", sc.getSchemaData().toString().getBytes(), true);
                     LOG.debug(PluginConfig.PAT_PLUGIN_NAME + " : Published " + solution + " / " + path + " / " + name );
                 } else {
                     throw new Exception(org.pentaho.pat.plugin.messages.Messages.getString("PlatformServlet.ErrorPublish"));
