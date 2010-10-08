@@ -176,13 +176,15 @@ public class CellLabelPanel extends HorizontalPanel implements IOperationListene
         case Event.ONCLICK:
             break;
         case Event.ONCONTEXTMENU:
-            final CellModeMenu test = new CellModeMenu();
-            test.showContextMenu(event, this);
-            test.setPopupPositionAndShow(new PositionCallback() {
-                public void setPosition(final int offsetWidth, final int offsetHeight) {
-                    test.setPopupPosition(event.getClientX(), event.getClientY());
-                }
-            });
+            if (PanelType.QM.equals(Pat.getCurrPanelType())) {
+                final CellModeMenu cm = new CellModeMenu();
+                cm.showContextMenu(event, this);
+                cm.setPopupPositionAndShow(new PositionCallback() {
+                    public void setPosition(final int offsetWidth, final int offsetHeight) {
+                        cm.setPopupPosition(event.getClientX(), event.getClientY());
+                    }
+                });
+            }
             break;
         default:
             break;

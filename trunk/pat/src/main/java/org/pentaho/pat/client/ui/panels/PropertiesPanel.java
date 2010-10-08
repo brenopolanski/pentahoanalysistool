@@ -40,6 +40,7 @@ import org.gwt.mosaic.ui.client.util.ButtonHelper.ButtonLabelType;
 import org.pentaho.pat.client.Pat;
 import org.pentaho.pat.client.listeners.IQueryListener;
 import org.pentaho.pat.client.ui.widgets.MDXRichTextArea;
+import org.pentaho.pat.client.ui.windows.SaveWindow;
 import org.pentaho.pat.client.util.Operation;
 import org.pentaho.pat.client.util.PanelUtil;
 import org.pentaho.pat.client.util.factory.EventFactory;
@@ -76,6 +77,8 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 	private final Button executeButton;
 	
 	private final ToolButton exportButton;
+	
+	private final ToolButton exportCdaButton;
 
 	private final ToolButton mdxButton;
 	
@@ -216,6 +219,18 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
 
         exportButton.setEnabled(false);
         
+        
+        exportCdaButton = new ToolButton("CDA");
+        exportCdaButton.setTitle(Pat.CONSTANTS.export() + " as CDA");
+
+        exportCdaButton.addClickHandler(new ClickHandler() {
+            public void onClick(final ClickEvent arg0) {
+                SaveWindow.displayCDA();
+            }
+        });
+
+        exportCdaButton.setEnabled(false);
+
         mdxButton = new ToolButton(Pat.CONSTANTS.mdx());
         mdxButton.setTitle(Pat.CONSTANTS.showMDX());
         mdxButton.addClickHandler(new ClickHandler() {
@@ -529,6 +544,9 @@ public class PropertiesPanel extends LayoutComposite implements IQueryListener {
             mainPanel.add(pivotButton, new BoxLayoutData(FillStyle.HORIZONTAL));
 //            mainPanel.add(drillThroughButton, new BoxLayoutData(FillStyle.HORIZONTAL));
 //            mainPanel.add(createScenarioButton, new BoxLayoutData(FillStyle.HORIZONTAL));
+        }
+        if (Pat.isPlugin()) {
+            mainPanel.add(exportCdaButton, new BoxLayoutData(FillStyle.HORIZONTAL));
         }
         mainPanel.add(formPanel, new BoxLayoutData(FillStyle.HORIZONTAL));
         rootPanel.add(mainPanel);
