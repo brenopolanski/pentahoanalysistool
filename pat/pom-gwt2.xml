@@ -257,6 +257,7 @@
 					<excludes>
 						<exclude>**/AbstractServiceTest.java</exclude>
 						<exclude>**/AbstractManagerTest.java</exclude>
+						<exclude>**/*IntegrationTest*.java</exclude>
 					</excludes>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
@@ -728,6 +729,23 @@
 			<artifactId>jersey-json</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		<dependency>
+            <groupId>com.sun.jersey.jersey-test-framework</groupId>
+            <artifactId>jersey-test-framework-core</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+       <dependency>
+            <groupId>com.sun.jersey.jersey-test-framework</groupId>
+            <artifactId>jersey-test-framework-grizzly</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+<dependency>
+            <groupId>com.sun.grizzly</groupId>
+            <artifactId>grizzly-servlet-webserver</artifactId>
+            <version>1.9.18-i</version>
+        </dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>
