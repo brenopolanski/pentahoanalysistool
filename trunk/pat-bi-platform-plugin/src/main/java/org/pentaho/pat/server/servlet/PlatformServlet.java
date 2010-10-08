@@ -19,7 +19,11 @@
  */
 package org.pentaho.pat.server.servlet;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 
@@ -31,6 +35,7 @@ import org.pentaho.pat.plugin.util.PatSolutionFile;
 import org.pentaho.pat.plugin.util.PluginConfig;
 import org.pentaho.pat.rpc.IPlatform;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.data.pojo.ConnectionType;
 import org.pentaho.pat.server.data.pojo.SavedConnection;
 import org.pentaho.pat.server.messages.Messages;
 import org.pentaho.pat.server.services.QueryService;
@@ -40,11 +45,13 @@ import org.pentaho.pat.server.util.serializer.MdxQuery2;
 import org.pentaho.pat.server.util.serializer.PatQuery;
 import org.pentaho.pat.server.util.serializer.QmQuery;
 import org.pentaho.pat.server.util.serializer.QuerySerializer;
+import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.pentaho.platform.plugin.services.pluginmgr.PluginClassLoader;
 
 /**
  * @author Paul Stoellberger
@@ -151,28 +158,55 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 StringBuffer xml = new StringBuffer();
                 xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
                 xml.append("<CDADescriptor>\n");
-                xml.append("<DataSources>");
-//                if (sc.getType().equals(ConnectionType.MONDRIAN)) {
-//                    xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\">\n");
-//                    // TODO replace with actual values
-//                    xml.append("<Driver>" + sc.getDriverClassName() + "</Driver>\n");
-//                    xml.append("<Url>" + sc.getUrl()+ "</Url>\n");
-//                    xml.append("<User>" + sc.getUsername() + "</User>\n");
-//                    xml.append("<Pass>" + sc.getPassword() + "</Pass>\n");
-//                    xml.append("</Connection>\n");
-//                
-//                }
-                xml.append("<Connection id=\"1\" type=\"mondrian.jndi\">\n");
-                // TODO replace with actual values
-                xml.append("<Jndi>SampleData</Driver>\n");
-                xml.append("<Catalog>../../../steel-wheels/analysis/SampleData.mondrian.xml</Catalog>\n");
+                xml.append("<DataSources>\n");
+                xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\"\n>");
+
+                if (sc.getType().equals(ConnectionType.MONDRIAN)) {
+                    xml.append("<Driver>mondrian.olap4j.MondrianOlap4jDriver</Driver>\n");
+                    xml.append("<Url>jdbc:mondrian:</Url>\n");
+                    xml.append("<Property name=\"JdbcDrivers\">" + sc.getUrl() + "</Property>\n");
+                    xml.append("<Property name=\"Jdbc\">" + sc.getUrl() + "</Property>\n");
+                    if (sc.getUsername() != null && sc.getUsername().length() > 0) {
+                        xml.append("<Property name=\"JdbcUser\">" + sc.getUsername() + "</Property>\n");
+                    }
+                    if (sc.getPassword() != null && sc.getPassword().length() > 0) {
+                        xml.append("<Property name=\"JdbcPassword\">" + sc.getUsername() + "</Property>\n");
+                    }
+
+                    final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
+                    final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PluginConfig.PAT_PLUGIN_NAME);
+                    File pluginDir = pluginClassloader.getPluginDir();
+                    String tmpFilename = String.valueOf(UUID.randomUUID());
+                    File schema = new File(pluginDir,"/tmp_cda/" + tmpFilename); //$NON-NLS-1$
+                    schema.createNewFile();
+                    final FileWriter fw = new FileWriter(schema);
+                    final BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(sc.getSchemaData());
+                    bw.close();
+                    fw.close();
+
+                    xml.append("<Property name=\"Catalog\">" + schema.getAbsolutePath() + "</Property>\n");
+
+                }
+                if (sc.getType().equals(ConnectionType.XMLA)) {
+                    xml.append("<Driver>org.olap4j.driver.xmla.XmlaOlap4jDriver</Driver>\n");
+                    xml.append("<Url>jdbc:xmla:</Url>\n");
+                    if (sc.getCatalog() != null && sc.getCatalog().length() > 0) {
+                        xml.append("<Property name=\"Catalog\">" + sc.getCatalog() + "</Property>\n");
+                    }
+                    xml.append("<Property name=\"Server\">" + sc.getUrl() + "</Property>\n");
+                    if (sc.getUsername() != null && sc.getUsername().length() > 0) {
+                        xml.append("<Property name=\"JdbcUser\">" + sc.getUsername() + "</Property>\n");
+                    }
+                    if (sc.getPassword() != null && sc.getPassword().length() > 0) {
+                        xml.append("<Property name=\"JdbcPassword\">" + sc.getUsername() + "</Property>\n");
+                    }
+                }
                 xml.append("</Connection>\n");
-            
                 xml.append("</DataSources>\n");
-                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"mdx\" access=\"public\">\n");
+                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"olap4j\" access=\"public\">\n");
                 xml.append("<Name>" + (name != null && name.length() > 0  ? name : "No Name") + "</Name>\n");
                     xml.append("<Query>\n");
-                    //  TODO replace with actual values
                     xml.append(mdx);
                     xml.append("</Query>\n");
                 xml.append("</DataAccess>\n");
