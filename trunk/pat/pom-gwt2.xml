@@ -305,6 +305,10 @@
 			<id>Analytical Labs</id>
 			<url>http://repo.analytical-labs.com/libs-releases</url>
 		</repository>
+        <repository>
+            <id>glassfish</id>
+            <url>http://download.java.net/maven/glassfish/</url>
+        </repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
