@@ -150,7 +150,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 String parentPath = ActionInfo.buildSolutionPath(solution, path, "");
                 ISolutionFile parentFile = repository.getSolutionFile(parentPath, ISolutionRepository.ACTION_CREATE);
                 String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
-                String mondrianfilePath = parentPath + ISolutionRepository.SEPARATOR + name + "mondrian.xml";
+                String mondrianfilePath = parentPath  + name + ".mondrian.xml";
                 ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
 
                 final SavedConnection sc = sessionService.getConnection(getCurrentUserId(), connectionId);
@@ -170,7 +170,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
                 xml.append("<CDADescriptor>\n");
                 xml.append("<DataSources>\n");
-                xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\"\n>");
+                xml.append("<Connection id=\"1\" type=\"olap4j.jdbc\">\n");
 
                 if (sc.getType().equals(ConnectionType.MONDRIAN)) {
                     xml.append("<Driver>mondrian.olap4j.MondrianOlap4jDriver</Driver>\n");
@@ -215,7 +215,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 }
                 xml.append("</Connection>\n");
                 xml.append("</DataSources>\n");
-                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"olap4j\" access=\"public\">\n");
+                xml.append("<DataAccess id=\"1\" connection=\"1\" type=\"olap4J\" access=\"public\">\n");
                 xml.append("<Name>" + (name != null && name.length() > 0  ? name : "No Name") + "</Name>\n");
                     xml.append("<Query>\n");
                     xml.append(mdx);
@@ -225,7 +225,9 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
 
                 if (fileToSave != null || (!repository.resourceExists(filePath) && parentFile != null)) {
                     repository.publish(base, '/' + parentPath, name, xml.toString().getBytes(), true);
-                    repository.publish(base, '/' + parentPath, name + ".mondrian.xml", sc.getSchemaData().toString().getBytes(), true);
+                    if (sc.getType().equals(ConnectionType.MONDRIAN)) {
+                        repository.publish(base, '/' + parentPath, name + ".mondrian.xml", sc.getSchemaData().toString().getBytes(), true);
+                    }
                     LOG.debug(PluginConfig.PAT_PLUGIN_NAME + " : Published " + solution + " / " + path + " / " + name );
                 } else {
                     throw new Exception(org.pentaho.pat.plugin.messages.Messages.getString("PlatformServlet.ErrorPublish"));
