@@ -81,6 +81,7 @@ public class SessionServlet extends AbstractServlet implements ISession {
     public String saveConnection(final String sessionId, final CubeConnection connection) throws RpcException {
         try {
             final SavedConnection sc = this.convert(connection);
+            this.sessionService.deleteConnection(getCurrentUserId(), sc.getId());
             this.sessionService.saveConnection(getCurrentUserId(), sc);
             return sc.getId();
         } catch (Exception e) {

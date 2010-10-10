@@ -341,11 +341,6 @@ public class SessionServiceImpl extends AbstractService implements SessionServic
     public void saveConnection(final String userId, final SavedConnection connection) {
         this.validateUser(userId);
         final User user = this.userManager.getUser(userId);
-        if ( user.getSavedConnections().contains(connection)) {
-            user.getSavedConnections().remove(connection);
-            connection.setId(UUID.randomUUID().toString());
-        }
-
         user.getSavedConnections().add(connection);
         this.userManager.updateUser(user);
     }
