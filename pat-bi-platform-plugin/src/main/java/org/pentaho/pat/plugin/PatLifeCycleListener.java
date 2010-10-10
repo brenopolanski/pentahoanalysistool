@@ -71,10 +71,8 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
     private static final String PAT_DATASOURCE_JDBC = "pat-datasource-jdbc.xml";
     private static final String PAT_DATASOURCE_JNDI = "pat-datasource-jndi.xml";
     private static final String PAT_SESSIONFACTORY = "pat-sessionfactory.xml";
-    
-    
-    private final static Log LOG = LogFactory.getLog(PatLifeCycleListener.class);
 
+    private final static Log LOG = LogFactory.getLog(PatLifeCycleListener.class);
 
     private SessionServlet sessionBean = null;
     private QueryServlet queryBean = null;
@@ -142,7 +140,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                         hibernateDialect = hibernateDialectCfg;
                     }
                 }
-                
+
                 if (StringUtils.isNotBlank(hibernateDialect)) {
                     patHibConfig.setProperty("hibernate.dialect", hibernateDialect);
                     LOG.info(PAT_PLUGIN_NAME + " : using hibernate dialect: " + hibernateDialect);
@@ -159,7 +157,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                     datasourceResource = PAT_DATASOURCE_JNDI;
                     LOG.info(PAT_PLUGIN_NAME + " : using JNDI : " + (String) properties.get("jndi.name") );
                 }
-                
+
                 XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource(datasourceResource));
                 PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
                 cfg.setLocation(new ClassPathResource(PAT_PLUGIN_PROPERTIES));
@@ -170,7 +168,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 PropertyPlaceholderConfigurer cfgSession = new PropertyPlaceholderConfigurer();
                 cfgSession.setProperties(patHibConfig.getProperties());
                 cfgSession.postProcessBeanFactory(bfSession);
-                
+
                 ClassPathXmlApplicationContext tmpCtxt = new ClassPathXmlApplicationContext();
                 tmpCtxt.refresh();
                 DefaultListableBeanFactory tmpBf = (DefaultListableBeanFactory) tmpCtxt.getBeanFactory();
@@ -180,7 +178,7 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
                 applicationContext.setClassLoader(pluginClassloader);
                 applicationContext.setParent(tmpCtxt);
                 applicationContext.refresh();
-                
+
 
                 sessionBean.setStandalone(true);
                 SessionServlet.setApplicationContext(applicationContext);
@@ -225,10 +223,21 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
 
     private void injectPentahoXmlaUrl() throws Exception {
         List<MondrianCatalog> catalogs = MondrianCatalogHelper.getInstance().listCatalogs(PentahoSessionHolder.getSession(), true);
+        String baseUrl = PentahoSystem.getApplicationContext().getBaseUrl();
+        if (!baseUrl.endsWith("/")) {
+            baseUrl = baseUrl + "/";
+        }
         String pentahoXmlaUrl = "";
         if ( catalogs.size() > 0 ) {
             LOG.debug(PAT_PLUGIN_NAME + ": PENTAHO XMLA URL: " + catalogs.get(0).getDataSource().getUrl());
             pentahoXmlaUrl = catalogs.get(0).getDataSource().getUrl();
+            // Let's try to detect the real base url
+            try {
+                pentahoXmlaUrl = baseUrl + pentahoXmlaUrl.substring(pentahoXmlaUrl.indexOf("/Xmla")+1, pentahoXmlaUrl.length()+1);
+            }
+            catch (Exception e) {
+                // TODO: handle exception
+            }
             CubeConnection cc = new CubeConnection();
             cc.setId("automatic-pentaho-connection-1234");
             cc.setName("Automatic Pentaho XMLA");
@@ -236,13 +245,9 @@ public class PatLifeCycleListener implements IPluginLifecycleListener {
             cc.setConnectionType(CubeConnection.ConnectionType.XMLA);
             cc.setConnectOnStartup(true);
 
-            if (sessionBean.getConnection("1234", cc.getId()) == null) {
-                sessionBean.saveConnection("1234", cc);
-                LOG.debug(PAT_PLUGIN_NAME + ": Automatic Pentaho Xmla connection saved");
-            }
-            else
-                LOG.debug(PAT_PLUGIN_NAME + ": Automatic Pentaho Xmla connection was already saved");
-
+            sessionBean.deleteConnection("1234", cc.getId());
+            sessionBean.saveConnection("1234", cc);
+            LOG.debug(PAT_PLUGIN_NAME + ": Automatic Pentaho Xmla connection saved");
 
         }
 
