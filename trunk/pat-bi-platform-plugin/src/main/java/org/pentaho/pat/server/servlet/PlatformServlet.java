@@ -19,11 +19,7 @@
  */
 package org.pentaho.pat.server.servlet;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 
@@ -45,13 +41,11 @@ import org.pentaho.pat.server.util.serializer.MdxQuery2;
 import org.pentaho.pat.server.util.serializer.PatQuery;
 import org.pentaho.pat.server.util.serializer.QmQuery;
 import org.pentaho.pat.server.util.serializer.QuerySerializer;
-import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.solution.ActionInfo;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import org.pentaho.platform.plugin.services.pluginmgr.PluginClassLoader;
 
 /**
  * @author Paul Stoellberger
@@ -152,19 +146,24 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 String filePath = parentPath + ISolutionRepository.SEPARATOR + name;
                 String mondrianfilePath = parentPath  + name + ".mondrian.xml";
                 ISolutionFile fileToSave = repository.getSolutionFile(filePath, ISolutionRepository.ACTION_UPDATE);
-
+                
                 final SavedConnection sc = sessionService.getConnection(getCurrentUserId(), connectionId);
                 Object query = null;
                 String mdx = "";
+                String catalog;
                 Map<String,MdxQuery> mdxQueries = sessionService.getSession(getCurrentUserId(), sessionId).getMdxQueries();
                 if (mdxQueries != null && mdxQueries.size() > 0) {
                     query = mdxQueries.get(queryId); 
                 }
                 if (query != null) {
                     mdx = ((MdxQuery)query).getMdx();
+                    catalog = ((MdxQuery)query).getCatalogName();
                 }
-                else 
+                else {
                     mdx = queryService.getMdxForQuery(getCurrentUserId(), sessionId, queryId);
+                    Query q = queryService.getQuery(getCurrentUserId(), sessionId, queryId);
+                    catalog = q.getCube().getSchema().getCatalog().getName();
+                }
                 
                 StringBuffer xml = new StringBuffer();
                 xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -184,10 +183,10 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                         xml.append("<Property name=\"JdbcPassword\">" + sc.getUsername() + "</Property>\n");
                     }
 
-                    final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
-                    final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PluginConfig.PAT_PLUGIN_NAME);
-                    File pluginDir = pluginClassloader.getPluginDir();
-                    String tmpFilename = String.valueOf(UUID.randomUUID());
+//                    final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
+//                    final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PluginConfig.PAT_PLUGIN_NAME);
+//                    File pluginDir = pluginClassloader.getPluginDir();
+//                    String tmpFilename = String.valueOf(UUID.randomUUID());
 //                    File schema = new File(pluginDir,"/tmp_cda/" + tmpFilename); //$NON-NLS-1$
 //                    schema.createNewFile();
 //                    final FileWriter fw = new FileWriter(schema);
@@ -195,6 +194,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
 //                    bw.write(sc.getSchemaData());
 //                    bw.close();
 //                    fw.close();
+                    
 
                     xml.append("<Property name=\"Catalog\">solution:" + mondrianfilePath + "</Property>\n");
 
@@ -202,15 +202,14 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 if (sc.getType().equals(ConnectionType.XMLA)) {
                     xml.append("<Driver>org.olap4j.driver.xmla.XmlaOlap4jDriver</Driver>\n");
                     xml.append("<Url>jdbc:xmla:</Url>\n");
-                    if (sc.getCatalog() != null && sc.getCatalog().length() > 0) {
-                        xml.append("<Property name=\"Catalog\">" + sc.getCatalog() + "</Property>\n");
-                    }
+                    xml.append("<Property name=\"Catalog\">" + catalog + "</Property>\n");
                     xml.append("<Property name=\"Server\">" + sc.getUrl() + "</Property>\n");
+                    
                     if (sc.getUsername() != null && sc.getUsername().length() > 0) {
-                        xml.append("<Property name=\"JdbcUser\">" + sc.getUsername() + "</Property>\n");
+                        xml.append("<Property name=\"User\">" + sc.getUsername() + "</Property>\n");
                     }
                     if (sc.getPassword() != null && sc.getPassword().length() > 0) {
-                        xml.append("<Property name=\"JdbcPassword\">" + sc.getUsername() + "</Property>\n");
+                        xml.append("<Property name=\"Password\">" + sc.getUsername() + "</Property>\n");
                     }
                 }
                 xml.append("</Connection>\n");
