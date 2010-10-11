@@ -10,34 +10,55 @@ public class QueryObject {
     
     
     private String queryId;
-    private String name;
-	private DimensionObject dob;
+    private String queryname;
+    private String catalog;
+    private String cube;
+    
+	private AxisObject aob;
 
     public void setQueryId(String queryId) {
         this.queryId = queryId;
     }
 
-    @XmlAttribute(name = "id", required = true)
+    @XmlAttribute(name = "queryid", required = true)
     public String getQueryId() {
         return queryId;
     }
 
     public void setQueryName(String queryName) {
-        this.name = queryName;
+        this.queryname = queryName;
     }
 
-    @XmlAttribute(name = "name", required = true)
+    @XmlAttribute(name = "queryname", required = true)
     public String getQueryName() {
-        return name;
+        return queryname;
     }
     
-	public void setDimensions(DimensionObject dob) {
-		this.dob = dob;		
+	public void setAxis(AxisObject aob) {
+		this.aob = aob;		
 	}
     
-	@XmlElement(name = "dimensions", required = true)
-    public DimensionObject getDimensions(){
-    	return dob;
+	@XmlElement(name = "axes", required = true)
+    public AxisObject getAxes(){
+    	return aob;
     }
+
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
+	}
+
+	@XmlAttribute(name = "catalog", required = true)
+	public String getCatalog() {
+		return catalog;
+	}
+
+	public void setCube(String cube) {
+		this.cube = cube;
+	}
+
+	@XmlAttribute(name = "cube", required = true)
+	public String getCube() {
+		return cube;
+	}
     
 }

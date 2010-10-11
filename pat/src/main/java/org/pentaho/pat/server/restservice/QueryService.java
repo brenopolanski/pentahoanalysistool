@@ -15,12 +15,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import org.pentaho.pat.rpc.dto.CubeItem;
+import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
+import org.pentaho.pat.rpc.dto.StringTree;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
+import org.pentaho.pat.server.restservice.restobjects.AxisObject;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
+import org.pentaho.pat.server.restservice.restobjects.LevelObject;
+import org.pentaho.pat.server.restservice.restobjects.MemberObject;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
 import org.pentaho.pat.server.restservice.restobjects.ResultSetObject;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
@@ -73,31 +80,59 @@ public class QueryService
     @Resource
     // to make it spring set the response type
     public synchronized QueryObject createNewQuery(
-            @FormParam("sessionId") String sessionId,
-            @FormParam("connectionId") String connectionId,
+            @FormParam("sessionid") String sessionId,
+            @FormParam("connectionid") String connectionId,
             @PathParam("cube") String cube,
             @PathParam("user") String user,
             @PathParam("schema") String schema,
             @PathParam("queryname") String queryname)
             throws RpcException, ServletException {
         //ss.init();
+    	try{
         qs.init();
         ds.init();
 
         QueryObject qob = new QueryObject();
         qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cube));
 
-        DimensionObject dob = new DimensionObject();
-
+        DimensionObject dimObj = new DimensionObject();
         String[] dims = ds.getDimensions(sessionId, qob.getQueryId(),
                 IAxis.Standard.valueOf("UNUSED"));
         for (int i = 0; i < dims.length; i++) {
-            dob.newDimension(dims[i], "UNUSED");
+        	//StringTree mem = ds.getMembers(sessionId, qob.getQueryId(), dims[i]);
+        	
+        	List<MemberLabelItem> levels = ds.getLevels(sessionId, qob.getQueryId(), dims[i]);
+        	LevelObject lob = new LevelObject();
+        	for(int j = 0; j<levels.size();j++){
+        	
+        	
+        	List<MemberLabelItem> bers = ds.getLevelMembers(sessionId, qob.getQueryId(), levels.get(j).getName());
+        	
+        	MemberObject mob = new MemberObject();
+        	
+        	for(int k=0; k<bers.size();k++){
+        		mob.newMember(bers.get(k).getName(), bers.get(k).getCaption(), "NONE", null);
+        	}
+        	
+        	lob.newLevel(levels.get(j).getName(), levels.get(j).getCaption(), mob);
+        	}
+        	dimObj.newDimension(dims[i], lob);
+        	
         }
 
-        qob.setDimensions(dob);
+
+        
+        AxisObject aop = new AxisObject();
+        
+        aop.newAxis("UNUSED", true, dimObj);
+        
+
+        qob.setAxis(aop);
 
         return qob;
+    	} catch (Exception e){
+    		   throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    	}
     }
 
     /**
@@ -229,10 +264,10 @@ public class QueryService
     
         qs.init();
         
-        for (int i=0; i<qob.getDimensions().getDimensionList().size(); i++){
+        /*for (int i=0; i<qob.getDimensions().getDimensionList().size(); i++){
             Dimension dimObj = qob.getDimensions().getDimensionList().get(i);
             qs.moveDimension(sessionId, qob.getQueryId(), IAxis.Standard.valueOf(dimObj.getAxis()), dimObj.getName());
-        }
+        }*/
         
         
         
