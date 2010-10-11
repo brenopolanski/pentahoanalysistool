@@ -7,30 +7,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "session")
 public class SessionObject {
 
-    
-    
-    private String sessionId;
+	private String sessionId;
 
-    private ConnectionObject cob;
-    
-    
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
+	private ConnectionObject cob;
 
-    @XmlAttribute(name = "sessionid")
-    public String getSessionId() {
-        return sessionId;
-    }
-    
-    public void setConnectionObject(ConnectionObject cob) {
-        this.cob = cob;
-    }
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
 
-    @XmlElement(name = "connections", required = true)
-    public ConnectionObject getConnectionObject() {
-        return cob;
-    }
-    
-    
+	@XmlAttribute(name = "sessionid")
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setConnectionObject(ConnectionObject cob) {
+		this.cob = cob;
+	}
+
+	@XmlElement(name = "connections", required = true)
+	public ConnectionObject getConnectionObject() {
+		return cob;
+	}
+
 }

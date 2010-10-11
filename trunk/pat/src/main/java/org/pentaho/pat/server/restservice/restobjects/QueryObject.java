@@ -7,41 +7,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class QueryObject {
 
-    
-    
-    private String queryId;
-    private String queryname;
-    private String catalog;
-    private String cube;
-    
+	private String queryId;
+	private String queryname;
+	private String catalog;
+	private String cube;
+
 	private AxisObject aob;
 
-    public void setQueryId(String queryId) {
-        this.queryId = queryId;
-    }
-
-    @XmlAttribute(name = "queryid", required = true)
-    public String getQueryId() {
-        return queryId;
-    }
-
-    public void setQueryName(String queryName) {
-        this.queryname = queryName;
-    }
-
-    @XmlAttribute(name = "queryname", required = true)
-    public String getQueryName() {
-        return queryname;
-    }
-    
-	public void setAxis(AxisObject aob) {
-		this.aob = aob;		
+	public void setQueryId(String queryId) {
+		this.queryId = queryId;
 	}
-    
+
+	@XmlAttribute(name = "queryid", required = true)
+	public String getQueryId() {
+		return queryId;
+	}
+
+	public void setQueryName(String queryName) {
+		this.queryname = queryName;
+	}
+
+	@XmlAttribute(name = "queryname", required = true)
+	public String getQueryName() {
+		return queryname;
+	}
+
+	public void setAxis(AxisObject aob) {
+		this.aob = aob;
+	}
+
 	@XmlElement(name = "axes", required = true)
-    public AxisObject getAxes(){
-    	return aob;
-    }
+	public AxisObject getAxes() {
+		return aob;
+	}
 
 	public void setCatalog(String catalog) {
 		this.catalog = catalog;
@@ -60,5 +58,5 @@ public class QueryObject {
 	public String getCube() {
 		return cube;
 	}
-    
+
 }

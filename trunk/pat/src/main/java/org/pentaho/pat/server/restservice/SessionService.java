@@ -11,8 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.GenericEntity;
-
 import org.pentaho.pat.rpc.dto.CubeConnection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.exceptions.RpcException;
@@ -24,8 +22,6 @@ import org.pentaho.pat.server.servlet.DiscoveryServlet;
 import org.pentaho.pat.server.servlet.QueryServlet;
 import org.pentaho.pat.server.servlet.SessionServlet;
 import org.springframework.context.annotation.Scope;
-
-import com.sun.jersey.api.json.JSONWithPadding;
 
 /**
  * The Session Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT
@@ -51,15 +47,20 @@ public class SessionService {
 	/**
 	 * This method allows you to login and get a session object in one request,
 	 * as per the idea of Tiemonster.<br>
-	 * <pre>curl --basic -u "admin:admin" -XPOST http://localhost:8080/rest/service/session</pre><br>
+	 * 
+	 * <pre>
+	 * curl --basic -u "admin:admin" -XPOST http://localhost:8080/rest/service/session
+	 * </pre>
+	 * 
+	 * <br>
+	 * 
 	 * @param jsoncallback
 	 * @return
 	 * @throws RpcException
 	 * @throws ServletException
 	 */
 	@POST
-	@Produces({"application/xml",
-			"application/json" })
+	@Produces({ "application/xml", "application/json" })
 	// it is to set the response type
 	@Resource
 	// to make it spring set the response type
@@ -69,41 +70,37 @@ public class SessionService {
 		ss.init();
 		qs.init();
 		ds.init();
-		
-		
+
 		SessionObject string = new SessionObject();
-		
+
 		string.setSessionId(ss.createSession());
 
 		CubeConnection[] ret = ss.getActiveConnections(string.getSessionId());
 
-
 		ConnectionObject cob = new ConnectionObject();
 
-		for (int i = 0; i < ret.length; i++){
+		for (int i = 0; i < ret.length; i++) {
 			CubeItem[] out = ds.getCubes(string.getSessionId(), ret[i].getId());
 			SchemaObject sob = new SchemaObject();
-			
+
 			Set<String> schemas = new HashSet<String>();
-			for (CubeItem item : out){
+			for (CubeItem item : out) {
 				schemas.add(item.getSchema());
 			}
-			
-			Iterator<String> it = schemas.iterator(); 
-			while (it.hasNext()) { 
+
+			Iterator<String> it = schemas.iterator();
+			while (it.hasNext()) {
 				String name = it.next().toString();
 				CubeObject cube = new CubeObject();
-				for(int k =0; k<out.length; k++){
-					if(out[k].getSchema().equals(name)){
+				for (int k = 0; k < out.length; k++) {
+					if (out[k].getSchema().equals(name)) {
 						cube.addCube(out[k].getName());
 					}
 				}
-			sob.addSchema(name, cube);
+				sob.addSchema(name, cube);
 			}
 			cob.addConnection(ret[i].getId(), ret[i].getName(), sob);
 		}
-		
-	
 
 		string.setConnectionObject(cob);
 
