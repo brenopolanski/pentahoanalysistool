@@ -174,13 +174,13 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                 if (sc.getType().equals(ConnectionType.MONDRIAN)) {
                     xml.append("<Driver>mondrian.olap4j.MondrianOlap4jDriver</Driver>\n");
                     xml.append("<Url>jdbc:mondrian:</Url>\n");
-                    xml.append("<Property name=\"JdbcDrivers\">" + sc.getUrl() + "</Property>\n");
+                    xml.append("<Property name=\"JdbcDrivers\">" + sc.getDriverClassName() + "</Property>\n");
                     xml.append("<Property name=\"Jdbc\">" + sc.getUrl() + "</Property>\n");
                     if (sc.getUsername() != null && sc.getUsername().length() > 0) {
                         xml.append("<Property name=\"JdbcUser\">" + sc.getUsername() + "</Property>\n");
                     }
                     if (sc.getPassword() != null && sc.getPassword().length() > 0) {
-                        xml.append("<Property name=\"JdbcPassword\">" + sc.getUsername() + "</Property>\n");
+                        xml.append("<Property name=\"JdbcPassword\">" + sc.getPassword() + "</Property>\n");
                     }
 
 //                    final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
@@ -209,7 +209,7 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                         xml.append("<Property name=\"User\">" + sc.getUsername() + "</Property>\n");
                     }
                     if (sc.getPassword() != null && sc.getPassword().length() > 0) {
-                        xml.append("<Property name=\"Password\">" + sc.getUsername() + "</Property>\n");
+                        xml.append("<Property name=\"Password\">" + sc.getPassword() + "</Property>\n");
                     }
                 }
                 xml.append("</Connection>\n");
