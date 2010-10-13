@@ -176,26 +176,8 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                     xml.append("<Url>jdbc:mondrian:</Url>\n");
                     xml.append("<Property name=\"JdbcDrivers\">" + sc.getDriverClassName() + "</Property>\n");
                     xml.append("<Property name=\"Jdbc\">" + sc.getUrl() + "</Property>\n");
-                    if (sc.getUsername() != null && sc.getUsername().length() > 0) {
-                        xml.append("<Property name=\"JdbcUser\">" + sc.getUsername() + "</Property>\n");
-                    }
-                    if (sc.getPassword() != null && sc.getPassword().length() > 0) {
-                        xml.append("<Property name=\"JdbcPassword\">" + sc.getPassword() + "</Property>\n");
-                    }
-
-//                    final IPluginManager pluginManager = (IPluginManager) PentahoSystem.get(IPluginManager.class, PentahoSessionHolder.getSession());
-//                    final PluginClassLoader pluginClassloader = (PluginClassLoader)pluginManager.getClassLoader(PluginConfig.PAT_PLUGIN_NAME);
-//                    File pluginDir = pluginClassloader.getPluginDir();
-//                    String tmpFilename = String.valueOf(UUID.randomUUID());
-//                    File schema = new File(pluginDir,"/tmp_cda/" + tmpFilename); //$NON-NLS-1$
-//                    schema.createNewFile();
-//                    final FileWriter fw = new FileWriter(schema);
-//                    final BufferedWriter bw = new BufferedWriter(fw);
-//                    bw.write(sc.getSchemaData());
-//                    bw.close();
-//                    fw.close();
-                    
-
+                    xml.append("<Property name=\"JdbcUser\">" + (sc.getUsername() != null ? sc.getUsername() : "") + "</Property>\n");
+                    xml.append("<Property name=\"JdbcPassword\">" + (sc.getPassword() != null ? sc.getPassword() : "") + "</Property>\n");
                     xml.append("<Property name=\"Catalog\">solution:" + mondrianfilePath + "</Property>\n");
 
                 }
@@ -203,7 +185,9 @@ public class PlatformServlet extends AbstractServlet implements IPlatform {
                     xml.append("<Driver>org.olap4j.driver.xmla.XmlaOlap4jDriver</Driver>\n");
                     xml.append("<Url>jdbc:xmla:</Url>\n");
                     xml.append("<Property name=\"Catalog\">" + catalog + "</Property>\n");
-                    xml.append("<Property name=\"Server\">" + sc.getUrl() + "</Property>\n");
+                    if (sc.getUrl() != null) {
+                        xml.append("<Property name=\"Server\">" + sc.getUrl().replaceAll("&", "&amp;") + "</Property>\n");
+                    }
                     
                     if (sc.getUsername() != null && sc.getUsername().length() > 0) {
                         xml.append("<Property name=\"User\">" + sc.getUsername() + "</Property>\n");
