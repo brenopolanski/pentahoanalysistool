@@ -4,7 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>PATui - Login to PATui Demo</title>
         <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
-        <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <!--[if lt IE 8]>
+        <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
         <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen, projection">
         <script type="text/javascript" src="js/jquery.js"></script>
     </head>

@@ -5,8 +5,7 @@
  *  Author      :   Prashant Raju (http://www.prashantraju.com/)
  *  Description :   This file is used to authenticate the user and retrieve
  *                  information about available schemas and cubes.
- *  @username   :   username used for authentication and for PAT's REST web
- *                  service
+ *  @username   :   username used for authentication and for PAT's REST web service
  *  @password   :   password used for authentication
  *
  */
