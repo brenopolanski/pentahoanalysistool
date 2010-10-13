@@ -51,7 +51,7 @@ if (isset($_SESSION['username'])) {
         echo $output;
     } else {
         //  Else output what the error is
-        echo "0";
+        echo "false";
     }
 } else {
     //  Logout

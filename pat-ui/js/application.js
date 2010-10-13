@@ -37,12 +37,14 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder"><em>Drop dimensions and measures for columns here</em></li>');
         }
+        createOutput();
     });
     $('#row-drop ul li .remove').live('click', function(){
         $(this).parent().remove();
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder"><em>Drop dimensions and measures for rows here</em></li>');
         }
+        createOutput();
     });
 
     //  Handle dimension-list and measure-list
@@ -59,7 +61,9 @@ $(document).ready(function () {
             $('#measure-list').html('<li class="placeholder quiet"><em>'+NO_MEASURES+'</em></li>');
             return false;
         }
-        $.blockUI({ message: '<div class="blockOverlay-inner">'+NEW_QUERY+'</div>' });
+        $.blockUI({
+            message: '<div class="blockOverlay-inner">'+NEW_QUERY+'</div>'
+        });
         new_query($(this).val());
     });
 });
@@ -106,58 +110,82 @@ function new_query(data_string) {
         data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
         datatype:   'json',
         success:    function(data){
-            $('#dimension-list, #measure-list').html('');
-            var obj = $.parseJSON(data);
-            $.each(obj.axes, function(i,axis){
-                $.each(axis.dimensions.dimension, function(i,dimension){
-                    if(this['@dimensionname'] != "Measures"){
-                        $('#dimension-list').append('<li id="'+this['@dimensionname']+'"><span id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'<span class="hide">['+this['@dimensionname']+']</span></span></li>');
-                        $('#'+this['@dimensionname']).append('<ul id="child_'+this['@dimensionname']+'"></ul>');
-                        var dimension_name = this['@dimensionname'];
-                        $.each(dimension.levels.level, function(i,level){
-                            $('#dimension-list #child_'+dimension_name).append('<li><span>'+this['@levelcaption']+'<span class="hide">'+this['@levelname']+'</span></span></li>');
-                        });
-                    }else{
-                        $('#measure-list').append('<li id="'+this['@dimensionname']+'"><span id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'</span></span></li>');
-                        $('#'+this['@dimensionname']).append('<ul id="child_'+this['@dimensionname']+'"></ul>');
-                        var dimension_name = this['@dimensionname'];
-                        $.each(dimension.levels.level.members.member, function(i,member){
-                            $('#measure-list #child_'+dimension_name).append('<li id="'+this['@membercaption']+'"><span>'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></span></li>');
-                        });
+            if(data === "false") {
+                return false;
+            }else{
+                $('#dimension-list, #measure-list').html('');
+                var obj = $.parseJSON(data);
+                $.each(obj.axes, function(i,axis){
+                    $.each(axis.dimensions.dimension, function(i,dimension){
+                        if(this['@dimensionname'] != "Measures"){
+                            $('#dimension-list').append('<li id="'+this['@dimensionname']+'"><span id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'<span class="hide">['+this['@dimensionname']+']</span></span></li>');
+                            $('#'+this['@dimensionname']).append('<ul id="child_'+this['@dimensionname']+'"></ul>');
+                            var dimension_name = this['@dimensionname'];
+                            $.each(dimension.levels.level, function(i,level){
+                                $('#dimension-list #child_'+dimension_name).append('<li><span>'+this['@levelcaption']+'<span class="hide">'+this['@levelname']+'</span></span></li>');
+                            });
+                        }else{
+                            $('#measure-list').append('<li id="'+this['@dimensionname']+'"><span id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'</span></span></li>');
+                            $('#'+this['@dimensionname']).append('<ul id="child_'+this['@dimensionname']+'"></ul>');
+                            var dimension_name = this['@dimensionname'];
+                            $.each(dimension.levels.level.members.member, function(i,member){
+                                $('#measure-list #child_'+dimension_name).append('<li id="'+this['@membercaption']+'"><span>'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></span></li>');
+                            });
+                        }
+                    });
+                    $("#dimension-list ul, #measure-list ul").hide();
+                });
+            
+                //  Draggable
+                $("#dimension-list span, #measure-list span").draggable({
+                    cancel:         '.not-draggable',
+                    helper:         function(){
+                        return $(this).clone().appendTo('body').css('zIndex',5).show();
                     }
                 });
-                $("#dimension-list ul, #measure-list ul").hide();
-            });
-            
-            //  Draggable
-            $("#dimension-list span, #measure-list span").draggable({
-                cancel:         '.not-draggable',
-                helper:         function(){ return $(this).clone().appendTo('body').css('zIndex',5).show(); }
-            });
 
-            //  Droppable and sortable
-            $('#column-drop ul, #row-drop ul').droppable({
-                accept:         '#dimension-list span, #measure-list span',
-                activeClass:    "",
-                hoverClass:     "",
-                accept:         ":not(.ui-sortable-helper)",
-                drop:           function(event, ui) {
-                                    var dropped_member = ui.draggable.children(':nth-child(1)').text();
-                                    var member = ui.draggable.text().replace(dropped_member, '');
-                                    if($('#column-drop ul span:contains("'+dropped_member+'"), #row-drop ul span:contains("'+dropped_member+'")').length > 0) {
-                                        return false;
-                                    }
-                                    $(this).find(".placeholder").remove();
-                                    $("<li></li>").text(member).appendTo(this).append(' <a href="#" class="remove small">x</a>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
-                                }
-            }).sortable({
-                items: "li:not(.placeholder)",
-                forceHelperSize: true,
-                helper: '.ui-draggable-dragging',
-                placeholder: 'placeholder-sort',
-                sort: function() {}
-            });
-            $.unblockUI();
+                //  Droppable and sortable
+                $('#row-axis, #column-axis').droppable({
+                    accept:         '#dimension-list span, #measure-list span',
+                    activeClass:    "",
+                    hoverClass:     "",
+                    accept:         ":not(.ui-sortable-helper)",
+                    drop:           function(event, ui) {
+                        var dropped_member = ui.draggable.children(':nth-child(1)').text();
+                        var member = ui.draggable.text().replace(dropped_member, '');
+                        if($('#column-drop ul span:contains("'+dropped_member+'"), #row-drop ul span:contains("'+dropped_member+'")').length > 0) {
+                            return false;
+                        }
+                        $(this).find(".placeholder").remove();
+                        $("<li></li>").text(member).appendTo(this).append(' <a href="#" class="remove small">x</a>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
+                        createOutput();
+                    }
+                }).sortable({
+                    items: "li:not(.placeholder)",
+                    forceHelperSize: true,
+                    helper: '.ui-draggable-dragging',
+                    placeholder: 'placeholder-sort',
+                    update: function() {
+                        createOutput();
+                    }
+                });
+                $.unblockUI();
+            }
         }
+    });
+}
+
+/*
+ * createOutput
+ * Create output for seeing whats on rows and columns
+ */
+
+function createOutput () {
+    $('#rows, #columns').html('')
+    $('#column-axis').find('.hide').each(function(index) {
+        $('#columns').append(' '+$(this).text());
+    });
+    $('#row-axis').find('.hide').each(function(index) {
+        $('#rows').append(' '+$(this).text());
     });
 }
