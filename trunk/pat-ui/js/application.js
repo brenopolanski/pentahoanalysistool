@@ -80,21 +80,24 @@ function load_data() {
             $.unblockUI();
             return false;
         }else{
-            if(data.connections === null) {
-                alert('Error!');
-                return false;
-            }else{
-                $.each(data.connections.connection, function(i,connection){
-                    $.each(connection.schemas, function(i,schema){
-                        $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
-                        $.each(schema.cubes, function(i,cube){
+            console.log(data);
+            $.each(data.connections.connection, function(i,connection){
+                $.each(connection.schemas, function(i,schema){
+                    $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
+                    $.each(schema.cubes, function(i,cube){
+                        console.log(cube.length);
+                        if(cube.length == undefined) { /* hack */
                             $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
-                        });
-                        $('#data-list').append('</optgroup>');
-                        $.unblockUI();
+                        }else{
+                            $.each(cube, function(i,item){
+                                $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
+                            });
+                    }
                     });
+                    $('#data-list').append('</optgroup>');
+                    $.unblockUI();
                 });
-            }
+            });
         }
     });
 }
