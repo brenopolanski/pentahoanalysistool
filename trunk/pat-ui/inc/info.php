@@ -21,16 +21,16 @@ session_start();
  */
 if (!isset($_SESSION['username'])) {
 
-    // Get the username/password from the login form
+    //  Get the username/password from the login form
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // URL for PAT's REST web service
+    //  URL for PAT's REST web service
     $url = "http://demo.analytical-labs.com/rest/admin/session";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    // Make sure the header is set to accept JSON
+    //  Make sure the header is set to accept JSON
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     /*
@@ -40,34 +40,34 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
-    // Had to set this for PHP's cURL library to play nice
+    //  Had to set this for PHP's cURL library to play nice
     curl_setopt($ch, CURLOPT_POSTFIELDS, "");
     $output = curl_exec($ch);
 
-    // Convert the output to a JSON object
+    //  Convert the output to a JSON object
     $obj = json_decode($output);
-    // Retrieve the sessionid from the JSON object
+    //  Retrieve the sessionid from the JSON object
     $sessionid = $obj->{'@sessionid'};
 
-    // If the cURL error code is 0 (success) and the sessionid is set
-    // then authentication was successful
+    //  If the cURL error code is 0 (success) and the sessionid is set
+    //  then authentication was successful
     if (curl_errno($ch) == 0 && isset($sessionid)) {
-        // Store the username/password as session variables
+        //  Store the username/password as session variables
         $_SESSION['username'] = $username;
         $_SESSION['password'] = $password;
-        // Had to echo as return was not working
+        //  Had to echo as return was not working
         echo curl_errno($ch);
     } else {
-        // Else output what the error is
+        //  Else output what the error is
         echo curl_error($ch);
     }
 } else {
 
-    // Store session and password session variables
+    //  Store session and password session variables
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
 
-    // URL for PATs REST web service using the current user
+    //  URL for PATs REST web service using the current user
     $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
 
     $ch = curl_init();
@@ -81,13 +81,13 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
-    // Had to set this for PHP's cURL library to play nice
+    //  Had to set this for PHP's cURL library to play nice
     curl_setopt($ch, CURLOPT_POSTFIELDS, "");
     $output = curl_exec($ch);
 
-    // Convert the output to a JSON object
+    //  Convert the output to a JSON object
     $obj = json_decode($output);
-    // Retrieve the sessionid from the JSON object
+    //  Retrieve the sessionid from the JSON object
     $sessionid = $obj->{'@sessionid'};
 
     /*
@@ -100,12 +100,12 @@ if (!isset($_SESSION['username'])) {
         $_SESSION['sessionid'] = $sessionid;
     }
 
-    // If the cURL error code is 0 (success)
+    //  If the cURL error code is 0 (success)
     if (curl_errno($ch) == 0) {
-        // Output schemas and cubes as JSON
+        //  Output schemas and cubes as JSON
         echo $output;
     } else {
-        // Else output what the error is
+        //  Else output what the error is
         echo "0";
     }
 }
