@@ -1,3 +1,12 @@
+<?php
+//  Start the session
+session_start();
+
+//  Check if the username is set, if so redirect to launch
+if (isset($_SESSION['username'])) {
+    header('Location: launch.php');
+}
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
