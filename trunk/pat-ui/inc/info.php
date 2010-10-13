@@ -1,12 +1,14 @@
 <?php
 
 /*
- *  Document    :   get_session.php
+ *  Document    :   info.php
  *  Author      :   Prashant Raju (http://www.prashantraju.com/)
- *  Description :   
- *      This file is used to authenticate the user and retrieve
- *      information about available schemas and cubes.
- *  
+ *  Description :   This file is used to authenticate the user and retrieve
+ *                  information about available schemas and cubes.
+ *  @username   :   username used for authentication and for PAT's REST web
+ *                  service
+ *  @password   :   password used for authentication
+ *
  */
 
 //  Start session
@@ -31,8 +33,10 @@ if (!isset($_SESSION['username'])) {
     // Make sure the header is set to accept JSON
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+    /*
+      curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
+      curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+     */
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -70,8 +74,10 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-    curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+    /*
+      curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
+      curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+     */
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -103,5 +109,4 @@ if (!isset($_SESSION['username'])) {
         echo "0";
     }
 }
-
 ?>
