@@ -266,6 +266,20 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
     }
 
+    public void keepOnly(String sessionId, String queryId, String dimensionName, ArrayList<String> memberNames)
+    throws RpcException {
+        try {
+            LOG.debug("Create Exclusion - SessionId: " + sessionId + " QueryId: " + queryId + " Dimension: " + dimensionName);
+            this.queryService.keepOnly(getCurrentUserId(), sessionId, queryId, dimensionName, memberNames);
+        } catch (Exception e) {
+            LOG.error("cant keep only", e); //$NON-NLS-1$
+            throw new RpcException("cant keep only"); //$NON-NLS-1$
+        }
+
+
+    }
+
+
     public void alterCell(final String sessionId, final String queryId, final String connectionId, final String scenarioId,  
             final String newCellValue)throws RpcException {
         try {
@@ -871,12 +885,5 @@ public class QueryServlet extends AbstractServlet implements IQuery {
         }
 
     }
-
-
-
-
-
-
-
 
 }

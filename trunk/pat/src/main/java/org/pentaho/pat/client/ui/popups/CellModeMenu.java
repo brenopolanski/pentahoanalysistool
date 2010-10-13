@@ -109,6 +109,38 @@ public class CellModeMenu extends PopupMenu {
             CellModeMenu.this.hide();
         }
     }
+    
+    public class KeepOnlyCommand implements Command {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.google.gwt.user.client.Command#execute()
+         */
+        /**
+         * The Command executed on click.
+         */
+        public final void execute() {
+            final CellLabelPanel targetLabel = (CellLabelPanel) getSource();
+            final ArrayList<String> memberList = new ArrayList<String>();
+            memberList.addAll(targetLabel.getMc().getMemberPath());
+
+            ServiceFactory.getQueryInstance().keepOnly(Pat.getSessionID(), Pat.getCurrQuery(),
+                    targetLabel.getMc().getParentDimension(), memberList, new AsyncCallback<Object>() {
+
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+                            
+                        }
+
+                        public void onSuccess(Object arg0) {
+                            Pat.executeQuery(targetLabel, Pat.getCurrQuery());
+                        }
+                
+            });
+            CellModeMenu.this.hide();
+        }
+    }
 
     public class SortOrderCommand implements Command {
 
@@ -177,6 +209,7 @@ public class CellModeMenu extends PopupMenu {
 //        this.addItem(new MenuItem(Pat.CONSTANTS.sortZA(), new SortOrderCommand("DESC"))); //$NON-NLS-1$
         this.addItem(new MenuItem(Pat.CONSTANTS.exclude(), new ExcludeCommand()));
         this.addItem(new MenuItem(Pat.CONSTANTS.clearExclusions(), new ClearExcludeCommand()));
+        this.addItem(new MenuItem("Keep Only", new KeepOnlyCommand())); //$NON-NLS-1$
     }
 
     /**

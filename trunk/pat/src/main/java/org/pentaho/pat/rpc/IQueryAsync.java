@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.rpc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -147,5 +148,8 @@ public interface IQueryAsync {
 	
 	
 	void getSelections(String sessionId, String queryId, AsyncCallback<Map<IAxis,PatQueryAxis>> callback);
+
+    void keepOnly(String sessionID, String currQuery, String parentDimension, ArrayList<String> memberList,
+            AsyncCallback<Object> asyncCallback);
 
 }
