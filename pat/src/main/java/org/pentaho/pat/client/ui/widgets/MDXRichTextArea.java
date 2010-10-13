@@ -146,6 +146,7 @@ public class MDXRichTextArea extends RichTextArea {
 
    private void unFormatMdx() {
         this.setHTML(this.getHTML().replaceAll("<br>", " ")); //$NON-NLS-1$ //$NON-NLS-2$
+        this.setHTML(this.getHTML().replaceAll(" +", " ")); //$NON-NLS-1$ //$NON-NLS-2$
         this.setHTML(this.getText());
     }
 
