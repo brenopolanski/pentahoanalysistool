@@ -33,10 +33,8 @@ if (isset($_SESSION['username'])) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    /*
-      curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-      curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-     */
+    //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
+    //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
     //  Make sure the header is set to accept JSON
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
