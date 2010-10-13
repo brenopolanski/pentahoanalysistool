@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.rpc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -434,6 +435,9 @@ public interface IQuery extends RemoteService {
 	
 	@Secured( {"Users"})
 	Map<IAxis,PatQueryAxis> getSelections(String sessionId, String queryId) throws RpcException;
+	
+	@Secured( {"Users"})
+	void keepOnly(String sessionID, String currQuery, String parentDimension, ArrayList<String> memberList) throws RpcException;
 	
 }
 

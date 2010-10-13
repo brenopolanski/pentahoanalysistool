@@ -190,6 +190,25 @@ public class OlapUtil {
 
         return returnselections;
     }
+    
+    public static List<Selection> findSelectionsByContextDimension(final QueryDimension dimension,final QueryDimension searchDimension) {
+        List<Selection> returnselections = new ArrayList<Selection>();
+        if (searchDimension != null) {
+
+            for (final Selection selection : dimension.getInclusions()) {
+                List<Selection> context = selection.getSelectionContext(); 
+                if (context != null ) {
+                    for (Selection contextSelection : context) {
+                        if (contextSelection.getDimension().equals(searchDimension)) {
+                            returnselections.add(selection);
+                        }
+                    }
+
+                }
+            }
+        }
+        return returnselections;
+    }
 
     /**
      * Finds all selections whose context contain parent or one of its descendants 

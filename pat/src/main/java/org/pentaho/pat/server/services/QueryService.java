@@ -19,6 +19,7 @@
  */
 package org.pentaho.pat.server.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -191,6 +192,11 @@ public interface QueryService extends Service {
     @Secured( {"Users"})
     void createExclusion(String userId, String sessionId, String queryId, String dimensionName, List<String> memberNames)
             throws OlapException;
+    
+    @Secured( {"Users"})
+    void keepOnly(String userId, String sessionId, String queryId, String dimensionName,
+            ArrayList<String> memberNames) throws OlapException;
+
 
     /**
      * Unselects members from a dimension inside a query. You must first specify onto which query to perform the
