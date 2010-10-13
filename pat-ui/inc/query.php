@@ -16,18 +16,18 @@
 //  Start session
 session_start();
 
-// If the username if set we can continue
+//  If the username if set we can continue
 if (isset($_SESSION['username'])) {
 
-    // Get the connectionid, schemaname and cubename
+    //  Get the connectionid, schemaname and cubename
     $connectionid = $_POST['connectionid'];
     $schemaname = $_POST['schemaname'];
     $cubename = $_POST['cubename'];
 
-    // Create a URL parameter string for PATs REST web service
+    //  Create a URL parameter string for PATs REST web service
     $fields_string = "sessionid=" . $_SESSION['sessionid'] . "&connectionid=" . $connectionid;
 
-    // URL for PAT's REST web service
+    //  URL for PAT's REST web service
     $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery";
 
     $ch = curl_init();
@@ -37,7 +37,7 @@ if (isset($_SESSION['username'])) {
       curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
       curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
      */
-    // Make sure the header is set to accept JSON
+    //  Make sure the header is set to accept JSON
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $_SESSION['username'] . ":" . $_SESSION['password']);
@@ -45,16 +45,16 @@ if (isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
     $output = curl_exec($ch);
 
-    // If the cURL error code is 0 (success)
+    //  If the cURL error code is 0 (success)
     if (curl_errno($ch) == 0) {
-        // Output schemas and cubes as JSON
+        //  Output schemas and cubes as JSON
         echo $output;
     } else {
-        // Else output what the error is
+        //  Else output what the error is
         echo "0";
     }
 } else {
-    // Logout
+    //  Logout
     header('Location: logout.php');
 }
 
