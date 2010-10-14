@@ -132,11 +132,8 @@ function new_query(data_string) {
                                 $('#dimension-list #child_'+dimension_name).append('<li><span>'+this['@levelcaption']+'<span class="hide">'+this['@levelname']+'</span></span></li>');
                             });
                         }else{
-                            $('#measure-list').append('<li id="'+this['@dimensionname']+'"><span id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'</span></span></li>');
-                            $('#'+this['@dimensionname']).append('<ul id="child_'+this['@dimensionname']+'"></ul>');
-                            var dimension_name = this['@dimensionname'];
                             $.each(dimension.levels.level.members.member, function(i,member){
-                                $('#measure-list #child_'+dimension_name).append('<li id="'+this['@membercaption']+'"><span>'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></span></li>');
+                                $('#measure-list').append('<li id="'+this['@membercaption']+'"><span>'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></span></li>');
                             });
                         }
                     });
