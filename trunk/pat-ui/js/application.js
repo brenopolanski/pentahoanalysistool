@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    $("#tabs").tabs();
+    
     //  Messages
     var LOADING_DATA    =   "Loading data, please wait...";
     var NO_DIMENSIONS   =   "No dimensions available";
@@ -11,7 +13,7 @@ $(document).ready(function () {
 
     //  On page load
     $.blockUI({
-        message: '<div class="blockOverlay-inner">'+LOADING_DATA+'</div>'
+        message: '<div class="blockOverlay-inner"><img src="images/loading.gif" alt="'+LOADING_DATA+'"><br/>'+LOADING_DATA+'</div>'
     });
 
     //  jQuery UI Layout
@@ -30,7 +32,6 @@ $(document).ready(function () {
     //  Load available schemas and cubes
     load_data();
 
-    
     //  Handle clicks on the remove links
     $('#column-drop ul li .remove').live('click', function(){
         $(this).parent().remove();
@@ -62,7 +63,7 @@ $(document).ready(function () {
             return false;
         }
         $.blockUI({
-            message: '<div class="blockOverlay-inner">'+NEW_QUERY+'</div>'
+            message: '<div class="blockOverlay-inner"><img src="images/loading.gif" alt="'+NEW_QUERY+'"><br/>'+NEW_QUERY+'</div>'
         });
         new_query($(this).val());
     });
@@ -80,19 +81,17 @@ function load_data() {
             $.unblockUI();
             return false;
         }else{
-            console.log(data);
             $.each(data.connections.connection, function(i,connection){
                 $.each(connection.schemas, function(i,schema){
                     $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
                     $.each(schema.cubes, function(i,cube){
-                        console.log(cube.length);
                         if(cube.length == undefined) { /* hack */
                             $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
                         }else{
                             $.each(cube, function(i,item){
                                 $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
                             });
-                    }
+                        }
                     });
                     $('#data-list').append('</optgroup>');
                     $.unblockUI();

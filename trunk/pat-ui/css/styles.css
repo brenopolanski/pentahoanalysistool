@@ -20,23 +20,24 @@
  *--------------------*/
 
 input,
-select      {   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;    }
-.calign     {   text-align: center;                                             }
-.ralign     {   text-align: right;                                              }
-.hide       {   display: none;                                                  }
-.trigger    {   cursor: pointer;                                                }
-
+select              {   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;    }
+.calign             {   text-align: center;                                             }
+.ralign             {   text-align: right;                                              }
+.hide               {   display: none;                                                  }
+.trigger            {   cursor: pointer;                                                }
+a.remove            {   color: #222; text-decoration: none;                             }
+a:hover.remove      {   color: #cc0000;                                                 }
 
 /*  $_login
  *--------------------*/
 
-#login h2                               {   margin: 15px 0;                                                                 }
-#login #login-wrapper                   {   border: 1px solid #d5d5d5; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
-#login #login-wrapper label             {   display: block; line-height: 1.0em;                                             }
-#login #login-wrapper hr                {   margin-bottom: 0.45em;                                                          }
+#login h2                               {   margin: 15px 0;                                                                                         }
+#login #login-wrapper                   {   border: 1px solid #d5d5d5; background: #f9f9f9; -moz-border-radius: 5px; -webkit-border-radius: 5px;    }
+#login #login-wrapper label             {   display: block; line-height: 1.0em;                                                                     }
+#login #login-wrapper hr                {   margin-bottom: 0.45em;                                                                                  }
 #login #login-wrapper input.login,
-#login #login-wrapper input.password    {   padding: 5px; width: 305px;                                                     }
-#login #login-wrapper input.button      {   padding: 2px; margin-left: -1px;                                                }
+#login #login-wrapper input.password    {   padding: 5px; width: 305px;                                                                             }
+#login #login-wrapper input.button      {   padding: 2px; margin-left: -1px;                                                                        }
 
 /*  $_launch
  *--------------------*/
@@ -81,6 +82,7 @@ body#launch {   background: #f0f0f0;    }
     font-weight: bold;
     line-height: 18px;
     padding: 5px 10px;
+    text-shadow: 1px 1px 0 #e0e0e0;
 }
 #launch #sidebar h3.first                       {   border-top: none; border-bottom: 1px solid #d5d5d5; padding-top: 6px;   }
 #launch #sidebar .sidebar-inner                 {   padding: 10px;                                                          }
@@ -115,41 +117,50 @@ body#launch {   background: #f0f0f0;    }
 }
 
 #launch #content #column-drop .placeholder-sort,
-#launch #content #row-drop .placeholder-sort    {   border:1px dashed #d5d5d5; padding: 0 30px;                              }
+#launch #content #row-drop .placeholder-sort    {   border:1px dashed #d5d5d5; padding: 0 30px;                             }
+#output                                         {   font-family: monospace;font-size: 12px;margin-top: 20px;                }
 
 /*  $_content
  *--------------------*/
 
 #launch #content                                    {   padding: 10px;                                                                  }
 #launch #content #column-drop,
-#launch #content #row-drop                          {   padding: 5px;                                                                   }
+#launch #content #row-drop                          {
+    border: 1px solid #d5d5d5;
+    margin-bottom: 10px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
 #launch #content #column-drop .column-drop-title,
-#launch #content #row-drop .row-drop-title          {   float: left; width: 9%; padding: 6px 0;                                         }
+#launch #content #row-drop .row-drop-title          {
+    background: #f9f9f9;
+    float: left;
+    width: 8%;
+    padding: 8px 5px;
+    text-shadow: 1px 1px 0 #e0e0e0;
+}
 #launch #content #column-drop .column-drop-area,
 #launch #content #row-drop .row-drop-area           {
-    border: 1px solid #d5d5d5;
     float: left;
-    padding: 5px 0;
+    padding: 6px 0;
     width: 90%;
-    line-height: 18px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
 }
 #launch #content #row-drop ul,
-#launch #content #column-drop ul                    {   padding-left: 0;                                                             }
+#launch #content #column-drop ul                    {   padding: 0;                                                                     }
 #launch #content #row-drop ul li,
 #launch #content #column-drop ul li                 {
     border: 1px solid #d5d5d5;
     cursor: move;
     display: inline;
     list-style-type: none;
-    margin-left: 4px;
-    padding: 2px 4px;
+    line-height: 20px;
+    margin-left: 6px;
+    padding: 4px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
 #launch #content #row-drop ul li.placeholder,
-#launch #content #column-drop ul li.placeholder     {   border: none; margin-left: 5px;                                                 }
+#launch #content #column-drop ul li.placeholder     {   border: none; margin-left: 5px;  border: 1px dashed #d5d5d5;                              }
 
 /*  $_plugins
  *--------------------*/
@@ -164,8 +175,12 @@ div.blockOverlay                {
     -moz-opacity: .70;
     opacity: .70;
 }
-div.blockOverlay-inner          {
-    padding: 10px;
+div.blockOverlay-inner          {    padding: 15px 10px 10px 10px;      }
+div.blockOverlay-inner img      {    padding-bottom: 10px;              }
+div.blockMsg                    {
+    border: 2px solid #d5d5d5 !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 /*  $_layoutUI
