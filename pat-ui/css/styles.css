@@ -146,7 +146,7 @@ body#launch {   background: #f0f0f0;    }
     width: 90%;
 }
 #launch #content #row-drop ul,
-#launch #content #column-drop ul                    {   padding: 0;                                                                     }
+#launch #content #column-drop ul                    {   padding: 1px 0 0 0;                                                                     }
 #launch #content #row-drop ul li,
 #launch #content #column-drop ul li                 {
     border: 1px solid #d5d5d5;
