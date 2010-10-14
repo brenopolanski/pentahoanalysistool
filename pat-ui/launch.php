@@ -66,7 +66,7 @@ if (!isset($_SESSION['username'])) {
                 <!-- Column drop area -->
                 <div id="column-drop">
                     <div class="column-drop-title">
-                        <strong>Columns</strong>
+                        <strong>Columns:</strong>
                     </div>
                     <div class="column-drop-area">
                         <ul id="column-axis" class="top bottom">
@@ -79,7 +79,7 @@ if (!isset($_SESSION['username'])) {
                 <!-- Row drop area -->
                 <div id="row-drop">
                     <div class="row-drop-title">
-                        <strong>Rows</strong>
+                        <strong>Rows:</strong>
                     </div>
                     <div class="row-drop-area">
                         <ul id="row-axis" class="top bottom">
@@ -87,19 +87,19 @@ if (!isset($_SESSION['username'])) {
                         </ul>
                     </div>
                     <div class="clear"></div>
-                    <hr class="space"/>
-                    <hr class="space"/>
-                    <div>
-                        <strong>row-axis:</strong>
-                        <div id="rows">
-                        </div>
-                        <br/>
-                        <strong>column-axis:</strong>
-                        <div id="columns">
-                        </div>
-                    </div>
                 </div>
-                <!-- Eof row drop area -->
+                <!-- Output -->
+                <div id="output">
+                    <strong>column-axis:</strong>
+                    <div id="columns">
+                    </div>
+                    <br/>
+                    <strong>row-axis:</strong>
+                    <div id="rows">
+                    </div>
+                    <!-- Eof output -->
+                    <!-- Eof row drop area -->
+                </div>
             </div>
         </div>
         <!--Eof Content / Center-->
