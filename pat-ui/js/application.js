@@ -48,6 +48,17 @@ $(document).ready(function () {
         createOutput();
     });
 
+    //  Hover
+    $(".remove").live('hover',
+        function(event) {
+            if (event.type == 'mouseover') {
+                $(this).addClass('remove-hover');
+            } else {
+                $(this).removeClass('remove-hover');
+            }
+        });
+
+
     //  Handle dimension-list and measure-list
     $(".trigger").live('click', function() {
         var child_id = 'child_'+$(this).attr('id');
@@ -161,7 +172,7 @@ function new_query(data_string) {
                             return false;
                         }
                         $(this).find(".placeholder").remove();
-                        $("<li></li>").text(member).appendTo(this).append(' <a href="#" class="remove small" title="Remove '+member+'">x</a>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
+                        $("<li></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
                         createOutput();
                     }
                 }).sortable({
