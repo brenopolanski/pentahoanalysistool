@@ -20,13 +20,11 @@
  *--------------------*/
 
 input,
-select              {   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;    }
-.calign             {   text-align: center;                                             }
-.ralign             {   text-align: right;                                              }
-.hide               {   display: none;                                                  }
-.trigger            {   cursor: pointer;                                                }
-a.remove            {   color: #222; text-decoration: none;                             }
-a:hover.remove      {   color: #cc0000;                                                 }
+select              {   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;                }
+.calign             {   text-align: center;                                                         }
+.ralign             {   text-align: right;                                                          }
+.hide               {   display: none;                                                              }
+.trigger            {   cursor: pointer;                                                            }
 
 /*  $_login
  *--------------------*/
@@ -123,7 +121,7 @@ body#launch {   background: #f0f0f0;    }
 /*  $_content
  *--------------------*/
 
-#launch #content                                    {   padding: 10px;                                                                  }
+#launch #content                                    {   padding: 10px;                                                                              }
 #launch #content #column-drop,
 #launch #content #row-drop                          {
     border: 1px solid #d5d5d5;
@@ -146,7 +144,7 @@ body#launch {   background: #f0f0f0;    }
     width: 90%;
 }
 #launch #content #row-drop ul,
-#launch #content #column-drop ul                    {   padding: 1px 0 0 0;                                                                     }
+#launch #content #column-drop ul                    {   padding: 1px 0 0 0;                                                                         }
 #launch #content #row-drop ul li,
 #launch #content #column-drop ul li                 {
     border: 1px solid #d5d5d5;
@@ -159,8 +157,17 @@ body#launch {   background: #f0f0f0;    }
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
+#launch #content #row-drop ul .remove,
+#launch #content #column-drop ul .remove            {
+    background: url('../images/cross.png') no-repeat 0 4px;
+    cursor: pointer;
+    margin-left: 5px;
+    padding:0 4px;
+}
+#launch #content #row-drop ul .remove-hover,
+#launch #content #column-drop ul .remove-hover      {   background: url('../images/cross.png') no-repeat 0 -8px;                                    }
 #launch #content #row-drop ul li.placeholder,
-#launch #content #column-drop ul li.placeholder     {   border: none; margin-left: 5px;  border: 1px dashed #d5d5d5;                              }
+#launch #content #column-drop ul li.placeholder     {   border: none; margin-left: 5px;  border: 1px dashed #d5d5d5;                                }
 
 /*  $_plugins
  *--------------------*/
