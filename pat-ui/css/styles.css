@@ -100,7 +100,7 @@ body#launch {   background: #f0f0f0;    }
 #measure-list                                   {   margin: 0; padding-left:15px;                                           }
 
 #dimension-list ul li,
-#measure-list ul li                             {   cursor: move;                                                           }
+#measure-list li                                {   cursor: move;                                                           }
 
 #dimension-list ul,
 #measure-list ul                                {   margin: 0;                                                              }
