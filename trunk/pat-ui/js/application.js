@@ -164,7 +164,7 @@ function new_query(data_string) {
                             return false;
                         }
                         $(this).find(".placeholder").remove();
-                        $("<li></li>").text(member).appendTo(this).append(' <a href="#" class="remove small">x</a>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
+                        $("<li></li>").text(member).appendTo(this).append(' <a href="#" class="remove small" title="Remove '+member+'">x</a>').append('<span class="hide">'+ui.draggable.children(':nth-child(1)').text()+'</span>');
                         createOutput();
                     }
                 }).sortable({
