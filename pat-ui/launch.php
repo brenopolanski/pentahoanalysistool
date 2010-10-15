@@ -21,6 +21,7 @@ if (!isset($_SESSION['username'])) {
         <script type="text/javascript" src="js/jquery.ui.js"></script>
         <script type="text/javascript" src="js/jquery.layout.js"></script>
         <script type="text/javascript" src="js/jquery.blockui.js"></script>
+        <script type="text/javascript" src="js/jquery.jstree.js"></script>
         <script type="text/javascript" src="js/application.js"></script>
     </head>
     <body id="launch">
@@ -44,17 +45,17 @@ if (!isset($_SESSION['username'])) {
             <!-- Eof data -->
             <!-- Dimensions -->
             <h3 class="bottom">Dimensions</h3>
-            <div class="sidebar-inner">
+            <div id="dimensions" class="sidebar-inner-list">
                 <ul id="dimension-list">
-                    <li class="placeholder quiet"><em>No dimensions available</em></li>
+                    <li class="placeholder quiet">No cube selected</li>
                 </ul>
             </div>
             <!-- Eof dimensions -->
             <!-- Measures -->
             <h3 class="bottom">Measures</h3>
-            <div class="sidebar-inner">
+            <div id="measures" class="sidebar-inner-list">
                 <ul id="measure-list">
-                    <li class="placeholder quiet"><em>No measures available</em></li>
+                    <li class="placeholder quiet">No cube selected</li>
                 </ul>
             </div>
             <!-- Eof measures -->
@@ -63,32 +64,33 @@ if (!isset($_SESSION['username'])) {
         <!-- Content / Center -->
         <div class="ui-layout-center">
             <div id="content">
+                <!-- Row drop area -->
+                <div id="row-drop">
+                    <div class="row-drop-title">
+                        <strong>Rows</strong>
+                    </div>
+                    <div class="row-drop-area">
+                        <ul id="row-axis" class="top bottom">
+                            <li class="placeholder quiet">Drop row axis items here</li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <!-- Eof row drop area -->
                 <!-- Column drop area -->
                 <div id="column-drop">
                     <div class="column-drop-title">
-                        <strong>Columns:</strong>
+                        <strong>Columns</strong>
                     </div>
                     <div class="column-drop-area">
                         <ul id="column-axis" class="top bottom">
-                            <li class="placeholder quiet"><em>Drop dimensions and measures for columns here</em></li>
+                            <li class="placeholder quiet">Drop column axis items here</li>
                         </ul>
                     </div>
                     <div class="clear"></div>
                 </div>
                 <!-- Eof column drop area -->
-                <!-- Row drop area -->
-                <div id="row-drop">
-                    <div class="row-drop-title">
-                        <strong>Rows:</strong>
-                    </div>
-                    <div class="row-drop-area">
-                        <ul id="row-axis" class="top bottom">
-                            <li class="placeholder quiet"><em>Drop dimensions and measures for rows here</em></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <!-- Output -->
+                <!-- Output
                 <div id="output">
                     <strong>column-axis:</strong>
                     <div id="columns">
@@ -97,11 +99,10 @@ if (!isset($_SESSION['username'])) {
                     <strong>row-axis:</strong>
                     <div id="rows">
                     </div>
-                    <!-- Eof output -->
-                    <!-- Eof row drop area -->
                 </div>
+                 Eof output -->
             </div>
         </div>
-        <!--Eof Content / Center-->
-    </body>
+    <!--Eof Content / Center-->
+</body>
 </html>
