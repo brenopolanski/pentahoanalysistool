@@ -75,8 +75,8 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
     //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-    //curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    //curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
     //  Had to set this for PHP's cURL library to play nice
     curl_setopt($ch, CURLOPT_POSTFIELDS, "");
