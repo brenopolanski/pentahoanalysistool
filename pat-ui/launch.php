@@ -90,7 +90,7 @@ if (!isset($_SESSION['username'])) {
                     <div class="clear"></div>
                 </div>
                 <!-- Eof column drop area -->
-                <!-- Output
+                <!-- Output -->
                 <div id="output">
                     <strong>column-axis:</strong>
                     <div id="columns">
@@ -100,9 +100,9 @@ if (!isset($_SESSION['username'])) {
                     <div id="rows">
                     </div>
                 </div>
-                 Eof output -->
+                <!-- Eof output -->
             </div>
         </div>
-    <!--Eof Content / Center-->
-</body>
+        <!--Eof Content / Center-->
+    </body>
 </html>

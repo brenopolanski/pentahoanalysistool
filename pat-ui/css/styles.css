@@ -264,3 +264,8 @@ div.blockMsg                    {
 #dimensions ul li.jstree-closed a ins,                              
 #dimensions ul li.jstree-open a ins                                 {   background-position:-56px -20px;                                                            }
 #measures ul li.jstree-leaf a ins                                   {   background-position:-71px -42px;                                                            }
+
+/*  $_tmp
+ ****************/
+
+#output                                         {   font-family: monospace;font-size: 12px;margin-top: 20px;                }

@@ -35,6 +35,7 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
+        createOutput();
     });
     //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
@@ -42,6 +43,7 @@ $(document).ready(function () {
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
+        createOutput();
     });
     //  When hovering over ther remove links
     $(".remove").live('hover',
@@ -181,15 +183,30 @@ function new_query(data_string) {
                         }
                         $(this).find(".placeholder").remove();
                         $("<li></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide">'+member_syntax+'</span>');
+                        createOutput();
                     }
                 }).sortable({
                     connectWith: '#row-axis, #column-axis',
                     items: "li:not(.placeholder)",
-                    placeholder: 'placeholder-sort'
+                    placeholder: 'placeholder-sort',
+                    sort: function() {
+                        createOutput();
+                    }
+
                 });
 
                 $.unblockUI();
             }
         }
+    });
+}
+
+function createOutput() {
+    $('#rows, #columns').html('')
+    $('#column-axis').find('.hide').each(function(index) {
+        $('#columns').append(' '+$(this).text());
+    });
+    $('#row-axis').find('.hide').each(function(index) {
+        $('#rows').append(' '+$(this).text());
     });
 }
