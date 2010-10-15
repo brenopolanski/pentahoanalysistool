@@ -42,7 +42,7 @@ Result:Query Id, Dimensions, Members
 
 Example:
 
-http://pastebin.com/KPA8CjCF
+http://pastebin.com/NvEeNXsG
 
 ==Delete Query==
 
