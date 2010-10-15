@@ -70,7 +70,7 @@ if (!isset($_SESSION['username'])) {
                         <strong>Rows</strong>
                     </div>
                     <div class="row-drop-area">
-                        <ul id="row-axis" class="top bottom">
+                        <ul id="row-axis">
                             <li class="placeholder quiet">Drop row axis items here</li>
                         </ul>
                     </div>
@@ -83,7 +83,7 @@ if (!isset($_SESSION['username'])) {
                         <strong>Columns</strong>
                     </div>
                     <div class="column-drop-area">
-                        <ul id="column-axis" class="top bottom">
+                        <ul id="column-axis">
                             <li class="placeholder quiet">Drop column axis items here</li>
                         </ul>
                     </div>
