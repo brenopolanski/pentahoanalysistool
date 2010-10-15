@@ -13,8 +13,9 @@
  *      $_plugins       :   jQuery plugin styles
  *          $_blockUI       :   BlockUI styles
  *          $_layoutUI      :   Layout UI styles
+ *          $_jstree        :   JStree styles
  *
- */
+*/
 
 /*  $_globals
  *--------------------*/
@@ -84,18 +85,22 @@ body#launch {   background: #f0f0f0;    }
 }
 #launch #sidebar h3.first                       {   border-top: none; border-bottom: 1px solid #d5d5d5; padding-top: 6px;   }
 #launch #sidebar .sidebar-inner                 {   padding: 10px;                                                          }
+#launch #sidebar .sidebar-inner-list            {   padding: 8px 10px 10px 7px;                                             }
 #launch #sidebar #data-list                     {
     font-size: 12px;
     padding: 2px;
     margin: 0;
     width: 100%;
 }
-
+#launch #sidebar #measures .placeholder,
+#launch #sidebar #dimensions .placeholder       {
+    padding-left: 3px;
+}
 /*  trees (temporary)
  *--------------------*/
 
 #dimension-list,
-#measure-list                                   {   margin: 0; padding-left:15px;                                           }
+#measure-list                                   {   margin: 0; padding-left:0px;                                            }
 
 #dimension-list ul li,
 #measure-list li                                {   cursor: move;                                                           }
@@ -103,71 +108,82 @@ body#launch {   background: #f0f0f0;    }
 #dimension-list ul,
 #measure-list ul                                {   margin: 0;                                                              }
 
+
 .ui-draggable-dragging                          {
-    background: #ffffff;
     border: 1px solid #d5d5d5;
+    background: #ffffff;
+    color: #222 !important;
+    cursor: move;
     display: inline;
     list-style-type: none;
-    margin-left: 4px;
-    padding: 2px 8px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    padding: 1px 4px;
+    text-decoration: none;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
 }
 
-#launch #content #column-drop .placeholder-sort,
-#launch #content #row-drop .placeholder-sort    {   border:1px dashed #d5d5d5; padding: 0 30px;                             }
-#output                                         {   font-family: monospace;font-size: 12px;margin-top: 20px;                }
+/*#launch #content #column-drop #column-axis .placeholder-sort,
+#launch #content #row-drop #row-axis .placeholder-sort      {   border:1px dashed #d5d5d5; padding: 0 30px;                   }*/
+
+#output                                                     {   font-family: monospace; font-size: 12px; margin-top: 20px;     }
 
 /*  $_content
  *--------------------*/
 
-#launch #content                                    {   padding: 10px;                                                                              }
+#launch #content                                            {   padding: 10px;                                                                              }
 #launch #content #column-drop,
-#launch #content #row-drop                          {
+#launch #content #row-drop                                  {
     border: 1px solid #d5d5d5;
     margin-bottom: 10px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
 }
 #launch #content #column-drop .column-drop-title,
-#launch #content #row-drop .row-drop-title          {
+#launch #content #row-drop .row-drop-title                  {
     background: #f9f9f9;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f9f9f9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f9f9f9));
     float: left;
     width: 8%;
-    padding: 8px 5px;
     text-shadow: 1px 1px 0 #e0e0e0;
+    padding: 5px;
 }
 #launch #content #column-drop .column-drop-area,
-#launch #content #row-drop .row-drop-area           {
+#launch #content #row-drop .row-drop-area                   {
     float: left;
-    padding: 6px 0;
-    width: 90%;
+    padding: 5px;
+    width: 85%;
 }
-#launch #content #row-drop ul,
-#launch #content #column-drop ul                    {   padding: 1px 0 0 0;                                                                         }
-#launch #content #row-drop ul li,
-#launch #content #column-drop ul li                 {
+#launch #content #row-drop #row-axis,
+#launch #content #column-drop #column-axis                  {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+#launch #content #row-drop #row-axis li,
+#launch #content #column-drop #column-axis li               {
     border: 1px solid #d5d5d5;
+    line-height: 18px;
     cursor: move;
     display: inline;
-    list-style-type: none;
-    line-height: 20px;
-    margin-left: 6px;
-    padding: 4px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
 }
-#launch #content #row-drop ul .remove,
-#launch #content #column-drop ul .remove            {
-    background: url('../images/cross.png') no-repeat 0 4px;
+#launch #content #row-drop #row-axis .remove,
+#launch #content #column-drop #column-axis .remove                    {
+    background: url('../images/cross.png') no-repeat 0 5px;
     cursor: pointer;
     margin-left: 5px;
     padding:0 4px;
 }
-#launch #content #row-drop ul .remove-hover,
-#launch #content #column-drop ul .remove-hover      {   background: url('../images/cross.png') no-repeat 0 -8px;                                    }
-#launch #content #row-drop ul li.placeholder,
-#launch #content #column-drop ul li.placeholder     {   border: none; margin-left: 5px;  border: 1px dashed #d5d5d5;                                }
+#launch #content #row-drop #row-axis .remove-hover,
+#launch #content #column-drop #column-axis .remove-hover    {   background: url('../images/cross.png') no-repeat 0 -7px;                      }
+#launch #content #row-drop #row-axis li.placeholder,
+#launch #content #column-drop #column-axis li.placeholder   {   
+    border: 1px dashed #d5d5d5;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+}
 
 /*  $_plugins
  *--------------------*/
@@ -182,12 +198,13 @@ div.blockOverlay                {
     -moz-opacity: .70;
     opacity: .70;
 }
-div.blockOverlay-inner          {    padding: 15px 10px 10px 10px;      }
-div.blockOverlay-inner img      {    padding-bottom: 10px;              }
+div.blockOverlay-inner          {    padding: 5px;      }
+div.blockOverlay-inner img      {                 }
 div.blockMsg                    {
     border: 2px solid #d5d5d5 !important;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    width: 200px;
 }
 
 /*  $_layoutUI
@@ -215,3 +232,37 @@ div.blockMsg                    {
 #launch .ui-layout-resizer-hover .ui-layout-toggler-hover   {   opacity: 1.00; filter:  alpha(opacity=100);                                                                                                                                     }
 #launch .ui-layout-toggler-north                            {   border-width: 0 1px;                                                                                                                                                            }
 #launch .ui-layout-resizer-sliding  ui-layout-toggler       {   display: none;                                                                                                                                                                  }
+
+/*  $_jstree
+ *--------------------*/
+
+.jstree-default li,
+.jstree-default ins                                                 {   background-image:url("../images/d.png"); background-repeat:no-repeat; background-color:transparent;   }
+.jstree-default a                                                   {   cursor: move;                                                                               }
+.jstree-default li                                                  {   background-position:-90px 0; background-repeat:repeat-y;                                    }
+.jstree-default li.jstree-last                                      {   background:transparent;                                                                     }
+.jstree-default .jstree-open > ins                                  {   background-position:-72px 0;                                                                }
+.jstree-default .jstree-closed > ins                                {   background-position:-54px 0;                                                                }
+.jstree-default .jstree-leaf > ins                                  {   background-position:-36px 0;                                                                }
+.jstree-default .jstree-hovered                                     {   background:#e7f4f9; border:1px solid #d8f0fa; padding:0 2px 0 1px;                          }
+.jstree-default .jstree-clicked                                     {   background:#beebff; border:1px solid #99defd; padding:0 2px 0 1px;                          }
+.jstree-default a .jstree-icon                                      {   background-position:-56px -19px;                                                            }
+.jstree-default a.jstree-loading .jstree-icon                       {   background:url("../images/throbber.gif") center center no-repeat !important;                          }
+.jstree-default .jstree-no-dots li,
+.jstree-default .jstree-no-dots .jstree-leaf > ins                  {   background:transparent;                                                                     }
+.jstree-default .jstree-no-dots .jstree-open > ins                  {   background-position:-18px 0;                                                                }
+.jstree-default .jstree-no-dots .jstree-closed > ins                {   background-position:0 0;                                                                    }
+.jstree-default .jstree-no-icons a .jstree-icon                     {   display:none;                                                                               }
+.jstree-default .jstree-search                                      {   font-style:italic;                                                                          }
+.jstree-default .jstree-no-icons .jstree-checkbox                   {   display:inline-block;                                                                       }
+.jstree-default .jstree-no-checkboxes .jstree-checkbox              {   display:none !important;                                                                    }
+.jstree-default .jstree-checked > a > .jstree-checkbox              {   background-position:-38px -19px;                                                            }
+.jstree-default .jstree-unchecked > a > .jstree-checkbox            {   background-position:-2px -19px;                                                             }
+.jstree-default .jstree-undetermined > a > .jstree-checkbox         {   background-position:-20px -19px;                                                            }
+.jstree-default .jstree-checked > a > .jstree-checkbox:hover        {   background-position:-38px -37px;                                                            }
+.jstree-default .jstree-unchecked > a > .jstree-checkbox:hover      {   background-position:-2px -37px;                                                             }
+.jstree-default .jstree-undetermined > a > .jstree-checkbox:hover   {   background-position:-20px -37px;                                                            }
+#dimensions ul ul li.jstree-leaf a ins                              {   background-position:-71px -24px;                                                            }
+#dimensions ul li.jstree-closed a ins,                              
+#dimensions ul li.jstree-open a ins                                 {   background-position:-56px -20px;                                                            }
+#measures ul li.jstree-leaf a ins                                   {   background-position:-71px -42px;                                                            }

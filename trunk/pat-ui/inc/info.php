@@ -25,7 +25,8 @@ if (!isset($_SESSION['username'])) {
     $password = $_POST['password'];
 
     //  URL for PAT's REST web service
-    $url = "http://demo.analytical-labs.com/rest/admin/session";
+    // $url = "http://demo.analytical-labs.com/rest/admin/session";
+    $url = "http://localhost/pat-ui/json/info.json";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -34,8 +35,8 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
     //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+    //curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    //curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
     //  Had to set this for PHP's cURL library to play nice
     curl_setopt($ch, CURLOPT_POSTFIELDS, "");
@@ -65,7 +66,8 @@ if (!isset($_SESSION['username'])) {
     $password = $_SESSION['password'];
 
     //  URL for PATs REST web service using the current user
-    $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
+    //$url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
+    $url = "http://localhost/pat-ui/json/info.json";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -73,8 +75,8 @@ if (!isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
     //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+    //curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    //curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
     //  Had to set this for PHP's cURL library to play nice
     curl_setopt($ch, CURLOPT_POSTFIELDS, "");
