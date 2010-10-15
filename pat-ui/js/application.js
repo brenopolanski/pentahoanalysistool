@@ -174,7 +174,6 @@ function new_query(data_string) {
                     accept:         '#dimensions ul a, #measures ul a',
                     accept:         ":not(.ui-sortable-helper)",
                     drop:           function(event, ui) {
-                        console.log(ui.draggable);
                         var member_syntax = ui.draggable.children(':nth-child(2)').html()
                         var member = ui.draggable.text().replace(member_syntax, '');
                         if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
