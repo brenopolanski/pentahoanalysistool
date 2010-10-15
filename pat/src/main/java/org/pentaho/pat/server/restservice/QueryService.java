@@ -22,17 +22,12 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
-import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.AxisObject;
-import org.pentaho.pat.server.restservice.restobjects.AxisObject.Axis;
 import org.pentaho.pat.server.restservice.restobjects.DimensionObject;
-import org.pentaho.pat.server.restservice.restobjects.DimensionObject.Dimension;
 import org.pentaho.pat.server.restservice.restobjects.LevelObject;
-import org.pentaho.pat.server.restservice.restobjects.LevelObject.Level;
 import org.pentaho.pat.server.restservice.restobjects.MemberObject;
-import org.pentaho.pat.server.restservice.restobjects.MemberObject.Member;
 import org.pentaho.pat.server.restservice.restobjects.QueryObject;
 import org.pentaho.pat.server.restservice.restobjects.ResultSetObject;
 import org.pentaho.pat.server.servlet.DiscoveryServlet;
@@ -101,40 +96,48 @@ public class QueryService {
 			QueryObject qob = new QueryObject();
 			qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cube));
 
-			DimensionObject dimObj = new DimensionObject();
+			AxisObject[] axis = new AxisObject[1];
+			
+			
 			String[] dims = ds.getDimensions(sessionId, qob.getQueryId(),
 					IAxis.Standard.valueOf("UNUSED"));
+			DimensionObject[] dimObj = new DimensionObject[dims.length];
 			for (int i = 0; i < dims.length; i++) {
-				// StringTree mem = ds.getMembers(sessionId, qob.getQueryId(),
-				// dims[i]);
 
 				List<MemberLabelItem> levels = ds.getLevels(sessionId,
 						qob.getQueryId(), dims[i]);
+				LevelObject[] levelObj = new LevelObject[levels.size()];
 				LevelObject lob = new LevelObject();
 				for (int j = 0; j < levels.size(); j++) {
 
 					List<MemberLabelItem> bers = ds.getLevelMembers(sessionId,
 							qob.getQueryId(), levels.get(j).getName());
 
-					MemberObject mob = new MemberObject();
+					
+					MemberObject[] memberObj = new MemberObject[bers.size()];
 
 					for (int k = 0; k < bers.size(); k++) {
+					    MemberObject mob = new MemberObject();
 						mob.newMember(bers.get(k).getName(), bers.get(k)
 								.getCaption(), "NONE", null);
+						memberObj[k]=mob;
+						
 					}
 
 					lob.newLevel(levels.get(j).getName(), levels.get(j)
-							.getCaption(), mob);
+							.getCaption(), memberObj);
+					levelObj[j]=lob;
 				}
-				dimObj.newDimension(dims[i], lob);
-
+				DimensionObject dob = new DimensionObject();
+				dob.newDimension(dims[i], levelObj);
+				dimObj[i]=dob;
 			}
-
+			
 			AxisObject aop = new AxisObject();
 
 			aop.newAxis("UNUSED", true, dimObj);
-
-			qob.setAxis(aop);
+			axis[0]=aop;
+			qob.setAxis(axis);
 
 			return qob;
 		} catch (Exception e) {
@@ -269,8 +272,8 @@ public class QueryService {
 	@Path("/{schema}/{cube}/{queryname}/run")
 	@Consumes({ "application/xml", "application/json" })
 	@Produces({ "application/xml", "application/json" })
-	public ResultSetObject run(@FormParam("queryObject") QueryObject qob,
-			@QueryParam("sessionId") String sessionId,
+	public ResultSetObject run(QueryObject qob,
+			@QueryParam("sessionid") String sessionId,
 			@PathParam("cube") String cube, @PathParam("user") String user,
 			@PathParam("schema") String schema,
 			@PathParam("queryname") String queryname) throws RpcException,
@@ -278,33 +281,25 @@ public class QueryService {
 
 		qs.init();
 
-		// Set dimensions to axis
-		List<Axis> axis = qob.getAxes().getAxisList();
+		for (AxisObject obj : qob.getAxes()) {
+			String loc = obj.getLocation();
 
-		for (int i = 0; i < axis.size(); i++) {
-			Axis currentaxis = axis.get(i);
-			String loc = currentaxis.getLocation();
+			 DimensionObject[] dimlist = obj.getDims();
 
-			List<Dimension> dimlist = currentaxis.getDims().getDimensionList();
-
-			for (int j = 0; j < dimlist.size(); j++) {
-				Dimension currentdimension = dimlist.get(j);
+			for (DimensionObject dim : dimlist) {
 				qs.moveDimension(sessionId, qob.getQueryId(),
-						IAxis.Standard.valueOf(loc), currentdimension.getName());
+						IAxis.Standard.valueOf(loc), dim.getName());
 
 				// Set memebers selection
-				List<Level> levellist = currentdimension.getLevels()
-						.getLevelList();
-				for (int k = 0; k < levellist.size(); k++) {
-					for (int l = 0; l < levellist.get(k).getMob()
-							.getMemberList().size(); l++) {
-						Member member = levellist.get(k).getMob()
-								.getMemberList().get(l);
-						if(member.getType()!=null){
-							if(member.getStatus().toString().equals("INCLUSION")){
+				LevelObject[] levellist = dim.getLevels();
+				for (LevelObject lob : levellist) {
+					for (MemberObject mob : lob.getMob()) {
+					    
+						if(mob.getType()!=null){
+							if(mob.getStatus().toString().equals("INCLUSION")){
 						qs.createSelection(sessionId, qob.getQueryId(),
-								member.getName(), ObjectType.MEMBER,
-								member.getType());
+								mob.getName(), ObjectType.MEMBER,
+								mob.getType());
 							}
 						}
 					}

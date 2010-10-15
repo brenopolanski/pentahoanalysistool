@@ -1,30 +1,27 @@
 package org.pentaho.pat.server.restservice.restobjects;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.server.restservice.enums.Status;
 
-@XmlRootElement
+@SuppressWarnings("restriction")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="level")
 public class MemberObject {
 
-
-	public static class Member {
-
+        @XmlAttribute(name = "membername", required = true)
 		String name;
-
+	    @XmlAttribute(name = "membercaption", required = true)
 		String caption;
-
+	    @XmlAttribute(name = "status", required = true)
 		Status status;
-
+        @XmlAttribute(name = "type", required = true)
 		SelectionType type;
 
-		@XmlAttribute(name = "membercaption", required = true)
 		public String getCaption() {
 			return caption;
 		}
@@ -33,7 +30,7 @@ public class MemberObject {
 			this.caption = caption;
 		}
 
-		@XmlAttribute(name = "status", required = true)
+		
 		public Status getStatus() {
 			return status;
 		}
@@ -42,7 +39,7 @@ public class MemberObject {
 			this.status = status;
 		}
 
-		@XmlAttribute(name = "type", required = true)
+
 		public SelectionType getType() {
 			return type;
 		}
@@ -55,27 +52,18 @@ public class MemberObject {
 			this.name = name;
 		}
 
-		@XmlAttribute(name = "membername", required = true)
+
 		public String getName() {
 			return name;
 		}
-	}
 
-	@XmlElement(name = "member", required = true)
-	private List<Member> names = new ArrayList<Member>();
 
 	public void newMember(String name, String caption, String status,
 			SelectionType selectionType) {
-		Member dim = new Member();
-		dim.setName(name);
-		dim.setCaption(caption);
-		dim.setStatus(Status.valueOf(status));
-		dim.setType(selectionType);
-		names.add(dim);
-	}
-
-	public List<Member> getMemberList() {
-		return names;
+		setName(name);
+		setCaption(caption);
+		setStatus(Status.valueOf(status));
+		setType(selectionType);
 	}
 
 }
