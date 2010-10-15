@@ -66,8 +66,8 @@ if (!isset($_SESSION['username'])) {
     $password = $_SESSION['password'];
 
     //  URL for PATs REST web service using the current user
-    //$url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
-    $url = "http://localhost/pat-ui/json/info.json";
+    $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
+    //$url = "http://localhost/pat-ui/json/info.json";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
