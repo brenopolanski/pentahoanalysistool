@@ -1,20 +1,17 @@
 $(document).ready(function () {
 
-    $("#tabs").tabs();
-    
     //  Messages
+    var PAT_TITLE       =   "<strong>PAT<em>ui</em> Demo</strong>";
+    var LOADING_DATA    =   "";
     var NO_DIMENSIONS   =   "No cube selected";
     var NO_MEASURES     =   "No cube selected";
 
-    //  BlockUI CSS defaults
-    $.blockUI();
-
-    //  On page load
+    //  Initialise BlockUI for loading available schemas and cubes
     $.blockUI({
-        message: '<div class="blockOverlay-inner"><strong>PAT<em>ui</em> Demo</strong><br/>Loading <span id="blockOverlay-update">schemas and cubes...</span></div>'
+        message: '<div class="blockOverlay-inner">'+PAT_TITLE+'<br/>Loading <span id="blockOverlay-update">schemas and cubes...</span></div>'
     });
 
-    //  jQuery UI Layout
+    //  Intialise jQuery UI Layout
     $('body').layout({
         north__closable:          false,
         north__resizable:         false,
@@ -30,23 +27,23 @@ $(document).ready(function () {
     //  Load available schemas and cubes
     load_data();
 
-    //  Handle clicks on the remove links
+    //  Remove links
+
+    //  Remove links on column axis items
     $('#column-drop ul li .remove').live('click', function(){
         $(this).parent().remove();
         if($('#column-drop ul li').length == 0) {
-            $('#column-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
+            $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
-        createOutput();
     });
+    //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
         $(this).parent().remove();
         if($('#row-drop ul li').length == 0) {
-            $('#row-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
+            $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
-        createOutput();
     });
-
-    //  Hover
+    //  When hovering over ther remove links
     $(".remove").live('hover',
         function(event) {
             if (event.type == 'mouseover') {
@@ -56,24 +53,30 @@ $(document).ready(function () {
             }
         });
 
-    // Handle changes on #data-list AKA create a new query
+    //  When user creates a new query
     $('#data-list').change(function(){
+        //  If Select a cube option is selected
         if($(this).val() === "none"){
             $('#dimensions, #measures').removeClass('jstree jstree-0 jstree-default');
             $('#dimensions').html('<ul id="dimension-list"><li class="placeholder quiet">'+NO_DIMENSIONS+'</li></ul>');
             $('#measures').html('<ul id="measure-list"><li class="placeholder quiet">'+NO_MEASURES+'</li></ul>');
             return false;
         }
+
+        //  Display a BlockUI when loading dimensions and measures
         $.blockUI({
-            message: '<div class="blockOverlay-inner"><strong>PAT<em>ui</em> Demo</strong><br/>Loading <span id="blockOverlay-update">dimensions and measures...</span></div>'
+            message: '<div class="blockOverlay-inner">'+PAT_TITLE+'<br/>Loading <span id="blockOverlay-update">dimensions and measures...</span></div>'
         });
+
+        //  Populate list of dimensions and measures
         new_query($(this).val());
     });
 });
 
 /*
  *  load_data()
- *  This populates available schemas and cubes into #data-list
+ *  Retrieves a list of schemas and cubes and populates the
+ *  #data_list selectbox.
  */
 
 function load_data() {
@@ -108,6 +111,9 @@ function load_data() {
 /*
  *  new_query()
  *  Populates dimension-list and measure-list with available items
+ *  and enables draggable, droppable and sortable lists.
+ *  @data_string    :   A concatenated string of connectionid, schemaname and
+ *                      cubename.
  */
 
 function new_query(data_string) {
@@ -153,25 +159,22 @@ function new_query(data_string) {
                     });
                 });
             
-                //  Draggable
                 $("#dimensions ul a, #measures ul a").draggable({
                     cancel:         '.not-draggable',
                     opacity:        0.90,
                     drag:       function(){
-                                    $('.ui-draggable-dragging ins').remove();
+                        $('.ui-draggable-dragging ins').remove();
                     },
                     helper:         function(){
                         return $(this).clone().appendTo('body').css('zIndex',5).show();
                     }
                 });
 
-                //  Droppable and sortable
                 $('#row-axis, #column-axis').droppable({
                     accept:         '#dimensions ul a, #measures ul a',
-                    activeClass:    "",
-                    hoverClass:     "",
                     accept:         ":not(.ui-sortable-helper)",
                     drop:           function(event, ui) {
+                        console.log(ui.draggable);
                         var member_syntax = ui.draggable.children(':nth-child(2)').html()
                         var member = ui.draggable.text().replace(member_syntax, '');
                         if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
@@ -179,32 +182,15 @@ function new_query(data_string) {
                         }
                         $(this).find(".placeholder").remove();
                         $("<li></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide">'+member_syntax+'</span>');
-                        createOutput();
                     }
                 }).sortable({
+                    connectWith: '#row-axis, #column-axis',
                     items: "li:not(.placeholder)",
-                    placeholder: 'placeholder-sort',
-                    update: function() {
-                        createOutput();
-                    }
+                    placeholder: 'placeholder-sort'
                 });
+
                 $.unblockUI();
             }
         }
-    });
-}
-
-/*
-     * createOutput
-     * Create output for seeing whats on rows and columns
-     */
-
-function createOutput () {
-    $('#rows, #columns').html('')
-    $('#column-axis').find('.hide').each(function(index) {
-        $('#columns').append(' '+$(this).text());
-    });
-    $('#row-axis').find('.hide').each(function(index) {
-        $('#rows').append(' '+$(this).text());
     });
 }
