@@ -35,7 +35,7 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
-        createOutput();
+        createOutput(queryid);
     });
     //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
@@ -43,7 +43,7 @@ $(document).ready(function () {
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
-        createOutput();
+        createOutput(queryid);
     });
     //  When hovering over ther remove links
     $(".remove").live('hover',
@@ -132,35 +132,48 @@ function new_query(data_string) {
             if(data === "false") {
                 return false;
             }else{
+                // Remove placeholders
                 $('#dimension-list, #measure-list').html('');
+                //  Convert output to a JSON object
                 var obj = $.parseJSON(data);
-                
-                $.each(obj.axes, function(i,axis){
-                    $.each(axis.dimensions.dimension, function(i,dimension){
-                        if(this['@dimensionname'] != "Measures"){
-                            $('#blockOverlay-update').html('dimensions...');
-                            $('#dimension-list').append('<li id="'+this['@dimensionname'].replace(' ', '_')+'"><a href="#" id="'+this['@dimensionname']+'" class="trigger">'+this['@dimensionname']+'<span class="hide">['+this['@dimensionname']+']</span></a></li>');
-                            $('#'+this['@dimensionname'].replace(' ', '_')).append('<ul id="child_'+this['@dimensionname'].replace(' ', '_')+'"></ul>');
-                            var dimension_name = this['@dimensionname'].replace(' ', '_');
-                            $.each(dimension.levels.level, function(i,level){
-                                $('#dimension-list #child_'+dimension_name).append('<li><a href="#">'+this['@levelcaption']+'<span class="hide">'+this['@levelname']+'</span></a></li>');
-                            });
-                        }else{
-                            $.each(dimension.levels.level.members.member, function(i,member){
-                                $('#blockOverlay-update').html('measures...');
-                                $('#measure-list').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
-                            });
-                        }
-                    });
-                    $("#dimension-list ul, #measure-list ul").hide();
-                    $("#dimensions, #measures").jstree({
-                        "core"      : {
-                            "animation" : 1
-                        },
-                        "plugins" : [ "themes", "html_data" ]
-                    });
+                //  For each dimension
+                var queryid = obj['@queryid'];
+                $.each(obj.axis.dimensions, function(i,dimension){
+                    //  If not a Measure dimension
+                    if(this['@dimensionname'] != 'Measures')
+                    {   //  Update blockUI
+                        $('#blockOverlay-update').html('dimensions...');
+                        //  Store and rename the dimension name (remove spaces and replace with _)
+                        var dimension_name = this['@dimensionname'].replace(' ', '_');
+                        //  Add dimension names as a <li></li> element
+                        $('#dimension-list').append('<li id="'+dimension_name+'"><a href="#">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
+                        //  Add a secondary list to the dimension name
+                        $('#'+dimension_name).append('<ul id="child_'+dimension_name+'"></ul>');
+                        //  Add levels to the above <ul></ul> element
+                        $.each(dimension.levels, function(i,level){
+                            $('#dimension-list #child_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'<span class="hide">'+level['@levelname']+'</span></a></li>');
+                        });
+                    } else {
+                        //  If a measure, display them all without a category
+                        //  they are seen as members
+                        $.each(dimension.levels.members, function(i,member){
+                            //  Update blockUI
+                            $('#blockOverlay-update').html('measures...');
+                            //  Add members to the measure-list <ul></ul>
+                            $('#measure-list').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
+                        });
+                        
+                    }
                 });
-            
+                //  Eof populating dimensions and measures
+                //  Activate the jstree plugin on the above lists
+                $("#dimensions, #measures").jstree({
+                    "core"      : {
+                        "animation" : 1
+                    },
+                    "plugins" : [ "themes", "html_data" ]
+                });
+                //  Draggable
                 $("#dimensions ul a, #measures ul a").draggable({
                     cancel:         '.not-draggable',
                     opacity:        0.90,
@@ -171,7 +184,7 @@ function new_query(data_string) {
                         return $(this).clone().appendTo('body').css('zIndex',5).show();
                     }
                 });
-
+                //  Droppable
                 $('#row-axis, #column-axis').droppable({
                     accept:         '#dimensions ul a, #measures ul a',
                     accept:         ":not(.ui-sortable-helper)",
@@ -183,30 +196,39 @@ function new_query(data_string) {
                         }
                         $(this).find(".placeholder").remove();
                         $("<li></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide">'+member_syntax+'</span>');
-                        createOutput();
+                        createOutput(queryid);
                     }
+                //  Sortable
                 }).sortable({
                     connectWith: '#row-axis, #column-axis',
                     items: "li:not(.placeholder)",
                     placeholder: 'placeholder-sort',
                     sort: function() {
-                        createOutput();
+                        createOutput(queryid);
                     }
 
                 });
-
+                //  Remove blockUI
                 $.unblockUI();
             }
         }
     });
 }
 
-function createOutput() {
-    $('#rows, #columns').html('')
-    $('#column-axis').find('.hide').each(function(index) {
-        $('#columns').append(' '+$(this).text());
+function createOutput(queryid) {
+
+    var queryid;
+    var str = '{ "@queryid" : "'+queryid+'" ,';
+    str += '"axis":{ "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
+    $('#column-axis li').each(function(index, e){
+        str += ' "@dimensioname" : "'+$(e).find(".hide").text()+'"';
     });
-    $('#row-axis').find('.hide').each(function(index) {
-        $('#rows').append(' '+$(this).text());
+    str += '} ] },'
+    str += '"axis":{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
+    $('#row-axis li').each(function(index, e){
+        str += ' "@dimensioname" : "'+$(e).find(".hide").text()+'"';
     });
+    str += '} ] } }'
+    $('#output').html(str);
+
 }

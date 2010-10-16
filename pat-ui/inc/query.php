@@ -44,8 +44,15 @@ if (isset($_SESSION['username'])) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
     $output = curl_exec($ch);
 
+    //  Convert the output to a JSON object
+    $obj = json_decode($output);
+    //  Retrieve the sessionid from the JSON object
+    $queryid = $obj->{'@queryid'};
+
     //  If the cURL error code is 0 (success)
     if (curl_errno($ch) == 0) {
+        //  Set the queryid as a SESSION variable
+        $_SESSION['queryid'] = $queryid;
         //  Output schemas and cubes as JSON
         echo $output;
     } else {
