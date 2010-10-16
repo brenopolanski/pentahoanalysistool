@@ -162,4 +162,7 @@ public interface DiscoveryService extends Service {
 
 	List<MemberLabelItem> getMeasures(String currentUserId, String sessionID, String currQuery) throws OlapException;
 
+	   List<Selection> getExclusions(String userId, String sessionId, String queryId, String dimension);
+
+	List<Selection> getInclusions(String userId, String sessionId, String queryId, String dimension);
 }

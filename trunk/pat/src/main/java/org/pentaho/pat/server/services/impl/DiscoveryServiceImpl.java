@@ -138,6 +138,24 @@ public class DiscoveryServiceImpl extends AbstractService implements DiscoverySe
         return list;
     }
 
+    public List<Selection> getInclusions(String userId, String sessionId, String queryId, String dimension){
+        this.sessionService.validateSession(userId, sessionId);
+        
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+        
+        return query.getDimension(dimension).getInclusions();
+        
+    }
+    
+    public List<Selection> getExclusions(String userId, String sessionId, String queryId, String dimension){
+        this.sessionService.validateSession(userId, sessionId);
+        
+        Query query = this.queryService.getQuery(userId, sessionId, queryId);
+        
+        return query.getDimension(dimension).getExclusions();
+        
+    }
+    
     public Cube getCube(String userId, String sessionId, String connectionId, String cubeName) throws OlapException {
         this.sessionService.validateSession(userId, sessionId);
         OlapConnection conn = this.sessionService.getNativeConnection(userId, sessionId, connectionId);

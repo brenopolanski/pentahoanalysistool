@@ -1,5 +1,7 @@
 package org.pentaho.pat.server.restservice;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,6 +20,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
@@ -36,8 +39,7 @@ import org.pentaho.pat.server.servlet.SessionServlet;
 import org.springframework.context.annotation.Scope;
 
 /**
- * The Query Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT
- * AS A FINSIHED API.
+ * The Query Service for the PAT Restful Interface, this is WIP DO NOT TAKE IT AS A FINSIHED API.
  * 
  * @author tom(at)wamonline.org.uk
  * @since 0.9.0
@@ -45,274 +47,330 @@ import org.springframework.context.annotation.Scope;
 @SuppressWarnings("restriction")
 @Path("/{user}/query")
 /*
- * to set the path on which the service will be accessed e.g.
- * http://{serverIp}/{contextPath}/foo
+ * to set the path on which the service will be accessed e.g. http://{serverIp}/{contextPath}/foo
  */
 @Scope("request")
 // to set the scope of service
 public class QueryService {
 
-	SessionServlet ss = new SessionServlet();
-	QueryServlet qs = new QueryServlet();
-	DiscoveryServlet ds = new DiscoveryServlet();
 
-	/**
-	 * 
-	 * This method allows you to create a query object in one request, as per
-	 * the idea of Tiemonster.<br>
-	 * To use this method you need to have a Session Object available.<br>
-	 * HTTP POST.<br>
-	 * 
-	 * <pre>
-	 * curl -XPOST -d "connectionId=792bcd2d-41c5-4af5-84b6-16fd65c4f7bb" -d "cubeName=SteelWheelsSales"  --basic -u "admin:admin" "http://localhost:8080/rest/53c72f85-7ff2-4a63-b4d2-dbd55a56255f/query"
-	 * </pre>
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@POST
-	@Path("/{schema}/{cube}/{queryname}")
-	@Produces({ "application/xml", "application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized QueryObject createNewQuery(
-			@FormParam("sessionid") String sessionId,
-			@FormParam("connectionid") String connectionId,
-			@PathParam("cube") String cube, @PathParam("user") String user,
-			@PathParam("schema") String schema,
-			@PathParam("queryname") String queryname) throws RpcException,
-			ServletException {
-		// ss.init();
-		try {
-			qs.init();
-			ds.init();
+    SessionServlet ss = new SessionServlet();
 
-			QueryObject qob = new QueryObject();
-			qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cube));
+    QueryServlet qs = new QueryServlet();
 
-			AxisObject[] axis = new AxisObject[1];
-			
-			
-			String[] dims = ds.getDimensions(sessionId, qob.getQueryId(),
-					IAxis.Standard.valueOf("UNUSED"));
-			DimensionObject[] dimObj = new DimensionObject[dims.length];
-			for (int i = 0; i < dims.length; i++) {
+    DiscoveryServlet ds = new DiscoveryServlet();
 
-				List<MemberLabelItem> levels = ds.getLevels(sessionId,
-						qob.getQueryId(), dims[i]);
-				LevelObject[] levelObj = new LevelObject[levels.size()];
+    /**
+     * 
+     * This method allows you to create a query object in one request, as per the idea of Tiemonster.<br>
+     * To use this method you need to have a Session Object available.<br>
+     * HTTP POST.<br>
+     * 
+     * <pre>
+     * curl -XPOST -d "connectionId=792bcd2d-41c5-4af5-84b6-16fd65c4f7bb" -d "cubeName=SteelWheelsSales"  --basic -u "admin:admin" "http://localhost:8080/rest/53c72f85-7ff2-4a63-b4d2-dbd55a56255f/query"
+     * </pre>
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @POST
+    @Path("/{schema}/{cube}/{queryname}")
+    @Produces( {"application/xml", "application/json"})
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized QueryObject createNewQuery(@FormParam("sessionid") String sessionId,
+            @FormParam("connectionid") String connectionId, @PathParam("cube") String cube,
+            @PathParam("user") String user, @PathParam("schema") String schema, @PathParam("queryname") String queryname)
+            throws RpcException, ServletException {
+        // ss.init();
+        try {
+            qs.init();
+            ds.init();
 
-				for (int j = 0; j < levels.size(); j++) {
+            QueryObject qob = new QueryObject();
+            qob.setQueryId(qs.createNewQuery(sessionId, connectionId, cube));
 
-					List<MemberLabelItem> bers = ds.getLevelMembers(sessionId,
-							qob.getQueryId(), levels.get(j).getName());
+            AxisObject[] axis = new AxisObject[1];
 
-					
-					MemberObject[] memberObj = new MemberObject[bers.size()];
+            String[] dims = ds.getDimensions(sessionId, qob.getQueryId(), IAxis.Standard.valueOf("UNUSED"));
+            DimensionObject[] dimObj = new DimensionObject[dims.length];
+            for (int i = 0; i < dims.length; i++) {
 
-					for (int k = 0; k < bers.size(); k++) {
-					    MemberObject mob = new MemberObject();
-						mob.newMember(bers.get(k).getName(), bers.get(k)
-								.getCaption(), "NONE", null);
-						memberObj[k]=mob;
-						
-					}
-					LevelObject lob = new LevelObject();
-					lob.newLevel(levels.get(j).getName(), levels.get(j)
-							.getCaption(), memberObj);
-					levelObj[j]=lob;
-				}
-				DimensionObject dob = new DimensionObject();
-				dob.newDimension(dims[i], levelObj);
-				dimObj[i]=dob;
-			}
-			
-			AxisObject aop = new AxisObject();
+                List<MemberLabelItem> levels = ds.getLevels(sessionId, qob.getQueryId(), dims[i]);
+                LevelObject[] levelObj = new LevelObject[levels.size()];
 
-			aop.newAxis("UNUSED", true, dimObj);
-			axis[0]=aop;
-			qob.setAxis(axis);
+                for (int j = 0; j < levels.size(); j++) {
 
-			return qob;
-		} catch (Exception e) {
-			throw new WebApplicationException(Response.Status.BAD_REQUEST);
-		}
-	}
+                    List<MemberLabelItem> bers = ds.getLevelMembers(sessionId, qob.getQueryId(), levels.get(j)
+                            .getName());
 
-	/**
-	 * 
-	 * This method allows you to delete a query, as per the idea of Tiemonster.<br>
-	 * HTTP DELETE<br>
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@DELETE
-	@Path("/{schema}/{cube}/{queryname}")
-	@Consumes({ "application/xml", "application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void deleteQuery(
-			@PathParam("queryname") String queryname,
-			@FormParam("sessionId") String sessionId,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
+                    MemberObject[] memberObj = new MemberObject[bers.size()];
 
-		List<QuerySaveModel> queries = this.qs.getActiveQueries(sessionId);
-		String id = null;
-		for (int q = 0; q < queries.size(); q++) {
+                    for (int k = 0; k < bers.size(); k++) {
+                        MemberObject mob = new MemberObject();
+                        mob.newMember(bers.get(k).getName(), bers.get(k).getCaption(), "NONE", null);
+                        memberObj[k] = mob;
 
-			if (queries.get(q).getName().equals(queryname)) {
-				id = queries.get(q).getQueryId();
-				queries.remove(q);
-				break;
-			}
-		}
-		if (id != null) {
-			this.qs.deleteQuery(sessionId, id);
-		}
-	}
+                    }
+                    LevelObject lob = new LevelObject();
+                    lob.newLevel(levels.get(j).getName(), levels.get(j).getCaption(), memberObj);
+                    levelObj[j] = lob;
+                }
+                DimensionObject dob = new DimensionObject();
+                dob.newDimension(dims[i], levelObj);
+                dimObj[i] = dob;
+            }
 
-	/**
-	 * 
-	 * This method allows you to overwrite a query object in one request, as per
-	 * the idea of Tiemonster.<br>
-	 * HTTP PUT.<br>
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws ServletException
-	 */
-	@PUT
-	@Path("/{schema}/{cube}/{queryname}")
-	@Consumes({ "application/xml", "application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void saveQuery(
-			@PathParam("queryId") String queryId,
-			@FormParam("sessionId") String sessionId,
-			@FormParam("queryName") String queryName,
-			@FormParam("connectionId") String connectionId,
-			@FormParam("cubeCatalog") String catalog,
-			@FormParam("cubeName") String cubeName,
-			@FormParam("schema") String schema,
-			@QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback)
-			throws RpcException, ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
-		CubeItem ci = new CubeItem(cubeName, catalog, schema);
+            AxisObject aop = new AxisObject();
 
-		this.qs.saveQuery(sessionId, queryId, queryName, connectionId, ci,
-				cubeName);
-	}
+            aop.newAxis("UNUSED", true, dimObj);
+            axis[0] = aop;
+            qob.setAxis(axis);
 
-	/**
-	 * 
-	 * This method allows you to get a query object in one request, as per the
-	 * idea of Tiemonster.<br>
-	 * HTTP GET.<br>
-	 * curl --basic -u "admin:admin"
-	 * "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
-	 * 
-	 * @param sessionId
-	 * @param connectionId
-	 * @param cubeName
-	 * @param jsoncallback
-	 * @return
-	 * @throws RpcException
-	 * @throws RpcException
-	 * @throws ServletException
-	 * @throws ServletException
-	 */
-	@GET
-	@Produces({ "application/xml", "application/json" })
-	// it is to set the response type
-	@Resource
-	// to make it spring set the response type
-	public synchronized void loadQuery(@PathParam("queryId") String queryId,
-			@FormParam("sessionId") String sessionId) throws RpcException,
-			ServletException {
-		ss.init();
-		qs.init();
-		ds.init();
+            return qob;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
 
-		this.qs.getQueries(sessionId);
+    /**
+     * 
+     * This method allows you to delete a query, as per the idea of Tiemonster.<br>
+     * HTTP DELETE<br>
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @DELETE
+    @Path("/{schema}/{cube}/{queryname}")
+    @Consumes( {"application/xml", "application/json"})
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized void deleteQuery(@PathParam("queryname") String queryname,
+            @FormParam("sessionId") String sessionId,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException,
+            ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
 
-	}
+        List<QuerySaveModel> queries = this.qs.getActiveQueries(sessionId);
+        String id = null;
+        for (int q = 0; q < queries.size(); q++) {
 
-	/**
-	 * curl --basic -u "admin:admin" -XPUT -H 'Content-Type: application/json'
-	 * -d ''
-	 * http://localhost:8080/rest/admin/SteelWheels/SteelWheelsSales/tomsquery
-	 * /run?sessionId=10 -v
-	 */
-	@PUT
-	// to be accessed using http get method
-	@Path("/{schema}/{cube}/{queryname}/run")
-	@Consumes({ "application/xml", "application/json" })
-	@Produces({ "application/xml", "application/json" })
-	public ResultSetObject run(QueryObject qob,
-			@QueryParam("sessionid") String sessionId,
-			@PathParam("cube") String cube, @PathParam("user") String user,
-			@PathParam("schema") String schema,
-			@PathParam("queryname") String queryname) throws RpcException,
-			ServletException {
+            if (queries.get(q).getName().equals(queryname)) {
+                id = queries.get(q).getQueryId();
+                queries.remove(q);
+                break;
+            }
+        }
+        if (id != null) {
+            this.qs.deleteQuery(sessionId, id);
+        }
+    }
 
-		qs.init();
+    /**
+     * 
+     * This method allows you to overwrite a query object in one request, as per the idea of Tiemonster.<br>
+     * HTTP PUT.<br>
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws ServletException
+     */
+    @PUT
+    @Path("/{schema}/{cube}/{queryname}")
+    @Consumes( {"application/xml", "application/json"})
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized void saveQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+            @FormParam("queryName") String queryName, @FormParam("connectionId") String connectionId,
+            @FormParam("cubeCatalog") String catalog, @FormParam("cubeName") String cubeName,
+            @FormParam("schema") String schema,
+            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException,
+            ServletException {
+        ss.init();
+        qs.init();
+        ds.init();
+        CubeItem ci = new CubeItem(cubeName, catalog, schema);
 
-		for (AxisObject obj : qob.getAxes()) {
-			String loc = obj.getLocation();
+        this.qs.saveQuery(sessionId, queryId, queryName, connectionId, ci, cubeName);
+    }
 
-			 DimensionObject[] dimlist = obj.getDims();
+    /**
+     * 
+     * This method allows you to get a query object in one request, as per the idea of Tiemonster.<br>
+     * HTTP GET.<br>
+     * curl --basic -u "admin:admin"
+     * "http://localhost:8080/rest/service/query?sessionId=idstring&connectionId=connectionstring&cubeName=cubestring"
+     * 
+     * @param sessionId
+     * @param connectionId
+     * @param cubeName
+     * @param jsoncallback
+     * @return
+     * @throws RpcException
+     * @throws RpcException
+     * @throws ServletException
+     * @throws ServletException
+     */
+    @GET
+    @Produces( {"application/xml", "application/json"})
+    // it is to set the response type
+    @Resource
+    // to make it spring set the response type
+    public synchronized QueryObject loadQuery(@QueryParam("queryId") String queryId,
+            @QueryParam("sessionId") String sessionId) throws RpcException, ServletException {
 
-			for (DimensionObject dim : dimlist) {
-				qs.moveDimension(sessionId, qob.getQueryId(),
-						IAxis.Standard.valueOf(loc), dim.getName());
+        try {
+            qs.init();
+            ds.init();
 
-				// Set memebers selection
-				LevelObject[] levellist = dim.getLevels();
-				if(levellist!=null){
-				for (LevelObject lob : levellist) {
-					for (MemberObject mob : lob.getMob()) {
-					    
-						if(mob.getType()!=null){
-							if(mob.getStatus().toString().equals("INCLUSION")){
-						qs.createSelection(sessionId, qob.getQueryId(),
-								mob.getName(), ObjectType.MEMBER,
-								mob.getType());
-							}
-						}
-					}
-				}
-			}
-			}
-		}
+            String[] queries = this.qs.getQueries(sessionId);
 
-		ResultSetObject rso = new ResultSetObject(qs.executeQuery(sessionId,
-				qob.getQueryId()));
-		return rso;
+            if (Arrays.asList(queries).contains(queryId)) {
+                QueryObject qob = new QueryObject();
+                qob.setQueryId(queryId);
 
-	}
+                AxisObject[] axis = new AxisObject[4];
+
+                for (int z = 0; z < 4; z++) {
+                    String axislabel = null;
+                    switch (z) {
+                    case 0:
+                        axislabel = "UNUSED";
+                        break;
+                    case 1:
+                        axislabel = "ROWS";
+                        break;
+                    case 2:
+                        axislabel = "COLUMNS";
+                        break;
+                    case 3:
+                        axislabel = "FILTER";
+                        break;
+                    }
+                    String[] dims = ds.getDimensions(sessionId, qob.getQueryId(), IAxis.Standard.valueOf(axislabel));
+                    DimensionObject[] dimObj = new DimensionObject[dims.length];
+                    for (int i = 0; i < dims.length; i++) {
+
+                        List<Selection> inclusions = ds.getInclusions(sessionId, queryId, dims[i]);
+                        List<String> inclusionmembers = new ArrayList<String>();
+                        for(int q=0; q< inclusions.size(); q++){
+
+                            inclusionmembers.add(inclusions.get(q).getMember().getUniqueName());   
+                        }
+                        List<MemberLabelItem> levels = ds.getLevels(sessionId, qob.getQueryId(), dims[i]);
+                        LevelObject[] levelObj = new LevelObject[levels.size()];
+
+                        for (int j = 0; j < levels.size(); j++) {
+
+                            List<MemberLabelItem> bers = ds.getLevelMembers(sessionId, qob.getQueryId(), levels.get(j)
+                                    .getName());
+
+                            MemberObject[] memberObj = new MemberObject[bers.size()];
+
+                            
+                            for (int k = 0; k < bers.size(); k++) {
+                                MemberObject mob = new MemberObject();
+                                MemberLabelItem mber = bers.get(k);
+                                if(inclusionmembers.contains(mber.getName())){
+                                    int ind = inclusionmembers.indexOf(mber.getName());
+                                    mob.newMember(mber.getName(), mber.getCaption(), "INCLUSION", inclusions.get(ind).getOperator().toString());
+                                }
+                                else{
+                                mob.newMember(bers.get(k).getName(), bers.get(k).getCaption(), "NONE", "MEMBER");
+                                }
+                                memberObj[k] = mob;
+
+                            }
+                            LevelObject lob = new LevelObject();
+                            lob.newLevel(levels.get(j).getName(), levels.get(j).getCaption(), memberObj);
+                            levelObj[j] = lob;
+                        }
+                        DimensionObject dob = new DimensionObject();
+                        dob.newDimension(dims[i], levelObj);
+                        dimObj[i] = dob;
+                    }
+
+                    AxisObject aop = new AxisObject();
+
+                    aop.newAxis(axislabel, true, dimObj);
+                    axis[z] = aop;
+                    qob.setAxis(axis);
+                }
+
+                return qob;
+            }
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+
+        return null;
+
+    }
+
+    /**
+     * curl --basic -u "admin:admin" -XPUT -H 'Content-Type: application/json' -d ''
+     * http://localhost:8080/rest/admin/SteelWheels/SteelWheelsSales/tomsquery /run?sessionId=10 -v
+     */
+    @PUT
+    // to be accessed using http get method
+    @Path("/{schema}/{cube}/{queryname}/run")
+    @Consumes( {"application/xml", "application/json"})
+    @Produces( {"application/xml", "application/json"})
+    public ResultSetObject run(QueryObject qob, @QueryParam("sessionid") String sessionId,
+            @PathParam("cube") String cube, @PathParam("user") String user, @PathParam("schema") String schema,
+            @PathParam("queryname") String queryname) throws RpcException, ServletException {
+
+        qs.init();
+
+        for (AxisObject obj : qob.getAxes()) {
+            String loc = obj.getLocation();
+
+            DimensionObject[] dimlist = obj.getDims();
+
+            for (DimensionObject dim : dimlist) {
+                qs.moveDimension(sessionId, qob.getQueryId(), IAxis.Standard.valueOf(loc), dim.getName());
+
+                // Set memebers selection
+                LevelObject[] levellist = dim.getLevels();
+                if (levellist != null) {
+                    for (LevelObject lob : levellist) {
+                        for (MemberObject mob : lob.getMob()) {
+
+                            if (mob.getType() != null) {
+                                if (mob.getStatus().toString().equals("INCLUSION")) {
+                                    qs.createSelection(sessionId, qob.getQueryId(), mob.getName(), ObjectType.MEMBER,
+                                            mob.getType());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ResultSetObject rso = new ResultSetObject(qs.executeQuery(sessionId, qob.getQueryId()));
+        return rso;
+
+    }
 
 }
