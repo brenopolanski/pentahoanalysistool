@@ -292,6 +292,7 @@ public class QueryService {
 
 				// Set memebers selection
 				LevelObject[] levellist = dim.getLevels();
+				if(levellist!=null){
 				for (LevelObject lob : levellist) {
 					for (MemberObject mob : lob.getMob()) {
 					    
@@ -304,6 +305,7 @@ public class QueryService {
 						}
 					}
 				}
+			}
 			}
 		}
 
