@@ -42,8 +42,7 @@ Result:Query Id, Dimensions, Members
 
 Example:
 
-http://pastebin.com/NvEeNXsG
-
+ http://pastebin.com/4PSs4McQ
 ==Delete Query==
 
 URL: http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/tomsquery
