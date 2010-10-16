@@ -107,7 +107,7 @@ public class QueryService {
 				List<MemberLabelItem> levels = ds.getLevels(sessionId,
 						qob.getQueryId(), dims[i]);
 				LevelObject[] levelObj = new LevelObject[levels.size()];
-				LevelObject lob = new LevelObject();
+
 				for (int j = 0; j < levels.size(); j++) {
 
 					List<MemberLabelItem> bers = ds.getLevelMembers(sessionId,
@@ -123,7 +123,7 @@ public class QueryService {
 						memberObj[k]=mob;
 						
 					}
-
+					LevelObject lob = new LevelObject();
 					lob.newLevel(levels.get(j).getName(), levels.get(j)
 							.getCaption(), memberObj);
 					levelObj[j]=lob;
