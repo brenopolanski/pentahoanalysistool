@@ -59,11 +59,13 @@ public class MemberObject {
 
 
 	public void newMember(String name, String caption, String status,
-			SelectionType selectionType) {
+			String selectionType) {
 		setName(name);
 		setCaption(caption);
 		setStatus(Status.valueOf(status));
-		setType(selectionType);
+		if(selectionType!=null){
+		setType(SelectionType.valueOf(selectionType));
+		}
 	}
 
 }

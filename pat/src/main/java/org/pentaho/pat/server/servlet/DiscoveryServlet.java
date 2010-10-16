@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.olap4j.OlapException;
+import org.olap4j.query.Selection;
 import org.pentaho.pat.rpc.IDiscovery;
 import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.LevelProperties;
@@ -172,5 +173,10 @@ public class DiscoveryServlet extends AbstractServlet implements IDiscovery {
             LOG.error(Messages.getString("Servlet.Discovery.CantGenerateMembersList"), e); //$NON-NLS-1$
             throw new RpcException(Messages.getString("Servlet.Discovery.CantGenerateMembersList")); //$NON-NLS-1$
         }
+	}
+	
+	public List<Selection> getInclusions(String sessionId, String queryId, String dimension) throws RpcException{
+        return this.discoveryService.getInclusions(getCurrentUserId(), sessionId, queryId, dimension);
+	    
 	}
 }
