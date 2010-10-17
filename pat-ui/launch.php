@@ -64,19 +64,6 @@ if (!isset($_SESSION['username'])) {
         <!-- Content / Center -->
         <div class="ui-layout-center">
             <div id="content">
-                <!-- Row drop area -->
-                <div id="row-drop">
-                    <div class="row-drop-title">
-                        <strong>Rows</strong>
-                    </div>
-                    <div class="row-drop-area">
-                        <ul id="row-axis">
-                            <li class="placeholder quiet">Drop row axis items here</li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <!-- Eof row drop area -->
                 <!-- Column drop area -->
                 <div id="column-drop">
                     <div class="column-drop-title">
@@ -90,15 +77,23 @@ if (!isset($_SESSION['username'])) {
                     <div class="clear"></div>
                 </div>
                 <!-- Eof column drop area -->
+                <!-- Row drop area -->
+                <div id="row-drop">
+                    <div class="row-drop-title">
+                        <strong>Rows</strong>
+                    </div>
+                    <div class="row-drop-area">
+                        <ul id="row-axis">
+                            <li class="placeholder quiet">Drop row axis items here</li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <!-- Eof row drop area -->
                 <!-- Output -->
                 <div id="output">
-                    <strong>column-axis:</strong>
-                    <div id="columns">
-                    </div>
-                    <br/>
-                    <strong>row-axis:</strong>
-                    <div id="rows">
-                    </div>
+                    <p>sessionid: <?php echo $_SESSION['sessionid'] ?></p>
+                    <div class="json"></div>
                 </div>
                 <!-- Eof output -->
             </div>
