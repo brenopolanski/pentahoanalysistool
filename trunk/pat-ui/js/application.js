@@ -222,35 +222,42 @@ function new_query(data_string) {
 
 function createOutput(queryid) {
 
-    //  How many measures are being used?
-    var col_measures_count = $('#column-axis li span:contains("[Measures]")').length;
-    var row_measures_count = $('#row-axis li span:contains("[Measures]")').length;
+    //  Before printing JSON count how many measures and dimensions
+    //  are on both the column and row axis
+    var col_meas_count = $('#column-axis li span:contains("[Measures]")').length;
+    var row_meas_count = $('#row-axis li span:contains("[Measures]")').length;
+    var col_dims_count = $('#column-axis li:not(.Measures)').length;
+    var row_dims_count = $('#row-axis li:not(.Measures)').length;
+    var output;
 
-    //  Start off the JSON to be sent back
-    var output = '{ "@queryid" : "'+queryid+'", ';
-    output += '"axis" : { "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
+    //  root
+    //  queryid
+    output  =   '{ "@queryid" : "'+queryid+'", ';
 
-    //  For the column axis
-    //  Loop through all Measures first
+    //  columns
+    output  +=  '"axis" : { "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
 
+    //  handle measures first
+
+    //  loop through all measures in the column list
     $('#column-axis li.Measures').each(function(index,item){
-        //  levelcaption
+        //  @levelcaption
         var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  levelname
+        //  @levelname
         var levelname = $(item).find(".levelname").text().trim();
         var arr = levelname.split(".");
-        //  dimensioname
+        //  @dimensioname
         var dimensionname = arr[0].replace('[','').replace(']','').trim();
 
-        //  If there is only 1 measure...
-        if(col_measures_count == 1) {
+        //  If we drag only one measure onto the column axis
+        if(col_meas_count == 1) {
             output +=  '"@dimensioname" : "'+dimensionname+'",';
             output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
             output +=  '"members" : [';
             output += ' { "@membercaption" : "'+levelcaption+'", '
             output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "USED" }';
-        //output += ' ] } ';
+            output += ' "@status" : "INCLUDE" ';
+            output += ' } ] ';
         }else{
             if(index == 0) {
                 output  +=  '"@dimensioname" : "'+dimensionname+'",';
@@ -263,18 +270,58 @@ function createOutput(queryid) {
                 output += ', { "@membercaption" : "'+levelcaption+'", '
             }
             output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "USED" }';
+            output += ' "@status" : "INCLUDE" }';
         }
-        if(index == col_measures_count-1) {
+        if(index == col_meas_count-1) {
             output += ']';
         }
+
     });
-    if($('#column-axis li:not(.Measures)').length > 0 && col_measures_count > 0){
-        output += ' } } ], ';
+    //  Eof loop
+
+    if(col_meas_count > 0){
+        output += ' } } ] ';
     }
 
-    //  For the column axis
-    //  Loop through all Dimensions second
+
+    //  rows
+    output += ', "axis" : { "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
+
+    $('#row-axis li:not(.Measures)').each(function(index,item){
+        //  @levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  @levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  @dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+        if(levelcaption === ""){
+        // Do nothing
+        }else {
+            if(index > 0) {
+                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
+            }else{
+                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+            }
+            output  +=  ' "levels" : [ {';
+            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
+            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
+            if(index == row_dims_count-1) {
+                output += '} ]';
+            }
+        }
+    });
+    //  Eof loop
+
+    
+    output += ' } } } ';
+
+
+    //if(col_measures_count > 0 && $('#column-axis li:not(.Measures)').length == 0){
+    //    output += ' } } ], ';
+    //}
+    
+    /*  Handle dimensions next
 
     $('#column-axis li:not(.Measures)').each(function(index,item){
         //  levelcaption
@@ -297,14 +344,19 @@ function createOutput(queryid) {
             output  +=  ' "@levelname" : "'+levelname+'" } ] ';
         }
     });
+*/
 
-    output += ' } ';
+    //if($('#column-axis li:not(.Measures)').length == 1) {
+    //    output += ' } ] } ';
+    //}else {
+    //    output += ' } ] } ';
+    //}
 
-    //  Repeat for rows...
+    /*  Repeat for rows...
 
-    output += ', "axis" : { "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
+        c
 
-    //  For the column axis
+    //  For the row axis
     //  Loop through all Measures first
 
     $('#row-axis li.Measures').each(function(index,item){
@@ -343,7 +395,7 @@ function createOutput(queryid) {
             output += ']';
         }
     });
-    if($('#row-axis li:not(.Measures)').length > 0 && row_measures_count > 0){
+    if(row_measures_count > 0){
         output += ' } } ], ';
     }
 
@@ -370,9 +422,9 @@ function createOutput(queryid) {
             output  +=  ' "@levelcaption" : "'+levelcaption+'",';
             output  +=  ' "@levelname" : "'+levelname+'" } ] ';
         }
-    });
+    });*/
 
-    output += ' } ] } } ';
+    //output += ' } }';
 
     $('#output .json').html(output);
 }

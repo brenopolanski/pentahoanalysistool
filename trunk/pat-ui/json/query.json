@@ -1,0 +1,42 @@
+{
+   "@queryid":"8940f706-0621-4f14-8960-658f9e8e8d3a",
+   "axis":{
+      "@location":"COLUMNS",
+      "@nonempty":"true",
+      "dimensions":[
+         {
+            "@dimensioname":"Measures",
+            "levels":{
+               "@levelcaption":"MeasuresLevel",
+               "@levelname":"[Measures].[MeasuresLevel]",
+               "members":[
+                  {
+                     "@membercaption":"Quantity",
+                     "@membername":"[Measures].[Quantity]",
+                     "@status":"INCLUDE"
+                  },
+                  {
+                     "@membercaption":"Sales",
+                     "@membername":"[Measures].[Sales]",
+                     "@status":"INCLUDE"
+                  }
+               }
+            }
+         ],
+         "axis":{
+            "@location":"ROWS",
+            "@nonempty":"true",
+            "dimensions":[
+               {
+                  "@dimensioname":"Order Status",
+                  "levels":[
+                     {
+                        "@levelcaption":"Type",
+                        "@levelname":"[Order Status].[Type]"
+                     }
+                  ]
+               }
+            ]
+         }
+      }
+   }

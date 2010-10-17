@@ -90,6 +90,11 @@ if (!isset($_SESSION['username'])) {
                     <div class="clear"></div>
                 </div>
                 <!-- Eof row drop area -->
+                <!-- Notice -->
+                <div class="notice">
+                    You are only able to use multiple measures on the column axis (Sales & Quantity) and one dimension on the row axis (i.e. Order Type).
+                </div>
+                <!-- Eof notice -->
                 <!-- Output -->
                 <div id="output">
                     <div class="sessionid"></div>
