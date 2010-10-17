@@ -88,7 +88,7 @@ function load_data() {
             $.unblockUI();
             return false;
         }else{
-            $('#output .sessionid').html('sessionid : '+data['@sessionid']+'<br/>');
+            $('#output .sessionid').html(data['@sessionid']);
             $.each(data.connections.connection, function(i,connection){
                 $.each(connection.schemas, function(i,schema){
                     $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
