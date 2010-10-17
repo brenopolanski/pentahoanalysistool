@@ -35,7 +35,7 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
-        createOutput(queryid);
+        createOutput();
     });
     //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
@@ -43,7 +43,7 @@ $(document).ready(function () {
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
-        createOutput(queryid);
+        createOutput();
     });
     //  When hovering over ther remove links
     $(".remove").live('hover',
@@ -145,8 +145,9 @@ function new_query(data_string) {
                         $('#blockOverlay-update').html('dimensions...');
                         //  Store and rename the dimension name (remove spaces and replace with _)
                         var dimension_name = this['@dimensionname'].replace(' ', '_');
+                        var dimension_name_old = this['@dimensionname'];
                         //  Add dimension names as a <li></li> element
-                        $('#dimension-list').append('<li id="'+dimension_name+'"><a href="#">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
+                        $('#dimension-list').append('<li id="'+dimension_name+'"><a href="#" class="not-draggable">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
                         //  Add a secondary list to the dimension name
                         $('#'+dimension_name).append('<ul id="child_'+dimension_name+'"></ul>');
                         //  Add levels to the above <ul></ul> element
@@ -162,7 +163,7 @@ function new_query(data_string) {
                             //  Add members to the measure-list <ul></ul>
                             $('#measure-list').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
                         });
-                        
+
                     }
                 });
                 //  Eof populating dimensions and measures
@@ -194,13 +195,16 @@ function new_query(data_string) {
                         if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
                             return false;
                         }
+                        var arr = member_syntax.split('.');
+                        var str = arr[0].replace('[','').replace(']','');
+                        
                         $(this).find(".placeholder").remove();
-                        $("<li></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide">'+member_syntax+'</span>');
+                        $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
                         createOutput(queryid);
                     }
                 //  Sortable
                 }).sortable({
-                    connectWith: '#row-axis, #column-axis',
+                    //connectWith: '#row-axis, #column-axis',
                     items: "li:not(.placeholder)",
                     placeholder: 'placeholder-sort',
                     sort: function() {
@@ -217,18 +221,157 @@ function new_query(data_string) {
 
 function createOutput(queryid) {
 
-    var queryid;
-    var str = '{ "@queryid" : "'+queryid+'" ,';
-    str += '"axis":{ "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
-    $('#column-axis li').each(function(index, e){
-        str += ' "@dimensioname" : "'+$(e).find(".hide").text()+'"';
-    });
-    str += '} ] },'
-    str += '"axis":{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
-    $('#row-axis li').each(function(index, e){
-        str += ' "@dimensioname" : "'+$(e).find(".hide").text()+'"';
-    });
-    str += '} ] } }'
-    $('#output').html(str);
+    //  How many measures are being used?
+    var col_measures_count = $('#column-axis li span:contains("[Measures]")').length;
+    var row_measures_count = $('#row-axis li span:contains("[Measures]")').length;
 
+    //  Start off the JSON to be sent back
+    var output = '{ "@queryid" : "'+queryid+'", ';
+    output += '"axis" : { "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
+
+    //  For the column axis
+    //  Loop through all Measures first
+
+    $('#column-axis li.Measures').each(function(index,item){
+        //  levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+
+        //  If there is only 1 measure...
+        if(col_measures_count == 1) {
+            output +=  '"@dimensioname" : "'+dimensionname+'",';
+            output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+            output +=  '"members" : [';
+            output += ' { "@membercaption" : "'+levelcaption+'", '
+            output += ' "@membername" : "'+levelname+'",';
+            output += ' "@status" : "USED" }';
+        //output += ' ] } ';
+        }else{
+            if(index == 0) {
+                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+                output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+                output  +=  '"members" : [';
+            }
+            if(index == 0) {
+                output += ' { "@membercaption" : "'+levelcaption+'", '
+            }else{
+                output += ', { "@membercaption" : "'+levelcaption+'", '
+            }
+            output += ' "@membername" : "'+levelname+'",';
+            output += ' "@status" : "USED" }';
+        }
+        if(index == col_measures_count-1) {
+            output += ']';
+        }
+    });
+    if($('#column-axis li:not(.Measures)').length > 0 && col_measures_count > 0){
+        output += ' } } ], ';
+    }
+
+    //  For the column axis
+    //  Loop through all Dimensions second
+
+    $('#column-axis li:not(.Measures)').each(function(index,item){
+        //  levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+        if(levelcaption === ""){
+        // Do nothing
+        }else {
+            if(index > 0) {
+                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
+            }else{
+                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+            }
+            output  +=  ' "levels" : [ {';
+            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
+            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
+        }
+    });
+
+    output += ' } ';
+
+    //  Repeat for rows...
+
+    output += ', "axis" : { "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
+
+    //  For the column axis
+    //  Loop through all Measures first
+
+    $('#row-axis li.Measures').each(function(index,item){
+        //  levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+
+        //  If there is only 1 measure...
+        if(row_measures_count == 1) {
+            output +=  '"@dimensioname" : "'+dimensionname+'",';
+            output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+            output +=  '"members" : [';
+            output += ' { "@membercaption" : "'+levelcaption+'", '
+            output += ' "@membername" : "'+levelname+'",';
+            output += ' "@status" : "USED" }';
+        //output += ' ] } ';
+        }else{
+            if(index == 0) {
+                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+                output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+                output  +=  '"members" : [';
+            }
+            if(index == 0) {
+                output += ' { "@membercaption" : "'+levelcaption+'", '
+            }else{
+                output += ', { "@membercaption" : "'+levelcaption+'", '
+            }
+            output += ' "@membername" : "'+levelname+'",';
+            output += ' "@status" : "USED" }';
+        }
+        if(index == row_measures_count-1) {
+            output += ']';
+        }
+    });
+    if($('#row-axis li:not(.Measures)').length > 0 && row_measures_count > 0){
+        output += ' } } ], ';
+    }
+
+    //  For the row axis
+    //  Loop through all Dimensions second
+
+    $('#row-axis li:not(.Measures)').each(function(index,item){
+        //  levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+        if(levelcaption === ""){
+        // Do nothing
+        }else {
+            if(index > 0) {
+                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
+            }else{
+                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+            }
+            output  +=  ' "levels" : [ {';
+            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
+            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
+        }
+    });
+
+    output += ' } ] } } ';
+
+    $('#output .json').html(output);
 }
