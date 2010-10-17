@@ -235,8 +235,37 @@ function createOutput(queryid) {
     output  =   '{ "@queryid" : "'+queryid+'", ';
 
     //  columns
-    output  +=  '"axis" : { "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" : [ {';
+    output  +=  '"axis" : [{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" :  {';
 
+    $('#row-axis li:not(.Measures)').each(function(index,item){
+        //  @levelcaption
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        //  @levelname
+        var levelname = $(item).find(".levelname").text().trim();
+        var arr = levelname.split(".");
+        //  @dimensioname
+        var dimensionname = arr[0].replace('[','').replace(']','').trim();
+        if(levelcaption === ""){
+        // Do nothing
+        }else {
+            if(index > 0) {
+                output  +=  ', "@dimensionname" : "'+dimensionname+'",';
+            }else{
+                output  +=  '"@dimensionname" : "'+dimensionname+'",';
+            }
+            output  +=  ' "levels" : [ {';
+            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
+            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
+            if(index == row_dims_count-1) {
+                output += '} ';
+            }
+        }
+    });
+    //  Eof loop
+
+    //  rows
+    output += '},{ "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" :  {';
+    
     //  handle measures first
 
     //  loop through all measures in the column list
@@ -251,16 +280,17 @@ function createOutput(queryid) {
 
         //  If we drag only one measure onto the column axis
         if(col_meas_count == 1) {
-            output +=  '"@dimensioname" : "'+dimensionname+'",';
+            output +=  '"@dimensionname" : "'+dimensionname+'",';
             output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
             output +=  '"members" : [';
             output += ' { "@membercaption" : "'+levelcaption+'", '
             output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "INCLUDE" ';
+            output += ' "@status" : "INCLUSION", ';
+            output += ' "@type" : "MEMBER" ';
             output += ' } ] ';
         }else{
             if(index == 0) {
-                output  +=  '"@dimensioname" : "'+dimensionname+'",';
+                output  +=  '"@dimensionname" : "'+dimensionname+'",';
                 output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
                 output  +=  '"members" : [';
             }
@@ -270,51 +300,22 @@ function createOutput(queryid) {
                 output += ', { "@membercaption" : "'+levelcaption+'", '
             }
             output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "INCLUDE" }';
+            output += ' "@status" : "INCLUSION", ';
+            output += ' "@type" : "MEMBER" }';
+            if(index == col_meas_count-1) {
+                output += ']';
+            }
         }
-        if(index == col_meas_count-1) {
-            output += ']';
-        }
-
+        
     });
     //  Eof loop
 
     if(col_meas_count > 0){
-        output += ' } } ] ';
+        output += ' } }  ';
     }
 
-
-    //  rows
-    output += ', "axis" : { "@location" : "ROWS", "@nonempty" : "true", "dimensions" : [ {';
-
-    $('#row-axis li:not(.Measures)').each(function(index,item){
-        //  @levelcaption
-        var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  @levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  @dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-        if(levelcaption === ""){
-        // Do nothing
-        }else {
-            if(index > 0) {
-                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
-            }else{
-                output  +=  '"@dimensioname" : "'+dimensionname+'",';
-            }
-            output  +=  ' "levels" : [ {';
-            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
-            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
-            if(index == row_dims_count-1) {
-                output += '} ]';
-            }
-        }
-    });
-    //  Eof loop
-
     
-    output += ' } } } ';
+    output += ' } ] }';
 
 
     //if(col_measures_count > 0 && $('#column-axis li:not(.Measures)').length == 0){
@@ -425,6 +426,5 @@ function createOutput(queryid) {
     });*/
 
     //output += ' } }';
-
     $('#output .json').html(output);
 }
