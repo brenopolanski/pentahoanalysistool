@@ -25,6 +25,7 @@ import org.pentaho.pat.rpc.dto.CubeItem;
 import org.pentaho.pat.rpc.dto.MemberLabelItem;
 import org.pentaho.pat.rpc.dto.QuerySaveModel;
 import org.pentaho.pat.rpc.dto.enums.ObjectType;
+import org.pentaho.pat.rpc.dto.enums.SelectionType;
 import org.pentaho.pat.rpc.dto.query.IAxis;
 import org.pentaho.pat.rpc.exceptions.RpcException;
 import org.pentaho.pat.server.restservice.restobjects.AxisObject;
@@ -200,15 +201,17 @@ public class QueryService {
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized void saveQuery(@PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
+    public synchronized void saveQuery(QueryObject qob, @PathParam("queryId") String queryId, @FormParam("sessionId") String sessionId,
             @FormParam("queryName") String queryName, @FormParam("connectionId") String connectionId,
             @FormParam("cubeCatalog") String catalog, @FormParam("cubeName") String cubeName,
-            @FormParam("schema") String schema,
-            @QueryParam("callback") @DefaultValue("jsoncallback") String jsoncallback) throws RpcException,
+            @FormParam("schema") String schema) throws RpcException,
             ServletException {
         ss.init();
         qs.init();
         ds.init();
+        
+        updateQuery(sessionId, qob);
+        
         CubeItem ci = new CubeItem(cubeName, catalog, schema);
 
         this.qs.saveQuery(sessionId, queryId, queryName, connectionId, ci, cubeName);
@@ -232,11 +235,12 @@ public class QueryService {
      * @throws ServletException
      */
     @GET
+    @Path("/{schema}/{cube}/{queryname}")
     @Produces( {"application/xml", "application/json"})
     // it is to set the response type
     @Resource
     // to make it spring set the response type
-    public synchronized QueryObject loadQuery(@QueryParam("queryId") String queryId,
+    public synchronized QueryObject loadQuery(@QueryParam("queryname") String queryId,
             @QueryParam("sessionId") String sessionId) throws RpcException, ServletException {
 
         try {
@@ -340,6 +344,14 @@ public class QueryService {
             @PathParam("cube") String cube, @PathParam("user") String user, @PathParam("schema") String schema,
             @PathParam("queryname") String queryname) throws RpcException, ServletException {
 
+        updateQuery(sessionId, qob);
+
+        ResultSetObject rso = new ResultSetObject(qs.executeQuery(sessionId, qob.getQueryId()));
+        return rso;
+
+    }
+
+    private void updateQuery(String sessionId, QueryObject qob) throws RpcException, ServletException{
         qs.init();
 
         for (AxisObject obj : qob.getAxes()) {
@@ -354,7 +366,13 @@ public class QueryService {
                 LevelObject[] levellist = dim.getLevels();
                 if (levellist != null) {
                     for (LevelObject lob : levellist) {
-                        for (MemberObject mob : lob.getMob()) {
+                        if(lob.getMob()==null){
+                            qs.createSelection(sessionId, qob.getQueryId(), lob.getName(), ObjectType.LEVEL,
+                                    SelectionType.MEMBER);
+                        }
+                        else{
+                            for (MemberObject mob : lob.getMob()) {
+                        
 
                             if (mob.getType() != null) {
                                 if (mob.getStatus().toString().equals("INCLUSION")) {
@@ -362,15 +380,11 @@ public class QueryService {
                                             mob.getType());
                                 }
                             }
+                            }
                         }
                     }
                 }
             }
         }
-
-        ResultSetObject rso = new ResultSetObject(qs.executeQuery(sessionId, qob.getQueryId()));
-        return rso;
-
     }
-
 }
