@@ -1,5 +1,5 @@
 {
-   "@queryid":"c58b2790-1b8b-4eb3-9cd7-618de7623861",
+   "@queryid":"0f4b1207-cd2a-49e8-a618-36a050ef08b6",
    "axis":[
       {
          "@location":"ROWS",
@@ -23,6 +23,12 @@
                "@levelcaption":"MeasuresLevel",
                "@levelname":"[Measures].[MeasuresLevel]",
                "members":[
+                  {
+                     "@membercaption":"Fact Count",
+                     "@membername":"[Measures].[Fact Count]",
+                     "@status":"NONE",
+                     "@type":"MEMBER"
+                  },
                   {
                      "@membercaption":"Quantity",
                      "@membername":"[Measures].[Quantity]",
