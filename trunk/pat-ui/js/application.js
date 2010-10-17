@@ -232,7 +232,8 @@ function createOutput(queryid) {
 
     //  root
     //  queryid
-    output  =   '{ "@queryid" : "'+queryid+'", ';
+    output  =    'curl -XPUT --basic -u admin:admin -HContent-type:application/json --data-binary \'';
+    output  +=   '{ "@queryid" : "'+queryid+'", ';
 
     //  columns
     output  +=  '"axis" : [{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" :  {';
@@ -426,5 +427,6 @@ function createOutput(queryid) {
     });*/
 
     //output += ' } }';
+    output += '\' http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/newquery/run?'+$('#output .sessionid').text();
     $('#output .json').html(output);
 }
