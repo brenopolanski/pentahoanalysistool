@@ -92,7 +92,7 @@ if (!isset($_SESSION['username'])) {
                 <!-- Eof row drop area -->
                 <!-- Output -->
                 <div id="output">
-                    <p>sessionid: <?php echo $_SESSION['sessionid']; ?></p>
+                    <div class="sessionid"></div>
                     <div class="json"></div>
                 </div>
                 <!-- Eof output -->
