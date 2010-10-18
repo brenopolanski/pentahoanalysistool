@@ -35,7 +35,7 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
-        createOutput();
+        create_output();
     });
     //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
@@ -43,7 +43,7 @@ $(document).ready(function () {
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
-        createOutput();
+        create_output();
     });
     //  When hovering over ther remove links
     $(".remove").live('hover',
@@ -82,32 +82,30 @@ $(document).ready(function () {
  */
 
 function load_data() {
-    $.getJSON('inc/info.php', function(data) {
-        if(data == 0){
-            alert('Error!');
-            $.unblockUI();
-            return false;
-        }else{
-            $('#output .sessionid').html(data['@sessionid']);
-            $.each(data.connections.connection, function(i,connection){
-                $.each(connection.schemas, function(i,schema){
-                    $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
-                    $('#blockOverlay-update').html('schema '+schema['@schemaname']);
-                    $.each(schema.cubes, function(i,cube){
-                        $('#blockOverlay-update').html('cube '+cube['@cubename']);
-                        if(cube.length == undefined) { /* hack */
-                            $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
-                        }else{
-                            $.each(cube, function(i,item){
-                                $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
-                            });
-                        }
-                    });
-                    $('#data-list').append('</optgroup>');
-                    $.unblockUI();
-                });
-            });
+    $.getJSON('inc/rest.php', function(data) {
+        if(data === null) {
+           $.unblockUI();
+            alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
         }
+        $('#output .sessionid').html(data['@sessionid']);
+        $.each(data.connections.connection, function(i,connection){
+            $.each(connection.schemas, function(i,schema){
+                $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
+                $('#blockOverlay-update').html('schema '+schema['@schemaname']);
+                $.each(schema.cubes, function(i,cube){
+                    $('#blockOverlay-update').html('cube '+cube['@cubename']);
+                    if(cube.length == undefined) { /* hack */
+                        $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
+                    }else{
+                        $.each(cube, function(i,item){
+                            $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
+                        });
+                    }
+                });
+                $('#data-list').append('</optgroup>');
+                $.unblockUI();
+            });
+        });
     });
 }
 
@@ -126,12 +124,14 @@ function new_query(data_string) {
     var cubename = split_string[2];
     $.ajax({
         type:       'POST',
-        url:        'inc/query.php',
+        url:        'inc/rest.php',
         data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
         datatype:   'json',
+        error:      function() { alert('hello'); },
         success:    function(data){
-            if(data === "false") {
-                return false;
+            if(data === "false" || data === null) {
+                alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
+                $.unblockUI();
             }else{
                 // Remove placeholders
                 $('#dimension-list, #measure-list').html('');
@@ -201,7 +201,7 @@ function new_query(data_string) {
                         
                         $(this).find(".placeholder").remove();
                         $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
-                        createOutput(queryid);
+                        create_output(queryid);
                     }
                 //  Sortable
                 }).sortable({
@@ -209,7 +209,7 @@ function new_query(data_string) {
                     items: "li:not(.placeholder)",
                     placeholder: 'placeholder-sort',
                     sort: function() {
-                        createOutput(queryid);
+                        create_output(queryid);
                     }
 
                 });
@@ -220,7 +220,7 @@ function new_query(data_string) {
     });
 }
 
-function createOutput(queryid) {
+function create_output(queryid) {
 
     //  Before printing JSON count how many measures and dimensions
     //  are on both the column and row axis

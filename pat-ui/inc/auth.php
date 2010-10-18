@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  Document    :   info.php
+ *  Document    :   auth.php
  *  Author      :   Prashant Raju (http://www.prashantraju.com/)
  *  Description :   This file is used to authenticate the user and retrieve
  *                  information about available schemas and cubes.
@@ -33,8 +33,8 @@ if (!isset($_SESSION['username'])) {
     //  Make sure the header is set to accept JSON
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-    //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+    curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
+    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -53,57 +53,17 @@ if (!isset($_SESSION['username'])) {
         //  Store the username/password as session variables
         $_SESSION['username'] = $username;
         $_SESSION['password'] = $password;
-        //  Had to echo as return was not working
+        //  Store the connections and sessionid as session variable
+        $_SESSION['connections'] = $output;
+        $_SESSION['sessionid'] = $sessionid;
+        //  Had to echo as 'return' was not working
         echo curl_errno($ch);
     } else {
         //  Else output what the error is
         echo curl_error($ch);
     }
 } else {
-
-    //  Store session and password session variables
-    $username = $_SESSION['username'];
-    $password = $_SESSION['password'];
-
-    //  URL for PATs REST web service using the current user
-    $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/session";
-    //$url = "http://localhost/pat-ui/json/info.json";
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-    //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-    //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    //  Had to set this for PHP's cURL library to play nice
-    curl_setopt($ch, CURLOPT_POSTFIELDS, "");
-    $output = curl_exec($ch);
-
-    //  Convert the output to a JSON object
-    $obj = json_decode($output);
-    //  Retrieve the sessionid from the JSON object
-    $sessionid = $obj->{'@sessionid'};
-
-    /*
-     *  If launch.php is relaunched the get_data() function will try and create
-     *  a new session everytime to get the schemas and cubes, this way we
-     *  are always using first sessionid we created orginally. This is probably
-     *  not ideal and needs refinement.
-     */
-    if (!isset($_SESSION['sessionid'])) {
-        $_SESSION['sessionid'] = $sessionid;
-    }
-
-    //  If the cURL error code is 0 (success)
-    if (curl_errno($ch) == 0) {
-        //  Output schemas and cubes as JSON
-        echo $output;
-    } else {
-        //  Else output what the error is
-        echo "0";
-    }
+    //  If the username is not set then logout
+    header('Location: logout.php');
 }
 ?>

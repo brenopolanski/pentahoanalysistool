@@ -61,7 +61,7 @@
                     $(this).attr("disabled", true).val('Please wait...');
                     $.ajax({
                         type: "POST",
-                        url: "inc/info.php",
+                        url: "inc/auth.php",
                         data: data_string,
                         success: function(data) {
                             if(data != 0) {
