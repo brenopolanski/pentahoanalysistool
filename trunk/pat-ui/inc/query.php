@@ -13,7 +13,11 @@
 session_start();
 
 if (isset($_SESSION['username'])) {
-    $method = $_SERVER['REQUEST_METHOD'];
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $method = $_SERVER['REQUEST_METHOD'];
+    } else {
+        $method = $_POST['method'];
+    }
 
 //  Headers and data, change this if you would like to work with XML
 //  instead of JSON
@@ -28,7 +32,7 @@ if (isset($_SESSION['username'])) {
             echo $_SESSION['connections'];
             break;
 
-        case 'POST':
+        case 'POST_NEW':
             //  Get the connectionid, schemaname and cubename
             $connectionid = $_POST['connectionid'];
             $schemaname = $_POST['schemaname'];
@@ -41,6 +45,7 @@ if (isset($_SESSION['username'])) {
             $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery";
 
             $ch = curl_init();
+
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
@@ -73,36 +78,41 @@ if (isset($_SESSION['username'])) {
             }
             break;
 
-        case 'PUT':
+        case 'POST_RUN':
             //  Get the connectionid, schemaname and cubename
-            $connectionid = $_POST['connectionid'];
             $schemaname = $_POST['schemaname'];
             $cubename = $_POST['cubename'];
             $query = $_POST['query'];
 
-            //  URL for PAT's REST web service
-            //$url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newqueryrun?" . $_SESSION['sessionid'];
-            $url = "http://localhost/pat-ui/json/result.json";
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            //curl_setopt($ch, CURLOPT_PROXY, "http://sensis-proxy-vs.sensis.com.au");
-            //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-            //  Make sure the header is set to accept JSON
+
+            //  URL for PAT's REST web service
+            $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery/run?sessionid=" . $_SESSION['sessionid'];
+
+            $putString = $query;
+            $putData = tmpfile();
+            fwrite($putData, $putString);
+            fseek($putData, 0);
+
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-           // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            //curl_setopt($ch, CURLOPT_USERPWD, $_SESSION['username'] . ":" . $_SESSION['password']);
-            //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-            //curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-            //curl_setopt($ch, CURLOPT_POST, 1);
-           // curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD, $_SESSION['username'] . ":" . $_SESSION['password']);
+            curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_PUT, true);
+            curl_setopt($ch, CURLOPT_INFILE, $putData);
+            curl_setopt($ch, CURLOPT_INFILESIZE, strlen($putString));
+
             $output = curl_exec($ch);
 
-            //  HTTP status of response
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            fclose($putData);
+            curl_close($ch);
 
+            //  HTTP status of response
+            // $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             //  If the cURL error code is 0 (success)
-            if ($status == 200) {
+            if ($output) {
                 //  Output schemas and cubes as JSON
                 echo $output;
             } else {
@@ -118,5 +128,4 @@ if (isset($_SESSION['username'])) {
     //  If username is not set logout
     header('Location: logout.php');
 }
-
 ?>

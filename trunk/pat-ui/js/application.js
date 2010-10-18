@@ -37,6 +37,7 @@ $(document).ready(function () {
         $(this).parent().remove();
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
+            run_query();
         }
         run_query();
     });
@@ -45,6 +46,7 @@ $(document).ready(function () {
         $(this).parent().remove();
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
+            run_query();
         }
         run_query();
     });
@@ -85,7 +87,7 @@ $(document).ready(function () {
  */
 
 function load_data() {
-    $.getJSON('inc/rest.php', function(data) {
+    $.getJSON('inc/query.php', function(data) {
         if(data === null) {
             $.unblockUI();
             alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
@@ -128,8 +130,8 @@ function new_query(data_string) {
     var cubename = split_string[2];
     $.ajax({
         type:       'POST',
-        url:        'inc/rest.php',
-        data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
+        url:        'inc/query.php',
+        data:       'method=POST_NEW&connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
         datatype:   'json',
         success:    function(data){
             if(data === "false" || data === null) {
@@ -231,10 +233,30 @@ function new_query(data_string) {
  */
 
 function run_query() {
-
-    //  Display a BlockUI when loading dimensions and measures
     
-
+    var data_string = $('#data-list').val();
+    var split_string = data_string.split("|");
+    var connectionid = split_string[0];
+    var schemaname = split_string[1];
+    var cubename = split_string[2];
+    $.ajax({
+        type:       'POST',
+        url:        'inc/query.php',
+        data:       'method=POST_NEW&connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
+        datatype:   'json',
+        success:    function(data){
+            if(data === "false" || data === null) {
+                alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
+                $.unblockUI();
+            }else{
+                //  Convert output to a JSON object
+                var obj = $.parseJSON(data);
+                //  Set the queryid into a cookie
+                $.cookie('queryid', obj['@queryid']);
+            }
+        }
+    });
+    
     //  Before printing JSON count how many measures and dimensions
     //  are on both the column and row axis
     var col_meas_count = $('#column-axis li span:contains("[Measures]")').length;
@@ -245,25 +267,25 @@ function run_query() {
 
     if(col_meas_count == 0 && row_dims_count == 0 && row_meas_count == 0 && col_dims_count == 0){
         $('#output .json').html('');
-        $('#result .json').html('');
+        $('#result').html('');
         return false;
     }
     if(col_meas_count == 0 && row_dims_count == 0 || row_meas_count > 0 && col_dims_count > 0) {
         $('#output .json').html('Incompatible items!');
-        $('#result .json').html('');
+        $('#result').html('');
         return false;
     } else if(col_meas_count > 0 && row_dims_count == 0 || col_meas_count == 0 && row_dims_count > 0) {
         $('#output .json').html('You will need to drag one more dimension or measure!');
-        $('#result .json').html('');
+        $('#result').html('');
         return false;
     } else {
         $.blockUI({
-            message: '<div class="blockOverlay-inner"><strong>PAT<em>ui</em> Demo<strong><br/>Running query...</span></div>'
+            message: '<div class="blockOverlay-inner"><strong>PAT<em>ui</em> Demo</strong><br/>Running query...</span></div>'
         });
         //  root
         //  queryid
-        output  =    'curl -XPUT --basic -u admin:admin -HContent-type:application/json --data-binary \'';
-        output  +=   '{ "@queryid" : "'+$.cookie('queryid')+'", ';
+        //output  =    'curl -XPUT --basic -u admin:admin -HContent-type:application/json --data-binary \'';
+        output  =   '{ "@queryid" : "'+$.cookie('queryid')+'", ';
 
         //  columns
         output  +=  '"axis" : [{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" :  {';
@@ -347,7 +369,7 @@ function run_query() {
 
         output += ' } ] }';
 
-        output += '\' http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/newquery/run?'+$.cookie('sessionid');
+        //output += '\' http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/newquery/run?'+$.cookie('sessionid');
         $('#output .json').html(output);
 
         var data_string = $('#data-list').val();
@@ -356,9 +378,9 @@ function run_query() {
         var schemaname = split_string[1];
         var cubename = split_string[2];
         $.ajax({
-            type:       'PUT',
-            url:        'inc/rest.php',
-            data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename+'&query='+output,
+            type:       'POST',
+            url:        'inc/query.php',
+            data:       'method=POST_RUN&connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename+'&query='+output,
             datatype:   'json',
             success:    function(data){
                 var obj = $.parseJSON(data);
@@ -367,6 +389,10 @@ function run_query() {
         });
     }
 }
+
+/*
+ *  create_table()
+ */
 
 function create_table(data){
     $('#result').html('');
@@ -384,7 +410,9 @@ function create_table(data){
     $(data.result).each(function(index,item){
         $('#result-table').append('<tr id="'+index+'"></tr>');
         $('#'+index).append('<td>'+item.ROW[0]+'</td>')
-        $('#'+index).append('<td>'+item.ROW[1]+'</td>')
+        $('#column-axis li.Measures').each(function(index2,measure){
+            $('#'+index).append('<td>'+item.ROW[index2+1]+'</td>')
+        });
     });
     $('#result-table').append('</table>');
     $.unblockUI();
