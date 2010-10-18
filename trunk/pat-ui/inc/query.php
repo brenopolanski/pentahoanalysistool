@@ -114,6 +114,9 @@ if (isset($_SESSION['username'])) {
             //  If the cURL error code is 0 (success)
             if ($output) {
                 //  Output schemas and cubes as JSON
+                echo $query;
+                echo $url;
+                echo curl_error($ch);
                 echo $output;
             } else {
                 //  Else output what the error is
