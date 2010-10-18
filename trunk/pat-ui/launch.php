@@ -22,6 +22,7 @@ if (!isset($_SESSION['username'])) {
         <script type="text/javascript" src="js/jquery.layout.js"></script>
         <script type="text/javascript" src="js/jquery.blockui.js"></script>
         <script type="text/javascript" src="js/jquery.jstree.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/application.js"></script>
     </head>
     <body id="launch">
@@ -90,14 +91,17 @@ if (!isset($_SESSION['username'])) {
                     <div class="clear"></div>
                 </div>
                 <!-- Eof row drop area -->
-                <!-- Notice -->
+                <!-- Notice 
                 <div class="notice">
-                    You are only able to use multiple measures on the column axis (Sales & Quantity) and one dimension on the row axis (i.e. Order Type).
+                    You are only able to use multiple measures on the column axis (Sales and Quantity) and one dimension on the row axis (i.e. Order Type).
                 </div>
-                <!-- Eof notice -->
+                 Eof notice -->
+                <!-- Result -->
+                <div id="result">
+                </div>
+                <!-- Eof result -->
                 <!-- Output -->
                 <div id="output">
-                    <div class="sessionid"></div>
                     <div class="json"></div>
                 </div>
                 <!-- Eof output -->
