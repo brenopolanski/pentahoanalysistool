@@ -1,5 +1,8 @@
 $(document).ready(function () {
-
+    //  Clear cookies
+    $.cookie('queryid', null);
+    $.cookie('sessionid', null);
+    
     //  Messages
     var PAT_TITLE       =   "<strong>PAT<em>ui</em> Demo</strong>";
     var LOADING_DATA    =   "";
@@ -35,7 +38,7 @@ $(document).ready(function () {
         if($('#column-drop ul li').length == 0) {
             $('#column-drop ul').append('<li class="quiet placeholder">Drop column axis items here</li>');
         }
-        create_output();
+        run_query();
     });
     //  Remove links on rows axis items
     $('#row-drop ul li .remove').live('click', function(){
@@ -43,7 +46,7 @@ $(document).ready(function () {
         if($('#row-drop ul li').length == 0) {
             $('#row-drop ul').append('<li class="quiet placeholder">Drop row axis items here</li>');
         }
-        create_output();
+        run_query();
     });
     //  When hovering over ther remove links
     $(".remove").live('hover',
@@ -84,10 +87,11 @@ $(document).ready(function () {
 function load_data() {
     $.getJSON('inc/rest.php', function(data) {
         if(data === null) {
-           $.unblockUI();
+            $.unblockUI();
             alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
         }
-        $('#output .sessionid').html(data['@sessionid']);
+        //  Set the sessionid into a cookie (temp)
+        $.cookie('sessionid', data['@sessionid']);
         $.each(data.connections.connection, function(i,connection){
             $.each(connection.schemas, function(i,schema){
                 $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
@@ -127,7 +131,6 @@ function new_query(data_string) {
         url:        'inc/rest.php',
         data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
         datatype:   'json',
-        error:      function() { alert('hello'); },
         success:    function(data){
             if(data === "false" || data === null) {
                 alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
@@ -137,8 +140,9 @@ function new_query(data_string) {
                 $('#dimension-list, #measure-list').html('');
                 //  Convert output to a JSON object
                 var obj = $.parseJSON(data);
-                //  For each dimension
-                var queryid = obj['@queryid'];
+                //  Set the queryid into a cookie
+                $.cookie('queryid', obj['@queryid']);
+                // For each dimension
                 $.each(obj.axis.dimensions, function(i,dimension){
                     //  If not a Measure dimension
                     if(this['@dimensionname'] != 'Measures')
@@ -201,7 +205,7 @@ function new_query(data_string) {
                         
                         $(this).find(".placeholder").remove();
                         $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
-                        create_output(queryid);
+                        run_query();
                     }
                 //  Sortable
                 }).sortable({
@@ -209,7 +213,7 @@ function new_query(data_string) {
                     items: "li:not(.placeholder)",
                     placeholder: 'placeholder-sort',
                     sort: function() {
-                        create_output(queryid);
+                        run_query();
                     }
 
                 });
@@ -220,213 +224,168 @@ function new_query(data_string) {
     });
 }
 
-function create_output(queryid) {
+
+/*
+ *  run_query()
+ *  Runs a query by using a POST method to PAT's server
+ */
+
+function run_query() {
+
+    //  Display a BlockUI when loading dimensions and measures
+    
 
     //  Before printing JSON count how many measures and dimensions
     //  are on both the column and row axis
     var col_meas_count = $('#column-axis li span:contains("[Measures]")').length;
     var row_meas_count = $('#row-axis li span:contains("[Measures]")').length;
-    var col_dims_count = $('#column-axis li:not(.Measures)').length;
-    var row_dims_count = $('#row-axis li:not(.Measures)').length;
+    var col_dims_count = $('#column-axis li:not(.Measures, .placeholder)').length;
+    var row_dims_count = $('#row-axis li:not(.Measures, .placeholder)').length;
     var output;
 
-    //  root
-    //  queryid
-    output  =    'curl -XPUT --basic -u admin:admin -HContent-type:application/json --data-binary \'';
-    output  +=   '{ "@queryid" : "'+queryid+'", ';
+    if(col_meas_count == 0 && row_dims_count == 0 && row_meas_count == 0 && col_dims_count == 0){
+        $('#output .json').html('');
+        $('#result .json').html('');
+        return false;
+    }
+    if(col_meas_count == 0 && row_dims_count == 0 || row_meas_count > 0 && col_dims_count > 0) {
+        $('#output .json').html('Incompatible items!');
+        $('#result .json').html('');
+        return false;
+    } else if(col_meas_count > 0 && row_dims_count == 0 || col_meas_count == 0 && row_dims_count > 0) {
+        $('#output .json').html('You will need to drag one more dimension or measure!');
+        $('#result .json').html('');
+        return false;
+    } else {
+        $.blockUI({
+            message: '<div class="blockOverlay-inner"><strong>PAT<em>ui</em> Demo<strong><br/>Running query...</span></div>'
+        });
+        //  root
+        //  queryid
+        output  =    'curl -XPUT --basic -u admin:admin -HContent-type:application/json --data-binary \'';
+        output  +=   '{ "@queryid" : "'+$.cookie('queryid')+'", ';
 
-    //  columns
-    output  +=  '"axis" : [{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" :  {';
+        //  columns
+        output  +=  '"axis" : [{ "@location" : "ROWS", "@nonempty" : "true", "dimensions" :  {';
 
-    $('#row-axis li:not(.Measures)').each(function(index,item){
-        //  @levelcaption
-        var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  @levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  @dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-        if(levelcaption === ""){
-        // Do nothing
-        }else {
-            if(index > 0) {
-                output  +=  ', "@dimensionname" : "'+dimensionname+'",';
+        $('#row-axis li:not(.Measures)').each(function(index,item){
+            //  @levelcaption
+            var levelcaption = $(item).find(".levelcaption").text().trim();
+            //  @levelname
+            var levelname = $(item).find(".levelname").text().trim();
+            var arr = levelname.split(".");
+            //  @dimensioname
+            var dimensionname = arr[0].replace('[','').replace(']','').trim();
+            if(levelcaption === ""){
+            // Do nothing
+            }else {
+                if(index > 0) {
+                    output  +=  ', "@dimensionname" : "'+dimensionname+'",';
+                }else{
+                    output  +=  '"@dimensionname" : "'+dimensionname+'",';
+                }
+                output  +=  ' "levels" : [ {';
+                output  +=  ' "@levelcaption" : "'+levelcaption+'",';
+                output  +=  ' "@levelname" : "'+levelname+'" } ] ';
+                if(index == row_dims_count-1) {
+                    output += '} ';
+                }
+            }
+        });
+        //  Eof loop
+
+        //  rows
+        output += '},{ "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" :  {';
+
+        //  handle measures first
+
+        //  loop through all measures in the column list
+        $('#column-axis li.Measures').each(function(index,item){
+            //  @levelcaption
+            var levelcaption = $(item).find(".levelcaption").text().trim();
+            //  @levelname
+            var levelname = $(item).find(".levelname").text().trim();
+            var arr = levelname.split(".");
+            //  @dimensioname
+            var dimensionname = arr[0].replace('[','').replace(']','').trim();
+
+            //  If we drag only one measure onto the column axis
+            if(col_meas_count == 1) {
+                output +=  '"@dimensionname" : "'+dimensionname+'",';
+                output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+                output +=  '"members" : [';
+                output += ' { "@membercaption" : "'+levelcaption+'", '
+                output += ' "@membername" : "'+levelname+'",';
+                output += ' "@status" : "INCLUSION", ';
+                output += ' "@type" : "MEMBER" ';
+                output += ' } ] ';
             }else{
-                output  +=  '"@dimensionname" : "'+dimensionname+'",';
+                if(index == 0) {
+                    output  +=  '"@dimensionname" : "'+dimensionname+'",';
+                    output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
+                    output  +=  '"members" : [';
+                }
+                if(index == 0) {
+                    output += ' { "@membercaption" : "'+levelcaption+'", '
+                }else{
+                    output += ', { "@membercaption" : "'+levelcaption+'", '
+                }
+                output += ' "@membername" : "'+levelname+'",';
+                output += ' "@status" : "INCLUSION", ';
+                output += ' "@type" : "MEMBER" }';
+                if(index == col_meas_count-1) {
+                    output += ']';
+                }
             }
-            output  +=  ' "levels" : [ {';
-            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
-            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
-            if(index == row_dims_count-1) {
-                output += '} ';
-            }
+
+        });
+        //  Eof loop
+
+        if(col_meas_count > 0){
+            output += ' } }  ';
         }
-    });
-    //  Eof loop
 
-    //  rows
-    output += '},{ "@location" : "COLUMNS", "@nonempty" : "true", "dimensions" :  {';
+        output += ' } ] }';
+
+        output += '\' http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/newquery/run?'+$.cookie('sessionid');
+        $('#output .json').html(output);
+
+        var data_string = $('#data-list').val();
+        var split_string = data_string.split("|");
+        var connectionid = split_string[0];
+        var schemaname = split_string[1];
+        var cubename = split_string[2];
+        $.ajax({
+            type:       'PUT',
+            url:        'inc/rest.php',
+            data:       'connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename+'&query='+output,
+            datatype:   'json',
+            success:    function(data){
+                var obj = $.parseJSON(data);
+                create_table(obj);
+            }
+        });
+    }
+}
+
+function create_table(data){
+    $('#result').html('');
+    $('#result').append('<table id="result-table">');
+    $('#result-table').append('<tr id="hd"></tr>');
     
-    //  handle measures first
-
-    //  loop through all measures in the column list
+    $('#row-axis li:not(.Measures)').each(function(index,item){
+        var levelcaption = $(item).find(".levelcaption").text().trim();
+        $('#hd').append('<th>'+levelcaption+'</th>')
+    });
     $('#column-axis li.Measures').each(function(index,item){
-        //  @levelcaption
         var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  @levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  @dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-
-        //  If we drag only one measure onto the column axis
-        if(col_meas_count == 1) {
-            output +=  '"@dimensionname" : "'+dimensionname+'",';
-            output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
-            output +=  '"members" : [';
-            output += ' { "@membercaption" : "'+levelcaption+'", '
-            output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "INCLUSION", ';
-            output += ' "@type" : "MEMBER" ';
-            output += ' } ] ';
-        }else{
-            if(index == 0) {
-                output  +=  '"@dimensionname" : "'+dimensionname+'",';
-                output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
-                output  +=  '"members" : [';
-            }
-            if(index == 0) {
-                output += ' { "@membercaption" : "'+levelcaption+'", '
-            }else{
-                output += ', { "@membercaption" : "'+levelcaption+'", '
-            }
-            output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "INCLUSION", ';
-            output += ' "@type" : "MEMBER" }';
-            if(index == col_meas_count-1) {
-                output += ']';
-            }
-        }
-        
+        $('#hd').append('<th>'+levelcaption+'</th>')
     });
-    //  Eof loop
-
-    if(col_meas_count > 0){
-        output += ' } }  ';
-    }
-
-    
-    output += ' } ] }';
-
-
-    //if(col_measures_count > 0 && $('#column-axis li:not(.Measures)').length == 0){
-    //    output += ' } } ], ';
-    //}
-    
-    /*  Handle dimensions next
-
-    $('#column-axis li:not(.Measures)').each(function(index,item){
-        //  levelcaption
-        var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-        if(levelcaption === ""){
-        // Do nothing
-        }else {
-            if(index > 0) {
-                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
-            }else{
-                output  +=  '"@dimensioname" : "'+dimensionname+'",';
-            }
-            output  +=  ' "levels" : [ {';
-            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
-            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
-        }
+    $(data.result).each(function(index,item){
+        $('#result-table').append('<tr id="'+index+'"></tr>');
+        $('#'+index).append('<td>'+item.ROW[0]+'</td>')
+        $('#'+index).append('<td>'+item.ROW[1]+'</td>')
     });
-*/
-
-    //if($('#column-axis li:not(.Measures)').length == 1) {
-    //    output += ' } ] } ';
-    //}else {
-    //    output += ' } ] } ';
-    //}
-
-    /*  Repeat for rows...
-
-        c
-
-    //  For the row axis
-    //  Loop through all Measures first
-
-    $('#row-axis li.Measures').each(function(index,item){
-        //  levelcaption
-        var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-
-        //  If there is only 1 measure...
-        if(row_measures_count == 1) {
-            output +=  '"@dimensioname" : "'+dimensionname+'",';
-            output +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
-            output +=  '"members" : [';
-            output += ' { "@membercaption" : "'+levelcaption+'", '
-            output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "USED" }';
-        //output += ' ] } ';
-        }else{
-            if(index == 0) {
-                output  +=  '"@dimensioname" : "'+dimensionname+'",';
-                output  +=  ' "levels": { "@levelcaption" : "MeasuresLevel", "@levelname" : "[Measures].[MeasuresLevel]",';
-                output  +=  '"members" : [';
-            }
-            if(index == 0) {
-                output += ' { "@membercaption" : "'+levelcaption+'", '
-            }else{
-                output += ', { "@membercaption" : "'+levelcaption+'", '
-            }
-            output += ' "@membername" : "'+levelname+'",';
-            output += ' "@status" : "USED" }';
-        }
-        if(index == row_measures_count-1) {
-            output += ']';
-        }
-    });
-    if(row_measures_count > 0){
-        output += ' } } ], ';
-    }
-
-    //  For the row axis
-    //  Loop through all Dimensions second
-
-    $('#row-axis li:not(.Measures)').each(function(index,item){
-        //  levelcaption
-        var levelcaption = $(item).find(".levelcaption").text().trim();
-        //  levelname
-        var levelname = $(item).find(".levelname").text().trim();
-        var arr = levelname.split(".");
-        //  dimensioname
-        var dimensionname = arr[0].replace('[','').replace(']','').trim();
-        if(levelcaption === ""){
-        // Do nothing
-        }else {
-            if(index > 0) {
-                output  +=  ', "@dimensioname" : "'+dimensionname+'",';
-            }else{
-                output  +=  '"@dimensioname" : "'+dimensionname+'",';
-            }
-            output  +=  ' "levels" : [ {';
-            output  +=  ' "@levelcaption" : "'+levelcaption+'",';
-            output  +=  ' "@levelname" : "'+levelname+'" } ] ';
-        }
-    });*/
-
-    //output += ' } }';
-    output += '\' http://demo.analytical-labs.com/rest/admin/query/SteelWheels/SteelWheelsSales/newquery/run?'+$('#output .sessionid').text();
-    $('#output .json').html(output);
+    $('#result-table').append('</table>');
+    $.unblockUI();
 }
