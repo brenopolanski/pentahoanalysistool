@@ -214,7 +214,7 @@ function new_query(data_string) {
                     //connectWith: '#row-axis, #column-axis',
                     items: "li:not(.placeholder)",
                     placeholder: 'placeholder-sort',
-                    sort: function() {
+                    stop: function() {
                         run_query();
                     }
 
