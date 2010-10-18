@@ -89,7 +89,7 @@ if (isset($_SESSION['username'])) {
             //  URL for PAT's REST web service
             $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery/run?sessionid=" . $_SESSION['sessionid'];
 
-            $putString = $query;
+            $putString = stripslashes_deep($query);
             $putData = tmpfile();
             fwrite($putData, $putString);
             fseek($putData, 0);
@@ -114,9 +114,9 @@ if (isset($_SESSION['username'])) {
             //  If the cURL error code is 0 (success)
             if ($output) {
                 //  Output schemas and cubes as JSON
-                echo $query;
-                echo $url;
-                echo curl_error($ch);
+                //echo $query;
+                //echo $url;
+                //echo curl_error($ch);
                 echo $output;
             } else {
                 //  Else output what the error is
