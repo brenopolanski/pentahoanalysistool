@@ -89,7 +89,7 @@ if (isset($_SESSION['username'])) {
             //  URL for PAT's REST web service
             $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery/run?sessionid=" . $_SESSION['sessionid'];
 
-            $putString = stripslashes_deep($query);
+            $putString = stripslashes($query);
             $putData = tmpfile();
             fwrite($putData, $putString);
             fseek($putData, 0);
