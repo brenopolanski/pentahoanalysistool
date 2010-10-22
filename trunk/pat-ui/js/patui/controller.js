@@ -28,8 +28,8 @@ function lazy_load(script_filename) {
  * Load view and draw UI, load model and initialize session
  */
 $(document).ready( function() {
-	lazy_load("/js/view.js");
+	lazy_load("js/patui/view.js");
 	view.drawUI();
-	lazy_load("/js/model.js");
+	lazy_load("js/patui/model.js");
 	model.init();
 });
