@@ -33,6 +33,11 @@ class Rest {
 	private $session_id;
 	
 	/*
+	 * Url segments from requested url
+	 */
+	private $url_segments = array();
+	
+	/*
 	 * Connection data returned by session creation
 	 */
 	private $connections;
@@ -42,15 +47,9 @@ class Rest {
 	 * Reflection will be used to load the appropriate method
 	 * based on URI.
 	 */
-	public function GET($matches) {
-		// TODO - remove, boilerplate code for testing routing
-		if (isset($matches['route1'])) {
-			echo $matches['route1'];			
-		} else {
-			echo "Could not find route";	
-		}
-		
-		// TODO - call $this->start_session();
+	public function GET($matches) {								
+		// TODO - call 
+		$this->start_session();
 	}
 	
 	/*
@@ -59,7 +58,20 @@ class Rest {
 	 * based on URI.
 	 */
 	public function POST($matches) {
-		// TODO - call $this->start_session();
+		// TODO - call 
+		$this->start_session();
+	}
+	
+	/*
+	 * This method logs url segments
+	 */
+	private function get_segments() {
+		if (isset($matches['route1']))
+			$this->url_segments[0] = $matches['route1'];
+		if (isset($matches['route2']))
+			$this->url_segments[1] = $matches['route2'];
+		if (isset($matches['route3']))
+			$this->url_segments[2] = $matches['route3'];
 	}
 	
 	/*
@@ -72,7 +84,11 @@ class Rest {
 	 * static class.
 	 */
 	private function start_session() {
+		// Start PHP session
 		session_start();
+		
+		// Get url segments
+		$this->get_segments();
 		
 		// Set class variables for username and password from session
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
