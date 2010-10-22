@@ -42,7 +42,7 @@ if (isset($_SESSION['username'])) {
             $fields_string = "sessionid=" . $_SESSION['sessionid'] . "&connectionid=" . $connectionid;
 
             //  URL for PAT's REST web service
-            $url = "http://demo.analytical-labs.com/rest/" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery";
+            $url = "" . $_SESSION['username'] . "/query/" . $schemaname . "/" . $cubename . "/newquery";
 
             $ch = curl_init();
 
