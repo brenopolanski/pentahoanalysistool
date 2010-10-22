@@ -9,7 +9,7 @@ class Rest {
 	 * Any global settings should be stored here
 	 */
 	private $settings = array(
-		'url'=>'http://demo.analytical-labs.com/rest/'
+		'base_url'=>'http://demo.analytical-labs.com/rest'
 	);
 	
 	/*
@@ -105,6 +105,9 @@ class Rest {
 		// Start PHP session
 		session_start();
 		
+		// FIXME - somewhere in here the session_id needs to be saved to the PHP session
+		// Right now we're creating a new session_id for each call to the server
+		
 		// Set class variables for username and password from session
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 			$this->username = $_SESSION['username'];
@@ -125,7 +128,9 @@ class Rest {
 		}
 		
 		// Create a new client
-		$this->client = new WebServices($this->username, $this->password);		
+		$this->client = new WebServices($this->username, $this->password);	
+
+		// FIXME - check to see if session is already created and use that
 		
 		// Create a session on the PAT server
 		$this->create_session();
@@ -141,7 +146,7 @@ class Rest {
 			'password'=>$this->password
 		);
 		
-		$response = $this->client->post("/", $credentials);
+		$response = $this->client->post($this->settings['base_url'] . "/admin/session", $credentials);
 		
 		// No data returned, something got screwed up
 		if (! isset($reponse['data']) || empty($reponse['data'])) {
@@ -150,6 +155,9 @@ class Rest {
 		
 		$this->session_id = $reponse['data']->{'@sessionid'};
 		$this->connections = $reponse['data'];
+		
+		// FIXME - add this stuff to PHP session if possible
+		// FIXME - check if username and password are set in session, and add if not
 		
 		return true;
 	}
