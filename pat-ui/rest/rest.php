@@ -43,29 +43,47 @@ class Rest {
 	private $connections;
 	
 	/*
-	 * TODO - This function will route any GET calls.
+	 * This function will route any GET calls.
 	 * Reflection will be used to load the appropriate method
 	 * based on URI.
 	 */
 	public function GET($matches) {								
-		// TODO - call 
-		$this->start_session();
+		$this->request('GET', $matches);
 	}
 	
 	/*
-	 * TODO - This function will route any POST calls.
+	 * This function will route any POST calls.
 	 * Reflection will be used to load the appropriate method
 	 * based on URI.
 	 */
 	public function POST($matches) {
-		// TODO - call 
+		$this->request('POST', $matches);
+	}
+	
+	/*
+	 * For DRY's sake, we'll handle all requests through here, using a single $method parameter
+	 */
+	private function request($method, $matches) {
+		$this->get_segments($matches);
 		$this->start_session();
+		
+		// Call handler dynamically by handle_ + url_segments
+		// Ex.
+		$handler = "handle_" . implode("_", $this->url_segments);
+		if (! method_exists($this, $handler)) {
+			// FIXME (see index.php:25ish)
+	    	header("HTTP/1.0 404 Not Found");
+	    	$output = array( 'error'=>'The resource you requested was not found.' );
+			die(json_encode($output)); // I've always loved the sweet justice of this function
+		}
+		
+		call_user_func(array($this, $handler));
 	}
 	
 	/*
 	 * This method logs url segments
 	 */
-	private function get_segments() {
+	private function get_segments($matches) {
 		if (isset($matches['route1']))
 			$this->url_segments[0] = $matches['route1'];
 		if (isset($matches['route2']))
@@ -86,9 +104,6 @@ class Rest {
 	private function start_session() {
 		// Start PHP session
 		session_start();
-		
-		// Get url segments
-		$this->get_segments();
 		
 		// Set class variables for username and password from session
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
@@ -139,4 +154,19 @@ class Rest {
 		return true;
 	}
 	
+	/****************************************************************************
+	 * TODO - These functions will handle the various URIs
+	 * This is where the magic happens!
+	 */
+	
+	/*
+	 * TODO - replace this example function with the real function
+	 * url: /session
+	 * description: just an example for now
+	 */
+	private function handle_session() {
+		header("HTTP/1.0 200 OK");
+		$output = array( 'session'=>'something' );
+		die(json_encode($output)); // I've always loved the sweet justice of this function
+	}
 }
