@@ -96,14 +96,15 @@ class Rest {
 			$this->password = $_SESSION['password'];
 		
 		// If there is no session, see if a new session is trying to be created
-		} else if (isset($_POST['username']) && isset($_POST['password'])) {
+		} else if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
 			// See if session is trying to be created
-		    $this->username = $_POST['username'];
-    		$this->password = $_POST['password'];
+		    $this->username = $_SERVER['PHP_AUTH_USER'];
+    		$this->password = $_SERVER['PHP_AUTH_PW'];
 			
 		// If unsuccessful, return Permission Denied 
 		} else {
-			header("HTTP/1.0 403 Forbidden");
+			header('WWW-Authenticate: Basic realm="PATui"');
+			header("HTTP/1.0 401 Unauthorized");
 			$output = array( 'error'=>'No credentials supplied. Session may be expired.' );
 			die(json_encode($output)); // I've always loved the sweet justice of this function
 		}
