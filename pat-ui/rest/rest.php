@@ -168,13 +168,11 @@ class Rest {
 	 */
 	
 	/*
-	 * TODO - replace this example function with the real function
-	 * url: /session
-	 * description: just an example for now
+	 * url: /admin/session
+	 * description: return session information
 	 */
-	private function handle_session() {
+	private function handle_admin_session() {
 		header("HTTP/1.0 200 OK");
-		$output = array( 'session'=>'something' );
-		die(json_encode($output)); // I've always loved the sweet justice of this function
+		die(json_encode($this->connections)); // FIXME - no session is being returned from the PAT server?
 	}
 }
