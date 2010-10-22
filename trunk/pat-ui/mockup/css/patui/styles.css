@@ -1,0 +1,236 @@
+/*
+ *  $_global
+ *  This includes all global styles
+*/
+
+.hide {
+    display: none !important;
+}
+
+/*
+ *  $_toolbar
+ *  @description    This includes all styles relevant to the toolbar
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+#toolbar {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f3f3f3');
+    border-bottom: 1px solid #d5d5d5;
+}
+
+/*
+ *  $_navigation
+ *  @description    This includes all styles relevant to the navigation bar
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+#navigation {
+    font-size: 0.8em;
+    height: 26px; /* 40px */
+    margin: 0;
+    padding: 10px;
+    list-style-type: none;
+}
+#navigation li {
+    display: inline-block;
+    float: left;
+    padding: 0 5px;
+    text-align: center;
+}
+#navigation li a {
+    text-decoration: none;
+}
+#navigation li img.disabled {
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: alpha(opacity=30);
+    opacity: 0.30;
+}
+#navigation li span {
+    display: block;
+    text-decoration: none;
+}
+#toolbar ul li.separator {
+    background: #d5d5d5;
+    font-size: 0;
+    height: 26px; /* 40px */
+    margin: 0 10px;
+    padding: 0;
+    width: 1px;
+}
+
+/*
+ *  $_dialog-widget
+ *  @description    For all pop up dialog boxes i.e. Help box
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+.dialog-widget {
+    border: 1px solid #d5d5d5;
+    margin: 10px;
+    width: 400px;
+}
+.dialog-widget .dialog-header {
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+.dialog-widget .dialog-body {
+    padding: 10px;
+}
+
+/*
+ *  $_jquery-ui-layout
+ *  @description    For the jQuery UI Layout Plugin
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+ *  @notes          IE8 has a sticky effect on risizing the bar
+*/
+
+/* all 'panes' */
+.ui-layout-pane {
+    background: #ffffff;
+    overflow: auto;
+}
+.ui-layout-content {
+    position: relative;
+    overflow: auto;
+}
+.ui-layout-west {
+    border-right: 1px solid #d5d5d5;
+}
+.ui-layout-center {
+    border-left: 1px solid #d5d5d5;
+}
+/* all 'resizer-bars' */
+.ui-layout-resizer {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left center, right center, from(#ffffff), to(#f3f3f3));
+    border: 1px solid #d5d5d5;
+    border-width: 0;
+}
+.ui-layout-resizer-open-hover,
+.ui-layout-resizer-dragging {
+    background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left, right, from(#ffffff), to(#f3f3f3));
+    background: #f3f3f3;
+    border: 1px solid #d5d5d5;
+    border-width: 0;
+}
+.ui-layout-resizer-sliding {
+    opacity: .50;
+    filter: alpha(opacity=50);
+}
+/* toggler */
+.ui-layout-toggler {
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    background-color: #e3e3e3;
+}
+.ui-layout-resizer-hover .ui-layout-toggler {
+    opacity: .60;
+    filter:  alpha(opacity=60);
+}
+.ui-layout-resizer-sliding  ui-layout-toggler {
+    display: none;
+}
+
+/*
+ *  $_sidebar
+ *  @description    For all sidebar specific styles
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+#sidebar {
+    padding: 10px;
+    text-align: left;
+}
+#sidebar .widget {
+    border: 1px solid #d5d5d5;
+    margin-bottom: 10px;
+    -moz-box-shadow: 0px 0px 2px #e3e3e3;
+    -webkit-box-shadow: 0px 0px 2px #e3e3e3;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#sidebar .widget-header {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f3f3f3');
+    font-weight: bold;
+    height: 17px;
+    line-height: 15px;
+    padding: 5px;
+    text-shadow: 1px 1px 0 #ffffff;
+
+}
+#sidebar .widget-body {
+    padding: 5px;
+}
+
+/*
+ *  $_content
+ *  @description    For all content specific styles
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+#content {
+    text-align: left;
+    padding-top: 10px;
+}
+
+/*
+ *  $_queries
+ *  @description    For all content tab styles
+ *  @tested         IE7+, FF3+, CH7+, SA4+
+*/
+
+#queries #querylist {
+    border-bottom: 1px solid #d5d5d5;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+}
+#queries #querylist li {
+    display: inline;
+    list-style-type: none;
+    background: #f9f9f9;
+    border-top: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    border-left: 1px solid #d5d5d5;
+    margin-left: 5px;
+    padding: 5px 5px 6px 5px;
+    /*height: 18px;*/
+    line-height: 27px;
+    text-shadow: 1px 1px 0 #ffffff;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#queries #querylist li.ui-tabs-selected {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    border-bottom: 1px solid #ffffff;
+}
+#queries #querylist li a {
+    color: #666;
+    text-decoration: none;
+}
+#queries #querylist li a:hover {}
+#queries #querylist li a:active,
+#queries #querylist li.ui-tabs-selected a {
+
+    color: #333333;
+    font-weight: bold;
+}
+#queries .querycontent {
+    padding: 10px;
+}
+#queries .ui-tabs-hide {
+    display: none;
+}
