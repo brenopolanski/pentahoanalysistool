@@ -24,6 +24,9 @@ function lazy_load(script_filename) {
     return false;
 }
 
+// model.NewQuery
+// if success then call a method of view to create new query
+
 /*
  * Load view and draw UI, load model and initialize session
  */

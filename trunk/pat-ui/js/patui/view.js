@@ -29,6 +29,8 @@ var view = {
 		        west__resizable:          true
 		    });
 		});
+
+                // New query method controller , newQueryButtonClick
 	},
 	
 	processing: function(message) {
