@@ -1,31 +1,65 @@
 /*
- *  $_global
- *  This includes all global styles
+ * PATui Stylesheet
+ * This is a stylesheet for PATui default theme
+ * TODO - Create sprites
+ * TODO - Remove hacks
+ * TODO - Add gradient images for IE support
+ */
+
+
+/*
+ * $_global
+ * Global styles
 */
 
 .hide {
     display: none !important;
 }
+.ralign {
+    text-align: right;
+}
+.calign {
+    text-align: center;
+}
+a.button {
+    background: #f9f9f9;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    border: 1px #d5d5d5 solid;
+    color: #222;
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 5px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #ffffff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    zoom:1;
+}
+a.button:hover{
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    cursor: pointer;
+    text-decoration:none;
+}
 
 /*
- *  $_toolbar
- *  @description    This includes all styles relevant to the toolbar
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
+ * $_toolbar
+ * Toolbar styles
+ */
 
 #toolbar {
-    background: #f3f3f3;
+    background: #f9f9f9;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f3f3f3');
     border-bottom: 1px solid #d5d5d5;
 }
 
 /*
- *  $_navigation
- *  @description    This includes all styles relevant to the navigation bar
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
+ * $_navigation
+ * Navigation styles which sit inside $_toolbar
+ */
 
 #navigation {
     font-size: 0.8em;
@@ -44,7 +78,6 @@
     text-decoration: none;
 }
 #navigation li img.disabled {
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: alpha(opacity=30);
     opacity: 0.30;
 }
@@ -62,33 +95,215 @@
 }
 
 /*
- *  $_dialog-widget
- *  @description    For all pop up dialog boxes i.e. Help box
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
+ * $_sidebar
+ * Sidebar styles
+ * TODO - widget_header has an extra 1px padding on the bottom
+ */
 
-.dialog-widget {
-    border: 1px solid #d5d5d5;
-    margin: 10px;
-    width: 400px;
+#sidebar {
+    text-align: left;
 }
-.dialog-widget .dialog-header {
+#sidebar .section_header {
+    background: #f9f9f9;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    font-size: 1.2em;
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    display: block;
     font-weight: bold;
-    padding: 5px 10px;
+    line-height: 18px;
+    padding: 5px;
+    text-shadow: 1px 1px 0 #ffffff;
 }
-.dialog-widget .dialog-body {
-    padding: 10px;
+#sidebar .top {
+    border-top: 0;
+    padding-top: 6px;
+}
+
+#sidebar .widget {
+    border: 1px solid #d5d5d5;
+    margin-bottom: 10px;
+    -moz-box-shadow: 0px 0px 2px #e3e3e3;
+    -webkit-box-shadow: 0px 0px 2px #e3e3e3;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#sidebar .widget_header {
+    background: #f9f9f9;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    font-weight: bold;
+    line-height: 18px;
+    padding: 3px 5px;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+#sidebar .widget_body {
+    padding: 5px;
+}
+#sidebar p {
+    padding: 5px;
 }
 
 /*
- *  $_jquery-ui-layout
- *  @description    For the jQuery UI Layout Plugin
- *  @tested         IE7+, FF3+, CH7+, SA4+
- *  @notes          IE8 has a sticky effect on risizing the bar
-*/
+ * $_content
+ * Content styles
+ */
+
+#content {
+    text-align: left;
+}
+
+/*
+ * $_queries
+ * Query/Tab styles
+ * TODO - IE7 places image inside inline-block 1px lower
+ */
+
+#querylist_wrapper #querylist_container {
+    background: #f0f0f0;
+    border-bottom: 1px solid #d5d5d5;
+    padding-top: 3px;
+    padding-top: 2px\0/; /* IE8 */
+}
+/* FF */
+#querylist_wrapper #querylist_container,
+x:-moz-any-link,
+x:default {
+    background: #f0f0f0;
+    border-bottom: 1px solid #d5d5d5;
+    padding-top: 2px;
+}
+#querylist_wrapper #querylist_container ul {
+    list-style-type: none;
+    line-height: 1.4em;
+    margin: 0 0 0 10px;
+    padding: 5px 4px 3px 0;
+}
+#querylist_wrapper #querylist_container ul li {
+    display: inline;
+}
+#querylist_wrapper #querylist_container ul li a {
+    background: #f9f9f9;
+    border: 1px solid #d5d5d5;
+    border-bottom: none;
+    color: #666;
+    outline: none !important;
+    padding: 4px 6px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #ffffff;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#querylist_wrapper #querylist_container ul li a:hover {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    color: #222;
+    padding: 4px 6px 4px 6px;
+}
+#querylist_wrapper #querylist_container ul li.ui-tabs-selected a {
+    border-bottom: 1px solid #fff;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    color: #222;
+    font-weight: bold;
+    padding: 4px 6px 5px 6px;
+    border-bottom: none;
+}
+#querylist_wrapper #querylist_container ul li.active a:hover {
+    border-bottom: none;
+    padding: 4px 6px 5px 6px;
+}
+#querylist_wrapper #querylist_container ul li img {
+    padding-left: 2px;
+}
+#query_content {
+    border-top: 1px solid #d5d5d5;
+    margin-top: 1px;
+    padding: 10px;
+}
+#query_content .ui-tabs-hide {
+    display: none;
+}
+#query_content .query_toolbar {
+    background: #f9f9f9;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    display: block;
+    font-weight: bold;
+    padding: 5px;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+#query_content #query_toolbar {
+    margin-bottom: 10px;
+    text-align: right;
+}
+#query_content #query_col_axis,
+#query_content #query_row_axis,
+#query_content #query_filter_axis {
+    border:1px solid #d5d5d5;
+    margin-top: 10px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#query_content #query_col_axis span.axis_title,
+#query_content #query_row_axis span.axis_title,
+#query_content #query_filter_axis span.axis_title {
+    background: #f9f9f9;
+    border-right: 1px solid #d5d5d5;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 5px;
+    padding: 4px;
+    text-shadow: 1px 1px 0 #ffffff;
+    width: 80px;
+    zoom: 1;
+}
+#query_content #query_col_axis #col_placeholder,
+#query_content #query_row_axis #row_placeholder,
+#query_content #query_filter_axis #filter_placeholder {
+    display: inline-block;
+    color: #888;
+    font-style: italic;
+    padding: 4px;
+}
+
+/*
+ * $_vis
+ * Visualisation styles
+ */
+
+#query_content #vis {
+    margin-top: 10px;
+}
+#datatable {
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+#datatable th, tr, td {
+    background: #ffffff;
+    border-bottom: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    font-weight: normal;
+}
+#datatable .header {
+    font-weight: bold;
+}
+#datatable .string {
+    text-align: left;
+}
+#datatable .number {
+    text-align: right;
+}
+
+/*
+ * $_jquery_ui_layout
+ * Override styles for the jQuery UI Layout plugin
+ */
 
 /* all 'panes' */
 .ui-layout-pane {
@@ -136,101 +351,5 @@
     filter:  alpha(opacity=60);
 }
 .ui-layout-resizer-sliding  ui-layout-toggler {
-    display: none;
-}
-
-/*
- *  $_sidebar
- *  @description    For all sidebar specific styles
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
-
-#sidebar {
-    padding: 10px;
-    text-align: left;
-}
-#sidebar .widget {
-    border: 1px solid #d5d5d5;
-    margin-bottom: 10px;
-    -moz-box-shadow: 0px 0px 2px #e3e3e3;
-    -webkit-box-shadow: 0px 0px 2px #e3e3e3;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-}
-#sidebar .widget-header {
-    background: #f3f3f3;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f3f3f3');
-    font-weight: bold;
-    height: 17px;
-    line-height: 15px;
-    padding: 5px;
-    text-shadow: 1px 1px 0 #ffffff;
-
-}
-#sidebar .widget-body {
-    padding: 5px;
-}
-
-/*
- *  $_content
- *  @description    For all content specific styles
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
-
-#content {
-    text-align: left;
-    padding-top: 10px;
-}
-
-/*
- *  $_queries
- *  @description    For all content tab styles
- *  @tested         IE7+, FF3+, CH7+, SA4+
-*/
-
-#queries #querylist {
-    border-bottom: 1px solid #d5d5d5;
-    margin: 0;
-    padding: 0;
-    padding-left: 5px;
-}
-#queries #querylist li {
-    display: inline;
-    list-style-type: none;
-    background: #f9f9f9;
-    border-top: 1px solid #d5d5d5;
-    border-right: 1px solid #d5d5d5;
-    border-left: 1px solid #d5d5d5;
-    margin-left: 5px;
-    padding: 5px 5px 6px 5px;
-    /*height: 18px;*/
-    line-height: 27px;
-    text-shadow: 1px 1px 0 #ffffff;
-    -moz-border-radius: 2px 2px 0 0;
-    -webkit-border-radius: 2px 2px 0 0;
-}
-#queries #querylist li.ui-tabs-selected {
-    background: #ffffff;
-    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-    border-bottom: 1px solid #ffffff;
-}
-#queries #querylist li a {
-    color: #666;
-    text-decoration: none;
-}
-#queries #querylist li a:hover {}
-#queries #querylist li a:active,
-#queries #querylist li.ui-tabs-selected a {
-
-    color: #333333;
-    font-weight: bold;
-}
-#queries .querycontent {
-    padding: 10px;
-}
-#queries .ui-tabs-hide {
     display: none;
 }

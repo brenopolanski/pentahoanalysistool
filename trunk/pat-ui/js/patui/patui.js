@@ -6,11 +6,8 @@
 
 var myLayout;
 $(document).ready(function () {
-    
-    /*
-     * jQuery UI Layout
-     */
 
+    // jQuery UI Layout
     $('body').layout({
         fxName:                 "slide",
         fxSpeed:                0.00001,
@@ -22,20 +19,15 @@ $(document).ready(function () {
         west__spacing_closed:   4,
         west__resizable:        true,
         west__closable:         true,
-        west__size:             280
+        west__size:             250
     });
 
-    /*
-     * Jquery UI Tabs
-     */
-    // tabs init with a custom tab template and an "add" callback filling in the content
-    var $tabs = $('#queries').tabs({
-        
-    });
+    // jQuery UI Tabs
+    var $tabs = $('#querylist_container').tabs();
 
-    // close icon: removing the tab on click
-    // note: closable tabs gonna be an option in the future - see http://dev.jqueryui.com/ticket/3924
-    $('#querylist li img').live('click', function() {
+    // If close button is clicked
+    $('#querylist_container li a img').click(function() {
+        alert('Are you sure you want to do that?');
         var index = $('li',$tabs).index($(this).parent());
         $tabs.tabs('remove', index);
     });

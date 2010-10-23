@@ -19,154 +19,43 @@
         <script type="text/javascript" src="js/jquery/jquery-1.4.3.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.ui-1.8.5.custom.min.js"></script>
         -->
-        <script type="text/javascript" src="js/jquery.plugins.min.js"></script>
-        <!-- PATui JavaScript -->
+        <script type="text/javascript" src="js/jquery/jquery.plugins.min.js"></script>
+        <!-- PATui JavaScript 
         <script type="text/javascript" src="js/patui/controller.js"></script>
-        <style type="text/css">
-            /*
-             *  $_queries
-             *  @description    For all content tab styles
-             *  @tested         IE7+, FF3+, CH7+, SA4+
-            */
-
-            #queries #querylist {
-                margin: 0;
-                padding: 0;
-            }
-            #queries #querylist li {
-                display: inline;
-                list-style-type: none;
-            }
-            #queries #querylist li.ui-tabs-selected {
-            }
-            #queries #querylist li a {
-                background: #f9f9f9;
-                border-top: 1px solid #d5d5d5;
-                border-right: 1px solid #d5d5d5;
-                border-left: 1px solid #d5d5d5;
-                margin-left: 5px;
-                text-shadow: 1px 1px 0 #ffffff;
-                
-                color: #666;
-                text-decoration: none;
-
-            }
-            #queries #querylist li a:hover {}
-            #queries #querylist li a:active,
-            #queries #querylist li.ui-tabs-selected a {
-                background: #ffffff;
-                background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-                background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-                border-bottom: 1px solid #ffffff;
-                color: #333333;
-                font-weight: bold;
-            }
-            #queries .querycontent {
-                border-top: 1px solid #d5d5d5;
-                padding: 10px;
-            }
-            #queries .ui-tabs-hide {
-                display: none;
-            }
-
-
-            
-            #tabs_container {
-                border-bottom: 1px solid #d5d5d5;
-            }
-            #tabs {
-                list-style: none;
-                line-height: 1.4em;
-                margin: 0;
-                margin: 0 0 0 10px;
-                padding: 0;
-                padding: 5px 4px 3px 0;
-            }
-            #tabs li {
-                display: inline;
-            }
-            #tabs li a {
-                background: #f9f9f9;
-                border: 1px solid #d5d5d5;
-                border-bottom: none;
-                color: #666;
-                outline: none !important;
-                padding: 4px 6px;
-                text-decoration: none;
-                -moz-border-radius: 2px 2px 0 0;
-                -webkit-border-radius: 2px 2px 0 0;
-            }
-            #tabs li a:hover {
-                background: #ffffff;
-                background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-                background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-                color: #222;
-                padding: 4px 6px;
-            }
-            #tabs li.active a {
-                border-bottom: 1px solid #fff;
-                background: #ffffff;
-                background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-                background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-                color: #222;
-                padding: 4px 6px 5px 6px;
-                border-bottom: none;
-            }
-            #tabs li.active a:hover {
-                border-bottom: none;
-                padding: 4px 6px 5px 6px;
-            }
-            #tabs_content_container {
-                padding: 10px;
-            }
-            .tab_content {
-                display: none;
-            }
-        </style>
-    </head>
+        -->
+        <!-- PATui Application JavaScript TODO - Remove -->
+        <script type="text/javascript" src="js/patui/patui.js"></script>
     <body>
         <!-- Toolbar -->
         <div id="toolbar" class="ui-layout-north">
             <!-- Navigation -->
             <ul id="navigation">
                 <li>
-                    <a id="new_query" href="#" title="New Query">
-                        <img src="images/toolbar/new.png" alt="New Query" />
-                    </a>
+                    <a id="new_query" href="#" title="New Query"><img src="images/toolbar/new.png" alt="New Query" /></a>
                     <span class="hide">New Query</span>
                 </li>
                 <li class="separator">&nbsp;</li>
                 <li>
-                    <a id="open_query" href="#" title="Open Query">
-                        <img src="images/toolbar/open.png" alt="Open Query" />
-                    </a>
+                    <a id="open_query" href="#" title="Open Query"><img src="images/toolbar/open.png" alt="Open Query" /></a>
                     <span class="hide">Open Query</span>
                 </li>
                 <li>
-                    <a id="save_query" href="#" title="Save Query">
-                        <img src="images/toolbar/save.png" alt="Save Query" class="disabled" />
-                    </a>
+                    <a id="save_query" href="#" title="Save Query"><img src="images/toolbar/save.png" alt="Save Query" class="disabled" /></a>
                     <span class="hide">Save Query</span>
                 </li>
                 <li class="separator">&nbsp;</li>
                 <li>
-                    <a id="delete_query" href="#" title="Delete Query">
-                        <img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" />
-                    </a>
+                    <a id="delete_query" href="#" title="Delete Query"><img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" /></a>
                     <span class="hide">Delete Query</span>
                 </li>
                 <li class="separator">&nbsp;</li>
                 <li>
-                    <a id="logout" href="#" title="Logout">
-                        <img src="images/toolbar/log-out.png" alt="Logout" />
-                    </a>
+                    <a id="logout" href="#" title="Logout"><img src="images/toolbar/log-out.png" alt="Logout" /></a>
                     <span class="hide">Logout</span>
                 </li>
                 <li class="separator">&nbsp;</li>
                 <li>
-                    <a id="help" href="#" title="Help">
-                        <img src="images/toolbar/help.png" alt="About" />
-                    </a>
+                    <a id="help" href="#" title="Help"><img src="images/toolbar/help.png" alt="About" /></a>
                     <span class="hide">Help</span>
                 </li>
             </ul>
@@ -175,52 +64,128 @@
         <!-- Eof Toolbar -->
         <!-- Sidebar -->
         <div id="sidebar" class="ui-layout-west">
-            <div id="data" class="widget">
-                <div class="widget_header">
-                    Data
-                </div>
-                <div class="widget_body">
-                    Select a cube from the list below:
-                </div>
-            </div>
-            <div id="dimensions" class="widget">
-                <div class="widget_header">
-                    Dimensions
-                </div>
-                <div class="widget_body">
-                    Dimensions here
-                </div>
-            </div>
-            <div id="measures" class="widget">
-                <div class="widget_header">
-                    Measures
-                </div>
-                <div class="widget_body">
-                    Measures here
-                </div>
-            </div>
+            <span class="section_header top">Data</span>
+            <p>Data</p>
+            <span class="section_header">Dimensions</span>
+            <p>Dimensions</p>
+            <span class="section_header">Measures</span>
+            <p>Measures</p>
         </div>
         <!-- Eof Sidebar -->
         <!-- Content -->
         <div id="content" class="ui-layout-center">
-            <div id="tabs_wrapper">
-                <div id="tabs_container">
-
-                    <ul id="tabs">
-                        <li class="active"><a href="#tab1">Tab 1</a></li>
-                        <li><a href="#tab3">Long name for the last tab</a></li>
+            <div id="querylist_wrapper">
+                <div id="querylist_container">
+                    <ul>
+                        <li><a href="#query_1">Welcome</a></li>
+                        <li><a href="#query_2" class="closable">Long name for the last tab <img src="images/tab/close.png" alt="Close tab"/></a></li>
                     </ul>
                 </div>
-                <div id="tabs_content_container">
-
-                    <div id="tab1" class="tab_content" style="display: block;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nibh urna, euismod ut ornare non, volutpat vel tortor. Integer laoreet placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. Proin nunc erat, gravida a facilisis quis, ornare id lectus. Proin consectetur nibh quis urna gravida mollis.
-                    </div>
-                    <div id="tab3" class="tab_content">
-                        Suspendisse blandit velit eget erat suscipit in malesuada odio venenatis.
-
+                <div id="query_content">
+                    <div id="query_1">
+                        <div id="query_toolbar">
+                            <a class="button">Show Axis</a>
+                            <a class="button">Show Filters</a>
+                            <a class="button">Swap Axis</a>
+                            <a class="button">Visualise</a>
+                            <a class="button">Export</a>
+                        </div>
+                        <div id="query_col_axis">
+                            <span class="axis_title">
+                                Column Axis
+                            </span>
+                            <span id="col_placeholder">Drop column fields here</span>
+                        </div>
+                        <div id="query_row_axis">
+                            <span class="axis_title">
+                                Row Axis
+                            </span>
+                            <span id="row_placeholder">Drop row fields here</span>
+                        </div>
+                        <div id="query_filter_axis">
+                            <span class="axis_title">
+                                Filters
+                            </span>
+                            <span id="filter_placeholder">Drop filter fields here</span>
+                        </div>
+                        <div id="vis">
+                            <table id="datatable">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">&nbsp;</th>
+                                        <th colspan="5" class="calign header">Years</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="string header">Region</th>
+                                        <th class="string header">Product Line</th>
+                                        <th class="string header">2006</th>
+                                        <th class="string header">2007</th>
+                                        <th class="string header">2008</th>
+                                        <th class="string header">2009</th>
+                                        <th class="string header">2010</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="3">
+                                            Australia
+                                        </th>
+                                        <td>Cars</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ships</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Boats</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="3">
+                                            United States
+                                        </th>
+                                        <td>Cars</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ships</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Boats</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                        <td class="number">$1,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <div id="query_2"></div>
             </div>
         </div>
         <!-- Eof Content -->
