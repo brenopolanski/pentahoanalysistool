@@ -149,12 +149,12 @@ class Rest {
 		$response = $this->client->post($this->settings['base_url'] . "/admin/session", $credentials);
 		
 		// No data returned, something got screwed up
-		if (! isset($reponse['data']) || empty($reponse['data'])) {
+		if ($response['string'] == '') {
 			return false;
 		}
 		
-		$this->session_id = $reponse['data']->{'@sessionid'};
-		$this->connections = $reponse['data'];
+		$this->session_id = $response['data']->{'@sessionid'};
+		$this->connections = $response['data'];
 		
 		// FIXME - add this stuff to PHP session if possible
 		// FIXME - check if username and password are set in session, and add if not
