@@ -68,16 +68,25 @@ class Rest {
 		$this->start_session();
 		
 		// Call handler dynamically by handle_ + url_segments
-		// Ex.
 		$handler = "handle_" . implode("_", $this->url_segments);
-		if (! method_exists($this, $handler)) {
+		
+		// TODO - replace all of this with a proxy object
+		
+		// /rest destroys session
+		if (count($this->url_segments) == 0) {
+			$this->destroy_session();
+			
+		// If no matching url handlers are found, throw 404
+		} else if (! method_exists($this, $handler)) {
 			// FIXME (see index.php:25ish)
 	    	header("HTTP/1.0 404 Not Found");
 	    	$output = array( 'error'=>'The resource you requested was not found.' );
 			die(json_encode($output)); // I've always loved the sweet justice of this function
-		}
-		
-		call_user_func(array($this, $handler));
+			
+		// Call appropriate url handler
+		} else {
+			call_user_func(array($this, $handler));
+		}		
 	}
 	
 	/*
@@ -195,5 +204,17 @@ class Rest {
 	private function handle_admin_session() {
 		header("HTTP/1.0 200 OK");
 		die(json_encode($this->connections));
+	}
+	
+	/*
+	 * url: /
+	 * description: destroys the session in the event that things got b0rked on the UI somehow
+	 * 				i.e. bad PAT session
+	 */
+	private function destroy_session() {
+		session_destroy();
+		header("HTTP/1.0 200 OK"); // FIXME - response global function in webservices.php
+		$output = array( 'error'=>'Your session has been purged.' );
+		die(json_encode($output));
 	}
 }
