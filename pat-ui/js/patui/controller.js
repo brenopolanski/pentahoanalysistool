@@ -24,15 +24,18 @@ function lazy_load(script_filename) {
     return false;
 }
 
-// model.NewQuery
-// if success then call a method of view to create new query
+var controller = {
+	server_error: function() {
+		// FIXME - handle this more elegantly (perhaps start the process over after a delay?)
+		alert("Could not connect to server.");
+		// model.init();
+	}
+};
 
 /*
- * Load view and draw UI, load model and initialize session
+ * Lazy load view and model and initialize session
  */
-$(document).ready( function() {
-    lazy_load("js/patui/view.js");
-    view.drawUI();
-    lazy_load("js/patui/model.js");
-    model.init();
+$(document).ready(function() {
+	lazy_load("js/patui/view.js");
+	lazy_load("js/patui/model.js");
 });

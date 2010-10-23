@@ -55,3 +55,5 @@ var view = {
     // Unblock UI
     }
 };
+
+view.drawUI();
