@@ -30,7 +30,7 @@ class Rest {
 	/*
 	 * Session ID to be used for REST calls
 	 */
-	private $session_id;
+	private $session_id = '';
 	
 	/*
 	 * Url segments from requested url
@@ -112,28 +112,49 @@ class Rest {
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 			$this->username = $_SESSION['username'];
 			$this->password = $_SESSION['password'];
+			$this->session_id = $_SESSION['pat_session_id'];
+			$this->connections = $_SESSION['connections'];
+			
+			// Create a new client
+			$this->client = new WebServices($this->username, $this->password);
 		
 		// If there is no session, see if a new session is trying to be created
 		} else if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
 			// See if session is trying to be created
 		    $this->username = $_SERVER['PHP_AUTH_USER'];
     		$this->password = $_SERVER['PHP_AUTH_PW'];
+    		
+			// Create a new client
+			$this->client = new WebServices($this->username, $this->password);
+    		
+			// Create a new PAT session
+    		$status = $this->create_session();
+			
+			if ($status) {
+				// Credentials good, create PHP session to store PAT session
+				$_SESSION['username'] = $this->username;
+				$_SESSION['password'] = $this->password;
+				$_SESSION['pat_session_id'] = $this->session_id;
+				$_SESSION['connections'] = $this->connections;
+			} else {
+				// Bad credentials, try again
+				header('WWW-Authenticate: Basic realm="PATui"');
+				header("HTTP/1.0 401 Unauthorized");
+				$output = array( 'error'=>'Invalid credentials supplied. Please try again.' );
+				die(json_encode($output)); // I've always loved the sweet justice of this function
+			}
 			
 		// If unsuccessful, return Permission Denied 
 		} else {
+			// Not authenticated at all
+			session_destroy();
 			header('WWW-Authenticate: Basic realm="PATui"');
 			header("HTTP/1.0 401 Unauthorized");
 			$output = array( 'error'=>'No credentials supplied. Session may be expired.' );
 			die(json_encode($output)); // I've always loved the sweet justice of this function
-		}
-		
-		// Create a new client
-		$this->client = new WebServices($this->username, $this->password);	
+		}	
 
 		// FIXME - check to see if session is already created and use that
-		
-		// Create a session on the PAT server
-		$this->create_session();
 		return true;
 	}
 	
@@ -149,7 +170,7 @@ class Rest {
 		$response = $this->client->post($this->settings['base_url'] . "/admin/session", $credentials);
 		
 		// No data returned, something got screwed up
-		if ($response['string'] == '') {
+		if ($response['string'] == '' || empty($response['data']->{'@sessionid'})) {
 			return false;
 		}
 		
@@ -163,8 +184,8 @@ class Rest {
 	}
 	
 	/****************************************************************************
-	 * TODO - These functions will handle the various URIs
-	 * This is where the magic happens!
+	 * TODO - Build proxy object here. All calls except session calls are forwarded
+	 * directly to the server.
 	 */
 	
 	/*
@@ -173,6 +194,6 @@ class Rest {
 	 */
 	private function handle_admin_session() {
 		header("HTTP/1.0 200 OK");
-		die(json_encode($this->connections)); // FIXME - no session is being returned from the PAT server?
+		die(json_encode($this->connections));
 	}
 }
