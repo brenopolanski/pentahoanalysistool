@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>PATui</title>
+        <!-- Blueprint CSS Framework -->
+        <link rel="stylesheet" href="css/blueprint/reset.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/forms.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/typography.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/grid.css" type="text/css" media="screen, projection">
+        <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <!-- PATui CSS -->
+        <link rel="stylesheet" href="css/patui/styles.css" type="text/css" media="screen, projection">
+        <!-- jQuery Core, UI and Plugins -->
+        <script type="text/javascript" src="js/jquery/jquery.core.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.ui.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.layout.min.js"></script>
+        <!-- PATui JavaScript -->
+        <script type="text/javascript" src="js/patui/patui.js"></script>
+    </head>
+    <body>
+        <!-- Toolbar -->
+        <div id="toolbar" class="ui-layout-north">
+            <!-- Navigation -->
+            <ul id="navigation">
+                <li>
+                    <a id="new_query" href="#" title="New Query">
+                        <img src="images/toolbar/new.png" alt="New Query" />
+                    </a>
+                    <span class="hide">New Query</span>
+                </li>
+                <li class="separator">&nbsp;</li>
+                <li>
+                    <a id="open_query" href="#" title="Open Query">
+                        <img src="images/toolbar/open.png" alt="Open Query" />
+                    </a>
+                    <span class="hide">Open Query</span>
+                </li>
+                <li>
+                    <a id="save_query" href="#" title="Save Query">
+                        <img src="images/toolbar/save.png" alt="Save Query" class="disabled" />
+                    </a>
+                    <span class="hide">Save Query</span>
+                </li>
+                <li class="separator">&nbsp;</li>
+                <li>
+                    <a id="delete_query" href="#" title="Delete Query">
+                        <img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" />
+                    </a>
+                    <span class="hide">Delete Query</span>
+                </li>
+                <li class="separator">&nbsp;</li>
+                <li>
+                    <a id="logout" href="#" title="Logout">
+                        <img src="images/toolbar/log-out.png" alt="Logout" />
+                    </a>
+                    <span class="hide">Logout</span>
+                </li>
+                <li class="separator">&nbsp;</li>
+                <li>
+                    <a id="help" href="#" title="Help">
+                        <img src="images/toolbar/help.png" alt="About" />
+                    </a>
+                    <span class="hide">Help</span>
+                </li>
+            </ul>
+            <!-- Eof Navigation -->
+        </div>
+        <!-- Eof Toolbar -->
+        <!-- Sidebar -->
+        <div id="sidebar" class="ui-layout-west">
+            <div id="data" class="widget">
+                <div class="widget_header">
+                    Data
+                </div>
+                <div class="widget_body">
+                    Select a cube from the list below:
+                </div>
+            </div>
+            <div id="dimensions" class="widget">
+                <div class="widget_header">
+                    Dimensions
+                </div>
+                <div class="widget_body">
+                    Dimensions here
+                </div>
+            </div>
+            <div id="measures" class="widget">
+                <div class="widget_header">
+                    Measures
+                </div>
+                <div class="widget_body">
+                    Measures here
+                </div>
+            </div>
+        </div>
+        <!-- Eof Sidebar -->
+        <!-- Content -->
+        <div id="content" class="ui-layout-center">
+            <div id="queries_wrapper">
+                <div id="queries_container">
+                    <ul id="queries">
+                        <li><a href="#tabs-1">Welcome</a></li>
+                        <li><a href="#tabs-2" class="closable">Long name for the last tab <img src="images/tab/close.png" alt="Close tab"/></a></li>
+                    </ul>
+                </div>
+                <div id="queries_content_container">
+                    <div id="tabs-1">
+                        Suspendisse b
+                    </div>
+                    <div id="tabs-2">
+                        Suspendisse blandit velit eget erat suscipit in malesuada odio venenatis.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Eof Content -->
+    </body>
+</html>

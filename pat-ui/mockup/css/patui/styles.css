@@ -1,0 +1,223 @@
+/*
+ * PATui Stylesheet
+ * This is a stylesheet for PATui default theme
+ * TODO - Create sprites
+ */
+
+
+/*
+ * $_global
+ * Global styles
+*/
+
+.hide {
+    display: none !important;
+}
+
+/*
+ * $_toolbar
+ * Toolbar styles
+ */
+
+#toolbar {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    border-bottom: 1px solid #d5d5d5;
+}
+
+/*
+ * $_navigation
+ * Navigation styles which sit inside $_toolbar
+ */
+
+#navigation {
+    font-size: 0.8em;
+    height: 26px; /* 40px */
+    margin: 0;
+    padding: 10px;
+    list-style-type: none;
+}
+#navigation li {
+    display: inline-block;
+    float: left;
+    padding: 0 5px;
+    text-align: center;
+}
+#navigation li a {
+    text-decoration: none;
+}
+#navigation li img.disabled {
+    filter: alpha(opacity=30);
+    opacity: 0.30;
+}
+#navigation li span {
+    display: block;
+    text-decoration: none;
+}
+#toolbar ul li.separator {
+    background: #d5d5d5;
+    font-size: 0;
+    height: 26px; /* 40px */
+    margin: 0 10px;
+    padding: 0;
+    width: 1px;
+}
+
+/*
+ * $_sidebar
+ * Sidebar styles
+ * TODO - widget_header has an extra 1px padding on the bottom
+ */
+
+#sidebar {
+    padding: 10px;
+    text-align: left;
+}
+#sidebar .widget {
+    border: 1px solid #d5d5d5;
+    margin-bottom: 10px;
+    -moz-box-shadow: 0px 0px 2px #e3e3e3;
+    -webkit-box-shadow: 0px 0px 2px #e3e3e3;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#sidebar .widget_header {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f3f3f3');
+    font-weight: bold;
+    line-height: 18px;
+    padding: 3px 5px;
+    text-shadow: 1px 1px 0 #ffffff;
+
+}
+#sidebar .widget_body {
+    padding: 5px;
+}
+
+/*
+ * $_content
+ * Content styles
+ */
+
+#content {
+    text-align: left;
+    padding-top: 9px;
+}
+
+/*
+ * $_queries
+ * Query/Tab styles
+ * TODO - IE7 places image inside inline-block 1px lower
+ */
+
+#queries_container {
+    border-bottom: 1px solid #d5d5d5;
+}
+#queries {
+    list-style: none;
+    line-height: 1.4em;
+    margin: 0;
+    margin: 0 0 0 10px;
+    padding: 0;
+    padding: 5px 4px 3px 0;
+}
+#queries li {
+    display: inline;
+}
+#queries li a {
+    background: #f9f9f9;
+    border: 1px solid #d5d5d5;
+    border-bottom: none;
+    color: #666;
+    outline: none !important;
+    padding: 4px 6px;
+    text-decoration: none;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#queries li a:hover {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    color: #222;
+    padding: 4px 6px 4px 6px;
+}
+#queries li.ui-tabs-selected a {
+    border-bottom: 1px solid #fff;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    color: #222;
+    padding: 4px 6px 5px 6px;
+    border-bottom: none;
+}
+#queries li.active a:hover {
+    border-bottom: none;
+    padding: 4px 6px 5px 6px;
+}
+#queries li img {
+    padding-left: 2px;
+}
+#queries_content_container {
+    padding: 10px;
+}
+#queries_content_container .ui-tabs-hide {
+    display: none;
+}
+
+/*
+ * $_jquery_ui_layout
+ * Override styles for the jQuery UI Layout plugin
+ */
+
+/* all 'panes' */
+.ui-layout-pane {
+    background: #ffffff;
+    overflow: auto;
+}
+.ui-layout-content {
+    position: relative;
+    overflow: auto;
+}
+.ui-layout-west {
+    border-right: 1px solid #d5d5d5;
+}
+.ui-layout-center {
+    border-left: 1px solid #d5d5d5;
+}
+/* all 'resizer-bars' */
+.ui-layout-resizer {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left center, right center, from(#ffffff), to(#f3f3f3));
+    border: 1px solid #d5d5d5;
+    border-width: 0;
+}
+.ui-layout-resizer-open-hover,
+.ui-layout-resizer-dragging {
+    background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left, right, from(#ffffff), to(#f3f3f3));
+    background: #f3f3f3;
+    border: 1px solid #d5d5d5;
+    border-width: 0;
+}
+.ui-layout-resizer-sliding {
+    opacity: .50;
+    filter: alpha(opacity=50);
+}
+/* toggler */
+.ui-layout-toggler {
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    background-color: #e3e3e3;
+}
+.ui-layout-resizer-hover .ui-layout-toggler {
+    opacity: .60;
+    filter:  alpha(opacity=60);
+}
+.ui-layout-resizer-sliding  ui-layout-toggler {
+    display: none;
+}
