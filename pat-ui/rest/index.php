@@ -8,7 +8,7 @@
     require_once('rest.php');
     
     // TODO - there has to be a better way of determining this for non-root deployments
-    define('BASE_URL', "/patui/rest");
+    define('BASE_URL', "/rest");
 
     // Define routes here - See http://gluephp.com/documentation.html
     // Trailing slashes limits the urls that hit
@@ -31,7 +31,7 @@
     } catch (Exception $e) {
     	// FIXME (see index.php:25ish)
     	header("HTTP/1.0 404 Not Found");
-    	$output = array( 'error'=>'The page you requested was not found.' );
+    	$output = array( 'error'=>$e->getMessage() );
 		die(json_encode($output)); // I've always loved the sweet justice of this function
     }
 ?>

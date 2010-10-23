@@ -50,7 +50,8 @@ class WebServices {
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, ""); //  Had to set this for PHP's cURL library to play nice
 	    
 	    $response = array();
-	    $response['output'] = curl_exec($ch);
+	    $response['string'] = curl_exec($ch);
+	    $response['data'] = json_decode($response['string']);
 	    
 	    if (curl_errno($ch) != 0) {
 	    	$response['data'] = array();
@@ -63,14 +64,14 @@ class WebServices {
 	 * GET request
 	 */
 	public function get($url, $data=array()) {
-		$this->request('GET', $url, $data);
+		return $this->request('GET', $url, $data);
 	}
 	
 	/*
 	 * POST request
 	 */
 	public function post($url, $data=array()) {
-		$this->request('POST', $url, $data);
+		return $this->request('POST', $url, $data);
 	}
 	
 	/*
