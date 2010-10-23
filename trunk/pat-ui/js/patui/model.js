@@ -5,12 +5,17 @@
 var model = {
 	/*
 	 * The session_id used to make calls to the server
-	 */
+	 */ 
 	session_id: "",
 	
 	/*
+	 * Connection information for this PAT server
+	 */
+	connections: {},
+	
+	/*
 	 * We're going to try to log server errors gracefully. However, if it reaches
-	 * a certain threashold, we're going to suggest to the user that they just
+	 * a certain threshold, we're going to suggest to the user that they just
 	 * refresh the page.
 	 */
 	server_errors: 0,
@@ -20,14 +25,14 @@ var model = {
 	 */
 	init: function (username) {
 		// TODO - Obtain a session_id
-		// Haven't found where this is done yet
+		model.get_session();
 	
 		// Load schemas
-		while (! this.load_schemas() && this.server_errors < 10) 
-			{ } // Cross our fingers there's no infinite loop
+		//while (! this.load_schemas() && this.server_errors < 10) 
+		//	{ } // Cross our fingers there's no infinite loop
 		
 		// Let the controller know if connection was successful
-		if (this.server_errors >= 10) {
+		if (model.server_errors >= 10) {
 			return false;
 		} else {
 			return true;
@@ -35,10 +40,22 @@ var model = {
 	},
 	
 	/*
+	 * Obtain a session and load connections
+	 */
+	get_session: function() {
+		$.getJSON(BASE_URL + "/rest/admin/session", function(data, textStatus, XMLHttpRequest) {
+			//alert(XMLHttpRequest.responseText);
+			model.session_id = data['@sessionid'];
+			model.connections = data;
+		});
+	},
+	
+	/*
 	 * Load the schemas into the model's schema property
 	 * TODO - move view logic to view
 	 */
 	load_schemas: function() {
+		/* Jackedupedness
 		success = true;
 	    $.getJSON('inc/query.php', function(data) {
 	        if(data === null) {
@@ -58,7 +75,7 @@ var model = {
 		                $('#blockOverlay-update').html('schema '+schema['@schemaname']);
 		                $.each(schema.cubes, function(i,cube){
 		                    $('#blockOverlay-update').html('cube '+cube['@cubename']);
-		                    if(cube.length == undefined) { /* hack */
+		                    if(cube.length == undefined) { 
 		                        $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
 		                    }else{
 		                        $.each(cube, function(i,item){
@@ -70,10 +87,10 @@ var model = {
 		                $.unblockUI(); // TODO - this is view logic
 		            });
 		        });
-	        }
+	        } 
 	    });
 	    
-	    return success;
+	    return success; */
 	},
 	
 	/*
@@ -86,6 +103,7 @@ var model = {
 	 *  TODO - this needs to be cleaned up considerably
 	 */
 	new_query: function (data_string) {
+	/*
 	    var split_string = data_string.split("|"); // TODO - what the hell!? why don't we have json?
 	    var connectionid = split_string[0];
 	    var schemaname = split_string[1];
@@ -185,6 +203,9 @@ var model = {
 	                $.unblockUI();
 	            }
 	        }
-	    });
+	    }); */
 	}
 };
+
+if (! model.init())
+	controller.server_error();
