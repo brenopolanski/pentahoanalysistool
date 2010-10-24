@@ -24,6 +24,7 @@ class WebServices {
 	
 	/*
 	 * This hides the ugliness that is cURL in PHP
+	 * FIXME - handle PUT and DELETE requests
 	 */
 	private function request($method, $url, $data) {
 		$headers = array(
@@ -75,17 +76,17 @@ class WebServices {
 	}
 	
 	/*
-	 * TODO - PUT request
+	 * PUT request
 	 */
 	public function put($url, $data=array()) {
-		
+		return $this->request('PUT', $url, $data);
 	}
 	
 	/*
-	 * TODO - DELETE request
+	 * DELETE request
 	 */
 	public function delete($url) {
-		
+		return $this->request('DELETE', $url);
 	}
 	
 }
@@ -96,6 +97,7 @@ function JSONresponse($HTTP_code, $message) {
 		200=>"OK",	
 		401=>"Unauthorized",
 		404=>"Not Found",
+		405=>"Method Not Allowed",
 		500=>"Internal Server Error"		
 	);
 	
@@ -103,12 +105,14 @@ function JSONresponse($HTTP_code, $message) {
 	if (! isset($status_codes[$HTTP_code])) {
 		$HTTP_code = 500;
 		$message = "Internal server error.";
-	}	
+	}
+
+	// TODO - if message == '' then message = default message for status codes
 	
 	// Send appropriate headers
 	if ($HTTP_code == 401)
 		header('WWW-Authenticate: Basic realm="PAT"');
-	header("HTTP/1.0 $HTTP_code {$status_codes['$HTTP_code']}");
+	header("HTTP/1.0 $HTTP_code {$status_codes[$HTTP_code]}");
 	
 	// Send the JSON response to the browser
 	$output = array( 'message'=>$message );

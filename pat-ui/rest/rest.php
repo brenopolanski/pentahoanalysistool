@@ -43,38 +43,37 @@ class Rest {
 	private $connections;
 	
 	/*
-	 * This function will route any GET calls.
-	 * Reflection will be used to load the appropriate method
-	 * based on URI.
+	 * Constructor - handles sessions and authentication before proxying API calls
 	 */
-	public function GET($matches) {								
-		$this->request('GET', $matches);
-	}
-	
-	/*
-	 * This function will route any POST calls.
-	 * Reflection will be used to load the appropriate method
-	 * based on URI.
-	 */
-	public function POST($matches) {
-		$this->request('POST', $matches);
+	public function Rest() {
+		$this->start_session();
 	}
 	
 	/*
 	 * For DRY's sake, we'll handle all requests through here, using a single $method parameter
 	 */
-	private function request($method, $matches) {
-		$this->get_segments($matches);
-		$this->start_session();
+	public function request($method, $url) {
+		// Make sure people don't try TRACE requests or crap like that
+		$valid_methods = array("GET", "POST", "PUT", "DELETE");
+		if (! in_array($method, $valid_methods)) {
+			JSONresponse(405, "Invalid HTTP method.");
+			return false;			
+		}
 		
 		// Call handler dynamically by handle_ + url_segments
 		$handler = "handle_" . implode("_", $this->url_segments);
 		
 		// FIXME - replace all of this with a proxy object
+		// FIXME - a switch statement would be ideal here
+		// FIXME - fix that trailing slash issue
 		
 		// /rest destroys session
-		if (count($this->url_segments) == 0) {
+		if ($url == "/" || $url == "") {
 			$this->destroy_session();
+			
+		// Creating PAT session
+		} else if ($url == "/admin/session/" || $url == "/admin/session") {
+			$this->handle_admin_session();
 			
 		// If no matching url handlers are found, throw 404
 		} else if (! method_exists($this, $handler)) {
@@ -84,19 +83,6 @@ class Rest {
 		} else {
 			call_user_func(array($this, $handler));
 		}		
-	}
-	
-	/*
-	 * This method logs url segments
-	 * FIXME - this isn't necessary anymore
-	 */
-	private function get_segments($matches) {
-		if (isset($matches['route1']))
-			$this->url_segments[0] = $matches['route1'];
-		if (isset($matches['route2']))
-			$this->url_segments[1] = $matches['route2'];
-		if (isset($matches['route3']))
-			$this->url_segments[2] = $matches['route3'];
 	}
 	
 	/*
@@ -199,5 +185,17 @@ class Rest {
 	private function destroy_session() {
 		session_destroy();
 		JSONresponse(200, 'Your session has been purged.');
+	}
+	
+	/*
+	 * url: all others
+	 * description: proxy function for PAT REST API calls
+	 */
+	private function call_api() { // TODO
+		// If cached returned cached output
+		// Call API
+		// Cache output
+		// Send back response, including headers
+		// use JSONresponse()
 	}
 }

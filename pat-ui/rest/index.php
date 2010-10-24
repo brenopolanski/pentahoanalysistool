@@ -1,29 +1,29 @@
 <?php
 	/*
-	 * This is the router for the rest API, which makes use of the GluePHP microframework
+	 * This is the router for the rest API
 	 */
 
-    require_once('glue.php');
-    require_once('webservices.php');
-    require_once('rest.php');
+	// Necessary bits
+	// Coming soon: require_once('cache.php'); // Wrapper for APC cache, used to cache API calls
+    require_once('webservices.php'); // Wrapper for cURL
+    require_once('rest.php'); // Proxy for PAT REST API
     
-    // FIXME - there has to be a better way of determining this for non-root deployments
-    define('BASE_URL', "/rest");
+    // Where are we?
+    define('REST_URL', '/rest');
+    define('REQUEST_URI', strtolower($_SERVER['REQUEST_URI']));
+    $subdir = stripos(REQUEST_URI, REST_URL);
+    define('BASE_URL', substr(REQUEST_URI, 0, $subdir) . REST_URL);
+    define('API_URL', substr(REQUEST_URI, $subdir + strlen(REST_URL), strlen(REQUEST_URI) - $subdir - strlen(REST_URL)));
+    
+    // Determine request method
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $request_method = strtoupper($_SERVER['REQUEST_METHOD']);
+    } else {
+        $request_method = strtoupper($_POST['method']);
+    }    
 
-    // Define routes here - See http://gluephp.com/documentation.html
-    // Trailing slashes limits the urls that hit
-    $urls = array(
-    	BASE_URL . '' => 'Rest',
-        BASE_URL . '/(?P<route1>[-\w]+)' => 'Rest',
-        BASE_URL . '/(?P<route1>[-\w]+)/(?P<route2>[-\w]+)' => 'Rest',
-        BASE_URL . '/(?P<route1>[-\w]+)/(?P<route2>[-\w]+)/(?P<route3>[-\w]+)' => 'Rest'
-    );
-	
-    try {
-    	glue::stick($urls);
-    } catch (BadMethodCallException $e) {
-    	JSONresponse(500, 'There was an error with your request.');
-    } catch (Exception $e) {
-    	JSONresponse(404, 'The url you requested could not be found.');
-    }
+	// Removed glue.php
+	// This wasn't necessary if we're just acting as a proxy. Now we're *really* OO
+	$rest = new Rest();
+	echo $rest->request($request_method, API_URL); 
 ?>
