@@ -70,7 +70,7 @@ class Rest {
 		// Call handler dynamically by handle_ + url_segments
 		$handler = "handle_" . implode("_", $this->url_segments);
 		
-		// TODO - replace all of this with a proxy object
+		// FIXME - replace all of this with a proxy object
 		
 		// /rest destroys session
 		if (count($this->url_segments) == 0) {
@@ -78,10 +78,7 @@ class Rest {
 			
 		// If no matching url handlers are found, throw 404
 		} else if (! method_exists($this, $handler)) {
-			// FIXME (see index.php:25ish)
-	    	header("HTTP/1.0 404 Not Found");
-	    	$output = array( 'error'=>'The resource you requested was not found.' );
-			die(json_encode($output)); // I've always loved the sweet justice of this function
+			JSONresponse(404, 'The resource you requested was not found.');
 			
 		// Call appropriate url handler
 		} else {
@@ -91,6 +88,7 @@ class Rest {
 	
 	/*
 	 * This method logs url segments
+	 * FIXME - this isn't necessary anymore
 	 */
 	private function get_segments($matches) {
 		if (isset($matches['route1']))
@@ -113,9 +111,6 @@ class Rest {
 	private function start_session() {
 		// Start PHP session
 		session_start();
-		
-		// FIXME - somewhere in here the session_id needs to be saved to the PHP session
-		// Right now we're creating a new session_id for each call to the server
 		
 		// Set class variables for username and password from session
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
@@ -147,28 +142,21 @@ class Rest {
 				$_SESSION['connections'] = $this->connections;
 			} else {
 				// Bad credentials, try again
-				header('WWW-Authenticate: Basic realm="PATui"');
-				header("HTTP/1.0 401 Unauthorized");
-				$output = array( 'error'=>'Invalid credentials supplied. Please try again.' );
-				die(json_encode($output)); // I've always loved the sweet justice of this function
+				JSONresponse(401, 'Invalid credentials supplied. Please try again.');
 			}
 			
 		// If unsuccessful, return Permission Denied 
 		} else {
 			// Not authenticated at all
 			session_destroy();
-			header('WWW-Authenticate: Basic realm="PATui"');
-			header("HTTP/1.0 401 Unauthorized");
-			$output = array( 'error'=>'No credentials supplied. Session may be expired.' );
-			die(json_encode($output)); // I've always loved the sweet justice of this function
+			JSONresponse(401, 'No credentials supplied. Session may be expired.');
 		}	
 
-		// FIXME - check to see if session is already created and use that
 		return true;
 	}
 	
 	/*
-	 * TODO - Creates a session from a username/password combination
+	 * Creates a session from a username/password combination
 	 */
 	private function create_session() {
 		$credentials = array(
@@ -185,9 +173,6 @@ class Rest {
 		
 		$this->session_id = $response['data']->{'@sessionid'};
 		$this->connections = $response['data'];
-		
-		// FIXME - add this stuff to PHP session if possible
-		// FIXME - check if username and password are set in session, and add if not
 		
 		return true;
 	}
@@ -213,8 +198,6 @@ class Rest {
 	 */
 	private function destroy_session() {
 		session_destroy();
-		header("HTTP/1.0 200 OK"); // FIXME - response global function in webservices.php
-		$output = array( 'error'=>'Your session has been purged.' );
-		die(json_encode($output));
+		JSONresponse(200, 'Your session has been purged.');
 	}
 }

@@ -89,3 +89,29 @@ class WebServices {
 	}
 	
 }
+
+function JSONresponse($HTTP_code, $message) {
+	// Lookup appropriate HTTP response
+	$status_codes = array(
+		200=>"OK",	
+		401=>"Unauthorized",
+		404=>"Not Found",
+		500=>"Internal Server Error"		
+	);
+	
+	// Override inputs with Internal Server Error if invalid code used
+	if (! isset($status_codes[$HTTP_code])) {
+		$HTTP_code = 500;
+		$message = "Internal server error.";
+	}	
+	
+	// Send appropriate headers
+	if ($HTTP_code == 401)
+		header('WWW-Authenticate: Basic realm="PAT"');
+	header("HTTP/1.0 $HTTP_code {$status_codes['$HTTP_code']}");
+	
+	// Send the JSON response to the browser
+	$output = array( 'message'=>$message );
+	echo json_encode($output);
+	exit(0);
+}

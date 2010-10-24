@@ -7,7 +7,7 @@
     require_once('webservices.php');
     require_once('rest.php');
     
-    // TODO - there has to be a better way of determining this for non-root deployments
+    // FIXME - there has to be a better way of determining this for non-root deployments
     define('BASE_URL', "/rest");
 
     // Define routes here - See http://gluephp.com/documentation.html
@@ -22,16 +22,8 @@
     try {
     	glue::stick($urls);
     } catch (BadMethodCallException $e) {
-    	// FIXME - we need to abstract quick message responses like this
-    	// This should be something like response(500, "There was an error with your request.");
-    	// Maybe a global function in webservices.php
-    	header("HTTP/1.0 500 Internal Server Error");
-    	$output = array( 'error'=>'There was an error with your request.' );
-		die(json_encode($output)); // I've always loved the sweet justice of this function
+    	JSONresponse(500, 'There was an error with your request.');
     } catch (Exception $e) {
-    	// FIXME (see index.php:25ish)
-    	header("HTTP/1.0 404 Not Found");
-    	$output = array( 'error'=>$e->getMessage() );
-		die(json_encode($output)); // I've always loved the sweet justice of this function
+    	JSONresponse(404, 'The url you requested could not be found.');
     }
 ?>
