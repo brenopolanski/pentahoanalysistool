@@ -12,13 +12,6 @@ var model = {
 	 * Connection information for this PAT server
 	 */
 	connections: {},
-	
-	/*
-	 * We're going to try to log server errors gracefully. However, if it reaches
-	 * a certain threshold, we're going to suggest to the user that they just
-	 * refresh the page.
-	 */
-	server_errors: 0,
 		
 	/*
 	 * This is the constructor of sorts, ensuring that the session ID is valid
@@ -29,27 +22,23 @@ var model = {
 		
 		// Obtain a session_id
 		model.get_session();
-	
-		// Load schemas
-		//while (! this.load_schemas() && this.server_errors < 10) 
-		//	{ } // Cross our fingers there's no infinite loop
-		
-		// Let the controller know if connection was successful
-		if (model.server_errors >= 10) {
-			return false;
-		} else {
-			return true;
-		}
 	},
 	
 	/*
 	 * Obtain a session and load connections
 	 */
 	get_session: function() {
-		$.getJSON(BASE_URL + "/rest/admin/session", function(data, textStatus, XMLHttpRequest) {
-			model.session_id = data['@sessionid'];
-			model.connections = data;
-			view.generate_navigation();
+		$.ajax({
+			url: BASE_URL + "/rest/admin/session",
+			dataType: 'json',
+			success: function(data, textStatus, XMLHttpRequest) {
+				model.session_id = data['@sessionid'];
+				model.connections = data;
+				view.generate_navigation();
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				controller.server_error();
+			}
 		});
 	},
 	
@@ -172,5 +161,4 @@ var model = {
 	}
 };
 
-if (! model.init())
-	controller.server_error();
+model.init();

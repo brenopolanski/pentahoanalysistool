@@ -36,10 +36,20 @@ function debug(msg) {
 }
 
 var controller = {
+	errors: 0,
+	
     server_error: function() {
-        // FIXME - handle this more elegantly (perhaps start the process over after a delay?)
-        alert("Could not connect to server.");
-    // model.init();
+        // Rstart the process over after a delay
+        view.processing("Could not connect to server. Retrying in 10 seconds...");
+        if (controller.errors > 5) {
+        	view.processing("Could not connect to server. Giving up.");
+        } else {
+	        setTimeout(function() {
+	        	controller.errors++;
+	        	view.free();
+	        	model.init();
+	        }, 10000);
+        }
     },
     
     click_handler: function($button) {
