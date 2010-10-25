@@ -3,14 +3,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>PATui</title>
+        <title>PATui - Layout</title>
         <!-- Blueprint CSS Framework -->
         <link rel="stylesheet" href="css/blueprint/reset.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/forms.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/typography.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/grid.css" type="text/css" media="screen, projection">
         <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
-        <!-- PATui CSS -->
+        <!-- PATui CSS Framework -->
         <link rel="stylesheet" href="css/patui/styles.css" type="text/css" media="screen, projection">
         <!-- jQuery Core, UI and Plugins -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
@@ -22,173 +22,212 @@
         <script type="text/javascript" src="js/jquery/jquery.plugins.min.js"></script>
         <!-- PATui JavaScript -->
         <script type="text/javascript" src="js/patui/controller.js"></script>
-        
-        <!-- PATui Application JavaScript TODO - Remove 
-        <script type="text/javascript" src="js/patui/patui.js"></script>-->
     </head>
     <body>
-        <!-- Toolbar -->
-        <div id="toolbar" class="ui-layout-north">
-            <!-- Navigation -->
-            <ul id="navigation">
-                <li>
-                    <a id="new_query" href="#" title="New Query"><img src="images/toolbar/new.png" alt="New Query" /></a>
-                    <span class="hide">New Query</span>
-                </li>
+        <!-- header -->
+        <div id="header">
+            <!-- toolbar -->
+            <ul id="toolbar">
+                <li><a id="new_query_btn" href="#" title="New Query"><img src="images/toolbar/new.png" alt="New Query" /></a></li>
                 <li class="separator">&nbsp;</li>
-                <li>
-                    <a id="open_query" href="#" title="Open Query"><img src="images/toolbar/open.png" alt="Open Query" /></a>
-                    <span class="hide">Open Query</span>
-                </li>
-                <li>
-                    <a id="save_query" href="#" title="Save Query"><img src="images/toolbar/save.png" alt="Save Query" class="disabled" /></a>
-                    <span class="hide">Save Query</span>
-                </li>
+                <li><a id="open_query_btn" href="#" title="Open Query"><img src="images/toolbar/open.png" alt="Open Query" /></a></li>
+                <li><a id="save_query_btn" href="#" title="Save Query"><img src="images/toolbar/save.png" alt="Save Query" class="disabled" /></a></li>
                 <li class="separator">&nbsp;</li>
-                <li>
-                    <a id="delete_query" href="#" title="Delete Query"><img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" /></a>
-                    <span class="hide">Delete Query</span>
-                </li>
+                <li><a id="delete_query_btn" href="#" title="Delete Query"><img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" /></a></li>
                 <li class="separator">&nbsp;</li>
-                <li>
-                    <a id="logout" href="#" title="Logout"><img src="images/toolbar/log-out.png" alt="Logout" /></a>
-                    <span class="hide">Logout</span>
-                </li>
+                <li><a id="logout_btn" href="#" title="Logout"><img src="images/toolbar/log-out.png" alt="Logout" /></a></li>
                 <li class="separator">&nbsp;</li>
-                <li>
-                    <a id="help" href="#" title="Help"><img src="images/toolbar/help.png" alt="About" /></a>
-                    <span class="hide">Help</span>
-                </li>
+                <li><a id="about_btn" href="#" title="About"><img src="images/toolbar/help.png" alt="About" /></a></li>
             </ul>
-            <!-- Eof Navigation -->
+            <!-- eof toolbar -->
         </div>
-        <!-- Eof Toolbar -->
-        <!-- Sidebar -->
-        <div id="sidebar" class="ui-layout-west">
-            <span class="section_header top">Data</span>
-            <p>Data</p>
-            <span class="section_header">Dimensions</span>
-            <p>Dimensions</p>
-            <span class="section_header">Measures</span>
-            <p>Measures</p>
-        </div>
-        <!-- Eof Sidebar -->
-        <!-- Content -->
-        <div id="content" class="ui-layout-center">
-            <div id="querylist_wrapper">
-                <div id="querylist_container">
+        <!-- eof header -->
+        <!-- wrapper -->
+        <div id="wrapper">
+            <!-- tab_panel -->
+            <div id="tab_panel">
+                <!-- tab_list -->
+                <div id="tab_list">
                     <ul>
-                        <li><a href="#query_1">Welcome</a></li>
-                        <li><a href="#query_2" class="closable">Long name for the last tab <img src="images/tab/close.png" alt="Close tab"/></a></li>
+                        <li><a href="#query1">Welcome</a></li>
+                        <li><a href="#query2" class="closable">Query (1) <img src="images/tab/close.png" alt="Close tab"/></a></li>
                     </ul>
                 </div>
-                <div id="query_content">
-                    <div id="query_1">
-                        <div id="query_toolbar">
-                            <a class="button">Show Axis</a>
-                            <a class="button">Show Filters</a>
-                            <a class="button">Swap Axis</a>
-                            <a class="button">Visualise</a>
-                            <a class="button">Export</a>
+                <!-- eof tab_list -->
+                <!-- tab_content -->
+                <div id="tab_content">
+                    <!-- query1 -->
+                    <div id="query1" class="tab ui-tabs-hide">
+                        <!-- tab_body -->
+                        <div id="tab_body">
+                            <!-- tab_top -->
+                            <div id="tab_top">
+                                <!-- tab_toolbar -->
+                                <div id="tab_toolbar">
+                                    <a id="toggle_axis" class="button">Show Axis</a>
+                                    <a id="toggle_filter" class="button">Show Filters</a>
+                                    <a class="button">Swap Axis</a>
+                                    <a class="button">Visualise</a>
+                                    <a class="button">Export</a>
+                                </div>
+                            </div>
+                            <!-- eof tab_toolbar -->
+                            <!-- eof tab_top -->
+                            <!-- tab_bottom -->
+                            <div id="tab_bottom" class="tab_scroll_content">
+                                <!-- col_axis -->
+                                <div id="col_axis">
+                                    <div class="axis_title">
+                                        Column Axis
+                                    </div>
+                                    <!-- col_axis_drop -->
+                                    <div id="col_axis_drop">
+                                        <span class="item measure">Measure</span>
+                                        <span class="item dimension">Dimension</span>
+                                    </div>
+                                    <!-- eof col_axis_drop -->
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- eof col_axis -->
+                                <!-- row_axis -->
+                                <div id="row_axis">
+                                    <div class="axis_title">
+                                        Row Axis
+                                    </div>
+                                    <!-- row_axis_drop -->
+                                    <div id="row_axis_drop">
+                                        <span id="row_placeholder">Drop row axis fields here</span>
+                                    </div>
+                                    <!-- eof row_axis_drop -->
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- eof row_axis -->
+                                <!-- filter_axis -->
+                                <div id="filter_axis">
+                                    <div class="axis_title">
+                                        Filter Axis
+                                    </div>
+                                    <!-- filter_axis_drop -->
+                                    <div id="filter_axis_drop">
+                                        <span id="filter_placeholder">Drop row axis fields here</span>
+                                    </div>
+                                    <!-- eof filter_axis_drop -->
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- eof filter_axis -->
+                                <!-- vis -->
+                                <div id="vis">
+                                    <!-- datatable -->
+                                    <table id="datatable">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">&nbsp;</th>
+                                                <th colspan="5" class="calign header">Years</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="string header">Region</th>
+                                                <th class="string header">Product Line</th>
+                                                <th class="string header">2006</th>
+                                                <th class="string header">2007</th>
+                                                <th class="string header">2008</th>
+                                                <th class="string header">2009</th>
+                                                <th class="string header">2010</th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="3">
+                                                    Australia
+                                                </th>
+                                                <td>Cars</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ships</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Boats</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="3">
+                                                    United States
+                                                </th>
+                                                <td>Cars</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ships</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Boats</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                                <td class="number">$1,000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- eof datatable -->
+                                </div>
+                                <!-- eof vis -->
+                            </div>
                         </div>
-                        <div id="query_col_axis">
-                            <span class="axis_title">
-                                Column Axis
-                            </span>
-                            <span id="col_placeholder">Drop column fields here</span>
+                        <!-- eof tab_bottom -->
+                        <!-- sidebar -->
+                        <div id="sidebar">
+                            <span class="section_header top">Data</span>
+                            <p>Data</p>
+                            <span class="section_header">Dimensions</span>
+                            <p>Dimensions</p>
+                            <span class="section_header">Measures</span>
+                            <p>Measures</p>
                         </div>
-                        <div id="query_row_axis">
-                            <span class="axis_title">
-                                Row Axis
-                            </span>
-                            <span id="row_placeholder">Drop row fields here</span>
-                        </div>
-                        <div id="query_filter_axis">
-                            <span class="axis_title">
-                                Filters
-                            </span>
-                            <span id="filter_placeholder">Drop filter fields here</span>
-                        </div>
-                        <div id="vis">
-                            <table id="datatable">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2">&nbsp;</th>
-                                        <th colspan="5" class="calign header">Years</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="string header">Region</th>
-                                        <th class="string header">Product Line</th>
-                                        <th class="string header">2006</th>
-                                        <th class="string header">2007</th>
-                                        <th class="string header">2008</th>
-                                        <th class="string header">2009</th>
-                                        <th class="string header">2010</th>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="3">
-                                            Australia
-                                        </th>
-                                        <td>Cars</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ships</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Boats</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="3">
-                                            United States
-                                        </th>
-                                        <td>Cars</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ships</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Boats</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                        <td class="number">$1,000</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <!-- eof sidebar -->
                     </div>
+                    <!-- eof query1 -->
+                    <!-- query2 -->
+                    <div id="query2" class="tab ui-tabs-hide">
+                        <!-- tab_body -->
+                        <div id="tab_body">
+                            Empty
+                        </div>
+                        <!-- eof tab_body -->
+                        <!-- sidebar -->
+                        <div id="sidebar">
+                            <p>Empty</p>
+                        </div>
+                        <!-- eof sidebar -->
+                    </div>
+                    <!-- eof query2 -->
+
                 </div>
-                <div id="query_2"></div>
+                <!-- eof tab_content  -->
             </div>
         </div>
-        <!-- Eof Content -->
+        <!-- eof wrapper -->
     </body>
 </html>

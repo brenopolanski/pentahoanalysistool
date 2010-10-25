@@ -1,25 +1,41 @@
 /*
- * PATui Stylesheet
- * This is a stylesheet for PATui default theme
- * TODO - Create sprites
- * TODO - Remove hacks
- * TODO - Add gradient images for IE support
+ * PATui v1.0 CSS
+ *
+ * Layout
+ *
+ * body
+ *   $_header
+ *     $_toolbar
+ *   $_wrapper
+ *     $_tab_panel
+ *       $_tab_list
+ *     $_tab_content
+ *       $_tab_body
+ *         $_tab_top
+ *           $_tab_toolbar
+ *         $_tab_bottom
+ *           $_col_axis, $_row_axis, $filter_axis
+ *             $_col_axis_drop, $_row_axis_drop, $filter_axis_drop
+ *
+ * Plugins
+ *
+ * $_jquery_ui_layout
+ * $_jquery_alerts
+ *
  */
 
+ /*
+  * $_globals
+  */
 
-/*
- * $_global
- * Global styles
-*/
-
-.hide {
-    display: none !important;
-}
 .ralign {
     text-align: right;
 }
 .calign {
     text-align: center;
+}
+.hide {
+    display: none !important;
 }
 a.button {
     background: #f9f9f9;
@@ -35,7 +51,6 @@ a.button {
     text-shadow: 1px 1px 0 #ffffff;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    zoom:1;
 }
 a.button:hover{
     background: #f3f3f3;
@@ -46,11 +61,10 @@ a.button:hover{
 }
 
 /*
- * $_toolbar
- * Toolbar styles
+ * $_header
  */
 
-#toolbar {
+#header {
     background: #f9f9f9;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
@@ -58,50 +72,263 @@ a.button:hover{
 }
 
 /*
- * $_navigation
- * Navigation styles which sit inside $_toolbar
+ * $_toolbar
  */
 
-#navigation {
+#toolbar {
     font-size: 0.8em;
-    height: 26px; /* 40px */
+    height: 26px;
     margin: 0;
     padding: 10px;
     list-style-type: none;
 }
-#navigation li {
+#toolbar li {
     display: inline-block;
     float: left;
     padding: 0 5px;
     text-align: center;
 }
-#navigation li a {
+#toolbar li a {
     text-decoration: none;
 }
-#navigation li img.disabled {
-    filter: alpha(opacity=30);
-    opacity: 0.30;
-}
-#navigation li span {
-    display: block;
-    text-decoration: none;
-}
-#toolbar ul li.separator {
+/* Used for separators for button groups */
+#toolbar li.separator {
     background: #d5d5d5;
     font-size: 0;
-    height: 26px; /* 40px */
+    height: 26px;
     margin: 0 10px;
     padding: 0;
     width: 1px;
 }
+/* Used to disable images when inactive */
+#toolbar li img.disabled {
+    filter: alpha(opacity=30);
+    opacity: 0.30;
+}
+
+/*
+ * $_wrapper
+ */
+
+/* */
+
+/*
+ * $_tab_panel
+ */
+
+ /* */
+
+/*
+ * $_tab_list
+ * TODO - $_tab_list Remove hacks
+ * TODO - $_tab_list Use sprites
+ */
+
+#tab_list  {
+    background: #f0f0f0;
+    padding-top: 3px;
+    padding-top: 2px\0/; /* IE8 hack */
+}
+#tab_list,
+x:-moz-any-link,
+x:default {
+    background: #f0f0f0;
+    padding-top: 2px;
+}
+#tab_list ul {
+    border-bottom: 1px solid #d5d5d5;
+    list-style-type: none;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 5px 4px 3px 15px;
+}
+#tab_list ul li {
+    display: inline;
+    padding-left: 2px;
+}
+#tab_list ul li a {
+    background: #f9f9f9;
+    border: 1px solid #d5d5d5;
+    border-bottom: none;
+    color: #666;
+    outline: none !important;
+    padding: 4px 6px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #ffffff;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#tab_list ul li a:hover {
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+    color: #222;
+    padding: 4px 6px 4px 6px;
+}
+#tab_list ul li.ui-tabs-selected a {
+    border-bottom: 1px solid #f0f0f0 !important;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
+    color: #222;
+    font-weight: bold;
+    padding: 4px 6px;
+    border-bottom: none;
+}
+#tab_list ul li.active a:hover {
+    border-bottom: none;
+    padding: 4px 6px 5px 6px;
+}
+#tab_list ul li img {
+    padding-left: 2px;
+}
+
+/*
+ * $_tab_content
+ * TODO - IE8 displays vertical scrollbar even when not needed
+ */
+
+#tab_content {
+    border-top: 1px solid #d5d5d5;
+    text-align: left;
+}
+/* Needed by jQuery UI Tabs */
+#tab_content .ui-tabs-hide {
+    display: none;
+}
+/* Needed by jQuery UI Layout for tab layout containers */
+#tab_content .tab { 
+    height: 100%;
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+}
+#tab_content .tab_scroll_content {
+    overflow: auto;
+    position: relative;
+}
+
+/*
+ * $_tab_body
+ */
+
+#tab_body {
+    border-left: 1px solid #d5d5d5;
+    padding: 10px;
+
+}
+#tab_body .axis_title {
+    background: #f9f9f9;
+    border-right: 1px solid #d5d5d5;
+    font-weight: bold;
+    padding: 5px;
+    text-shadow: 1px 1px 0 #ffffff;
+    width: 15%;
+    float: left;
+}
+#tab_body span.item {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 3px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#tab_body span.measure {
+    background: #fbe3e4;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+}
+#tab_body span.dimension {
+    color: #006699;
+    border: 1px solid #006699;
+    background: #d5edf8;
+}
+
+/*
+ * $_tab_top
+ */
+
+/* */
+
+/*
+ * $_tab_bottom
+ */
+
+/*
+ * $_tab_toolbar
+ */
+
+#tab_body #tab_toolbar {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+/*
+ * $_*_axis
+ */
+
+#tab_body #col_axis,
+#tab_body #row_axis,
+#tab_body #filter_axis {
+    border:1px solid #d5d5d5;
+    margin-top: 10px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#tab_body #col_axis #col_axis_drop,
+#tab_body #row_axis #row_axis_drop,
+#tab_body #filter_axis #filter_axis_drop {
+    float: left;
+    padding: 4px 4px;
+    width: 80%;
+}
+#tab_body #col_axis #col_placeholder,
+#tab_body #row_axis #row_placeholder,
+#tab_body #filter_axis #filter_placeholder {
+    color: #888;
+    font-style: italic;
+    padding: 5px;
+}
+
+/*
+ * $_vis
+ */
+
+#tab_body #vis {
+    margin-top: 20px;
+}
+
+/*
+ * $_datatable
+ */
+ 
+#tab_body #vis #datatable {
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+#tab_body #vis #datatable th, tr, td {
+    background: #ffffff;
+    border-bottom: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    font-weight: normal;
+}
+#tab_body #vis #datatable .header {
+    font-weight: bold;
+}
+#tab_body #vis #datatable .string {
+    text-align: left;
+}
+#tab_body #vis #datatable .number {
+    text-align: right;
+}
 
 /*
  * $_sidebar
- * Sidebar styles
- * TODO - widget_header has an extra 1px padding on the bottom
  */
-
+ 
 #sidebar {
+    border-right: 1px solid #d5d5d5;
     text-align: left;
 }
 #sidebar .section_header {
@@ -120,190 +347,12 @@ a.button:hover{
     border-top: 0;
     padding-top: 6px;
 }
-
-#sidebar .widget {
-    border: 1px solid #d5d5d5;
-    margin-bottom: 10px;
-    -moz-box-shadow: 0px 0px 2px #e3e3e3;
-    -webkit-box-shadow: 0px 0px 2px #e3e3e3;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-}
-#sidebar .widget_header {
-    background: #f9f9f9;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    font-weight: bold;
-    line-height: 18px;
-    padding: 3px 5px;
-    text-shadow: 1px 1px 0 #ffffff;
-}
-#sidebar .widget_body {
-    padding: 5px;
-}
 #sidebar p {
     padding: 5px;
 }
 
 /*
- * $_content
- * Content styles
- */
-
-#content {
-    text-align: left;
-}
-
-/*
- * $_queries
- * Query/Tab styles
- * TODO - IE7 places image inside inline-block 1px lower
- */
-
-#querylist_wrapper #querylist_container {
-    background: #f0f0f0;
-    border-bottom: 1px solid #d5d5d5;
-    padding-top: 3px;
-    padding-top: 2px\0/; /* IE8 */
-}
-/* FF */
-#querylist_wrapper #querylist_container,
-x:-moz-any-link,
-x:default {
-    background: #f0f0f0;
-    border-bottom: 1px solid #d5d5d5;
-    padding-top: 2px;
-}
-#querylist_wrapper #querylist_container ul {
-    list-style-type: none;
-    line-height: 1.4em;
-    margin: 0 0 0 10px;
-    padding: 5px 4px 3px 0;
-}
-#querylist_wrapper #querylist_container ul li {
-    display: inline;
-}
-#querylist_wrapper #querylist_container ul li a {
-    background: #f9f9f9;
-    border: 1px solid #d5d5d5;
-    border-bottom: none;
-    color: #666;
-    outline: none !important;
-    padding: 4px 6px;
-    text-decoration: none;
-    text-shadow: 1px 1px 0 #ffffff;
-    -moz-border-radius: 2px 2px 0 0;
-    -webkit-border-radius: 2px 2px 0 0;
-}
-#querylist_wrapper #querylist_container ul li a:hover {
-    background: #ffffff;
-    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-    color: #222;
-    padding: 4px 6px 4px 6px;
-}
-#querylist_wrapper #querylist_container ul li.ui-tabs-selected a {
-    border-bottom: 1px solid #fff;
-    background: #ffffff;
-    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
-    color: #222;
-    font-weight: bold;
-    padding: 4px 6px 5px 6px;
-    border-bottom: none;
-}
-#querylist_wrapper #querylist_container ul li.active a:hover {
-    border-bottom: none;
-    padding: 4px 6px 5px 6px;
-}
-#querylist_wrapper #querylist_container ul li img {
-    padding-left: 2px;
-}
-#query_content {
-    border-top: 1px solid #d5d5d5;
-    margin-top: 1px;
-    padding: 10px;
-}
-#query_content .ui-tabs-hide {
-    display: none;
-}
-#query_content .query_toolbar {
-    background: #f9f9f9;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    border-top: 1px solid #d5d5d5;
-    border-bottom: 1px solid #d5d5d5;
-    display: block;
-    font-weight: bold;
-    padding: 5px;
-    text-shadow: 1px 1px 0 #ffffff;
-}
-#query_content #query_toolbar {
-    margin-bottom: 10px;
-    text-align: right;
-}
-#query_content #query_col_axis,
-#query_content #query_row_axis,
-#query_content #query_filter_axis {
-    border:1px solid #d5d5d5;
-    margin-top: 10px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-}
-#query_content #query_col_axis span.axis_title,
-#query_content #query_row_axis span.axis_title,
-#query_content #query_filter_axis span.axis_title {
-    background: #f9f9f9;
-    border-right: 1px solid #d5d5d5;
-    display: inline-block;
-    font-weight: bold;
-    margin-right: 5px;
-    padding: 4px;
-    text-shadow: 1px 1px 0 #ffffff;
-    width: 80px;
-    zoom: 1;
-}
-#query_content #query_col_axis #col_placeholder,
-#query_content #query_row_axis #row_placeholder,
-#query_content #query_filter_axis #filter_placeholder {
-    display: inline-block;
-    color: #888;
-    font-style: italic;
-    padding: 4px;
-}
-
-/*
- * $_vis
- * Visualisation styles
- */
-
-#query_content #vis {
-    margin-top: 10px;
-}
-#datatable {
-    background: #ffffff;
-    margin: 0;
-    padding: 0;
-}
-#datatable th, tr, td {
-    background: #ffffff;
-    border-bottom: 1px solid #d5d5d5;
-    border-right: 1px solid #d5d5d5;
-    font-weight: normal;
-}
-#datatable .header {
-    font-weight: bold;
-}
-#datatable .string {
-    text-align: left;
-}
-#datatable .number {
-    text-align: right;
-}
-
-/*
  * $_jquery_ui_layout
- * Override styles for the jQuery UI Layout plugin
  */
 
 /* all 'panes' */
@@ -320,6 +369,7 @@ x:default {
 }
 .ui-layout-center {
     border-left: 1px solid #d5d5d5;
+    padding: 10px;
 }
 /* all 'resizer-bars' */
 .ui-layout-resizer {
@@ -353,4 +403,57 @@ x:default {
 }
 .ui-layout-resizer-sliding  ui-layout-toggler {
     display: none;
+}
+
+/*
+ * $_jquery_alerts
+ */
+
+#popup_container {
+    background: #ffffff;
+    border: 2px solid #d5d5d5;
+    min-width: 300px; /* Dialog will be no smaller than this */
+    max-width: 600px; /* Dialog will wrap after this width */
+    -moz-box-shadow: 0px 0px 10px #c5c5c5;
+    -webkit-box-shadow: 0px 0px 10px #c5c5c5;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+#popup_title {
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    border-bottom: 1px solid #d5d5d5;
+    font-weight: bold;
+    line-height: 18px;
+    padding: 3px 5px;
+    text-align: left;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+/*#popup_content {
+    background: 16px 16px no-repeat url(images/info.gif);
+    padding: 1em 1.75em;
+    margin: 0em;
+}
+#popup_content.alert {
+    background-image: url(images/info.gif);
+}
+#popup_content.confirm {
+    background-image: url(images/important.gif);
+}
+#popup_content.prompt {
+    background-image: url(images/help.gif);
+}*/
+#popup_message {
+    /*padding-left: 48px;*/
+    padding: 10px;
+}
+#popup_panel {
+    background: #ffffff;
+    text-align: center;
+    padding: 5px;
+}
+#popup_prompt {
+   /* margin: .5em 0em; */
 }
