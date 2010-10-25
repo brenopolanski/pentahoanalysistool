@@ -132,6 +132,11 @@ var view = {
                     return false;
                 }
             });
+            
+            // Add event handler to toolbar buttons
+            $("#toolbar a").click(function() {
+            	controller.click_handler($(this));
+            });
                 
         });
 
