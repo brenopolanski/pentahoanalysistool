@@ -26,9 +26,11 @@ function lazy_load(script_filename) {
 
 /*
  * Debug 
+ * TODO - I would remove this in the production code
  */
 function debug(msg) {
-    if (debug_enabled && console != 'undefined') {
+    //if (debug_enabled && console != 'undefined') {
+    if (console != 'undefined') {
         console.log(msg);
     }
 }
@@ -38,6 +40,25 @@ var controller = {
         // FIXME - handle this more elegantly (perhaps start the process over after a delay?)
         alert("Could not connect to server.");
     // model.init();
+    },
+    
+    click_handler: function($button) {
+    	var handler = $button.attr("id");
+    	var success = false;
+    	for (method in controller) {
+    		if (method == handler) {
+    			eval("controller." + method + "();");
+    			success = true;
+    		}
+    	}
+    	
+    	if (success == false)
+    		debug("This button handler isn't implemented yet.");
+    },
+    
+    new_query: function() {
+    	alert("New query!");
+    	return false;
     }
 };
 
@@ -46,5 +67,5 @@ var controller = {
  */
 $(document).ready(function() {
     lazy_load("js/patui/view.js");
-    //lazy_load("js/patui/model.js");
+    lazy_load("js/patui/model.js");
 });
