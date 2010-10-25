@@ -24,18 +24,27 @@ function lazy_load(script_filename) {
     return false;
 }
 
+/*
+ * Debug 
+ */
+function debug(msg) {
+    if (debug_enabled && console != 'undefined') {
+        console.log(msg);
+    }
+}
+
 var controller = {
-	server_error: function() {
-		// FIXME - handle this more elegantly (perhaps start the process over after a delay?)
-		alert("Could not connect to server.");
-		// model.init();
-	}
+    server_error: function() {
+        // FIXME - handle this more elegantly (perhaps start the process over after a delay?)
+        alert("Could not connect to server.");
+    // model.init();
+    }
 };
 
 /*
  * Lazy load view and model and initialize session
  */
 $(document).ready(function() {
-	lazy_load("js/patui/view.js");
-	lazy_load("js/patui/model.js");
+    lazy_load("js/patui/view.js");
+    //lazy_load("js/patui/model.js");
 });
