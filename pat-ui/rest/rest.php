@@ -9,7 +9,9 @@ class Rest {
 	 * Any global settings should be stored here
 	 */
 	private $settings = array(
-		'base_url'=>'http://demo.analytical-labs.com/rest'
+		//'base_url'=>'http://demo.analytical-labs.com/rest'
+		//'base_url'=>'http://localhost:8080/pat/rest'
+		'base_url'=>'http://localhost/fixtures/rest'
 	);
 	
 	/*
@@ -46,13 +48,14 @@ class Rest {
 	 * Constructor - handles sessions and authentication before proxying API calls
 	 */
 	public function Rest() {
+		// TODO - single sign-on here
 		$this->start_session();
 	}
 	
 	/*
 	 * For DRY's sake, we'll handle all requests through here, using a single $method parameter
 	 */
-	public function request($method, $url) {
+	public function request($method, $url, $data) {
 		// Make sure people don't try TRACE requests or crap like that
 		$valid_methods = array("GET", "POST", "PUT", "DELETE");
 		if (! in_array($method, $valid_methods)) {
@@ -61,28 +64,32 @@ class Rest {
 		}
 		
 		// Call handler dynamically by handle_ + url_segments
-		$handler = "handle_" . implode("_", $this->url_segments);
-		
-		// FIXME - replace all of this with a proxy object
-		// FIXME - a switch statement would be ideal here
-		// FIXME - fix that trailing slash issue
-		
-		// /rest destroys session
-		if ($url == "/" || $url == "") {
-			$this->destroy_session();
-			
-		// Creating PAT session
-		} else if ($url == "/admin/session/" || $url == "/admin/session") {
-			$this->handle_admin_session();
-			
-		// If no matching url handlers are found, throw 404
-		} else if (! method_exists($this, $handler)) {
-			JSONresponse(404, 'The resource you requested was not found.');
-			
-		// Call appropriate url handler
-		} else {
-			call_user_func(array($this, $handler));
-		}		
+		$handler = str_replace("/", "", $url);
+
+		switch ($handler) {
+			case "":
+				// Destroy session at /rest
+				$this->destroy_session();
+				break;
+			case "adminsession":
+				// Creating PAT session
+				$this->handle_admin_session();
+				break;
+			default:
+				// Proxy all other requests
+				$response = $this->client->request($method, $this->settings['base_url'] . $url, $data);
+				
+				// Handle server errors
+				if ($response['http_code'] != 200) {
+					JSONresponse($response['http_code'], 'There was an error accessing the PAT API.');
+				}
+				
+				// TODO - cache results
+				
+				// Return response from cURL
+				return $response;
+				break;
+		}
 	}
 	
 	/*
@@ -96,7 +103,11 @@ class Rest {
 	 */
 	private function start_session() {
 		// Start PHP session
-		session_start();
+		try {
+			session_start();
+		} catch (Exception $e) {
+			JSONresponse(500, 'Could not create session.');
+		}
 		
 		// Set class variables for username and password from session
 		if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
@@ -128,6 +139,7 @@ class Rest {
 				$_SESSION['connections'] = $this->connections;
 			} else {
 				// Bad credentials, try again
+				session_destroy();
 				JSONresponse(401, 'Invalid credentials supplied. Please try again.');
 			}
 			
@@ -150,15 +162,15 @@ class Rest {
 			'password'=>$this->password
 		);
 		
-		$response = $this->client->post($this->settings['base_url'] . "/admin/session", $credentials);
+		$response = $this->client->request('POST', $this->settings['base_url'] . "/admin/session", $credentials);
 		
 		// No data returned, something got screwed up
-		if ($response['string'] == '' || empty($response['data']->{'@sessionid'})) {
+		if ($response['response_string'] == '' || empty($response['response_data']->{'@sessionid'})) {
 			return false;
 		}
 		
-		$this->session_id = $response['data']->{'@sessionid'};
-		$this->connections = $response['data'];
+		$this->session_id = $response['response_data']->{'@sessionid'};
+		$this->connections = $response['response_data'];
 		
 		return true;
 	}
@@ -185,17 +197,5 @@ class Rest {
 	private function destroy_session() {
 		session_destroy();
 		JSONresponse(200, 'Your session has been purged.');
-	}
-	
-	/*
-	 * url: all others
-	 * description: proxy function for PAT REST API calls
-	 */
-	private function call_api() { // TODO
-		// If cached returned cached output
-		// Call API
-		// Cache output
-		// Send back response, including headers
-		// use JSONresponse()
 	}
 }
