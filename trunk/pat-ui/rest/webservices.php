@@ -26,7 +26,7 @@ class WebServices {
 	 * This hides the ugliness that is cURL in PHP
 	 * FIXME - handle PUT and DELETE requests
 	 */
-	private function request($method, $url, $data) {
+	public function request($method, $url, $data=array()) {
 		$headers = array(
         'Accept: application/json',
         'Content-Type: application/json',
@@ -38,57 +38,40 @@ class WebServices {
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	    
+	    
+	    // FIXME - seeing if this hack will help PAT 404s
+	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	    // FIXME - set reasonable timeout
+	    
 	    // Perform HTTP Basic Authentication if credentials available
 	    if ($this->username != '' && $this->password != '')
 	    	curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);
 	    
-	    // Post for POST (== cURL is weird)
-	    if ($method = 'POST')
+	    // Set for POST (== cURL is weird)
+	    if ($method == 'POST')
 	    	curl_setopt($ch, CURLOPT_POST, 1);
+	    	curl_setopt($ch, CURLOPT_POSTFIELDS, ""); //  Had to set this for PHP's cURL library to play nice
 	    	
-	    // TODO - not sure how to do PUT or DELETE with cURL yet
+	    // Set for PUT (== cURL is weird)
+	    if ($method == 'PUT')
+	    	curl_setopt($ch, CURLOPT_PUT, 1);
 	    	
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, ""); //  Had to set this for PHP's cURL library to play nice
+	    // TODO - not sure how to do DELETE with cURL yet
 	    
 	    $response = array();
-	    $response['string'] = curl_exec($ch);
-	    $response['data'] = json_decode($response['string']);
+	    $response['response_string'] = curl_exec($ch);
+	    $response['response_data'] = json_decode($response['response_string']);
+	    
+	    // Merge in cURL request data
+	    $header  = curl_getinfo( $ch );
+	    $response = array_merge($response, $header);
 	    
 	    if (curl_errno($ch) != 0) {
 	    	$response['data'] = array();
 	    }
 	    
 	    return $response;
-	}
-	
-	/*
-	 * GET request
-	 */
-	public function get($url, $data=array()) {
-		return $this->request('GET', $url, $data);
-	}
-	
-	/*
-	 * POST request
-	 */
-	public function post($url, $data=array()) {
-		return $this->request('POST', $url, $data);
-	}
-	
-	/*
-	 * PUT request
-	 */
-	public function put($url, $data=array()) {
-		return $this->request('PUT', $url, $data);
-	}
-	
-	/*
-	 * DELETE request
-	 */
-	public function delete($url) {
-		return $this->request('DELETE', $url);
-	}
-	
+	}	
 }
 
 function JSONresponse($HTTP_code, $message) {
@@ -96,15 +79,16 @@ function JSONresponse($HTTP_code, $message) {
 	$status_codes = array(
 		200=>"OK",	
 		401=>"Unauthorized",
+		403=>"Forbidden",
 		404=>"Not Found",
 		405=>"Method Not Allowed",
 		500=>"Internal Server Error"		
 	);
 	
 	// Override inputs with Internal Server Error if invalid code used
-	if (! isset($status_codes[$HTTP_code])) {
+	if (! in_array($HTTP_code, array_keys($status_codes))) {
 		$HTTP_code = 500;
-		$message = "Internal server error.";
+		$message = "Internal server error (Unkown status code: {$HTTP_code}).";
 	}
 
 	// TODO - if message == '' then message = default message for status codes
