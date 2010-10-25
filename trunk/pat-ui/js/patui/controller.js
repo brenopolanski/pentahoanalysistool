@@ -45,20 +45,15 @@ var controller = {
     click_handler: function($button) {
     	var handler = $button.attr("id");
     	var success = false;
-    	for (method in controller) {
+    	for (method in model) {
     		if (method == handler) {
-    			eval("controller." + method + "();");
+    			eval("model." + method + "();");
     			success = true;
     		}
     	}
     	
     	if (success == false)
     		debug("This button handler isn't implemented yet.");
-    },
-    
-    new_query: function() {
-    	alert("New query!");
-    	return false;
     }
 };
 
@@ -66,6 +61,6 @@ var controller = {
  * Lazy load view and model and initialize session
  */
 $(document).ready(function() {
-    lazy_load("js/patui/view.js");
-    lazy_load("js/patui/model.js");
+	lazy_load("/js/patui/view.js");
+	lazy_load("/js/patui/model.js");
 });
