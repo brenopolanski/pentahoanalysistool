@@ -56,6 +56,10 @@ class WebServices {
 	    if ($method == 'PUT')
 	    	curl_setopt($ch, CURLOPT_PUT, 1);
 	    	
+	    // Set for DELETE (== cURL is weird)
+	    if ($method == 'DELETE')
+	    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+	    	
 	    // TODO - not sure how to do DELETE with cURL yet
 	    
 	    $response = array();
