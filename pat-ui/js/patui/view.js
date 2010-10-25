@@ -8,23 +8,17 @@ var view = {
      */
     drawUI: function() {
 	
-        var $tabs, $inner_tabs;
+        var $tabs;
         var outer_layout, tabs_container_layout;
 
         function resize_tab_panel_layout () {
             var tabIndex = $tabs.tabs("option", "selected")
-            // Make sure is 'visible'
             , $tab_panel = $("#query"+ (tabIndex + 1)).show()
             , tab_layout;
-            // If tab_layout exists - get instance and call resizeAll
             if ($tab_panel.data("layoutContainer")) {
-                // Resize the layout-panes - if required
                 tab_layout = $tab_panel.layout();
                 tab_layout.resizeAll();
-            }
-            // Else if tab_layout does not exist yet, create it now
-            else {
-                // if (ui.index > 0) // panel #0 layout is initialized in document.ready
+            } else {
                 tab_layout = $tab_panel.layout(tab_layout_options);
             }
             return;
@@ -46,7 +40,6 @@ var view = {
         $(document).ready(function(){
 
             outer_layout = $("body").layout({
-                // delay calling resizeAll when window is *still* resizing
                 resizeWithWindowDelay:	250,
                 resizable:		false,
                 slidable:		false,
@@ -69,27 +62,21 @@ var view = {
                 north__paneSelector:	"#tab_list",
                 center__paneSelector:	"#tab_content",
                 spacing_open:		0,
-                fxName:                 "slide",
-                fxSpeed:                0.00001,
+                fxName:                 "none",
                 center__onresize:       resize_tab_panel_layout
             });
 
             window.tabs_loading = true;
-            // Set object BEFORE initializing tabs because is used during init
 
             $tabs = $("#wrapper");
             $tabs.tabs({
                 show: function (evt, ui) {
-                    // Need to resize layout after tabs init,
-                    // but before creating inner tabPanelLayout
                     if (tabs_loading) {
                         tabs_loading = false;
                         tabs_container_layout.resizeAll();
-                    // ResizeAll will trigger center.onresize = resize_tab_panel_layout()
-                    }
-                    else
-                        // Resize the INNER-layout each time it becomes 'visible'
+                    } else {
                         resize_tab_panel_layout(ui);
+                    }
                 }
             });
 
