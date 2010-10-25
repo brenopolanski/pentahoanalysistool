@@ -9,7 +9,7 @@ var PAT_TITLE       =   "<strong>PAT<em>ui</em> Demo</strong>";
 var LOADING_DATA    =   "";
 var NO_DIMENSIONS   =   "No cube selected";
 var NO_MEASURES     =   "No cube selected";
-var BASE_URL		=	""; // Same domain
+var BASE_URL		=	""; // Same domain - if defined must end with a /
     
 /*
  * Lazy load javascript files
