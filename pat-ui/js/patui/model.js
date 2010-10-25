@@ -47,53 +47,10 @@ var model = {
 	 */
 	get_session: function() {
 		$.getJSON(BASE_URL + "/rest/admin/session", function(data, textStatus, XMLHttpRequest) {
-			//alert(XMLHttpRequest.responseText);
 			model.session_id = data['@sessionid'];
 			model.connections = data;
+			view.generate_navigation();
 		});
-	},
-	
-	/*
-	 * Load the schemas into the model's schema property
-	 * TODO - move view logic to view
-	 */
-	load_schemas: function() {
-		/* Jackedupedness
-		success = true;
-	    $.getJSON('inc/query.php', function(data) {
-	        if(data === null) {
-	        	// Let the controller know that we couldn't get the schemas
-	            success = false;
-	            this.server_errors++;
-	        } else {
-	        	// TODO - this is all jacked up at the moment
-		        // Load the session_id into a cookie for use later
-	        	// TODO - this logic should go in model.init() 
-		        $.cookie('sessionid', data['@sessionid']);
-		        
-		        // TODO - all this connection data and stuff should be loaded into class variables and then iterated
-		        $.each(data.connections.connection, function(i,connection){
-		            $.each(connection.schemas, function(i,schema){
-		                $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
-		                $('#blockOverlay-update').html('schema '+schema['@schemaname']);
-		                $.each(schema.cubes, function(i,cube){
-		                    $('#blockOverlay-update').html('cube '+cube['@cubename']);
-		                    if(cube.length == undefined) { 
-		                        $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
-		                    }else{
-		                        $.each(cube, function(i,item){
-		                            $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
-		                        });
-		                    }
-		                });
-		                $('#data-list').append('</optgroup>');
-		                $.unblockUI(); // TODO - this is view logic
-		            });
-		        });
-	        } 
-	    });
-	    
-	    return success; */
 	},
 	
 	/*
@@ -105,7 +62,12 @@ var model = {
 	 *                      
 	 *  TODO - this needs to be cleaned up considerably
 	 */
-	new_query: function (data_string) {
+    new_query: function() {
+    	alert("New query!");
+    	return false;
+    },
+	
+	new_query_old: function (data_string) {
 	/*
 	    var split_string = data_string.split("|"); // TODO - what the hell!? why don't we have json?
 	    var connectionid = split_string[0];

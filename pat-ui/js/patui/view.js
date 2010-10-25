@@ -139,17 +139,44 @@ var view = {
             });
                 
         });
-
-    // New query method controller , newQueryButtonClick
     },
 	
     processing: function(message) {
-    // Block the UI
-    // TODO - handle the case that the UI is already blocked
+    	// Block the UI
+    	// TODO - handle the case that the UI is already blocked
+    	$.blockUI({
+            message: '<div class="blockOverlay-inner"><p>' + message + '</p></div>'
+        });
     },
 	
     free: function() {
-    // Unblock UI
+    	// Unblock UI
+    	$.unblockUI();
+    },
+    
+    generate_navigation: function($connections) {
+    	view.processing("Loading schema...");
+    	
+        // Iterate over connections and populate navigation
+        $.each(model.connections.connections.connection, function(i,connection){
+            $.each(connection.schemas, function(i,schema){
+                $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
+                $('#blockOverlay-update').html('schema '+schema['@schemaname']);
+                $.each(schema.cubes, function(i,cube){
+                    $('#blockOverlay-update').html('cube '+cube['@cubename']);
+                    if(cube.length == undefined) { 
+                        $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
+                    }else{
+                        $.each(cube, function(i,item){
+                            $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
+                        });
+                    }
+                });
+                $('#data-list').append('</optgroup>');
+            });
+        });
+        
+        view.free();
     }
 };
 
