@@ -20,10 +20,19 @@
         $request_method = strtoupper($_SERVER['REQUEST_METHOD']);
     } else {
         $request_method = strtoupper($_POST['method']);
-    }    
+    }
+    
+    // Get data
+    // TODO - clean data?
+    if ($request_method == "GET") {
+		$data = $_GET;    	
+    } else if ($request_method == "POST") {
+    	$data = $_POST;
+    }
+    
 
 	// Removed glue.php
 	// This wasn't necessary if we're just acting as a proxy. Now we're *really* OO
 	$rest = new Rest();
-	echo $rest->request($request_method, API_URL); 
+	echo $rest->request($request_method, API_URL, $data);
 ?>
