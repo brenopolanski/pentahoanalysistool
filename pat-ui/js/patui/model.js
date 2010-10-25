@@ -24,7 +24,10 @@ var model = {
 	 * This is the constructor of sorts, ensuring that the session ID is valid
 	 */
 	init: function (username) {
-		// TODO - Obtain a session_id
+		// Let's be friends!
+		model.server_errors = 0;
+		
+		// Obtain a session_id
 		model.get_session();
 	
 		// Load schemas
