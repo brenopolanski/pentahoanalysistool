@@ -31,8 +31,8 @@ var view = {
             north__closable:            false,
             spacing_open:               4,
             spacing_closed:             4,
-            center__paneSelector:       "#tab_body",
-            west__paneSelector:         "#sidebar",
+            center__paneSelector:       ".tab_body",
+            west__paneSelector:         ".sidebar",
             west__size:                 "250",
             contentSelector:            ".tab_scroll_content",
             west__resizable:            true,
@@ -88,39 +88,6 @@ var view = {
                 return false;
             });
 
-            // Query toolbar events
-            // TODO - This should be part of the newQuery method
-            $('#col_axis, #row_axis, #filter_axis').hide();
-            $('#toggle_axis').click(function(){
-                var showAxisText = 'Show Axis';
-                var hideAxisText = 'Hide Axis';
-
-                if ($(this).text() === showAxisText) {
-                    $('#col_axis, #row_axis').show();
-                    $(this).text(hideAxisText);
-                    return false;
-                } else {
-                    $('#col_axis, #row_axis').hide();
-                    $(this).text(showAxisText);
-                    return false;
-                }
-            });
-
-            $('#toggle_filter').click(function(){
-                var showFilterText = 'Show Filters';
-                var hideFilterText = 'Hide Filters';
-
-                if ($(this).text() === showFilterText) {
-                    $('#filter_axis').show();
-                    $(this).text(hideFilterText);
-                    return false;
-                } else {
-                    $('#filter_axis').hide()
-                    $(this).text(showFilterText);
-                    return false;
-                }
-            });
-            
             // Add event handler to toolbar buttons
             $("#toolbar a").click(function() {
                 controller.click_handler($(this));

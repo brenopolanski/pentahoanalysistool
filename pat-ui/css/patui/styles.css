@@ -1,48 +1,44 @@
 /*
- * PATui v1.0 CSS
+ *  Document:    PATui v1.0 CSS
+ *  Description: Default PATui theme
  *
- * Layout
+ *  Layout
+ *  ---------------------------------------------------
+ *  $_globals
+ *  $_header
+ *  $_toolbar
+ *  $_wrapper
+ *  $_tab_panel
+ *  $_tab_list
+ *  $_tab_content
+ *  $_tab_body
+ *  $_tab_top
+ *  $_tab_toolbar
+ *  $_tab_bottom
+ *  $_col_axis, $_row_axis, $filter_axis
+ *  $_col_axis_drop, $_row_axis_drop, $filter_axis_drop
  *
- * body
- *   $_header
- *     $_toolbar
- *   $_wrapper
- *     $_tab_panel
- *       $_tab_list
- *     $_tab_content
- *       $_tab_body
- *         $_tab_top
- *           $_tab_toolbar
- *         $_tab_bottom
- *           $_col_axis, $_row_axis, $filter_axis
- *             $_col_axis_drop, $_row_axis_drop, $filter_axis_drop
+ *  Plugins
+ *  ---------------------------------------------------
+ *  $_jquery_ui_layout
+ *  $_jquery_ui_blockui
+ *  $_dialogs
+ *  $_jquery_alerts
  *
- * Plugins
- *
- * $_jquery_ui_layout
- * $_dialogs
- * $_jquery_alerts
+ *  TODO
+ *  ---------------------------------------------------
+ *  TODO - Use sprites
  *
  */
 
 
- /*
-  * TODO - Use sprite.png
-  */
+/*  $_globals   */
 
- /*
-  * $_globals
-  */
-
-.ralign {
-    text-align: right;
-}
-.calign {
-    text-align: center;
-}
 .hide {
     display: none !important;
 }
+
+/* buttons */
 a.button {
     background: url('../../images/global/button_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
@@ -66,9 +62,7 @@ a.button:hover{
     text-decoration:none;
 }
 
-/*
- * $_header
- */
+/*  $_header    */
 
 #header {
     background: url('../../images/toolbar/header_bg.png') repeat-x 0 0;
@@ -77,9 +71,7 @@ a.button:hover{
     border-bottom: 1px solid #d5d5d5;
 }
 
-/*
- * $_toolbar
- */
+/*  $_toolbar    */
 
 #toolbar {
     font-size: 0.8em;
@@ -112,22 +104,13 @@ a.button:hover{
     opacity: 0.30;
 }
 
-/*
- * $_wrapper
- */
+/*  $_wrapper   */
 
-/* */
+/*  $_tab_panel */
 
 /*
- * $_tab_panel
- */
-
- /* */
-
-/*
- * $_tab_list
- * TODO - $_tab_list Remove hacks
- * TODO - $_tab_list Use sprites
+ *  $_tab_list
+ *  TODO - $_tab_list Remove hacks
  */
 
 #tab_list  {
@@ -193,10 +176,7 @@ x:default {
     padding-left: 2px;
 }
 
-/*
- * $_tab_content
- * TODO - IE8 displays vertical scrollbar even when not needed
- */
+/*  $_tab_content   */
 
 #tab_content {
     border-top: 1px solid #d5d5d5;
@@ -207,7 +187,7 @@ x:default {
     display: none;
 }
 /* Needed by jQuery UI Layout for tab layout containers */
-#tab_content .tab { 
+#tab_content .tab {
     height: 100%;
     overflow: hidden;
     padding: 0;
@@ -218,16 +198,14 @@ x:default {
     position: relative;
 }
 
-/*
- * $_tab_body
- */
+/*  $_tab_body      */
 
-#tab_body {
+#tab_content .tab_body {
     border-left: 1px solid #d5d5d5;
     padding: 10px;
 
 }
-#tab_body .axis_title {
+#tab_content .tab_body .axis_title {
     background: #f9f9f9;
     border-right: 1px solid #d5d5d5;
     font-weight: bold;
@@ -236,112 +214,96 @@ x:default {
     width: 15%;
     float: left;
 }
-#tab_body span.item {
+#tab_content .tab_body span.item {
     display: inline-block;
     margin-left: 5px;
     padding: 0 3px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
-#tab_body span.measure {
+#tab_content .tab_body span.measure {
     background: #fbe3e4;
     border: 1px solid #cc0000;
     color: #cc0000;
 }
-#tab_body span.dimension {
+#tab_content .tab_body span.dimension {
     color: #006699;
     border: 1px solid #006699;
     background: #d5edf8;
 }
 
-/*
- * $_tab_top
- */
+/*  $_tab_top       */
 
-/* */
+/*  $_tab_bottom    */
 
-/*
- * $_tab_bottom
- */
+/*  $_tab_toolbar   */
 
-/*
- * $_tab_toolbar
- */
-
-#tab_body #tab_toolbar {
+#tab_content .tab_body .tab_toolbar {
     margin-bottom: 10px;
     text-align: right;
 }
 
-/*
- * $_*_axis
- */
+/*  $_axis          */
 
-#tab_body #col_axis,
-#tab_body #row_axis,
-#tab_body #filter_axis {
+#tab_content .tab_body .col_axis,
+#tab_content .tab_body .row_axis,
+#tab_content .tab_body .filter_axis {
     border:1px solid #d5d5d5;
     margin-top: 10px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
-#tab_body #col_axis #col_axis_drop,
-#tab_body #row_axis #row_axis_drop,
-#tab_body #filter_axis #filter_axis_drop {
+#tab_content .tab_body .col_axis .col_axis_drop,
+#tab_content .tab_body .row_axis .row_axis_drop,
+#tab_content .tab_body .filter_axis .filter_axis_drop {
     float: left;
     padding: 4px 4px;
     width: 80%;
 }
-#tab_body #col_axis #col_placeholder,
-#tab_body #row_axis #row_placeholder,
-#tab_body #filter_axis #filter_placeholder {
+#tab_content .tab_body .col_axis .col_placeholder,
+#tab_content .tab_body .row_axis .row_placeholder,
+#tab_content .tab_body .filter_axis .filter_placeholder {
     color: #888;
     font-style: italic;
     padding: 5px;
 }
 
-/*
- * $_vis
- */
+/*  $_vis       */
 
-#tab_body #vis {
+#tab_content .tab_body .vis {
     margin-top: 20px;
 }
 
-/*
- * $_datatable
- */
+/*  $_datatable */
  
-#tab_body #vis #datatable {
+#tab_content .tab_body .vis .datatable {
     background: #ffffff;
     margin: 0;
     padding: 0;
 }
-#tab_body #vis #datatable th, tr, td {
+#tab_content .tab_body .vis .datatable th, tr, td {
     background: #ffffff;
     border-bottom: 1px solid #d5d5d5;
     border-right: 1px solid #d5d5d5;
     font-weight: normal;
 }
-#tab_body #vis #datatable .header {
+#tab_content .tab_body .vis .datatable .header {
     font-weight: bold;
 }
-#tab_body #vis #datatable .string {
+#tab_content .tab_body .vis .datatable .string {
     text-align: left;
 }
-#tab_body #vis #datatable .number {
+#tab_content .tab_body .vis .datatable .number {
     text-align: right;
 }
 
-/*
- * $_sidebar
- */
+/*  $_sidebar   */
  
-#sidebar {
+.sidebar {
     border-right: 1px solid #d5d5d5;
     text-align: left;
 }
-#sidebar .section_header {
+.sidebar .section_header {
     background: #f9f9f9;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
@@ -354,23 +316,21 @@ x:default {
     padding: 5px;
     text-shadow: 1px 1px 0 #ffffff;
 }
-#sidebar .top {
+.sidebar .top {
     border-top: 0;
     padding-top: 6px;
 }
-#sidebar select {
+.sidebar select {
     border: 1px solid #d5d5d5;
     padding: 2px;
     width: 100%;
 }
-#sidebar p {
+.sidebar p {
     margin: 0;
     padding: 5px 10px;
 }
 
-/*
- * $_jquery_ui_layout
- */
+/*  $_jqueryui_layout   */
 
 /* all 'panes' */
 .ui-layout-pane {
@@ -423,10 +383,8 @@ x:default {
     display: none;
 }
 
-/*
- * $_blockUI
- */
- 
+/*  $_jqueryui_blockui  */
+
 .blockUI,
 .blockMsg {
     border: #333 !important;
@@ -453,9 +411,8 @@ x:default {
     padding: 0 5px 10px;
 }
 
-/*
- * $_dialogs
- */
+/*  $_dialog    */
+
 .dialog_wrapper {
     border: 3px solid #e5e5e5;
     -moz-border-radius: 4px;
@@ -488,9 +445,7 @@ x:default {
    padding: 5px;
 }
 
-/*
- * $_jquery_alerts
- */
+/*  $_jquery_alerts */
 
 #popup_container {
     background: #ffffff;

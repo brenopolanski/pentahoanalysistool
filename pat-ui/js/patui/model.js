@@ -52,9 +52,17 @@ var model = {
 	 *  TODO - this needs to be cleaned up considerably
 	 */
     new_query: function() {
+
+        // Add a new tab
+        // Render content for new tab
+        // 
+
+
         alert("New query!");
         return false;
     },
+
+    
     open_query: function() {}, //TODO
     save_query: function() {}, //TODO
     delete_query: function() {}, //TODO
