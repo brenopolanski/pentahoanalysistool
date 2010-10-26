@@ -55,6 +55,12 @@ var model = {
     	alert("New query!");
     	return false;
     },
+    
+    open_query: function() {}, //TODO
+    save_query: function() {}, //TODO
+    delete_query: function() {}, //TODO
+    logout: function() {}, //TODO - I'll handle this one -MSC
+    about: function() {}, //TODO - I'll handle this one, too -MSC
 	
 	new_query_old: function (data_string) {
 	/*
