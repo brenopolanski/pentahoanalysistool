@@ -1,3 +1,5 @@
 -implement toolbar button handlers
 -handle multiple tabs
 -finish widgets
+-destroy tabs correctly i.e. .destroy()
+-add sprites
