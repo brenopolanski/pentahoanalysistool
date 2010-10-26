@@ -3,46 +3,46 @@
  */
 
 var model = {
-	/*
+    /*
 	 * The session_id used to make calls to the server
 	 */ 
-	session_id: "",
+    session_id: "",
 	
-	/*
+    /*
 	 * Connection information for this PAT server
 	 */
-	connections: {},
+    connections: {},
 		
-	/*
+    /*
 	 * This is the constructor of sorts, ensuring that the session ID is valid
 	 */
-	init: function (username) {
-		// Let's be friends!
-		model.server_errors = 0;
+    init: function (username) {
+        // Let's be friends!
+        model.server_errors = 0;
 		
-		// Obtain a session_id
-		model.get_session();
-	},
+        // Obtain a session_id
+        model.get_session();
+    },
 	
-	/*
+    /*
 	 * Obtain a session and load connections
 	 */
-	get_session: function() {
-		$.ajax({
-			url: BASE_URL + "rest/admin/session",
-			dataType: 'json',
-			success: function(data, textStatus, XMLHttpRequest) {
-				model.session_id = data['@sessionid'];
-				model.connections = data;
-				view.generate_navigation();
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				controller.server_error();
-			}
-		});
-	},
+    get_session: function() {
+        $.ajax({
+            url: BASE_URL + "rest/admin/session",
+            dataType: 'json',
+            success: function(data, textStatus, XMLHttpRequest) {
+                model.session_id = data['@sessionid'];
+                model.connections = data;
+                view.generate_navigation();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                controller.server_error();
+            }
+        });
+    },
 	
-	/*
+    /*
 	 *  new_query()
 	 *  Populates dimension-list and measure-list with available items
 	 *  and enables draggable, droppable and sortable lists.
@@ -52,18 +52,19 @@ var model = {
 	 *  TODO - this needs to be cleaned up considerably
 	 */
     new_query: function() {
-    	alert("New query!");
-    	return false;
+        alert("New query!");
+        return false;
     },
-    
     open_query: function() {}, //TODO
     save_query: function() {}, //TODO
     delete_query: function() {}, //TODO
     logout: function() {}, //TODO - I'll handle this one -MSC
-    about: function() {}, //TODO - I'll handle this one, too -MSC
+    about: function() {
+        jAlert('PATui Version 1.0', 'About');
+    }, //TODO - I'll handle this one, too -MSC
 	
-	new_query_old: function (data_string) {
-	/*
+    new_query_old: function (data_string) {
+    /*
 	    var split_string = data_string.split("|"); // TODO - what the hell!? why don't we have json?
 	    var connectionid = split_string[0];
 	    var schemaname = split_string[1];
@@ -164,7 +165,7 @@ var model = {
 	            }
 	        }
 	    }); */
-	}
+    }
 };
 
 model.init();

@@ -131,7 +131,14 @@ var view = {
     	// Block the UI
     	// TODO - handle the case that the UI is already blocked
     	$.blockUI({
-            message: '<div class="blockOverlay-inner"><p>' + message + '</p></div>'
+            message: '<div class="loading_wrapper">'
+                     + '<div class="loading_inner">'
+                     + '<div class="loading_body">'
+                     + '<img src="images/global/loading.gif" alt="Loading..." /><br />'
+                     + '<span>' + message + '</span>'
+                     + '</div>'
+                     + '</div>'
+                     + '</div>'
         });
     },
 	

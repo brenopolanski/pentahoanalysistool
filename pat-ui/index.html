@@ -18,9 +18,11 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
         -->
         <!-- If you do not have internet access, uncomment these and comment the googleapis includes above
-        <script type="text/javascript" src="js/jquery/jquery-1.4.3.min.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery-ui-1.8.5.custom.min.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery.layout.1.3.0.js"></script> -->
+        <script type="text/javascript" src="js/jquery/jquery.1.4.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.ui-1.8.5.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.layout.1.3.0.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.blockui.2.35.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.alerts.1.1.js"></script> -->
         <script type="text/javascript" src="js/jquery/jquery.plugins.min.js"></script>
         <!-- PATui JavaScript -->
         <script type="text/javascript" src="js/patui/controller.js"></script>
@@ -218,17 +220,28 @@
                     <div id="query2" class="tab ui-tabs-hide">
                         <!-- tab_body -->
                         <div id="tab_body">
-                            Empty
+                            <!-- widget -->
+                            <div class="dialog_wrapper">
+                                <div class="dialog_inner">
+                                    <div class="dialog_header">I'm Header</div>
+                                    <div class="dialog_body">
+                                        <div class="dialog_message">
+                                            I'm Message
+                                        </div>
+                                        <hr/>
+                                        <div class="dialog_footer">I'm Footer</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- eof widget -->
                         </div>
                         <!-- eof tab_body -->
                         <!-- sidebar -->
                         <div id="sidebar">
-                            <p>Empty</p>
                         </div>
                         <!-- eof sidebar -->
                     </div>
                     <!-- eof query2 -->
-
                 </div>
                 <!-- eof tab_content  -->
             </div>

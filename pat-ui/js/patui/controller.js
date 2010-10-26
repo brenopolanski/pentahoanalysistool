@@ -9,7 +9,7 @@ var PAT_TITLE       =   "<strong>PAT<em>ui</em> Demo</strong>";
 var LOADING_DATA    =   "";
 var NO_DIMENSIONS   =   "No cube selected";
 var NO_MEASURES     =   "No cube selected";
-var BASE_URL		=	""; // Same domain - if defined must end with a /
+var BASE_URL        =	"http://localhost/pat-ui/fixtures/"; // Same domain - if defined must end with a /
     
 /*
  * Lazy load javascript files
@@ -40,7 +40,7 @@ var controller = {
 	
     server_error: function() {
         // Rstart the process over after a delay
-        view.processing("Could not connect to server. Retrying in 10 seconds...");
+        view.processing("Could not connect to server.<br />Retrying in 10 seconds.");
         if (controller.errors > 5) {
         	view.processing("Could not connect to server. Giving up.");
         } else {
@@ -72,5 +72,5 @@ var controller = {
  */
 $(document).ready(function() {
 	lazy_load("js/patui/view.js");
-	//lazy_load("js/patui/model.js");
+	lazy_load("js/patui/model.js");
 });
