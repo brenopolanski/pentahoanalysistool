@@ -126,16 +126,25 @@ var view = {
                 $('#blockOverlay-update').html('schema '+schema['@schemaname']);
                 $.each(schema.cubes, function(i,cube){
                     $('#blockOverlay-update').html('cube '+cube['@cubename']);
-                    if(cube.length == undefined) { 
-                        $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+cube['@cubename']+'">'+cube['@cubename']+'</option>');
-                    }else{
-                        $.each(cube, function(i,item){
-                            $('#data-list').append('<option value="'+connection['@connectionid']+'|'+schema['@schemaname']+'|'+item['@cubename']+'">'+item['@cubename']+'</option>');
-                        });
-                    }
+                    if(cube.length == undefined)
+                        cube = [cube];
+                    $.each(cube, function(i,item){
+                    	$("<option />")
+                    		.attr({ 'value': connection['@connectionid'] })
+                    		.data({ 
+                    			'schema': schema['@schemaname'],
+                    			'cube': item['@cubename']
+                    			})
+                    		.text(item['@cubename'])
+                    		.appendTo($('#data-list'));
+                    });
                 });
                 $('#data-list').append('</optgroup>');
             });
+        });
+        
+        $('#data-list').change(function() {
+        	model.new_query($(this).find("option:selected"));
         });
         
         view.free();

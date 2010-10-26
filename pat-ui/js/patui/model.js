@@ -51,7 +51,7 @@ var model = {
 	 *                      
 	 *  TODO - this needs to be cleaned up considerably
 	 */
-    new_query: function() {
+    clear_query: function() {
 
         // Add a new tab
         // Render content for new tab
@@ -62,14 +62,22 @@ var model = {
         return false;
     },
 
+    new_query: function($cube) {
+    	data = $cube.data();
+    	alert("You clicked on cube: " + data['cube']);
+    },
     
     open_query: function() {}, //TODO
     save_query: function() {}, //TODO
     delete_query: function() {}, //TODO
     logout: function() {}, //TODO - I'll handle this one -MSC
+    
+    /*
+     * Display information about PAT
+     */
     about: function() {
         jAlert('PATui Version 1.0', 'About');
-    }, //TODO - I'll handle this one, too -MSC
+    },
 	
     new_query_old: function (data_string) {
     /*
