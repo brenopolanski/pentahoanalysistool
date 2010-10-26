@@ -72,5 +72,5 @@ var controller = {
  */
 $(document).ready(function() {
 	lazy_load("js/patui/view.js");
-	lazy_load("js/patui/model.js");
+	//lazy_load("js/patui/model.js");
 });

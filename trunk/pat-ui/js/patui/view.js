@@ -22,8 +22,7 @@ var view = {
                 tab_layout = $tab_panel.layout(tab_layout_options);
             }
             return;
-        };
-
+        }
 
         var tab_layout_options = {
             resizeWithWindow:         false,
