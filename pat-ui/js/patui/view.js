@@ -25,19 +25,22 @@ var view = {
         }
 
         var tab_layout_options = {
-            resizeWithWindow:         false,
-            north__resizable:         false,
-            north__closable:          false,
-            spacing_open:             4,
-            spacing_closed:           4,
-            center__paneSelector:     "#tab_body",
-            west__paneSelector:       "#sidebar",
-            west__size:               "250",
-            contentSelector:          ".tab_scroll_content"
+            name:                       'tab_layout_options',
+            resizeWithWindow:           false,
+            north__resizable:           false,
+            north__closable:            false,
+            spacing_open:               4,
+            spacing_closed:             4,
+            center__paneSelector:       "#tab_body",
+            west__paneSelector:         "#sidebar",
+            west__size:                 "250",
+            contentSelector:            ".tab_scroll_content",
+            west__resizable:            true,
+            west__closable:             true
         };
 
         $(document).ready(function(){
-
+            
             outer_layout = $("body").layout({
                 resizeWithWindowDelay:	250,
                 resizable:		false,
@@ -50,13 +53,11 @@ var view = {
                 north__spacing_closed:  0,
                 center__paneSelector:	"#wrapper"
             });
-
-            tabs_container_layout = $("#wrapper").layout( {
+            tabs_container_layout = $("#wrapper").layout({
+                name:                   'tabs_container_layout',
                 resizable:              false,
                 slidable:               false,
                 closable:               false,
-                north__closable:        false,
-                north__resizable:       true,
                 north__size:            30,
                 north__paneSelector:	"#tab_list",
                 center__paneSelector:	"#tab_content",
@@ -64,10 +65,10 @@ var view = {
                 fxName:                 "none",
                 center__onresize:       resize_tab_panel_layout
             });
-
+            
             window.tabs_loading = true;
 
-            $tabs = $("#wrapper");
+            $tabs = $("#tab_list");
             $tabs.tabs({
                 show: function (evt, ui) {
                     if (tabs_loading) {
@@ -79,11 +80,12 @@ var view = {
                 }
             });
 
-            // If close button is clicked
-            $('#querylist_container li a img').click(function() {
+            // When a tab is requested to be closed
+            $('#tab_list ul li a img').click(function() {
                 alert('Are you sure you want to do that?');
                 var index = $('li',$tabs).index($(this).parent());
                 $tabs.tabs('remove', index);
+                return false;
             });
 
             // Query toolbar events
@@ -121,34 +123,34 @@ var view = {
             
             // Add event handler to toolbar buttons
             $("#toolbar a").click(function() {
-            	controller.click_handler($(this));
+                controller.click_handler($(this));
             });
                 
         });
     },
 	
     processing: function(message) {
-    	// Block the UI
-    	// TODO - handle the case that the UI is already blocked
-    	$.blockUI({
+        // Block the UI
+        // TODO - handle the case that the UI is already blocked
+        $.blockUI({
             message: '<div class="loading_wrapper">'
-                     + '<div class="loading_inner">'
-                     + '<div class="loading_body">'
-                     + '<img src="images/global/loading.gif" alt="Loading..." /><br />'
-                     + '<span>' + message + '</span>'
-                     + '</div>'
-                     + '</div>'
-                     + '</div>'
+            + '<div class="loading_inner">'
+            + '<div class="loading_body">'
+            + '<img src="images/global/loading.gif" alt="Loading..." /><br />'
+            + '<span>' + message + '</span>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
         });
     },
 	
     free: function() {
-    	// Unblock UI
-    	$.unblockUI();
+        // Unblock UI
+        $.unblockUI();
     },
     
     generate_navigation: function($connections) {
-    	view.processing("Loading schema...");
+        view.processing("Loading schema...");
     	
         // Iterate over connections and populate navigation
         $.each(model.connections.connections.connection, function(i,connection){
