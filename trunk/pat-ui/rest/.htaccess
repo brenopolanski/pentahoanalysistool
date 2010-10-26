@@ -1,7 +1,2 @@
-# Make sure rewrite is installed, and AllowOverride All is set
-
-RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /rest/index.php [L]
+# Make sure this is set to the REST API's index.php relative to the DocumentRoot for this VirtualHost
+ErrorDocument 404 /rest/index.php
