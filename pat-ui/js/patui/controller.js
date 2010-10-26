@@ -1,14 +1,6 @@
 /*
  * This is the controller for PATui. It will lazy load and then initialize the model and the view.
  */
-
-/*
- * The extent of our globalization at this point, I'm guessing
- */
-var PAT_TITLE       =   "<strong>PAT<em>ui</em> Demo</strong>";
-var LOADING_DATA    =   "";
-var NO_DIMENSIONS   =   "No cube selected";
-var NO_MEASURES     =   "No cube selected";
     
 /*
  * Lazy load javascript files
