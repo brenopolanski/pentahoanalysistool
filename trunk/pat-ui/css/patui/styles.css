@@ -157,6 +157,7 @@ x:default {
     border: 1px solid #d5d5d5;
     border-bottom: none;
     color: #666;
+    cursor: pointer;
     outline: none !important;
     padding: 4px 6px;
     text-decoration: none;
@@ -169,6 +170,7 @@ x:default {
     background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
     color: #222;
+    cursor: pointer;
     padding: 4px 6px 4px 6px;
 }
 #tab_list ul li.ui-tabs-selected a {
@@ -177,6 +179,7 @@ x:default {
     background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
     color: #222;
+    cursor: default;
     font-weight: bold;
     padding: 4px 6px;
     border-bottom: none;
@@ -186,6 +189,7 @@ x:default {
     padding: 4px 6px 5px 6px;
 }
 #tab_list ul li img {
+    cursor: pointer;
     padding-left: 2px;
 }
 
