@@ -2,9 +2,9 @@ HTML
 
 * HTML 4.01 Strict
 
-CSS
+CSS(3)
 
-* Blueprint CSS Framework v1.0  -   http://www.blueprintcss.org/
+* Blueprint CSS Framework v1.0  -   http://www.blueprintcss.org/ *source modified*
 
 JavaScript
 
@@ -13,8 +13,14 @@ JavaScript
 * jstree v1.0rc2                -   http://www.jstree.com/
 * jQuery UI.Layout v1.3.0       -   http://layout.jquery-dev.net/
 * jQuery BlockUI v2.0           -   http://jquery.malsup.com/block/
+* jQuery Alerts v1.1            -   http://abeautifulsite.net/notebook/87 *source modified*
 
-MISC
+Misc
 
 * For minimising JS             -   http://jscompress.com/
 * For creating sprites          -   http://spritegen.website-performance.org/
+
+Images
+
+* Toolbar PNG's                 -   http://tango.freedesktop.org/Tango_Icon_Gallery
+* Loading GIF's                 -   http://ajaxload.info/
