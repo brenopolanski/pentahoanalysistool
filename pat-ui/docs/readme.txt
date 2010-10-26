@@ -13,3 +13,8 @@ JavaScript
 * jstree v1.0rc2                -   http://www.jstree.com/
 * jQuery UI.Layout v1.3.0       -   http://layout.jquery-dev.net/
 * jQuery BlockUI v2.0           -   http://jquery.malsup.com/block/
+
+MISC
+
+* For minimising JS             -   http://jscompress.com/
+* For creating sprites          -   http://spritegen.website-performance.org/

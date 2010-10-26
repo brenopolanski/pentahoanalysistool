@@ -24,6 +24,11 @@
  *
  */
 
+
+ /*
+  * TODO - Use sprite.png
+  */
+
  /*
   * $_globals
   */
@@ -38,7 +43,7 @@
     display: none !important;
 }
 a.button {
-    background: #f9f9f9;
+    background: url('../../images/global/button_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
     border: 1px #d5d5d5 solid;
@@ -53,7 +58,7 @@ a.button {
     -webkit-border-radius: 2px;
 }
 a.button:hover{
-    background: #f3f3f3;
+    background: url('../../images/global/button_hover_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
     cursor: pointer;
@@ -65,7 +70,7 @@ a.button:hover{
  */
 
 #header {
-    background: #f9f9f9;
+    background: url('../../images/toolbar/header_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
     border-bottom: 1px solid #d5d5d5;
@@ -159,7 +164,7 @@ x:default {
     -webkit-border-radius: 2px 2px 0 0;
 }
 #tab_list ul li a:hover {
-    background: #f0f0f0;
+    background: url('../../images/tab/tab_list_a_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
     color: #222;
@@ -167,7 +172,7 @@ x:default {
 }
 #tab_list ul li.ui-tabs-selected a {
     border-bottom: 1px solid #f0f0f0 !important;
-    background: #f0f0f0;
+    background: url('../../images/tab/tab_list_a_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f0f0f0));
     color: #222;
@@ -335,6 +340,7 @@ x:default {
     background: #f9f9f9;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    background: url('../../images/sidebar/section_title_bg.png') repeat-x 0 0;
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
     display: block;
@@ -373,7 +379,7 @@ x:default {
 }
 /* all 'resizer-bars' */
 .ui-layout-resizer {
-    background: #f3f3f3;
+    background: url('../../images/layout/resizer_bg.png') repeat-y 0 0;
     background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left center, right center, from(#ffffff), to(#f3f3f3));
     border: 1px solid #d5d5d5;
@@ -381,6 +387,7 @@ x:default {
 }
 .ui-layout-resizer-open-hover,
 .ui-layout-resizer-dragging {
+    background: url('../../images/layout/resizer_bg.png') repeat-y 0 0;
     background: -moz-linear-gradient(left, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left, right, from(#ffffff), to(#f3f3f3));
     background: #f3f3f3;
