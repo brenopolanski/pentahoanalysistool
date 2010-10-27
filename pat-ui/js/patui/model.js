@@ -29,7 +29,7 @@ var model = {
 	 */
     get_session: function() {
         $.ajax({
-            url: "fixtures/rest/admin/session",
+            url: "rest/admin/session",
             dataType: 'json',
             success: function(data, textStatus, XMLHttpRequest) {
                 model.session_id = data['@sessionid'];
