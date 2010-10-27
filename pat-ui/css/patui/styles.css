@@ -24,6 +24,7 @@
  *  $_jquery_ui_blockui
  *  $_dialogs
  *  $_jquery_alerts
+ *  $_jstree
  *
  *  TODO
  *  ---------------------------------------------------
@@ -502,4 +503,65 @@ x:default {
 }
 #popup_container hr {
     margin: 0;
+}
+
+/*  $_jstree    */
+
+.dimension_tree,.measure_tree {
+    padding:5px;
+}
+
+.jstree li,.jstree ul ins {
+    background-image:url("../../images/sidebar/d.png");
+    background-repeat:no-repeat;
+    background-color:transparent;
+}
+
+.jstree li {
+    background-position:-90px 0;
+    background-repeat:repeat-y;
+}
+
+.jstree .jstree-hovered {
+    background:#e7f4f9;
+    border:1px solid #d8f0fa;
+    padding:0 2px 0 1px;
+}
+
+.jstree .jstree-clicked {
+    background:#beebff;
+    border:1px solid #99defd;
+    padding:0 2px 0 1px;
+}
+
+.dimensions .jstree ul a .jstree-icon {
+    background-position:-57px -1px;
+}
+
+.measures .jstree ul ul a .jstree-icon {
+    background-position:-54px -38px;
+}
+
+.measures .jstree ul a .jstree-icon {
+    background-position:-38px -1px;
+}
+
+.dimensions .jstree ul ul a .jstree-icon {
+    background-position:-54px -54px;
+}
+
+.jstree a.jstree-loading .jstree-icon {
+    background:url("../../images/sidebar/throbber.gif") center center no-repeat !important;
+}
+
+.jstree .jstree-open > ins {
+    background-position:-18px 0;
+}
+
+.jstree .jstree-closed > ins {
+    background-position:0 0;
+}
+
+.jstree li.jstree-last,.jstree li,.jstree .jstree-leaf > ins {
+    background:transparent;
 }
