@@ -30,7 +30,7 @@ var controller = {
 	errors: 0,
 	
     server_error: function() {
-        // Rstart the process over after a delay
+        // Restart the process over after a delay
         view.processing("Could not connect to server.<br />Retrying in 10 seconds.");
         if (controller.errors > 5) {
         	view.processing("Could not connect to server. Giving up.");
