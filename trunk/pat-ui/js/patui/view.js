@@ -103,9 +103,13 @@ var view = {
                 "plugins" : [ "themes", "html_data" ]
             });
             
-            $("#header").hide();
-            $("#wrapper").hide();
+            view.logout();
         });
+    },
+    
+    logout: function() {
+    	$("#header").hide();
+        $("#wrapper").hide();
     },
 	
     processing: function(message) {
