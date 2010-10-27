@@ -77,7 +77,7 @@ class WebServices {
 	}	
 }
 
-function JSONresponse($HTTP_code, $message) {
+function JSONresponse($HTTP_code, $message, $wrap_message=True) {
 	// Lookup appropriate HTTP response
 	$status_codes = array(
 		200=>"OK",	
@@ -99,10 +99,16 @@ function JSONresponse($HTTP_code, $message) {
 	// Send appropriate headers
 	if ($HTTP_code == 401)
 		header('WWW-Authenticate: Basic realm="PAT"');
+	header("Content-Type: application/json");
 	header("HTTP/1.0 $HTTP_code {$status_codes[$HTTP_code]}");
 	
 	// Send the JSON response to the browser
-	$output = array( 'message'=>$message );
-	echo json_encode($output);
+	if ($wrap_message) {
+		$output = array( 'message'=>$message );
+		echo json_encode($output);
+	} else {
+		echo $message;
+	}
+	
 	exit(0);
 }
