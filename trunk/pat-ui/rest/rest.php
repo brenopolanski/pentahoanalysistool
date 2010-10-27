@@ -87,7 +87,7 @@ class Rest {
 				// TODO - cache results
 				
 				// Return response from cURL
-				JSONresponse(200, $response['content']);
+				JSONresponse(200, $response['content'], False);
 				break;
 		}
 	}
