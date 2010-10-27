@@ -263,6 +263,7 @@ x:default {
 #tab_content .tab_body .col_axis .col_placeholder,
 #tab_content .tab_body .row_axis .row_placeholder,
 #tab_content .tab_body .filter_axis .filter_placeholder {
+    border: 1px dashed #e5e5e5;
     color: #888;
     font-style: italic;
     padding: 5px;
