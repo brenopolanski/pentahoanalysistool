@@ -10,7 +10,7 @@
     
     // Where are we?
     define('REST_URL', '/rest');
-    define('REQUEST_URI', strtolower($_SERVER['REQUEST_URI'])); // FIXME - strip GET criteria
+    define('REQUEST_URI', $_SERVER['REQUEST_URI']); // FIXME - strip GET criteria
     $subdir = stripos(REQUEST_URI, REST_URL);
     define('BASE_URL', substr(REQUEST_URI, 0, $subdir) . REST_URL);
     define('API_URL', substr(REQUEST_URI, $subdir + strlen(REST_URL), strlen(REQUEST_URI) - $subdir - strlen(REST_URL)));
@@ -34,5 +34,5 @@
 	// Removed glue.php
 	// This wasn't necessary if we're just acting as a proxy. Now we're *really* OO
 	$rest = new Rest();
-	echo $rest->request($request_method, API_URL, $data);
+	$rest->request($request_method, API_URL, $data);
 ?>
