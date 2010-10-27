@@ -3,6 +3,16 @@
  */
 
 var model = {
+	/*
+	 * The username to be used with HTTP basic auth
+	 */
+	username: "",
+	
+	/*
+	 * The password to be used with HTTP basic auth
+	 */
+	password: "",
+	
     /*
 	 * The session_id used to make calls to the server
 	 */ 
@@ -19,27 +29,47 @@ var model = {
     init: function (username) {
         // Let's be friends!
         model.server_errors = 0;
-		
-        // Obtain a session_id
-        model.get_session();
+        
+        // Really ghetto way to get credentials. Better than the browser prompting, I guess...
+        // FIXME - ask for credentials using a pretty form that doesn't block the browser
+        jPrompt("Please enter your username: ", "", "PAT", function(input) {
+        	model.username = input;
+        	jPrompt("Please enter your password: ", "", "PAT", function(input) {
+        		model.password = input;
+        		
+        		// Obtain a session_id
+                model.get_session();
+        	});
+        });        
+    },
+    
+    /*
+     * Make an ajax request
+     */
+    request: function(method, url, callback, data) {
+        $.ajax({
+        	type: method,
+            url: "rest/" + model.username + url,
+            cache: false,
+            dataType: 'json',
+            username: model.username,
+            password: model.password,
+            success: callback,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                controller.server_error();
+            }
+        });
     },
 	
     /*
 	 * Obtain a session and load connections
 	 */
     get_session: function() {
-        $.ajax({
-            url: "rest/admin/session",
-            dataType: 'json',
-            success: function(data, textStatus, XMLHttpRequest) {
-                model.session_id = data['@sessionid'];
-                model.connections = data;
-                view.generate_navigation();
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                controller.server_error();
-            }
-        });
+    	model.request("POST", "/session", function(data, textStatus, XMLHttpRequest) {
+    		model.session_id = data['@sessionid'];
+            model.connections = data;
+            view.generate_navigation();
+    	}, {});
     },
 	
     /*
@@ -61,7 +91,9 @@ var model = {
 
     new_query: function($cube) {
     	data = $cube.data();
-    	alert("You clicked on cube: " + data['cube']);
+    	view.processing("Creating new query on " + data['cube']);
+    	
+    	view.free();
     },
     
     open_query: function() {}, //TODO
