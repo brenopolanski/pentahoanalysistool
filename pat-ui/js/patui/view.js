@@ -39,8 +39,7 @@ var view = {
             west__closable:             true
         };
 
-        $(document).ready(function(){
-            
+        $(document).ready(function(){        	
             outer_layout = $("body").layout({
                 resizeWithWindowDelay:	250,
                 resizable:		false,
@@ -103,12 +102,14 @@ var view = {
                 },
                 "plugins" : [ "themes", "html_data" ]
             });
+            
+            $("#header").hide();
+            $("#wrapper").hide();
         });
     },
 	
     processing: function(message) {
         // Block the UI
-        // TODO - handle the case that the UI is already blocked
         $.blockUI({
             message: '<div class="loading_wrapper">'
             + '<div class="loading_inner">'
@@ -156,6 +157,9 @@ var view = {
         $('.data_list').change(function() {
             model.new_query($(this).find("option:selected"));
         });
+        
+        $("#header").show();
+        $("#wrapper").show();
         
         view.free();
     }
