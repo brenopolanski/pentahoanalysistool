@@ -29,7 +29,7 @@
  *  ---------------------------------------------------
  *  TODO - Use sprites
  *
- */
+*/
 
 
 /*  $_globals   */
@@ -111,7 +111,7 @@ a.button:hover{
 /*
  *  $_tab_list
  *  TODO - $_tab_list Remove hacks
- */
+*/
 
 #tab_list  {
     background: #f0f0f0;
@@ -275,7 +275,7 @@ x:default {
 }
 
 /*  $_datatable */
- 
+
 #tab_content .tab_body .vis .datatable {
     background: #ffffff;
     margin: 0;
@@ -298,7 +298,7 @@ x:default {
 }
 
 /*  $_sidebar   */
- 
+
 .sidebar {
     border-right: 1px solid #d5d5d5;
     text-align: left;
@@ -322,8 +322,14 @@ x:default {
 }
 .sidebar select {
     border: 1px solid #d5d5d5;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
     padding: 2px;
     width: 100%;
+}
+.sidebar select optgroup {
+    color: #999;
+    font-weight: normal;
+    font-style: normal;
 }
 .sidebar p {
     margin: 0;
@@ -439,10 +445,10 @@ x:default {
     background: #ffffff;
 }
 .dialog_body .dialog_message {
-   padding: 5px;
+    padding: 5px;
 }
 .dialog_body .dialog_footer {
-   padding: 5px;
+    padding: 5px;
 }
 
 /*  $_jquery_alerts */

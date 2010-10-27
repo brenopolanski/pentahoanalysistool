@@ -54,7 +54,7 @@ var view = {
                 center__paneSelector:	"#wrapper"
             });
             tabs_container_layout = $("#wrapper").layout({
-                name:                   'tabs_container_layout',
+                name:                   "tabs_container_layout",
                 resizable:              false,
                 slidable:               false,
                 closable:               false,
@@ -122,10 +122,8 @@ var view = {
         // Iterate over connections and populate navigation
         $.each(model.connections.connections.connection, function(i,connection){
             $.each(connection.schemas, function(i,schema){
-                $('#data-list').append('<optgroup label="'+schema['@schemaname']+'">');
-                $('#blockOverlay-update').html('schema '+schema['@schemaname']);
+                $('.data_list').append('<optgroup label="'+schema['@schemaname']+'">');
                 $.each(schema.cubes, function(i,cube){
-                    $('#blockOverlay-update').html('cube '+cube['@cubename']);
                     if(cube.length == undefined)
                         cube = [cube];
                     $.each(cube, function(i,item){
@@ -136,7 +134,7 @@ var view = {
                     			'cube': item['@cubename']
                     			})
                     		.text(item['@cubename'])
-                    		.appendTo($('#data-list'));
+                    		.appendTo($('.data_list'));
                     });
                 });
                 $('#data-list').append('</optgroup>');

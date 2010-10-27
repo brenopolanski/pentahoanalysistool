@@ -19,6 +19,7 @@ Misc
 
 * For minimising JS             -   http://jscompress.com/
 * For creating sprites          -   http://spritegen.website-performance.org/
+* JSON Formatter and Validator  -   http://jsonformatter.curiousconcept.com/
 
 Images
 
