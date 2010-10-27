@@ -4,14 +4,14 @@
 
 var model = {
 	/*
-	 * The username to be used with HTTP basic auth
+	 * FIXME - The username to be used with HTTP basic auth
 	 */
-	username: "",
+	username: "admin",
 	
 	/*
-	 * The password to be used with HTTP basic auth
+	 * FIXME - The password to be used with HTTP basic auth
 	 */
-	password: "",
+	password: "admin",
 	
     /*
 	 * The session_id used to make calls to the server
@@ -32,31 +32,48 @@ var model = {
         
         // Really ghetto way to get credentials. Better than the browser prompting, I guess...
         // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
-        jPrompt("Please enter your username: ", "", "PAT", function(input) {
-        	model.username = input;
-        	jPrompt("Please enter your password: ", "", "PAT", function(input) {
-        		model.password = input;
-        		
-        		// Obtain a session_id
-                model.get_session();
-        	});
-        });        
+        /* if (model.username == "" || model.password == "") {
+	        jPrompt("Please enter your username: ", "", "PAT", function(input) {
+	        	model.username = input;
+	        	jPrompt("Please enter your password: ", "", "PAT", function(input) {
+	        		model.password = input;
+	        		
+	        		// Obtain a session_id
+	                model.get_session();
+	        	});
+	        });
+        }*/
+        
+        // FIXME - hard-coded credentials to ease development
+        
+		// Obtain a session_id
+        model.get_session();
     },
     
     /*
      * Make an ajax request
      */
-    request: function(method, url, callback, data) {
+    request: function(parameters) {
+    	if (typeof parameters.method == "undefined")
+    		parameters.method = "GET";
+    	
+    	if (typeof parameters.data == "undefined")
+    		parameters.data = {};
+    	
+    	if (typeof parameters.success == "undefined")
+    		parameters.success = function() {};
+    	
+    	if (typeof parameters.error == "undefined")
+    		parameters.error = controller.server_error;
+    	
         $.ajax({
-        	type: method,
-            url: "rest/" + url,
+        	type: parameters.method,
+            url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
             password: model.password,
-            success: callback,
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                controller.server_error();
-            }
+            success: parameters.success,
+            error: parameters.error
         });
     },
 	
@@ -64,40 +81,85 @@ var model = {
 	 * Obtain a session and load connections
 	 */
     get_session: function() {
-    	model.request("POST",  model.username + "/session", function(data, textStatus, XMLHttpRequest) {
-    		model.session_id = data['@sessionid'];
-            model.connections = data;
-            view.generate_navigation();
-    	}, {});
+    	model.request({
+    		method: "POST",  
+    		url: model.username + "/session", 
+    		success: function(data, textStatus, XMLHttpRequest) {
+	    		model.session_id = data['@sessionid'];
+	            model.connections = data;
+	            view.generate_navigation();
+    		}
+    	});
     },
 	
     /*
-	 *  new_query()
-	 *  Populates dimension-list and measure-list with available items
-	 *  and enables draggable, droppable and sortable lists.
-	 *  @data_string    :   A concatenated string of connectionid, schemaname and
-	 *                      cubename.
-	 *                      
-	 *  TODO - this needs to be cleaned up considerably
-	 */
+     * Clears the current query to prepare for a new one
+     */
     clear_query: function() {
 
-        // Add a new tab
-        // Render content for new tab
-        alert("New query added!");
+        // TODO - Add a new tab
+        // TODO - Render content for new tab
         return false;
     },
 
+    /*
+	 *  Populates dimension-list and measure-list with available items
+	 *  and enables draggable, droppable and sortable lists.
+	 */
     new_query: function($cube) {
     	data = $cube.data();
     	view.processing("Creating new query on " + data['cube']);
     	
-    	view.free();
+    	model.clear_query();
+    	
+    	model.request({
+    		method: "POST",  
+    		url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery", 
+    		success: function(data, textStatus, XMLHttpRequest) {
+    			$('.dimension_tree, .measure_tree').html('');
+    			// TODO - fill in dimensions and measures
+                $.each(data.axis.dimensions, function(i,dimension){
+                    //  If not a Measure dimension
+                    if(this['@dimensionname'] != 'Measures')
+                    {   
+                        //  Store and rename the dimension name (remove spaces and replace with _)
+                        var dimension_name = this['@dimensionname'].replace(' ', '_');
+                        var dimension_name_old = this['@dimensionname'];
+                        //  Add dimension names as a <li></li> element
+                        $('.dimension_tree').append('<li id="'+dimension_name+'"><a href="#" class="not-draggable">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
+                        //  Add a secondary list to the dimension name
+                        $('#'+dimension_name).append('<ul id="child_'+dimension_name+'"></ul>');
+                        //  Add levels to the above <ul></ul> element
+                        $.each(dimension.levels, function(i,level){
+                            $('.dimension_tree #child_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'<span class="hide">'+level['@levelname']+'</span></a></li>');
+                        });
+                    } else {
+                        //  If a measure, display them all without a category
+                        //  they are seen as members
+                        $.each(dimension.levels.members, function(i,member){
+                            //  Update blockUI
+                            $('#blockOverlay-update').html('measures...');
+                            //  Add members to the measure-list <ul></ul>
+                            $('.measure_tree').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
+                        });
+
+                    }
+                });
+                
+
+    			
+    			view.free();
+    		},
+    		error: function() {
+    			jAlert("Couldn't create a new query. Please try again.");
+    			view.free();
+    		}
+    	});
     },
     
-    open_query: function() {}, //TODO
-    save_query: function() {}, //TODO
-    delete_query: function() {}, //TODO
+    open_query: function() {}, //TODO - open query
+    save_query: function() {}, //TODO - save query
+    delete_query: function() {}, //TODO - delete query
     
     /*
      * Kill credentials and server-side session
@@ -126,55 +188,6 @@ var model = {
 	
     new_query_old: function (data_string) {
     /*
-	    var split_string = data_string.split("|"); // TODO - what the hell!? why don't we have json?
-	    var connectionid = split_string[0];
-	    var schemaname = split_string[1];
-	    var cubename = split_string[2];
-	    $.ajax({
-	        type:       'POST',
-	        url:        'inc/query.php',
-	        data:       'method=POST_NEW&connectionid='+connectionid+'&schemaname='+schemaname+'&cubename='+cubename,
-	        datatype:   'json',
-	        success:    function(data){
-	            if(data === "false" || data === null) {
-	                alert('An error has occured when contacting PAT\'s server. Check your console log for more info.');
-	                $.unblockUI();
-	            }else{
-	                // Remove placeholders
-	                $('#dimension-list, #measure-list').html('');
-	                //  Convert output to a JSON object
-	                var obj = $.parseJSON(data);
-	                //  Set the queryid into a cookie
-	                $.cookie('queryid', obj['@queryid']);
-	                // For each dimension
-	                $.each(obj.axis.dimensions, function(i,dimension){
-	                    //  If not a Measure dimension
-	                    if(this['@dimensionname'] != 'Measures')
-	                    {   //  Update blockUI
-	                        $('#blockOverlay-update').html('dimensions...');
-	                        //  Store and rename the dimension name (remove spaces and replace with _)
-	                        var dimension_name = this['@dimensionname'].replace(' ', '_');
-	                        var dimension_name_old = this['@dimensionname'];
-	                        //  Add dimension names as a <li></li> element
-	                        $('#dimension-list').append('<li id="'+dimension_name+'"><a href="#" class="not-draggable">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
-	                        //  Add a secondary list to the dimension name
-	                        $('#'+dimension_name).append('<ul id="child_'+dimension_name+'"></ul>');
-	                        //  Add levels to the above <ul></ul> element
-	                        $.each(dimension.levels, function(i,level){
-	                            $('#dimension-list #child_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'<span class="hide">'+level['@levelname']+'</span></a></li>');
-	                        });
-	                    } else {
-	                        //  If a measure, display them all without a category
-	                        //  they are seen as members
-	                        $.each(dimension.levels.members, function(i,member){
-	                            //  Update blockUI
-	                            $('#blockOverlay-update').html('measures...');
-	                            //  Add members to the measure-list <ul></ul>
-	                            $('#measure-list').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
-	                        });
-
-	                    }
-	                });
 	                //  Eof populating dimensions and measures
 	                //  Activate the jstree plugin on the above lists
 	                $("#dimensions, #measures").jstree({
