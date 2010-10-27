@@ -67,16 +67,11 @@ class WebServices {
 	    // TODO - not sure how to do DELETE with cURL yet
 	    
 	    $response = array();
-	    $response['response_string'] = curl_exec($ch);
-	    $response['response_data'] = json_decode($response['response_string']);
+	    $response['content'] = curl_exec($ch);
 	    
 	    // Merge in cURL request data
 	    $header  = curl_getinfo( $ch );
 	    $response = array_merge($response, $header);
-	    
-	    if (curl_errno($ch) != 0) {
-	    	$response['data'] = array();
-	    }
 	    
 	    return $response;
 	}	

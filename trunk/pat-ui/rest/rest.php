@@ -87,7 +87,7 @@ class Rest {
 				// TODO - cache results
 				
 				// Return response from cURL
-				return $response;
+				JSONresponse(200, $response['content']);
 				break;
 		}
 	}
@@ -164,13 +164,15 @@ class Rest {
 		
 		$response = $this->client->request('POST', $this->settings['base_url'] . "/admin/session", $credentials);
 		
+		$connections = json_decode($response['content']);
+		
 		// No data returned, something got screwed up
-		if ($response['response_string'] == '' || empty($response['response_data']->{'@sessionid'})) {
+		if ($response['content'] == '' || empty($connections->{'@sessionid'})) {
 			return false;
 		}
 		
-		$this->session_id = $response['response_data']->{'@sessionid'};
-		$this->connections = $response['response_data'];
+		$this->session_id = $connections->{'@sessionid'};
+		$this->connections = $connections;
 		
 		return true;
 	}
