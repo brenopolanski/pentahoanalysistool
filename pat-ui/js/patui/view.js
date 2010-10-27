@@ -92,7 +92,17 @@ var view = {
             $("#toolbar a").click(function() {
                 controller.click_handler($(this));
             });
-                
+
+            // Convert dimension and measure <ul/> to trees
+            $(".dimension_tree, .measure_tree").jstree({
+                "core" : {
+                    "animation" : 0
+                },
+                "themes" : {
+                    "theme" : false
+                },
+                "plugins" : [ "themes", "html_data" ]
+            });
         });
     },
 	
@@ -127,14 +137,16 @@ var view = {
                     if(cube.length == undefined)
                         cube = [cube];
                     $.each(cube, function(i,item){
-                    	$("<option />")
-                    		.attr({ 'value': connection['@connectionid'] })
-                    		.data({ 
-                    			'schema': schema['@schemaname'],
-                    			'cube': item['@cubename']
-                    			})
-                    		.text(item['@cubename'])
-                    		.appendTo($('.data_list'));
+                        $("<option />")
+                        .attr({
+                            'value': connection['@connectionid']
+                        })
+                        .data({
+                            'schema': schema['@schemaname'],
+                            'cube': item['@cubename']
+                        })
+                        .text(item['@cubename'])
+                        .appendTo($('.data_list'));
                     });
                 });
                 $('#data-list').append('</optgroup>');
@@ -142,7 +154,7 @@ var view = {
         });
         
         $('#data-list').change(function() {
-        	model.new_query($(this).find("option:selected"));
+            model.new_query($(this).find("option:selected"));
         });
         
         view.free();
