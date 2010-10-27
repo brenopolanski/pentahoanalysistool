@@ -149,11 +149,11 @@ var view = {
                         .appendTo($('.data_list'));
                     });
                 });
-                $('#data-list').append('</optgroup>');
+                $('.data_list').append('</optgroup>');
             });
         });
         
-        $('#data-list').change(function() {
+        $('.data_list').change(function() {
             model.new_query($(this).find("option:selected"));
         });
         
