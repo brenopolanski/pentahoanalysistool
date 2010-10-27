@@ -263,10 +263,13 @@ x:default {
 #tab_content .tab_body .col_axis .col_placeholder,
 #tab_content .tab_body .row_axis .row_placeholder,
 #tab_content .tab_body .filter_axis .filter_placeholder {
-    border: 1px dashed #e5e5e5;
+    border: 1px dashed #999;
     color: #888;
-    font-style: italic;
-    padding: 5px;
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 3px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 
 /*  $_vis       */
