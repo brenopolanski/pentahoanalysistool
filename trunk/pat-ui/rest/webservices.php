@@ -32,6 +32,10 @@ class WebServices {
         'Content-Type: application/json',
     	);
     	
+    	if (! function_exists('curl_init')) {
+    		JSONresponse(500, "The cURL module for PHP is not installed on this server.");
+    	}
+    	
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json')); //  Make sure the header is set to accept JSON
