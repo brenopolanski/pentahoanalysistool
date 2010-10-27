@@ -31,7 +31,7 @@ var model = {
         model.server_errors = 0;
         
         // Really ghetto way to get credentials. Better than the browser prompting, I guess...
-        // FIXME - ask for credentials using a pretty form that doesn't block the browser
+        // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
         jPrompt("Please enter your username: ", "", "PAT", function(input) {
         	model.username = input;
         	jPrompt("Please enter your password: ", "", "PAT", function(input) {
@@ -49,8 +49,7 @@ var model = {
     request: function(method, url, callback, data) {
         $.ajax({
         	type: method,
-            url: "rest/" + model.username + url,
-            cache: false,
+            url: "rest/" + url,
             dataType: 'json',
             username: model.username,
             password: model.password,
@@ -65,7 +64,7 @@ var model = {
 	 * Obtain a session and load connections
 	 */
     get_session: function() {
-    	model.request("POST", "/session", function(data, textStatus, XMLHttpRequest) {
+    	model.request("POST",  model.username + "/session", function(data, textStatus, XMLHttpRequest) {
     		model.session_id = data['@sessionid'];
             model.connections = data;
             view.generate_navigation();
@@ -99,7 +98,24 @@ var model = {
     open_query: function() {}, //TODO
     save_query: function() {}, //TODO
     delete_query: function() {}, //TODO
-    logout: function() {}, //TODO - I'll handle this one -MSC
+    
+    /*
+     * Kill credentials and server-side session
+     */
+    logout: function() {    	
+    	// Kill server-side session
+    	model.request("GET", "", function() {}, {});
+    	
+    	// Clear credentials
+    	model.username = "";
+    	model.password = "";
+    	
+    	// Hide everything
+    	view.logout();
+    	
+    	// Start over
+    	model.init();
+    },
     
     /*
      * Display information about PAT
