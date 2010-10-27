@@ -55,10 +55,7 @@ var model = {
 
         // Add a new tab
         // Render content for new tab
-        // 
-
-
-        alert("New query!");
+        alert("New query added!");
         return false;
     },
 
