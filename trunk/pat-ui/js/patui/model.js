@@ -103,7 +103,63 @@ var model = {
     },
 
     /*
-     *  Populates dimension-list and measure-list with available items
+     *  When a new query button is clicked create a new tab and load with
+     *  a new query template.
+     */
+    new_tab: function() {
+        
+        // TODO - Need to load partial view using ajax method i.e. _new_query.html
+        // See if I can reformat the markup to be liked by jQuery UI tabs ? Worth it ?
+
+        var new_tab_counter, tab_counter;
+
+        // Find all new query tabs, designating the tab markup with a 'rel="new"
+        // makes it a new query tab, this can be used for open/saved queries i.e.
+        // 'rel="save"'
+        new_tab_counter = $('#tab_list li a[rel="new"]').length + 1;
+        
+        // Find the total number of enabled tabs
+        tab_counter = $('#tab_list li').length + 1;
+
+        // We can not use jQuery UI tab methods as the markup of our tabs do not
+        // follow the jQuery UI tabs standard templates, the only way around this
+        // is to manually do the methods (it is not as neater but does the job)
+
+        // Add a new <li/> element to the #tab_list ul (tab)
+        $('#tab_list ul').append('<li class="ui-state-default ui-corner-top">' +
+            '<a href="#query' + tab_counter + '" rel="new">' +
+            'New Query (' + new_tab_counter + ') ' +
+            '<img alt="Close tab" src="images/tab/close.png" />' +
+            '</a>' +
+            '</li>');
+                             
+        // Add a new <div/> element to the #tab_content <div/> (tab panel)
+        $('#tab_content').append('<div id="query' + tab_counter +'" class="tab ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">[Content Here]</div>');
+
+//        Load view
+//        model.request({
+//            method: "POST",
+//            url: "views/_new_query.html",
+//            success: function(data, textStatus, XMLHttpRequest) {
+//                $('#query' + tab_counter).html(data);
+//            },
+//            error: function(){
+//                jAlert("Could not load new query", "Error");
+//            }
+//        });
+
+        var $tabs = $('#tab_list');
+        // Init tabs
+        $tabs.tabs()
+        // Enable tabs
+        .tabs('option', 'disabled', tab_counter)
+        // Select the tab which was just created
+        .tabs('select', '#query' + tab_counter);
+        
+    },
+     
+    /*
+     *  Populates dimensions_tree and measures_tree with available items
      *  and enables draggable, droppable and sortable lists.
      */
     new_query: function($cube) {
@@ -116,31 +172,48 @@ var model = {
             method: "POST",
             url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
             success: function(data, textStatus, XMLHttpRequest) {
-                // Clear dimension and measure trees
-                // TODO - method to get current tab
-                $('#query1 .dimensions_tree').html('').html('<ul id="query1_dimensions" />');
-                $('#query1 .measures_tree').html('').html('<ul id="query1_measures" />');
-                // TODO - fill in dimensions and measures
+                // TODO - method to get current tab, hardcoded #query1
+
+                // Remove all instances of previous trees
+                // incase user reselects cube
+                $('#query1 .dimensions_tree').html('')
+                .html('<ul id="query1_dimensions" />');
+                $('#query1 .measures_tree').html('')
+                .html('<ul id="query1_measures" />');
+
                 $.each(data.axis.dimensions, function(i,dimension) {
-                    // For 'dimensions' only
+
+                    // Populate dimension tree first
                     if(this['@dimensionname'] != 'Measures') {
+
                         // Clean up the dimension name
                         var dimension_name = this['@dimensionname'].replace(' ', '_');
                         // Append <li/> to the dimensions_tree <ul/>
                         $('#query1_dimensions').append('<li id="'+dimension_name+'"><a href="#">'+this['@dimensionname']+'</a></li>');
-                        // Append <ul/> to the dimendions_tree <li/>
-                        $('#'+dimension_name).append('<ul id="c_'+dimension_name+'"/>');
+
                         // TODO - Check if there is a secondary level
+                        // Append <ul/> to the dimensions_tree <li/>
+                        $('#'+dimension_name).append('<ul id="c_'+dimension_name+'"/>');
+                        
                         // If there is a seconday level loop through and add to the <ul/>
                         $.each(dimension.levels, function(i,level){
+                            // Populate the second <ul/>
                             $('#c_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
                         });
+                        
                     } else {
-                        $('#query1_measures').append('<li id="Measures"><a href="#">Measures</a></li>');
-                        $('#Measures').append('<ul id="c_Measures"/>');
+                        // Create a 'dummy' measures <ul/>
+                        // Append <li/> to the dimensions_tree <ul/>
+                        $('#query1_measures').append('<li id="measures"><a href="#">Measures</a></li>');
+
+                        // Append <ul/> to the dimensions_tree <li/>
+                        $('#measures').append('<ul id="c_measures"/>');
+                            
                         $.each(dimension.levels.members, function(i,member){
-                            $('#c_Measures').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
+                            // Populate the second <ul/>
+                            $('#c_measures').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
                         });
+                        
                     }
                 });
                 
@@ -155,6 +228,8 @@ var model = {
                     },
                     "plugins" : [ "themes", "html_data" ]
                 });
+
+                // Remove blockUI
                 view.free();
             },
             error: function() {

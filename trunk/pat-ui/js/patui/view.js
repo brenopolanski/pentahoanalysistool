@@ -67,7 +67,7 @@ var view = {
             
             window.tabs_loading = true;
 
-            $tabs = $("#tab_list");
+            $tabs = $("#tab_panel");
             $tabs.tabs({
                 show: function (evt, ui) {
                     if (tabs_loading) {
@@ -77,14 +77,6 @@ var view = {
                         resize_tab_panel_layout(ui);
                     }
                 }
-            });
-
-            // When a tab is requested to be closed
-            $('#tab_list ul li a img').click(function() {
-                alert('Are you sure you want to do that?');
-                var index = $('li',$tabs).index($(this).parent());
-                $tabs.tabs('remove', index);
-                return false;
             });
 
             // Add event handler to toolbar buttons
