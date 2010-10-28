@@ -2,12 +2,7 @@
  * This is the view for PATui. This will handle the drawing of the UI.
  */
 
-var view = {
-	/*
-	 * The navigation that will be used to select a cube
-	 */
-	navigation: "",
-	
+var view = {	
 	/*
 	 * The number of tabs that have been rendered, for naming new tabs
 	 */
@@ -75,9 +70,6 @@ var view = {
      * Clear credentials and clear the screen
      */
     logout: function() {
-    	// Delete the cached navigation
-    	view.navigation = "";
-    	
     	// Remove all tabs
     	$('#tab_list ul li').remove();
     	$('#tab_content div').remove();
@@ -118,51 +110,45 @@ var view = {
     generate_navigation: function($tab) {
         $data_list = $tab.find('.data_list');
     	
-        // Check to see if navigation is cached
-        if (view.navigation == "") {
-        	// Block the UI - depending on connection, this may take a while
-        	view.processing("Loading schema...");
-        	
-        	// Iterate over connections and populate navigation
-	        $.each(model.connections.connections.connection, function(i,connection){
-	            $.each(connection.schemas, function(i,schema){
-	            	$data_list.append('<optgroup label="'+schema['@schemaname']+'">');
-	                $.each(schema.cubes, function(i,cube){
-	                    if(cube.length == undefined)
-	                        cube = [cube];
-	                    $.each(cube, function(i,item){
-	                        $("<option />")
-	                        .attr({
-	                            'value': connection['@connectionid']
-	                        })
-	                        .data({
-	                            'schema': schema['@schemaname'],
-	                            'cube': item['@cubename']
-	                        })
-	                        .text(item['@cubename'])
-	                        .appendTo($data_list);
-	                    });
-	                });
-	                $data_list.append('</optgroup>');
-	            });
-	        });
+    	// Block the UI - depending on connection, this may take a while
+    	view.processing("Loading schema...");
+    	
+    	// Iterate over connections and populate navigation
+        $.each(model.connections.connections.connection, function(i,connection){
+            $.each(connection.schemas, function(i,schema){
+            	$data_list.append('<optgroup label="'+schema['@schemaname']+'">');
+                $.each(schema.cubes, function(i,cube){
+                    if(cube.length == undefined)
+                        cube = [cube];
+                    $.each(cube, function(i,item){
+                        $("<option />")
+                        .attr({
+                            'value': connection['@connectionid']
+                        })
+                        .data({
+                            'schema': schema['@schemaname'],
+                            'cube': item['@cubename']
+                        })
+                        .text(item['@cubename'])
+                        .appendTo($data_list);
+                    });
+                });
+                $data_list.append('</optgroup>');
+            });
+        });
+    
+        // Cache the navigation
+        view.navigation = $data_list.html();
         
-	        // Cache the navigation
-	        view.navigation = $data_list.html();
-	        
-	        // Show the window (hidden first time)
-	        $("#header").show();
-	        $("#tab_content").show();
-	        
-	        // Free up UI
-	        view.free();
-        } else {
-        	// Fill the navigation list with the cached copy of the navigation
-        	$data_list.html(view.navigation);
-        }
+        // Show the window (hidden first time)
+        $("#header").show();
+        $("#tab_content").show();
+        
+        // Free up UI
+        view.free();
         
         $data_list.change(function() {
-            model.new_query($data_list.find("option:selected"));
+            model.new_query($tab, $data_list.find("option:selected"));
         });
     },
     
