@@ -69,21 +69,18 @@ a.button:hover{
 
 /*  $_header    */
 
-#header {
-    background: url('../../images/toolbar/header_bg.png') repeat-x 0 0;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-}
-
 /*  $_toolbar    */
 
 #toolbar {
+    background: url('../../images/toolbar/header_bg.png') repeat-x 0 0;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    border-bottom: 1px solid #d5d5d5;
     font-size: 0.8em;
     height: 26px;
     margin: 0;
     padding: 10px;
     list-style-type: none;
-    border-bottom: 1px solid #d5d5d5;
 }
 #toolbar li {
     display: inline-block;
