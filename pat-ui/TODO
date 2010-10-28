@@ -3,3 +3,4 @@
 -finish widgets
 -destroy tabs correctly i.e. .destroy()
 -add sprites
+-create lite version of jquery ui
