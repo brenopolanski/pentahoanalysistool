@@ -102,55 +102,57 @@ var model = {
     /*
          *  Populates dimensions_tree and measures_tree with available items
          *  and enables draggable, droppable and sortable lists.
+         *  
+         *  FIXME - this needs some cleanup
          */
-    new_query: function($cube) {
+    new_query: function($tab, $cube) {
         data = $cube.data();
+        console.debug(data);
         view.processing("Creating new query on " + data['cube']);
     	
         model.request({
             method: "POST",
             url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
             success: function(data, textStatus, XMLHttpRequest) {
-                // TODO - method to get current tab, hardcoded #query1
-
                 // Remove all instances of previous trees
                 // in case user reselects cube
-                $('#query1 .dimensions_tree').html('')
+                $tab.find('.dimensions_tree')
                 .html('<ul id="query1_dimensions" />');
-                $('#query1 .measures_tree').html('')
+                $tab.find('.measures_tree')
                 .html('<ul id="query1_measures" />');
+                
+                $both_trees = $tab.find('.dimensions_tree, .measures_tree');
 
                 $.each(data.axis.dimensions, function(i,dimension) {
 
                     // Populate dimension tree first
-                    if(this['@dimensionname'] != 'Measures') {
-
-                        // Clean up the dimension name
-                        var dimension_name = this['@dimensionname'].replace(' ', '_');
+                    if(this['@dimensionname'] != 'Measures') {                        
                         // Append <li/> to the dimensions_tree <ul/>
-                        $('#query1_dimensions').append('<li id="'+dimension_name+'"><a href="#">'+this['@dimensionname']+'</a></li>');
+                        $first_level = $('<li><a href="#">'+this['@dimensionname']+'</a></li>')
+                        	.appendTo($tab.find('.dimensions_tree ul'));
 
                         // TODO - Check if there is a secondary level
                         // Append <ul/> to the dimensions_tree <li/>
-                        $('#'+dimension_name).append('<ul id="c_'+dimension_name+'"/>');
+                        $second_level = $('<ul />').appendTo($first_level);
                         
                         // If there is a secondary level loop through and add to the <ul/>
                         $.each(dimension.levels, function(i,level){
                             // Populate the second <ul/>
-                            $('#c_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
+                            $second_level.append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
                         });
                         
                     } else {
                         // Create a 'dummy' measures <ul/>
                         // Append <li/> to the dimensions_tree <ul/>
-                        $('#query1_measures').append('<li id="measures"><a href="#">Measures</a></li>');
+                    	$measures = $('<li><a href="#">Measures</a></li>')
+                    		.appendTo($tab.find('.measures_tree ul'));
 
                         // Append <ul/> to the dimensions_tree <li/>
-                        $('#measures').append('<ul id="c_measures"/>');
+                        $measures.append('<ul />');
                             
                         $.each(dimension.levels.members, function(i,member){
                             // Populate the second <ul/>
-                            $('#c_measures').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
+                        	$measures.find('ul').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
                         });
                         
                     }
@@ -158,7 +160,7 @@ var model = {
                 
                 // jsTree
                 // TODO - Must reference active tab only
-                $("#query1 .dimensions_tree, #query1 .measures_tree").jstree({
+                $both_trees.jstree({
                     "core" : {
                         "animation" : 0
                     },
@@ -169,7 +171,7 @@ var model = {
                 });
                 
                 //  Draggable
-                $("#query1 .dimensions_tree, #query1 .measures_tree").draggable({
+                $both_trees.draggable({
                     cancel:         '.not-draggable',
                     opacity:        0.90,
                     drag:       function(){
@@ -181,7 +183,7 @@ var model = {
                 });
                 
                 //  Droppable
-                $('#row-axis, #column-axis').droppable({
+                $both_trees.droppable({
                     accept:         '#query1 .dimensions_tree, #query1 .measures_tree',
                     accept:         ":not(.ui-sortable-helper)",
                     drop:           function(event, ui) {
