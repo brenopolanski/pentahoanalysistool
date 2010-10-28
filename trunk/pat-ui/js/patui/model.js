@@ -6,12 +6,12 @@ var model = {
     /*
      * FIXME - The username to be used with HTTP basic auth
      */
-    username: "admin",
+    username: "",
 	
     /*
      * FIXME - The password to be used with HTTP basic auth
      */
-    password: "admin",
+    password: "",
 	
     /*
      * The session_id used to make calls to the server
@@ -32,22 +32,17 @@ var model = {
         
         // Really ghetto way to get credentials. Better than the browser prompting, I guess...
         // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
-        /* if (model.username == "" || model.password == "") {
-	        jPrompt("Please enter your username: ", "", "PAT", function(input) {
+        if (model.username == "" || model.password == "") {
+	        jPrompt("Please enter your username: ", "admin", "PAT", function(input) {
 	        	model.username = input;
-	        	jPrompt("Please enter your password: ", "", "PAT", function(input) {
+	        	jPrompt("Please enter your password: ", "admin", "PAT", function(input) {
 	        		model.password = input;
 	        		
 	        		// Obtain a session_id
 	                model.get_session();
 	        	});
 	        });
-        }*/
-        
-        // FIXME - hard-coded credentials to ease development
-        
-        // Obtain a session_id
-        model.get_session();
+        }
     },
     
     /*
@@ -256,11 +251,13 @@ var model = {
          */
     logout: function() {
         // Kill server-side session
-        model.request("GET", "", function() {}, {});
+        model.request({ url: "" });
     	
         // Clear credentials
         model.username = "";
         model.password = "";
+        model.session_id = "";
+        model.connections = {};
     	
         // Hide everything
         view.logout();

@@ -76,7 +76,7 @@ var view = {
     
     logout: function() {
         $("#header").hide();
-        $("#wrapper").hide();
+        $("#tab_content").hide();
     },
 	
     processing: function(message) {
@@ -130,7 +130,7 @@ var view = {
         });
         
         $("#header").show();
-        $("#wrapper").show();
+        $("#tab_content").show();
         
         view.free();
     }
