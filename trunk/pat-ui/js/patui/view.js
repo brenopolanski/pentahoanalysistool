@@ -159,7 +159,70 @@ var view = {
         
         // Free up UI
         view.free();
+
+        /* NEW - Start */
+
+        var $tabs, outer_layout, tab_layout_options;
+
+        // Resizes the tab panel when 'show' event is triggered
+        function resize_tab_panel_layout (ui) {
+            var tabIndex = $tabs.tabs("option", "selected"),
+            $tab_panel = $( "#query"+ (tabIndex + 1) );
+            if ($tab_panel.data("layoutContainer")) {
+                $tab_panel.layout().resizeAll();
+            } else {
+                $tab_panel.layout(tab_layout_options);
+            }
+            return;
+        }
+
+        // Layout options for the contents inside the tab
+        tab_layout_options = {
+            name:                       'tab_layout_options',
+            resizeWithWindow:           false,
+            north__resizable:           false,
+            north__closable:            false,
+            spacing_open:               4,
+            spacing_closed:             4,
+            center__paneSelector:       ".tab_body",
+            west__paneSelector:         ".sidebar",
+            west__size:                 "250",
+            contentSelector:            ".tab_scroll_content",
+            west__resizable:            true,
+            west__closable:             true
+        };
+
+
+            outer_layout = $("body").layout({
+                name:                   'outer_layout',
+                resizeWithWindowDelay:	250,
+                closable:		false,
+                resizable:		false,
+                spacing_open:    	0,
+                spacing_closed: 	0,
+                center__paneSelector:	"#tab_content",
+                north__paneSelector:	"#header",
+                center__onresize:       resize_tab_panel_layout
+            });
+
+            window.tabs_loading = true;
+
+            $tabs = $("#tab_list");
+            $tabs.tabs({
+                show: function (evt, ui) {
+                    if (tabs_loading) {
+                        tabs_loading = false;
+                        outer_layout.resizeAll();
+                    }
+                    resize_tab_panel_layout(ui);
+                }
+            });
         
+        //$tabs.tabs( "enable");
+        $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
+
+        /* NEW - End */
+
         $data_list.change(function() {
             model.new_query($tab, $data_list.find("option:selected"));
         });
@@ -180,7 +243,10 @@ var view = {
         	.appendTo($new_tab_index);
         $new_tab_close_button = $('<img />').attr({ 'alt': 'Close tab', 'src': 'images/tab/close.png' })
         	.click(function() {
-        		view.delete_tab($(this).parent("a").attr('id'));
+                    /* NEW - Start */
+                        var index = $('#tab_list').tabs('option', 'selected');
+        		view.delete_tab(index);
+                    /* NEW - End */
         	})
         	.appendTo($new_tab_link);
         $new_tab_index.appendTo($('#tab_list ul'));
@@ -191,13 +257,16 @@ var view = {
         	.appendTo($('#tab_content'));
         
     	$.get('views/_new_query.html', function(data) {
-    		$new_tab.html(data).show();
+    		$new_tab.html(data); //.show();
     		view.generate_navigation($new_tab)
     	});
     },
     
     delete_tab: function(index) {
-    	$(index).remove();
+        /* NEW - Start */
+    	$('#tab_list').tabs("remove", index)
+        //$('#tab_list ul').append('<li></li>');
+        /* NEW - End */
     }
 };
 
