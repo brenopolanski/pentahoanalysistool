@@ -4,163 +4,47 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>PAT</title>
+        
         <!-- Blueprint CSS Framework -->
         <link rel="stylesheet" href="css/blueprint/reset.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/forms.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/typography.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/grid.css" type="text/css" media="screen, projection">
         <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
-        <!-- PATui CSS Framework -->
+        
+        <!-- PATui CSS/JS -->
         <link rel="stylesheet" href="css/patui/styles.css" type="text/css" media="screen, projection">
-        <!-- Google CDN: jQuery Core and UI 
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-        -->
         <script type="text/javascript" src="js/jquery/jquery.1.4.3.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.ui.1.8.5.custom.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.plugins.js"></script>
-        <!-- PATui JavaScript -->
         <script type="text/javascript" src="js/patui/controller.js"></script>
+        
     </head>
+    
+    
     <body>
-        <!-- header -->
+
         <div id="header">
-            <!-- toolbar -->
+        
             <ul id="toolbar">
                 <li><a id="new_tab" href="#" title="New Query"><img src="images/toolbar/new.png" alt="New Query" ></a></li>
-                <li class="separator">&nbsp;</li>
+                				<li class="separator">&nbsp;</li>
                 <li><a id="open_query" href="#" title="Open Query"><img src="images/toolbar/open.png" alt="Open Query" ></a></li>
                 <li><a id="save_query" href="#" title="Save Query"><img src="images/toolbar/save.png" alt="Save Query" class="disabled" ></a></li>
-                <li class="separator">&nbsp;</li>
+                				<li class="separator">&nbsp;</li>
                 <li><a id="delete_query" href="#" title="Delete Query"><img src="images/toolbar/delete.png" alt="Delete Query" class="disabled" ></a></li>
-                <li class="separator">&nbsp;</li>
+                				<li class="separator">&nbsp;</li>
                 <li><a id="logout" href="#" title="Logout"><img src="images/toolbar/log-out.png" alt="Logout" ></a></li>
-                <li class="separator">&nbsp;</li>
+                				<li class="separator">&nbsp;</li>
                 <li><a id="about" href="#" title="About"><img src="images/toolbar/help.png" alt="About" ></a></li>
             </ul>
-            <!-- eof toolbar -->
-            <!-- tab_list -->
+
             <div id="tab_list">
-                <ul>
-                    <li><a href="#query1">Welcome</a></li>
-                    <li><a href="#query2" class="closable" rel="new">New Query (1) <img src="images/tab/close.png" alt="Close tab"/></a></li>
-                </ul>
+                <ul></ul>
             </div>
-            <!-- eof tab_list -->
+
         </div>
-        <!-- eof header -->
-        <!-- tab_content (must use classes) -->
-        <div id="tab_content">
-            <!-- query1 -->
-            <div id="query1" class="tab ui-tabs-hide">
-                <!-- tab_body -->
-                <div class="tab_body">
-                    <!-- tab_top -->
-                    <div class="tab_top">
-                        <!-- tab_toolbar -->
-                        <div class="tab_toolbar">
-                            <span class="saving_message quiet">Saving query ... Saved</span>
-                            <a class="button">Show Axis</a>
-                            <a class="button">Show Filters</a>
-                            <a class="button">Swap Axis</a>
-                            <a class="button">Visualise</a>
-                            <a class="button">Export</a>
-                        </div>
-                    </div>
-                    <!-- eof tab_toolbar -->
-                    <!-- eof tab_top -->
-                    <!-- tab_bottom -->
-                    <div class="tab_bottom tab_scroll_content">
-                        <!-- col_axis -->
-                        <div class="col_axis">
-                            <div class="axis_title">
-                                Column Axis
-                            </div>
-                            <!-- col_axis_drop -->
-                            <div class="col_axis_drop">
-                                <span class="item measure">Measure</span>
-                                <span class="item dimension">Dimension</span>
-                            </div>
-                            <!-- eof col_axis_drop -->
-                            <div class="clear"></div>
-                        </div>
-                        <!-- eof col_axis -->
-                        <!-- row_axis -->
-                        <div class="row_axis">
-                            <div class="axis_title">
-                                Row Axis
-                            </div>
-                            <!-- row_axis_drop -->
-                            <div class="row_axis_drop">
-                                <span class="row_placeholder">Drop row axis fields here</span>
-                            </div>
-                            <!-- eof row_axis_drop -->
-                            <div class="clear"></div>
-                        </div>
-                        <!-- eof row_axis -->
-                        <!-- filter_axis -->
-                        <div class="filter_axis">
-                            <div class="axis_title">
-                                Filter Axis
-                            </div>
-                            <!-- filter_axis_drop -->
-                            <div class="filter_axis_drop">
-                                <span class="filter_placeholder">Drop row axis fields here</span>
-                            </div>
-                            <!-- eof filter_axis_drop -->
-                            <div class="clear"></div>
-                        </div>
-                        <!-- eof filter_axis -->
-                        <!-- vis -->
-                        <div class="vis">
-                        </div>
-                        <!-- eof vis -->
-                    </div>
-                </div>
-                <!-- eof tab_bottom -->
-                <!-- sidebar -->
-                <div class="sidebar">
-                    <span class="section_header top">Data</span>
-                    <p class="bottom">
-                        <select class="data_list">
-                            <option>Select a cube</option>
-                        </select>
-                    </p>
-                    <span class="section_header">Dimensions</span>
-                    <!-- dimensions -->
-                    <div class="dimensions">
-                        <!-- eof dimension_tree -->
-                        <div class="dimensions_tree">
-                        </div>
-                        <!-- eof dimension_tree -->
-                    </div>
-                    <!-- eof dimensions -->
-                    <span class="section_header">Measures</span>
-                    <!-- measures -->
-                    <div class="measures">
-                        <!-- measure_tree -->
-                        <div class="measures_tree">
-                        </div>
-                        <!-- eof measure_tree -->
-                    </div>
-                    <!-- eof measures -->
-                </div>
-                <!-- eof sidebar -->
-            </div>
-            <!-- eof query1 -->
-            <!-- query2 -->
-            <div id="query2" class="tab ui-tabs-hide">
-                <!-- tab_body -->
-                <div class="tab_body">
-                </div>
-                <!-- eof tab_body -->
-                <!-- sidebar -->
-                <div class="sidebar">
-                </div>
-                <!-- eof sidebar -->
-            </div>
-            <!-- eof query2 -->
-        </div>
-        <!-- eof tab_content -->
+
+        <div id="tab_content"></div>
     </body>
 </html>
