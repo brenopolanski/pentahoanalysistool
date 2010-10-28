@@ -513,8 +513,8 @@ x:default {
 
 /*  $_jstree    */
 
-.dimension_tree,.measure_tree {
-    padding:5px;
+.dimensions_tree,.measures_tree {
+    padding:10px 5px;
 }
 
 .jstree li,.jstree ul ins {

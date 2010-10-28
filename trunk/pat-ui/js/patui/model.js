@@ -3,29 +3,29 @@
  */
 
 var model = {
-	/*
-	 * FIXME - The username to be used with HTTP basic auth
-	 */
-	username: "admin",
-	
-	/*
-	 * FIXME - The password to be used with HTTP basic auth
-	 */
-	password: "admin",
+    /*
+     * FIXME - The username to be used with HTTP basic auth
+     */
+    username: "admin",
 	
     /*
-	 * The session_id used to make calls to the server
-	 */ 
+     * FIXME - The password to be used with HTTP basic auth
+     */
+    password: "admin",
+	
+    /*
+     * The session_id used to make calls to the server
+     */
     session_id: "",
 	
     /*
-	 * Connection information for this PAT server
-	 */
+     * Connection information for this PAT server
+     */
     connections: {},
 		
     /*
-	 * This is the constructor of sorts, ensuring that the session ID is valid
-	 */
+     * This is the constructor of sorts, ensuring that the session ID is valid
+     */
     init: function (username) {
         // Let's be friends!
         model.server_errors = 0;
@@ -46,7 +46,7 @@ var model = {
         
         // FIXME - hard-coded credentials to ease development
         
-		// Obtain a session_id
+        // Obtain a session_id
         model.get_session();
     },
     
@@ -54,20 +54,20 @@ var model = {
      * Make an ajax request
      */
     request: function(parameters) {
-    	if (typeof parameters.method == "undefined")
-    		parameters.method = "GET";
+        if (typeof parameters.method == "undefined")
+            parameters.method = "GET";
     	
-    	if (typeof parameters.data == "undefined")
-    		parameters.data = {};
+        if (typeof parameters.data == "undefined")
+            parameters.data = {};
     	
-    	if (typeof parameters.success == "undefined")
-    		parameters.success = function() {};
+        if (typeof parameters.success == "undefined")
+            parameters.success = function() {};
     	
-    	if (typeof parameters.error == "undefined")
-    		parameters.error = controller.server_error;
+        if (typeof parameters.error == "undefined")
+            parameters.error = controller.server_error;
     	
         $.ajax({
-        	type: parameters.method,
+            type: parameters.method,
             url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
@@ -78,18 +78,18 @@ var model = {
     },
 	
     /*
-	 * Obtain a session and load connections
-	 */
+     * Obtain a session and load connections
+     */
     get_session: function() {
-    	model.request({
-    		method: "POST",  
-    		url: model.username + "/session", 
-    		success: function(data, textStatus, XMLHttpRequest) {
-	    		model.session_id = data['@sessionid'];
-	            model.connections = data;
-	            view.generate_navigation();
-    		}
-    	});
+        model.request({
+            method: "POST",
+            url: model.username + "/session",
+            success: function(data, textStatus, XMLHttpRequest) {
+                model.session_id = data['@sessionid'];
+                model.connections = data;
+                view.generate_navigation();
+            }
+        });
     },
 	
     /*
@@ -103,58 +103,65 @@ var model = {
     },
 
     /*
-	 *  Populates dimension-list and measure-list with available items
-	 *  and enables draggable, droppable and sortable lists.
-	 */
+     *  Populates dimension-list and measure-list with available items
+     *  and enables draggable, droppable and sortable lists.
+     */
     new_query: function($cube) {
-    	data = $cube.data();
-    	view.processing("Creating new query on " + data['cube']);
+        data = $cube.data();
+        view.processing("Creating new query on " + data['cube']);
     	
-    	model.clear_query();
+        model.clear_query();
     	
-    	model.request({
-    		method: "POST",  
-    		url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery", 
-    		success: function(data, textStatus, XMLHttpRequest) {
-    			$('.dimension_tree, .measure_tree').html('');
-    			// TODO - fill in dimensions and measures
-                $.each(data.axis.dimensions, function(i,dimension){
-                    //  If not a Measure dimension
-                    if(this['@dimensionname'] != 'Measures')
-                    {   
-                        //  Store and rename the dimension name (remove spaces and replace with _)
+        model.request({
+            method: "POST",
+            url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
+            success: function(data, textStatus, XMLHttpRequest) {
+                // Clear dimension and measure trees
+                // TODO - method to get current tab
+                $('#query1 .dimensions_tree').html('').html('<ul id="query1_dimensions" />');
+                $('#query1 .measures_tree').html('').html('<ul id="query1_measures" />');
+                // TODO - fill in dimensions and measures
+                $.each(data.axis.dimensions, function(i,dimension) {
+                    // For 'dimensions' only
+                    if(this['@dimensionname'] != 'Measures') {
+                        // Clean up the dimension name
                         var dimension_name = this['@dimensionname'].replace(' ', '_');
-                        var dimension_name_old = this['@dimensionname'];
-                        //  Add dimension names as a <li></li> element
-                        $('.dimension_tree').append('<li id="'+dimension_name+'"><a href="#" class="not-draggable">'+this['@dimensionname']+'<span class="hide">'+this['@dimensionname']+'</span></a></li>');
-                        //  Add a secondary list to the dimension name
-                        $('#'+dimension_name).append('<ul id="child_'+dimension_name+'"></ul>');
-                        //  Add levels to the above <ul></ul> element
+                        // Append <li/> to the dimensions_tree <ul/>
+                        $('#query1_dimensions').append('<li id="'+dimension_name+'"><a href="#">'+this['@dimensionname']+'</a></li>');
+                        // Append <ul/> to the dimendions_tree <li/>
+                        $('#'+dimension_name).append('<ul id="c_'+dimension_name+'"/>');
+                        // TODO - Check if there is a secondary level
+                        // If there is a seconday level loop through and add to the <ul/>
                         $.each(dimension.levels, function(i,level){
-                            $('.dimension_tree #child_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'<span class="hide">'+level['@levelname']+'</span></a></li>');
+                            $('#c_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
                         });
                     } else {
-                        //  If a measure, display them all without a category
-                        //  they are seen as members
+                        $('#query1_measures').append('<li id="Measures"><a href="#">Measures</a></li>');
+                        $('#Measures').append('<ul id="c_Measures"/>');
                         $.each(dimension.levels.members, function(i,member){
-                            //  Update blockUI
-                            $('#blockOverlay-update').html('measures...');
-                            //  Add members to the measure-list <ul></ul>
-                            $('.measure_tree').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'<span class="hide">'+this['@membername']+'</span></a></li>');
+                            $('#c_Measures').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
                         });
-
                     }
                 });
                 
-
-    			
-    			view.free();
-    		},
-    		error: function() {
-    			jAlert("Couldn't create a new query. Please try again.");
-    			view.free();
-    		}
-    	});
+                // jsTree
+                // TODO - Must reference active tab only
+                $("#query1 .dimensions_tree, #query1 .measures_tree").jstree({
+                    "core" : {
+                        "animation" : 0
+                    },
+                    "themes" : {
+                        "theme" : false
+                    },
+                    "plugins" : [ "themes", "html_data" ]
+                });
+                view.free();
+            },
+            error: function() {
+                jAlert("Couldn't create a new query. Please try again.", "Error");
+                view.free();
+            }
+        });
     },
     
     open_query: function() {}, //TODO - open query
@@ -162,26 +169,26 @@ var model = {
     delete_query: function() {}, //TODO - delete query
     
     /*
-     * Kill credentials and server-side session
-     */
-    logout: function() {    	
-    	// Kill server-side session
-    	model.request("GET", "", function() {}, {});
+         * Kill credentials and server-side session
+         */
+    logout: function() {
+        // Kill server-side session
+        model.request("GET", "", function() {}, {});
     	
-    	// Clear credentials
-    	model.username = "";
-    	model.password = "";
+        // Clear credentials
+        model.username = "";
+        model.password = "";
     	
-    	// Hide everything
-    	view.logout();
+        // Hide everything
+        view.logout();
     	
-    	// Start over
-    	model.init();
+        // Start over
+        model.init();
     },
     
     /*
-     * Display information about PAT
-     */
+         * Display information about PAT
+         */
     about: function() {
         jAlert('PATui Version 1.0', 'About');
     },
