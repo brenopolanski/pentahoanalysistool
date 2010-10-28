@@ -92,17 +92,6 @@ var view = {
                 controller.click_handler($(this));
             });
 
-            // Convert dimension and measure <ul/> to trees
-            $(".dimension_tree, .measure_tree").jstree({
-                "core" : {
-                    "animation" : 0
-                },
-                "themes" : {
-                    "theme" : false
-                },
-                "plugins" : [ "themes", "html_data" ]
-            });
-            
             view.logout();
         });
     },
