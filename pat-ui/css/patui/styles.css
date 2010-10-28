@@ -490,8 +490,7 @@ x:default {
     text-shadow: 1px 1px 0 #ffffff;
 }
 #popup_content {
-    background: 20px 15px no-repeat url('../../images/dialog/info.png');
-    padding: 10px;
+    background: 10px 10px no-repeat url('../../images/dialog/info.png');
     margin: 0;
 }
 #popup_content.alert {
@@ -504,19 +503,22 @@ x:default {
     background-image: url('../../images/dialog/info.png');
 }
 #popup_message {
-    padding-left: 60px;
+    padding-left: 55px;
+    padding-right: 10px;
     padding-top: 10px;
     text-align: left;
 }
+#popup_message input {
+    margin-top: 10px;
+    padding: 2px;
+    width: 97% !important;
+}
 #popup_panel {
     text-align: right;
-    margin-top: 1.45em;
+    padding: 10px;
 }
 #popup_panel hr {
-    margin-bottom: 1em;
-}
-#popup_prompt {
-    margin: .5em 0em;
+    display: none;
 }
 
 /*  $_jstree    */
