@@ -56,6 +56,19 @@ var view = {
                 north__paneSelector:	"#header",
                 center__onresize:       resize_tab_panel_layout
             });
+            
+            window.tabs_loading = true;
+
+            $tabs = $("#tab_list");
+            $tabs.tabs({
+                show: function (evt, ui) {
+                    if (tabs_loading) {
+                        tabs_loading = false;
+                        outer_layout.resizeAll();
+                    }
+                    resize_tab_panel_layout(ui);
+                }
+            });
 
             // Add event handler to toolbar buttons
             $("#toolbar a").click(function() {
