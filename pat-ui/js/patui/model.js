@@ -82,19 +82,9 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 model.session_id = data['@sessionid'];
                 model.connections = data;
-                view.generate_navigation();
+                view.new_tab();
             }
         });
-    },
-	
-    /*
-     * Clears the current query to prepare for a new one
-     */
-    clear_query: function() {
-
-        // TODO - Add a new tab
-        // TODO - Render content for new tab
-        return false;
     },
 
     /*
@@ -102,63 +92,11 @@ var model = {
      *  a new query template.
      */
     new_tab: function() {
-        
-        // TODO - Need to load partial view using ajax method i.e. _new_query.html
-        // See if I can reformat the markup to be liked by jQuery UI tabs ? Worth it ?
-
-        var new_tab_counter, tab_counter;
-
-        // Find all new query tabs, designating the tab markup with a 'rel="new"
-        // makes it a new query tab, this can be used for open/saved queries i.e.
-        // 'rel="save"'
-        new_tab_counter = $('#tab_list li a[rel="new"]:not(a[rel="welcome"])').length + 1;
-        
-        // Find the total number of enabled tabs
-        tab_counter = $('#tab_list li:not(.welcome)').length + 1;
-
-        // We can not use jQuery UI tab methods as the markup of our tabs do not
-        // follow the jQuery UI tabs standard templates, the only way around this
-        // is to manually do the methods (it is not as neater but does the job)
-        // http://stackoverflow.com/questions/3593713/using-jquery-ui-tabs-with-a-custom-html-layout
-        // ^ mentions that they will not change the way, so I will try and make the tabs
-        // follow jQuery UI's style - if not this method should suffice.
-
-        // Add a new <li/> element to the #tab_list ul (tab)
-        $('#tab_list ul').append('<li class="ui-state-default ui-corner-top">' +
-            '<a href="#query' + tab_counter + '" rel="new" class="closable">' +
-            'New Query (' + new_tab_counter + ')' +
-            '<img alt="Close tab" src="images/tab/close.png" />' +
-            '</a>' +
-            '</li>');
-                             
-        // Add a new <div/> element to the #tab_content <div/> (tab panel)
-        $('#tab_content').append('<div id="query' + tab_counter +'" class="tab ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide"><div class="tab_body"></div><div class="sidebar"></div></div>');
-        
-        // load content
-        // init layout
-        // enable tabs
-        // show tab
-
-
-        /* Other method trying to use jQuery Tabs UI methods */
-        /*
-        $tabs.tabs({
-            add: function(event, ui){
-                $("#tab_content").append('<div id="query3"><div class="tab_body ui-layout-pane ui-layout-pane-center">Idas</div><div class="sidebar ui-layout-pane ui-layout-pane-west">Idsa</div></div>');
-                $tabs.tabs('select', '#' + ui.panel.id);
-            }
-        });
-
-        $tabs.tabs({
-            tabTemplate: '<li><a href="#{href}">#{label} <img alt="Close tab" src="images/tab/close.png" /></a></li>'
-        });
-
-        $tabs.tabs("add", "#query"+tab_counter, "New Query ("+new_tab_counter+")");
-        */
-
-
-
-
+    	
+    	/*
+    	 * Create the actual tab and tab index
+    	 */
+    	view.new_tab();
     },
      
     /*
@@ -168,8 +106,6 @@ var model = {
     new_query: function($cube) {
         data = $cube.data();
         view.processing("Creating new query on " + data['cube']);
-    	
-        model.clear_query();
     	
         model.request({
             method: "POST",
