@@ -124,6 +124,9 @@ var model = {
         // We can not use jQuery UI tab methods as the markup of our tabs do not
         // follow the jQuery UI tabs standard templates, the only way around this
         // is to manually do the methods (it is not as neater but does the job)
+        // http://stackoverflow.com/questions/3593713/using-jquery-ui-tabs-with-a-custom-html-layout
+        // ^ mentions that they will not change the way, so I will try and make the tabs
+        // follow jQuery UI's style - if not this method should suffice.
 
         // Add a new <li/> element to the #tab_list ul (tab)
         $('#tab_list ul').append('<li class="ui-state-default ui-corner-top">' +
