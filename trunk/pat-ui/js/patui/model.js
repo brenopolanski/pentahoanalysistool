@@ -178,7 +178,7 @@ var model = {
                 // TODO - method to get current tab, hardcoded #query1
 
                 // Remove all instances of previous trees
-                // incase user reselects cube
+                // in case user reselects cube
                 $('#query1 .dimensions_tree').html('')
                 .html('<ul id="query1_dimensions" />');
                 $('#query1 .measures_tree').html('')
@@ -198,7 +198,7 @@ var model = {
                         // Append <ul/> to the dimensions_tree <li/>
                         $('#'+dimension_name).append('<ul id="c_'+dimension_name+'"/>');
                         
-                        // If there is a seconday level loop through and add to the <ul/>
+                        // If there is a secondary level loop through and add to the <ul/>
                         $.each(dimension.levels, function(i,level){
                             // Populate the second <ul/>
                             $('#c_'+dimension_name).append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
@@ -231,6 +231,48 @@ var model = {
                     },
                     "plugins" : [ "themes", "html_data" ]
                 });
+                
+                //  Draggable
+                $("#query1 .dimensions_tree, #query1 .measures_tree").draggable({
+                    cancel:         '.not-draggable',
+                    opacity:        0.90,
+                    drag:       function(){
+                        $('.ui-draggable-dragging ins').remove();
+                    },
+                    helper:         function(){
+                        return $(this).clone().appendTo('body').css('zIndex',5).show();
+                    }
+                });
+                
+                //  Droppable
+                $('#row-axis, #column-axis').droppable({
+                    accept:         '#query1 .dimensions_tree, #query1 .measures_tree',
+                    accept:         ":not(.ui-sortable-helper)",
+                    drop:           function(event, ui) {
+                        var member_syntax = ui.draggable.children(':nth-child(2)').html()
+                        var member = ui.draggable.text().replace(member_syntax, '');
+                        if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
+                            return false;
+                        }
+                        var arr = member_syntax.split('.');
+                        var str = arr[0].replace('[','').replace(']','');
+                        
+                        $(this).find(".placeholder").remove();
+                        $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
+                        run_query();
+                    }
+                })
+                
+                //  Sortable
+                .sortable({
+                    //connectWith: '#row-axis, #column-axis',
+                    items: "li:not(.placeholder)",
+                    placeholder: 'placeholder-sort',
+                    stop: function() {
+                        run_query();
+                    }
+
+                });
 
                 // Remove blockUI
                 view.free();
@@ -247,8 +289,8 @@ var model = {
     delete_query: function() {}, //TODO - delete query
     
     /*
-         * Kill credentials and server-side session
-         */
+     * Kill credentials and server-side session
+     */
     logout: function() {
         // Kill server-side session
         model.request({ url: "" });
@@ -271,61 +313,6 @@ var model = {
          */
     about: function() {
         jAlert('PATui Version 1.0', 'About');
-    },
-	
-    new_query_old: function (data_string) {
-    /*
-	                //  Eof populating dimensions and measures
-	                //  Activate the jstree plugin on the above lists
-	                $("#dimensions, #measures").jstree({
-	                    "core"      : {
-	                        "animation" : 1
-	                    },
-	                    "plugins" : [ "themes", "html_data" ]
-	                });
-	                //  Draggable
-	                $("#dimensions ul a, #measures ul a").draggable({
-	                    cancel:         '.not-draggable',
-	                    opacity:        0.90,
-	                    drag:       function(){
-	                        $('.ui-draggable-dragging ins').remove();
-	                    },
-	                    helper:         function(){
-	                        return $(this).clone().appendTo('body').css('zIndex',5).show();
-	                    }
-	                });
-	                //  Droppable
-	                $('#row-axis, #column-axis').droppable({
-	                    accept:         '#dimensions ul a, #measures ul a',
-	                    accept:         ":not(.ui-sortable-helper)",
-	                    drop:           function(event, ui) {
-	                        var member_syntax = ui.draggable.children(':nth-child(2)').html()
-	                        var member = ui.draggable.text().replace(member_syntax, '');
-	                        if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
-	                            return false;
-	                        }
-	                        var arr = member_syntax.split('.');
-	                        var str = arr[0].replace('[','').replace(']','');
-	                        
-	                        $(this).find(".placeholder").remove();
-	                        $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
-	                        run_query();
-	                    }
-	                //  Sortable
-	                }).sortable({
-	                    //connectWith: '#row-axis, #column-axis',
-	                    items: "li:not(.placeholder)",
-	                    placeholder: 'placeholder-sort',
-	                    stop: function() {
-	                        run_query();
-	                    }
-
-	                });
-	                //  Remove blockUI
-	                $.unblockUI();
-	            }
-	        }
-	    }); */
     }
 };
 
