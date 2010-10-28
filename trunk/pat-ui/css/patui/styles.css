@@ -73,7 +73,6 @@ a.button:hover{
     background: url('../../images/toolbar/header_bg.png') repeat-x 0 0;
     background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-    border-bottom: 1px solid #d5d5d5;
 }
 
 /*  $_toolbar    */
@@ -84,6 +83,7 @@ a.button:hover{
     margin: 0;
     padding: 10px;
     list-style-type: none;
+    border-bottom: 1px solid #d5d5d5;
 }
 #toolbar li {
     display: inline-block;
@@ -120,21 +120,31 @@ a.button:hover{
 
 #tab_list  {
     background: #f0f0f0;
-    padding-top: 3px;
+    padding-top: 2px;
     padding-top: 2px\0/; /* IE8 hack */
+    height: 29px;
 }
 #tab_list,
 x:-moz-any-link,
 x:default {
     background: #f0f0f0;
-    padding-top: 2px;
+    padding-top: 1px;
+    height: 30px;
+
 }
 #tab_list ul {
     border-bottom: 1px solid #d5d5d5;
     list-style-type: none;
-    line-height: 1.4em;
     margin: 0;
-    padding: 5px 4px 3px 15px;
+    padding: 5px 4px 2px 10px;
+}
+#tab_list ul,
+x:-moz-any-link,
+x:default {
+    border-bottom: 1px solid #d5d5d5;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 4px 3px 10px;
 }
 #tab_list ul li {
     display: inline;
@@ -346,6 +356,7 @@ x:default {
 }
 
 /*  $_jqueryui_layout   */
+
 
 /* all 'panes' */
 .ui-layout-pane {
