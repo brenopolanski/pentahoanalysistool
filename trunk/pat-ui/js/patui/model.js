@@ -115,10 +115,8 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Remove all instances of previous trees
                 // in case user reselects cube
-                $tab.find('.dimensions_tree')
-                .html('<ul id="query1_dimensions" />');
-                $tab.find('.measures_tree')
-                .html('<ul id="query1_measures" />');
+        		$dimension_tree = $('<ul />').appendTo($tab.find('.dimensions_tree'));
+        		$measures_tree = $('<ul />').appendTo($tab.find('.measures_tree'));
                 
                 $both_trees = $tab.find('.dimensions_tree, .measures_tree');
 
@@ -128,17 +126,18 @@ var model = {
                     if(this['@dimensionname'] != 'Measures') {                        
                         // Append <li/> to the dimensions_tree <ul/>
                         $first_level = $('<li><a href="#">'+this['@dimensionname']+'</a></li>')
-                        	.appendTo($tab.find('.dimensions_tree ul'));
+                        	.appendTo($dimension_tree);
 
-                        // TODO - Check if there is a secondary level
-                        // Append <ul/> to the dimensions_tree <li/>
-                        $second_level = $('<ul />').appendTo($first_level);
-                        
-                        // If there is a secondary level loop through and add to the <ul/>
-                        $.each(dimension.levels, function(i,level){
-                            // Populate the second <ul/>
-                            $second_level.append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
-                        });
+                        if (dimension.levels.length > 1) {
+	                        // Append <ul/> to the dimensions_tree <li/>
+	                        $second_level = $('<ul />').appendTo($first_level);
+	                        
+	                        // If there is a secondary level loop through and add to the <ul/>
+	                        $.each(dimension.levels, function(i,level){
+	                            // Populate the second <ul/>
+	                            $second_level.append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
+	                        });
+                        }
                         
                     } else {
                         // Create a 'dummy' measures <ul/>
