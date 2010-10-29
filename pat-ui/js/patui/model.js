@@ -4,12 +4,12 @@
 
 var model = {
     /*
-     * FIXME - The username to be used with HTTP basic auth
+     * The username to be used with HTTP basic auth
      */
     username: "",
 	
     /*
-     * FIXME - The password to be used with HTTP basic auth
+     * The password to be used with HTTP basic auth
      */
     password: "",
 	
@@ -33,9 +33,9 @@ var model = {
         // Really ghetto way to get credentials. Better than the browser prompting, I guess...
         // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
         if (model.username == "" || model.password == "") {
-	        jPrompt("Please enter your username: ", "admin", "PAT - Login", function(input) {
+	        jPrompt("Please enter your username: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
 	        	model.username = input;
-	        	jPrompt("Please enter your password: ", "admin", "PAT - Login", function(input) {
+	        	jPrompt("Please enter your password: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
 	        		model.password = input;
 	        		
 	        		// Obtain a session_id
