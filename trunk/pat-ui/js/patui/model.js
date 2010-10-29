@@ -107,7 +107,6 @@ var model = {
          */
     new_query: function($tab, $cube) {
         data = $cube.data();
-        console.debug(data);
         view.processing("Creating new query on " + data['cube']);
     	
         model.request({
