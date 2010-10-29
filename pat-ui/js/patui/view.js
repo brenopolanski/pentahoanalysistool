@@ -12,71 +12,13 @@ var view = {
      * This is where you're going to put your initial UI drawing
      */
     drawUI: function() {
-
-        var $tabs, outer_layout, tab_layout_options;
-
-        // Resizes the tab panel when 'show' event is triggered
-        function resize_tab_panel_layout (ui) {
-            var tabIndex = $tabs.tabs("option", "selected"),
-            $tab_panel = $( "#query"+ (tabIndex + 1) );
-            if ($tab_panel.data("layoutContainer")) {
-                $tab_panel.layout().resizeAll();
-            } else {
-                $tab_panel.layout(tab_layout_options);
-            }
-            return;
-        }
-
-        // Layout options for the contents inside the tab
-        tab_layout_options = {
-            name:                       'tab_layout_options',
-            resizeWithWindow:           false,
-            north__resizable:           false,
-            north__closable:            false,
-            spacing_open:               4,
-            spacing_closed:             4,
-            center__paneSelector:       ".tab_body",
-            west__paneSelector:         ".sidebar",
-            west__size:                 "250",
-            contentSelector:            ".tab_scroll_content",
-            west__resizable:            true,
-            west__closable:             true
-        };
-
-        $(document).ready(function(){
-
-            outer_layout = $("body").layout({
-                name:                   'outer_layout',
-                resizeWithWindowDelay:	250,
-                closable:		false,
-                resizable:		false,
-                spacing_open:    	0,
-                spacing_closed: 	0,
-                center__paneSelector:	"#tab_content",
-                north__paneSelector:	"#header",
-                center__onresize:       resize_tab_panel_layout
-            });
-            
-            window.tabs_loading = true;
-
-            $tabs = $("#tab_list");
-            $tabs.tabs({
-                show: function (evt, ui) {
-                    if (tabs_loading) {
-                        tabs_loading = false;
-                        outer_layout.resizeAll();
-                    }
-                    resize_tab_panel_layout(ui);
-                }
-            });
-
-            // Add event handler to toolbar buttons
-            $("#toolbar a").click(function() {
-                controller.click_handler($(this));
-            });
-
-            view.logout();
+        // Add event handler to toolbar buttons
+        $("#toolbar a").click(function() {
+            controller.click_handler($(this));
         });
+
+        // Blank everything out until the user logs in
+        view.logout();
     },
     
     /*
@@ -151,70 +93,7 @@ var view = {
         $("#header").show();
         $("#tab_content").show();
         
-
-
-        /* NEW - Start */
-
-        var $tabs, outer_layout, tab_layout_options;
-
-        // Resizes the tab panel when 'show' event is triggered
-        function resize_tab_panel_layout (ui) {
-            var tabIndex = $tabs.tabs("option", "selected"),
-            $tab_panel = $( "#query"+ (tabIndex + 1) );
-            if ($tab_panel.data("layoutContainer")) {
-                $tab_panel.layout().resizeAll();
-            } else {
-                $tab_panel.layout(tab_layout_options);
-            }
-            return;
-        }
-
-        // Layout options for the contents inside the tab
-        tab_layout_options = {
-            name:                       'tab_layout_options',
-            resizeWithWindow:           false,
-            north__resizable:           false,
-            north__closable:            false,
-            spacing_open:               4,
-            spacing_closed:             4,
-            center__paneSelector:       ".tab_body",
-            west__paneSelector:         ".sidebar",
-            west__size:                 "250",
-            contentSelector:            ".tab_scroll_content",
-            west__resizable:            true,
-            west__closable:             true
-        };
-
-
-            outer_layout = $("body").layout({
-                name:                   'outer_layout',
-                resizeWithWindowDelay:	250,
-                closable:		false,
-                resizable:		false,
-                spacing_open:    	0,
-                spacing_closed: 	0,
-                center__paneSelector:	"#tab_content",
-                north__paneSelector:	"#header",
-                center__onresize:       resize_tab_panel_layout
-            });
-
-            window.tabs_loading = true;
-
-            $tabs = $("#tab_list");
-            $tabs.tabs({
-                show: function (evt, ui) {
-                    if (tabs_loading) {
-                        tabs_loading = false;
-                        outer_layout.resizeAll();
-                    }
-                    resize_tab_panel_layout(ui);
-                }
-            });
-        
-        //$tabs.tabs( "enable");
-        $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
-
-        /* NEW - End */
+        view.resize_tabs();
         
         $data_list.change(function() {
             model.new_query($tab, $data_list.find("option:selected"));
@@ -261,6 +140,67 @@ var view = {
     	$('#tab_list').tabs("remove", index);
         //$('#tab_list ul').append('<li></li>');
         /* NEW - End */
+    },
+    
+    resize_tabs: function() {
+        var $tabs, outer_layout, tab_layout_options;
+
+        // Resizes the tab panel when 'show' event is triggered
+        function resize_tab_panel_layout (ui) {
+            var tabIndex = $tabs.tabs("option", "selected"),
+            $tab_panel = $( "#query"+ (tabIndex + 1) );
+            if ($tab_panel.data("layoutContainer")) {
+                $tab_panel.layout().resizeAll();
+            } else {
+                $tab_panel.layout(tab_layout_options);
+            }
+            return;
+        }
+
+        // Layout options for the contents inside the tab
+        tab_layout_options = {
+            name:                       'tab_layout_options',
+            resizeWithWindow:           false,
+            north__resizable:           false,
+            north__closable:            false,
+            spacing_open:               4,
+            spacing_closed:             4,
+            center__paneSelector:       ".tab_body",
+            west__paneSelector:         ".sidebar",
+            west__size:                 "250",
+            contentSelector:            ".tab_scroll_content",
+            west__resizable:            true,
+            west__closable:             true
+        };
+
+
+        outer_layout = $("body").layout({
+            name:                   'outer_layout',
+            resizeWithWindowDelay:	250,
+            closable:		false,
+            resizable:		false,
+            spacing_open:    	0,
+            spacing_closed: 	0,
+            center__paneSelector:	"#tab_content",
+            north__paneSelector:	"#header",
+            center__onresize:       resize_tab_panel_layout
+        });
+
+        window.tabs_loading = true;
+
+        $tabs = $("#tab_list");
+        $tabs.tabs({
+            show: function (evt, ui) {
+                if (tabs_loading) {
+                    tabs_loading = false;
+                    outer_layout.resizeAll();
+                }
+                resize_tab_panel_layout(ui);
+            }
+        });
+        
+        //$tabs.tabs( "enable");
+        $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
     }
 };
 
