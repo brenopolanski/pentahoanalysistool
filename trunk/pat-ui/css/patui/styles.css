@@ -323,10 +323,10 @@ x:default {
     text-align: left;
 }
 .sidebar .section_header {
-    background: #f9f9f9;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    
     background: url('../../images/sidebar/section_title_bg.png') repeat-x 0 0;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f9f9f9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f9f9f9));
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
     display: block;
