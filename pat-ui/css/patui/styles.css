@@ -45,9 +45,9 @@
 
 /* buttons */
 a.button {
-    background: url('../../images/global/button_bg.png') repeat-x 0 0;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
+    background: -moz-linear-gradient(top, #ffffff 0%, #e9e9e9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e9e9e9));
+    /*background: url('../../images/global/button_bg.png') repeat-x 0 0;*/
     border: 1px #d5d5d5 solid;
     color: #222;
     cursor: pointer;
@@ -60,9 +60,9 @@ a.button {
     -webkit-border-radius: 2px;
 }
 a.button:hover{
-    background: url('../../images/global/button_hover_bg.png') repeat-x 0 0;
-    background: -moz-linear-gradient(top, #f3f3f3 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#ffffff));
+    background: -moz-linear-gradient(top, #e9e9e9 0%, #ffffff  100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#e9e9e9), to(#ffffff));
+    /* background: url('../../images/global/button_hover_bg.png') repeat-x 0 0;*/
     cursor: pointer;
     text-decoration:none;
 }
@@ -323,10 +323,9 @@ x:default {
     text-align: left;
 }
 .sidebar .section_header {
-    
-    background: url('../../images/sidebar/section_title_bg.png') repeat-x 0 0;
-    background: -moz-linear-gradient(top, #ffffff 0%, #f9f9f9 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f9f9f9));
+    background: -moz-linear-gradient(top, #ffffff 0%, #e9e9e9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e9e9e9));
+    /*background: url('../../images/sidebar/section_title_bg.png') repeat-x 0 0;*/
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
     display: block;
