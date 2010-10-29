@@ -123,9 +123,6 @@ var view = {
     generate_navigation: function($tab) {
         $data_list = $tab.find('.data_list');
     	
-    	// Block the UI - depending on connection, this may take a while
-    	view.processing("Loading schema...");
-    	
     	// Iterate over connections and populate navigation
         $.each(model.connections.connections.connection, function(i,connection){
             $.each(connection.schemas, function(i,schema){
@@ -149,9 +146,6 @@ var view = {
                 $data_list.append('</optgroup>');
             });
         });
-    
-        // Cache the navigation
-        view.navigation = $data_list.html();
         
         // Show the window (hidden first time)
         $("#header").show();
@@ -221,9 +215,6 @@ var view = {
         $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
 
         /* NEW - End */
-
-        // Free up UI
-        view.free();
         
         $data_list.change(function() {
             model.new_query($tab, $data_list.find("option:selected"));
@@ -232,12 +223,8 @@ var view = {
     
     new_tab: function() {
     	// Increment the number rendered tabs
-    	if($('#tab_list ul li').length == 0) {
-            view.rendered_tabs = 0;
-            view.rendered_tabs++;
-        } else {
-            view.rendered_tabs++;
-        }
+        view.rendered_tabs++;
+
     	var tab_id = 'query' + view.rendered_tabs;
     	
         // Add a new <li/> element to the #tab_list ul (tab)
