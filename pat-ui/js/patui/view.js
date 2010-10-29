@@ -218,7 +218,6 @@ var view = {
             });
         
         //$tabs.tabs( "enable");
-        debug($('#tab_list ul li').length - 1);
         $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
 
         /* NEW - End */
