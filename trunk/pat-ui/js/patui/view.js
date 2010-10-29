@@ -157,8 +157,7 @@ var view = {
         $("#header").show();
         $("#tab_content").show();
         
-        // Free up UI
-        view.free();
+
 
         /* NEW - Start */
 
@@ -219,10 +218,14 @@ var view = {
             });
         
         //$tabs.tabs( "enable");
+        debug($('#tab_list ul li').length - 1);
         $('#tab_list').tabs( "select", $('#tab_list ul li').length - 1 );
 
         /* NEW - End */
 
+        // Free up UI
+        view.free();
+        
         $data_list.change(function() {
             model.new_query($tab, $data_list.find("option:selected"));
         });
@@ -230,7 +233,12 @@ var view = {
     
     new_tab: function() {
     	// Increment the number rendered tabs
-    	view.rendered_tabs++;
+    	if($('#tab_list ul li').length == 0) {
+            view.rendered_tabs = 0;
+            view.rendered_tabs++;
+        } else {
+            view.rendered_tabs++;
+        }
     	var tab_id = 'query' + view.rendered_tabs;
     	
         // Add a new <li/> element to the #tab_list ul (tab)
@@ -264,7 +272,7 @@ var view = {
     
     delete_tab: function(index) {
         /* NEW - Start */
-    	$('#tab_list').tabs("remove", index)
+    	$('#tab_list').tabs("remove", index);
         //$('#tab_list ul').append('<li></li>');
         /* NEW - End */
     }
