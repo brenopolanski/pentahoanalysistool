@@ -83,6 +83,7 @@ var model = {
                 model.session_id = data['@sessionid'];
                 model.connections = data;
                 view.new_tab();
+                view.login();
             }
         });
     },
