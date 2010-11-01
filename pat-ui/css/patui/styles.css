@@ -80,27 +80,27 @@
  * $_tab_list
 */
 
-#tab_list  {
+#tabs  {
     background: #f0f0f0 url('../../images/x_sprite.png') repeat-x 0 -56px;
     padding-top: 2px;
 	padding-top: 2px\0/; /* ie8 hack */
     height: 29px; }
 
-#tab_list,
+#tabs,
 x:-moz-any-link,
 x:default {
 	/* firefox specific */
     padding-top: 1px;
     height: 30px; }
 
-#tab_list ul {
+#tabs ul {
     border-bottom: 1px solid #d5d5d5;
     list-style-type: none;
     margin: 0;
     padding: 5px 4px 2px 10px;
     height: 18px; }
 
-#tab_list ul,
+#tabs ul,
 x:-moz-any-link,
 x:default {
 	/* firefox specific */
@@ -110,11 +110,11 @@ x:default {
     padding: 5px 4px 3px 10px;
     height: 18px; }
 
-#tab_list ul li {
+#tabs ul li {
     display: inline;
     padding-left: 2px; }
 
-#tab_list ul li a {
+#tabs ul li a {
     background: #f9f9f9; /* theme */
     border: 1px solid #d5d5d5; /* theme */
     border-bottom: none;
@@ -127,13 +127,13 @@ x:default {
     -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px 2px 0 0; }
 
-#tab_list ul li a:hover {
+#tabs ul li a:hover {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
     color: #222;
     cursor: pointer;
     padding: 4px 6px 4px 6px; }
 
-#tab_list ul li.ui-tabs-selected a {
+#tabs ul li.ui-tabs-selected a {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
     border-bottom: 1px solid #f5f5f5 !important;
 	color: #222;
@@ -142,15 +142,15 @@ x:default {
     padding: 4px 6px;
     border-bottom: none; }
 
-#tab_list ul li.active a:hover {
+#tabs ul li.active a:hover {
     border-bottom: none;
     padding: 4px 6px 5px 6px; }
 
-#tab_list ul li a span {
+#tabs ul li span {
     background: url("../../images/i_sprite.png") no-repeat 0px -19px;
 	cursor: pointer;
 	padding:0 5px; }
-#tab_list ul li a span:hover {
+#tabs ul li span:hover {
     background: url("../../images/i_sprite.png") no-repeat -18px -19px;
 	padding:0 5px; }
 
@@ -158,35 +158,41 @@ x:default {
  * $_tab_content
 */
 
-#tab_content {
+#tab_panel {
     border-top: 1px solid #d5d5d5; /* theme */
     text-align: left; }
 
 
-#tab_content .ui-tabs-hide {
+#tab_panel .ui-tabs-hide {
 	/* Needed by jquery ui tabs */
     display: none; }
 
-#tab_content .tab {
+#tab_panel .tab {
 	/* Needed by jquery ui tabs for tab content */
     height: 100%;
     overflow: hidden;
     padding: 0;
     width: 100%; }
 
-#tab_content .tab_scroll_content {
+#tab_panel .tab_scroll_content {
     overflow: auto;
     position: relative; }
+    
+#tab_panel .sidebar {
+	float: left;
+	width: 200px;
+	margin-right: 20px;
+}
 
 /**
  * __tab_body
 */
 
-#tab_content .tab_body {
+#tab_panel .workspace {
     border-left: 1px solid #d5d5d5;
     padding: 10px; }
 
-#tab_content .tab_body .axis_title {
+#tab_panel .workspace .axis_title {
     background: #f7f7f7;
     border-right: 1px solid #d5d5d5;
     font-weight: bold;
@@ -195,19 +201,19 @@ x:default {
     text-shadow: 1px 1px 0 #ffffff;
     width: 15%; }
 
-#tab_content .tab_body span.item {
+#tab_panel .workspace span.item {
     display: inline-block;
     margin-left: 5px;
     padding: 0 3px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px; }
 
-#tab_content .tab_body span.measure {
+#tab_panel .workspace span.measure {
     background: #fbe3e4;
     border: 1px solid #cc0000;
     color: #cc0000; }
 
-#tab_content .tab_body span.dimension {
+#tab_panel .workspace span.dimension {
     color: #006699;
     border: 1px solid #006699;
     background: #d5edf8; }
@@ -216,11 +222,11 @@ x:default {
  * __tab_toolbar
 */
 
-#tab_content .tab_body .tab_top .tab_toolbar {
+#tab_panel .workspace .tab_top .tab_toolbar {
     margin-bottom: 10px;
     text-align: right; }
 
-#tab_content .tab_body .tab_top .tab_toolbar a.button {
+#tab_panel .workspace .tab_top .tab_toolbar a.button {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -140px;
     border: 1px #d5d5d5 solid;
     color: #222;
@@ -233,7 +239,7 @@ x:default {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px; }
 
-#tab_content .tab_body .tab_top .tab_toolbar a.button:hover {
+#tab_panel .workspace .tab_top .tab_toolbar a.button:hover {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -174px;
     cursor: pointer;
     text-decoration:none; }
@@ -242,24 +248,24 @@ x:default {
  * __tab_bottom
 */
 
-#tab_content .tab_body .tab_bottom .col_axis,
-#tab_content .tab_body .tab_bottom .row_axis,
-#tab_content .tab_body .tab_bottom .filter_axis {
+#tab_panel .workspace .tab_bottom .col_axis,
+#tab_panel .workspace .tab_bottom .row_axis,
+#tab_panel .workspace .tab_bottom .filter_axis {
     border:1px solid #d5d5d5;
     margin-top: 10px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px; }
 
-#tab_content .tab_body .tab_bottom .col_axis .col_axis_drop,
-#tab_content .tab_body .tab_bottom .row_axis .row_axis_drop,
-#tab_content .tab_body .tab_bottom .filter_axis .filter_axis_drop {
+#tab_panel .workspace .tab_bottom .col_axis .col_axis_drop,
+#tab_panel .workspace .tab_bottom .row_axis .row_axis_drop,
+#tab_panel .workspace .tab_bottom .filter_axis .filter_axis_drop {
     float: left;
     padding: 4px 4px;
     width: 80%; }
 
-#tab_content .tab_body .tab_bottom .col_axis .col_placeholder,
-#tab_content .tab_body .tab_bottom .row_axis .row_placeholder,
-#tab_content .tab_body .tab_bottom .filter_axis .filter_placeholder {
+#tab_panel .workspace .tab_bottom .col_axis .col_placeholder,
+#tab_panel .workspace .tab_bottom .row_axis .row_placeholder,
+#tab_panel .workspace .tab_bottom .filter_axis .filter_placeholder {
     border: 1px dashed #999;
     color: #888;
     display: inline-block;
@@ -267,36 +273,35 @@ x:default {
     padding: 0 3px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px; }
+    
+#tab_panel .status_bar {
+	clear:both;
+}
 
-/**
- * __vis
-*/
 
-#tab_content .tab_body .vis {
-    margin-top: 20px; }
 
 /**
  * __datatable
 */
 
-#tab_content .tab_body .vis .datatable {
+#tab_panel .workspace .vis .datatable {
     background: #ffffff;
     margin: 0;
     padding: 0; }
 
-#tab_content .tab_body .vis .datatable th, tr, td {
+#tab_panel .workspace .vis .datatable th, tr, td {
     background: #ffffff;
     border-bottom: 1px solid #d5d5d5;
     border-right: 1px solid #d5d5d5;
     font-weight: normal; }
 
-#tab_content .tab_body .vis .datatable .header {
+#tab_panel .workspace .vis .datatable .header {
     font-weight: bold; }
 
-#tab_content .tab_body .vis .datatable .string {
+#tab_panel .workspace .vis .datatable .string {
     text-align: left; }
 
-#tab_content .tab_body .vis .datatable .number {
+#tab_panel .workspace .vis .datatable .number {
     text-align: right;
 }
 
@@ -305,7 +310,7 @@ x:default {
 */
 
 .sidebar {
-    border-right: 1px solid #d5d5d5; /* themes */
+    border-right: 1px solid #d5d5d5;
     text-align: left; }
 
 .sidebar .section_header {
@@ -340,9 +345,9 @@ x:default {
 /**
  * __jquery_ui_layout
 */
-
+/*
 .ui-layout-pane {
-	/* all 'panes' */
+
     background: #ffffff;
     overflow: auto; }
 
@@ -358,7 +363,7 @@ x:default {
     padding: 10px; }
 
 .ui-layout-resizer {
-	/* all 'resizer-bars' */
+
     background: #f5f5f5 url('../../images/y_sprite.png') repeat-y 0 0;
     border: 1px solid #d5d5d5;
     border-width: 0; }
@@ -374,7 +379,7 @@ x:default {
     filter: alpha(opacity=50); }
 
 .ui-layout-toggler {
-	/* toggler */
+
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
     background-color: #e3e3e3; }
@@ -385,7 +390,7 @@ x:default {
 
 .ui-layout-resizer-sliding  ui-layout-toggler {
     display: none; }
-
+*/
 /**
  * __jquery_blockui
 */
