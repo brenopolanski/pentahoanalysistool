@@ -17,60 +17,58 @@ var TabContainer = function(tab_container, content_container) {
 	this.selected = 0;
 	
 	/*
-	 * Add a tab
+	 * Remove a tab and reclaim memory
 	 */
-	this.add = function() {
-		// Create the tab itself
-		var new_index = this.tabs.length;
-		var $new_tab = $("<li />").addClass("closable ui-state-default ui-corner-top ui-tabs-selected ui-state-active");
-		var $new_tab_link = $("<a />")
-			.html("Unsaved query (" + new_index + ")")
-			.click(function() {
-				this.select(new_index);
-				})
-			.appendTo($new_tab);
-		var $new_tab_closer = $("<span />")
-			.click(function() {
-				this.remove(new_index);
-				})
-			.appendTo($new_tab);
-		$new_tab.appendTo(this.tab_container);
-		
-		// Create the content portion of the tab
-		$new_tab_content = $('<div />')
-			.addClass("tab ui-tabs-panel ui-widget-content ui-corner-bottom tabs-ui-hide")
-			// FIXME - this is preventing caching atm
-			.load("views/_new_query.html", {"_": Math.floor(Math.random()*1000000)}, function() {
-				view.generate_navigation($new_tab);
-			});
-		$new_tab_content.appendTo(this.content_container);
-		
-		// Register the new tab with the TabContainer
-		this.tabs.push(new Tab($new_tab, $new_tab_content));
+	this.remove_tab = function(index) {
+		this.tabs[index].tab.remove();
+		this.tabs[index].content.remove();
+		delete this.tabs[index].data;
+		delete this.tabs[index];
 	};
 	
 	/*
 	 * Change the selected tab
 	 */
-	this.select = function(index) {
-		this.content_container.find("div").hide();
+	this.select_tab = function(index) {
+		this.content_container.find(".tab").hide();
 		this.tabs[index].content.show();
+		this.selected = index;
 	};
 	
 	/*
-	 * Remove a tab and reclaim memory
+	 * Add a tab
 	 */
-	this.remove = function(index) {
-		this.tabs[index].tab.remove();
-		this.tabs[index].container.remove();
-		delete this.tabs[index];
+	this.add_tab = function() {
+		// Create the tab itself
+		var new_index = this.tabs.length;
+		var $new_tab = $("<li />").addClass("closable").data({ 'tab_index': new_index});
+		var $new_tab_link = $("<a />")
+			.html("Unsaved query (" + (new_index + 1) + ")")
+			.appendTo($new_tab);
+		var $new_tab_closer = $("<span />")
+			.text("X")
+			.appendTo($new_tab);
+		$new_tab.appendTo(this.tab_container);
+		
+		// Create the content portion of the tab
+		$new_tab_content = $('<div />')
+			.addClass("tab")
+			// FIXME - this is preventing caching atm
+			.load("views/_new_query.html", {"_": Math.floor(Math.random()*1000000)}, function() {
+				view.generate_navigation($new_tab_content);
+			});
+		$new_tab_content.appendTo(this.content_container);
+		
+		// Register the new tab with the TabContainer
+		this.tabs.push(new Tab($new_tab, $new_tab_content));
+		this.select_tab(new_index);
 	};
 	
 	/*
 	 * Completely empty the tab container
 	 * (Used for logout)
 	 */
-	this.clear = function() {
+	this.clear_tabs = function() {
 		for (i = 0; i < this.tabs.length; i++) {
 			if (typeof this.tabs[i] != 'undefined') {
 				this.remove[i];
@@ -118,6 +116,20 @@ var view = {
 		$("#toolbar a").click(function() {
 			controller.click_handler($(this));
 		});
+		
+		// Add click handler on tabs
+		$(document).ready(function() {
+			view.tabs.tab_container.find("a").live('click', function() {
+				view.tabs.select_tab($(this).parent().data('tab_index'));
+			});
+		});
+		
+		// Add click handler on tabs
+		$(document).ready(function() {
+			view.tabs.tab_container.find("span").live('click', function() {
+				view.tabs.remove_tab($(this).parent().data('tab_index'));
+			});
+		});
 
 		// Blank everything out until the user logs in
 		view.logout();
@@ -137,7 +149,7 @@ var view = {
      */
 	logout: function() {
 		// Remove all tabs
-		this.tabs.clear();
+		this.tabs.clear_tabs();
     	
 		// Hide the layout
 		$("#header").hide();
@@ -174,6 +186,7 @@ var view = {
      * FIXME - store data in tab object somehow
      */
 	generate_navigation: function($tab) {
+		debug($tab);
 		$data_list = $tab.find('.data_list');
 		
 		// TODO - Cache HTML itself
@@ -212,7 +225,7 @@ var view = {
 	},
     
 	new_tab: function() {
-		this.tabs.add();
+		this.tabs.add_tab();
 	}
 };
 
