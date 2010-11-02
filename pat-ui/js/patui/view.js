@@ -17,6 +17,20 @@ var TabContainer = function(tab_container, content_container) {
 	this.selected = 0;
 	
 	/*
+	 * Counts active tabs
+	 */
+	this.active_tabs = function() {
+		active_tabs = 0;
+		for (i = 0; i < this.tabs.length; i++) {
+			if (typeof this.tabs[i] != "undefined") {
+				active_tabs++;
+			}
+		}
+		
+		return active_tabs;
+	}
+	
+	/*
 	 * Remove a tab and reclaim memory
 	 */
 	this.remove_tab = function(index) {
@@ -33,6 +47,13 @@ var TabContainer = function(tab_container, content_container) {
 				this.select_tab(next_tab);
 				return;
 			}
+		}
+		
+		// Check and make sure there are any tabs at all
+		if (this.active_tabs() == 0) {
+			// Create one if not
+			this.add_tab();
+			return;
 		}
 		
 		// If the last tab was removed, select the next to last tab
