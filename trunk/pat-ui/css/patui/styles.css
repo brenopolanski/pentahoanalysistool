@@ -16,6 +16,9 @@
 
 .hide {
 	display: none !important; }
+	
+#header {
+	display: none; }
 
 /**
  * $_toolbar
@@ -314,7 +317,7 @@ x:default {
 */
 
 .sidebar {
-    border-right: 1px solid #d5d5d5;
+    border: 1px solid #d5d5d5;
     text-align: left; }
 
 .sidebar .section_header {
@@ -477,12 +480,27 @@ x:default {
     display: none; }
 
 /**
- * __jstree
+ * sidebar
 */
 
-.dimensions_tree,
-.measures_tree {
-    padding:10px 5px; }
+.tree, .tree ul {
+	list-style: none; }
+	
+.dimensions, .measures, .tree li {
+	padding: 2px; }
+
+.tree a { 
+	color: #333; 
+	text-decoration: none; } 
+
+li.folder {
+	font-weight: bold; }
+
+li.dimension ul li {
+	display: none; }
+
+li.folder ul li {
+	font-weight: normal; }
 
 .jstree li,.jstree ul ins {
     background: transparent url("../../images/i_sprite.png") no-repeat;
