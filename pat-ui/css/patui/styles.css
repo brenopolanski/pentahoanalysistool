@@ -112,34 +112,37 @@ x:default {
 
 #tabs ul li {
     display: inline;
-    padding-left: 2px; }
-
-#tabs ul li a {
+    padding: 4px 6px 4px 2px;
     background: #f9f9f9; /* theme */
     border: 1px solid #d5d5d5; /* theme */
     border-bottom: none;
-    color: #666;
-    cursor: pointer;
-    outline: none !important;
-    padding: 4px 6px;
-    text-decoration: none;
-    text-shadow: 1px 1px 0 #ffffff;
     -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px 2px 0 0; }
+
+#tabs ul li a {
+    cursor: pointer;
+    outline: none !important;
+    padding: 2px 6px !important;
+    color: #666;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #ffffff;
+    }
 
 #tabs ul li a:hover {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
     color: #222;
     cursor: pointer;
     padding: 4px 6px 4px 6px; }
+    
+#tabs ul li.ui-tabs-selected {
+	padding-bottom: 6px !important; }
 
 #tabs ul li.ui-tabs-selected a {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
-    border-bottom: 1px solid #f5f5f5 !important;
+    /* border-bottom: 1px solid #f5f5f5 !important; */
 	color: #222;
     cursor: default;
     font-weight: bold;
-    padding: 4px 6px;
     border-bottom: none; }
 
 #tabs ul li.active a:hover {
@@ -149,10 +152,11 @@ x:default {
 #tabs ul li span {
     background: url("../../images/i_sprite.png") no-repeat 0px -19px;
 	cursor: pointer;
-	padding:0 5px; }
+	padding:0 7px; }
+	
 #tabs ul li span:hover {
     background: url("../../images/i_sprite.png") no-repeat -18px -19px;
-	padding:0 5px; }
+	padding:0 7px; }
 
 /**
  * $_tab_content

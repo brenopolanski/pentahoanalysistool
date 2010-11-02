@@ -48,7 +48,6 @@ var TabContainer = function(tab_container, content_container) {
 			.html("Unsaved query (" + (new_index + 1) + ")")
 			.appendTo($new_tab);
 		var $new_tab_closer = $("<span />")
-			.text("X")
 			.appendTo($new_tab);
 		$new_tab.appendTo(this.tab_container);
 		
