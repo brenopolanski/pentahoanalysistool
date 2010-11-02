@@ -11,7 +11,7 @@ var Tab = function(tab_selector, content_selector) {
  * Container object used for tracking tabs
  */
 var TabContainer = function(tab_container, content_container) {
-	this.tab_container = tab_container;
+	this.tab_container = tab_container.find("ul");
 	this.content_container = content_container;
 	this.tabs = new Array();
 	this.selected = 0;
@@ -30,7 +30,9 @@ var TabContainer = function(tab_container, content_container) {
 	 * Change the selected tab
 	 */
 	this.select_tab = function(index) {
+		this.tab_container.find("li.ui-tabs-selected").removeClass("ui-tabs-selected");
 		this.content_container.find(".tab").hide();
+		this.tabs[index].tab.addClass("ui-tabs-selected");
 		this.tabs[index].content.show();
 		this.selected = index;
 	};
