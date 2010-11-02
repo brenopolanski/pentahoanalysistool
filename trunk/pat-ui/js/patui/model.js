@@ -40,6 +40,7 @@ var model = {
 	        		
 	        		// Obtain a session_id
 	                model.get_session();
+	                view.login();
 	        	});
 	        });
         }
@@ -106,9 +107,15 @@ var model = {
          *  
          *  FIXME - this needs some cleanup
          */
-    new_query: function($tab, $cube) {
-        data = $cube.data();
+    new_query: function(tab_index, $cube) {
+        data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+        if (typeof data == "undefined") {
+        	view.tabs.tabs[tab_index].content.html("Something broke. Please close this tab and try again on another one.");
+        	return;
+        }
+
         view.processing("Creating new query on " + data['cube']);
+        $tab = view.tabs.tabs[tab_index].content;
     	
         model.request({
             method: "POST",
@@ -170,7 +177,7 @@ var model = {
                 });
                 
                 //  Draggable
-                $both_trees.draggable({
+                $both_trees.find("li ul li").draggable({
                     cancel:         '.not-draggable',
                     opacity:        0.90,
                     drag:       function(){
@@ -182,7 +189,7 @@ var model = {
                 });
                 
                 //  Droppable
-                $both_trees.droppable({
+                $both_trees.find("li ul li").droppable({
                     accept:         '#query1 .dimensions_tree, #query1 .measures_tree',
                     accept:         ":not(.ui-sortable-helper)",
                     drop:           function(event, ui) {

@@ -20,10 +20,12 @@ var TabContainer = function(tab_container, content_container) {
 	 * Remove a tab and reclaim memory
 	 */
 	this.remove_tab = function(index) {
-		this.tabs[index].tab.remove();
-		this.tabs[index].content.remove();
-		delete this.tabs[index].data;
-		delete this.tabs[index];
+		if (typeof this.tabs[index] != "undefined") {
+			this.tabs[index].tab.remove();
+			this.tabs[index].content.remove();
+			delete this.tabs[index].data;
+			delete this.tabs[index];
+		}
 		
 		// Find the next tab and select it
 		for (next_tab = index; next_tab < this.tabs.length; next_tab++) {
@@ -34,18 +36,20 @@ var TabContainer = function(tab_container, content_container) {
 		}
 		
 		// If the last tab was removed, select the next to last tab
-		this.select_tab(this.tab_container.find("li:last").data('tab_index'));
+		this.select_tab(this.index_from_tab(this.tab_container.find("li:last")));
 	};
 	
 	/*
 	 * Change the selected tab
 	 */
 	this.select_tab = function(index) {
-		this.tab_container.find("li.ui-tabs-selected").removeClass("ui-tabs-selected");
-		this.content_container.find(".tab").hide();
-		this.tabs[index].tab.addClass("ui-tabs-selected");
-		this.tabs[index].content.show();
-		this.selected = index;
+		if (typeof this.tabs[index] != "undefined") {
+			this.tab_container.find("li.ui-tabs-selected").removeClass("ui-tabs-selected");
+			this.content_container.find(".tab").hide();
+			this.tabs[index].tab.addClass("ui-tabs-selected");
+			this.tabs[index].content.show();
+			this.selected = index;
+		}
 	};
 	
 	/*
@@ -54,7 +58,7 @@ var TabContainer = function(tab_container, content_container) {
 	this.add_tab = function() {
 		// Create the tab itself
 		var new_index = this.tabs.length;
-		var $new_tab = $("<li />").addClass("closable").data({ 'tab_index': new_index});
+		var $new_tab = $("<li />").addClass("closable");
 		var $new_tab_link = $("<a />")
 			.html("Unsaved query (" + (new_index + 1) + ")")
 			.appendTo($new_tab);
@@ -66,8 +70,8 @@ var TabContainer = function(tab_container, content_container) {
 		$new_tab_content = $('<div />')
 			.addClass("tab")
 			// FIXME - this is preventing caching atm
-			.load("views/_new_query.html", {"_": Math.floor(Math.random()*1000000)}, function() {
-				view.generate_navigation($new_tab_content);
+			.load("views/_new_query.html", function() {
+				view.generate_navigation(new_index);
 			});
 		$new_tab_content.appendTo(this.content_container);
 		
@@ -107,6 +111,32 @@ var TabContainer = function(tab_container, content_container) {
 		// If not, return true
 		return true;
 	};
+	
+	/*
+	 * Get a tab_index from a tab instance
+	 */
+	this.index_from_tab = function($tab) {
+		for (i = 0; i < this.tabs.length; i++) {
+			if (typeof this.tabs[i] != "undefined" && $tab[0] == this.tabs[i].tab[0]) {
+				return i;
+			}
+		}
+		
+		return -1;
+	};
+	
+	/*
+	 * Get a tab_index from a tab instance
+	 */
+	this.index_from_content = function($content) {
+		for (i = 0; i < this.tabs.length; i++) {
+			if (typeof this.tabs[i] != "undefined" && $content[0] == this.tabs[i].content[0]) {
+				return i;
+			}
+		}
+		
+		return -1;
+	};
 };
 
 
@@ -132,14 +162,14 @@ var view = {
 		// Add click handler on tabs
 		$(document).ready(function() {
 			view.tabs.tab_container.find("a").live('click', function() {
-				view.tabs.select_tab($(this).parent().data('tab_index'));
+				view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
 			});
 		});
 		
 		// Add click handler on tabs
 		$(document).ready(function() {
 			view.tabs.tab_container.find("span").live('click', function() {
-				view.tabs.remove_tab($(this).parent().data('tab_index'));
+				view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
 			});
 		});
 
@@ -197,10 +227,11 @@ var view = {
      * Load data list with schema and cubes from the PAT server
      * FIXME - store data in tab object somehow
      */
-	generate_navigation: function($tab) {
+	generate_navigation: function(tab_index) {
+		$tab = view.tabs.tabs[tab_index].content;
 		$data_list = $tab.find('.data_list');
-		
-		// TODO - Cache HTML itself
+		view.tabs.tabs[tab_index].data['navigation'] = new Array();
+		storage_id = 0;
     	
 		// Iterate over connections and populate navigation
 		$.each(model.connections.connections.connection, function(i,connection){
@@ -212,26 +243,26 @@ var view = {
 					$.each(cube, function(i,item){
 						$("<option />")
 						.attr({
-							'value': connection['@connectionid']
-						})
-						.data({
-							'schema': schema['@schemaname'],
-							'cube': item['@cubename']
+							'value': storage_id
 						})
 						.text(item['@cubename'])
 						.appendTo($data_list);
+						
+						view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
+							'connection_id': connection['@connectionid'],
+							'schema': schema['@schemaname'],
+							'cube': item['@cubename']
+						};
+						storage_id++;
+						
 					});
 				});
 				$data_list.append('</optgroup>');
 			});
 		});
         
-		// Show the window (hidden first time)
-		$("#header").show();
-		$("#tab_panel").show();
-        
 		$data_list.change(function() {
-			model.new_query($tab, $data_list.find("option:selected"));
+			model.new_query(tab_index, $data_list.find("option:selected"));
 		});
 	},
     
