@@ -24,6 +24,17 @@ var TabContainer = function(tab_container, content_container) {
 		this.tabs[index].content.remove();
 		delete this.tabs[index].data;
 		delete this.tabs[index];
+		
+		// Find the next tab and select it
+		for (next_tab = index; next_tab < this.tabs.length; next_tab++) {
+			if (typeof this.tabs[next_tab] != "undefined") {
+				this.select_tab(next_tab);
+				return;
+			}
+		}
+		
+		// If the last tab was removed, select the next to last tab
+		this.select_tab(this.tab_container.find("li:last").data('tab_index'));
 	};
 	
 	/*
@@ -187,7 +198,6 @@ var view = {
      * FIXME - store data in tab object somehow
      */
 	generate_navigation: function($tab) {
-		debug($tab);
 		$data_list = $tab.find('.data_list');
 		
 		// TODO - Cache HTML itself
