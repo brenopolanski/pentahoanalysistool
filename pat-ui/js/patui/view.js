@@ -283,7 +283,7 @@ var view = {
 		});
         
 		$data_list.change(function() {
-			model.new_query(tab_index, $data_list.find("option:selected"));
+			model.new_query(tab_index);
 		});
 	},
     

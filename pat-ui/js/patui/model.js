@@ -107,10 +107,15 @@ var model = {
          *  
          *  FIXME - this needs some cleanup
          */
-    new_query: function(tab_index, $cube) {
+    new_query: function(tab_index) {
+    	// Find the selected cube
+    	$cube = view.tabs.tabs[tab_index].content.find(".data_list option:selected");
+    	
         data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
         if (typeof data == "undefined") {
-        	view.tabs.tabs[tab_index].content.html("Something broke. Please close this tab and try again on another one.");
+        	debug("Broken tab: " + tab_index + ", cube value: " + $cube.attr('value'));
+        	//view.tabs.tabs[tab_index].content.html("Something broke. Please close this tab and try again on another one.");
+        	jAlert("Something broke. Please close this tab and try again on another one.");
         	return;
         }
 
