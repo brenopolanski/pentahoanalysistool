@@ -185,6 +185,12 @@ var view = {
 			view.tabs.tab_container.find("a").live('click', function() {
 				view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
 			});
+			
+			view.tabs.tab_container.find("a").live('mousedown', function(event) {
+				if (event.which == 2) {
+					view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+				}
+			});
 		});
 		
 		// Add click handler on tabs
