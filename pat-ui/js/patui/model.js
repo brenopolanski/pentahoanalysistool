@@ -128,8 +128,8 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Remove all instances of previous trees
                 // in case user reselects cube
-        		$dimension_tree = $('<ul />').appendTo($tab.find('.dimensions_tree'));
-        		$measures_tree = $('<ul />').appendTo($tab.find('.measures_tree'));
+        		$dimension_tree = $('<ul />').addClass("tree").appendTo($tab.find('.dimensions_tree'));
+        		$measures_tree = $('<ul />').addClass("tree").appendTo($tab.find('.measures_tree'));
                 
                 $both_trees = $tab.find('.dimensions_tree, .measures_tree');
 
@@ -139,6 +139,10 @@ var model = {
                     if(this['@dimensionname'] != 'Measures') {                        
                         // Append <li/> to the dimensions_tree <ul/>
                         $first_level = $('<li><a href="#">'+this['@dimensionname']+'</a></li>')
+                        	.addClass("dimension folder")
+                        	.click(function() {
+                        		$(this).find("ul li").toggle();
+                        		})
                         	.appendTo($dimension_tree);
 
                         if (dimension.levels.length > 1) {
@@ -148,14 +152,17 @@ var model = {
 	                        // If there is a secondary level loop through and add to the <ul/>
 	                        $.each(dimension.levels, function(i,level){
 	                            // Populate the second <ul/>
-	                            $second_level.append('<li><a href="#">'+level['@levelcaption']+'</a></li>');
+	                            $('<li><a href="#">'+level['@levelcaption']+'</a></li>')
+	                            .click(function() { return false; })
+	                            .appendTo($second_level);
 	                        });
                         }
                         
                     } else {
                         // Create a 'dummy' measures <ul/>
                         // Append <li/> to the dimensions_tree <ul/>
-                    	$measures = $('<li><a href="#">Measures</a></li>')
+                    	$measures = $('<li>Measures</li>')
+                    		.addClass("measures folder")
                     		.appendTo($tab.find('.measures_tree ul'));
 
                         // Append <ul/> to the dimensions_tree <li/>
@@ -170,16 +177,7 @@ var model = {
                 });
                 
                 // jsTree
-                // TODO - Must reference active tab only
-                $both_trees.jstree({
-                    "core" : {
-                        "animation" : 0
-                    },
-                    "themes" : {
-                        "theme" : false
-                    },
-                    "plugins" : [ "themes", "html_data" ]
-                });
+                /*
                 
                 //  Draggable
                 $both_trees.find("li ul li").draggable({
@@ -222,7 +220,8 @@ var model = {
                     }
 
                 });
-
+                */
+                
                 // Remove blockUI
                 view.free();
             },
