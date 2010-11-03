@@ -37,17 +37,15 @@
         </div>
         <div id="tab_panel" class="unit elastic-height">
             <div id="tab_panel_inner" class="container full-height">
-                <div class="on-3 columns full-height">
-                    <div id="sidebar" class="fixed column full-height">
+                <div id="tab_1" class="on-3 columns full-height">
+                    <div class="fixed column full-height sidebar">
                         <div class="container full-height">
-
                             <h3 class="top">Cubes</h3>
                             <div class="container_inner">
                                 <select>
                                     <option>I'm an option!</option>
                                 </select>
                             </div>
-
                             <h3>Dimensions</h3>
                             <div class="container_inner">
                                 <ul>
@@ -78,41 +76,45 @@
                             </div>
                         </div>
                     </div>
-                    <div id="sidebar_pane" class="fixed column full-height">
+                    <div class="fixed column full-height sidebar_toggler">
                         <div class="container full-height"></div>
                     </div>
-                    <div id="workspace" class="elastic column full-height">
-                        <div class="container" style="padding: 10px;">
-
-							<div id="workspace_toolbar" class="full-width">
-								Toolbar
-							</div>
-							<div class="dropzone full-width on-2 columns">
-								<div class="fixed column">
-									TITLE HERE
-								</div>
-								<div class="elastic column" style="background: red;">
-									DROP HERE
-								</div>
-							</div>
-
-
-                            <div id="dialog" style="margin-bottom:10px; -moz-box-shadow: 0 0 5px #EEEEEE; border: 4px solid #EEEEEE; background: #FFFFFF; width: 400px; padding: 10px; -moz-border-radius: 5px;">
-                                <h4>Header</h4>
-                                <p>
-                                    This <b>can</b> <em>be</em> HTML.
-                                </p>
+                    <div class="elastic column full-height workspace">
+                        <div class="container">
+                            <div class="on-2 columns workspace_dropzone">
+                                <div class="fixed column">
+                                    <div class="dropzone_title">
+                                        Columns
+                                    </div>
+                                </div>
+                                <div class="elastic column">
+                                    <div class="dropzone_area">
+                                        <span class="dimension_item">Dimension</span>
+                                    </div>
+                                </div>
                             </div>
-							<span style="-moz-box-shadow: 0 0 2px #DDDDDD; padding: 2px 3px; border: 1px solid #93aded; background: -moz-linear-gradient(top, #f5f7fc 0%, #d9e3fa 100%); color: #305798;-moz-border-radius: 2px;">
-								Dimension
-							</span>
-							<br/>
-							<br/>
-							<br/>
-							<span style="-moz-box-shadow: 0 0 2px #DDDDDD; padding: 2px 3px; border: 1px solid #ed9393; background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%); color: #983030;-moz-border-radius: 2px;">
-								Measure
-							</span>
-
+                            <div class="on-2 columns workspace_dropzone">
+                                <div class="fixed column">
+                                    <div class="dropzone_title">
+                                        Rows
+                                    </div>
+                                </div>
+                                <div class="elastic column">
+                                    <div class="dropzone_area">
+                                        <span class="measure_item">Measures</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="on-2 columns workspace_dropzone">
+                                <div class="fixed column">
+                                    <div class="dropzone_title">
+                                        Filter
+                                    </div>
+                                </div>
+                                <div class="elastic column">
+                                    <div class="dropzone_area"><span class="dimension_item">Dimension</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

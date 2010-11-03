@@ -16,22 +16,15 @@
 </div>
 
 <div class="workspace">
-    <div class="tab_top">
-        <div class="tab_toolbar">
-            <a class="button">Show Axis</a>
-            <a class="button">Show Filters</a>
-            <a class="button">Swap Axis</a>
-            <a class="button">Visualise</a>
-            <a class="button">Export</a>
-        </div>
-    </div>
-    <div class="tab_bottom tab_scroll_content">
+    <div class="tab_bottom">
         <div class="col_axis">
             <div class="axis_title">
                 Column Axis
             </div>
             <div class="col_axis_drop">
-                <span class="col_placeholder">Drop column axis fields here</span>
+                <ul>
+                    <li></li>
+                </ul>
             </div>
             <div class="clear"></div>
         </div>
@@ -40,7 +33,7 @@
                 Row Axis
             </div>
             <div class="row_axis_drop">
-                <span class="row_placeholder">Drop row axis fields here</span>
+                <ul><li></li></ul>
             </div>
             <div class="clear"></div>
         </div>
@@ -49,13 +42,26 @@
                 Filter Axis
             </div>
             <div class="filter_axis_drop">
-                <span class="filter_placeholder">Drop filter axis fields here</span>
+                <ul><li></li></ul>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="vis"></div>
+        <div class="vis">
+            Rules:
+            <ol>
+                <li>Unique items only the row and column axis</li>
+                <li>You can only drag one item from the hierarchy onto the row and column axis i.e. Only Region from Markets</li>
+                <li>
+                    <ul>
+                        <li>Once the above occurs you can no longer any other items from the hierarchy onto the row, column, filters axis</li>
+                    </ul>
+                </li>
+                <li>Measures must be grouped together and can only belong on one axis as a group</li>
+                <li>Measures can not be place on the filters axis</li>
+            </ol>
+
+        </div>
     </div>
 </div>
 
-<div class="status_bar">
-</div>
+<div class="clear"/>

@@ -33,16 +33,16 @@ var model = {
         // Really ghetto way to get credentials. Better than the browser prompting, I guess...
         // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
         if (model.username == "" || model.password == "") {
-	        jPrompt("Please enter your username: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
-	        	model.username = input;
-	        	jPrompt("Please enter your password: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
-	        		model.password = input;
+            jPrompt("Please enter your username: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
+                model.username = input;
+                jPrompt("Please enter your password: ", "admin", "PAT - Login", function(input) { //FIXME - auth hardcoded
+                    model.password = input;
 	        		
-	        		// Obtain a session_id
-	                model.get_session();
-	                view.login();
-	        	});
-	        });
+                    // Obtain a session_id
+                    model.get_session();
+                    view.login();
+                });
+            });
         }
     },
     
@@ -95,10 +95,10 @@ var model = {
      */
     new_tab: function() {
     	
-    	/*
+        /*
     	 * Create the actual tab and tab index
     	 */
-    	view.new_tab();
+        view.new_tab();
     },
      
     /*
@@ -108,15 +108,15 @@ var model = {
          *  FIXME - this needs some cleanup
          */
     new_query: function(tab_index) {
-    	// Find the selected cube
-    	$cube = view.tabs.tabs[tab_index].content.find(".data_list option:selected");
+        // Find the selected cube
+        $cube = view.tabs.tabs[tab_index].content.find(".data_list option:selected");
     	
         data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
         if (typeof data == "undefined") {
-        	debug("Broken tab: " + tab_index + ", cube value: " + $cube.attr('value'));
-        	//view.tabs.tabs[tab_index].content.html("Something broke. Please close this tab and try again on another one.");
-        	jAlert("Something broke. Please close this tab and try again on another one.");
-        	return;
+            debug("Broken tab: " + tab_index + ", cube value: " + $cube.attr('value'));
+            //view.tabs.tabs[tab_index].content.html("Something broke. Please close this tab and try again on another one.");
+            jAlert("Something broke. Please close this tab and try again on another one.");
+            return;
         }
 
         view.processing("Creating new query on " + data['cube']);
@@ -128,8 +128,8 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Remove all instances of previous trees
                 // in case user reselects cube
-        		$dimension_tree = $('<ul />').addClass("tree").appendTo($tab.find('.dimensions_tree'));
-        		$measures_tree = $('<ul />').addClass("tree").appendTo($tab.find('.measures_tree'));
+                $dimension_tree = $('<ul />').addClass("tree").appendTo($tab.find('.dimensions_tree'));
+                $measures_tree = $('<ul />').addClass("tree").appendTo($tab.find('.measures_tree'));
                 
                 $both_trees = $tab.find('.dimensions_tree, .measures_tree');
 
@@ -139,89 +139,89 @@ var model = {
                     if(this['@dimensionname'] != 'Measures') {                        
                         // Append <li/> to the dimensions_tree <ul/>
                         $first_level = $('<li><a href="#">'+this['@dimensionname']+'</a></li>')
-                        	.addClass("dimension folder")
-                        	.click(function() {
-                        		$(this).find("ul li").toggle();
-                        		})
-                        	.appendTo($dimension_tree);
+                        .addClass("dimension folder")
+                        .click(function() {
+                            $(this).find("ul li").toggle();
+                        })
+                        .appendTo($dimension_tree);
 
                         if (dimension.levels.length > 1) {
-	                        // Append <ul/> to the dimensions_tree <li/>
-	                        $second_level = $('<ul />').appendTo($first_level);
+                            // Append <ul/> to the dimensions_tree <li/>
+                            $second_level = $('<ul />').appendTo($first_level);
 	                        
-	                        // If there is a secondary level loop through and add to the <ul/>
-	                        $.each(dimension.levels, function(i,level){
-	                            // Populate the second <ul/>
-	                            $('<li><a href="#">'+level['@levelcaption']+'</a></li>')
-	                            .click(function() { return false; })
-	                            .appendTo($second_level);
-	                        });
+                            // If there is a secondary level loop through and add to the <ul/>
+                            $.each(dimension.levels, function(i,level){
+                                // Populate the second <ul/>
+                                $('<li><a href="#">'+level['@levelcaption']+'</a></li>')
+                                .click(function() {
+                                    return false;
+                                })
+                                .appendTo($second_level);
+                            });
                         }
                         
                     } else {
                         // Create a 'dummy' measures <ul/>
                         // Append <li/> to the dimensions_tree <ul/>
-                    	$measures = $('<li>Measures</li>')
-                    		.addClass("measures folder")
-                    		.appendTo($tab.find('.measures_tree ul'));
+                        $measures = $('<li>Measures</li>')
+                        .addClass("measures folder")
+                        .appendTo($tab.find('.measures_tree ul'));
 
                         // Append <ul/> to the dimensions_tree <li/>
                         $measures.append('<ul />');
                             
                         $.each(dimension.levels.members, function(i,member){
                             // Populate the second <ul/>
-                        	$measures.find('ul').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
+                            $measures.find('ul').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
                         });
                         
                     }
                 });
                 
                 // jsTree
-                /*
-                
+
                 //  Draggable
-                $both_trees.find("li ul li").draggable({
-                    cancel:         '.not-draggable',
-                    opacity:        0.90,
-                    drag:       function(){
-                        $('.ui-draggable-dragging ins').remove();
-                    },
-                    helper:         function(){
-                        return $(this).clone().appendTo('body').css('zIndex',5).show();
+                $both_trees.find("li ul li a").draggable({
+                    cancel: ".not-draggable",
+                    
+                    helper: "clone",
+                    opacity: 0.90
+                });
+
+                $drop_zones = $('.row_axis_drop ul, .col_axis_drop ul, .filter_axis_drop ul');
+
+                //  Droppable
+                $drop_zones.droppable({
+                    accept: '.ui-draggable',
+                    activeClass: "ui-state-hover",
+                    hoverClass: "ui-state-active",
+                    drop: function(event, ui) {
+                        $(this).append('<li><span>'+ui.draggable.text()+'</span></li>');
+                    //run_query();
                     }
+                }).sortable({
+                    connectWith: $drop_zones,
+                    tolerance: 'pointer',
+                    placeholder: '.placeholder_sort'
+                    
                 });
                 
-                //  Droppable
-                $both_trees.find("li ul li").droppable({
-                    accept:         '#query1 .dimensions_tree, #query1 .measures_tree',
-                    accept:         ":not(.ui-sortable-helper)",
-                    drop:           function(event, ui) {
-                        var member_syntax = ui.draggable.children(':nth-child(2)').html()
-                        var member = ui.draggable.text().replace(member_syntax, '');
-                        if($('#column-drop ul span:contains("'+member_syntax+'"), #row-drop ul span:contains("'+member_syntax+'")').length > 0) {
-                            return false;
-                        }
-                        var arr = member_syntax.split('.');
-                        var str = arr[0].replace('[','').replace(']','');
-                        
-                        $(this).find(".placeholder").remove();
-                        $("<li class="+str+"></li>").text(member).appendTo(this).append('<span class="remove"></span>').append('<span class="hide levelname">'+member_syntax+'</span><span class="hide levelcaption">'+member+'</span>');
-                        run_query();
+                $('li', $drop_zones).draggable({
+                    cancel: ".not-draggable",
+                    revert: "invalid",
+                    opacity: 0.90
+                });
+
+                $('.sidebar').droppable({
+                    accept: '.row_axis_drop ul li, .col_axis_drop ul li, .filter_axis_drop ul li',
+                    drop: function(event, ui) {
+                        ui.draggable.remove();
                     }
                 })
                 
-                //  Sortable
-                .sortable({
-                    //connectWith: '#row-axis, #column-axis',
-                    items: "li:not(.placeholder)",
-                    placeholder: 'placeholder-sort',
-                    stop: function() {
-                        run_query();
-                    }
+                //.selectable();
+                // can use selectable to select and then delete using the "delete or backspace key"
 
-                });
-                */
-                
                 // Remove blockUI
                 view.free();
             },
@@ -241,7 +241,9 @@ var model = {
      */
     logout: function() {
         // Kill server-side session
-        model.request({ url: "" });
+        model.request({
+            url: ""
+        });
     	
         // Clear credentials
         model.username = "";
