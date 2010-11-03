@@ -11,6 +11,7 @@ var Tab = function(tab_selector, content_selector) {
  * Container object used for tracking tabs
  */
 var TabContainer = function(tab_container, content_container) {
+	$("<ul />").appendTo(tab_container);
 	this.tab_container = tab_container.find("ul");
 	this.content_container = content_container;
 	this.tabs = new Array();
