@@ -15,21 +15,21 @@
 */
 
 .hide {
-	display: none !important; }
-	
+    display: none !important; }
+
 #header {
-	display: none; }
+    display: none; }
 
 /**
  * $_toolbar
 */
 
 #toolbar {
-	background: #f0f0f0 url('../../images/x_sprite.png') repeat-x 0 0;
+    background: #f0f0f0 url('../../images/x_sprite.png') repeat-x 0 0;
     border-bottom: 1px solid #ccc;
     font-size: 0.8em;
     height: 26px;
-	list-style-type: none;
+    list-style-type: none;
     margin: 0;
     padding: 10px; }
 
@@ -40,32 +40,32 @@
     text-align: center; }
 
 #toolbar li a {
-	background: transparent url("../../images/i_sprite.png") no-repeat;
-	display: block;
-	width: 22px;
-	padding-top: 11px;
-	text-decoration: none }
+    background: transparent url("../../images/i_sprite.png") no-repeat;
+    display: block;
+    width: 22px;
+    padding-top: 11px;
+    text-decoration: none }
 
 #toolbar li a#new_tab {
-	background-position: right -94px; }
+    background-position: right -94px; }
 
 #toolbar li a#open_query {
-	background-position: right -126px; }
+    background-position: right -126px; }
 
 #toolbar li a#save_query {
-	background-position: right -158px; }
+    background-position: right -158px; }
 
 #toolbar li a#delete_query {
-	background-position: right 1px; }
+    background-position: right 1px; }
 
 #toolbar li a#logout {
-	background-position: right -63px; }
+    background-position: right -63px; }
 
 #toolbar li a#about {
-	background-position: right -30px; }
+    background-position: right -30px; }
 
 #toolbar li.separator {
-	/* Used to separate groups of icons */
+    /* Used to separate groups of icons */
     background: #d5d5d5;
     font-size: 0;
     height: 26px;
@@ -74,7 +74,7 @@
     width: 1px; }
 
 #toolbar li img.disabled {
-	/* When a button is disabled */
+    /* When a button is disabled */
     filter: alpha(opacity=30);
     opacity: 0.30; }
 
@@ -86,13 +86,13 @@
 #tabs  {
     background: #f0f0f0 url('../../images/x_sprite.png') repeat-x 0 -56px;
     padding-top: 2px;
-	padding-top: 2px\0/; /* ie8 hack */
+    padding-top: 2px\0/; /* ie8 hack */
     height: 29px; }
 
 #tabs,
 x:-moz-any-link,
 x:default {
-	/* firefox specific */
+    /* firefox specific */
     padding-top: 1px;
     height: 30px; }
 
@@ -106,7 +106,7 @@ x:default {
 #tabs ul,
 x:-moz-any-link,
 x:default {
-	/* firefox specific */
+    /* firefox specific */
     border-bottom: 1px solid #d5d5d5; /* theme */
     list-style-type: none;
     margin: 0;
@@ -129,21 +129,21 @@ x:default {
     color: #666;
     text-decoration: none;
     text-shadow: 1px 1px 0 #ffffff;
-    }
+}
 
 #tabs ul li a:hover {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
     color: #222;
     cursor: pointer;
     padding: 4px 6px 4px 6px; }
-    
+
 #tabs ul li.ui-tabs-selected {
-	padding-bottom: 6px !important; }
+    padding-bottom: 6px !important; }
 
 #tabs ul li.ui-tabs-selected a {
     background: #f5f5f5 url('../../images/x_sprite.png') repeat-x 0 -98px;
     /* border-bottom: 1px solid #f5f5f5 !important; */
-	color: #222;
+    color: #222;
     cursor: default;
     font-weight: bold;
     border-bottom: none; }
@@ -154,12 +154,12 @@ x:default {
 
 #tabs ul li span {
     background: url("../../images/i_sprite.png") no-repeat 0px -19px;
-	cursor: pointer;
-	padding:0 7px; }
-	
+    cursor: pointer;
+    padding:0 7px; }
+
 #tabs ul li span:hover {
     background: url("../../images/i_sprite.png") no-repeat -18px -19px;
-	padding:0 7px; }
+    padding:0 7px; }
 
 /**
  * $_tab_content
@@ -171,24 +171,22 @@ x:default {
 
 
 #tab_panel .ui-tabs-hide {
-	/* Needed by jquery ui tabs */
+    /* Needed by jquery ui tabs */
     display: none; }
 
 #tab_panel .tab {
-	/* Needed by jquery ui tabs for tab content */
+    /* Needed by jquery ui tabs for tab content */
     height: 100%;
     overflow: hidden;
     padding: 0;
     width: 100%; }
 
 #tab_panel .tab_scroll_content {
-    overflow: auto;
-    position: relative; }
-    
+}
 #tab_panel .sidebar {
-	float: left;
-	width: 200px;
-	margin-right: 20px;
+    float: left;
+    width: 200px;
+    margin-right: 20px;
 }
 
 /**
@@ -197,13 +195,15 @@ x:default {
 
 #tab_panel .workspace {
     border-left: 1px solid #d5d5d5;
-    padding: 10px; }
+    padding: 10px;
+float: left;
+width: 70%;}
 
 #tab_panel .workspace .axis_title {
     background: #f7f7f7;
     border-right: 1px solid #d5d5d5;
     font-weight: bold;
-	float: left;
+    float: left;
     padding: 5px;
     text-shadow: 1px 1px 0 #ffffff;
     width: 15%; }
@@ -280,9 +280,9 @@ x:default {
     padding: 0 3px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px; }
-    
+
 #tab_panel .status_bar {
-	clear:both;
+    clear:both;
 }
 
 
@@ -321,7 +321,7 @@ x:default {
     text-align: left; }
 
 .sidebar .section_header {
-	background: url('../../images/x_sprite.png') repeat-x 0 -134px;
+    background: url('../../images/x_sprite.png') repeat-x 0 -134px;
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
     display: block;
@@ -441,7 +441,7 @@ x:default {
     border: 1px solid #d5d5d5; }
 
 #popup_title {
-	background: url('../../images/x_sprite.png') repeat-x 0 -134px;
+    background: url('../../images/x_sprite.png') repeat-x 0 -134px;
     border-bottom: 1px solid #d5d5d5;
     color: #222;
     font-weight: bold;
@@ -484,27 +484,27 @@ x:default {
 */
 
 .tree, .tree ul {
-	list-style: none; }
-	
+    list-style: none; }
+
 .dimensions, .measures, .tree li {
-	padding: 2px; }
+    padding: 2px; }
 
 .tree a { 
-	color: #333; 
-	text-decoration: none; } 
+    color: #333;
+    text-decoration: none; }
 
 li.folder {
-	font-weight: bold; }
+    font-weight: bold; }
 
 li.dimension ul li {
-	display: none; }
+    display: none; }
 
 li.folder ul li {
-	font-weight: normal; }
+    font-weight: normal; }
 
 .jstree li,.jstree ul ins {
     background: transparent url("../../images/i_sprite.png") no-repeat;
-	cursor: pointer; }
+    cursor: pointer; }
 
 .jstree li {
     background-position: -90px 0;
@@ -535,3 +535,52 @@ li.folder ul li {
 
 .jstree li.jstree-last,.jstree li,.jstree .jstree-leaf > ins {
     background:transparent; }
+
+
+.row_axis_drop ul,
+.col_axis_drop ul,
+.filter_axis_drop ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.row_axis_drop ul li,
+.col_axis_drop ul li,
+.filter_axis_drop ul li {
+    display: inline;
+    margin: 0 5px;
+    height: 1.5em; line-height: 1.2em;
+}
+.row_axis_drop ul li span,
+.col_axis_drop ul li span,
+.filter_axis_drop ul li span {
+    color: #336699;
+    padding: 2px 5px;
+    border: 1px solid #336699;
+    background: #e7f4f9;
+    margin: 0 2px;
+}
+.row_axis_drop ul li.ui-selected span,
+.col_axis_drop ul li.ui-selected span,
+.filter_axis_drop ul li.ui-selected span {
+    color: #e7f4f9;
+    padding: 2px 5px;
+    border: 1px solid #336699;
+    background: #336699;
+    margin: 0 2px;
+}
+
+.placeholder_sort {
+    background: grey;
+    padding: 5px;
+    height: 1.5em; line-height: 1.2em;
+    width: 100px;
+    display: block;
+}
+.ui-state-hover{
+    background: #fcefa1;
+}
+.ui-state-active {
+    background: #c6d880;
+}

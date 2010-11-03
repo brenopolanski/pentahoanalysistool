@@ -16,7 +16,6 @@
 html,
 body {
     color: #222;
-	font-size:85%;
     height: 100%;
 }
 
@@ -96,7 +95,7 @@ body {
     width: 150px;
 }
 #toolbar #logo h1 { /*t*/
-					text-shadow: 1px 1px 0 #FFF;
+                    text-shadow: 1px 1px 0 #FFF;
 }
 
 /*
@@ -115,25 +114,24 @@ body {
     /*t*/ background: #F8F8F8;
     /*t*/ border-bottom: 1px solid #CCC;
     list-style-type: none;
-    padding:  11px 10px 6px;
+    padding:  9px 10px 6px;
     margin: 0;
 }
 #tabs ul li {
     /*t*/ background: #F2F2F2;
     /*t*/ color: #888;
     display: inline;
-    padding-left: 10px;
     /*t*/ border-left: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     /*t*/ border-right: 1px solid #CCC;
-    padding: 4px 8px 5px 8px;
+    padding: 5px 8px 7px 8px;
     -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px 2px 0 0;
 }
 #tabs ul li,
 x:-moz-any-link,
 x:default {
-    padding: 5px 8px;
+    padding: 6px 8px;
 }
 #tabs ul li.selected {
     /*t*/ background: #F0F0F0;
@@ -182,18 +180,45 @@ x:default {
 #tab_panel_inner {
     /*t*/ border-top: 1px solid #CCC;
 }
+#tab_panel_inner .dimension_item {
+    background: #f5f7fc;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d9e3fa', endColorstr='#f5f7fc');
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5f7fc), to(#d9e3fa));
+    background: -moz-linear-gradient(top, #f5f7fc 0%, #d9e3fa 100%);
+    border: 1px solid #93aded;
+    color: #305798;
+    padding: 1px 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -moz-border-radius: 2px;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-border-radius: 2px;
+}
+#tab_panel_inner .measure_item {
+    background: #f5f7fc;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fad9d9', endColorstr='#fcf5f5');
+    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
+    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
+    border: 1px solid #ed9393;
+    color: #983030;
+    padding: 1px 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -moz-border-radius: 2px;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-border-radius: 2px;
+}
+
 
 /*
-    Id          : #sidebar
+    Class       : #sidebar
     Description : Sits inside #tab_panel and contains data, dimension etc.
                   browsers
 */
 
-#sidebar {
-    width: 264px;
+.sidebar {
+    width: 264px !important;
 }
-#sidebar div.container h3 {
-	/*t*/ background: #F0F0F0;
+.sidebar div.container h3 {
+    /*t*/ background: #F0F0F0;
     /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#FFFFFF');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
@@ -204,36 +229,90 @@ x:default {
     padding: 7px 5px;
     text-shadow: 1px 1px 0 #FFFFFF;
 }
-#sidebar div.container h3.top {
+.sidebar div.container h3.top {
     border-top: none !important;
     margin-bottom: 10px;
     margin-top: 0;
 }
-#sidebar div.container_inner {
+.sidebar div.container_inner {
     padding: 0px 10px;
 }
-#sidebar div.container_inner select {
+.sidebar div.container_inner select {
     /*t*/ border: 1px solid #DDDDDD;
-	font-size: 100%;
+    font-size: 100%;
     padding: 2px;
     width: 100%;
 }
 
 /*
-    Id          : #sidebar_pane
-    Description : Sits between the #sidebar and #workspace as a separator
+    Class       : .sidebar_toggler
+    Description : Sits between the .sidebar and .workspace as a separator
 */
 
-#sidebar_pane div.container {
+.sidebar_toggler div.container {
     /*t*/ background: #F0F0F0;
     /*t*/ border-right: 1px solid #CCC;
-	padding: 0 1px 0 2px;
+    padding: 0 1px 0 2px;
     /*t*/ border-left: 1px solid #CCC;
 }
-#sidebar_pane div.container:hover {
+.sidebar_toggler div.container:hover {
     /*t*/ background: #E0E0E0;
     cursor: pointer;
     /*t*/ border-right: 1px solid #CCC;
     padding: 0 1px 0 2px;
     /*t*/ border-left: 1px solid #CCC;
 }
+
+/*
+    Class       : .workspace
+*/
+
+.workspace .container {
+    padding: 10px;
+}
+
+/*
+    Class       : .workspace_toolbar
+*/
+
+.workspace_toolbar {
+    text-align: right;
+    padding: 10px;
+}
+
+/*
+    Class       : .workspace_dropzone
+*/
+
+.workspace_dropzone {
+    margin-bottom: 10px;
+}
+
+/*
+    Class       : .dropzone_title
+*/
+.workspace_dropzone .dropzone_title {
+    /*t*/ background: #F0F0F0;
+    /*t*/ border: 1px solid #CCC;
+    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#FFFFFF');
+    /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    padding: 5px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 60px;
+    -moz-border-radius: 2px 0 0 2px;
+    -webkit-border-radius: 2px 0 0 2px;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+}
+.workspace_dropzone .dropzone_area {
+    /*t*/ border-bottom: 1px solid #CCC;
+    /*t*/ border-right: 1px solid #CCC;
+    /*t*/ border-top: 1px solid #CCC;
+    padding: 5px;
+    -moz-border-radius: 0 2px 2px 0;
+    -webkit-border-radius: 0 2px 2px 0;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+
