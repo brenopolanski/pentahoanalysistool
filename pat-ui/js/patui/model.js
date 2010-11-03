@@ -178,7 +178,17 @@ var model = {
                     }
                 });
                 
-                // jsTree
+                /* DND Rules:
+                 * Rules:
+                 * Unique items only the row and column axis
+                 * You can only drag one item from the hierarchy onto 
+                 * 		the row and column axis i.e. Only Region from Markets
+                 * Once the above occurs you can no longer any other items 
+                 * 		from the hierarchy onto the row, column, filters axis
+                 * Measures must be grouped together and can only belong 
+                 * 		on one axis as a group
+                 * Measures can not be place on the filters axis
+                 */
 
                 //  Draggable
                 $both_trees.find("li ul li a").draggable({
