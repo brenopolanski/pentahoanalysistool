@@ -167,11 +167,13 @@ var model = {
                         .appendTo($tab.find('.measures_tree ul'));
 
                         // Append <ul/> to the dimensions_tree <li/>
-                        $measures.append('<ul />');
+                        $measures_ul = $('<ul />').appendTo($measures);
                             
                         $.each(dimension.levels.members, function(i,member){
                             // Populate the second <ul/>
-                            $measures.find('ul').append('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>');
+                            $('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>')
+                            	.mousedown(function() { return false; })
+                            	.appendTo($measures_ul);
                         });
                         
                     }
