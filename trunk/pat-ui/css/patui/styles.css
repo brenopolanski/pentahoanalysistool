@@ -349,6 +349,9 @@ width: 70%;}
     margin: 0;
     padding: 5px 10px; }
 
+.sidebar a, .col_axis_drop, .row_axis_drop, .filter_axis_drop {
+	cursor: pointer; }
+
 /**
  * __jquery_ui_layout
 */
