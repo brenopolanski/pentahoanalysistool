@@ -153,9 +153,13 @@ var model = {
                             // If there is a secondary level loop through and add to the <ul/>
                             $.each(dimension.levels, function(i,level){
                                 // Populate the second <ul/>
-                                $('<li><a>'+level['@levelcaption']+'</a></li>')
+                                $li = $('<li />')
                                 .mousedown(function() { return false; })
                                 .appendTo($second_level);
+                                
+                                $("<a>"+level['@levelcaption']+"</a>")
+                                .click(function(event) { return false; })
+                                .appendTo($li);
                             });
                         }
                         
@@ -171,7 +175,7 @@ var model = {
                             
                         $.each(dimension.levels.members, function(i,member){
                             // Populate the second <ul/>
-                            $('<li id="'+this['@membercaption']+'"><a href="#">'+this['@membercaption']+'</a></li>')
+                            $('<li id="'+this['@membercaption']+'"><a>'+this['@membercaption']+'</a></li>')
                             	.mousedown(function() { return false; })
                             	.appendTo($measures_ul);
                         });
@@ -208,8 +212,10 @@ var model = {
                     hoverClass: "ui-state-active",
                     drop: function(event, ui) {
                         $(this).append('<li><span>'+ui.draggable.text()+'</span></li>');
-                    //run_query();
-                    }
+                    	},
+                	deactivate: function() {
+                    	//view.check_query();
+                    	}
                 }).sortable({
                     connectWith: $drop_zones,
                     tolerance: 'pointer',
