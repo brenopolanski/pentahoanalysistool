@@ -293,6 +293,13 @@ var view = {
 			model.new_query(tab_index);
 		});
 	},
+	
+	check_query: function(tab_index) {
+		$workspace = view.tabs.tabs[tab_index].content;
+		if ($workspace.find(".col_axis_drop li").length > 0 && $workspace.find(".row_axis_drop li").length > 0) {
+			jAlert("Run the query!");
+		}
+	},
     
 	new_tab: function() {
 		this.tabs.add_tab();
