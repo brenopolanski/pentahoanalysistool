@@ -16,6 +16,7 @@
 html,
 body {
     color: #222;
+	font-size:85%;
     height: 100%;
 }
 
@@ -95,7 +96,7 @@ body {
     width: 150px;
 }
 #toolbar #logo h1 { /*t*/
-    text-shadow: 1px 1px 0 #FFF;
+					text-shadow: 1px 1px 0 #FFF;
 }
 
 /*
@@ -114,7 +115,7 @@ body {
     /*t*/ background: #F8F8F8;
     /*t*/ border-bottom: 1px solid #CCC;
     list-style-type: none;
-    padding:  10px 10px 5px 10px;
+    padding:  11px 10px 6px;
     margin: 0;
 }
 #tabs ul li {
@@ -125,7 +126,7 @@ body {
     /*t*/ border-left: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     /*t*/ border-right: 1px solid #CCC;
-    padding: 4px 8px 6px 8px;
+    padding: 4px 8px 5px 8px;
     -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px 2px 0 0;
 }
@@ -192,7 +193,7 @@ x:default {
     width: 264px;
 }
 #sidebar div.container h3 {
-/*t*/ background: #F0F0F0;
+	/*t*/ background: #F0F0F0;
     /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#FFFFFF');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
@@ -213,6 +214,7 @@ x:default {
 }
 #sidebar div.container_inner select {
     /*t*/ border: 1px solid #DDDDDD;
+	font-size: 100%;
     padding: 2px;
     width: 100%;
 }
@@ -223,15 +225,15 @@ x:default {
 */
 
 #sidebar_pane div.container {
-    /*t*/ background: #F8F8F8;
+    /*t*/ background: #F0F0F0;
     /*t*/ border-right: 1px solid #CCC;
-    padding:    0 1px 0 2px;
+	padding: 0 1px 0 2px;
     /*t*/ border-left: 1px solid #CCC;
 }
 #sidebar_pane div.container:hover {
-    /*t*/ background: #F0F0F0;
+    /*t*/ background: #E0E0E0;
     cursor: pointer;
     /*t*/ border-right: 1px solid #CCC;
-    padding:    0 1px 0 2px;
+    padding: 0 1px 0 2px;
     /*t*/ border-left: 1px solid #CCC;
 }
