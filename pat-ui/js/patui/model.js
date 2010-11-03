@@ -142,6 +142,7 @@ var model = {
                         .addClass("dimension folder")
                         .click(function() {
                             $(this).find("ul li").toggle();
+                            return false;
                         })
                         .appendTo($dimension_tree);
 
@@ -152,10 +153,8 @@ var model = {
                             // If there is a secondary level loop through and add to the <ul/>
                             $.each(dimension.levels, function(i,level){
                                 // Populate the second <ul/>
-                                $('<li><a href="#">'+level['@levelcaption']+'</a></li>')
-                                .click(function() {
-                                    return false;
-                                })
+                                $('<li><a>'+level['@levelcaption']+'</a></li>')
+                                .mousedown(function() { return false; })
                                 .appendTo($second_level);
                             });
                         }
@@ -198,7 +197,7 @@ var model = {
                     opacity: 0.90
                 });
 
-                $drop_zones = $('.row_axis_drop ul, .col_axis_drop ul, .filter_axis_drop ul');
+                $drop_zones = view.tabs.tabs[tab_index].content.find('.row_axis_drop ul, .col_axis_drop ul, .filter_axis_drop ul');
 
                 //  Droppable
                 $drop_zones.droppable({
