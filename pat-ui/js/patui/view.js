@@ -179,26 +179,26 @@ var view = {
 		// Add event handler to toolbar buttons
 		$("#toolbar a").click(function() {
 			controller.click_handler($(this));
+			return false;
 		});
 		
 		// Add click handler on tabs
-		$(document).ready(function() {
-			view.tabs.tab_container.find("a").live('click', function() {
-				view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
-			});
-			
-			view.tabs.tab_container.find("a").live('mousedown', function(event) {
-				if (event.which == 2) {
-					view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
-				}
-			});
+		view.tabs.tab_container.find("a").live('click', function() {
+			view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
+			return false;
 		});
 		
-		// Add click handler on tabs
-		$(document).ready(function() {
-			view.tabs.tab_container.find("span").live('click', function() {
+		view.tabs.tab_container.find("a").live('mousedown', function(event) {
+			if (event.which == 2) {
 				view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
-			});
+			}
+			return false;
+		});
+		
+		// Add click handler on tabs
+		view.tabs.tab_container.find("span").live('click', function() {
+			view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+			return false;
 		});
 
 		// Blank everything out until the user logs in
