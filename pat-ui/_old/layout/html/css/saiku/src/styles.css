@@ -107,14 +107,14 @@ body {
 
 #tabs {
     /*t*/ background: #F0F0F0;
-    height: 35px;
+    height: 32px;
     text-align: left;
 }
 #tabs ul {
     /*t*/ background: #F8F8F8;
     /*t*/ border-bottom: 1px solid #CCC;
     list-style-type: none;
-    padding:  9px 10px 6px;
+    padding: 9px 10px 3px 10px;
     margin: 0;
 }
 #tabs ul li {
@@ -124,14 +124,14 @@ body {
     /*t*/ border-left: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     /*t*/ border-right: 1px solid #CCC;
-    padding: 5px 8px 7px 8px;
+    padding: 4px 8px 3px 8px;
     -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px 2px 0 0;
 }
 #tabs ul li,
 x:-moz-any-link,
 x:default {
-    padding: 6px 8px;
+    padding: 4px 8px 3px;
 }
 #tabs ul li.selected {
     /*t*/ background: #F0F0F0;
@@ -297,6 +297,7 @@ x:default {
     /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#FFFFFF');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+	font-weight: bold;
     padding: 5px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 60px;
