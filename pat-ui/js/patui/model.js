@@ -214,7 +214,8 @@ var model = {
                         $(this).append('<li><span>'+ui.draggable.text()+'</span></li>');
                     	},
                 	deactivate: function() {
-                    	//view.check_query();
+                    	tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
+                    	view.check_query(tab_index);
                     	}
                 }).sortable({
                     connectWith: $drop_zones,
