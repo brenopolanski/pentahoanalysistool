@@ -496,14 +496,20 @@ width: 70%;}
     color: #333;
     text-decoration: none; }
 
-li.folder {
-    font-weight: bold; }
+.folder {
+	font-weight: bold; }
+	
+.folder ul li {
+	font-weight: normal; }
+
+.folder .folder {
+	font-weight: bold; }
+	
+.folder .folder ul li {
+	font-weight: normal; }
 
 li.dimension ul li {
     display: none; }
-
-li.folder ul li {
-    font-weight: normal; }
 
 .jstree li,.jstree ul ins {
     background: transparent url("../../images/i_sprite.png") no-repeat;

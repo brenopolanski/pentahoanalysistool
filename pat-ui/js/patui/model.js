@@ -128,6 +128,9 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Remove all instances of previous trees
                 // in case user reselects cube
+        	
+        		// FIXME - this needs to be a recursive algorithm in the view
+        	
                 $dimension_tree = $('<ul />').addClass("tree").appendTo($tab.find('.dimensions_tree'));
                 $measures_tree = $('<ul />').addClass("tree").appendTo($tab.find('.measures_tree'));
                 
@@ -140,10 +143,6 @@ var model = {
                         // Append <li/> to the dimensions_tree <ul/>
                         $first_level = $('<li><a href="#">'+this['@dimensionname']+'</a></li>')
                         .addClass("dimension folder")
-                        .click(function() {
-                            $(this).find("ul li").toggle();
-                            return false;
-                        })
                         .appendTo($dimension_tree);
 
                         if (dimension.levels.length > 1) {
@@ -151,15 +150,30 @@ var model = {
                             $second_level = $('<ul />').appendTo($first_level);
 	                        
                             // If there is a secondary level loop through and add to the <ul/>
-                            $.each(dimension.levels, function(i,level){
+                            $.each(dimension.levels, function(j,level){
                                 // Populate the second <ul/>
                                 $li = $('<li />')
                                 .mousedown(function() { return false; })
                                 .appendTo($second_level);
                                 
-                                $("<a>"+level['@levelcaption']+"</a>")
-                                .click(function(event) { return false; })
+                                $second_level_link = $("<a href='#'>"+level['@levelcaption']+"</a>")
                                 .appendTo($li);
+                                
+                                if (level.members.length > 1) {
+                                	$li.addClass("folder");
+                                	$ul = $("<ul />").appendTo($li);
+                                	$.each(level.members, function(k, member) {
+                                		 $li2 = $('<li />')
+                                         .mousedown(function() { return false; })
+                                         .appendTo($ul);
+                                		 
+                                		 $("<a href='#'>"+member['@membercaption']+"</a>")
+     	                                .click(function(event) { return false; })
+     	                                .appendTo($li2);
+                                	});
+                                } else {
+                                	$second_level_link.click(function(event) { return false; });
+                                }                                
                             });
                         }
                         
@@ -183,6 +197,11 @@ var model = {
                     }
                 });
                 
+                $tab.find(".folder").click(function() {
+                    $(this).children("ul").children("li").toggle();
+                    return false;
+                });
+        
                 /* DND Rules:
                  * Rules:
                  * Unique items only the row and column axis
