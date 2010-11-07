@@ -10,8 +10,10 @@ class Rest {
 	 */
 	private $settings = array(
 		//'base_url'=>'http://demo.analytical-labs.com/rest'
-		'base_url'=>'http://localhost:8080/pat/rest'
-		//'base_url'=>'http://localhost/pat-ui/fixtures/rest' // TEST - Change back
+		//'base_url'=>'http://localhost:8080/pat/rest'
+                'base_url'=>'http://localhost/fixtures/rest'
+                //'base_url'=>'http://localhost/pat-ui/fixtures/rest
+		
 	);
 	
 	/*
