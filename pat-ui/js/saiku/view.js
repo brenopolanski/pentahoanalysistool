@@ -189,15 +189,14 @@ var view = {
         });
 		
         // Add click handler on tabs
-        view.tabs.tab_container.find("a").live('click', function() {
-            view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
-            return false;
-        });
-		
         view.tabs.tab_container.find("a").live('mousedown', function(event) {
-            if (event.which == 2) {
+        	if (event.which == 1) {
+        		view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
+        	} else if (event.which == 2) {
                 view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
             }
+            event.stopImmediatePropagation();
+            event.cancelBubble = true;
             return false;
         });
 		
