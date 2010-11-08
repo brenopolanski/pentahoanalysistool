@@ -68,6 +68,7 @@ body {
     border: 1px solid transparent;
     display: block;
     padding: 16px;
+    width: 1px;
 }
 #toolbar ul li a.new_tab {
     background: transparent url('../../../images/src/doc_empty.png') no-repeat 0 0;
@@ -122,7 +123,6 @@ body {
 }
 #tabs ul li {
     float: left;
-    list-style: none;
     padding-right: 4px;
     /*t*/ background: #F2F2F2;
     /*t*/ color: #888;
@@ -142,7 +142,6 @@ body {
     /*t*/ border-left: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     /*t*/ border-right: 1px solid #CCC;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-bottom: 1px solid #F0F0F0 !important;
@@ -184,7 +183,6 @@ body {
 }
 #tab_panel .dimension_item {
     background: #f5f7fc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d9e3fa', endColorstr='#f5f7fc');
     background: -webkit-gradient(linear, left top, left bottom, from(#f5f7fc), to(#d9e3fa));
     background: -moz-linear-gradient(top, #f5f7fc 0%, #d9e3fa 100%);
     border: 1px solid #93aded;
@@ -197,7 +195,6 @@ body {
 }
 #tab_panel .measure_item {
     background: #f5f7fc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fad9d9', endColorstr='#fcf5f5');
     background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
     border: 1px solid #ed9393;
@@ -241,7 +238,6 @@ body {
 }
 .sidebar h3 {
     /*t*/ background: #F0F0F0;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-top: 1px solid #CCC;
@@ -310,7 +306,6 @@ body {
 .dropzone .dropzone_title {
     /*t*/ background: #F0F0F0;
     /*t*/ border: 1px solid #CCC;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     font-weight: bold;
@@ -362,7 +357,6 @@ body {
 }
 .dialog .dialog_inner h3 {
     /*t*/ background: #F0F0F0;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-bottom: 1px solid #d5d5d5;
@@ -439,7 +433,6 @@ body {
 }
 #popup_title {
     /*t*/ background: #F0F0F0;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#FFFFFF');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     border-bottom: 1px solid #d5d5d5;

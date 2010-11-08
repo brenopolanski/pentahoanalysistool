@@ -31,8 +31,42 @@
                     $('.sidebar, .sidebar_toggler').css('height', sidebar_height);
                     $('.workspace').css('height', workspace_height);
                 }
+
+                $('#left').click(function()
+                {
+                    /*var content = $(".tabs .scrollable .content");
+
+                    var pos = content.position().left - 250;
+
+                    if (pos >= 0) {
+                        pos = 0;
+                    }
+
+                    pos = -25;
+                    content.animate({ left: -25 }, 0);*/
+                    var content = $("#tabs #tabs_scrollable");
+                    var pos = content.position().left ;
+                    if(pos == 0) {
+                        pos = 0;
+                    }else {
+                        pos = pos + 25;
+                    }
+                    $(content).css('margin-left', pos)
+                });
+                $('#right').click(function()
+                {
+                    var content = $("#tabs #tabs_scrollable");
+                    //var pos = content.position().left;
+                    //pos = pos - 25;]
+
+
+                    $(content).css('margin-left', -25)
+                });
+
             });
         </script>
+        <style type="text/css">
+        </style>
     </head>
     <body>
         <!-- header -->
@@ -40,7 +74,7 @@
             <!-- toolbar -->
             <div id="toolbar">
                 <ul>
-                    <li><a href="#" title="New Query" class="new_tab"></a></li>
+                    <li><a href="#" title="New Query" class="new_tab">&nbsp;</a></li>
                     <li class="separator">&nbsp;</li>
                     <li><a href="#" title="Open Query" class="open_query"></a></li>
                     <li><a href="#" title="Save Query" class="save_query"></a></li>
@@ -59,12 +93,37 @@
         </div>
         <!-- eof header -->
         <!-- tabs -->
+        <div>
+            <div style="position:absolute;right:3px;top:64px;z-index:99999;"><a id="left" href="#">></a></div>
+            <div style="position:absolute;left:3px;top:64px;z-index:99999;"><a id="right" href="#"><</a></div>
+        </div>
         <div id="tabs">
-            <ul>
-                <li class="selected"><a href="#" title="Tab Title" >Tab title</a><span>&nbsp;</span></li>
-                <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
-                <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
-            </ul>
+            <div id="tabs_scrollable" style="overflow:hidden;">
+                    <ul style="overflow:hidden;width:4000px;">
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                        <li><a href="#" title="Tab Title">Tab title<span>&nbsp;</span></a></li>
+                    </ul>
+            </div>
         </div>
         <!-- eof tabs -->
         <!-- tab_panel -->
