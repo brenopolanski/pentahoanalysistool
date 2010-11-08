@@ -36,7 +36,6 @@ body {
 
 #header {
     /*t*/ background: #EEEEEE;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#DDDDDD');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
     /*t*/ background: -moz-linear-gradient(top, #EEEEEE 0%, #DDDDDD 100%);
     /*t*/ border-bottom: 1px solid #BBB;
@@ -147,7 +146,6 @@ body {
     /*t*/ border-left: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     /*t*/ border-right: 1px solid #CCC;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-bottom: 1px solid #F0F0F0 !important;
@@ -160,6 +158,7 @@ body {
 }
 #tabs ul li a {
     color: #777;
+    cursor: pointer;
     text-decoration: none;
 }
 #tabs ul li.selected a {
@@ -188,12 +187,11 @@ body {
     border-top: 1px solid #CCC;
 }
 #tab_panel .dimension_item {
-    background: #f5f7fc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d9e3fa', endColorstr='#f5f7fc');
-    background: -webkit-gradient(linear, left top, left bottom, from(#f5f7fc), to(#d9e3fa));
-    background: -moz-linear-gradient(top, #f5f7fc 0%, #d9e3fa 100%);
-    border: 1px solid #93aded;
-    color: #305798;
+    background: #b9e2fb;
+    background: -webkit-gradient(linear, left top, left bottom, from(#cbe7f9), to(#a6d9f8));
+    background: -moz-linear-gradient(top, #cbe7f9 0%, #a6d9f8 100%);
+    border: 1px solid #75c6f9;
+    color: #1d6592;
     padding: 1px 3px;
     -moz-box-shadow: 0 0 2px #DDDDDD;
     -moz-border-radius: 2px;
@@ -202,7 +200,6 @@ body {
 }
 #tab_panel .measure_item {
     background: #f5f7fc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fad9d9', endColorstr='#fcf5f5');
     background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
     border: 1px solid #ed9393;
@@ -253,7 +250,6 @@ body {
 }
 .sidebar h3 {
     /*t*/ background: #F0F0F0;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-top: 1px solid #CCC;
@@ -336,7 +332,6 @@ body {
 .dropzone .dropzone_title {
     /*t*/ background: #F0F0F0;
     /*t*/ border: 1px solid #CCC;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     font-weight: bold;
@@ -364,6 +359,7 @@ body {
 .dropzone .dropzone_area .dropzone_columns ul,
 .dropzone .dropzone_area .dropzone_rows ul,
 .dropzone .dropzone_area .dropzone_filters ul {
+    height: 18px;
     margin: 0;
     padding: 5px 0;
 }
@@ -411,7 +407,6 @@ body {
 }
 .dialog .dialog_inner h3 {
     /*t*/ background: #F0F0F0;
-    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F0F0');
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-bottom: 1px solid #d5d5d5;
