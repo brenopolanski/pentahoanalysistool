@@ -93,7 +93,6 @@ var TabContainer = function(tab_container, content_container) {
         // Create the content portion of the tab
         $new_tab_content = $('<div />')
         .addClass("tab")
-        // FIXME - this is preventing caching atm
         .load("views/_new_query.html", function() {
             view.generate_navigation(new_index);
             view.resize_layout();
@@ -115,7 +114,7 @@ var TabContainer = function(tab_container, content_container) {
     this.clear_tabs = function() {
         for (i = 0; i < this.tabs.length; i++) {
             if (typeof this.tabs[i] != 'undefined') {
-                this.remove[i];
+                this.remove_tab(i);
             }
         }
     };
@@ -229,9 +228,6 @@ var view = {
      * Clear the screen
      */
     logout: function() {
-        // Remove all tabs
-        this.tabs.clear_tabs();
-    	
         // Hide the layout
         $("#header").hide();
         $("#tabs").hide();
@@ -276,7 +272,6 @@ var view = {
     
     /*
      * Load data list with schema and cubes from the PAT server
-     * FIXME - store data in tab object somehow
      */
     generate_navigation: function(tab_index) {
         $tab = view.tabs.tabs[tab_index].content;

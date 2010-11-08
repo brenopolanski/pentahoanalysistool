@@ -333,6 +333,11 @@ var model = {
         model.password = "";
         model.session_id = "";
         model.connections = {};
+        
+        // Remove all tabs
+        view.tabs.clear_tabs();
+        delete view.tabs;
+        view.tabs = new TabContainer($("#tabs"), $('#tab_panel'));
     	
         // Hide everything
         view.logout();
