@@ -51,7 +51,7 @@ var TabContainer = function(tab_container, content_container) {
         }
 		
         // Check and make sure there are any tabs at all
-        if (this.active_tabs() == 0) {
+        if (this.active_tabs() == 0 && model.session_id != "") {
             // Create one if not
             this.add_tab();
             return;

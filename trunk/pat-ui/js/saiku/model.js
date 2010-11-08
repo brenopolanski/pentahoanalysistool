@@ -325,23 +325,24 @@ var model = {
     logout: function() {
         // Kill server-side session
         model.request({
-            url: ""
+            url: "",
+            success: function() {
+	        	// Clear credentials
+	            model.username = "";
+	            model.password = "";
+	            model.session_id = "";
+	            model.connections = {};
+	            
+	            // Remove all tabs
+	            view.tabs.clear_tabs();
+	        	
+	            // Hide everything
+	            view.logout();
+	        	
+	            // Refresh the page
+	            location.reload(true);
+        	}
         });
-    	
-        // Clear credentials
-        model.username = "";
-        model.password = "";
-        model.session_id = "";
-        model.connections = {};
-        
-        // Remove all tabs
-        view.tabs.clear_tabs();
-    	
-        // Hide everything
-        view.logout();
-    	
-        // Start over
-        model.init();
     },
     
     /*
