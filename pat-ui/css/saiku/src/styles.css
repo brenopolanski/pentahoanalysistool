@@ -29,6 +29,13 @@ body {
 .hide {
     display: none;
 }
+.ui-sortable-helper {
+    height: 16px !important;
+}
+.placeholder_sort {
+    padding: 0 40px;
+    border: 1px dashed #CCC;
+}
 
 /*
 	#header
