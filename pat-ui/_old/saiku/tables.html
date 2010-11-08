@@ -40,11 +40,22 @@
                     opacity: 0.90,
                     start: function(event, ui) {
                         $last_td = $('#test').find('.last');
-                        $last_td.css('border-right', '5px solid blue');
+                        $last_td.after('<td class="row_drop">:)</td>');
+
+                        $('.row_drop').droppable({
+                            accept: '.dimension',
+                            activeClass: "notice",
+                            hoverClass: "success",
+                            drop: function(event, ui) {
+                                $('#test').find('.last').removeClass('last');
+                                $last_td.after('<td class="last">You dropped</td>');
+                            }
+                        });
+                        
                     },
                     stop: function(event, ui) {
                         $last_td = $('#test').find('.last');
-                        $last_td.css('border-right', 'none');
+                        $('.row_drop').remove();
                     }
 
                 });
@@ -52,14 +63,7 @@
 
 
 
-                $('.row_drop').droppable({
-                    accept: '.dimension',
-                    activeClass: "notice",
-                    hoverClass: "success",
-                    drop: function(event, ui) {
-                        
-                    }
-                });
+                
 
 
 
