@@ -40,8 +40,7 @@ var controller = {
             setTimeout(function() {
                 controller.errors++;
                 view.free();
-                //model.init()
-                window.location.reload();
+                model.init();
             }, 10000);
         }
     },
