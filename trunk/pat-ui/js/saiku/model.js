@@ -263,6 +263,7 @@ var model = {
                     activeClass: "notice",
                     hoverClass: "success",
                     drop: function(event, ui) {
+
                         $(this).find('.placeholder').remove();
 
                         if(ui.helper.hasClass('dimension')) {
@@ -271,6 +272,7 @@ var model = {
                             $(this).append('<li class="measure_item"><span>'+ui.draggable.text()+'</span></li>');
                         }
 
+
                         tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
 
                         view.check_query(tab_index);
@@ -278,8 +280,8 @@ var model = {
                 }).sortable({
                     connectWith: $drop_zones,
                     tolerance: 'pointer',
-                    placeholder: '.placeholder_sort'
-                    
+                    placeholder: 'placeholder_sort',
+                    forcePlaceholderSize: true
                 });
                 
                 $('li', $drop_zones).draggable({
@@ -291,7 +293,15 @@ var model = {
                 $('.sidebar').droppable({
                     accept: ".dropzone_rows ul li, .dropzone_columns ul li, .dropzone_filters ul li",
                     drop: function(event, ui) {
+                        console.log(ui);
                         ui.draggable.remove();
+                        if(!$(".dropzone_rows ul li").hasClass("placeholder")) {
+                            $(".dropzone_rows ul").append('<li class="placeholder">Drop fields here</li>');
+                        }else if(!$(".dropzone_columns ul li").hasClass("placeholder")) {
+                            $(".dropzone_columns ul").append('<li class="placeholder">Drop fields here</li>');
+                        }else if(!$(".dropzone_filters ul li").hasClass("placeholder")) {
+                            $(".dropzone_filters ul").append('<li class="placeholder">Drop fields here</li>');
+                        }
                     }
                 })
                 
