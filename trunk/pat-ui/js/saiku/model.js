@@ -67,6 +67,7 @@ var model = {
     	
         $.ajax({
             type: parameters.method,
+            //url: "/pat-ui/fixtures/rest/" + parameters.url,
             url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
@@ -290,7 +291,6 @@ var model = {
                 $('.sidebar').droppable({
                     accept: ".dropzone_rows ul li, .dropzone_columns ul li, .dropzone_filters ul li",
                     drop: function(event, ui) {
-                        console.log(ui);
                         ui.draggable.remove();
                         if(!$(".dropzone_rows ul li").hasClass("placeholder")) {
                             $(".dropzone_rows ul").append('<li class="placeholder">Drop fields here</li>');
