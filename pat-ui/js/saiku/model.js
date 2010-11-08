@@ -30,14 +30,13 @@ var model = {
         // Let's be friends!
         model.server_errors = 0;
         
-        // Really ghetto way to get credentials. Better than the browser prompting, I guess...
-        // FIXME - ask for credentials using a pretty form that doesn't block the browser (and hides password)
+        // Ask for credentials using a pretty form that doesn't block the browser (and hides password)
         if (model.username == "" || model.password == "") {
 
-            //FIXME - auth hardcoded
             $('#login_form').jqm({
                 modal: true
             });
+            
             $('#login_form').jqmShow()
             .find('#login')         
             .click(function(){
@@ -45,7 +44,6 @@ var model = {
                 model.username = $('#login_form .username').val();
                 model.password = $('#login_form .password').val();
                 model.get_session();
-                view.login();
             });
 
         }
@@ -69,7 +67,6 @@ var model = {
     	
         $.ajax({
             type: parameters.method,
-            //url: "/pat-ui/fixtures/rest/" + parameters.url, // TEST - Change back
             url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
