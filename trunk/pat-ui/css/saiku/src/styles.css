@@ -225,7 +225,7 @@ body {
     border: 1px dashed #777;
     color: #777;
     cursor: text !important;
-    padding: 1px 2px;
+    padding: 1px 2px !important;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
 }
@@ -382,9 +382,7 @@ body {
 .dropzone .dropzone_area .dropzone_columns ul,
 .dropzone .dropzone_area .dropzone_rows ul,
 .dropzone .dropzone_area .dropzone_filters ul {
-    /*height: 19px; */
     margin: 0;
-    /*padding: 5px 0 5px 0;*/
     padding: 4px;
 }
 .dropzone .dropzone_area .dropzone_columns ul li,
@@ -393,7 +391,6 @@ body {
     cursor: pointer;
     list-style: none;
     display: inline;
-    /*margin-left: 10px;*/
     margin: 0;
     padding: 0;
     line-height: 19px;
