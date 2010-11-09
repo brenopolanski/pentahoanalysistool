@@ -274,6 +274,7 @@ var view = {
      * Load data list with schema and cubes from the PAT server
      */
     generate_navigation: function(tab_index) {
+        // FIXME - IE7 does not like this method
         $tab = view.tabs.tabs[tab_index].content;
         $cubes = $tab.find('.cubes');
         view.tabs.tabs[tab_index].data['navigation'] = new Array();

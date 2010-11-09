@@ -76,7 +76,8 @@ body {
 #toolbar ul li a {
     border: 1px solid transparent;
     display: block;
-    padding: 11px;
+    height: 24px;
+    width: 24px;
 }
 #toolbar ul li a.new_tab {
     background: transparent url('../../../images/src/doc_empty.png') no-repeat 0 0;
@@ -176,15 +177,17 @@ body {
     color: #222;
 }
 #tabs ul li span {
-    background: transparent url('../../../images/src/cross.png') no-repeat center 8px;
-    opacity: 0.50;
-    padding: 4px 10px;
+    background: transparent url('../../../images/src/cross.png') no-repeat center 1px;
+    display: inline-block;
+    height: 9px;
+    width: 20px;
 }
 #tabs ul li span:hover {
-    background: transparent url('../../../images/src/cross.png') no-repeat center 8px;
+    background: transparent url('../../../images/src/cross_hover.png') no-repeat center 1px;
     cursor: pointer !important;
-    padding: 4px 10px;
-    opacity: 1;
+    display: inline-block;
+    height: 9px;
+    width: 20px;
 }
 
 /*
@@ -195,12 +198,12 @@ body {
     border-top: 1px solid #CCC;
 }
 #tab_panel .dimension_item {
-    background: #b9e2fb;
-    background: -webkit-gradient(linear, left top, left bottom, from(#cbe7f9), to(#a6d9f8));
-    background: -moz-linear-gradient(top, #cbe7f9 0%, #a6d9f8 100%);
-    border: 1px solid #75c6f9;
-    color: #1d6592;
-    padding: 1px 3px;
+    background: #e5f6ff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
+    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
+    border: 1px solid #2a6085;
+    color: #2a6085;
+    padding: 1px 2px;
     -moz-box-shadow: 0 0 2px #DDDDDD;
     -moz-border-radius: 2px;
     -webkit-box-shadow: 0 0 2px #DDDDDD;
@@ -212,7 +215,7 @@ body {
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
     border: 1px solid #ed9393;
     color: #983030;
-    padding: 1px 3px;
+    padding: 1px 2px;
     -moz-box-shadow: 0 0 2px #DDDDDD;
     -moz-border-radius: 2px;
     -webkit-box-shadow: 0 0 2px #DDDDDD;
@@ -221,7 +224,8 @@ body {
 .placeholder {
     border: 1px dashed #777;
     color: #777;
-    padding: 1px 3px;
+    cursor: text !important;
+    padding: 1px 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
 }
@@ -257,7 +261,7 @@ body {
     overflow: auto;
 }
 .sidebar h3 {
-    /*t*/ background: #F0F0F0;
+    /*t*/ background: #F9F9F9;
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-top: 1px solid #CCC;
@@ -297,21 +301,30 @@ body {
 }
 .sidebar .sidebar_inner .dimensions_tree ul,
 .sidebar .sidebar_inner .measures_tree ul {
-    margin-bottom: 0px;
+    margin: 0;
+    padding: 0;
 }
 .sidebar .sidebar_inner .dimensions_tree ul li,
 .sidebar .sidebar_inner .measures_tree ul li {
-    list-style-image: url('../../../images/src/arrow_right.png');
+    background: url('../../../images/src/arrow_right.png') no-repeat left center;
+    padding-left: 18px;
+    list-style-type: none;
 }
 .sidebar .sidebar_inner .dimensions_tree ul li.expand,
 .sidebar .sidebar_inner .measures_tree ul li.expand {
-    list-style-image: url('../../../images/src/arrow_down.png');
+    background: url('../../../images/src/arrow_down.png') no-repeat left 5px;
+    padding-left: 18px;
+    list-style-type: none;
 }
 .sidebar .sidebar_inner .dimensions_tree ul li ul li {
-    list-style-image: url('../../../images/src/blue_bullet.png');
+    background: url('../../../images/src/blue_bullet.png') no-repeat left center;
+    padding-left: 18px;
+    list-style-type: none;
 }
 .sidebar .sidebar_inner .measures_tree ul li ul li {
-    list-style-image: url('../../../images/src/red_bullet.png');
+    background: url('../../../images/src/red_bullet.png') no-repeat left center;
+    padding-left: 18px;
+    list-style-type: none;
 }
 
 /*
@@ -338,13 +351,14 @@ body {
     margin-bottom: 10px;
 }
 .dropzone .dropzone_title {
-    /*t*/ background: #F0F0F0;
+    /*t*/ background: #F9F9F9;
     /*t*/ border: 1px solid #CCC;
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     font-weight: bold;
     float: left;
-    padding: 5px;
+    padding: 4px;
+    line-height: 19px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 10%;
     -moz-border-radius: 2px 0 0 2px;
@@ -357,8 +371,9 @@ body {
     /*t*/ border-right: 1px solid #CCC;
     /*t*/ border-top: 1px solid #CCC;
     float: left;
-    height: 28px;
     width: 86.7%;
+    margin: 0;
+    padding: 0;
     -moz-border-radius: 0 2px 2px 0;
     -webkit-border-radius: 0 2px 2px 0;
     -moz-box-shadow: 0 0 2px #DDDDDD;
@@ -367,9 +382,10 @@ body {
 .dropzone .dropzone_area .dropzone_columns ul,
 .dropzone .dropzone_area .dropzone_rows ul,
 .dropzone .dropzone_area .dropzone_filters ul {
-    height: 18px;
+    /*height: 19px; */
     margin: 0;
-    padding: 5px 0;
+    /*padding: 5px 0 5px 0;*/
+    padding: 4px;
 }
 .dropzone .dropzone_area .dropzone_columns ul li,
 .dropzone .dropzone_area .dropzone_rows ul li,
@@ -377,7 +393,10 @@ body {
     cursor: pointer;
     list-style: none;
     display: inline;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
+    margin: 0;
+    padding: 0;
+    line-height: 19px;
 }
 
 
@@ -388,13 +407,13 @@ body {
     background-color: #222;
 }
 .dialog {
+    background: #FFFFFF;
+    border: 4px solid #EEE;
+    display: none;
     left: 50%;
     margin-left: -200px;
     position: fixed;
     top: 17%;
-    background: #FFFFFF;
-    border: 4px solid #EEE;
-    display: none;
     width: 400px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -408,13 +427,18 @@ body {
     padding: 2px;
     width: 280px;
 }
+.dialog label {
+    display: block;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
 .dialog .dialog_inner {
     border: 1px solid #CCC;
     -moz-border-radius: 1px;
     -webkit-border-radius: 1px;
 }
 .dialog .dialog_inner h3 {
-    /*t*/ background: #F0F0F0;
+    /*t*/ background: #F9F9F9;
     /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     /*t*/ border-bottom: 1px solid #d5d5d5;
@@ -439,10 +463,9 @@ body {
     padding: 8px 10px 7px 10px;
 }
 .dialog .dialog_buttons {
-    padding: 7px 10px;
+    padding: 7px 12px;
     text-align: right;
 }
 .dialog .dialog_buttons input {
     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    padding: 2px;
 }

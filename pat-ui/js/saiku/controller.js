@@ -21,9 +21,9 @@ function lazy_load(script_filename) {
  */
 function debug(msg) {
     //if (debug_enabled && console != 'undefined') {
-    if (console != 'undefined') {
-        console.log(msg);
-    }
+    //if (console != 'undefined') {
+     //   console.log(msg);
+    //}
 }
 
 var controller = {

@@ -112,6 +112,13 @@ var model = {
          *  FIXME - this needs some cleanup
          */
     new_query: function(tab_index) {
+
+        //  Patch for Chrome/Safari showing the text cursor
+        //  when dragging
+        document.onselectstart = function () {
+            return false;
+        };
+
         // Find the selected cube
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
     	
@@ -241,7 +248,7 @@ var model = {
 
                 //  Draggable
                 $both_trees.find("li ul li a").draggable({
-                    cancel: ".not-draggable",
+                    cancel: ".not-draggable .placeholder",
                     helper: "clone",
                     opacity: 0.90,
                     start: function(event, ui) {
@@ -270,12 +277,11 @@ var model = {
                             $(this).append('<li class="measure_item"><span>'+ui.draggable.text()+'</span></li>');
                         }
 
-
                         tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
-
                         view.check_query(tab_index);
                     }
                 }).sortable({
+                    cancel: 'placeholder',
                     connectWith: $drop_zones,
                     tolerance: 'pointer',
                     placeholder: 'placeholder_sort',
@@ -291,7 +297,12 @@ var model = {
                 $('.sidebar').droppable({
                     accept: ".dropzone_rows ul li, .dropzone_columns ul li, .dropzone_filters ul li",
                     drop: function(event, ui) {
-                        ui.draggable.remove();
+                        // Using setTimeout due to IE7+ bug with jQuery UI
+                        // Info: http://dev.jqueryui.com/ticket/4550
+                        setTimeout(function() {
+                            ui.draggable.remove();
+                        },1);
+                        
                         if(!$(".dropzone_rows ul li").hasClass("placeholder")) {
                             $(".dropzone_rows ul").append('<li class="placeholder">Drop fields here</li>');
                         }else if(!$(".dropzone_columns ul li").hasClass("placeholder")) {
@@ -327,21 +338,21 @@ var model = {
         model.request({
             url: "",
             success: function() {
-	        	// Clear credentials
-	            model.username = "";
-	            model.password = "";
-	            model.session_id = "";
-	            model.connections = {};
+                // Clear credentials
+                model.username = "";
+                model.password = "";
+                model.session_id = "";
+                model.connections = {};
 	            
-	            // Remove all tabs
-	            view.tabs.clear_tabs();
+                // Remove all tabs
+                view.tabs.clear_tabs();
 	        	
-	            // Hide everything
-	            view.logout();
+                // Hide everything
+                view.logout();
 	        	
-	            // Refresh the page
-	            location.reload(true);
-        	}
+                // Refresh the page
+                location.reload(true);
+            }
         });
     },
     
