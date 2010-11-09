@@ -62,7 +62,7 @@ legend { margin-top:-0.2em; margin-bottom:1em; margin-left:-0.5em; }
 textarea { overflow:auto; }
 
 /* Makes labels behave correctly in IE 6 and 7 */
-label { vertical-align:middle; position:relative; top:-0.25em; }
+label { vertical-align:middle; position:relative; /*top:-0.25em;*/ }
 
 /* Fixes rule that IE 6 ignores */
 input.text, input.title, textarea { background-color:#fff; border:1px solid #bbb; }
