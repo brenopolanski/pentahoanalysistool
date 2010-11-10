@@ -80,22 +80,22 @@ body {
     width: 24px;
 }
 #toolbar ul li a.new_tab {
-    background: transparent url('../../../images/src/doc_empty.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/add_tab.png') no-repeat 0 0;
 }
 #toolbar ul li a.open_query {
-    background: transparent url('../../../images/src/doc_import.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/open_query.png') no-repeat 0 0;
 }
 #toolbar ul li a.save_query {
-    background: transparent url('../../../images/src/doc_plus.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/save_query.png') no-repeat 0 0;
 }
 #toolbar ul li a.delete_query {
-    background: transparent url('../../../images/src/doc_delete.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/delete_query.png') no-repeat 0 0;
 }
 #toolbar ul li a.logout {
-    background: transparent url('../../../images/src/on-off.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/logout.png') no-repeat 0 0;
 }
 #toolbar ul li a.about {
-    background: transparent url('../../../images/src/info.png') no-repeat 0 0;
+    background: transparent url('../../../images/src/about.png') no-repeat 0 0;
 }
 #toolbar ul li a.cog {
     background: transparent url('../../../images/src/cog.png') no-repeat 0 0;
