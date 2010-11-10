@@ -42,30 +42,34 @@
                     view.resize_layout();
                 });
 
-                $('#right').click(function()
-                {
+                $('#right').click(function() {
                     var content = $("#tabs #tabs_scrollable ul");
-                    
-                    var pos = parseInt($(content).css('marginLeft').replace("px", ""));
-                    
-                    if (pos == 0 )
-                    {
-                        pos = 0;
-                    } else {
-                        pos = pos + 25;
+                    // Work out the current margin-left
+                    var position = parseInt($(content).css('margin-left').replace("px", ""));
+                    // If the margin-left is 0 do nothing else move to the left
+                    if(position == 0 ) {
+                        position = 0;
+                    }else{
+                        position = position + 25;
                     }
-
-                    $(content).css('margin-left', pos+'px')
+                    $(content).css('margin-left', position+'px')
                 });
-                $('#left').click(function()
-                {
-
+                $('#left').click(function() {
                     var content = $("#tabs #tabs_scrollable ul");
-                    
-                    var pos = $(content).css('marginLeft').replace("px", "");
+                    // Work out the current margin-left
+                    var position = parseInt($(content).css('margin-left').replace("px", ""));
+                    var length_of_tabs = 0;
 
-                    pos = pos - 25;
-                    $(content).css('margin-left', pos+'px')
+                    $('#tabs #tabs_scrollable ul li').each(function(index){
+                        length_of_tabs = $(this).width() + length_of_tabs;
+                    });
+                    console.log(length_of_tabs);
+                    if(length_of_tabs+25/position < 3) {
+                        position = position
+                    }else{
+                        position = position - 25;
+                    }
+                    $(content).css('margin-left', position+'px')
                 });
                 
             });
@@ -76,38 +80,59 @@
                 width: 100%;
             }
             #tabs_scroll_buttons .scroll_left {
-                /*t*/ background: #F2F2F2;
+                /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#F9F9F9), to(#F2F2F2));
+                /*t*/ background: -moz-linear-gradient(top, #F9F9F9 0%, #F2F2F2 100%);
                 /*t*/ color: #888;
-                /*t*/ border-left: 1px solid #DDD;
+                /*t*/ border-left: 1px solid #CCC;
                 /*t*/ border-bottom: 1px solid #CCC;
+                cursor: pointer;
                 display: block;
-                padding: 6px 0 7px 0;
+                padding: 9px 0 8px 0;
                 position: absolute;
                 right: 0px;
                 top: 43px;
                 z-index: 0;
-
             }
             #tabs_scroll_buttons .scroll_right {
                 /*t*/ background: #F2F2F2;
+                /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#F9F9F9), to(#F2F2F2));
+                /*t*/ background: -moz-linear-gradient(top, #F9F9F9 0%, #F2F2F2 100%);
                 /*t*/ color: #888;
-                /*t*/ border-right: 1px solid #DDD;
+                /*t*/ border-right: 1px solid #CCC;
                 /*t*/ border-bottom: 1px solid #CCC;
+                cursor: pointer;
                 display: block;
-                padding: 6px 0 7px 0;
+                padding: 9px 0 8px 0;
                 position: absolute;
                 left: 0px;
                 top: 43px;
                 z-index: 0;
             }
-            #tabs_scroll_buttons .scroll_right a,
-            #tabs_scroll_buttons .scroll_left a {
+            #tabs_scroll_buttons .scroll_right:hover {
+                background: #E9E9E9;
+                /*t*/ border-right: 1px solid #BBB;
+                /*t*/ border-bottom: 1px solid #BBB;
+            }
+            #tabs_scroll_buttons .scroll_left:hover {
+                background: #E9E9E9;
+                /*t*/ border-left: 1px solid #BBB;
+                /*t*/ border-bottom: 1px solid #BBB;
+            }
+            #tabs_scroll_buttons a {
                 color: #777;
                 cursor: pointer;
                 text-decoration: none;
                 text-align: center;
-                padding: 0 4px;
-
+                padding: 4px 2px;
+                display: block;
+                width: 10px;
+                height: 10px;
+            }
+            #tabs_scroll_buttons .scroll_left a {
+                /*t*/ background: transparent url('images/src/br_next.png') no-repeat 2px 4px;
+            }
+            #tabs_scroll_buttons .scroll_right a {
+                /*t*/ background: transparent url('images/src/br_prev.png') no-repeat 1px 4px;
             }
             #tabs #tabs_scrollable {
                 overflow: hidden;
@@ -140,8 +165,8 @@
         <!-- eof header -->
         <!-- tabs -->
         <div id="tabs_scroll_buttons">
-            <div class="scroll_right"><a id="right" href="#"><</a></div>
-            <div class="scroll_left"><a id="left" href="#">></a></div>
+            <div class="scroll_right"><a id="right" href="#" title="Scroll Left"></a></div>
+            <div class="scroll_left"><a id="left" href="#" title="Scroll Right"></a></div>
 
         </div>
         <div id="tabs" style="z-index: -1;">
