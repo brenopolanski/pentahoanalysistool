@@ -1,0 +1,75 @@
+/*
+    Document    : styles_cahill.css
+    Description : Default theme for Saiku
+    Notes       :
+        A different theme inspired by Mark Cahill
+*/
+
+/*
+    Globals
+*/
+
+#toolbar {
+    /*t*/ background: #EEEEEE;
+    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#edf5fd', endColorstr='#dceeff');
+    /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#edf5fd), to(#dceeff));
+    /*t*/ background: -moz-linear-gradient(top, #F5F7FC 0%, #D9E3FA 100%);
+	background:-moz-linear-gradient(center top , #F5F7FC 0%,  100%) repeat scroll 0 0 transparent;
+    /*t*/ border-bottom: 1px solid #93ADED;
+    height: 54px;
+}
+
+#toolbar #menu ul li.separator {
+    /*t*/ border-left: 1px solid #93ADED;
+}
+#tabs {
+    /*t*/ background: #e9f4ff;
+}
+#tabs ul {
+    /*t*/ background: #f5f7fc;
+    /*t*/ border-bottom: 1px solid #8fa8e4;
+}
+#tabs ul li {
+    /*t*/ background: #e2effb;
+    /*t*/ color: #888;
+    /*t*/ border-left: 1px solid #8fa8e4;
+    /*t*/ border-top: 1px solid #8fa8e4;
+    /*t*/ border-right: 1px solid #8fa8e4;
+}
+#tabs ul li.selected {
+    /*t*/ background: #e9f4ff;
+    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9f4ff', endColorstr='#FFFFFF');
+    /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#e9f4ff));
+    /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #e9f4ff 100%);
+    /*t*/ border-bottom: 1px solid #e9f4ff !important;
+}
+#tabs ul li a {
+    /*t*/ color: #888;
+}
+#tabs ul li a:hover {
+    /*t*/ color: #222;
+}
+#tabs ul li.selected a {
+    /*t*/ color: #222;
+}
+#tab_panel_inner {
+    /*t*/ border-top: 1px solid #8fa8e4;
+}
+#sidebar div.container h3 {
+    /*t*/ background: #e9f4ff;
+    /*t*/ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9f4ff', endColorstr='#FFFFFF');
+    /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#e9f4ff));
+    /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #e9f4ff 100%);
+    /*t*/ border-top: 1px solid #93ADED;
+    /*t*/ border-bottom: 1px solid #93ADED;
+}
+#sidebar_pane div.container {
+    /*t*/ background: #e9f4ff;
+    /*t*/ border-right: 1px solid #8fa8e4;
+    /*t*/ border-left: 1px solid #8fa8e4;
+}
+#sidebar_pane div.container:hover {
+    /*t*/ background: #d5dfe9;
+    /*t*/ border-right: 1px solid #8fa8e4;
+    /*t*/ border-left: 1px solid #8fa8e4;
+}

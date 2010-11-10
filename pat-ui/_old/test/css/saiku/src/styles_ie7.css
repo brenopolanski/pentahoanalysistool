@@ -1,0 +1,86 @@
+/*
+    Document    : styles_ie7.css
+    Description : IE7 Specific styles for Saiku
+    Notes       :
+        # Lines marked with "t" are important to the default theme, to
+          create a custom theme make modifications to these lines
+        # This is complemented by the BlueprintCSS framework files reset.css,
+          typography.css and ie.css
+        # The default theme relies heavily on CSS3
+*/
+
+/*
+    #tabs
+*/
+
+#tabs {
+    /*t*/ background: #F5F5F5;
+    /*t*/ border-bottom: 1px solid #CCC;
+    height: 28px;
+    margin-bottom: 3px;
+    padding-top: 3px;
+    text-align: left;
+}
+#tabs ul {
+    /*t*/ background: #F8F8F8;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+#tabs ul li {
+    float: left;
+    list-style: none;
+    padding-right: 4px;
+    /*t*/ background: #F2F2F2;
+    /*t*/ color: #888;
+    /*t*/ border-left: 1px solid #DDD;
+    /*t*/ border-top: 1px solid #DDD;
+    /*t*/ border-right: 1px solid #DDD;
+    display: block;
+    margin:1px 1px -1px 0;
+    padding: 3px 0px 5px 0px;
+    text-decoration: none;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#tabs ul li.selected {
+    /*t*/ background: #F0F0F0;
+    /*t*/ border-left: 1px solid #CCC;
+    /*t*/ border-top: 1px solid #CCC;
+    /*t*/ border-right: 1px solid #CCC;
+    /*t*/ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    /*t*/ background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    /*t*/ border-bottom: 1px solid #F0F0F0 !important;
+    font-weight: bold;
+}
+#tabs ul li:hover {
+    /*t*/ border-left: 1px solid #BBB;
+    /*t*/ border-top: 1px solid #BBB;
+    /*t*/ border-right: 1px solid #BBB;
+}
+#tabs ul li a {
+    color: #777;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 5px 0px 5px 10px;
+}
+#tabs ul li.selected a {
+    color: #222;
+}
+#tabs ul li a:hover{
+    color: #222;
+}
+#tabs ul li span {
+    background: transparent url('../../../images/src/cross.png') no-repeat center 0px;
+    display: inline-block;
+    height: 9px;
+    opacity: 0.50;
+    width: 20px;
+}
+#tabs ul li span:hover {
+    background: transparent url('../../../images/src/cross_hover.png') no-repeat center 0px;
+    cursor: pointer !important;
+    height: 9px;
+    opacity: 1;
+    width: 20px;
+}
+
