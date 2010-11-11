@@ -63,7 +63,7 @@
                     if(position == 0 ) {
                         position = 0;
                     }else{
-                        position = position + 25;
+                        position = position + 100;
                     }
                     $(content).css('margin-left', position+'px');
                     return false;
@@ -73,26 +73,40 @@
                     // Work out the current margin-left
                     var position = parseInt($(content).css('margin-left').replace("px", ""));
                     var length_of_tabs = 0;
+                    var window_width = $(window).width();
 
                     $('#tabs #tabs_scrollable ul li').each(function(index){
                         length_of_tabs = $(this).width() + length_of_tabs;
                     });
-                    
-                    console.log('We have moved '+position);
-                    console.log('Tabs are '+length_of_tabs+ 'px long');
-                    console.log('You have clicked ' + ((position/25 * -1) + 1) + ' times');
-                    console.log('Formula: ' + ((length_of_tabs/25)));
 
-
-                    //if((position)  > (length_of_tabs)) {
-                    //    position = position
-                    //}else{
-                        position = position - 25;
-                    //}
+                    if(position < (window_width - length_of_tabs)- 30) {
+                        position = position;
+                    }else{
+                        position = position - 100;
+                    }
                     $(content).css('margin-left', position+'px')
                     return false;
                 });
-                
+
+                /*
+
+                 view.resize_layout;
+                 view.add_tab;
+                 view.remove_tab;
+
+                 if ( width_of_browser < length_of_tabs ) {
+                    $tabs_scroller.show();
+                 } else {
+                    $tabs_scroller.hide();
+                 }
+
+                 view.select_tab;
+                 if ( width_of_browser < length_of_tabs ) {
+                    ... change position to match selected tab;
+                 }
+
+                 */
+
             });
 
         </script>
