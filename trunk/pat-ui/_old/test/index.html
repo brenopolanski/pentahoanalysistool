@@ -39,7 +39,20 @@
                 $('.workspace').css('height', workspace_height);
 
                 $(window).resize(function(){
-                    view.resize_layout();
+                    var window_height = $(window).height();
+
+                    if(window_height <= 600) {
+                        window_height = 600;
+                    }
+
+                    var workspace_offset = $('.workspace').outerHeight(true) - $('.workspace').height(),
+                    sidebar_offset = ($('#header').outerHeight(true) + ($('#tabs').outerHeight(true) + 1)),
+                    sidebar_height = window_height - sidebar_offset,
+                    workspace_height = sidebar_height - workspace_offset;
+
+                    $('.sidebar, .sidebar_toggler').css('height', sidebar_height);
+                    $('.workspace').css('height', workspace_height);
+
                 });
 
                 $('#right').click(function() {
@@ -52,7 +65,8 @@
                     }else{
                         position = position + 25;
                     }
-                    $(content).css('margin-left', position+'px')
+                    $(content).css('margin-left', position+'px');
+                    return false;
                 });
                 $('#left').click(function() {
                     var content = $("#tabs #tabs_scrollable ul");
@@ -63,13 +77,20 @@
                     $('#tabs #tabs_scrollable ul li').each(function(index){
                         length_of_tabs = $(this).width() + length_of_tabs;
                     });
-                    console.log(length_of_tabs);
-                    if(length_of_tabs+25/position < 3) {
-                        position = position
-                    }else{
+                    
+                    console.log('We have moved '+position);
+                    console.log('Tabs are '+length_of_tabs+ 'px long');
+                    console.log('You have clicked ' + ((position/25 * -1) + 1) + ' times');
+                    console.log('Formula: ' + ((length_of_tabs/25)));
+
+
+                    //if((position)  > (length_of_tabs)) {
+                    //    position = position
+                    //}else{
                         position = position - 25;
-                    }
+                    //}
                     $(content).css('margin-left', position+'px')
+                    return false;
                 });
                 
             });
