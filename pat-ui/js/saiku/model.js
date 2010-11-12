@@ -67,8 +67,8 @@ var model = {
     	
         $.ajax({
             type: parameters.method,
-            url: "/pat-ui/fixtures/rest/" + parameters.url,
-            //url: "rest/" + parameters.url,
+            //url: "/pat-ui/fixtures/rest/" + parameters.url,
+            url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
             password: model.password,
