@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Saiku</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .notice {
+                background: orange;
+            }
+            .success {
+                background: greenyellow;
+            }
+            .bin {
+                background: grey;
+                height: 50px;
+                width: 180px;
+            }
+            .wrapper {
+                padding: 10px;
+            }
+            .wrapper .left {
+                float: left;
+                width: 100px;
+            }
+            .wrapper .left h3 {
+                margin: 0;
+            }
+            .wrapper .right {
+                float: left;
+                padding-left: 50px;
+                text-align: left;
+                width: 500px;
+            }
+            .ui-draggable-dragging {
+                z-index: 999;
+                background: blue;
+            }
+        </style>
+        <script src="js/jquery/src/jquery.1.4.3.min.js" type="text/javascript"></script>
+        <script src="js/jquery/src/jquery.ui.1.8.5.custom.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // when document / new tab is added
+            $(document).ready(function() {
+
+                // patch for chrome draggable issue
+                document.onselectstart = function () {
+                    return false;
+                };
+
+                // lets make the dimensions to rows draggable
+                $('#dimension li').draggable({
+                    cursor: 'pointer',
+                    //appendTo: 'body',
+                    helper: 'clone',
+                    start: function(event, ui) {
+                        // show the row placeholder
+                        $('table .drop').show();
+                    },
+                    stop: function(event, ui) {
+                        $('table .drop').hide();
+                    }
+                });
+
+                // lets make the column and row areas droppable for
+                // dimensions only
+                
+                $('table .drop').droppable({
+                    accept: '.ui-draggable, .dimension',
+                    activeClass: 'notice',
+                    hoverClass: 'success',
+                    activate: function(event, ui) {
+                        $('table .drop').show();
+                    },
+                    drop: function(event, ui) {
+                        // insert a cell
+                        $('<td class="dimension">Row</td>').insertBefore($(this));
+                        // adjust the column colspan
+                        $('table thead td').attr('colspan', $('table tbody tr td').length + 1);
+                        // hide the row placeholder
+                        $(this).hide();
+                        $('.dimension').draggable({
+                            cancel: ".not-draggable",
+                            cursor: "pointer",
+                            helper: function(event, ui) {
+                                return '<span style="background: red;">'+$(this).text()+'</span>'
+                            }
+                        });
+                    }
+                });
+                $('.bin').droppable({
+                    accept: ".dimension",
+                    drop: function(event, ui) {
+                        // remove the <td/>
+                        ui.draggable.remove();
+                        // hack
+                        $('.ui-draggable-dragging').remove();
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1><em>Saiku</em></h1>
+        <h2>Table Manipulation</h2>
+        <hr/>
+        <div class="wrapper">
+            <div class="left">
+                <h3>Dimensions</h3>
+                <ul id="dimension">
+                    <li class="dimension">Drag me</li>
+                    <li class="dimension">Drag me</li>
+                    <li class="dimension">Drag me</li>
+                    <li class="dimension">Drag me</li>
+                </ul>
+                <h3>Measures</h3>
+                <ul>
+                    <li>Drag me</li>
+                    <li>Drag me</li>
+                    <li>Drag me</li>
+                    <li>Drag me</li>
+                </ul>
+                <h3>Bin</h3>
+                <div class="bin"></div>
+            </div>
+            <div class="right">
+                <table>
+                    <thead>
+                        <tr>
+                            <td colspan="2" align="right">Columns</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="drop">Drop row here</td>
+                            <td>Measures</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </body>
+</html>

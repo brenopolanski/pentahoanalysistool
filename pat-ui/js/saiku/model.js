@@ -67,8 +67,8 @@ var model = {
     	
         $.ajax({
             type: parameters.method,
-            //url: "/pat-ui/fixtures/rest/" + parameters.url,
-            url: "rest/" + parameters.url,
+            url: "/pat-ui/fixtures/rest/" + parameters.url,
+            //url: "rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
             password: model.password,
@@ -302,7 +302,8 @@ var model = {
                         setTimeout(function() {
                             ui.draggable.remove();
                         },1);
-                        
+
+                        // FIXME - Incorrect logic to keeping placeholder 
                         if(!$(".dropzone_rows ul li").hasClass("placeholder")) {
                             $(".dropzone_rows ul").append('<li class="placeholder">Drop fields here</li>');
                         }else if(!$(".dropzone_columns ul li").hasClass("placeholder")) {
