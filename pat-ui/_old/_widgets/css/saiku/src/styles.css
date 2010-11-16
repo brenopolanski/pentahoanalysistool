@@ -1,0 +1,209 @@
+
+/* Widgets
+ ----------------------------------------- */
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+}
+.container {
+    padding: 20px;
+}
+
+/* Toolbar
+ ----------------------------------------- */
+
+#toolbar {
+    background: #EEEEEE;
+    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
+    background: -moz-linear-gradient(top, #EEEEEE 0%, #DDDDDD 100%);
+    border-bottom: 1px solid #BBB;
+    height: 50px;
+}
+#toolbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 7px 10px 7px 10px;
+}
+#toolbar ul li {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding-right: 6px;
+}
+#toolbar ul li.separator {
+    border-left: 1px solid #CCC;
+    display: block;
+    height: 26px;
+    padding: 4px;
+    width: 1px;
+}
+#toolbar ul li a {
+    background: transparent url('../../../images/src/toolbar_cross.png') center center no-repeat;
+    border: 1px solid transparent;
+    display: block;
+    height: 26px;
+    padding: 4px;
+    width: 26px;
+}
+#toolbar ul li a:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_cross.png') center center no-repeat;
+    border: 1px solid #CCC;
+    padding: 4px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+/* Tabs
+ ----------------------------------------- */
+
+#tabs {
+    background: #F5F5F5;
+    border-bottom: 1px solid #CCC;
+    height: 28px;
+    margin-bottom: 3px;
+    padding-top: 3px;
+    text-align: left;
+}
+#tabs ul {
+    background: #F8F8F8;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+#tabs ul li {
+    float: left;
+    list-style: none;
+    padding-right: 4px;
+    background: #F2F2F2;
+    color: #888;
+    border-left: 1px solid #DDD;
+    border-top: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    display: block;
+    margin:1px 1px -1px 0;
+    padding: 4px 0px 4px 0px;
+    text-decoration: none;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+}
+#tabs ul li.selected {
+    background: #F0F0F0;
+    border-left: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border-bottom: 1px solid #F0F0F0 !important;
+    font-weight: bold;
+}
+#tabs ul li:hover {
+    border-left: 1px solid #BBB;
+    border-top: 1px solid #BBB;
+    border-right: 1px solid #BBB;
+}
+#tabs ul li a {
+    color: #777;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 5px 2px 5px 10px;
+}
+#tabs ul li.selected a {
+    color: #222;
+}
+#tabs ul li a:hover{
+    color: #222;
+}
+#tabs ul li span {
+    background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
+    display: inline-block;
+    height: 18px;
+    text-indent: -999px;
+    width: 20px;
+}
+#tabs ul li span:hover {
+    background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
+    cursor: pointer !important;
+    display: inline-block;
+    height: 18px;
+    width: 20px;
+}
+
+/* Sidebar
+ ----------------------------------------- */
+
+.sidebar h3 {
+    background: #F9F9F9;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.4em;
+    margin: 5px 0;
+    padding: 5px 10px 6px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+}
+.sidebar h3.top {
+    border-top: none !important;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top:  6px;
+}
+
+
+/* Sidebar Separator
+ ----------------------------------------- */
+
+.sidebar_separator {
+    background: #F0F0F0;
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    cursor: pointer;
+    width: 3px;
+}
+.sidebar_separator:hover {
+    background: #E0E0E0;
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    width: 3px;
+}
+
+/* Dialog
+ ----------------------------------------- */
+
+.dialog {
+    background: #FFF;
+    border: 3px solid #EEE;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 3px #DDD;
+    -webkit-box-shadow: 0 0 3px #DDD;
+}
+.dialog .dialog_inner {
+    border: 1px solid #CCC;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+}
+.dialog .dialog_inner .dialog_header {
+    background: #F9F9F9;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 5px 10px 6px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    -moz-box-shadow:0 1px 3px #DDDDDD;
+    -webkit-box-shadow:0 1px 3px #DDDDDD;
+}
+.dialog .dialog_inner .dialog_body {
+    padding: 13px 10px 10px 10px;
+}
+.dialog .dialog_inner .dialog_footer {
+    border-top: 1px solid #CCC;
+    padding: 10px 10px;
+    text-align: right
+}
