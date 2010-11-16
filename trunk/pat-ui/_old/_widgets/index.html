@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Saiku UI Widgets</title>
+        <!-- Blueprint CSS -->
+        <link rel="stylesheet" href="css/blueprint/src/reset.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/src/typography.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/src/forms.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/src/grid.css" type="text/css" media="screen, projection">
+        <!--[if lt IE 8]>
+        <link rel="stylesheet" href="css/blueprint/src/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+        <!-- Saiku CSS -->
+        <link rel="stylesheet" href="css/saiku/src/styles.css" type="text/css" media="screen, projection">
+    </head>
+    <body>
+        <div class="container">
+            <div class="span-24">
+                <h2>Saiku <em>UI</em> Widgets (Default)</h2>
+                <hr/>
+            </div>
+            <div class="span-24">
+                <h3>Toolbar</h3>
+                <div id="toolbar" class="span-24">
+                    <ul>
+                        <li><a href="#" class="" title="Title"></a></li>
+                        <li class="separator">&nbsp;</li>
+                        <li><a href="#" class="" title="Title"></a></li>
+                        <li><a href="#" class="" title="Title"></a></li>
+                        <li><a href="#" class="" title="Title"></a></li>
+                        <li class="separator">&nbsp;</li>
+                        <li><a href="#" class="" title="Title"></a></li>
+                        <li><a href="#" class="" title="Title"></a></li>
+                    </ul>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Id</strong>: #toolbar</li>
+                        <li><strong>Description</strong>: A configurable toolbar which sits at the top of Saiku UI.</li>
+                        <li><strong>Notes</strong>: When hovered over icons are highlighted with a background and border.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Tabs</h3>
+                <div id="tabs" class="span-24">
+                    <ul>
+                        <li class="selected"><a href="#" title="New Query (1)">New Query (1)</a><span>Close</span></li>
+                        <li><a href="#" title="New Query (2)">New Query (2)</a><span>Close</span></li>
+                        <li><a href="#" title="New Query (3)">New Query (3)</a><span>Close</span></li>
+                    </ul>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Id</strong> : #tabs</li>
+                        <li><strong>Description</strong> : A panel which lists tabs with a closable button.</li>
+                        <li><strong>Notes</strong> : Needs to be scrollable.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Sidebar</h3>
+                <div class="sidebar span-8">
+                    <h3 class="top">Sidebar Title (Top)</h3>
+                    <h3>Sidebar Title</h3>
+                </div>
+                <div class="span-16 last"></div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .sidebar h3</li>
+                        <li><strong>Description</strong> : Headers which sit in the sidebar area.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Sidebar Separator</h3>
+                <div class="span-24">
+                    <div class="sidebar_separator">&nbsp;</div>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .sidebar_separator</li>
+                        <li><strong>Description</strong> : A panel which separates the Sidebar and Workspace.</li>
+                        <li><strong>Notes</strong> : When hovered over it is highlighted.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Dialog</h3>
+                <div class="span-11">
+
+                    <div class="dialog">
+                        <div class="dialog_inner">
+                            <div class="dialog_header">
+                                Dialog Title
+                            </div>
+                            <div class="dialog_body">
+                                Content
+                            </div>
+                            <div class="dialog_footer">
+                                <input type="button" value="OK" />
+                                <input type="button" value="Close" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="span-13 last"></div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .dialog</li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+    </body>
+</html>
