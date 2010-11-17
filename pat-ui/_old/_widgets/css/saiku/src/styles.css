@@ -232,11 +232,9 @@ h3 {
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
+    margin-top: 10px;
     padding: 5px 10px;
     text-align: right
-}
-.dialog .dialog_inner .dialog_footer input {
-    font-size: 0.8em;
 }
 
 /* Button
@@ -252,6 +250,8 @@ a.button {
     text-decoration: none;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
 }
 a.button:hover {
     background: #F0F0F0;
@@ -289,8 +289,8 @@ a.button_selected {
     width: 10%;
     -moz-border-radius: 3px 0 0 3px;
     -webkit-border-radius: 3px 0 0 3px;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
     -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
 }
 .field_list .field_list_body {
     border-bottom: 1px solid #CCC;
@@ -375,11 +375,69 @@ a.button_selected {
     border-right: 1px solid #CCC;
 }
 
-/* Notices
+/* Tree
  ----------------------------------------- */
 
-.notice {
-    background: #fff6bf; 
-    border: 1px solid #ffd324;
-    color: #514721;
+.dtree,
+.mtree {
+    margin: 0;
+    padding: 0;
+}
+.dtree li,
+.mtree li {
+    list-style-type: none;
+    padding-left: 22px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.dtree li.collapsed,
+.mtree li.collapsed {
+    background: url('../../../images/src/tree_collapsed.png') 0px 2px no-repeat;
+}
+.dtree li.expand,
+.mtree li.expand {
+    background: url('../../../images/src/tree_expand.png') 0px 2px no-repeat;
+}
+.dtree li a,
+.mtree li a {
+    color: #222;
+    text-decoration: none;
+}
+.dtree li a:hover {
+    background: #e5f6ff;
+}
+.mtree li a:hover {
+    background: #ffe8e8;
+}
+.dtree li a.folder_expand,
+.mtree li a.folder_expand {
+    background: url('../../../images/src/tree_folder_expand.png') 0px -1px no-repeat;
+    padding-left: 20px;
+}
+.dtree li a.folder_collapsed,
+.mtree li a.folder_collapsed {
+    background: url('../../../images/src/tree_folder_collapsed.png') 0px -1px no-repeat;
+    padding-left: 20px;
+}
+
+/* Waiting
+ ------------------------------------------ */
+
+.waiting {
+    background: #FFF;
+    border: 3px solid #EEE;
+    display: inline-block;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 3px #DDD;
+    -webkit-box-shadow: 0 0 3px #DDD;
+}
+.waiting .waiting_inner {
+    border: 1px solid #CCC;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+}
+.waiting .waiting_inner .waiting_body {
+    background: url('../../../images/src/waiting_loading.gif') 10px 11px no-repeat;
+    padding: 10px 15px 10px 35px;
 }

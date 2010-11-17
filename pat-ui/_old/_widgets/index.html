@@ -135,18 +135,35 @@
                 <hr/>
                 <h3>Tree</h3>
                 <div class="span-24">
-                    <ul class="tree">
-                        <li>Dimension 1
+                    <ul class="dtree">
+                        <li class="expand"><a href="#" class="folder_expand" title="Dimension 1" rel="[].[]">Dimension 1</a>
                             <ul>
-                                <li>Dimension 1a</li>
-                                <li>Dimension 1b</li>
-                                <li>Dimension 1c</li>
-                                <li>Dimension 1d</li>
+                                <li><a href="#" title="Dimension 1a" rel="[].[]">Dimension 1a</a></li>
+                                <li><a href="#" title="Dimension 1b" rel="[].[]">Dimension 1b</a></li>
+                                <li><a href="#" title="Dimension 1c" rel="[].[]">Dimension 1c</a></li>
+                                <li><a href="#" title="Dimension 1d" rel="[].[]">Dimension 1d</a></li>
                             </ul>
                         </li>
-                        <li>Dimension 2</li>
-                        <li>Dimension 3</li>
-                        <li>Dimension 4</li>
+                        <li class="collapsed"><a href="#" class="folder_collapsed" title="Dimension 2" rel="[].[]">Dimension 2</a></li>
+                        <li class="collapsed"><a href="#" class="folder_collapsed" title="Dimension 3" rel="[].[]">Dimension 3</a></li>
+                        <li class="collapsed"><a href="#" class="folder_collapsed" title="Dimension 4" rel="[].[]">Dimension 4</a></li>
+                    </ul>
+                    <hr class="space"/>
+                    <ul class="mtree">
+                        <li class="expand"><a href="#" class="folder_expand" title="Measures" rel="[].[]">Measures</a>
+                            <ul>
+                                <li><a href="#" title="Measure 1a" rel="[].[]">Measure a</a></li>
+                                <li><a href="#" title="Measure 1b" rel="[].[]">Measure b</a></li>
+                                <li><a href="#" title="Measure 1c" rel="[].[]">Measure c</a></li>
+                                <li><a href="#" title="Measure 1d" rel="[].[]">Measure d</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .tree</li>
+                        <li><strong>Description</strong> : Tree to display measures and dimensions.</li>
                     </ul>
                 </div>
                 <hr/>
@@ -213,7 +230,8 @@
                     <table class="datatable">
                         <thead>
                             <tr>
-                                <th class="int" colspan="3">Header</th>
+                                <th class="int"></th>
+                                <th class="int" colspan="2">Header</th>
                             </tr>
                             <tr>
                                 <th class="str">Header</th>
@@ -240,13 +258,21 @@
                     </ul>
                 </div>
                 <hr/>
-                <h3>Notifications</h3>
-                <div class="span-24">
-                    <div class="notice">I'm a notice</div>
+                <h3>Waiting</h3>
+                <div class="span-11">
+                    <div class="waiting">
+                        <div class="waiting_inner">
+                            <div class="waiting_body">
+                                Loading available schemas and cubes
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                 <div class="span-24 prepend-top">
+                <div class="span-13 last"></div>
+                <div class="span-24 prepend-top">
                     <ul>
-                        <li><strong>Class</strong> : .notice</li>
+                        <li><strong>Class</strong> : .waiting</li>
+                        <li><strong>Description</strong> : A waiting message which pop ups.</li>
                     </ul>
                 </div>
                 <hr/>
