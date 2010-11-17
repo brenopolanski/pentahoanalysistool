@@ -285,6 +285,7 @@ a.button_selected {
     font-weight: bold;
     float: left;
     padding: 5px;
+    line-height: 19px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 10%;
     -moz-border-radius: 3px 0 0 3px;
@@ -311,7 +312,8 @@ a.button_selected {
 }
 .field_list .field_list_body ul li {
     cursor: pointer;
-    list-style: none;
+    line-height: 19px;
+    list-style-type: none;
     display: inline;
     margin: 0 0 0 5px;
     padding: 0;
@@ -385,10 +387,10 @@ a.button_selected {
 }
 .dtree li,
 .mtree li {
+    line-height: 20px;
     list-style-type: none;
+    margin: 0;
     padding-left: 22px;
-    padding-top: 2px;
-    padding-bottom: 2px;
 }
 .dtree li.collapsed,
 .mtree li.collapsed {
@@ -401,24 +403,36 @@ a.button_selected {
 .dtree li a,
 .mtree li a {
     color: #222;
+    padding-left: 20px;
     text-decoration: none;
-}
-.dtree li a:hover {
-    background: #e5f6ff;
-}
-.mtree li a:hover {
-    background: #ffe8e8;
 }
 .dtree li a.folder_expand,
 .mtree li a.folder_expand {
     background: url('../../../images/src/tree_folder_expand.png') 0px -1px no-repeat;
-    padding-left: 20px;
 }
 .dtree li a.folder_collapsed,
 .mtree li a.folder_collapsed {
     background: url('../../../images/src/tree_folder_collapsed.png') 0px -1px no-repeat;
-    padding-left: 20px;
 }
+.dtree li ul,
+.mtree li ul{
+    padding: 0px;
+    margin: 0;
+}
+.dtree li ul li,
+.mtree li ul li {
+    padding-left: 18px;
+}
+.dtree li ul li a {
+    padding-left: 20px;
+    background: url('../../../images/src/tree_dimension.png') 0px 0px no-repeat;
+}
+.mtree li ul li a {
+    padding-left: 20px;
+    background: url('../../../images/src/tree_measure.png') 0px 0px no-repeat;
+}
+
+
 
 /* Waiting
  ------------------------------------------ */
