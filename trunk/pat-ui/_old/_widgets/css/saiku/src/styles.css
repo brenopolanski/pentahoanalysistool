@@ -10,6 +10,12 @@ h3 {
 .container {
     padding: 20px;
 }
+.clear {
+    clear: both;
+}
+.button_showcase {
+    padding: 10px 0;
+}
 
 /* Toolbar
  ----------------------------------------- */
@@ -114,14 +120,14 @@ h3 {
 #tabs ul li a:hover{
     color: #222;
 }
-#tabs ul li span {
+#tabs ul li span.close_tab {
     background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
     display: inline-block;
     height: 18px;
     text-indent: -999px;
     width: 20px;
 }
-#tabs ul li span:hover {
+#tabs ul li span.close_tab:hover {
     background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
     cursor: pointer !important;
     display: inline-block;
@@ -142,14 +148,14 @@ h3 {
     font-weight: bold;
     line-height: 1.4em;
     margin: 5px 0;
-    padding: 5px 10px 6px;
+    padding: 4px 10px 6px;
     text-shadow: 1px 1px 0 #FFFFFF;
 }
 .sidebar h3.top {
     border-top: none !important;
     margin-bottom: 0;
     margin-top: 0;
-    padding-top:  6px;
+    padding-top: 5px;
 }
 
 
@@ -190,20 +196,190 @@ h3 {
     background: #F9F9F9;
     background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border-bottom: 1px solid #CCC;
+    line-height: 1.4em;
+    padding: 5px 5px 6px 10px;
+    -moz-box-shadow:0 1px 3px #DDDDDD;
+    -webkit-box-shadow:0 1px 3px #DDDDDD;
+}
+.dialog .dialog_inner .dialog_header h3 {
+    float: left;
     font-size: 13px;
     font-weight: bold;
     line-height: 1.4em;
     margin: 0;
-    padding: 5px 10px 6px;
     text-shadow: 1px 1px 0 #FFFFFF;
-    -moz-box-shadow:0 1px 3px #DDDDDD;
-    -webkit-box-shadow:0 1px 3px #DDDDDD;
+    width: 200px;
+}
+.dialog .dialog_inner .dialog_header a.close_dialog {
+    background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
+    display: inline-block;
+    cursor: pointer;
+    float: right;
+    height: 18px;
+    text-indent: -999px;
+    width: 20px;
+}
+.dialog .dialog_inner .dialog_header a.close_dialog:hover {
+    background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
 }
 .dialog .dialog_inner .dialog_body {
-    padding: 13px 10px 10px 10px;
+    padding: 10px;
+}
+.dialog .dialog_inner .dialog_body_image {
+    background: transparent url('../../../images/src/dialog_box.png') 20px 10px no-repeat;
+    padding: 10px 10px 10px 70px;
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
-    padding: 10px 10px;
+    padding: 5px 10px;
     text-align: right
+}
+.dialog .dialog_inner .dialog_footer input {
+    font-size: 0.8em;
+}
+
+/* Button
+ ----------------------------------------- */
+
+a.button {
+    background: #F5F5F5;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border: 1px solid #CCC;
+    color: #222;
+    padding: 5px 10px;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+a.button:hover {
+    background: #F0F0F0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
+    color: #777;
+}
+a.button_selected {
+    background: #F0F0F0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
+    border: 1px solid #CCC;
+    color: #777;
+    padding: 5px 10px;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+/* Field List
+ ----------------------------------------- */
+
+.field_list {
+    margin-bottom: 10px;
+}
+.field_list .field_list_header {
+    background: #F9F9F9;
+    border: 1px solid #CCC;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    font-weight: bold;
+    float: left;
+    padding: 5px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 10%;
+    -moz-border-radius: 3px 0 0 3px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+}
+.field_list .field_list_body {
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    float: left;
+    margin: 0;
+    padding: 5px;
+    width: 80%;
+    -moz-border-radius: 0 3px 3px 0;
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+.field_list .field_list_body ul {
+    margin: 0;
+    padding: 0;
+}
+.field_list .field_list_body ul li {
+    cursor: pointer;
+    list-style: none;
+    display: inline;
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+
+/* Draggables
+ ----------------------------------------- */
+
+.draggable {
+    cursor: pointer;
+    padding: 2px 4px;
+    -moz-box-shadow: 0 0 2px #DDD;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: 0 0 2px #DDD;
+    -webkit-border-radius: 3px;
+}
+.dimension {
+    background: #e5f6ff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
+    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
+    border: 1px solid #2a6085;
+    color: #2a6085;
+}
+.measure {
+    background: #ffe8e8;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
+    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
+    border: 1px solid #ed9393;
+    color: #983030;
+}
+.placeholder {
+    background: #FFF;
+    border: 1px dashed #777;
+    color: #777;
+    padding: 2px 4px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+/* Table
+ ----------------------------------------- */
+
+.datatable {
+    background: #FFF;
+}
+.datatable .int {
+    text-align: right;
+}
+.datatable .str {
+    text-align: left;
+}
+.datatable tr th {
+    background: #FFF;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    font-weight: bold;
+}
+.datatable tr td {
+    background: #FFF !important;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+/* Notices
+ ----------------------------------------- */
+
+.notice {
+    background: #fff6bf; 
+    border: 1px solid #ffd324;
+    color: #514721;
 }
