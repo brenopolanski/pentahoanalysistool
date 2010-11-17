@@ -9,9 +9,7 @@
         <link rel="stylesheet" href="css/blueprint/src/typography.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/src/forms.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="css/blueprint/src/grid.css" type="text/css" media="screen, projection">
-        <!--[if lt IE 8]>
-        <link rel="stylesheet" href="css/blueprint/src/ie.css" type="text/css" media="screen, projection">
-        <![endif]-->
+        <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/src/ie.css" type="text/css" media="screen, projection"><![endif]-->
         <!-- Saiku CSS -->
         <link rel="stylesheet" href="css/saiku/src/styles.css" type="text/css" media="screen, projection">
     </head>
@@ -19,6 +17,13 @@
         <div class="container">
             <div class="span-24">
                 <h2>Saiku <em>UI</em> Widgets (Default)</h2>
+                <p>Tested on Mac OSX, Windows and <span class="quiet">Debian</span> with:</p>
+                <ul>
+                    <li>Internet Explorer 7+</li>
+                    <li>Firefox 3+</li>
+                    <li>Safari</li>
+                    <li>Chrome</li>
+                </ul>
                 <hr/>
             </div>
             <div class="span-24">
@@ -46,9 +51,9 @@
                 <h3>Tabs</h3>
                 <div id="tabs" class="span-24">
                     <ul>
-                        <li class="selected"><a href="#" title="New Query (1)">New Query (1)</a><span>Close</span></li>
-                        <li><a href="#" title="New Query (2)">New Query (2)</a><span>Close</span></li>
-                        <li><a href="#" title="New Query (3)">New Query (3)</a><span>Close</span></li>
+                        <li class="selected"><a href="#" title="New Query (1)">New Query (1)</a><span class="close_tab">Close tab</span></li>
+                        <li><a href="#" title="New Query (2)">New Query (2)</a><span class="close_tab">Close tab</span></li>
+                        <li><a href="#" title="New Query (3)">New Query (3)</a><span class="close_tab">Close tab</span></li>
                     </ul>
                 </div>
                 <div class="span-24 prepend-top">
@@ -86,32 +91,166 @@
                 <hr/>
                 <h3>Dialog</h3>
                 <div class="span-11">
-
                     <div class="dialog">
                         <div class="dialog_inner">
                             <div class="dialog_header">
-                                Dialog Title
+                                <h3>Dialog Title</h3>
+                                <a href="#" title="Close" class="close_dialog">Close</a>
+                                <div class="clear"></div>
                             </div>
                             <div class="dialog_body">
-                                Content
+                                I'm really really really really really really really really really really really really really really long.
                             </div>
                             <div class="dialog_footer">
-                                <input type="button" value="OK" />
-                                <input type="button" value="Close" />
+                                <input type="button" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
+                                <input type="button" value="&nbsp;&nbsp;Close&nbsp;&nbsp;" />
                             </div>
                         </div>
                     </div>
-
-
+                    <hr class="space"/>
+                    <div class="dialog">
+                        <div class="dialog_inner">
+                            <div class="dialog_header">
+                                <h3>Dialog Title</h3>
+                                <a href="#" title="Close" class="close_dialog">Close</a>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="dialog_body_image">
+                                Adding an image is as easy as changing the .dialog_body to .dialog_body_image
+                            </div>
+                            <div class="dialog_footer">
+                                <input type="button" value="&nbsp;&nbsp;OK&nbsp;&nbsp;" />
+                                <input type="button" value="&nbsp;&nbsp;Close&nbsp;&nbsp;" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="span-13 last"></div>
                 <div class="span-24 prepend-top">
                     <ul>
                         <li><strong>Class</strong> : .dialog</li>
-                        <li></li>
-                        <li></li>
+                        <li><strong>Description</strong> : A dialog template which will be used for all 'pop up' experiences.</li>
                     </ul>
                 </div>
+                <hr/>
+                <h3>Tree</h3>
+                <div class="span-24">
+                    <ul class="tree">
+                        <li>Dimension 1
+                            <ul>
+                                <li>Dimension 1a</li>
+                                <li>Dimension 1b</li>
+                                <li>Dimension 1c</li>
+                                <li>Dimension 1d</li>
+                            </ul>
+                        </li>
+                        <li>Dimension 2</li>
+                        <li>Dimension 3</li>
+                        <li>Dimension 4</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Toolbar / Buttons</h3>
+                <div class="button_showcase span-24">
+                    <a class="button" href="#">Button</a>
+                    <a class="button_selected" href="#">Button selected</a>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .button</li>
+                        <li><strong>Description</strong> : Buttons to be used on the query workspace toolbar.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Field List</h3>
+                <div class="span-14">
+                    <div class="field_list">
+                        <div class="field_list_header">Rows</div>
+                        <div class="field_list_body">
+                            <ul>
+                                <li>Row Item</li>
+                                <li>Row Item</li>
+                                <li>Row Item</li>
+                            </ul>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="field_list">
+                        <div class="field_list_header">Columns</div>
+                        <div class="field_list_body">
+                            <ul>
+                                <li>Column Item</li>
+                                <li>Column Item</li>
+                                <li>Column Item</li>
+                            </ul>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="span-10"></div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .field_list</li>
+                        <li><strong>Description</strong> : An error where users will drop dimensions and measures, these will be split into axis.</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Draggables</h3>
+                <div class="span-24">
+                    <span class="draggable dimension">Dimension</span>
+                    <span class="draggable measure">Measure</span>
+                    <span class="placeholder">Placeholder</span>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .draggable (.dimension, .measure)</li>
+                        <li><strong>Description</strong> : All draggable and undraggable items</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Table</h3>
+                <div class="span-24">
+                    <table class="datatable">
+                        <thead>
+                            <tr>
+                                <th class="int" colspan="3">Header</th>
+                            </tr>
+                            <tr>
+                                <th class="str">Header</th>
+                                <th class="int">Header</th>
+                                <th class="int">Header</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="str" rowspan="2">Row Item</td>
+                                <td class="int">Row Item</td>
+                                <td class="int">Row Item</td>
+                            </tr>
+                            <tr>
+                                <td class="int">Row Item</td>
+                                <td class="int">Row Item</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .datatable</li>
+                    </ul>
+                </div>
+                <hr/>
+                <h3>Notifications</h3>
+                <div class="span-24">
+                    <div class="notice">I'm a notice</div>
+                </div>
+                 <div class="span-24 prepend-top">
+                    <ul>
+                        <li><strong>Class</strong> : .notice</li>
+                    </ul>
+                </div>
+                <hr/>
             </div>
+        </div>
     </body>
 </html>

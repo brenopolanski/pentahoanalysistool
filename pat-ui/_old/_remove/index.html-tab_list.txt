@@ -1,3 +1,0 @@
-<li><a href="#query1">New Query</a></li>
-                    <li><a href="#query2" class="closable" rel="new">New Query (1) <img src="images/tab/close.png" alt="Close tab"/></a></li>
-                
