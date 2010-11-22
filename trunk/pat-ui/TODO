@@ -1,7 +1,0 @@
--implement toolbar button handlers
--handle multiple tabs
--finish widgets
--destroy tabs correctly i.e. .destroy()
--add sprites
--create lite version of jquery ui
--more commenting needed on view.drawUI()

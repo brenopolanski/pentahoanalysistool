@@ -1,42 +1,45 @@
-/*
- * This is the model for the PATui. It will handle all calls to the REST API stored on the server.
+/**
+ * @fileOverview This file represents the model for Saiku's user interface.
+ * @description This file handles all REST API calls to Saiku's server.
+ * @author Mark Cahill and Prashant Raju
+ * @version 1.0.0
  */
 
+/**
+ * model class
+ * @class
+ */
 var model = {
-    /*
-     * The username to be used with HTTP basic auth
-     */
+    /** @lends model# */
+    
+    /** The username to be used with HTTP basic auth. */
     username: "",
-	
-    /*
-     * The password to be used with HTTP basic auth
-     */
+
+    /** The password to be used with HTTP basic auth. */
     password: "",
-	
-    /*
-     * The session_id used to make calls to the server
-     */
+
+    /** The session_id used to make calls to the server. */
     session_id: "",
-	
-    /*
-     * Connection information for this PAT server
-     */
+
+    /** Connection information for this Saiku server. */
     connections: {},
-		
-    /*
-     * This is the constructor of sorts, ensuring that the session ID is valid
+
+    /**
+     * Check if the session id is valid and display the login form.
+     * @param username {String} The username to use with Saiku server.
      */
     init: function (username) {
         // Let's be friends!
         model.server_errors = 0;
-        
-        // Ask for credentials using a pretty form that doesn't block the browser (and hides password)
-        if (model.username == "" || model.password == "") {
 
+        /**
+         * Ask for credentials using a pretty form that doesn't block the 
+         * browser (and hides password)
+         */   
+        if (model.username == "" || model.password == "") {
             $('#login_form').jqm({
                 modal: true
             });
-            
             $('#login_form').jqmShow()
             .find('#login')         
             .click(function(){
@@ -45,23 +48,17 @@ var model = {
                 model.password = $('#login_form .password').val();
                 model.get_session();
             });
-
         }
     },
     
-    /*
-     * Make an ajax request
-     */
+    /** Handle all AJAX requests. */
     request: function(parameters) {
         if (typeof parameters.method == "undefined")
             parameters.method = "GET";
-    	
         if (typeof parameters.data == "undefined")
             parameters.data = {};
-    	
         if (typeof parameters.success == "undefined")
             parameters.success = function() {};
-    	
         if (typeof parameters.error == "undefined")
             parameters.error = controller.server_error;
     	
@@ -77,9 +74,7 @@ var model = {
         });
     },
 	
-    /*
-     * Obtain a session and load connections
-     */
+    /** Obtain a session and load connections. */
     get_session: function() {
         model.request({
             method: "POST",
@@ -93,28 +88,22 @@ var model = {
         });
     },
 
-    /*
-     *  When a new query button is clicked create a new tab and load with
-     *  a new query template.
+    /**
+     * When a new query button is clicked create a new tab and load with
+     * a new query template.
      */
     new_tab: function() {
-    	
-        /*
-    	 * Create the actual tab and tab index
-    	 */
+        /** Create the actual tab and tab index. */
         view.new_tab();
     },
      
-    /*
-         *  Populates dimensions_tree and measures_tree with available items
-         *  and enables draggable, droppable and sortable lists.
-         *  
-         *  FIXME - this needs some cleanup
-         */
+    /**
+     * Populate dimension and measure trees with available items, enable
+     * draggable, droppable and sortable lists.
+     */
     new_query: function(tab_index) {
 
-        //  Patch for Chrome/Safari showing the text cursor
-        //  when dragging
+        // Patch for Chrome/Safari showing the text cursor when dragging
         document.onselectstart = function () {
             return false;
         };
@@ -327,13 +316,16 @@ var model = {
         });
     },
     
-    open_query: function() {}, //TODO - open query
-    save_query: function() {}, //TODO - save query
-    delete_query: function() {}, //TODO - delete query
+    // TODO - open query
+    open_query: function() {},
+
+    // TODO - save query
+    save_query: function() {},
+
+    // TODO - delete query
+    delete_query: function() {}, 
     
-    /*
-     * Kill credentials and server-side session
-     */
+    /** Kill credentials and server side session. */
     logout: function() {
         // Kill server-side session
         model.request({
@@ -344,25 +336,24 @@ var model = {
                 model.password = "";
                 model.session_id = "";
                 model.connections = {};
-	            
+
                 // Remove all tabs
                 view.tabs.clear_tabs();
-	        	
+
                 // Hide everything
                 view.logout();
-	        	
+                
                 // Refresh the page
                 location.reload(true);
             }
         });
     },
     
-    /*
-         * Display information about PAT
-         */
+    /** Display information about Saiku. */
     about: function() {
         view.info('Saiku Version 1.0', 'About');
     }
 };
 
+// Initialise the model
 model.init();
