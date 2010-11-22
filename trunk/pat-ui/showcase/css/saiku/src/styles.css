@@ -21,6 +21,9 @@ html, body {
 .hide {
     display: none;
 }
+.calign {
+    text-align: center
+}
 
 /** Toolbar */
 
@@ -389,27 +392,19 @@ html, body {
 
 /** Dialog */
 
-.dialog_overlay {
-    height: 100%;
-    filter: alpha(opacity=50);
-    left: 0;
-    opacity: 0.5;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 3000;
-    -moz-opacity: 0.5;
-}
 .dialog {
     background: #FFF;
     border: 3px solid #EEE;
-    position: absolute;
     width: 400px;
-    z-index: 5000;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-box-shadow: 0 0 10px #EEE;
     -webkit-box-shadow: 0 0 10px #EEE;
+}
+.dialog input[type=text],
+.dialog input[type=password] {
+    padding: 4px;
+    width: 286px;
 }
 .dialog .dialog_inner {
     border: 1px solid #CCC;
@@ -452,7 +447,7 @@ html, body {
 }
 .dialog .dialog_inner .dialog_body_image {
     background: transparent url('../../../images/src/dialog_box.png') 20px 10px no-repeat;
-    padding: 10px 10px 20px 90px;
+    padding: 10px 10px 10px 90px;
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
