@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Saiku</title>
+        <!-- Blueprint CSS -->
+        <link rel="stylesheet" href="css/blueprint/src/reset.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/src/typography.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/src/forms.css" type="text/css" media="screen, projection">
+        <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/src/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <!-- Saiku CSS -->
+        <link rel="stylesheet" href="css/saiku/src/styles.css" type="text/css" media="screen, projection">
+        <!-- jQuery -->
+        <script src="js/jquery/src/jquery.1.4.3.min.js" type="text/javascript"></script>
+        <!-- jQueryui -->
+        <script src="js/jquery/src/jquery.ui.1.8.5.custom.min.js" type="text/javascript"></script>
+        <!-- Resize Height -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                fluid_height();
+
+                $(window).resize(function(){
+                    fluid_height();
+                });
+
+                $('.sidebar_separator').click(function(){
+                    toggle_sidebar();
+                });
+
+                function fluid_height() {
+                    var window_height = $(window).height();
+
+                    // If the height of the user's browser is less than 600px
+                    // then set a static height of 600px
+                    if(window_height <= 600) {
+                        window_height = 600;
+                    }
+
+                    var workspace_offset = $('.workspace_inner').outerHeight(true) - $('.workspace_inner').height(),
+                    // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
+                    sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 1)),
+                    sidebar_height = window_height - sidebar_offset,
+                    workspace_height = sidebar_height - workspace_offset;
+
+                    $('.sidebar, .sidebar_separator').css('height', sidebar_height);
+                    $('.workspace_inner').css('height', workspace_height);
+                }
+
+                function toggle_sidebar() {
+                    var sidebar_width = $('.sidebar').width();
+
+                    if(sidebar_width == 260) {
+                        $('.sidebar').css('width', 0);
+                        $('.workspace_inner').css('margin-left', 5);
+                    }else{
+                        $('.sidebar').css('width', 260);
+                        $('.workspace_inner').css('margin-left', 265);
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <!-- toolbar -->
+        <div id="toolbar">
+            <ul>
+                <li><a id="new_tab" href="#" title="New Query" class="new_tab"></a></li>
+                <li class="separator">&nbsp;</li>
+                <li><a id="open_query" href="#" title="Open Query" class="open_query"></a></li>
+                <li><a id="save_query" href="#" title="Save Query" class="save_query"></a></li>
+                <li><a id="delete_query" href="#" title="Delete Query" class="delete_query"></a></li>
+                <li class="separator">&nbsp;</li>
+                <li><a id="logout" href="#" title="Logout" class="logout"></a></li>
+                <li><a id="about" href="#" title="About" class="about"></a></li>
+            </ul>
+        </div>
+        <!-- eof toolbar -->
+        <!-- tabs -->
+        <div id="tabs">
+            <ul>
+                <li class="selected"><a href="#" title="New Query (1)">New Query (1)</a><span class="close_tab">Close tab</span></li>
+                <li><a href="#" title="New Query (2)">New Query (2)</a><span class="close_tab">Close tab</span></li>
+                <li><a href="#" title="New Query (3)">New Query (3)</a><span class="close_tab">Close tab</span></li>
+            </ul>
+        </div>
+        <!-- eof tabs -->
+        <!-- tab_panel -->
+        <div id="tab_panel">
+            <!-- tab_n -->
+            <div id="tab_0">
+                <!-- tab_workspace -->
+                <div class="workspace">
+                    <div class="workspace_inner">
+                        <div class="field_list">
+                            <div class="field_list_header">Rows</div>
+                            <div class="field_list_body">
+                                <ul>
+                                    <li class="draggable dimension">Row Item</li>
+                                </ul>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="field_list">
+                            <div class="field_list_header">Columns</div>
+                            <div class="field_list_body">
+                                <ul>
+                                    <li class="draggable measure">Column Item</li>
+                                </ul>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- eof tab_workspace -->
+                <!-- sidebar -->
+                <div class="sidebar">
+                    <h3 class="top">Cubes</h3>
+                    <div class="sidebar_inner"></div>
+                    <h3>Dimensions</h3>
+                    <div class="sidebar_inner"></div>
+                    <h3>Measures</h3>
+                    <div class="sidebar_inner"></div>
+                </div>
+                <!-- eof sidebar -->
+                <!-- sidebar separator -->
+                <div class="sidebar_separator"></div>
+                <!-- eof sidebar separator -->
+                <div class="clear"></div>
+            </div>
+            <!-- eof tab_n -->
+        </div>
+        <!-- eof tab_panel -->
+    </body>
+</html>
