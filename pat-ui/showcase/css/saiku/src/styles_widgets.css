@@ -1,28 +1,28 @@
-/**
- * @fileOverview Saiku User Inteface (UI) Default Styles
- * @author Prashant Raju and Mark Cahill
- * @version 1.0.0
-*/
+/* ------------------------------------------
+   Saiku User Inteface (UI) Default Styles
+   For /showcase/ only
+ ----------------------------------------- */
 
-/** Globals */
+/* Widgets
+ ----------------------------------------- */
 
-html, body {
-    background: #F0F0F0;
-    height: 100%;
-    min-width: 1052px;
-    min-height: 600px; 
-    overflow: auto;
-    text-align: left;
-    width: 100%;
+h1,
+h2,
+h3 {
+    font-weight: bold;
+}
+.container {
+    padding: 20px;
 }
 .clear {
     clear: both;
 }
-.hide {
-    display: none;
+.button_showcase {
+    padding: 10px 0;
 }
 
-/** Toolbar */
+/* Toolbar
+ ----------------------------------------- */
 
 #toolbar {
     background: #EEEEEE;
@@ -46,7 +46,7 @@ html, body {
     border-left: 1px solid #CCC;
     display: block;
     height: 26px;
-    padding: 4px 4px 6px 4px;
+    padding: 4px;
     width: 1px;
 }
 #toolbar ul li a {
@@ -65,7 +65,8 @@ html, body {
     -webkit-border-radius: 2px;
 }
 
-/** Tabs */
+/* Tabs
+ ----------------------------------------- */
 
 #tabs {
     background: #F5F5F5;
@@ -114,9 +115,8 @@ html, body {
 #tabs ul li a {
     color: #777;
     cursor: pointer;
-    padding: 5px 2px 5px 10px;
     text-decoration: none;
-    text-shadow: 1px 1px 0 #FFFFFF;
+    padding: 5px 2px 5px 10px;
 }
 #tabs ul li.selected a {
     color: #222;
@@ -139,13 +139,9 @@ html, body {
     width: 20px;
 }
 
-/** Sidebar */
+/* Sidebar
+ ----------------------------------------- */
 
-.sidebar {
-    float: left;
-    overflow: auto;
-    width: 260px;
-}
 .sidebar h3 {
     background: #F9F9F9;
     background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
@@ -165,18 +161,16 @@ html, body {
     margin-top: 0;
     padding-top: 5px;
 }
-.sidebar .sidebar_inner {
-    padding: 10px;
-}
 
-/** Sidebar Separator */
+
+/* Sidebar Separator
+ ----------------------------------------- */
 
 .sidebar_separator {
     background: #F0F0F0;
     border-right: 1px solid #CCC;
     border-left: 1px solid #CCC;
     cursor: pointer;
-    float: left;
     width: 3px;
 }
 .sidebar_separator:hover {
@@ -186,7 +180,209 @@ html, body {
     width: 3px;
 }
 
-/** Tree */
+/* Dialog
+ ----------------------------------------- */
+
+.dialog {
+    background: #FFF;
+    border: 3px solid #EEE;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 3px #DDD;
+    -webkit-box-shadow: 0 0 3px #DDD;
+}
+.dialog .dialog_inner {
+    border: 1px solid #CCC;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+}
+.dialog .dialog_inner .dialog_header {
+    background: #F9F9F9;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border-bottom: 1px solid #CCC;
+    line-height: 1.4em;
+    padding: 5px 5px 6px 10px;
+    -moz-box-shadow:0 1px 3px #DDDDDD;
+    -webkit-box-shadow:0 1px 3px #DDDDDD;
+}
+.dialog .dialog_inner .dialog_header h3 {
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.4em;
+    margin: 0;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 200px;
+}
+.dialog .dialog_inner .dialog_header a.close_dialog {
+    background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
+    display: inline-block;
+    cursor: pointer;
+    float: right;
+    height: 18px;
+    text-indent: -999px;
+    width: 20px;
+}
+.dialog .dialog_inner .dialog_header a.close_dialog:hover {
+    background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
+}
+.dialog .dialog_inner .dialog_body {
+    padding: 10px;
+}
+.dialog .dialog_inner .dialog_body_image {
+    background: transparent url('../../../images/src/dialog_box.png') 20px 10px no-repeat;
+    padding: 10px 10px 20px 90px;
+}
+.dialog .dialog_inner .dialog_footer {
+    border-top: 1px solid #CCC;
+    margin-top: 10px;
+    padding: 5px 10px;
+    text-align: right
+}
+
+/* Button
+ ----------------------------------------- */
+
+a.button {
+    background: #F5F5F5;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border: 1px solid #CCC;
+    color: #222;
+    padding: 5px 10px;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+a.button:hover {
+    background: #F0F0F0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
+    color: #777;
+}
+a.button_selected {
+    background: #F0F0F0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
+    border: 1px solid #CCC;
+    color: #777;
+    padding: 5px 10px;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+/* Field List
+ ----------------------------------------- */
+
+.field_list {
+    margin-bottom: 10px;
+}
+.field_list .field_list_header {
+    background: #F9F9F9;
+    border: 1px solid #CCC;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    font-weight: bold;
+    float: left;
+    padding: 5px;
+    line-height: 19px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 10%;
+    -moz-border-radius: 3px 0 0 3px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+.field_list .field_list_body {
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    float: left;
+    margin: 0;
+    padding: 5px;
+    width: 80%;
+    -moz-border-radius: 0 3px 3px 0;
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+.field_list .field_list_body ul {
+    margin: 0;
+    padding: 0;
+}
+.field_list .field_list_body ul li {
+    cursor: pointer;
+    line-height: 19px;
+    list-style-type: none;
+    display: inline;
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+
+/* Draggables
+ ----------------------------------------- */
+
+.draggable {
+    cursor: pointer;
+    padding: 2px 4px;
+    -moz-box-shadow: 0 0 2px #DDD;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: 0 0 2px #DDD;
+    -webkit-border-radius: 3px;
+}
+.dimension {
+    background: #e5f6ff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
+    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
+    border: 1px solid #2a6085;
+    color: #2a6085;
+}
+.measure {
+    background: #ffe8e8;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
+    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
+    border: 1px solid #ed9393;
+    color: #983030;
+}
+.placeholder {
+    background: #FFF;
+    border: 1px dashed #777;
+    color: #777;
+    padding: 2px 4px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+/* Table
+ ----------------------------------------- */
+
+.datatable {
+    background: #FFF;
+}
+.datatable .int {
+    text-align: right;
+}
+.datatable .str {
+    text-align: left;
+}
+.datatable tr th {
+    background: #FFF;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    font-weight: bold;
+}
+.datatable tr td {
+    background: #FFF !important;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+/* Tree
+ ----------------------------------------- */
 
 .dtree,
 .mtree {
@@ -240,133 +436,8 @@ html, body {
     background: url('../../../images/src/tree_measure.png') 0px 0px no-repeat;
 }
 
-/** Tab Panel */
-
-#tab_panel {
-    border-top: 1px solid #CCC;
-}
-
-/** Tab Workspace */
-
-.workspace {
-    background: #FFFFFF;
-    float: right;
-    margin-left: -265px;
-    width: 100%;
-}
-
-/** Tab Workspace Inner */
-
-.workspace_inner {
-    margin-left: 265px;
-    padding: 10px;
-    overflow: auto;
-}
-
-/** Field List */
-
-.field_list {
-    margin-bottom: 10px;
-}
-.field_list .field_list_header {
-    background: #F9F9F9;
-    border: 1px solid #CCC;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
-    font-weight: bold;
-    float: left;
-    padding: 5px;
-    line-height: 19px;
-    text-shadow: 1px 1px 0 #FFFFFF;
-    width: 10%;
-    -moz-border-radius: 3px 0 0 3px;
-    -webkit-border-radius: 3px 0 0 3px;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-}
-.field_list .field_list_body {
-    border-bottom: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-    border-top: 1px solid #CCC;
-    float: left;
-    margin: 0;
-    padding: 5px;
-    width: 87%;
-    -moz-border-radius: 0 3px 3px 0;
-    -webkit-border-radius: 0 3px 3px 0;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-}
-.field_list .field_list_body ul {
-    margin: 0;
-    padding: 0;
-}
-.field_list .field_list_body ul li {
-    cursor: pointer;
-    line-height: 19px;
-    list-style-type: none;
-    display: inline;
-    margin: 0 0 0 5px;
-    padding: 0 2px;
-}
-
-/** Draggables */
-
-.draggable {
-    cursor: pointer;
-    padding: 2px 4px;
-    -moz-box-shadow: 0 0 2px #DDD;
-    -moz-border-radius: 3px;
-    -webkit-box-shadow: 0 0 2px #DDD;
-    -webkit-border-radius: 3px;
-}
-.dimension {
-    background: #e5f6ff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
-    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
-    border: 1px solid #2a6085;
-    color: #2a6085;
-}
-.measure {
-    background: #ffe8e8;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
-    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
-    border: 1px solid #ed9393;
-    color: #983030;
-}
-.placeholder {
-    background: #FFF;
-    border: 1px dashed #777;
-    color: #777;
-    padding: 2px 4px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
-
-/** Table */
-
-.datatable {
-    background: #FFF;
-}
-.datatable .int {
-    text-align: right;
-}
-.datatable .str {
-    text-align: left;
-}
-.datatable tr th {
-    background: #FFF;
-    border-bottom: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-    font-weight: bold;
-}
-.datatable tr td {
-    background: #FFF !important;
-    border-bottom: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-}
-
-/** Waiting */
+/* Waiting
+ ------------------------------------------ */
 
 .waiting {
     background: #FFF;
@@ -385,111 +456,4 @@ html, body {
 .waiting .waiting_inner .waiting_body {
     background: url('../../../images/src/waiting_loading.gif') 10px 11px no-repeat;
     padding: 10px 15px 10px 35px;
-}
-
-/** Dialog */
-
-.dialog_overlay {
-    height: 100%;
-    filter: alpha(opacity=50);
-    left: 0;
-    opacity: 0.5;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 3000;
-    -moz-opacity: 0.5;
-}
-.dialog {
-    background: #FFF;
-    border: 3px solid #EEE;
-    position: absolute;
-    width: 400px;
-    z-index: 5000;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-box-shadow: 0 0 10px #EEE;
-    -webkit-box-shadow: 0 0 10px #EEE;
-}
-.dialog .dialog_inner {
-    border: 1px solid #CCC;
-    -moz-border-radius: 1px;
-    -webkit-border-radius: 1px;
-}
-.dialog .dialog_inner .dialog_header {
-    background: #F9F9F9;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
-    border-bottom: 1px solid #CCC;
-    line-height: 1.4em;
-    padding: 5px 5px 6px 10px;
-    -moz-box-shadow:0 1px 3px #DDDDDD;
-    -webkit-box-shadow:0 1px 3px #DDDDDD;
-}
-.dialog .dialog_inner .dialog_header h3 {
-    float: left;
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 1.4em;
-    margin: 0;
-    text-shadow: 1px 1px 0 #FFFFFF;
-    width: 200px;
-}
-.dialog .dialog_inner .dialog_header a.close_dialog {
-    background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
-    display: inline-block;
-    cursor: pointer;
-    float: right;
-    height: 18px;
-    text-indent: -999px;
-    width: 20px;
-}
-.dialog .dialog_inner .dialog_header a.close_dialog:hover {
-    background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
-}
-.dialog .dialog_inner .dialog_body {
-    padding: 10px;
-}
-.dialog .dialog_inner .dialog_body_image {
-    background: transparent url('../../../images/src/dialog_box.png') 20px 10px no-repeat;
-    padding: 10px 10px 20px 90px;
-}
-.dialog .dialog_inner .dialog_footer {
-    border-top: 1px solid #CCC;
-    margin-top: 10px;
-    padding: 5px 10px;
-    text-align: right
-}
-
-/** Button */
-
-a.button {
-    background: #F5F5F5;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
-    border: 1px solid #CCC;
-    color: #222;
-    padding: 5px 10px;
-    text-decoration: none;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-}
-a.button:hover {
-    background: #F0F0F0;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
-    color: #777;
-}
-a.button_selected {
-    background: #F0F0F0;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#FFFFFF));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #FFFFFF 100%);
-    border: 1px solid #CCC;
-    color: #777;
-    padding: 5px 10px;
-    text-decoration: none;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
 }
