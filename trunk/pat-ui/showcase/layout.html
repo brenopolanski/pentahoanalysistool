@@ -75,10 +75,7 @@
                         cache: false,
                         dataType: "html",
                         success: function(data) {
-                            $('#dialog').html(data);
-                            $('#dialog').modal({
-                                closeClass : 'close'
-                            });
+                            $('#dialog').html(data).modal({ closeClass : 'close' });
                         }
                     });
                     return false;

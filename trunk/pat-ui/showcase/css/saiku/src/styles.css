@@ -128,11 +128,13 @@ html, body {
     color: #222;
 }
 #tabs ul li span.close_tab {
+    -moz-background-origin: 0px 2px;
     background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
     display: inline-block;
     height: 18px;
     text-indent: -999px;
     width: 20px;
+    
 }
 #tabs ul li span.close_tab:hover {
     background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
@@ -140,7 +142,10 @@ html, body {
     display: inline-block;
     height: 18px;
     width: 20px;
+    -moz-background-origin: 0px 2px;
 }
+
+
 
 /** Sidebar */
 
