@@ -126,7 +126,7 @@ var TabContainer = function(tab_container, content_container) {
         $new_tab_content = $('<div />')
         .addClass("tab")
         .load("../views/queries/", function() {
-            //view.generate_navigation(new_index);
+            view.load_cubes(new_index);
             resize_height();
         });
         $new_tab_content.appendTo(this.content_container);
@@ -221,6 +221,12 @@ var view = {
     /** Initialise the user interface. */
     draw_ui : function () {
 
+        // Patch for webkit browsers to stop the text cursor appearing
+        // when dragging items.
+        document.onselectstart = function () {
+            return false;
+        };
+
         // Show waiting message.
         view.start_waiting('Saiku User Interface loading...');
         
@@ -275,6 +281,111 @@ var view = {
     },
 
     /**
+     * Populate a select box with available schemas and cubes.
+     * @param tab_index {Integer} Index of the selected tab.
+     */
+    load_cubes : function(tab_index) {
+        view.start_waiting('Loading available schemas and cubes');
+        $tab = view.tabs.tabs[tab_index].content;
+        $cubes = $tab.find('.cubes');
+        $cubes.append('<option>Select a cube</option>');
+
+        view.tabs.tabs[tab_index].data['navigation'] = new Array();
+        storage_id = 0;
+
+        /** Loop through available connections and populate the select box. */
+        $.each(model.connections.connections.connection, function(i,connection){
+            $.each(connection.schemas, function(i,schema){
+                
+                $cubes.append('<optgroup label="'+schema['@schemaname']+'">');
+                $.each(schema.cubes, function(i,cube){
+                    if(cube.length == undefined)
+                        cube = [cube];
+                    $.each(cube, function(i,item){
+                        $("<option />")
+                        .attr({
+                            'value': storage_id
+                        })
+                        .text(item['@cubename'])
+                        .appendTo($cubes);
+                        view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
+                            'connection_id': connection['@connectionid'],
+                            'schema': schema['@schemaname'],
+                            'cube': item['@cubename']
+                        };
+                        storage_id++;
+                    });
+                });
+                $cubes.append('</optgroup>');
+            });
+        });
+        view.stop_waiting();
+
+        $cubes.change(function() {
+            model.new_query(tab_index);
+        });
+    },
+
+    /**
+     * Populate the dimension tree for the selected tab.
+     * @param $tab {Object} Selected tab content.
+     * @param data {Object} Data object which contains the available dimension
+     *                      members.
+     */
+    load_dimensions : function($tab, data) {
+        // Remove any instances of a tree.
+        $tab.find('.dimension_tree ul').remove();
+        // Add a new dimension tree.
+        $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree')).addClass('dtree');
+        // Populate the tree with first level dimensions.
+        $.each(data, function(i, dimension) {
+            if(this['@dimensionname'] != 'Measures') {
+                $first_level = $('<li><a href="#" class="folder_collapsed">'+this['@dimensionname']+'</a></li>')
+                .addClass("collapsed root")
+                .appendTo($dimension_tree);
+                if (dimension.levels.length > 1) {
+                    $second_level = $('<ul />').appendTo($first_level);
+                    $.each(dimension.levels, function(j,level){
+                        $li = $('<li />').mousedown(function() {
+                            return false;
+                        }).appendTo($second_level);
+                        $second_level_link = $('<a href="#" class="dimension" rel="'+this['@levelname']+'">'+level['@levelcaption']+'</a>')
+                        .appendTo($li);
+                    });
+                }
+            }
+        });
+    },
+
+    /**
+     * Populate the measure tree for the selected tab.
+     * @param $tab {Object} Selected tab content.
+     * @param data {Object} Data object which contains the available measure
+     *                      members.
+     */
+    load_measures : function($tab, data) {
+        // Remove any instances of a tree.
+        $tab.find('.measure_tree ul').remove();
+        // Add a new measure tree.
+        $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');
+        // Populate the tree with first level measures.
+        $.each(data, function(i, dimension) {
+            if(this['@dimensionname'] === 'Measures') {
+                $measures = $('<li><a href="#" class="folder_collapsed">Measures</a></li>')
+                .addClass("collapsed root")
+                .appendTo($tab.find('.measure_tree ul'));
+                $measures_ul = $('<ul />').appendTo($measures);
+                $.each(dimension.levels.members, function(i,member){
+                    $('<li id="'+this['@membercaption']+'"><a href="#" class="measure" rel="'+this['@memebername']+'">'+this['@membercaption']+'</a></li>')
+                    .mousedown(function() {
+                        return false;
+                    }).appendTo($measures_ul);
+                });
+            }
+        });
+    },
+
+    /**
      * Displays a waiting dialog box.
      * @param message {String} Waiting message to be displayed.
      */
@@ -295,7 +406,7 @@ var view = {
      * Load views into a dialog template
      * @param url {String} The url where the view is located.
      */
-    show_dialog : function(url) {
+    show_view : function(url) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
@@ -304,9 +415,41 @@ var view = {
             cache : false,
             dataType : "html",
             success : function(data) {
-                $('#dialog').html(data).modal();
+                $('#dialog').html(data).modal({
+                    onClose : function() {
+                        $.modal.close();
+                        $('#dialog').remove();
+                    }
+                });
             }
         });
+    },
+
+    /**
+     * Loads a pop up dialog box for alerting.
+     * @param title {String} Title to be displayed in the dialog box.
+     * @param message {String} Message to be displayed in the dialog box.
+     */
+    show_dialog : function (title, message) {
+        // Append a dialog <div/> to the body.
+        $('<div id="dialog" class="dialog hide">').appendTo('body');
+        $('#dialog').append('<div class="dialog_inner">' +
+            '<div class="dialog_header">' +
+            '<h3>' + title + '</h3>' +
+            '<a href="#" title="Close" class="close_dialog close">Close</a>' +
+            '<div class="clear"></div>' +
+            '</div>' +
+            '<div class="dialog_body_image">' + message + '</div>' +
+            '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
+            '</div>' +
+            '</div>');
+        $('#dialog').modal({
+            onClose : function () {
+                $.modal.close();
+                $('#dialog').remove();
+            }
+        });
+        
     }
     
 }
