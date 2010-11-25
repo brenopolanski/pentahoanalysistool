@@ -78,7 +78,7 @@ var controller = {
 
     /** Handle click when the about button is clicked. */
     about : function() {
-        view.show_dialog('../views/info/');
+        view.show_view('../views/info/');
     }
     
 }

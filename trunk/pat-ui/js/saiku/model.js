@@ -235,7 +235,7 @@ var model = {
                  * Measures can not be place on the filters axis
                  */
 
-                //  Draggable
+                // Draggable
                 $both_trees.find("li ul li a").draggable({
                     cancel: ".not-draggable .placeholder",
                     helper: "clone",
@@ -248,7 +248,7 @@ var model = {
                         }
                     }
                 });
-
+                
                 $drop_zones = view.tabs.tabs[tab_index].content.find('.dropzone_rows ul, .dropzone_columns ul, .dropzone_filters ul');
 
                 //  Droppable
