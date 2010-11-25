@@ -29,6 +29,7 @@ var model = {
             parameters.success = function() {};
         if (typeof parameters.error == "undefined")
             parameters.error = model.server_error;
+        
         $.ajax({
             type: parameters.method,
             url: "/pat-ui/fixtures/rest/" + parameters.url,
@@ -50,6 +51,7 @@ var model = {
                 model.session_id = data['@sessionid'];
                 model.connections = data;
                 view.draw_ui();
+                controller.add_tab();
             }
         });
     }

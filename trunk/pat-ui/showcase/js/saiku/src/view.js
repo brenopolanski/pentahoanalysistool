@@ -15,11 +15,10 @@ function resize_height() {
     if(window_height <= 600) {
         window_height = 600;
     }
-    var workspace_offset = $('.workspace_inner').outerHeight(true) - $('.workspace_inner').height(),
     // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
-    sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 1)),
+    var sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 1)),
     sidebar_height = window_height - sidebar_offset,
-    workspace_height = sidebar_height - workspace_offset;
+    workspace_height = sidebar_height - 20;
 
     $('.sidebar, .sidebar_separator').css('height', sidebar_height);
     $('.workspace_inner').css('height', workspace_height);
@@ -27,6 +26,7 @@ function resize_height() {
 
 /** Toggle (hide/show) the sidebar. */
 function toggle_sidebar() {
+    // TODO - Has to be for selected tab only.
     // Get the width of the sidebar.
     var sidebar_width = $('.sidebar').width();
     // If the sidebar is not hidden.
@@ -39,6 +39,149 @@ function toggle_sidebar() {
         $('.workspace_inner').css('margin-left', 265);
     }
 }
+
+/**
+ * Object for containing tab metadata.
+ * @class
+ */
+var Tab = function(tab_selector, content_selector) {
+    this.tab = tab_selector;
+    this.content = content_selector;
+    this.data = {};
+}
+
+/**
+ * Container object used for tracking tabs.
+ * @class
+ */
+var TabContainer = function(tab_container, content_container) {
+    $("<ul />").appendTo(tab_container);
+    this.tab_container = tab_container.find("ul");
+    this.content_container = content_container;
+    this.tabs = new Array();
+    this.selected = 0;
+
+    /** Counts active tabs. */
+    this.active_tabs = function() {
+        active_tabs = 0;
+        for (i = 0; i < this.tabs.length; i++) {
+            if (typeof this.tabs[i] != "undefined") {
+                active_tabs++;
+            }
+        }
+        return active_tabs;
+    }
+
+    /** Remove a tab and reclaim memory. */
+    this.remove_tab = function(index) {
+        if (typeof this.tabs[index] != "undefined") {
+            this.tabs[index].tab.remove();
+            this.tabs[index].content.remove();
+            delete this.tabs[index].data;
+            delete this.tabs[index];
+        }
+        // Find the next tab and select it.
+        for (next_tab = index; next_tab < this.tabs.length; next_tab++) {
+            if (typeof this.tabs[next_tab] != "undefined") {
+                this.select_tab(next_tab);
+                return;
+            }
+        }
+        // Check and make sure there are any tabs at all.
+        if (this.active_tabs() == 0 && model.session_id != "") {
+            // Create one if not.
+            this.add_tab();
+            return;
+        }
+        // If the last tab was removed, select the next to last tab.
+        this.select_tab(this.index_from_tab(this.tab_container.find("li:last")));
+    };
+
+    /** Change the selected tab. */
+    this.select_tab = function(index) {
+        if (typeof this.tabs[index] != "undefined") {
+            this.tab_container.find("li.selected").removeClass("selected");
+            this.content_container.find(".tab").hide();
+            this.tabs[index].tab.addClass("selected");
+            resize_height();
+            this.tabs[index].content.show();
+            this.selected = index;
+        }
+    };
+
+    /** Add a tab. */
+    this.add_tab = function() {
+        // Create the tab itself
+        var new_index = this.tabs.length;
+        var $new_tab = $("<li />");
+        var $new_tab_link = $("<a />")
+        .html("Unsaved query (" + (new_index + 1) + ")")
+        .appendTo($new_tab);
+        var $new_tab_closer = $("<span>Close Tab</span>")
+        .addClass("close_tab")
+        .appendTo($new_tab);
+        $new_tab.appendTo(this.tab_container);
+
+        // Create the content portion of the tab.
+        $new_tab_content = $('<div />')
+        .addClass("tab")
+        .load("../views/queries/", function() {
+            //view.generate_navigation(new_index);
+            resize_height();
+        });
+        $new_tab_content.appendTo(this.content_container);
+
+        // Register the new tab with the TabContainer.
+        this.tabs.push(new Tab($new_tab, $new_tab_content));
+        this.select_tab(new_index);
+
+    };
+
+    /** Empty the tab container (used for logout) */
+    this.clear_tabs = function() {
+        for (i = 0; i < this.tabs.length; i++) {
+            if (typeof this.tabs[i] != 'undefined') {
+                this.remove_tab(i);
+            }
+        }
+    };
+
+    /** Determine whether or not the TabContainer is empty .*/
+    this.is_empty = function() {
+        // If the array is uninitialized, obviously return true
+        if (this.tabs.length == 0)
+            return true;
+        // Check to see if there are any active tabs
+        for (i = 0; i < this.tabs.length; i++) {
+            if (typeof this.tabs[i] != 'undefined') {
+                // An active tab still exists, return false
+                return false;
+            }
+        }
+        // If not, return true
+        return true;
+    };
+
+    /** Get a tab_index from a tab instance. */
+    this.index_from_tab = function($tab) {
+        for (i = 0; i < this.tabs.length; i++) {
+            if (typeof this.tabs[i] != "undefined" && $tab[0] == this.tabs[i].tab[0]) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    /** Get a tab_index from a tab content. */
+    this.index_from_content = function($content) {
+        for (i = 0; i < this.tabs.length; i++) {
+            if (typeof this.tabs[i] != "undefined" && $content[0] == this.tabs[i].content[0]) {
+                return i;
+            }
+        }
+        return -1;
+    };
+};
 
 /**
  * View class.
@@ -57,27 +200,32 @@ var view = {
             dataType : "html",
             success : function(data) {
                 $('#dialog').html(data).modal({
-                    overlayCss: {
-                        background: 'white',
-                        opacity: 'none'
+                    opacity : 100,
+                    overlayCss : {
+                        background : 'white'
                     }
                 });
                 $('#dialog').find('#login').click(function(){
                     model.username = $('#username').val();
                     model.password = $('#password').val();
                     model.get_session();
+                    $('#dialog').remove();
                 });
             }
         });
     },
 
+    /** Tabs container. */
+    tabs : new TabContainer($("#tabs"), $('#tab_panel')),
+
     /** Initialise the user interface. */
     draw_ui : function () {
+
         // Show waiting message.
-        view.show_waiting('Drawing UI, please wait...');
+        view.start_waiting('Saiku User Interface loading...');
         
         /** Show all UI elements. */
-        $('#toolbar, #tabs, #tab_panel').show();
+        $('#toolbar, #tabs, #tab_panel').fadeIn('slow');
 
         /** Add an event handler to all toolbar buttons. */
         $("#toolbar ul li a").click(function() {
@@ -91,12 +239,30 @@ var view = {
         });
 
         /** Bind toggle_sidebar() to click event on the sidebar_separator. */
-        $('.sidebar_separator').bind('click', function() {
+        $('.sidebar_separator').live('click', function() {
             toggle_sidebar();
         });
 
+        /** Add click handler on tabs. */
+        view.tabs.tab_container.find("a").live('mousedown', function(event) {
+            if (event.which == 1) {
+                view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
+            } else if (event.which == 2) {
+                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+            }
+            event.stopImmediatePropagation();
+            event.cancelBubble = true;
+            return false;
+        });
+
+        /** Add click handler on tabs. */
+        view.tabs.tab_container.find("span").live('click', function() {
+            view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+            return false;
+        });
+
         /** Initialise resize_height() on first page load. */
-        resize_height();
+        //resize_height();
 
         // Remove waiting message.
         view.stop_waiting();
@@ -105,14 +271,14 @@ var view = {
 
     /** Destroy the user interface. */
     destroy_ui : function () {
-        $('#toolbar, #tabs, #tab_panel').hide();
+        $('#toolbar, #tabs, #tab_panel').fadeOut('slow');
     },
 
     /**
      * Displays a waiting dialog box.
      * @param message {String} Waiting message to be displayed.
      */
-    show_waiting : function (message) {
+    start_waiting : function (message) {
         // Append the waiting <div/> to the body.
         $('<div id="waiting" class="waiting hide" />').appendTo('body');
         // Load the contents and message into the waiting <div/>.
@@ -142,7 +308,7 @@ var view = {
             }
         });
     }
-
+    
 }
 
 /** Initialise the user interface. */
