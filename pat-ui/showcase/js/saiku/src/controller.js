@@ -26,7 +26,7 @@ function lazy_load(script_filename) {
  * @param message {String} The message to output.
  */
 function debug(message) {
-    if(enable_debug == true && console != undefined) {
+    if(enable_debug == true && console != 'undefined') {
         console.log(message);
     }
 }
@@ -55,7 +55,9 @@ var controller = {
     },
 
     /** Handle click when the new query button is clicked. */
-    new_query : function () {},
+    add_tab : function () {
+        view.tabs.add_tab();
+    },
 
     /** Handle click when the open query button is clicked. */
     open_query : function () {},
@@ -68,9 +70,9 @@ var controller = {
 
     /** Handle click when the save logout button is clicked. */
     logout : function () {
+        view.destroy_ui();
         model.username = "";
         model.password = "";
-        view.destroy_ui();
         location.reload(true);
     },
 
