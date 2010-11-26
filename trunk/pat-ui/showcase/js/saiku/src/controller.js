@@ -73,12 +73,19 @@ var controller = {
         view.destroy_ui();
         model.username = "";
         model.password = "";
+        model.session_id = "";
+        model.connections = "";
         location.reload(true);
     },
 
     /** Handle click when the about button is clicked. */
     about : function() {
         view.show_view('../views/info/');
+    },
+
+    /** Handle all errors which occur with the server. */
+    server_error: function() {
+        /*...*/
     }
     
 }

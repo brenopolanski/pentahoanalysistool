@@ -15,6 +15,12 @@ var model = {
 
     /** Password to be used with BASIC_AUTH. */
     password : "",
+
+    /** session_id used to make calls to the server. */
+    session_id : "",
+
+    /** Connection information for this Saiku server. */
+    connections : {},
     
     /**
      * Handle all AJAX requests.
@@ -78,10 +84,10 @@ var model = {
 
         // Get a list of available dimensions and measures.
         model.request({
-            method: "POST",
-            url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
-            success: function(data, textStatus, XMLHttpRequest) {
-                view.start_waiting('Loading');
+            method : "POST",
+            url : model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
+            success : function(data, textStatus, XMLHttpRequest) {
+                view.start_waiting('Loading...');
 
                 view.load_dimensions($tab, data.axis.dimensions);
                 view.load_measures($tab, data.axis.dimensions);
@@ -127,45 +133,48 @@ var model = {
                         }
                     }
                 });
+                
                 // Enable droppable
-                $both_dropzones = view.tabs.tabs[tab_index].content.find('field_list_body .rows li, .field_list_body .columns li');
+                $both_dropzones = view.tabs.tabs[tab_index].content.find('.rows ul, .columns ul');
                 $both_dropzones.droppable({
-                    accept: '.ui-draggable',
-                    activeClass: "notice",
-                    hoverClass: "success",
-                    drop: function(event, ui) {
-                        $(this).parent().find('.placeholder').remove();
+                    accept : '.ui-draggable',
+                    activeClass : "notice",
+                    hoverClass : "success",
+                    drop : function(event, ui) {
+
+                        $(this).find('.placeholder').remove();
+                        
                         if(ui.helper.hasClass('dimension')) {
-                            $(this).parent().append('<li><span class="dimension_dropped">'+ui.draggable.text()+'</span></li>');
-                        }else if(ui.helper.hasClass('measure')) {
-                            $(this).append('<li class="measure_dropped">'+ui.draggable.text()+'</li>');
+                            // TODO If this is the first drop don't do anything.
+                            // Work out the parent of the dropped item.
+
+
+
+                            $(this).append('<li class="dimension_dropped"><a href="#" title="'+ui.helper.attr('rel')+'" rel="'+ui.helper.attr('rel')+'">'+ui.draggable.text()+'</a></li>');
+                        }else{
+                        $(this).append('<li class="measure_dropped"><a href="#" title="'+ui.helper.attr('rel')+'" rel="'+ui.helper.attr('rel')+'">'+ui.draggable.text()+'</a></li>');
                         }
                         tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
-                        
-                        // Enable draggable on dropped items
-                        $('span', $both_dropzones).draggable({
-                            cancel: ".not-draggable",
-                            revert: "invalid",
-                            opacity: 0.70
-                        });
-
-                    //view.check_query(tab_index);
                     }
+                // Enable sortable
+                }).sortable({
+                    cancel : 'placeholder',
+                    connectWith : $both_dropzones,
+                    placeholder : 'empty_placeholder',
+                    forcePlaceholderSize : true
                 });
-
-                
 
                 // Enable droppable
                 $('.sidebar').droppable({
-                    accept: ".field_list_body .rows, .field_list_body .columns",
-                    drop: function(event, ui) {
+                    accept : ".rows li, .columns li",
+                    drop : function(event, ui) {
                         // Using setTimeout due to IE7+ bug with jQuery UI
+                        ui.draggable.remove();
                         setTimeout(function() {
                             ui.draggable.remove();
                         } , 1);
                     }
-                })
-
+                });
                 
                 view.stop_waiting();
             },
@@ -174,5 +183,4 @@ var model = {
             }
         });
     }
-    
 }

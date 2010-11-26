@@ -145,8 +145,6 @@ html, body {
     -moz-background-origin: 0px 2px;
 }
 
-
-
 /** Sidebar */
 
 .sidebar {
@@ -309,8 +307,7 @@ html, body {
     border-top: 1px solid #CCC;
     float: left;
     margin: 0;
-    padding: 5px;
-    width: 87%;
+    width: 88%;
     -moz-border-radius: 0 3px 3px 0;
     -webkit-border-radius: 0 3px 3px 0;
     -moz-box-shadow: 0 0 2px #DDDDDD;
@@ -318,12 +315,13 @@ html, body {
 }
 .field_list .field_list_body ul {
     margin: 0;
-    padding: 0;
+    padding: 5px;
 }
 .field_list .field_list_body ul li {
     cursor: pointer;
     line-height: 19px;
     list-style-type: none;
+    height: 20px;
     display: inline;
     margin: 0 0 0 5px;
     padding: 0 2px;
@@ -331,21 +329,17 @@ html, body {
 
 /** Draggables */
 
-.draggable {
-    cursor: pointer;
-    padding: 2px 4px;
-    -moz-box-shadow: 0 0 2px #DDD;
-    -moz-border-radius: 3px;
-    -webkit-box-shadow: 0 0 2px #DDD;
-    -webkit-border-radius: 3px;
-}
 .dimension_dropped {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
     border: 1px solid #2a6085;
     color: #2a6085;
-    z-index: 999;
+    margin-left: 10px;
+    -moz-box-shadow: 0 0 2px #DDD;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: 0 0 2px #DDD;
+    -webkit-border-radius: 3px;
 }
 .measure_dropped {
     background: #ffe8e8;
@@ -353,14 +347,19 @@ html, body {
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
     border: 1px solid #ed9393;
     color: #983030;
-    z-index: 999;
-}
-.placeholder {
-    border: 1px dashed #777;
-    color: #777;
-    padding: 2px 4px;
+    margin-left: 10px;
+    -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
+    -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
+}
+.dimension_dropped a {
+    color: #2a6085;
+    text-decoration: none;
+}
+.measure_dropped a {
+    color: #983030;
+    text-decoration: none;
 }
 
 .dimension_dragging {
@@ -369,8 +368,9 @@ html, body {
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%) !important;
     border: 1px solid #2a6085 !important;
     color: #2a6085 !important;
-    line-height: 19px !important;
-    padding: 0px 4px !important;
+    height: 15px;
+    line-height: 15px !important;
+    padding: 1px 2px !important;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
     -webkit-box-shadow: 0 0 2px #DDD;
@@ -382,12 +382,35 @@ html, body {
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%) !important;
     border: 1px solid #ed9393 !important;
     color: #983030 !important;
-    line-height: 20px !important;
-    padding: 0px 4px !important;
+    height: 15px;
+    line-height: 15px !important;
+    padding: 1px 2px !important;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
     -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
+}
+
+.placeholder {
+    border: 1px dashed #777;
+    color: #777;
+    padding: 1px 2px;
+    margin-left: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.empty_placeholder {
+    border: 1px solid #777;
+    background: #F0F0F0;
+    color: #777;
+    padding: 1px 2px;
+    margin-left: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.ui-sortable-helper {
+    line-height: 15px !important;
 }
 
 /** Table */
