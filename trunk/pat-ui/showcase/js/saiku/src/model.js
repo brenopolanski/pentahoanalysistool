@@ -195,6 +195,17 @@ var model = {
                          * then prevent the drop from occuring, this is for only measures.
                          */
                             view.show_dialog('Incompatible Items', 'That measure already exists.', 'error');
+
+                            /**
+                             * count how many measures in dropzones
+                             * $both_dropzones.find('.measure_dropped').length
+                             * if 0 then drop away
+                             * if not 0 then find the axis which has the measures
+                             * $both_dropzones.find('.measure_dropped').parent().parent().attr('class').split(" ")[1]
+                             * if $(this) == columns then drop away
+                             * if $(this) != columns then error out
+                             */
+
                         }else{
                             // Hide the placeholder.
                             $(this).find('.placeholder').hide();
@@ -261,5 +272,6 @@ var model = {
      *   - Measures must be grouped
      * @param axis {Object} Axis where the object has been dropped.
      */
-    is_valid_drop : function() {}
+    is_valid_dimension_drop : function() {},
+    is_valid_measure_drop : function() {}
 }
