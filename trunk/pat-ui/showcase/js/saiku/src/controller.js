@@ -26,7 +26,7 @@ function lazy_load(script_filename) {
  * @param message {String} The message to output.
  */
 function debug(message) {
-    if(enable_debug == true && console != 'undefined') {
+    if (enable_debug == true && console != 'undefined') {
         console.log(message);
     }
 }

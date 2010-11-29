@@ -12,11 +12,11 @@ function resize_height() {
     // Get the browser's current height
     var window_height = $(window).height();
     // When the height of the browser is less than 600px set a height of 600px.
-    if(window_height <= 600) {
+    if (window_height <= 600) {
         window_height = 600;
     }
     // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
-    var sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4)),
+    var sidebar_offset = ( $('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4) ),
     sidebar_height = window_height - sidebar_offset,
     workspace_height = sidebar_height - 20;
 
@@ -30,7 +30,7 @@ function toggle_sidebar() {
     // Get the width of the sidebar.
     var sidebar_width = $('.sidebar').width();
     // If the sidebar is not hidden.
-    if(sidebar_width == 260) {
+    if (sidebar_width == 260) {
         $('.sidebar').css('width', 0);
         $('.workspace_inner').css('margin-left', 5);
     } else {
@@ -231,7 +231,7 @@ var view = {
         view.start_waiting('Saiku User Interface loading...');
         
         /** Show all UI elements. */
-        $('#header, #tab_panel').fadeIn('slow');
+        $('#header, #tab_panel').show();
 
         /** Add an event handler to all toolbar buttons. */
         $("#toolbar ul li a").click(function() {
@@ -277,7 +277,7 @@ var view = {
 
     /** Destroy the user interface. */
     destroy_ui : function () {
-        $('#header, #tab_panel').fadeOut('slow');
+        $('#header, #tab_panel').hide();
     },
 
     /**
@@ -299,7 +299,7 @@ var view = {
                 
                 $cubes.append('<optgroup label="'+schema['@schemaname']+'">');
                 $.each(schema.cubes, function(i,cube){
-                    if(cube.length == undefined)
+                    if (cube.length == undefined)
                         cube = [cube];
                     $.each(cube, function(i,item){
                         $("<option />")
@@ -339,7 +339,7 @@ var view = {
         $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree')).addClass('dtree');
         // Populate the tree with first level dimensions.
         $.each(data, function(i, dimension) {
-            if(this['@dimensionname'] != 'Measures') {
+            if (this['@dimensionname'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
                 $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
                 .addClass("collapsed root")
@@ -372,19 +372,78 @@ var view = {
         $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
-            if(this['@dimensionname'] === 'Measures') {
+            if (this['@dimensionname'] === 'Measures') {
                 $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_collapsed">Measures</a></li>')
                 .addClass("collapsed root")
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
-                $.each(dimension.levels.members, function(i, j){
-                    $('<li id="'+this['@membercaption']+'"><a href="#" rel="m' + i + '_' + j + '" class="measure" title="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
+                $.each(dimension.levels.members, function(j, level){
+                    $('<li><a href="#" class="measure" rel="m' + i + '_' + j + '"  title="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
                 });
             }
         });
+    },
+
+    /**
+     * Check if the dropped dimension or measure item is valid.
+     * @param ui {Object} jQuery object of the item being dropped.
+     * @param axis {Object} jQuery object of the item accepting the drop.
+     * @param parent_id {String} Parent id of the dropped item.
+     * @param child_id {String} Child id of the dropped item.
+     */
+    valid_drop : function(ui, axis, parent_id, child_id) {
+        // Create a variable to store invalid drop codes.
+        var invalid_drop_reason;
+
+        // Easy access to dimensions and measures.
+        $dimension_dropzones = $both_dropzones.find('.dimension_dropped');
+        $measure_dropzones = $both_dropzones.find('.measure_dropped');
+        $dropped_axis = axis.parent().attr('class').split(" ")[1];
+
+        // If a dimension is being dropped.
+        if (ui.item.find('a').hasClass('dimension')){
+            /** If any dimensions within in the same hierarchy level already exist. */
+            if ($dimension_dropzones.find('[rel=' + parent_id + ']').length > 0) {
+                invalid_drop_reason = 1;
+            }
+        }else{
+            /** If any measures already exist. */
+            if ($measure_dropzones.find('[rel=' + child_id + ']').length > 0) {
+                invalid_drop_reason = 2;
+            }else{
+                /** Handle unique measures to an axis. */
+                // If any measures have already been dropped.
+                if ($both_dropzones.find('.measure_dropped').length > 0) {
+                    // Which axis has the first measure?
+                    $measure_axis = $both_dropzones.find('.measure_dropped').parent().parent().attr('class').split(" ")[1];
+                    if($measure_axis != $dropped_axis) {
+                        invalid_drop_reason = 3;
+                    }
+                }
+            }
+        }
+        // Handle invalid_drop_reason.
+        switch (invalid_drop_reason) {
+            case 1:
+                view.show_dialog('Error', 'There is already a dimension which belongs to that level on the ' + $dropped_axis + ' axis.', 'error');
+                return false;
+                break;
+            case 2:
+                view.show_dialog('Error', 'That measure already exists.', 'error');
+                return false;
+                break;
+            case 3:
+                view.show_dialog('Error', 'There is already a measure on the other axis you can not drop this measure onto this axis.', 'error')
+                return false;
+                break;
+            default:
+                return true;
+                break;
+        }
+
     },
 
     /**

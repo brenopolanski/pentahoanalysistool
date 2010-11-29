@@ -186,7 +186,7 @@ html, body {
     height: 18px;
     text-indent: -999px;
     width: 20px;
-    
+
 }
 #tabs ul li span.close_tab:hover {
     background: transparent url('../../../images/src/tabs_cross_on.png') 0px 1px no-repeat;
@@ -391,6 +391,7 @@ html, body {
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
     border: 1px solid #2a6085;
     color: #2a6085;
+    display: inline !important;
     margin-left: 10px;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
@@ -403,6 +404,7 @@ html, body {
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
     border: 1px solid #ed9393;
     color: #983030;
+    display: inline !important;
     margin-left: 10px;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
@@ -425,13 +427,22 @@ html, body {
     border: 1px solid #2a6085 !important;
     color: #2a6085 !important;
     cursor: move !important;
-    height: 15px;
+    display: inline !important;
+    height: 15px !important;
     line-height: 15px !important;
-    padding: 1px 2px !important;
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0 2px !important;
+    width: auto !important;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
     -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
+}
+.dimension_dragging a {
+    color: #2a6085 !important;
+    background-image: none !important;
+    padding: 0 !important;
 }
 .measure_dragging {
     background: #ffe8e8 !important;
@@ -440,15 +451,23 @@ html, body {
     border: 1px solid #ed9393 !important;
     color: #983030 !important;
     cursor: move !important;
-    height: 15px;
+    display: inline !important;
+    height: 15px !important;
     line-height: 15px !important;
-    padding: 1px 2px !important;
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0 2px !important;
+    width: auto !important;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
     -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
 }
-
+.measure_dragging a {
+    color: #983030 !important;
+    background-image: none !important;
+    padding: 0 !important;
+}
 .placeholder {
     border: 1px dashed #777;
     color: #777;
@@ -529,7 +548,7 @@ html, body {
 .dialog input[type=text],
 .dialog input[type=password] {
     padding: 4px;
-    width: 368px;
+    width: 242px;
 }
 .dialog .dialog_inner {
     border: 1px solid #CCC;
@@ -580,6 +599,11 @@ html, body {
     min-height: 40px;
     padding: 10px 10px 10px 70px;
 }
+.dialog .dialog_inner .dialog_body_login {
+    background: transparent url('../../../images/src/dialog_login.png') 15px 15px no-repeat;
+    min-height: 40px;
+    padding: 10px 10px 10px 130px;
+}
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
     margin-top: 10px;
@@ -618,4 +642,17 @@ a.button_selected {
     text-decoration: none;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+}
+
+/** Workspace Toolbar */
+
+.workspace_toolbar {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/** Workspace Area */
+
+.workspace_area {
+    overflow: auto;
 }
