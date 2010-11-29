@@ -72,43 +72,53 @@ html, body {
     -webkit-border-radius: 2px;
 }
 #toolbar ul li a.new_tab {
-    background: transparent url('../../../images/src/toolbar_new.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_new.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.open_query {
-    background: transparent url('../../../images/src/toolbar_open.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_open.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.save_query {
-    background: transparent url('../../../images/src/toolbar_save.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_save.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.delete_query {
-    background: transparent url('../../../images/src/toolbar_delete.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_delete.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.logout {
-    background: transparent url('../../../images/src/toolbar_logout.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_logout.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.about {
-    background: transparent url('../../../images/src/toolbar_about.png') center center no-repeat;
+    background: transparent url('../../../images/src/toolbar_about.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.new_tab:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_new.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_new.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.open_query:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_open.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_open.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.save_query:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_save.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_save.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.delete_query:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_delete.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_delete.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.logout:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_logout.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_logout.png') 2px 2px no-repeat;
 }
 #toolbar ul li a.about:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_about.png') center center no-repeat;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
+    background: #F0F0F0 url('../../../images/src/toolbar_about.png') 2px 2px no-repeat;
 }
-
-
 
 /** Tabs */
 
@@ -291,10 +301,12 @@ html, body {
     padding-left: 18px;
 }
 .dtree li ul li a {
+    cursor: move;
     padding-left: 20px;
     background: url('../../../images/src/bullet_blue.png') 0px 0px no-repeat;
 }
 .mtree li ul li a {
+    cursor: move;
     padding-left: 20px;
     background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
 }
@@ -360,13 +372,15 @@ html, body {
     padding: 5px;
 }
 .field_list .field_list_body ul li {
-    cursor: pointer;
     line-height: 19px;
     list-style-type: none;
     height: 20px;
     display: inline;
     margin: 0 0 0 5px;
     padding: 0 2px;
+}
+.field_list .field_list_body ul li a {
+    cursor: move;
 }
 
 /** Draggables */
@@ -410,6 +424,7 @@ html, body {
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%) !important;
     border: 1px solid #2a6085 !important;
     color: #2a6085 !important;
+    cursor: move !important;
     height: 15px;
     line-height: 15px !important;
     padding: 1px 2px !important;
@@ -424,6 +439,7 @@ html, body {
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%) !important;
     border: 1px solid #ed9393 !important;
     color: #983030 !important;
+    cursor: move !important;
     height: 15px;
     line-height: 15px !important;
     padding: 1px 2px !important;
