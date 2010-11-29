@@ -7,7 +7,7 @@
 /** Globals */
 
 html, body {
-    background: #F0F0F0;
+    background: #FFF;
     height: 100%;
     min-width: 1052px;
     min-height: 600px; 
@@ -23,6 +23,12 @@ html, body {
 }
 .calign {
     text-align: center
+}
+
+/** Header */
+#header {
+    background: #F0F0F0;
+    border-bottom: 3px solid #F0F0F0;
 }
 
 /** Toolbar */
@@ -53,7 +59,6 @@ html, body {
     width: 1px;
 }
 #toolbar ul li a {
-    background: transparent url('../../../images/src/toolbar_cross.png') center center no-repeat;
     border: 1px solid transparent;
     display: block;
     height: 26px;
@@ -61,12 +66,49 @@ html, body {
     width: 26px;
 }
 #toolbar ul li a:hover {
-    background: #F0F0F0 url('../../../images/src/toolbar_cross.png') center center no-repeat;
     border: 1px solid #CCC;
     padding: 4px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
+#toolbar ul li a.new_tab {
+    background: transparent url('../../../images/src/toolbar_new.png') center center no-repeat;
+}
+#toolbar ul li a.open_query {
+    background: transparent url('../../../images/src/toolbar_open.png') center center no-repeat;
+}
+#toolbar ul li a.save_query {
+    background: transparent url('../../../images/src/toolbar_save.png') center center no-repeat;
+}
+#toolbar ul li a.delete_query {
+    background: transparent url('../../../images/src/toolbar_delete.png') center center no-repeat;
+}
+#toolbar ul li a.logout {
+    background: transparent url('../../../images/src/toolbar_logout.png') center center no-repeat;
+}
+#toolbar ul li a.about {
+    background: transparent url('../../../images/src/toolbar_about.png') center center no-repeat;
+}
+#toolbar ul li a.new_tab:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_new.png') center center no-repeat;
+}
+#toolbar ul li a.open_query:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_open.png') center center no-repeat;
+}
+#toolbar ul li a.save_query:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_save.png') center center no-repeat;
+}
+#toolbar ul li a.delete_query:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_delete.png') center center no-repeat;
+}
+#toolbar ul li a.logout:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_logout.png') center center no-repeat;
+}
+#toolbar ul li a.about:hover {
+    background: #F0F0F0 url('../../../images/src/toolbar_about.png') center center no-repeat;
+}
+
+
 
 /** Tabs */
 
@@ -74,7 +116,7 @@ html, body {
     background: #F5F5F5;
     border-bottom: 1px solid #CCC;
     height: 28px;
-    margin-bottom: 3px;
+    /*margin-bottom: 3px;*/
     padding-top: 3px;
     text-align: left;
 }
@@ -471,7 +513,7 @@ html, body {
 .dialog input[type=text],
 .dialog input[type=password] {
     padding: 4px;
-    width: 286px;
+    width: 368px;
 }
 .dialog .dialog_inner {
     border: 1px solid #CCC;
@@ -512,10 +554,15 @@ html, body {
 .dialog .dialog_inner .dialog_body {
     padding: 10px;
 }
-.dialog .dialog_inner .dialog_body_image {
-    background: transparent url('../../../images/src/dialog_box.png') 20px 10px no-repeat;
+.dialog .dialog_inner .dialog_body_info {
+    background: transparent url('../../../images/src/toolbar_about.png') 20px 10px no-repeat;
     min-height: 40px;
-    padding: 10px 10px 10px 90px;
+    padding: 10px 10px 10px 70px;
+}
+.dialog .dialog_inner .dialog_body_error {
+    background: transparent url('../../../images/src/toolbar_error.png') 20px 10px no-repeat;
+    min-height: 40px;
+    padding: 10px 10px 10px 70px;
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
