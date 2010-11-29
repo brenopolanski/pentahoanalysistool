@@ -16,7 +16,7 @@ function resize_height() {
         window_height = 600;
     }
     // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
-    var sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 1)),
+    var sidebar_offset = ($('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4)),
     sidebar_height = window_height - sidebar_offset,
     workspace_height = sidebar_height - 20;
 
@@ -231,7 +231,7 @@ var view = {
         view.start_waiting('Saiku User Interface loading...');
         
         /** Show all UI elements. */
-        $('#toolbar, #tabs, #tab_panel').fadeIn('slow');
+        $('#header, #tab_panel').fadeIn('slow');
 
         /** Add an event handler to all toolbar buttons. */
         $("#toolbar ul li a").click(function() {
@@ -277,7 +277,7 @@ var view = {
 
     /** Destroy the user interface. */
     destroy_ui : function () {
-        $('#toolbar, #tabs, #tab_panel').fadeOut('slow');
+        $('#header, #tab_panel').fadeOut('slow');
     },
 
     /**
@@ -340,16 +340,18 @@ var view = {
         // Populate the tree with first level dimensions.
         $.each(data, function(i, dimension) {
             if(this['@dimensionname'] != 'Measures') {
-                $first_level = $('<li><a href="#" class="folder_collapsed">'+this['@dimensionname']+'</a></li>')
+                // Make sure the first level has a unique rel attribute.
+                $first_level = $('<li><a href="#" rel="' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
                 .addClass("collapsed root")
                 .appendTo($dimension_tree);
                 if (dimension.levels.length > 1) {
                     $second_level = $('<ul />').appendTo($first_level);
-                    $.each(dimension.levels, function(j,level){
+                    $.each(dimension.levels, function(j, level){
                         $li = $('<li />').mousedown(function() {
                             return false;
                         }).appendTo($second_level);
-                        $second_level_link = $('<a href="#" class="dimension" rel="'+this['@levelname']+'">'+level['@levelcaption']+'</a>')
+                        // Create a parent-child relationship with the rel attribute.
+                        $second_level_link = $('<a href="#" class="dimension" rel="' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
                         .appendTo($li);
                     });
                 }
@@ -376,7 +378,7 @@ var view = {
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
                 $.each(dimension.levels.members, function(i,member){
-                    $('<li id="'+this['@membercaption']+'"><a href="#" class="measure" rel="'+this['@memebername']+'">'+this['@membercaption']+'</a></li>')
+                    $('<li id="'+this['@membercaption']+'"><a href="#" class="measure" rel="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
@@ -430,7 +432,7 @@ var view = {
      * @param title {String} Title to be displayed in the dialog box.
      * @param message {String} Message to be displayed in the dialog box.
      */
-    show_dialog : function (title, message) {
+    show_dialog : function (title, message, type) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide">').appendTo('body');
         $('#dialog').append('<div class="dialog_inner">' +
@@ -439,11 +441,15 @@ var view = {
             '<a href="#" title="Close" class="close_dialog close">Close</a>' +
             '<div class="clear"></div>' +
             '</div>' +
-            '<div class="dialog_body_image">' + message + '</div>' +
+            '<div class="dialog_body_' + type + '">' + message + '</div>' +
             '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
             '</div>' +
             '</div>');
         $('#dialog').modal({
+            opacity : 0,
+            overlayCss : {
+                background : 'white'
+            },
             onClose : function () {
                 $.modal.close();
                 $('#dialog').remove();

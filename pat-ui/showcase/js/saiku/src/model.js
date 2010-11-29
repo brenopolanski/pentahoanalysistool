@@ -47,7 +47,47 @@ var model = {
             error: parameters.error
         });
     },
-    
+
+    /** Handle all errors which occur with the server. */
+    server_error: function() {
+        $('<div id="dialog" class="dialog hide">').appendTo('body');
+        $('#dialog').append('<div class="dialog_inner">' +
+            '<div class="dialog_header">' +
+            '<h3>Error</h3>' +
+            '<a href="#" title="Close" class="close_dialog close">Close</a>' +
+            '<div class="clear"></div>' +
+            '</div>' +
+            '<div class="dialog_body_error">Could not connect to the server.</div>' +
+            '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
+            '</div>' +
+            '</div>');
+        $('#dialog').modal({
+            opacity : 100,
+            overlayCss : {
+                background : 'white'
+            },
+            onClose : function () {
+                $.modal.close();
+                $('#dialog').remove();
+                controller.logout();
+            }
+        });
+    /*
+        view.logout();
+        view.processing("Could not connect to server, trying again...");
+        if (controller.errors > 5) {
+            view.free();
+            view.processing("Could not connect to server. Giving up.");
+        } else {
+            setTimeout(function() {
+                controller.errors++;
+                view.free();
+                model.init();
+            }, 10000);
+        }
+     */
+    },
+
     /** Get the sessionid and based on the username and unhide the UI. */
     get_session : function() {
         model.request({
@@ -75,7 +115,7 @@ var model = {
         /** Check if the cube is valid if so then display an error. */
         data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
         if (typeof data == "undefined") {
-            view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.')
+            view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error')
             return;
         }
 
@@ -88,7 +128,7 @@ var model = {
             url : model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
             success : function(data, textStatus, XMLHttpRequest) {
                 view.start_waiting('Loading...');
-
+                
                 view.load_dimensions($tab, data.axis.dimensions);
                 view.load_measures($tab, data.axis.dimensions);
 
@@ -112,13 +152,7 @@ var model = {
                     return false;
                 });
 
-                /**
-                 * Enable dragging, dropping and sorting.
-                 * Drag and Drop rules
-                 *   - Unique items on all axis
-                 *   - You can only drag one item from a level onto an axis
-                 *   - Measures must be grouped
-                 */
+                /** Enable dragging, dropping and sorting. */
                 // Enable dragging
                 $both_trees = $tab.find('.dimension_tree, .measure_tree');
                 $both_trees.find("li ul li a").draggable({
@@ -136,23 +170,32 @@ var model = {
                 
                 // Enable droppable
                 $both_dropzones = view.tabs.tabs[tab_index].content.find('.rows ul, .columns ul');
+                $row_dropzone = view.tabs.tabs[tab_index].content.find('.rows ul');
+                $column_dropzone = view.tabs.tabs[tab_index].content.find('.columns ul');
+
                 $both_dropzones.droppable({
                     accept : '.ui-draggable',
                     activeClass : "notice",
                     hoverClass : "success",
                     drop : function(event, ui) {
-
-                        $(this).find('.placeholder').remove();
-                        
-                        if(ui.helper.hasClass('dimension')) {
-                            // TODO If this is the first drop don't do anything.
-                            // Work out the parent of the dropped item.
-
-
-
-                            $(this).append('<li class="dimension_dropped"><a href="#" title="'+ui.helper.attr('rel')+'" rel="'+ui.helper.attr('rel')+'">'+ui.draggable.text()+'</a></li>');
+                        // Find the dropped item's parent_id.
+                        var parent_id = ui.helper.attr('rel').split('_')[0];
+                        /**
+                         * If the dropped item's parent id already exists in the row or column axis
+                         * then prevent the drop from occuring.
+                         */
+                        if($both_dropzones.find('[rel=' + parent_id + ']').length > 0) {
+                            view.show_dialog('Incompatible Items', 'You can only have one unique member within the same hierarchy on the bolumn and row axis at once.', 'error');
                         }else{
-                        $(this).append('<li class="measure_dropped"><a href="#" title="'+ui.helper.attr('rel')+'" rel="'+ui.helper.attr('rel')+'">'+ui.draggable.text()+'</a></li>');
+                            // Hide the placeholder.
+                            $(this).find('.placeholder').hide();
+                            // If a dimension has been dropped.
+                            if(ui.helper.hasClass('dimension')){
+                                $(this).append('<li class="dimension_dropped"><a href="#" title="'+ui.helper.attr('title')+'" rel="' + parent_id + '">'+ui.draggable.text()+'</a></li>');
+                            }else{
+                                // If a measure has been dropped.
+                                $(this).append('<li class="measure_dropped"><a href="#" title="'+ui.helper.attr('title')+'">'+ui.draggable.text()+'</a></li>');
+                            }
                         }
                         tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
                     }
@@ -161,18 +204,34 @@ var model = {
                     cancel : 'placeholder',
                     connectWith : $both_dropzones,
                     placeholder : 'empty_placeholder',
-                    forcePlaceholderSize : true
+                    forcePlaceholderSize : true,
+                    stop : function() {
+                        // Show placeholders
+                        if($row_dropzone.find('.dimension_dropped, .measure_dropped').length == 0) {
+                            $row_dropzone.find('.placeholder').show();
+                        }
+                        if($column_dropzone.find('.dimension_dropped, .measure_dropped').length == 0) {
+                            $column_dropzone.find('.placeholder').show();
+                        }
+                    }
                 });
 
                 // Enable droppable
                 $('.sidebar').droppable({
                     accept : ".rows li, .columns li",
                     drop : function(event, ui) {
-                        // Using setTimeout due to IE7+ bug with jQuery UI
                         ui.draggable.remove();
+                        // Using setTimeout due to IE7+ bug with jQuery UI
                         setTimeout(function() {
                             ui.draggable.remove();
                         } , 1);
+                        // Show placeholders
+                        if($row_dropzone.find('.dimension_dropped, .measure_dropped').length == 0) {
+                            $row_dropzone.find('.placeholder').show();
+                        }
+                        if($column_dropzone.find('.dimension_dropped, .measure_dropped').length == 0) {
+                            $column_dropzone.find('.placeholder').show();
+                        }
                     }
                 });
                 
@@ -182,5 +241,15 @@ var model = {
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.");
             }
         });
-    }
+    },
+
+    /**
+     * Check if the dropped item (dimnesion or measure) follows the rules.
+     * Drag and Drop rules
+     *   - Unique items on all axis
+     *   - You can only drag one item from a level onto an axis
+     *   - Measures must be grouped
+     * @param axis {Object} Axis where the object has been dropped.
+     */
+    is_valid_drop : function() {}
 }

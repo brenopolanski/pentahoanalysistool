@@ -20,22 +20,24 @@
         <script src="js/saiku/src/controller.js" type="text/javascript"></script>
     </head>
     <body>
-        <!-- toolbar -->
-        <div id="toolbar" class="hide">
-            <ul>
-                <li><a id="add_tab" href="#" title="New Query" class="new_tab"></a></li>
-                <li class="separator">&nbsp;</li>
-                <li><a id="open_query" href="#" title="Open Query" class="open_query"></a></li>
-                <li><a id="save_query" href="#" title="Save Query" class="save_query"></a></li>
-                <li><a id="delete_query" href="#" title="Delete Query" class="delete_query"></a></li>
-                <li class="separator">&nbsp;</li>
-                <li><a id="logout" href="#" title="Logout" class="logout"></a></li>
-                <li><a id="about" href="#" title="About" class="about"></a></li>
-            </ul>
+        <div id="header" class="hide">
+            <!-- toolbar -->
+            <div id="toolbar">
+                <ul>
+                    <li><a id="add_tab" href="#" title="New Query" class="new_tab"></a></li>
+                    <li class="separator">&nbsp;</li>
+                    <li><a id="open_query" href="#" title="Open Query" class="open_query"></a></li>
+                    <li><a id="save_query" href="#" title="Save Query" class="save_query"></a></li>
+                    <li><a id="delete_query" href="#" title="Delete Query" class="delete_query"></a></li>
+                    <li class="separator">&nbsp;</li>
+                    <li><a id="logout" href="#" title="Logout" class="logout"></a></li>
+                    <li><a id="about" href="#" title="About" class="about"></a></li>
+                </ul>
+            </div>
+            <!-- eof toolbar -->
+            <!-- tabs -->
+            <div id="tabs"></div>
         </div>
-        <!-- eof toolbar -->
-        <!-- tabs -->
-        <div id="tabs" class="hide"></div>
         <!-- eof tabs -->
         <!-- tab_panel -->
         <div id="tab_panel" class="hide"></div>

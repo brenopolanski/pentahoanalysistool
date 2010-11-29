@@ -81,11 +81,6 @@ var controller = {
     /** Handle click when the about button is clicked. */
     about : function() {
         view.show_view('../views/info/');
-    },
-
-    /** Handle all errors which occur with the server. */
-    server_error: function() {
-        /*...*/
     }
     
 }
