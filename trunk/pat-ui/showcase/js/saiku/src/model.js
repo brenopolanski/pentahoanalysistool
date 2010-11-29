@@ -180,12 +180,21 @@ var model = {
                     drop : function(event, ui) {
                         // Find the dropped item's parent_id.
                         var parent_id = ui.helper.attr('rel').split('_')[0];
+                        // Find the dropped item's child_id.
+                        var child_id = ui.helper.attr('rel').split('_')[0];
                         /**
-                         * If the dropped item's parent id already exists in the row or column axis
-                         * then prevent the drop from occuring.
+                         * If the dropped item is a dimension and its' parent id already exists in
+                         * the row or column axis then prevent the drop from occuring,
+                         * this is for only dimensions.
                          */
-                        if($both_dropzones.find('[rel=' + parent_id + ']').length > 0) {
+                        if($both_dropzones.find('.dimension_dropped').find('[rel=' + parent_id + ']').length > 0) {
                             view.show_dialog('Incompatible Items', 'You can only have one unique member within the same hierarchy on the bolumn and row axis at once.', 'error');
+                        }else if($both_dropzones.find('.measure_dropped').find('[rel=' + child_id + ']').length > 0) {
+                        /**
+                         * If the dropped item is a measure and already exists on either axis
+                         * then prevent the drop from occuring, this is for only measures.
+                         */
+                            view.show_dialog('Incompatible Items', 'That measure already exists.', 'error');
                         }else{
                             // Hide the placeholder.
                             $(this).find('.placeholder').hide();
@@ -194,7 +203,7 @@ var model = {
                                 $(this).append('<li class="dimension_dropped"><a href="#" title="'+ui.helper.attr('title')+'" rel="' + parent_id + '">'+ui.draggable.text()+'</a></li>');
                             }else{
                                 // If a measure has been dropped.
-                                $(this).append('<li class="measure_dropped"><a href="#" title="'+ui.helper.attr('title')+'">'+ui.draggable.text()+'</a></li>');
+                                $(this).append('<li class="measure_dropped"><a href="#" title="'+ui.helper.attr('title')+'" rel="' + child_id + '">'+ui.draggable.text()+'</a></li>');
                             }
                         }
                         tab_index = view.tabs.index_from_content($(this).parent().parent().parent().parent().parent("div.tab"));
@@ -204,6 +213,7 @@ var model = {
                     cancel : 'placeholder',
                     connectWith : $both_dropzones,
                     placeholder : 'empty_placeholder',
+                    opacity : 0.70,
                     forcePlaceholderSize : true,
                     stop : function() {
                         // Show placeholders

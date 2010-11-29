@@ -341,7 +341,7 @@ var view = {
         $.each(data, function(i, dimension) {
             if(this['@dimensionname'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
-                $first_level = $('<li><a href="#" rel="' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
+                $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
                 .addClass("collapsed root")
                 .appendTo($dimension_tree);
                 if (dimension.levels.length > 1) {
@@ -351,7 +351,7 @@ var view = {
                             return false;
                         }).appendTo($second_level);
                         // Create a parent-child relationship with the rel attribute.
-                        $second_level_link = $('<a href="#" class="dimension" rel="' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
+                        $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
                         .appendTo($li);
                     });
                 }
@@ -373,12 +373,12 @@ var view = {
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
             if(this['@dimensionname'] === 'Measures') {
-                $measures = $('<li><a href="#" class="folder_collapsed">Measures</a></li>')
+                $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_collapsed">Measures</a></li>')
                 .addClass("collapsed root")
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
-                $.each(dimension.levels.members, function(i,member){
-                    $('<li id="'+this['@membercaption']+'"><a href="#" class="measure" rel="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
+                $.each(dimension.levels.members, function(i, j){
+                    $('<li id="'+this['@membercaption']+'"><a href="#" rel="m' + i + '_' + j + '" class="measure" title="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
