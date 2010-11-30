@@ -388,13 +388,13 @@ var view = {
     },
 
     /**
-     * Check if the dropped dimension or measure item is valid.
-     * @param ui {Object} jQuery object of the item being dropped.
-     * @param axis {Object} jQuery object of the item accepting the drop.
-     * @param parent_id {String} Parent id of the dropped item.
-     * @param child_id {String} Child id of the dropped item.
+     * Check if the sortted dimension or measure item is valid.
+     * @param ui {Object} jQuery object of the item being sorted.
+     * @param axis {Object} jQuery object of the item accepting the sort.
+     * @param parent_id {String} Parent id of the sortted item.
+     * @param child_id {String} Child id of the sortted item.
      */
-    valid_drop : function(ui, axis, parent_id, child_id) {
+    valid_sort : function(ui, axis, parent_id, child_id) {
         // Create a variable to store invalid drop codes.
         var invalid_drop_reason;
 
@@ -403,29 +403,45 @@ var view = {
         $measure_dropzones = $both_dropzones.find('.measure_dropped');
         $dropped_axis = axis.parent().attr('class').split(" ")[1];
 
-        // If a dimension is being dropped.
-        if (ui.item.find('a').hasClass('dimension')){
-            /** If any dimensions within in the same hierarchy level already exist. */
-            if ($dimension_dropzones.find('[rel=' + parent_id + ']').length > 0) {
-                invalid_drop_reason = 1;
-            }
-        }else{
-            /** If any measures already exist. */
-            if ($measure_dropzones.find('[rel=' + child_id + ']').length > 0) {
-                invalid_drop_reason = 2;
-            }else{
-                /** Handle unique measures to an axis. */
-                // If any measures have already been dropped.
-                if ($both_dropzones.find('.measure_dropped').length > 0) {
-                    // Which axis has the first measure?
-                    $measure_axis = $both_dropzones.find('.measure_dropped').parent().parent().attr('class').split(" ")[1];
-                    if($measure_axis != $dropped_axis) {
-                        invalid_drop_reason = 3;
-                    }
-                }
-            }
+        // Dealing with dimensions only.
+        if (ui.item.find('a').hasClass('dimension')) {
+            /**
+             * If there is a dimension which belongs to the same level
+             * already on the row or column axis then send an error.
+             */
+            
+
+            
+
         }
-        // Handle invalid_drop_reason.
+
+
+
+
+        
+        //        // If a dimension is being dropped.
+        //        if (ui.item.find('a').hasClass('dimension')){
+        //            /** If any dimensions within in the same hierarchy level already exist. */
+        //            if ($('.dimension_dropped').find('[rel=' + parent_id + ']').length - 1 > 0) {
+        //                invalid_drop_reason = 1;
+        //            }
+        //        }else{
+        //            /** If any measures already exist. */
+        //            if ($measure_dropzones.find('[rel=' + child_id + ']').length > 0) {
+        //                invalid_drop_reason = 2;
+        //            }else{
+        //                /** Handle unique measures to an axis. */
+        //                // If any measures have already been dropped.
+        //                if ($both_dropzones.find('.measure_dropped').length > 0) {
+        //                    // Which axis has the first measure?
+        //                    $measure_axis = $both_dropzones.find('.measure_dropped').parent().parent().attr('class').split(" ")[1];
+        //                    if($measure_axis != $dropped_axis) {
+        //                        invalid_drop_reason = 3;
+        //                    }
+        //                }
+        //            }
+        //        }
+        // Handle invalid_drop_reasons.
         switch (invalid_drop_reason) {
             case 1:
                 view.show_dialog('Error', 'There is already a dimension which belongs to that level on the ' + $dropped_axis + ' axis.', 'error');
