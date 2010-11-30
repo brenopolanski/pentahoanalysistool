@@ -368,8 +368,10 @@ html, body {
     -webkit-box-shadow: 0 0 2px #DDDDDD;
 }
 .field_list .field_list_body ul {
+    height: 29px;
+    line-height: 29px;
     margin: 0;
-    padding: 5px;
+    padding: 0 5px;
 }
 .field_list .field_list_body ul li {
     line-height: 19px;
@@ -383,8 +385,50 @@ html, body {
     cursor: move;
 }
 
-/** Draggables */
+/** Draggables, Sortables and Droppables */
 
+.ui-sortable-helper {
+    line-height: 15px !important;
+}
+.ui-draggable-dragging {
+    cursor: move !important;
+    display: inline !important;
+    height: 15px !important;
+    line-height: 15px !important;
+    list-style-type: none !important;
+    margin: 0 !important;
+    padding: 0 2px !important;
+    width: auto !important;
+    -moz-box-shadow: 0 0 2px #DDD;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: 0 0 2px #DDD;
+    -webkit-border-radius: 3px;
+}
+.ui-draggable-dragging a {
+    background-image: none !important;
+    padding: 0 !important;
+}
+.dtree .ui-draggable-dragging {
+    background: #e5f6ff !important;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2)) !important;
+    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%) !important;
+    border: 1px solid #2a6085 !important;
+    color: #2a6085 !important;
+
+}
+.dtree .ui-draggable-dragging a {
+    color: #2a6085 !important;
+}
+.mtree .ui-draggable-dragging {
+    background: #ffe8e8 !important;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9)) !important;
+    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%) !important;
+    border: 1px solid #ed9393 !important;
+    color: #983030 !important;
+}
+.mtree .ui-draggable-dragging a {
+    color: #983030 !important;
+}
 .dimension_dropped {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
@@ -419,55 +463,6 @@ html, body {
     color: #983030;
     text-decoration: none;
 }
-
-.dimension_dragging {
-    background: #e5f6ff !important;
-    background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2)) !important;
-    background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%) !important;
-    border: 1px solid #2a6085 !important;
-    color: #2a6085 !important;
-    cursor: move !important;
-    display: inline !important;
-    height: 15px !important;
-    line-height: 15px !important;
-    list-style-type: none !important;
-    margin: 0;
-    padding: 0 2px !important;
-    width: auto !important;
-    -moz-box-shadow: 0 0 2px #DDD;
-    -moz-border-radius: 3px;
-    -webkit-box-shadow: 0 0 2px #DDD;
-    -webkit-border-radius: 3px;
-}
-.dimension_dragging a {
-    color: #2a6085 !important;
-    background-image: none !important;
-    padding: 0 !important;
-}
-.measure_dragging {
-    background: #ffe8e8 !important;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9)) !important;
-    background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%) !important;
-    border: 1px solid #ed9393 !important;
-    color: #983030 !important;
-    cursor: move !important;
-    display: inline !important;
-    height: 15px !important;
-    line-height: 15px !important;
-    list-style-type: none !important;
-    margin: 0;
-    padding: 0 2px !important;
-    width: auto !important;
-    -moz-box-shadow: 0 0 2px #DDD;
-    -moz-border-radius: 3px;
-    -webkit-box-shadow: 0 0 2px #DDD;
-    -webkit-border-radius: 3px;
-}
-.measure_dragging a {
-    color: #983030 !important;
-    background-image: none !important;
-    padding: 0 !important;
-}
 .placeholder {
     border: 1px dashed #777;
     color: #777;
@@ -484,10 +479,6 @@ html, body {
     margin-left: 10px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-}
-
-.ui-sortable-helper {
-    line-height: 15px !important;
 }
 
 /** Table */
