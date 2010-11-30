@@ -389,6 +389,7 @@ html, body {
 
 .ui-sortable-helper {
     line-height: 15px !important;
+    width: auto !important;
 }
 .ui-draggable-dragging {
     cursor: move !important;
@@ -429,7 +430,7 @@ html, body {
 .mtree .ui-draggable-dragging a {
     color: #983030 !important;
 }
-.dimension_dropped {
+.dropped_dimension {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
@@ -442,7 +443,7 @@ html, body {
     -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
 }
-.measure_dropped {
+.dropped_measure {
     background: #ffe8e8;
     background: -webkit-gradient(linear, left top, left bottom, from(#fcf5f5), to(#fad9d9));
     background: -moz-linear-gradient(top, #fcf5f5 0%, #fad9d9 100%);
@@ -455,25 +456,16 @@ html, body {
     -webkit-box-shadow: 0 0 2px #DDD;
     -webkit-border-radius: 3px;
 }
-.dimension_dropped a {
+.dropped_dimension a {
     color: #2a6085;
     text-decoration: none;
 }
-.measure_dropped a {
+.dropped_measure a {
     color: #983030;
     text-decoration: none;
 }
 .placeholder {
     border: 1px dashed #777;
-    color: #777;
-    padding: 1px 2px;
-    margin-left: 10px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
-.empty_placeholder {
-    border: 1px solid #777;
-    background: #F0F0F0;
     color: #777;
     padding: 1px 2px;
     margin-left: 10px;

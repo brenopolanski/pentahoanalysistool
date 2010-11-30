@@ -85,7 +85,7 @@ var model = {
                 model.init();
             }, 10000);
         }
-         */
+     */
     },
 
     /** Get the sessionid and based on the username and unhide the UI. */
@@ -103,10 +103,10 @@ var model = {
     },
 
     /**
-     * Populate the dimension and measure tree and initialise draggable,
-     * droppable and sortable items.
-     * @param tab_index {Integer} Index of the selected tab.
-     */
+ * Populate the dimension and measure tree and initialise draggable,
+ * droppable and sortable items.
+ * @param tab_index {Integer} Index of the selected tab.
+ */
     new_query : function(tab_index) {
 
         /** Find the selected cube. */
@@ -127,7 +127,6 @@ var model = {
             method : "POST",
             url : model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
             success : function(data, textStatus, XMLHttpRequest) {
-                view.start_waiting('Loading...');
 
                 /** Load dimensions into a tree. */
                 view.load_dimensions($tab, data.axis.dimensions);
@@ -169,33 +168,35 @@ var model = {
 
                 /** Disable selection. */
                 $both_trees.find("li ul li").disableSelection();
+                
 
                 /**
-                 * Make both the dropzones sortable and connectable.
-                 **/
+             * Make both the dropzones sortable and connectable.
+             **/
                 $both_dropzones.sortable({
-                    cancel : 'placeholder',
-                    placeholder : 'empty_placeholder',
+                    cancel : 'placeholder, dropped_measure',
+                    placeholder : 'placeholder',
                     items : 'li:not(.placeholder)',
                     connectWith : $both_dropzones,
                     opacity: 0.60,
+                    distance: 30,
 
                     /**
-                     * This event is triggered when sorting starts (belongs to jQuery UI).
-                     * @param event {Object} jQuery UI object.
-                     * @param ui {Object} jQuery UI object.
-                     **/
+                 * This event is triggered when sorting starts (belongs to jQuery UI).
+                 * @param event {Object} jQuery UI object.
+                 * @param ui {Object} jQuery UI object.
+                 **/
                     start : function(event, ui) {
                         /** When the sorting starts make sure the placeholder resembles the sorted item. */
                         ui.placeholder.text(ui.helper.text());
                     },
 
                     /**
-                     * This event is triggered when a sortable item has been dragged out
-                     * from the list and into another (belongs to jQuery UI).
-                     * @param event {Object} jQuery UI object.
-                     * @param ui {Object} jQuery UI object.
-                     */
+                 * This event is triggered when a sortable item has been dragged out
+                 * from the list and into another (belongs to jQuery UI).
+                 * @param event {Object} jQuery UI object.
+                 * @param ui {Object} jQuery UI object.
+                 */
                     remove : function(event, ui) {
                         // If the item being removed is a dimension.
                         if (ui.item.find('a').hasClass('dimension')) {
@@ -209,62 +210,90 @@ var model = {
                             /** Id of the item being sorted. */
                             var measure_id = ui.item.find('a').attr('rel');
                             /** Remove the not-draggable class and add ui-draggable to the measure item. */
-                            $both_trees.find('[rel=' + measure_id + ']')
+                            $both_trees.find('[rel=' + measure_id + ']').parent()
                             .removeClass('not-draggable').addClass('ui-draggable');
                         }
                     },
 
                     /**
-                     * This event is triggered when sorting stops, but when the placeholder/helper
-                     * is still available (belongs to jQuery UI).
-                     * @param event {Object} jQuery UI object.
-                     * @param ui {Object} jQuery UI object.
-                     */
+                 * This event is triggered when sorting stops, but when the placeholder/helper
+                 * is still available (belongs to jQuery UI).
+                 * @param event {Object} jQuery UI object.
+                 * @param ui {Object} jQuery UI object.
+                 */
+
                     beforeStop : function(event, ui) {
-                        /** Check if the item being sorted is invalid by finding if it has a not-draggable class. */
-                        if (ui.item.hasClass('not-draggable')) {
-                            // Display generic error.
-                            view.show_dialog('Incompatible Items', 'That combination is not valid with this version of Saiku Server.', 'error');
-                            // Remove the ui.item object.
-                            ui.item.remove();
-                        }else{
-                            /** If the item being added/sorted is a dimension. */
-                            if (ui.item.find('a').hasClass('dimension')) {
-                                /** Id of the removed item. */
-                                var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
-                                /** Add the not-draggable class and add ui-draggable to all the sorted items sibilings. */
-                                $both_trees.find('[rel=' + dimension_id + ']').parent().children().children()
-                                .removeClass('ui-draggable').addClass('not-draggable');
-                                ui.item.addClass('dimension_dropped')
+                        if(!(ui.item.hasClass('dropped'))) {
+                            /** If the item is not being 'dropped/removed' onto the .sidebar. */
+                            /** Check if the item being sorted is invalid by finding if it has a not-draggable class. */
+                            if (ui.item.hasClass('not-draggable')) {
+                                // Display generic error.
+                                view.show_dialog('Incompatible Items', 'That combination of items is not valid with this version of Saiku Server.', 'error');
+                                // Remove the ui.item object.
+                                ui.item.remove();
                             }else{
-                                /** If the item being added/sorted is a measure. */
-                                /** Check if there any other measures. */
-                                if ($both_dropzones.find('.measure_dropped').length == 0) {
+                                /** If the item being added/sorted is a dimension. */
+                                if (ui.item.find('a').hasClass('dimension')) {
                                     /** Id of the removed item. */
-                                    var measure_id = ui.item.find('a').attr('rel');
-                                    /** Add the not-draggable class and add ui-draggable to the measure item. */
-                                    $both_trees.find('[rel=' + measure_id + ']').parent()
+                                    var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
+                                    /** Add the not-draggable class and add ui-draggable to all the sorted items sibilings. */
+                                    $both_trees.find('[rel=' + dimension_id + ']').parent().children().children()
                                     .removeClass('ui-draggable').addClass('not-draggable');
-                                    ui.item.addClass('measure_dropped');
+                                    ui.item.addClass('dropped_dimension');
                                 }else{
-                                    /** If there any other measures. */
-                                    /** What axis currently has the measure. */
-                                    $measure_axis = $both_dropzones.find('.measure_dropped').parent().parent().attr('class').split(" ")[1];
-                                    /** Check what axis the item is being dropped on. */
-                                    $dropped_axis = ui.item.parent().parent().attr('class').split(" ")[1];
-                                    /** Check if the axis the item is being dropped on is the same. */
-                                    if ($dropped_axis != $measure_axis) {
-                                        // Show error.
-                                        view.show_dialog('Incompatible Items', 'That combination is not valid with this version of Saiku Server.', 'error');
-                                        /** If the axis is not the same, remove the ui.item instance. */
-                                        ui.item.remove();
-                                    }else{
+                                    /** If the item being added/sorted is a measure. */
+                                    if ($both_dropzones.find('.dropped_measure').length == 0) {
                                         /** Id of the removed item. */
                                         var measure_id = ui.item.find('a').attr('rel');
                                         /** Add the not-draggable class and add ui-draggable to the measure item. */
                                         $both_trees.find('[rel=' + measure_id + ']').parent()
                                         .removeClass('ui-draggable').addClass('not-draggable');
-                                        ui.item.addClass('measure_dropped');
+                                        ui.item.addClass('dropped_measure');
+                                    }else{
+                                        var drag_to = ui.helper.parent().parent().attr('class').split(' ')[1];
+                                        var drag_from   = $(this).parent().attr('class').split(' ')[1];
+
+                                        debug('Dragging to '+drag_to);
+                                        debug('Dragging from '+drag_from);
+
+                                        if (drag_to === 'rows' && drag_from === 'columns' || drag_to === 'columns' && drag_from === 'rows')  {
+                                        
+                                            debug('Dragging b/w lists');
+                                            debug('Dragging to a list which has '+$('.' + drag_to).find('.dropped_measure').length);
+                                            if($('.'+drag_to).find('.dropped_measure').length - 1 == 0) {
+                                                $both_dropzones.find('.dropped_measure').appendTo($('.'+drag_to+' ul'));
+                                                $both_trees.find('[rel=' + measure_id + ']').parent()
+                                                .removeClass('ui-draggable').addClass('not-draggable');
+                                                ui.item.addClass('dropped_measure');
+                                            }else{
+                                                debug('Say hello to measure, measure.');
+                                                $both_trees.find('[rel=' + measure_id + ']').parent()
+                                                .removeClass('ui-draggable').addClass('not-draggable');
+                                                ui.item.addClass('dropped_measure');
+                                            }
+
+
+                                        }else{
+                                            debug('Say hello to measure, measure.');
+                                            $both_trees.find('[rel=' + measure_id + ']').parent()
+                                            .removeClass('ui-draggable').addClass('not-draggable');
+                                            ui.item.addClass('dropped_measure');
+                                        }
+
+                                    //                                    if($(this).find('.dropped_measure').length > 0) {
+                                    //                                        debug('Say hello to measure, measure.');
+                                    //                                        $both_trees.find('[rel=' + measure_id + ']').parent()
+                                    //                                        .removeClass('ui-draggable').addClass('not-draggable');
+                                    //                                        ui.item.addClass('dropped_measure');
+                                    //                                    }else{
+                                    //                                        debug('No other measures here, bring your friends!');
+                                    //                                        $both_dropzones.find('.dropped_measure').appendTo($(this));
+                                    //                                        $both_trees.find('[rel=' + measure_id + ']').parent()
+                                    //                                        .removeClass('ui-draggable').addClass('not-draggable');
+                                    //                                        ui.item.addClass('dropped_measure');
+                                    //                                    }
+
+                                    
                                     }
                                 }
                             }
@@ -278,12 +307,12 @@ var model = {
                      */
                     stop : function(event, ui) {
                         /** Check if the placeholder should be visible. */
-                        if ($row_dropzone.find('.dimension_dropped, .measure_dropped').length == 0) {
+                        if ($row_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
                             $row_dropzone.find('.placeholder').show();
                         }else{
                             $row_dropzone.find('.placeholder').hide();
                         }
-                        if ($column_dropzone.find('.dimension_dropped, .measure_dropped').length == 0){
+                        if ($column_dropzone.find('.dropped_dimension, .dropped_measure').length == 0){
                             $column_dropzone.find('.placeholder').show();
                         }else{
                             $column_dropzone.find('.placeholder').hide();
@@ -365,11 +394,13 @@ var model = {
                 //                    }
                 // Make the sortable area also droppable.
                 });
+
+                $both_dropzones.find("li").disableSelection();
                 
-                /** Droppable. */
                 $('.sidebar').droppable({
                     accept : ".rows li, .columns li",
                     drop : function(event, ui) {
+                        ui.draggable.addClass('dropped');
                         // Remove the draggable item.
                         ui.draggable.remove();
                         // Using setTimeout due to IE7+ bug with jQuery UI.
