@@ -270,6 +270,7 @@ html, body {
 }
 .dtree li,
 .mtree li {
+    cursor: pointer;
     line-height: 20px;
     list-style-type: none;
     margin: 0;

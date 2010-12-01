@@ -137,17 +137,17 @@ var model = {
                 view.load_measures($tab, data.axis.dimensions);
 
                 /** Activate hide and show on trees. */
-                $tab.find('.root').parent().children('ul').children('li').hide();
+                $tab.find('.root').children('ul').children('li').hide();
                 /** When the root item is clicked show it's children. */
                 $tab.find('.root').click(function() {
-                    $(this).parent().children("ul").children('li').toggle();
-                    if ($(this).parent().hasClass('expand')) {
-                        $(this).parent().removeClass('expand').addClass('collapsed')
+                    $(this).children("ul").children('li').toggle();
+                    if ($(this).hasClass('expand')) {
+                        $(this).removeClass('expand').addClass('collapsed')
                         .find('a.folder_expand')
                         .removeClass('folder_expand')
                         .addClass('folder_collapsed');
                     }else{
-                        $(this).parent().removeClass('collapsed').addClass('expand')
+                        $(this).removeClass('collapsed').addClass('expand')
                         .find('a.folder_collapsed')
                         .removeClass('folder_collapsed')
                         .addClass('folder_expand');
