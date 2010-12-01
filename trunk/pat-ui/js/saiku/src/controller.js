@@ -83,7 +83,7 @@ var controller = {
         view.show_view('views/info/');
     }
     
-}
+};
 
 /** Lazy load the view and model. */
 $(document).ready(function() {
