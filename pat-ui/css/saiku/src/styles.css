@@ -124,6 +124,10 @@ html, body {
 #logo {
     float: right;
     text-indent: -9999px;
+    width: 166px;
+    height: 28px;
+    margin: -2px 10px 0 0;
+    background: transparent url('../../../images/src/Saiku_logo.png') 50% 50% no-repeat;
 }
 
 /** Tabs */
@@ -604,9 +608,9 @@ html, body {
     padding: 10px;
 }
 .dialog .dialog_inner .dialog_body_info {
-    background: transparent url('../../../images/src/toolbar_about.png') 20px 10px no-repeat;
+    background: transparent url('../../../images/src/Saiku_logo.png') 20px 10px no-repeat;
     min-height: 40px;
-    padding: 10px 10px 10px 70px;
+    padding: 45px 20px 0px 20px;
 }
 .dialog .dialog_inner .dialog_body_error {
     background: transparent url('../../../images/src/toolbar_error.png') 20px 10px no-repeat;
