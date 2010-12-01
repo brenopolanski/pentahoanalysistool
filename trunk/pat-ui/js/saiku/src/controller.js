@@ -87,6 +87,14 @@ var controller = {
 
 /** Lazy load the view and model. */
 $(document).ready(function() {
+	// Set base url for all REST calls
+	BASE_URL = location.href.replace("index.html", "");
+	if (BASE_URL.substr(BASE_URL.length - 1, 1) != "/")
+		BASE_URL += "/";
+	
+	// FIXME - should be rest/ instead of fixtures/rest/
+	BASE_URL += "fixtures/rest/";
+	
     lazy_load("js/saiku/src/view.js");
     lazy_load("js/saiku/src/model.js");
 });
