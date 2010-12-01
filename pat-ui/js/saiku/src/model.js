@@ -22,6 +22,9 @@ var model = {
     /** Connection information for this Saiku server. */
     connections : {},
     
+    /** BASE_URL of saiku server. */
+    BASE_URL : "pat-ui",
+
     /**
      * Handle all AJAX requests.
      * @param paramters {Object} Parameters for AJAX requests.
@@ -90,6 +93,7 @@ var model = {
 
     /** Get the sessionid and based on the username and unhide the UI. */
     get_session : function() {
+        $.modal.close();
         model.request({
             method: "POST",
             url: model.username + "/session",
