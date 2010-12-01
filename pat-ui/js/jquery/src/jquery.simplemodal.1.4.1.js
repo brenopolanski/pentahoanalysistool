@@ -473,7 +473,9 @@
 			// focus on dialog or the first visible/enabled input element
 			var input = $(':input:enabled:visible:' + p, s.d.wrap);
 			setTimeout(function () {
+				try { //FIXME - this is stupid
 				input.length > 0 ? input.focus() : s.d.wrap.focus();
+				} catch (err) {}
 			}, 10);
 		},
 		getDimensions: function () {
