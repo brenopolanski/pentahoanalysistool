@@ -125,7 +125,7 @@ var TabContainer = function(tab_container, content_container) {
         // Create the content portion of the tab.
         $new_tab_content = $('<div />')
         .addClass("tab")
-        .load("views/queries/", function() {
+        .load(BASE_URL + "views/queries/", function() {
             view.load_cubes(new_index);
             resize_height();
         });
@@ -195,7 +195,7 @@ var view = {
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : 'views/session',
+            url : BASE_URL + 'views/session',
             cache : false,
             dataType : "html",
             success : function(data) {

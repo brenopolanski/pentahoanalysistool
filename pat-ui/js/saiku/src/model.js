@@ -38,7 +38,8 @@ var model = {
         
         $.ajax({
             type: parameters.method,
-            url: BASE_URL + parameters.url,
+            // FIXME - should be rest/ instead of fixtures/rest/
+            url: BASE_URL + "fixtures/rest/" + parameters.url,
             dataType: 'json',
             username: model.username,
             password: model.password,
