@@ -171,8 +171,8 @@ var model = {
                     /** Connect to the dimension dropzone. */
                     connectToSortable : $dimensions_dropzone,
                     cursorAt : {
-                        top : 7,
-                        left : 5
+                        top : 8,
+                        right : 40
                     }
                 }).disableSelection();
 
@@ -186,8 +186,8 @@ var model = {
                     opacity: 0.60,
                     distance: 30,
                     cursorAt : {
-                        top : 7,
-                        left : 5
+                        top : 8,
+                        right : 40
                     },
 
                 /**
@@ -211,7 +211,7 @@ var model = {
                         /** Id of the item being sorted. */
                         var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
                         /** Remove the not-draggable class and add ui-draggable to all the sorted items sibilings. */
-                        $dimension_tree.find('[rel=' + dimension_id + ']').parent().children().children()
+                        $dimension_tree.parent().parent().parent().find('[rel=' + dimension_id + ']').parent().children().children()
                         .removeClass('not-draggable').addClass('ui-draggable');
                     },
 
@@ -228,7 +228,7 @@ var model = {
                             /** Id of the removed item. */
                             var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
                             /** Add the not-draggable class and add ui-draggable to all the sorted items sibilings. */
-                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().children().children()
+                            $dimension_tree.parent().parent().parent().find('[rel=' + dimension_id + ']').parent().children().children()
                             .removeClass('ui-draggable').addClass('not-draggable');
                             ui.item.addClass('dropped_dimension');
                         }
@@ -304,7 +304,7 @@ var model = {
                         /** Id of the item being sorted. */
                         var measure_id = ui.item.find('a').attr('rel');
                         /** Remove the not-draggable class and add ui-draggable to the measure item. */
-                        $measure_tree.find('[rel=' + measure_id + ']').parent()
+                        $measure_tree.parent().parent().parent().find('[rel=' + measure_id + ']').parent()
                         .removeClass('not-draggable').addClass('ui-draggable');
                     },
 
@@ -323,7 +323,7 @@ var model = {
                             /** If this is the first measure being dropped. */
                             if ($measures_dropzone.find('.dropped_measure').length == 0) {
                                 /** Add the not-draggable class and remove ui-draggable to the measure item in the measures tree. */
-                                $measure_tree.find('[rel=' + measure_id + ']').parent()
+                                $measure_tree.parent().parent().parent().find('[rel=' + measure_id + ']').parent()
                                 .removeClass('ui-draggable').addClass('not-draggable');
                                 // Style the measure item.
                                 ui.item.addClass('dropped_measure');
@@ -342,7 +342,7 @@ var model = {
                                     /** If sorting to a list which contains no measures. */
                                     if ($('.'+drag_from).find('.dropped_measure').length == 0) {
                                         /** Add the not-draggable class and remove ui-draggable to the measure item in the measures tree. */
-                                        $measure_tree.find('[rel=' + measure_id + ']').parent()
+                                        $measure_tree.parent().parent().parent().find('[rel=' + measure_id + ']').parent()
                                         .removeClass('ui-draggable').addClass('not-draggable');
                                         /** Find all other measures and append them to the new axis. */
                                         $measures_dropzone.find('.dropped_measure').appendTo($('.'+drag_from+' .measures_group'));
@@ -350,7 +350,7 @@ var model = {
                                         ui.item.addClass('dropped_measure');
                                     }else{
                                         /** If sorting from the tree to a list which already contains measures. */
-                                        $measure_tree.find('[rel=' + measure_id + ']')
+                                        $measure_tree.parent().parent().parent().find('[rel=' + measure_id + ']')
                                         .parent().removeClass('ui-draggable').addClass('not-draggable');
                                         // Style the measure item.
                                         ui.item.addClass('dropped_measure');
