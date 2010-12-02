@@ -53,28 +53,7 @@ var model = {
 
     /** Handle all errors which occur with the server. */
     server_error : function() {
-        $('<div id="dialog" class="dialog hide">').appendTo('body');
-        $('#dialog').append('<div class="dialog_inner">' +
-            '<div class="dialog_header">' +
-            '<h3>Error</h3>' +
-            '<a href="#" title="Close" class="close_dialog close">Close</a>' +
-            '<div class="clear"></div>' +
-            '</div>' +
-            '<div class="dialog_body_error">Could not connect to the server.</div>' +
-            '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
-            '</div>' +
-            '</div>');
-        $('#dialog').modal({
-            opacity : 100,
-            overlayCss : {
-                background : 'white'
-            },
-            onClose : function () {
-                $.modal.close();
-                $('#dialog').remove();
-                controller.logout();
-            }
-        });
+        view.show_dialog('Fatal Error', 'Could not connect to the server, please refresh the page.', 'error');
     /*
         view.logout();
         view.processing("Could not connect to server, trying again...");
@@ -93,7 +72,6 @@ var model = {
 
     /** Get the sessionid and based on the username and unhide the UI. */
     get_session : function() {
-        $.modal.close();
         model.request({
             method: "POST",
             url: model.username + "/session",
@@ -125,6 +103,8 @@ var model = {
 
         // Reference for the selected tabs content.
         $tab = view.tabs.tabs[tab_index].content;
+
+        view.start_waiting();
 
         // Get a list of available dimensions and measures.
         model.request({
@@ -194,7 +174,7 @@ var model = {
                         right : 40
                     },
 
-                /**
+                    /**
                  * This event is triggered when sorting starts (belongs to jQuery UI).
                  * @param event {Object} jQuery UI object.
                  * @param ui {Object} jQuery UI object.
@@ -205,7 +185,7 @@ var model = {
 
                     },
 
-                /**
+                    /**
                  * This event is triggered when a sortable item has been dragged out
                  * from the list and into another (belongs to jQuery UI).
                  * @param event {Object} jQuery UI object.
@@ -219,7 +199,7 @@ var model = {
                         .removeClass('not-draggable').addClass('ui-draggable');
                     },
 
-                /**
+                    /**
                  * This event is triggered when sorting stops, but when the placeholder/helper
                  * is still available (belongs to jQuery UI).
                  * @param event {Object} jQuery UI object.
@@ -288,7 +268,7 @@ var model = {
                         left : 5
                     },
 
-                /**
+                    /**
                  * This event is triggered when sorting starts (belongs to jQuery UI).
                  * @param event {Object} jQuery UI object.
                  * @param ui {Object} jQuery UI object.
@@ -407,9 +387,13 @@ var model = {
                         } , 1);
                     }
                 });
+                
+                view.stop_waiting();
             },
             error: function() {
+                view.stop_waiting();
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
+                $('.cubes').find('option:first').attr('selected', 'selected');
             }
         });
     }
