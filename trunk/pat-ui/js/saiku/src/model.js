@@ -104,7 +104,7 @@ var model = {
         // Reference for the selected tabs content.
         $tab = view.tabs.tabs[tab_index].content;
 
-        view.start_waiting();
+        view.start_waiting('Preparing workspace...');
 
         // Get a list of available dimensions and measures.
         model.request({
