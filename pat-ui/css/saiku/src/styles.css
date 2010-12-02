@@ -662,6 +662,6 @@ a.button_selected {
 /** Waiting */
 .waiting {
     background: transparent url('../../../images/src/waiting.gif') no-repeat left center;
-    padding-left: 20px;
+    padding: 5px 0 5px 20px;
     float: right;
 }
