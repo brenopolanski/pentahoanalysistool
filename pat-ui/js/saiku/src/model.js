@@ -85,10 +85,10 @@ var model = {
     },
 
     /**
- * Populate the dimension and measure tree and initialise draggable,
- * droppable and sortable items.
- * @param tab_index {Integer} Index of the selected tab.
- */
+     * Populate the dimension and measure tree and initialise draggable,
+     * droppable and sortable items.
+     * @param tab_index {Integer} Index of the selected tab.
+     */
     new_query : function(tab_index) {
 
         /** Find the selected cube. */
@@ -175,10 +175,10 @@ var model = {
                     },
 
                     /**
-                 * This event is triggered when sorting starts (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 **/
+                     * This event is triggered when sorting starts (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     **/
                     start : function(event, ui) {
                         /** When the sorting starts make sure the placeholder resembles the sorted item. */
                         ui.placeholder.text(ui.helper.text());
@@ -186,11 +186,11 @@ var model = {
                     },
 
                     /**
-                 * This event is triggered when a sortable item has been dragged out
-                 * from the list and into another (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 */
+                     * This event is triggered when a sortable item has been dragged out
+                     * from the list and into another (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     */
                     remove : function(event, ui) {
                         /** Id of the item being sorted. */
                         var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
@@ -200,12 +200,11 @@ var model = {
                     },
 
                     /**
-                 * This event is triggered when sorting stops, but when the placeholder/helper
-                 * is still available (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 */
-
+                     * This event is triggered when sorting stops, but when the placeholder/helper
+                     * is still available (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     */
                     beforeStop : function(event, ui) {
                         /** If the item is not being 'dropped/removed' onto the .sidebar. */
                         if(!(ui.item.hasClass('dropped'))) {
@@ -262,28 +261,33 @@ var model = {
                     items : 'li:not(.placeholder_measure)',
                     connectWith : $measures_dropzone,
                     tolerance : "pointer",
-                    opacity: 0.60,
+                    opacity : 0.60,
                     cursorAt : {
                         top : 7,
                         left : 5
                     },
 
                     /**
-                 * This event is triggered when sorting starts (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 **/
+                     * This event is triggered when sorting starts (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     **/
                     start : function(event, ui) {
                         /** When the sorting starts make sure the placeholder resembles the sorted item. */
                         ui.placeholder.text(ui.helper.text());
                     },
 
+
+                    over : function(event, ui) {
+                        debug(ui);
+                    },
+
                     /**
-                 * This event is triggered when a sortable item has been dragged out
-                 * from the list and into another (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 */
+                     * This event is triggered when a sortable item has been dragged out
+                     * from the list and into another (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     */
                     remove : function(event, ui) {
                         /** Id of the item being sorted. */
                         var measure_id = ui.item.find('a').attr('rel');
@@ -293,12 +297,11 @@ var model = {
                     },
 
                     /**
-                 * This event is triggered when sorting stops, but when the placeholder/helper
-                 * is still available (belongs to jQuery UI).
-                 * @param event {Object} jQuery UI object.
-                 * @param ui {Object} jQuery UI object.
-                 */
-
+                     * This event is triggered when sorting stops, but when the placeholder/helper
+                     * is still available (belongs to jQuery UI).
+                     * @param event {Object} jQuery UI object.
+                     * @param ui {Object} jQuery UI object.
+                     */
                     beforeStop : function(event, ui) {
                         /** If the item is not being 'dropped/removed' onto the .sidebar. */
                         if(!(ui.item.hasClass('dropped'))) {
