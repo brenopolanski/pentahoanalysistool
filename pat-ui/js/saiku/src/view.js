@@ -393,12 +393,14 @@ var view = {
      * @param message {String} Waiting message to be displayed.
      */
     start_waiting : function (message) {
-        $('.waiting_message').html(message).show();
+        $('.waiting_message').html(message);
+        $('.waiting').show();
     },
     
     /** Removes a waiting dialog box. */
     stop_waiting : function () {
-        $('.waiting').html('').hide();
+        $('.waiting_message').html('');
+        $('.waiting').hide();
     },
 
     /**
