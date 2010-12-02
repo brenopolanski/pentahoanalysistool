@@ -201,15 +201,22 @@ var view = {
             success : function(data) {
                 $('#dialog').html(data).modal({
                     opacity : 100,
-                    overlayCss : {
-                        background : 'white'
+                    onClose : function (dialog) {
+                        // Get the username and password from the form.
+                        model.username = $('#username').val();
+                        model.password = $('#password').val();
+
+                        // Remove all simple modal objects.
+                        dialog.data.remove();
+                        dialog.container.remove();
+                        dialog.overlay.remove();
+                        $.modal.close();
+                        // Remove the #dialog which we appended to the body.
+                        $('#dialog').remove();
+
+                        // Create the session and log in.
+                        model.get_session();
                     }
-                });
-                $('#dialog').find('#login').click(function(){
-                    model.username = $('#username').val();
-                    model.password = $('#password').val();
-                    model.get_session();
-                    $('#dialog').remove();
                 });
             }
         });
@@ -227,9 +234,6 @@ var view = {
             return false;
         };
 
-        // Show waiting message.
-        view.start_waiting('Saiku User Interface loading...');
-        
         /** Show all UI elements. */
         $('#header, #tab_panel').show();
 
@@ -270,9 +274,6 @@ var view = {
         /** Initialise resize_height() on first page load. */
         //resize_height();
 
-        // Remove waiting message.
-        view.stop_waiting();
-        
     },
 
     /** Destroy the user interface. */
@@ -392,16 +393,12 @@ var view = {
      * @param message {String} Waiting message to be displayed.
      */
     start_waiting : function (message) {
-        // Append the waiting <div/> to the body.
-        $('<div id="waiting" class="waiting hide" />').appendTo('body');
-        // Load the contents and message into the waiting <div/>.
-        $('#waiting').append('<div class="waiting_inner"><div class="waiting_body">' + message + '</div></div>').modal();
+        $('.waiting').show();
     },
     
     /** Removes a waiting dialog box. */
     stop_waiting : function () {
-        $.modal.close();
-        $('#waiting').remove();
+        $('.waiting').hide();
     },
 
     /**
@@ -413,13 +410,19 @@ var view = {
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : url,
+            url : BASE_URL + url,
             cache : false,
             dataType : "html",
             success : function(data) {
                 $('#dialog').html(data).modal({
-                    onClose : function() {
+                    opacity : 100,
+                    onClose : function (dialog) {
+                        // Remove all simple modal objects.
+                        dialog.data.remove();
+                        dialog.container.remove();
+                        dialog.overlay.remove();
                         $.modal.close();
+                        // Remove the #dialog which we appended to the body.
                         $('#dialog').remove();
                     }
                 });
@@ -435,6 +438,7 @@ var view = {
     show_dialog : function (title, message, type) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide">').appendTo('body');
+        // Add the structure of the dialog.
         $('#dialog').append('<div class="dialog_inner">' +
             '<div class="dialog_header">' +
             '<h3>' + title + '</h3>' +
@@ -444,18 +448,22 @@ var view = {
             '<div class="dialog_body_' + type + '">' + message + '</div>' +
             '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
             '</div>' +
-            '</div>');
-        $('#dialog').modal({
-            opacity : 0,
-            overlayCss : {
-                background : 'white'
-            },
-            onClose : function () {
+            '</div>').modal({
+            opacity : 100,
+            onClose : function (dialog) {
+                // Get the username and password from the form.
+                model.username = $('#username').val();
+                model.password = $('#password').val();
+
+                // Remove all simple modal objects.
+                dialog.data.remove();
+                dialog.container.remove();
+                dialog.overlay.remove();
                 $.modal.close();
+                // Remove the #dialog which we appended to the body.
                 $('#dialog').remove();
             }
         });
-        
     }
     
 }
