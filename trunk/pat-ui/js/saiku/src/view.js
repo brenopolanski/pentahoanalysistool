@@ -451,10 +451,6 @@ var view = {
             '</div>').modal({
             opacity : 100,
             onClose : function (dialog) {
-                // Get the username and password from the form.
-                model.username = $('#username').val();
-                model.password = $('#password').val();
-
                 // Remove all simple modal objects.
                 dialog.data.remove();
                 dialog.container.remove();
