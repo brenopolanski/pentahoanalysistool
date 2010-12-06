@@ -57,7 +57,7 @@
                 background: #92cae4;
                 color: #205791;
             }
-            #columns li a.measure, 
+            #columns li a.measure,
             #rows li a.measure {
                 border: 1px solid #8a1f11;
                 background: pink;
@@ -70,7 +70,6 @@
             }
         </style>
         <script type="text/javascript">
-            /*
             $(function() {
                 $('#columns ul, #rows ul').sortable({
                     connectWith : '.connectable',
@@ -89,102 +88,11 @@
                             .removeClass('not-draggable').addClass('ui-draggable');
                         }
                     },
-                    stop : function (event, ui) {
+                    beforeStop : function(event, ui) {
                         if(!(ui.item.hasClass('dropped'))) {
-                            if (ui.item.find('a').hasClass('dimension')) {
-                                var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
-                                $('#dimension_tree').parent().parent().parent()
-                                .find('[rel=' + dimension_id + ']').parent().children().children()
-                                .removeClass('ui-draggable').addClass('not-draggable');
-                                ui.item.css('display', '').addClass('d');
-                            }
-                        }else{
-                            var measure_id = ui.item.find('a').attr('rel');
                             if($('#columns, #rows').find('.measures_group').find('li').length == 0) {
                                 $(this).find('.placeholder').after('<li class="measures">Measures<ul class="measures_group"/></li>');
-                                ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
-                                $('.measures_group').sortable({
-                                    forcePlaceholderSize : true,
-                                    placeholder : 'placeholder',
-                                    items : 'li',
-                                    stop : function(event, ui) {
-                                        var measure_id = ui.item.find('a').attr('rel');
-                                        ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
-                                        $('#measure_tree').find('[rel=' + measure_id + ']').parent()
-                                        .removeClass('ui-draggable').addClass('not-draggable');
-                                    }
-                                });
-                                $('#measure_tree li ul li').draggable('destroy').draggable({
-                                    cancel : '.not-draggable',
-                                    connectToSortable : '.measures_group',
-                                    helper : 'clone',
-                                    revert : 'invalid'
-                                });
-                                $('#measure_tree').find('[rel=' + measure_id + ']').parent()
-                                .removeClass('ui-draggable').addClass('not-draggable');
-                            }else{
-                                $('#columns ul, #rows ul').sortable("refresh")
                             }
-                        }
-                    }
-                });
-
-                $('#dimension_tree li ul li').draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : '#columns > ul, #rows > ul',
-                    helper : 'clone',
-                    revert : 'invalid'
-                });
-
-                $('#measure_tree li ul li').draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : '#columns > ul, #rows > ul',
-                    helper : 'clone',
-                    revert : 'invalid'
-                });
-
-                $('#sidebar').droppable({
-                    accept : "#rows li, #columns li, .measures_group li",
-                    drop : function(event, ui) {
-                        if($('.measures_group').find('.m').length == 1 || ui.draggable.hasClass('measures')) {
-                            ui.draggable.addClass('dropped');
-                            ui.draggable.remove();
-                            setTimeout(function() {
-                                ui.draggable.remove();
-                            },1);
-                            $('.measures').remove();
-                            $('#measure_tree li ul li').draggable('destroy').draggable({
-                                cancel : '.not-draggable',
-                                connectToSortable : '#columns ul, #rows ul',
-                                helper : 'clone',
-                                revert : 'invalid'
-                            });
-                        }
-                        ui.draggable.addClass('dropped');
-                        ui.draggable.remove();
-                        setTimeout(function() {
-                            ui.draggable.remove();
-                        },1);
-                    }
-                });
-            });
-            */
-           $(function() {
-                $('#columns div, #rows div').sortable({
-                    connectWith : '.connectable',
-                    forcePlaceholderSize : true,
-                    items : '> span',
-                    placeholder : 'placeholder',
-                    remove : function(event, ui) {
-                        if(ui.item.hasClass('m')){
-                            var measure_id = ui.item.find('a').attr('rel');
-                            $('#measure_tree').find('[rel=' + measure_id + ']').parent()
-                            .removeClass('not-draggable').addClass('ui-draggable');
-                        }else{
-                            var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
-                            $('#dimension_tree').parent().parent().parent()
-                            .find('[rel=' + dimension_id + ']').parent().children().children()
-                            .removeClass('not-draggable').addClass('ui-draggable');
                         }
                     },
                     stop : function (event, ui) {
@@ -195,51 +103,55 @@
                                 .find('[rel=' + dimension_id + ']').parent().children().children()
                                 .removeClass('ui-draggable').addClass('not-draggable');
                                 ui.item.css('display', '').addClass('d');
-                            }
-                        }else{
-                            var measure_id = ui.item.find('a').attr('rel');
-                            if($('#columns, #rows').find('.measures_group').find('li').length == 0) {
-                                $(this).find('.placeholder').after('<li class="measures">Measures<ul class="measures_group"/></li>');
-                                ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
-                                $('.measures_group').sortable({
-                                    forcePlaceholderSize : true,
-                                    placeholder : 'placeholder',
-                                    items : 'li',
-                                    stop : function(event, ui) {
-                                        var measure_id = ui.item.find('a').attr('rel');
-                                        ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
-                                        $('#measure_tree').find('[rel=' + measure_id + ']').parent()
-                                        .removeClass('ui-draggable').addClass('not-draggable');
-                                    }
-                                });
-                                $('#measure_tree li ul li').draggable('destroy').draggable({
-                                    cancel : '.not-draggable',
-                                    connectToSortable : '.measures_group',
-                                    helper : 'clone',
-                                    revert : 'invalid'
-                                });
-                                $('#measure_tree').find('[rel=' + measure_id + ']').parent()
-                                .removeClass('ui-draggable').addClass('not-draggable');
+
+                                $('#columns ul, #rows ul').sortable("refresh");
                             }else{
-                                $('#columns ul, #rows ul').sortable("refresh")
+                                var measure_id = ui.item.find('a').attr('rel');
+                                if($('#columns, #rows').find('.measures_group').find('li').length == 0) {
+                                    $(this).find('.placeholder').after('<li class="measures">Measures<ul class="measures_group"/></li>');
+                                    ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
+                                    $('.measures_group').sortable({
+                                        forcePlaceholderSize : true,
+                                        placeholder : 'placeholder',
+                                        items : 'li',
+                                        stop : function(event, ui) {
+                                            var measure_id = ui.item.find('a').attr('rel');
+                                            ui.item.css('display', '').addClass('m').appendTo($('.measures_group'));
+                                            $('#measure_tree').find('[rel=' + measure_id + ']').parent()
+                                            .removeClass('ui-draggable').addClass('not-draggable');
+                                        }
+                                    });
+                                    $('#measure_tree li ul li').draggable('destroy').draggable({
+                                        cancel : '.not-draggable',
+                                        connectToSortable : '.measures_group',
+                                        helper : 'clone',
+                                        revert : 'invalid'
+                                    });
+                                    $('#measure_tree').find('[rel=' + measure_id + ']').parent()
+                                    .removeClass('ui-draggable').addClass('not-draggable');
+
+                                    $('#columns ul, #rows ul').sortable("refresh");
+                                }else{
+                                    $('#columns ul, #rows ul').sortable("refresh");
+                                }
                             }
                         }
                     }
-                }).disableSelection();
+                });
 
                 $('#dimension_tree li ul li').draggable({
                     cancel : '.not-draggable',
-                    connectToSortable : '#columns > div, #rows > div',
+                    connectToSortable : '#columns > ul, #rows > ul',
                     helper : 'clone',
                     revert : 'invalid'
-                }).disableSelection();
+                });
 
                 $('#measure_tree li ul li').draggable({
                     cancel : '.not-draggable',
-                    connectToSortable : '#columns > div, #rows > div',
+                    connectToSortable : '#columns > ul, #rows > ul',
                     helper : 'clone',
                     revert : 'invalid'
-                }).disableSelection();
+                });
 
                 $('#sidebar').droppable({
                     accept : "#rows li, #columns li, .measures_group li",
@@ -303,16 +215,16 @@
             </div>
             <div class="span-17 last">
                 <div id="columns">
-                    <div class="connectable">
-                        <span><a class="dimension" href="#">Item 1</a></span>
-                    </div>
+                    <ul class="connectable">
+                        <li><a class="dimension" href="#">Item 1</a></li>
+                    </ul>
                     <div class="clear"></div>
                 </div>
 
                 <div id="rows">
-                    <div class="connectable">
-                        <span><a class="dimension" href="#">Item 1</a></span>
-                    </div>
+                    <ul class="connectable">
+                        <li><a class="dimension" href="#">Item 1</a></li>
+                    </ul>
                     <div class="clear"></div>
                 </div>
             </div>
