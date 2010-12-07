@@ -150,7 +150,9 @@ var model = {
                 $sidebar_dropzone = view.tabs.tabs[tab_index].content.find('.sidebar');
                 $connectable = view.tabs.tabs[tab_index].content.find('.columns > ul, .rows > ul');
                 $sidebar_accept = view.tabs.tabs[tab_index].content.find('.rows li, .columns li, .measures_group li');
-                
+
+                $both_dropzones.find('.placeholder').disableSelection();
+
                 /** Make the dropzones sortable. */
                 $both_dropzones.sortable({
                     connectWith : '.connectable',
@@ -183,7 +185,7 @@ var model = {
                     beforeStop : function(event, ui) {
                         if(!(ui.item.hasClass('dropped'))) {
                             if($both_dropzones.find('.measures_group').find('li').length == 0 && ui.item.find('a').hasClass('measure')) {
-                                $(this).find('.placeholder').after('<li class="all_measures"><span>Drag all</span><ul class="measures_group"/></li>');
+                                $(this).find('.placeholder').after('<li class="all_measures"><span>//</span> <ul class="measures_group"/></li>');
                                 $measures_group = $both_dropzones.find('.measures_group');
                             }
                         }
@@ -210,6 +212,8 @@ var model = {
                                             left : 40
                                         },
                                         start : function(event, ui) {
+                                            var set_width = ui.placeholder.width() + $('.measures_group').width() + 10;
+                                            $('.measures_group').css('width', set_width+'px');
                                             ui.placeholder.text(ui.helper.text());
                                         },
                                         stop : function(event, ui) {
@@ -217,6 +221,7 @@ var model = {
                                             ui.item.css('display', '').addClass('dropped_measure').appendTo($measures_group);
                                             $measure_tree.find('[rel=' + measure_id + ']').parent()
                                             .removeClass('ui-draggable').addClass('not-draggable');
+                                            $('.measures_group').css('width', 'auto');
                                         }
                                     });
                                     $measure_tree.find('li ul li').draggable('destroy').draggable({
