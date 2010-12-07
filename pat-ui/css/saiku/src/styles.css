@@ -347,7 +347,7 @@ html, body {
 
 /** Field List */
 
-.fields {
+/* .fields {
     overflow: hidden;
 }
 .field_list {
@@ -387,12 +387,14 @@ html, body {
 .field_list .field_list_body ul {
     height: 27px;
     display: inline;
+    float: left;
     line-height: 27px;
     list-style: none;
     margin: 0;
-    padding-left: 5px;
+    padding: 0;
 }
 .field_list .field_list_body ul li {
+    float: left;
     line-height: 19px;
     list-style-type: none;
     height: 20px;
@@ -404,16 +406,79 @@ html, body {
     margin-right: 0;
 }
 .field_list .field_list_body .measures_group {
-    margin-left: 5px;
-}
-.field_list .field_list body ul li ul {
     float: right;
+    margin-left: 5px;
 }
 .field_list .field_list_body ul a {
     cursor: move;
 }
 .field_list .field_list_body ul li.all_measures span {
     cursor: move;
+} */
+
+
+.fields {
+    overflow: hidden;
+}
+.fields_list {
+    border: 1px solid #CCC;
+    margin-bottom: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+}
+.fields_list .fields_list_header {
+    background: #F9F9F9;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
+    border-right: 1px solid #CCC;
+    float: left;
+    font-weight: bold;
+    padding: 4px 5px;
+    line-height: 19px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 80px;
+}
+.fields_list .fields_list_body {
+    float: left;
+    padding: 2px 0;
+    width: 87%;
+}
+.fields_list .fields_list_body a,
+.fields_list .fields_list_body .all_measures span {
+    cursor: move;
+}
+
+.fields_list .fields_list_body ul {
+    height: 22px;
+    display: inline;
+    float: left;
+    line-height: 22px;
+    list-style: none;
+    margin: 0 10px;
+    padding: 0;
+    width: 100%;
+}
+.fields_list .fields_list_body ul li {
+    float: left;
+    line-height: 15px;
+    list-style-type: none;
+    height: 15px;
+    display: inline;
+    margin: 3px 5px 0 0;
+    padding: 0 2px;
+}
+.fields_list .fields_list_body ul li ul li {
+    margin-right: 5px;
+}
+.fields_list .fields_list_body ul li ul {
+    float: right;
+    margin: 0 0 0 5px;
+    width: auto;
+}
+.fields_list .fields_list_body ul li ul li {
+    margin-top: 0;
 }
 
 /** Draggables, Sortables and Droppables */
@@ -461,6 +526,13 @@ html, body {
 .mtree .ui-draggable-dragging a {
     color: #983030 !important;
 }
+
+.all_measures {
+    color: #983030;
+    display: inline !important;
+    margin-left: 10px;
+}
+
 .dropped_dimension {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
