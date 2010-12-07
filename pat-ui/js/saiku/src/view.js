@@ -374,8 +374,8 @@ var view = {
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
             if (this['@dimensionname'] === 'Measures') {
-                $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_collapsed">Measures</a></li>')
-                .addClass("collapsed root")
+                $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></li>')
+                .addClass("expand root")
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
                 $.each(dimension.levels.members, function(j, level){

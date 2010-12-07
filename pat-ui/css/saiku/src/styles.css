@@ -347,76 +347,6 @@ html, body {
 
 /** Field List */
 
-/* .fields {
-    overflow: hidden;
-}
-.field_list {
-    margin-bottom: 10px;
-    margin-left: -100px;
-    float: right;
-    width: 100%;
-    border-bottom: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-    border-top: 1px solid #CCC;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-}
-.field_list_header {
-    background: #F9F9F9;
-    border: 1px solid #CCC;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
-    font-weight: bold;
-    float: left;
-    padding: 4px 5px;
-    line-height: 19px;
-    text-shadow: 1px 1px 0 #FFFFFF;
-    width: 80px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-}
-.field_list .field_list_body {
-    float: left;
-    margin: 0;
-    margin-left: 100px;
-}
-.field_list .field_list_body ul {
-    height: 27px;
-    display: inline;
-    float: left;
-    line-height: 27px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.field_list .field_list_body ul li {
-    float: left;
-    line-height: 19px;
-    list-style-type: none;
-    height: 20px;
-    display: inline;
-    margin: 0 10px 0 0;
-    padding: 0 2px;
-}
-.field_list .field_list_body ul li.all_measures {
-    margin-right: 0;
-}
-.field_list .field_list_body .measures_group {
-    float: right;
-    margin-left: 5px;
-}
-.field_list .field_list_body ul a {
-    cursor: move;
-}
-.field_list .field_list_body ul li.all_measures span {
-    cursor: move;
-} */
-
-
 .fields {
     overflow: hidden;
 }
@@ -526,13 +456,11 @@ html, body {
 .mtree .ui-draggable-dragging a {
     color: #983030 !important;
 }
-
 .all_measures {
     color: #983030;
     display: inline !important;
     margin-left: 10px;
 }
-
 .dropped_dimension {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
@@ -571,7 +499,7 @@ html, body {
 .placeholder {
     border: 1px dashed #999;
     color: #999;
-    padding: 1px 2px;
+    padding: 1px 4px;
     margin-left: 10px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
