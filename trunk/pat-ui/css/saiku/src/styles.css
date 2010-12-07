@@ -365,26 +365,25 @@ html, body {
     border-right: 1px solid #CCC;
     float: left;
     font-weight: bold;
-    padding: 4px 5px;
-    line-height: 19px;
+    padding: 5px 5px;
+    line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 80px;
 }
 .fields_list .fields_list_body {
     float: left;
-    padding: 2px 0;
+    padding: 3px 0;
     width: 87%;
 }
 .fields_list .fields_list_body a,
 .fields_list .fields_list_body .all_measures span {
     cursor: move;
 }
-
 .fields_list .fields_list_body ul {
-    height: 22px;
+    height: 26px;
     display: inline;
     float: left;
-    line-height: 22px;
+    line-height: 26px;
     list-style: none;
     margin: 0 10px;
     padding: 0;
@@ -392,12 +391,12 @@ html, body {
 }
 .fields_list .fields_list_body ul li {
     float: left;
-    line-height: 15px;
+    line-height: 17px;
     list-style-type: none;
-    height: 15px;
+    height: 18px;
     display: inline;
     margin: 3px 5px 0 0;
-    padding: 0 2px;
+    padding: 0 6px;
 }
 .fields_list .fields_list_body ul li ul li {
     margin-right: 5px;
