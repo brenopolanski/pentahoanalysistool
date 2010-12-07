@@ -167,20 +167,11 @@ var model = {
                     start : function(event, ui) {
                         ui.placeholder.text(ui.helper.text());
                     },
+                    receive : function(event, ui) {
+                        
+                    },
                     remove : function(event, ui) {
-                        if(ui.item.find('a').hasClass('dimension')){
-                            var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
-                            $dimension_tree.parent().parent().parent()
-                            .find('[rel=' + dimension_id + ']').parent().children().children()
-                            .removeClass('not-draggable').addClass('ui-draggable');
-                        }else{
-                            var measure_id = ui.item.find('a').attr('rel');
-                            $measure_tree.find('[rel=' + measure_id + ']').parent()
-                            .removeClass('not-draggable').addClass('ui-draggable');
-                        }
-                        if($(this).find('.dropped_dimension, .dropped_measure').length == 0) {
-                            $(this).find('.empty_placeholder').show();
-                        }
+                        
                     },
                     beforeStop : function(event, ui) {
                         if(!(ui.item.hasClass('dropped'))) {
@@ -241,8 +232,15 @@ var model = {
                                     $both_dropzones.sortable("refresh");
                                 }
                             }
-                            if($(this).find('.dropped_dimension, .dropped_measure').length == 1) {
-                                $(this).find('.empty_placeholder').hide();
+                            if($row_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
+                                $row_dropzone.find('.empty_placeholder').show();
+                            }else{
+                                $row_dropzone.find('.empty_placeholder').hide();
+                            }
+                            if($column_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
+                                $column_dropzone.find('.empty_placeholder').show();
+                            }else{
+                                $column_dropzone.find('.empty_placeholder').hide();
                             }
                         }                       
                     }
@@ -282,9 +280,11 @@ var model = {
                     accept : '.dropped_measure, .dropped_dimension, .all_measures',
                     drop : function(event, ui) {
                         ui.draggable.addClass('dropped');
-                        if(ui.draggable.find('a').hasClass('measure')) {
+                        if(ui.draggable.find('a').hasClass('measure') || ui.draggable.hasClass('all_measures')) {
                             if($measures_group.find('.measure').length == 1 || ui.draggable.hasClass('all_measures')) {
+                                console.log('recreate draggable');
                                 $('.all_measures').remove();
+                                
                                 $measure_tree_items.draggable('destroy').draggable({
                                     cancel : '.not-draggable',
                                     connectToSortable : $connectable,
@@ -296,7 +296,6 @@ var model = {
                                         right : 40
                                     }
                                 });
-                                $both_dropzones.sortable("refresh");
                             }else{
                                 ui.draggable.remove();
                                 setTimeout(function() {
@@ -309,6 +308,20 @@ var model = {
                                 ui.draggable.remove();
                             },1);
                         }
+                        console.log(ui);
+                        if(ui.draggable.find('a').hasClass('dimension')){
+                            var dimension_id = ui.draggable.find('a').attr('rel').split('_')[0];
+                            $dimension_tree.parent().parent().parent()
+                            .find('[rel=' + dimension_id + ']').parent().children().children()
+                            .removeClass('not-draggable').addClass('ui-draggable');
+                        }else{
+                            var measure_id = ui.draggable.find('a').attr('rel');
+                            $measure_tree.find('[rel=' + measure_id + ']').parent()
+                            .removeClass('not-draggable').addClass('ui-draggable');
+                        }
+
+
+
                         if($row_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
                             $row_dropzone.find('.empty_placeholder').show();
                         }
