@@ -160,11 +160,14 @@ var model = {
                     connectWith : '.connectable',
                     items : '> li',
                     placeholder : 'placeholder',
+                    forcePlaceholderSize: true,
                     opacity : 0.60,
-                    cursor : 'move',
+                    handler : 'a',
+                    //cursor : 'move',
+                    //tolerance: 'pointer',
                     cursorAt : {
                         top : 10,
-                        left : 40
+                        left : 10
                     },
                     start : function(event, ui) {
                         ui.placeholder.text(ui.helper.text());
@@ -202,10 +205,10 @@ var model = {
                                         placeholder : 'placeholder',
                                         items : 'li',
                                         opacity : 0.60,
-                                        cursor : 'move',
+                                        //cursor : 'move',
                                         cursorAt : {
                                             top : 10,
-                                            left : 40
+                                            left : 20
                                         },
                                         start : function(event, ui) {
                                             if (!(ui.item.hasClass('dropped'))) {
@@ -237,10 +240,10 @@ var model = {
                                         connectToSortable : $measures_group,
                                         helper : 'clone',
                                         opacity : 0.60,
-                                        cursor: 'move',
+                                        ///cursor: 'move',
                                         cursorAt : {
                                             top : 10,
-                                            left : 40
+                                            left : 20
                                         }
                                     });
                                 }else{
@@ -277,10 +280,10 @@ var model = {
                     connectToSortable : $connectable,
                     helper : 'clone',
                     opacity : 0.60,
-                    cursor: 'move',
+                    //cursor: 'move',
                     cursorAt : {
                         top : 10,
-                        left : 40
+                        left : 20
                     }
                 });
                 /** Make the measure tree draggable. */
@@ -289,10 +292,10 @@ var model = {
                     connectToSortable : $connectable,
                     helper : 'clone',
                     opacity : 0.60,
-                    cursor: 'move',
+                    //cursor: 'move',
                     cursorAt : {
                         top : 10,
-                        left : 40
+                        left : 20
                     }
                 });
                 
@@ -318,7 +321,7 @@ var model = {
                                     opacity : 0.60,
                                     cursorAt : {
                                         top : 10,
-                                        left : 40
+                                        left : 20
                                     }
                                 });
                             }else{
