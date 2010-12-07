@@ -122,12 +122,12 @@ html, body {
 
 /** Logo */
 #logo {
+    /*background: transparent url('../../../images/src/Saiku_logo.png') 50% 50% no-repeat;*/
     float: right;
-    text-indent: -9999px;
     width: 166px;
     height: 28px;
     margin: -2px 10px 0 0;
-    background: transparent url('../../../images/src/Saiku_logo.png') 50% 50% no-repeat;
+    text-indent: -9999px;
 }
 
 /** Tabs */
@@ -386,23 +386,33 @@ html, body {
 }
 .field_list .field_list_body ul {
     height: 27px;
+    display: inline;
     line-height: 27px;
+    list-style: none;
     margin: 0;
-    padding-left: 10px;
-    float: left;
-}
-.field_list .field_list_body ul.measures_group {
-    padding-left: 0;
+    padding-left: 5px;
 }
 .field_list .field_list_body ul li {
     line-height: 19px;
     list-style-type: none;
     height: 20px;
     display: inline;
-    margin: 0 5px 0 0;
+    margin: 0 10px 0 0;
     padding: 0 2px;
 }
-.field_list .field_list_body ul li a {
+.field_list .field_list_body ul li.all_measures {
+    margin-right: 0;
+}
+.field_list .field_list_body .measures_group {
+    margin-left: 5px;
+}
+.field_list .field_list body ul li ul {
+    float: right;
+}
+.field_list .field_list_body ul a {
+    cursor: move;
+}
+.field_list .field_list_body ul li.all_measures span {
     cursor: move;
 }
 
@@ -594,9 +604,9 @@ html, body {
     padding: 10px;
 }
 .dialog .dialog_inner .dialog_body_info {
-    background: transparent url('../../../images/src/Saiku_logo.png') 20px 10px no-repeat;
+    background: transparent url('../../../images/src/toolbar_about.png') 20px 10px no-repeat;
     min-height: 40px;
-    padding: 45px 20px 0px 20px;
+    padding: 10px 10px 10px 70px;
 }
 .dialog .dialog_inner .dialog_body_error {
     background: transparent url('../../../images/src/toolbar_error.png') 20px 10px no-repeat;
