@@ -159,8 +159,8 @@ var model = {
                     placeholder : 'placeholder',
                     opacity : 0.60,
                     cursorAt : {
-                        top : 8,
-                        right : 40
+                        top : 10,
+                        left : 40
                     },
                     start : function(event, ui) {
                         ui.placeholder.text(ui.helper.text());
@@ -176,6 +176,9 @@ var model = {
                             $measure_tree.find('[rel=' + measure_id + ']').parent()
                             .removeClass('not-draggable').addClass('ui-draggable');
                         }
+                        if($(this).find('.dropped_dimension, .dropped_measure').length == 0) {
+                            $(this).find('.empty_placeholder').show();
+                        }
                     },
                     beforeStop : function(event, ui) {
                         if(!(ui.item.hasClass('dropped'))) {
@@ -183,7 +186,6 @@ var model = {
                                 $(this).find('.placeholder').after('<li class="all_measures"><span>Drag all</span><ul class="measures_group"/></li>');
                                 $measures_group = $both_dropzones.find('.measures_group');
                             }
-                            
                         }
                     },
                     stop : function (event, ui) {
@@ -204,8 +206,8 @@ var model = {
                                         items : 'li',
                                         opacity : 0.60,
                                         cursorAt : {
-                                            top : 8,
-                                            right : 40
+                                            top : 10,
+                                            left : 40
                                         },
                                         start : function(event, ui) {
                                             ui.placeholder.text(ui.helper.text());
@@ -221,7 +223,12 @@ var model = {
                                         cancel : '.not-draggable',
                                         connectToSortable : '.measures_group',
                                         helper : 'clone',
-                                        revert : 'invalid'
+                                        revert : 'invalid',
+                                        opacity : 0.60,
+                                        cursorAt : {
+                                            top : 10,
+                                            left : 40
+                                        }
                                     });
                                     $measure_tree.find('[rel=' + measure_id + ']').parent()
                                     .removeClass('ui-draggable').addClass('not-draggable');
@@ -229,7 +236,10 @@ var model = {
                                     $both_dropzones.sortable("refresh");
                                 }
                             }
-                        }
+                            if($(this).find('.dropped_dimension, .dropped_measure').length == 1) {
+                                $(this).find('.empty_placeholder').hide();
+                            }
+                        }                       
                     }
                 }).disableSelection();
 
@@ -241,8 +251,11 @@ var model = {
                     revert : 'invalid',
                     opacity : 0.60,
                     cursorAt : {
-                        top : 8,
-                        right : 40
+                        top : 10,
+                        left : 40
+                    },
+                    over : function() {
+                        console.log('O M G');
                     }
                 });
 
@@ -254,8 +267,8 @@ var model = {
                     revert : 'invalid',
                     opacity : 0.60,
                     cursorAt : {
-                        top : 8,
-                        right : 40
+                        top : 10,
+                        left : 40
                     }
                 });
 
@@ -264,29 +277,39 @@ var model = {
                     accept : '.dropped_measure, .dropped_dimension, .all_measures',
                     drop : function(event, ui) {
                         ui.draggable.addClass('dropped');
-                        if($measures_group.find('.measure').length == 1 || ui.draggable.hasClass('all_measures')) {
+                        if(ui.draggable.find('a').hasClass('measure')) {
+                            if($measures_group.find('.measure').length == 1 || ui.draggable.hasClass('all_measures')) {
+                                $('.all_measures').remove();
+                                $measure_tree_items.draggable('destroy').draggable({
+                                    cancel : '.not-draggable',
+                                    connectToSortable : $connectable,
+                                    helper : 'clone',
+                                    revert : 'invalid',
+                                    opacity : 0.60,
+                                    cursorAt : {
+                                        top : 8,
+                                        right : 40
+                                    }
+                                });
+                                $both_dropzones.sortable("refresh");
+                            }else{
+                                ui.draggable.remove();
+                                setTimeout(function() {
+                                    ui.draggable.remove();
+                                },1);
+                            }
+                        }else{
                             ui.draggable.remove();
                             setTimeout(function() {
                                 ui.draggable.remove();
                             },1);
-                            $('.all_measures').remove();
-                            $measure_tree_items.draggable('destroy').draggable({
-                                cancel : '.not-draggable',
-                                connectToSortable : $both_dropzones,
-                                helper : 'clone',
-                                revert : 'invalid',
-                                opacity : 0.60,
-                                distance : 30,
-                                cursorAt : {
-                                    top : 8,
-                                    right : 40
-                                }
-                            });
                         }
-                        ui.draggable.remove();
-                        setTimeout(function() {
-                            ui.draggable.remove();
-                        },1);
+                        if($row_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
+                            $row_dropzone.find('.empty_placeholder').show();
+                        }
+                        if($column_dropzone.find('.dropped_dimension, .dropped_measure').length == 0) {
+                            $column_dropzone.find('.empty_placeholder').show();
+                        }
                     }
                 });
 
