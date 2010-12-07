@@ -495,8 +495,7 @@ html, body {
     color: #983030;
     text-decoration: none;
 }
-.placeholder_dimension,
-.placeholder_measure,
+.empty_placeholder,
 .placeholder {
     border: 1px dashed #999;
     color: #999;
