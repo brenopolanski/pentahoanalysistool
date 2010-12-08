@@ -223,18 +223,17 @@ html, body {
     font-size: 13px;
     font-weight: bold;
     line-height: 1.4em;
-    margin: 5px 0;
+    margin: 0;
     padding: 4px 10px 6px;
     text-shadow: 1px 1px 0 #FFFFFF;
 }
 .sidebar h3.top {
     border-top: none !important;
-    margin-bottom: 5px;
-    margin-top: 0;
+    margin: 0;
     padding-top: 5px;
 }
 .sidebar .sidebar_inner {
-    padding: 5px 10px;
+    padding: 10px;
 }
 .sidebar .sidebar_inner select {
     border: 1px solid #CCC;
@@ -246,6 +245,14 @@ html, body {
 }
 .sidebar .sidebar_inner ul {
     margin: 0;
+}
+.sidebar .dimension_tree {
+    height: 225px;
+    overflow: auto;
+}
+.sidebar .measure_tree {
+    height: 175px;
+    overflow: auto;
 }
 
 /** Sidebar Separator */
@@ -365,14 +372,14 @@ html, body {
     border-right: 1px solid #CCC;
     float: left;
     font-weight: bold;
-    padding: 5px 5px;
+    padding: 2px 5px 3px 5px;
     line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 80px;
 }
 .fields_list .fields_list_body {
     float: left;
-    padding: 3px 0;
+    padding:  2px 0 3px 0;
     width: 87%;
 }
 .fields_list .fields_list_body a,
@@ -380,10 +387,10 @@ html, body {
     cursor: move;
 }
 .fields_list .fields_list_body ul {
-    height: 26px;
+    height: 22px;
     display: inline;
     float: left;
-    line-height: 26px;
+    line-height: 22px;
     list-style: none;
     margin: 0 10px;
     padding: 0;
@@ -391,12 +398,14 @@ html, body {
 }
 .fields_list .fields_list_body ul li {
     float: left;
-    line-height: 17px;
+    line-height: 15px;
     list-style-type: none;
-    height: 18px;
+    height: 16px;
     display: inline;
     margin: 3px 5px 0 0;
     padding: 0 6px;
+    min-width: 70px;
+    text-align: center;
 }
 .fields_list .fields_list_body ul li ul li {
     margin-right: 5px;
