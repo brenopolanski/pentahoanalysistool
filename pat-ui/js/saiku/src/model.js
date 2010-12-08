@@ -11,25 +11,25 @@
 var model = {
 
     /** Username to be used with BASIC_AUTH. */
-    username : "",
+    username: "",
 
     /** Password to be used with BASIC_AUTH. */
-    password : "",
+    password: "",
 
     /** session_id used to make calls to the server. */
-    session_id : "",
+    session_id: "",
 
     /** Connection information for this Saiku server. */
-    connections : {},
+    connections: {},
     
     /** BASE_URL of saiku server. */
-    BASE_URL : "pat-ui",
+    BASE_URL: "pat-ui",
 
     /**
      * Handle all AJAX requests.
      * @param paramters {Object} Parameters for AJAX requests.
      */
-    request : function(parameters) {
+    request: function(parameters) {
         if (typeof parameters.method == "undefined")
             parameters.method = "GET";
         if (typeof parameters.data == "undefined")
@@ -52,7 +52,7 @@ var model = {
     },
 
     /** Handle all errors which occur with the server. */
-    server_error : function() {
+    server_error: function() {
         view.show_dialog('Error', 'Could not connect to the server, please refresh the page.', 'error');
     /*
         view.logout();
@@ -71,7 +71,7 @@ var model = {
     },
 
     /** Get the sessionid and based on the username and unhide the UI. */
-    get_session : function() {
+    get_session: function() {
         model.request({
             method: "POST",
             url: model.username + "/session",
@@ -89,7 +89,7 @@ var model = {
      * droppable and sortable items.
      * @param tab_index {Integer} Index of the selected tab.
      */
-    new_query : function(tab_index) {
+    new_query: function(tab_index) {
 
         /** Find the selected cube. */
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
@@ -108,9 +108,9 @@ var model = {
 
         // Get a list of available dimensions and measures.
         model.request({
-            method : "POST",
-            url : model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
-            success : function(data, textStatus, XMLHttpRequest) {
+            method: "POST",
+            url: model.username + "/query/" + data['schema'] + "/" + data['cube'] + "/newquery",
+            success: function(data, textStatus, XMLHttpRequest) {
                 /** Load dimensions into a tree. */
                 view.load_dimensions($tab, data.axis.dimensions);
                 /** Load measures into a tree. */
@@ -157,21 +157,21 @@ var model = {
 
                 /** Make the dropzones sortable. */
                 $both_dropzones.sortable({
-                    connectWith : '.connectable',
-                    items : '> li',
-                    placeholder : 'placeholder',
+                    connectWith: '.connectable',
+                    items: '> li',
+                    placeholder: 'placeholder',
                     forcePlaceholderSize: true,
-                    opacity : 0.60,
-                    cursor : 'move',
+                    opacity: 0.60,
+                    cursor: 'move',
                     tolerance: 'pointer',
-                    cursorAt : {
-                        top : 10,
-                        left : 35
+                    cursorAt: {
+                        top: 10,
+                        left: 35
                     },
-                    start : function(event, ui) {
+                    start: function(event, ui) {
                         ui.placeholder.text(ui.helper.text());
                     },
-                    receive : function(event, ui) {
+                    receive: function(event, ui) {
                         /** Collapse this levels folder in the dimension tree. */
                         if (!((ui.item.hasClass('dropped_dimension') || ui.item.hasClass('dropped_measure')) || ui.item.find('a').hasClass('measure'))) {
                             /** What is the dimension_id. */
@@ -183,7 +183,7 @@ var model = {
                             .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
                         }
                     },
-                    beforeStop : function(event, ui) {
+                    beforeStop: function(event, ui) {
                         /** If the user is trying to not remove the item. */
                         if (!(ui.item.hasClass('dropped'))) {
                             /** If the user is dropping or sorting a dimension. */
@@ -203,7 +203,7 @@ var model = {
                                     var measure_id = ui.item.find('a').attr('rel');
                                     /** Find out where the user is dropping the first measure. */
                                     $(this).find('.placeholder')
-                                    .after('<li class="all_measures"><span class="small">All</span><ul class="measures_group"></ul></li>');
+                                    .after('<li class="all_measures"><span class="dropped_measure">All Measures</span><ul class="measures_group"></ul></li>');
                                     // Set a pointer to the above list.
                                     $measures_group = $both_dropzones.find('.measures_group');
                                     /** Style the first measure and add it to the above ul. */
@@ -213,15 +213,19 @@ var model = {
                                     .removeClass('ui-draggable').addClass('not-draggable');
                                     /** Make the measures group sortable. */
                                     $measures_group.sortable({
-                                        placeholder : 'placeholder',
-                                        items : 'li',
-                                        opacity : 0.60,
-                                        //cursor : 'move',
-                                        cursorAt : {
-                                            top : 10,
-                                            left : 20
+                                        placeholder: 'placeholder',
+                                        items: 'li',
+                                        opacity: 0.60,
+                                        cursor: 'move',
+                                        tolerance: 'pointer',
+                                        cursorAt: {
+                                            top: 10,
+                                            left: 35
                                         },
-                                        start : function(event, ui) {
+                                        start: function(event, ui) {
+                                            ui.placeholder.text(ui.helper.text());
+                                        },
+                                        receive: function(event, ui) {
                                             if (!(ui.item.hasClass('dropped'))) {
                                                 /** Expand the measures group for easy drag and drop. */
                                                 var set_width = $('.measures_group').width() + ui.helper.width() + 10;
@@ -230,7 +234,10 @@ var model = {
                                                 ui.placeholder.text(ui.helper.text());
                                             }
                                         },
-                                        stop : function(event, ui) {
+                                        out: function(event, ui) {
+                                            $('.measures_group').css('width', 'auto');
+                                        },
+                                        stop: function(event, ui) {
                                             if (!(ui.item.hasClass('dropped'))) {
                                                 /** Get the measure id. */
                                                 var measure_id = ui.item.find('a').attr('rel');
@@ -247,14 +254,15 @@ var model = {
                                     
                                     /** Destroy and create the measures tree so that it points only to the measures group. */
                                     $measure_tree_items.draggable('destroy').draggable({
-                                        cancel : '.not-draggable',
-                                        connectToSortable : $measures_group,
-                                        helper : 'clone',
-                                        opacity : 0.60,
-                                        ///cursor: 'move',
-                                        cursorAt : {
-                                            top : 10,
-                                            left : 20
+                                        cancel: '.not-draggable',
+                                        connectToSortable: $measures_group,
+                                        helper: 'clone',
+                                        opacity: 0.60,
+                                        cursor: 'move',
+                                        tolerance: 'pointer',
+                                        cursorAt: {
+                                            top: 10,
+                                            left: 35
                                         }
                                     });
                                 }else{
@@ -268,52 +276,55 @@ var model = {
                                         /** The user is adding an existing measure. */
                                         /** Get the measure id. */
                                         var measure_id = ui.item.find('a').attr('rel');
-                                        if (!measure_id) {
+                                        if (!measure_id) { // Not sure why this is needed.
                                             /** Style the measure which was just added. */
                                             ui.item.css('display', '').addClass('dropped_measure');
                                             /** Disable the measure in the measure tree. */
                                             $measure_tree.find('[rel=' + measure_id + ']').parent()
                                             .removeClass('ui-draggable').addClass('not-draggable');
+                                            
                                         }
                                     }
                                 }
                             }
                         }
                     },
-                    stop : function (event, ui) {
+                    stop: function (event, ui) {
                         $both_dropzones.sortable("refresh");
                     }                    
                 }).disableSelection();
 
                 /** Make the dimension tree draggable. */
                 $dimension_tree_items.draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : $connectable,
-                    helper : 'clone',
-                    opacity : 0.60,
-                    //cursor: 'move',
-                    cursorAt : {
-                        top : 10,
-                        left : 20
+                    cancel: '.not-draggable',
+                    connectToSortable: $connectable,
+                    helper: 'clone',
+                    opacity: 0.60,
+                    cursor: 'move',
+                    tolerance: 'pointer',
+                    cursorAt: {
+                        top: 10,
+                        left: 35
                     }
                 });
                 /** Make the measure tree draggable. */
                 $measure_tree_items.draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : $connectable,
-                    helper : 'clone',
-                    opacity : 0.60,
-                    //cursor: 'move',
-                    cursorAt : {
-                        top : 10,
-                        left : 20
+                    cancel: '.not-draggable',
+                    connectToSortable: $connectable,
+                    helper: 'clone',
+                    opacity: 0.60,
+                    cursor: 'move',
+                    tolerance: 'pointer',
+                    cursorAt: {
+                        top: 10,
+                        left: 35
                     }
                 });
                 
                 /** Make the sidebar droppable. */
                 $sidebar_dropzone.droppable({
-                    accept : '.dropped_measure, .dropped_dimension, .all_measures',
-                    drop : function(event, ui) {
+                    accept: '.dropped_measure, .dropped_dimension, .all_measures',
+                    drop: function(event, ui) {
                         /** Add the drop class so that the sortable functions. */
                         ui.draggable.addClass('dropped');
 
@@ -325,14 +336,14 @@ var model = {
                                 $('.all_measures').remove();
                                 /** Destroy the measure_tree_items draggable instance and recreate it. */
                                 $measure_tree_items.attr('class', '').draggable('destroy').draggable({
-                                    cancel : '.not-draggable',
-                                    connectToSortable : $connectable,
-                                    helper : 'clone',
+                                    cancel: '.not-draggable',
+                                    connectToSortable: $connectable,
+                                    helper: 'clone',
                                     cursor: 'move',
-                                    opacity : 0.60,
-                                    cursorAt : {
-                                        top : 10,
-                                        left : 20
+                                    opacity: 0.60,
+                                    cursorAt: {
+                                        top: 10,
+                                        left: 20
                                     }
                                 });
                             }else{
