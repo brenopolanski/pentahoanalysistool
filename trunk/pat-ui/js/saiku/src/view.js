@@ -271,8 +271,8 @@ var view = {
             return false;
         });
 
-        /** Initialise resize_height() on first page load. */
-        //resize_height();
+    /** Initialise resize_height() on first page load. */
+    //resize_height();
 
     },
 
@@ -345,6 +345,8 @@ var view = {
                 $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
                 .addClass("collapsed root")
                 .appendTo($dimension_tree);
+                // Store the dimension name for the (All) level
+                var dimension_name = this['@dimensionname'];
                 if (dimension.levels.length > 1) {
                     $second_level = $('<ul />').appendTo($first_level);
                     $.each(dimension.levels, function(j, level){
@@ -352,8 +354,13 @@ var view = {
                             return false;
                         }).appendTo($second_level);
                         // Create a parent-child relationship with the rel attribute.
-                        $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
-                        .appendTo($li);
+                        if (level['@levelcaption'] === '(All)') {
+                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '"> All ' + dimension_name + '</a>')
+                            .appendTo($li);
+                        }else{
+                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
+                            .appendTo($li);
+                        }
                     });
                 }
             }
