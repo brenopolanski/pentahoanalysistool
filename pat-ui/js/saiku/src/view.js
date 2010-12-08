@@ -271,8 +271,8 @@ var view = {
             return false;
         });
 
-    /** Initialise resize_height() on first page load. */
-    //resize_height();
+        /** Initialise resize_height() on first page load. */
+        //resize_height();
 
     },
 
@@ -295,27 +295,28 @@ var view = {
         storage_id = 0;
 
         /** Loop through available connections and populate the select box. */
-        $.each(model.connections.connections.connection, function(i,connection){
-            $.each(connection.schemas, function(i,schema){
+        $.each(model.connections, function(i,connection){
+            $.each(connection.catalogs[0].schemas, function(i,schema){
                 
-                $cubes.append('<optgroup label="'+schema['@schemaname']+'">');
+                $cubes.append('<optgroup label="'+schema['name']+'">');
                 $.each(schema.cubes, function(i,cube){
-                    if (cube.length == undefined)
-                        cube = [cube];
-                    $.each(cube, function(i,item){
+                    //if (cube.length == undefined)
+                    //    cube = [cube];
+                    //$.each(cube, function(i,item){
                         $("<option />")
                         .attr({
                             'value': storage_id
                         })
-                        .text(item['@cubename'])
+                        .text(cube['cubeName'])
                         .appendTo($cubes);
                         view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
-                            'connection_id': connection['@connectionid'],
-                            'schema': schema['@schemaname'],
-                            'cube': item['@cubename']
+                            'connectionName': connection['name'],
+                            'catalogName': connection.catalogs[0]['name'],
+                            'schema': schema['name'],
+                            'cube': cube['cubeName']
                         };
                         storage_id++;
-                    });
+                    //});
                 });
                 $cubes.append('</optgroup>');
             });
@@ -340,27 +341,20 @@ var view = {
         $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree')).addClass('dtree');
         // Populate the tree with first level dimensions.
         $.each(data, function(i, dimension) {
-            if (this['@dimensionname'] != 'Measures') {
+            if (this['name'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
-                $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['@dimensionname'] + '</a></li>')
+                $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['name'] + '</a></li>')
                 .addClass("collapsed root")
                 .appendTo($dimension_tree);
-                // Store the dimension name for the (All) level
-                var dimension_name = this['@dimensionname'];
-                if (dimension.levels.length > 1) {
+                if (dimension.hierarchies[0].levels.length > 1) {
                     $second_level = $('<ul />').appendTo($first_level);
-                    $.each(dimension.levels, function(j, level){
+                    $.each(dimension.hierarchies[0].levels, function(j, level){
                         $li = $('<li />').mousedown(function() {
                             return false;
                         }).appendTo($second_level);
                         // Create a parent-child relationship with the rel attribute.
-                        if (level['@levelcaption'] === '(All)') {
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '"> All ' + dimension_name + '</a>')
-                            .appendTo($li);
-                        }else{
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['@levelcaption'] + '</a>')
-                            .appendTo($li);
-                        }
+                        $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['level'] + '">' + level['caption'] + '</a>')
+                        .appendTo($li);
                     });
                 }
             }
@@ -380,13 +374,13 @@ var view = {
         $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
-            if (this['@dimensionname'] === 'Measures') {
+            if (this['name'] === 'Measures') {
                 $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></li>')
                 .addClass("expand root")
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
-                $.each(dimension.levels.members, function(j, level){
-                    $('<li><a href="#" class="measure" rel="m' + i + '_' + j + '"  title="'+this['@membername']+'">'+this['@membercaption']+'</a></li>')
+                $.each(dimension.hierarchies[0].levels, function(j, level){
+                    $('<li><a href="#" class="measure" rel="m' + i + '_' + j + '"  title="'+this['level']+'">'+this['caption']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
