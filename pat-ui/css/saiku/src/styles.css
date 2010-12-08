@@ -407,12 +407,9 @@ html, body {
     height: 16px;
     display: inline;
     margin: 3px 5px 0 0;
-    /*padding: 0 6px;*/
+    padding: 0 6px;
     min-width: 70px;
     text-align: center;
-}
-.fields_list .fields_list_body ul li ul li {
-    margin-right: 5px;
 }
 .fields_list .fields_list_body ul li ul {
     float: right;
@@ -422,7 +419,11 @@ html, body {
 }
 .fields_list .fields_list_body ul li ul li {
     margin-top: 0;
+    margin-right: 5px;
     min-width: 70px;
+}
+.fields_list .fields_list_body .all_measures {
+    padding: 0 !important;
 }
 
 /** Draggables, Sortables and Droppables */
