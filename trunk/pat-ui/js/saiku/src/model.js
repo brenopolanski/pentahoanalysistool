@@ -162,15 +162,26 @@ var model = {
                     placeholder : 'placeholder',
                     forcePlaceholderSize: true,
                     opacity : 0.60,
-                    handler : 'a',
-                    //cursor : 'move',
-                    //tolerance: 'pointer',
+                    cursor : 'move',
+                    tolerance: 'pointer',
                     cursorAt : {
                         top : 10,
-                        left : 10
+                        left : 35
                     },
                     start : function(event, ui) {
                         ui.placeholder.text(ui.helper.text());
+                    },
+                    receive : function(event, ui) {
+                        /** Collapse this levels folder in the dimension tree. */
+                        if (!((ui.item.hasClass('dropped_dimension') || ui.item.hasClass('dropped_measure')) || ui.item.find('a').hasClass('measure'))) {
+                            /** What is the dimension_id. */
+                            var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
+                            $dimension_tree.parent().parent().parent()
+                            .find('[rel=' + dimension_id + ']').parent().children().children().toggle();
+                            $dimension_tree.parent().parent().parent()
+                            .find('[rel=' + dimension_id + ']').parent().removeClass('expand').addClass('collapsed')
+                            .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+                        }
                     },
                     beforeStop : function(event, ui) {
                         /** If the user is trying to not remove the item. */
@@ -338,7 +349,7 @@ var model = {
                             /** Enable the dimenson and sibilings in the dimension tree. */
                             $dimension_tree.parent().parent().parent()
                             .find('[rel=' + dimension_id + ']').parent().children().children()
-                            .removeClass('not-draggable').addClass('ui-draggable');
+                            .removeClass('not-draggable').addClass('ui-draggable');                         
                         }
                         /** Remove the draggable measure. */
                         ui.draggable.remove();
