@@ -36,7 +36,7 @@ var model = {
         if (typeof parameters.error == "undefined")
             parameters.error = model.server_error;
         if (typeof parameters.dataType == "undefined")
-        	parameters.dataType = 'json';
+            parameters.dataType = 'json';
         
         $.ajax({
             type: parameters.method,
@@ -78,13 +78,13 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 model.session_id = data;
                 model.request({
-                	method: "GET",
-                	url: model.username + "/datasources",
-                	success: function(data, textStatus, XMLHttpRequest) {
-                		model.connections = data;
-                		view.draw_ui();
+                    method: "GET",
+                    url: model.username + "/datasources",
+                    success: function(data, textStatus, XMLHttpRequest) {
+                        model.connections = data;
+                        view.draw_ui();
                         controller.add_tab();
-                	}
+                    }
                 });
             }
         });
@@ -117,15 +117,15 @@ var model = {
             method : "POST",
             url : model.username + "/query/new_query",
             data: {
-        		'connection': data['connectionName'],
-        		'cube': data['cube'],
-        		'catalog': data['catalogName'],
-        		'schema': data['schema'],
-        		'queryname': 'new_query'
-        	},
+                'connection': data['connectionName'],
+                'cube': data['cube'],
+                'catalog': data['catalogName'],
+                'schema': data['schema'],
+                'queryname': 'new_query'
+            },
             success : function(data, textStatus, XMLHttpRequest) {
-        		view.stop_waiting();
-        		view.start_waiting("Loading dimensions and levels...");
+                view.stop_waiting();
+                view.start_waiting("Loading dimensions and levels...");
         		
                 /** Load dimensions into a tree. */
                 view.load_dimensions($tab, data.axes[0].dimensions);
@@ -151,202 +151,164 @@ var model = {
                     return false;
                 });
 
-                /** jQuery objects for trees.  */
+                /** Tree selectors. */
                 $dimension_tree = $tab.find('.dimension_tree');
-                $dimension_tree_items = $dimension_tree.find('li ul li');
                 $measure_tree = $tab.find('.measure_tree');
-                $measure_tree_items = $measure_tree.find('li ul li');
                 $both_trees = $tab.find('.measure_tree, .dimension_tree');
-                $both_trees_items = $tab.find('.measure_tree li ul li, .dimension_tree li ul li');
+                $both_tree_items = $tab.find('.measure_tree li ul li, .dimension_tree li ul li');
 
-                /** jQuery objects for dropzones. */
-                $row_dropzone = view.tabs.tabs[tab_index].content.find('.rows ul');
-                $column_dropzone = view.tabs.tabs[tab_index].content.find('.columns ul');
-                $both_dropzones = view.tabs.tabs[tab_index].content.find('.rows ul, .columns ul');
-                $measures_dropzone = view.tabs.tabs[tab_index].content.find('.rows .measures_group, .columns .measures_group');
-                $sidebar_dropzone = view.tabs.tabs[tab_index].content.find('.sidebar');
-                $connectable = view.tabs.tabs[tab_index].content.find('.columns > ul, .rows > ul');
-                $sidebar_accept = view.tabs.tabs[tab_index].content.find('.rows li, .columns li, .measures_group li');
+                /** Dropzone selectors. */
+                $both_dropzones = $tab.find('.rows ul, .columns ul');
+                $sidebar_dropzone = $tab.find('.sidebar');
+                $connectable = $tab.find('.columns > ul, .rows > ul');
+                $sidebar_accept = $tab.find('.rows li, .columns li');
 
+                /** Disable selection. */
                 $both_dropzones.find('.placeholder').disableSelection();
                 $both_trees.find('ul > li').disableSelection();
 
+                /** Remove all dropped items. */
+                $both_dropzones.find('li').remove();
+
                 /** Make the dropzones sortable. */
                 $both_dropzones.sortable({
-                    connectWith : '.connectable',
-                    items : '> li',
-                    placeholder : 'placeholder',
-                    opacity : 0.60,
-                    cursor : 'move',
-                    cursorAt : {
-                        top : 10,
-                        left : 40
+                    connectWith: '.connectable',
+                    cursor: 'move',
+                    cursorAt: {
+                        top: 10,
+                        left: 35
                     },
-                    start : function(event, ui) {
+                    forcePlaceholderSize: true,
+                    items: '> li',
+                    opacity: 0.60,
+                    placeholder: 'placeholder',
+                    tolerance: 'pointer',
+                    start: function(event, ui) {
+                        /** Replace the placeholder text. */
                         ui.placeholder.text(ui.helper.text());
                     },
-                    beforeStop : function(event, ui) {
-                        /** If the user is trying to not remove the item. */
-                        if (!(ui.item.hasClass('dropped'))) {
-                            /** If the user is dropping or sorting a dimension. */
-                            if (ui.item.find('a').hasClass('dimension')) {
-                                /** What is the dimension_id. */
+                    beforeStop: function(event, ui) {
+                        /** Is the item being removed. */
+                        if(!(ui.item.hasClass('dropped'))) {
+                            /** Determine the sorting to and from axis. */
+                            if($(this).parent().hasClass('rows')) {
+                                var sort_to = 'columns', sort_from = 'rows', is_measure = ui.item.hasClass('d_measure');
+                            }else{
+                                var sort_to = 'rows', sort_from = 'columns', is_measure = ui.item.hasClass('d_measure');
+                            }
+
+                            /** Set sorting between lists to false. */
+                            var between_lists = false;
+
+                            /** Check if sorting a measure, does the axis accepting the sort have a measure already. */
+                            if ($('.'+sort_to).find('.d_measure').length == 1
+                                && $('.'+sort_from).find('.d_measure').length > 0
+                                && is_measure) {
+                                /** Move all measures from rows to columns. */
+                                $('.'+sort_to).find('.d_measure').last()
+                                .after($('.'+sort_from).find('.d_measure'));
+                                /** Set sorting between lists to true. */
+                                between_lists = true;
+                            }
+
+                            /** Sorting a dimension or measure. */
+                            var is_dimension = ui.item.find('a').hasClass('dimension'),
+                            is_measure = ui.item.find('a').hasClass('measure');
+                            /** What is on the left and right of the placeholder. */
+                            var left_item = $(this).find('.placeholder').prev().prev(),
+                            right_item = $(this).find('.placeholder').next();
+
+                            /** Sorting a dimension. */
+                            if (is_dimension){
+                                /** dimension id. */
                                 var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
-                                /** Make sure none of the dimensions in the same level can not be dragged or sorted. */
+                                /** If the placeholder is in between measures. */
+                                if(left_item.hasClass('d_measure') && right_item.hasClass('d_measure')) {
+                                    /** Find the last item and append it to the end of the list. */
+                                    $(this).find('li').last().append()
+                                    .after(ui.item.css('display', '').addClass('d_dimension'));
+                                }else{
+                                    /** Act as normal. */
+                                    ui.item.css('display', '').addClass('d_dimension');
+                                }
+                                /** Disable all siblings of the dimension. */
                                 $dimension_tree.parent().parent().parent()
                                 .find('[rel=' + dimension_id + ']').parent().children().children()
                                 .removeClass('ui-draggable').addClass('not-draggable');
-                                /** Style the newly sorted / dropped item. */
-                                ui.item.css('display', '').addClass('dropped_dimension');
-                            }else{ /** If the user is dropping or sorting a measure. */
-                                /** Check if this is a new measure (no other measures exist. */
-                                if($both_dropzones.find('.measures_group li').length == 0 && ui.item.find('a').hasClass('measure')) {
-                                    /** Get the measure id. */
-                                    var measure_id = ui.item.find('a').attr('rel');
-                                    /** Find out where the user is dropping the first measure. */
-                                    $(this).find('.placeholder')
-                                    .after('<li class="all_measures"><span class="small">All</span><ul class="measures_group"></ul></li>');
-                                    // Set a pointer to the above list.
-                                    $measures_group = $both_dropzones.find('.measures_group');
-                                    /** Style the first measure and add it to the above ul. */
-                                    ui.item.css('display', '').addClass('dropped_measure').appendTo($measures_group);
-                                    /** Style the measure which has just been dropped (first measure). */
-                                    $measure_tree.find('[rel=' + measure_id + ']').parent()
-                                    .removeClass('ui-draggable').addClass('not-draggable');
-                                    /** Make the measures group sortable. */
-                                    $measures_group.sortable({
-                                        placeholder : 'placeholder',
-                                        items : 'li',
-                                        opacity : 0.60,
-                                        cursor : 'move',
-                                        cursorAt : {
-                                            top : 10,
-                                            left : 40
-                                        },
-                                        start : function(event, ui) {
-                                            if (!(ui.item.hasClass('dropped'))) {
-                                                /** Expand the measures group for easy drag and drop. */
-                                                var set_width = $('.measures_group').width() + ui.helper.width() + 10;
-                                                $('.measures_group').css('width', set_width+'px');
-                                                /** Style the placeholder within the measures group. */
-                                                ui.placeholder.text(ui.helper.text());
-                                            }
-                                        },
-                                        stop : function(event, ui) {
-                                            if (!(ui.item.hasClass('dropped'))) {
-                                                /** Get the measure id. */
-                                                var measure_id = ui.item.find('a').attr('rel');
-                                                /** Style the measure which was just added. */
-                                                ui.item.css('display', '').addClass('dropped_measure').appendTo($measures_group);
-                                                /** Disable the measure in the measure tree. */
-                                                $measure_tree.find('[rel=' + measure_id + ']').parent()
-                                                .removeClass('ui-draggable').addClass('not-draggable');
-                                            }
-                                            /** Reset the width. */
-                                            $('.measures_group').css('width', 'auto');
-                                        }
-                                    });
-                                    
-                                    /** Destroy and create the measures tree so that it points only to the measures group. */
-                                    $measure_tree_items.draggable('destroy').draggable({
-                                        cancel : '.not-draggable',
-                                        connectToSortable : $measures_group,
-                                        helper : 'clone',
-                                        opacity : 0.60,
-                                        cursor: 'move',
-                                        cursorAt : {
-                                            top : 10,
-                                            left : 40
-                                        }
-                                    });
-                                }else{
-                                    /** If we are sorting from one axis to another axis. */
-                                    var sorting_to = ui.helper.parent().parent().attr('class').split(' ')[1],
-                                    sorting_from = $(this).parent().attr('class').split(' ')[1];
-                                    if (sorting_to === 'rows' && sorting_from === 'columns'
-                                        || sorting_to === 'columns' && sorting_from === 'rows') {
-                                    /** Lets do nothing, this works for some reason. */
+
+                            }else if (!(between_lists)) {
+                                /** If sorting between lists and is a measure. */
+                                /** If this is the first measure. */
+                                if ($both_dropzones.find('.d_measure').length == 0) {
+                                    /** Act as normal. */
+                                    ui.item.css('display','').addClass('d_measure');
+                                }else{ /** Is there a measure on the left or right or ( measure on left and right ). */
+                                    if ((left_item.hasClass('d_measure') || right_item.hasClass('d_measure')
+                                        || (left_item.hasClass('d_measure') && right_item.hasClass('d_measure')))) {
+                                        /** Act as normal. */
+                                        ui.item.css('display','').addClass('d_measure');
                                     }else{
-                                        /** The user is adding an existing measure. */
-                                        /** Get the measure id. */
-                                        var measure_id = ui.item.find('a').attr('rel');
-                                        if (!measure_id) {
-                                            /** Style the measure which was just added. */
-                                            ui.item.css('display', '').addClass('dropped_measure');
-                                            /** Disable the measure in the measure tree. */
-                                            $measure_tree.find('[rel=' + measure_id + ']').parent()
-                                            .removeClass('ui-draggable').addClass('not-draggable');
-                                        }
+                                        /** If not then find all other measures insert them after the measure being sorted. */
+                                        $both_dropzones.find('.d_measure').insertAfter($('.placeholder'));
+                                        ui.item.css('display','').addClass('d_measure');
                                     }
                                 }
+
+                                /** measure id. */
+                                var measure_id = ui.item.find('a').attr('rel');
+                                /** Disable the measure. */
+                                $measure_tree.find('[rel=' + measure_id + ']').parent()
+                                .removeClass('ui-draggable').addClass('not-draggable');
                             }
                         }
                     },
-                    stop : function (event, ui) {
-                        $both_dropzones.sortable("refresh");
-                    }                    
+                    receive: function(event, ui) {
+                        if( ui.item.hasClass('d_measure') || ui.item.hasClass('d_dimension')
+                            || ui.item.find('a').hasClass('measure')) {
+                        // Do nothing.
+                        }else{
+                            /** Get the dimension_id. */
+                            var dimension_id = ui.item.find('a').attr('rel').split('_')[0];
+                            /** Toggle (Hide/Show) the children of the dimension. */
+                            $dimension_tree.parent().parent().parent()
+                            .find('[rel=' + dimension_id + ']').parent().children().children().toggle();
+                            /** Style the parent dimension. */
+                            $dimension_tree.parent().parent().parent()
+                            .find('[rel=' + dimension_id + ']').parent().removeClass('expand').addClass('collapsed')
+                            .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+                        }
+                    }
                 }).disableSelection();
 
-                /** Make the dimension tree draggable. */
-                $dimension_tree_items.draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : $connectable,
-                    helper : 'clone',
-                    opacity : 0.60,
+                /** Make the measure and dimension tree draggable. */
+                $both_tree_items.draggable({
+                    cancel: '.not-draggable',
+                    connectToSortable: $connectable,
+                    helper: 'clone',
+                    opacity: 0.60,
                     cursor: 'move',
-                    cursorAt : {
-                        top : 10,
-                        left : 40
+                    tolerance: 'pointer',
+                    cursorAt: {
+                        top: 10,
+                        left: 35
                     }
                 });
-                /** Make the measure tree draggable. */
-                $measure_tree_items.draggable({
-                    cancel : '.not-draggable',
-                    connectToSortable : $connectable,
-                    helper : 'clone',
-                    opacity : 0.60,
-                    cursor: 'move',
-                    cursorAt : {
-                        top : 10,
-                        left : 40
-                    }
-                });
-                
-                /** Make the sidebar droppable. */
+
+                //** Make the sidebar droppable. */
                 $sidebar_dropzone.droppable({
-                    accept : '.dropped_measure, .dropped_dimension, .all_measures',
-                    drop : function(event, ui) {
+                    accept: '.d_measure, .d_dimension',
+                    drop: function(event, ui) {
                         /** Add the drop class so that the sortable functions. */
                         ui.draggable.addClass('dropped');
-
                         /** Is the item being removed is a measure or is all the measures. */
-                        if (ui.draggable.find('a').hasClass('measure') || ui.draggable.hasClass('all_measures')) {
-                            /** Is this the last measure being removed or is all the masures being removed. */
-                            if ($measures_group.find('.measure').length == 1 || ui.draggable.hasClass('all_measures')) {
-                                /** Remove the measures group.*/
-                                $('.all_measures').remove();
-                                /** Destroy the measure_tree_items draggable instance and recreate it. */
-                                $measure_tree_items.attr('class', '').draggable('destroy').draggable({
-                                    cancel : '.not-draggable',
-                                    connectToSortable : $connectable,
-                                    helper : 'clone',
-                                    cursor: 'move',
-                                    opacity : 0.60,
-                                    cursorAt : {
-                                        top : 10,
-                                        left : 40
-                                    }
-                                });
-                            }else{
-                                /** We can assume it is only one measures being removed. */
-                                var measure_id = ui.draggable.find('a').attr('rel');
-                                /** Enable the measure in the measures tree. */
-                                $measure_tree.find('[rel=' + measure_id + ']').parent()
-                                .removeClass('not-draggable').addClass('ui-draggable');
-                            }
+                        if (ui.draggable.find('a').hasClass('measure')) {
+                            /** We can assume it is only one measures being removed. */
+                            var measure_id = ui.draggable.find('a').attr('rel');
+                            /** Enable the measure in the measures tree. */
+                            $measure_tree.find('[rel=' + measure_id + ']').parent()
+                            .removeClass('not-draggable').addClass('ui-draggable');
                         }else{
-                            /** We can assume it is a dimension. */
-                            /** Get the dimension id. */
+                            /** dimension id. */
                             var dimension_id = ui.draggable.find('a').attr('rel').split('_')[0];
                             /** Enable the dimenson and sibilings in the dimension tree. */
                             $dimension_tree.parent().parent().parent()
@@ -357,6 +319,7 @@ var model = {
                         ui.draggable.remove();
                         // Patch needed for IE to work.
                         setTimeout(function() {
+                            /** Remove the draggable measure. */
                             ui.draggable.remove();
                         },1);
                     }
