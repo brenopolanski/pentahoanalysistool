@@ -21,9 +21,6 @@ var model = {
 
     /** Connection information for this Saiku server. */
     connections : {},
-    
-    /** BASE_URL of saiku server. */
-    BASE_URL : "pat-ui",
 
     /**
      * Handle all AJAX requests.
@@ -43,7 +40,6 @@ var model = {
         
         $.ajax({
             type: parameters.method,
-            // FIXME - should be rest/ instead of fixtures/rest/
             url: BASE_URL + "saiku/rest/saiku/" + parameters.url,
             dataType: parameters.dataType,
             username: model.username,
