@@ -121,7 +121,7 @@ html, body {
 }
 
 /** Logo */
-#logo {
+#logo a {
     background: transparent url("../../../images/src/logo.png") 24px 1px no-repeat;
     float: right;
     width: 166px;
