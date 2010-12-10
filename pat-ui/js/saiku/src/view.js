@@ -357,11 +357,11 @@ var view = {
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '"> All ' + dimension_name + '</a>')
+                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + level['uniqueName'] + '"> All ' + dimension_name + '</a>')
                             .appendTo($li);
                         }else{
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + this['@levelname'] + '">' + level['caption'] + '</a>')
+                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
                             .appendTo($li);
                         }
                     });

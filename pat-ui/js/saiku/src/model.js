@@ -124,8 +124,8 @@ var model = {
                 'queryname': 'new_query'
             },
             success : function(data, textStatus, XMLHttpRequest) {
-                view.stop_waiting();
-                view.start_waiting("Loading dimensions and levels...");
+                //view.stop_waiting();
+                //view.start_waiting("Loading dimensions and levels...");
         		
                 /** Load dimensions into a tree. */
                 view.load_dimensions($tab, data.axes[0].dimensions);
@@ -264,7 +264,7 @@ var model = {
                     },
                     receive: function(event, ui) {
                         if( ui.item.hasClass('d_measure') || ui.item.hasClass('d_dimension')
-                            || ui.item.find('a').hasClass('measure')) {
+                            || ui.item.find('a').hasClass('measure') || ui.helper === null) {
                         // Do nothing.
                         }else{
                             /** Get the dimension_id. */
