@@ -22,7 +22,13 @@ html, body {
     display: none;
 }
 .calign {
-    text-align: center
+    text-align: center;
+}
+.lalign {
+    text-align: left;
+}
+.ralign {
+    text-align: right;
 }
 
 /** Header */
@@ -628,6 +634,9 @@ html, body {
     margin-top: 10px;
     padding: 5px 10px;
     text-align: right
+}
+.dialog .dialog_inner .dialog_footer .tested_browsers {
+    padding-right: 10px;
 }
 
 /** Button */
