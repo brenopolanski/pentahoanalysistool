@@ -343,8 +343,7 @@ var view = {
         $.each(data, function(i, dimension) {
             if (this['name'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
-                $first_level = $('<li><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['name'] + '</a></li>')
-                .addClass("collapsed root")
+                $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
                 .appendTo($dimension_tree);
                 // Store the dimension name for the (All) level
                 var dimension_name = this['name'];
@@ -384,8 +383,7 @@ var view = {
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
             if (this['name'] === 'Measures') {
-                $measures = $('<li><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></li>')
-                .addClass("expand root")
+                $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></span></li>')
                 .appendTo($tab.find('.measure_tree ul'));
                 $measures_ul = $('<ul />').appendTo($measures);
                 $.each(dimension.hierarchies[0].levels, function(j, level){

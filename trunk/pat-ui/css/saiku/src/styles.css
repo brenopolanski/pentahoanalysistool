@@ -253,7 +253,7 @@ html, body {
     margin: 0;
 }
 .sidebar .dimension_tree {
-    height: 220px;
+    height: 230px;
     overflow: auto;
 }
 .sidebar .measure_tree {
@@ -291,15 +291,17 @@ html, body {
     line-height: 19px;
     list-style-type: none;
     margin: 0;
+    padding-left: 0;
+}
+.dimension_tree ul li span.collapsed,
+.measure_tree ul li span.collapsed {
+    background: url('../../../images/src/tree_collapsed.png') 0px -1px no-repeat;
     padding-left: 20px;
 }
-.dimension_tree ul li.collapsed,
-.measure_tree ul li.collapsed {
-    background: url('../../../images/src/tree_collapsed.png') 0px 1px no-repeat;
-}
-.dimension_tree ul li.expand,
-.measure_tree ul li.expand {
-    background: url('../../../images/src/tree_expand.png') 0px 1px no-repeat;
+.dimension_tree ul li span.expand,
+.measure_tree ul li span.expand {
+    background: url('../../../images/src/tree_expand.png') 0px -1px no-repeat;
+    padding-left: 20px;
 }
 .dimension_tree ul li a,
 .measure_tree ul li a {
@@ -317,7 +319,7 @@ html, body {
 }
 .dimension_tree ul li ul,
 .measure_tree ul li ul {
-    padding: 0px;
+    padding: 0 0 0 18px;
     margin: 0;
 }
 .dimension_tree ul li ul li,
@@ -389,7 +391,7 @@ html, body {
     width: 87%;
 }
 .fields_list .fields_list_body a {
-    cursor: move;
+    /* cursor: move; */
 }
 .fields_list .fields_list_body .all_measures span {
     margin: 0 5px 0 0;
@@ -408,7 +410,7 @@ html, body {
 }
 .fields_list .fields_list_body ul li {
     float: left;
-    line-height: 15px;
+    line-height: 16px;
     list-style-type: none;
     height: 16px;
     display: inline;
@@ -436,18 +438,18 @@ html, body {
 
 .ui-sortable-helper {
     line-height: 15px !important;
-    min-width: 70px !important;
+    min-width: 70px;
     text-align: center;
 }
 .ui-draggable-dragging {
-    cursor: move !important;
+    /* cursor: move !important; */
     display: inline !important;
     height: 15px !important;
     line-height: 15px !important;
     list-style-type: none !important;
     margin: 0 !important;
-    padding: 0 6px !important;
     min-width: 70px;
+    padding: 0 6px !important;
     text-align: center;
     -moz-box-shadow: 0 0 2px #DDD;
     -moz-border-radius: 3px;
