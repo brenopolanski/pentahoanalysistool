@@ -200,15 +200,21 @@ var model = {
                                 $both_dropzones.sortable('refresh');
                             }
                         }else{
-//                            /** Get the dimension_id. */
-//                            var dimension_id = $(this).find('a').attr('rel').split('_')[0];
-//                            /** By default add the dimension to the row dropzones. */
-//                            $(this).clone().appendTo('.rows ul').addClass('d_dimension');
-//                            /** Disable all siblings of the dimension. */
-//                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
-//                            .removeClass('ui-draggable').addClass('not-draggable');
-//                            /** Refresh the sortables. */
-//                            $both_dropzones.sortable('refresh');
+                            /** Get the dimension_id. */
+                            var dimension_id = $(this).find('a').attr('rel').split('_')[0];
+                            /** By default add the dimension to the row dropzones. */
+                            $(this).clone().appendTo('.rows ul').addClass('d_dimension');
+                            /** Disable all siblings of the dimension. */
+                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
+                            .removeClass('ui-draggable').addClass('not-draggable');
+                            /** Toggle (Hide/Show) the children of the dimension. */
+                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().find('ul').toggle();
+                            /** Style the parent dimension. */
+                            $dimension_tree.find('[rel=' + dimension_id + ']').parent()
+                            .removeClass('expand').addClass('collapsed')
+                            .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+                            /** Refresh the sortables. */
+                            $both_dropzones.sortable('refresh');
                         }
                         return false;
                     }

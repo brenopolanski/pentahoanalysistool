@@ -287,7 +287,6 @@ html, body {
 }
 .dimension_tree ul li,
 .measure_tree ul li {
-    cursor: pointer;
     line-height: 19px;
     list-style-type: none;
     margin: 0;
@@ -296,11 +295,13 @@ html, body {
 .dimension_tree ul li span.collapsed,
 .measure_tree ul li span.collapsed {
     background: url('../../../images/src/tree_collapsed.png') 0px -1px no-repeat;
+    cursor: pointer;
     padding-left: 20px;
 }
 .dimension_tree ul li span.expand,
 .measure_tree ul li span.expand {
     background: url('../../../images/src/tree_expand.png') 0px -1px no-repeat;
+    cursor: pointer;
     padding-left: 20px;
 }
 .dimension_tree ul li a,
@@ -327,12 +328,12 @@ html, body {
     padding-left: 18px;
 }
 .dimension_tree ul li ul li a {
-    cursor: move;
+    /* cursor: move; */
     padding-left: 20px;
     background: url('../../../images/src/bullet_blue.png') 0px 0px no-repeat;
 }
 .measure_tree ul li ul li a {
-    cursor: move;
+    /* cursor: move; */
     padding-left: 20px;
     background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
 }
@@ -441,8 +442,10 @@ html, body {
     min-width: 70px;
     text-align: center;
 }
+.ui-sortable-helper a {
+    cursor: move !important;
+}
 .ui-draggable-dragging {
-    /* cursor: move !important; */
     display: inline !important;
     height: 15px !important;
     line-height: 15px !important;
@@ -458,6 +461,7 @@ html, body {
 }
 .ui-draggable-dragging a {
     background-image: none !important;
+    cursor: move !important;
     padding: 0 !important;
 }
 .dimension_tree ul .ui-draggable-dragging {
@@ -604,7 +608,7 @@ html, body {
 .dialog .dialog_inner .dialog_header a.close_dialog {
     background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
     display: inline-block;
-    cursor: pointer;
+    /*cursor: pointer;*/
     float: right;
     height: 18px;
     text-indent: -999px;
