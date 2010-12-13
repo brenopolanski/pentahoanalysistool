@@ -195,12 +195,15 @@ var model = {
                                 $(this).clone().appendTo($column_dropzone).addClass('d_measure');
                                 /** Disable the measure. */
                                 $measure_tree.find('[rel=' + measure_id + ']').parent()
-                                .removeClass('ui-draggable').addClass('not-draggable used')
+                                .removeClass('ui-draggable').addClass('not-draggable used');
                                 /** Refresh the sortables. */
                                 $both_dropzones.sortable('refresh');
                             }else{
                                 /** Append the measure to the last measure available. */
                                 $(this).clone().insertAfter($both_dropzones.find('.d_measure').last()).addClass('d_measure');
+                                /** Disable the measure. */
+                                $measure_tree.find('[rel=' + measure_id + ']').parent()
+                                .removeClass('ui-draggable').addClass('not-draggable used');
                                 /** Refresh the sortables. */
                                 $both_dropzones.sortable('refresh');
                             }
