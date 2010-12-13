@@ -82,6 +82,7 @@ var model = {
                     url: model.username + "/datasources",
                     success: function(data, textStatus, XMLHttpRequest) {
                         model.connections = data;
+                        $('.pre_waiting').remove();
                         view.draw_ui();
                         controller.add_tab();
                     }
