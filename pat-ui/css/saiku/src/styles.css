@@ -635,6 +635,10 @@ html, body {
     min-height: 40px;
     padding: 10px 10px 10px 100px;
 }
+.dialog .dialog_inner .dialog_body_waiting {
+    background: transparent url('../../../images/src/waiting.gif') 10px 11px no-repeat;
+    padding: 10px 10px 10px 30px;
+}
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
     margin-top: 10px;
@@ -696,4 +700,15 @@ a.button_selected {
     background: transparent url('../../../images/src/waiting.gif') no-repeat left center;
     padding: 5px 0 5px 20px;
     float: right;
+}
+
+/** Pre Waiting */
+.pre_waiting {
+    height: 40px !important;
+    left: 50%;
+    margin: -20px auto auto -100px;
+    position:absolute; 
+    top: 50%;
+    width: 200px !important;
+    text-align: center;
 }

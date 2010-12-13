@@ -214,6 +214,9 @@ var view = {
                         // Remove the #dialog which we appended to the body.
                         $('#dialog').remove();
 
+                        // Show pre loading message
+                        $('<div class="dialog pre_waiting"><div class="dialog_inner"><div class="dialog_body_waiting">Loading Saiku. Please wait...</div></div></div>').appendTo('body');
+
                         // Create the session and log in.
                         model.get_session();
                     }
