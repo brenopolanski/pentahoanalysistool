@@ -208,7 +208,7 @@ var model = {
                             /** By default add the dimension to the row dropzones. */
                             $(this).clone().appendTo('.rows ul').addClass('d_dimension');
                             /** Disable all siblings of the dimension. */
-                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
+                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children().children()
                             .removeClass('ui-draggable').addClass('not-draggable');
                             /** Toggle (Hide/Show) the children of the dimension. */
                             $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().find('ul').toggle();
