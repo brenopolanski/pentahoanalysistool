@@ -537,7 +537,7 @@ html, body {
     -webkit-border-radius: 3px;
 }
 .not-draggable a {
-    cursor: not-allowed !important;
+    /*cursor: not-allowed !important;*/
 }
 
 /** Table */
