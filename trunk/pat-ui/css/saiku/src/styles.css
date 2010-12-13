@@ -30,6 +30,9 @@ html, body {
 .ralign {
     text-align: right;
 }
+.used {
+    font-weight: bold;
+}
 
 /** Header */
 #header {
