@@ -384,7 +384,9 @@ html, body {
     padding: 2px 5px 3px 5px;
     line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
-    width: 73px;
+    width: 68px;
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
 }
 .fields_list .fields_list_body {
     float: left;
