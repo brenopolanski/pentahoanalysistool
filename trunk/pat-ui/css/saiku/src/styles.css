@@ -383,8 +383,6 @@ html, body {
     line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 68px;
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
 }
 .fields_list .fields_list_body {
     float: left;
@@ -486,7 +484,6 @@ html, body {
 .measure_tree ul .ui-draggable-dragging a {
     color: #983030 !important;
 }
-
 .d_dimension {
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
@@ -521,7 +518,6 @@ html, body {
     color: #983030;
     text-decoration: none;
 }
-
 .empty_placeholder,
 .placeholder {
     border: 1px dashed #999;
@@ -537,7 +533,6 @@ html, body {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
 .not-draggable a {
     cursor: not-allowed !important;
 }
