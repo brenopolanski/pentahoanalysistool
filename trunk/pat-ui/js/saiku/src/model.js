@@ -135,7 +135,8 @@ var model = {
                 /** Activate hide and show on trees. */
                 $tab.find('.dimension_tree').find('ul li ul').hide();
                 /** When the root item is clicked show it's children. */
-                $tab.find('.root').click(function() {
+                $tab.find('.root').click(function(e) {
+                    e.preventDefault();
                     $(this).parent().find('ul').toggle();
                     if ($(this).hasClass('expand')) {
                         $(this).removeClass('expand').addClass('collapsed')
@@ -174,7 +175,8 @@ var model = {
                 $both_dropzones.sortable('reset');
 
                 /** Double click instead of drag and drop. */
-                $both_tree_items.dblclick(function(){
+                $both_tree_items.dblclick(function(e){
+                    e.preventDefault();
                     var is_dimension = $(this).find('a').hasClass('dimension'),
                     is_measure = $(this).find('a').hasClass('measure');
 
