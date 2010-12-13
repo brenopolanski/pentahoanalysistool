@@ -218,12 +218,35 @@ var model = {
                             $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().find('ul').toggle();
                             /** Style the parent dimension. */
                             $dimension_tree.find('[rel=' + dimension_id + ']').parent()
-                            .removeClass('expand').addClass('collapsed')
+                            .removeClass('expand').addClass('collapsed used')
                             .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
                             /** Refresh the sortables. */
                             $both_dropzones.sortable('refresh');
                         }
-                        return false;
+                    }else{
+                        if(is_measure) {
+                            /** measure id. */
+                            var measure_id = $(this).find('a').attr('rel');
+                            /** Find the measure in the dropzone and remove it. */
+                            $both_dropzones.find('[rel=' + measure_id + ']').parent().remove();
+                            /** Enable the measure in the measures tree. */
+                            $measure_tree.find('[rel=' + measure_id + ']').parent()
+                            .removeClass('not-draggable used').addClass('ui-draggable');
+                            /** Refresh the sortables. */
+                            $both_dropzones.sortable('refresh');
+                        }else if (is_dimension) {
+                            /** Get the dimension_id. */
+                            var dimension_id = $(this).find('a').attr('rel').split('_')[0];
+                            var dimension_id_member = $(this).find('a').attr('rel');
+                            /** Find the dimension in the dropzone and remove it. */
+                            $both_dropzones.find('[rel=' + dimension_id_member + ']').parent().remove();
+                            /** Enable the dimenson and sibilings in the dimension tree. */
+                            $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
+                            .removeClass('not-draggable used').addClass('ui-draggable');
+                            $dimension_tree.find('[rel=' + dimension_id_member + ']').parent().removeClass('used');
+                            /** Refresh the sortables. */
+                            $both_dropzones.sortable('refresh');
+                        }
                     }
                 });
 
@@ -291,7 +314,7 @@ var model = {
                                 }
                                 /** Disable all siblings of the dimension. */
                                 $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
-                                .removeClass('ui-draggable').addClass('not-draggable');
+                                .removeClass('ui-draggable').addClass('not-draggable used');
                                 $dimension_tree.find('[rel=' + dimension_id_member + ']').parent().addClass('used');
 
                             }else if (!(between_lists)) {
@@ -370,7 +393,7 @@ var model = {
                             var dimension_id_member = ui.draggable.find('a').attr('rel');
                             /** Enable the dimenson and sibilings in the dimension tree. */
                             $dimension_tree.find('[rel=' + dimension_id + ']').parent().parent().children()
-                            .removeClass('not-draggable').addClass('ui-draggable');
+                            .removeClass('not-draggable used').addClass('ui-draggable');
                             $dimension_tree.find('[rel=' + dimension_id_member + ']').parent().removeClass('used');
                         }
                         /** Remove the draggable measure. */
