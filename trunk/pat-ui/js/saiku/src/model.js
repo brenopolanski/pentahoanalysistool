@@ -90,6 +90,20 @@ var model = {
             }
         });
     },
+    
+    /**
+     * Delete old query and create new
+     */
+    new_query_id: function(tab_index) {
+    	if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
+    		model.request({
+    			method: "DELETE",
+    			url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
+    		});
+    	}
+    	
+    	view.tabs.tabs[tab_index].data['query_name'] = model.generate_uuid();
+    },
 
     /**
      * Populate the dimension and measure tree and initialise draggable,
@@ -99,7 +113,7 @@ var model = {
     new_query : function(tab_index) {
     	
     	/** Generate the temporary query name */
-    	view.tabs.tabs[tab_index].data['query_name'] = model.generate_uuid();
+    	model.new_query_id(tab_index);
 
         /** Find the selected cube. */
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
