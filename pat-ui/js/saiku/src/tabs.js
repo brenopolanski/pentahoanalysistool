@@ -63,7 +63,7 @@ var TabContainer = function(tab_container, content_container) {
             this.tab_container.find("li.selected").removeClass("selected");
             this.content_container.find(".tab").hide();
             this.tabs[index].tab.addClass("selected");
-            resize_height();
+            view.resize_height();
             this.tabs[index].content.show();
             this.selected = index;
         }
@@ -87,7 +87,7 @@ var TabContainer = function(tab_container, content_container) {
         .addClass("tab")
         .load(BASE_URL + "views/queries/", function() {
             view.load_cubes(new_index);
-            resize_height();
+            view.resize_height();
         });
         $new_tab_content.appendTo(this.content_container);
 
