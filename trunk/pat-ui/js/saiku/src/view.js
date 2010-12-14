@@ -7,23 +7,6 @@
 // Enable debugging
 enable_debug = true;
 
-/** Resize the height of the layout to keep consistant columns. */
-function resize_height() {
-    // Get the browser's current height
-    var window_height = $(window).height();
-    // When the height of the browser is less than 600px set a height of 600px.
-    if (window_height <= 600) {
-        window_height = 600;
-    }
-    // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
-    var sidebar_offset = ( $('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4) ),
-    sidebar_height = window_height - sidebar_offset,
-    workspace_height = sidebar_height - 20;
-
-    $('.sidebar, .sidebar_separator').css('height', sidebar_height);
-    $('.workspace_inner').css('height', workspace_height);
-}
-
 /** Toggle (hide/show) the sidebar. */
 function toggle_sidebar() {
     // TODO - Has to be for selected tab only.
@@ -84,6 +67,27 @@ var view = {
 
     /** Tabs container. */
     tabs : new TabContainer($("#tabs"), $('#tab_panel')),
+    
+    /**
+     * Resize layout to fit window height
+     */
+    resize_height: function() {
+        // Get the browser's current height
+        var window_height = $(window).height();
+        
+        // When the height of the browser is less than 600px set a height of 600px.
+        if (window_height <= 600) {
+            window_height = 600;
+        }
+        
+        // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
+        var sidebar_offset = ( $('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4) ),
+        sidebar_height = window_height - sidebar_offset,
+        workspace_height = sidebar_height - 20;
+
+        $('.sidebar, .sidebar_separator').css('height', sidebar_height);
+        $('.workspace_inner').css('height', workspace_height);
+    },
 
     /** Initialise the user interface. */
     draw_ui : function () {
@@ -105,7 +109,7 @@ var view = {
 
         /** Bind resize_height() to the resize event. */
         $(window).bind('resize', function() {
-            resize_height();
+            view.resize_height();
         });
 
         /** Bind toggle_sidebar() to click event on the sidebar_separator. */
@@ -130,10 +134,6 @@ var view = {
             view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
             return false;
         });
-
-    /** Initialise resize_height() on first page load. */
-    //resize_height();
-
     },
 
     /** Destroy the user interface. */
