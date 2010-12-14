@@ -74,6 +74,8 @@ var TabContainer = function(tab_container, content_container) {
 
     /** Remove a tab and reclaim memory. */
     this.remove_tab = function(index) {
+    	model.new_query_id(index);
+    	
         if (typeof this.tabs[index] != "undefined") {
             this.tabs[index].tab.remove();
             this.tabs[index].content.remove();
