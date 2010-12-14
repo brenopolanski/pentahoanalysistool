@@ -380,13 +380,6 @@ var view = {
         model.request({
             method : "GET",
             url : model.username + url,
-            data: {
-                'connection': data['connectionName'],
-                'cube': data['cube'],
-                'catalog': data['catalogName'],
-                'schema': data['schema'],
-                'queryname': 'new_query'
-            },
             success: function(data, textStatus, XMLHttpRequest) {
                 // Remove any instances of a tree.
                 $tab.find('.measure_tree ul').remove();
