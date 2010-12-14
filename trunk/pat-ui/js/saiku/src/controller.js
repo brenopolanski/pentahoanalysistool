@@ -89,6 +89,8 @@ var controller = {
 $(document).ready(function() {
 	// Set base url for all REST calls
 	BASE_URL = location.pathname;
+	TOMCAT_WEBAPP = "saiku/";
+	REST_MOUNT_POINT = "rest/saiku/";
 	
     lazy_load("js/saiku/src/view.js");
     lazy_load("js/saiku/src/model.js");
