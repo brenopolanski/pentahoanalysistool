@@ -256,11 +256,10 @@ html, body {
     margin: 0;
 }
 .sidebar .dimension_tree {
-    height: 230px;
+    height: 180px;
     overflow: auto;
 }
 .sidebar .measure_tree {
-    height: 130px;
     overflow: auto;
 }
 
