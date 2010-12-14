@@ -71,7 +71,7 @@ var controller = {
 /** Lazy load the view and model. */
 $(document).ready(function() {
 	// Set base url for all REST calls
-	BASE_URL = location.pathname;
+	BASE_URL = "/";
 	TOMCAT_WEBAPP = "saiku/";
 	REST_MOUNT_POINT = "rest/saiku/";
 
