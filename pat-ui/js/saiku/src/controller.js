@@ -74,7 +74,9 @@ $(document).ready(function() {
 	BASE_URL = location.pathname;
 	TOMCAT_WEBAPP = "saiku/";
 	REST_MOUNT_POINT = "rest/saiku/";
-	
-	$.getScript("js/saiku/src/view.js");
+
+	$.getScript("js/saiku/src/tabs.js", function() {
+		$.getScript("js/saiku/src/view.js");
+	});
 	$.getScript("js/saiku/src/model.js");
 });
