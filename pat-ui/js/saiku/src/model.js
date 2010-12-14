@@ -40,7 +40,7 @@ var model = {
         
         $.ajax({
             type: parameters.method,
-            url: BASE_URL + "saiku/json/saiku/" + parameters.url,
+            url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + parameters.url,
             dataType: parameters.dataType,
             username: model.username,
             password: model.password,
