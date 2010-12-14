@@ -48,7 +48,7 @@ var Tab = function(tab_selector, content_selector) {
     this.tab = tab_selector;
     this.content = content_selector;
     this.data = {};
-}
+};
 
 /**
  * Container object used for tracking tabs.
@@ -195,7 +195,7 @@ var view = {
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : BASE_URL + 'views/session',
+            url : BASE_URL + 'views/session/',
             cache : false,
             dataType : "html",
             success : function(data) {
