@@ -5,6 +5,19 @@
  */
 
 /**
+ * Variables which control where REST API calls are sent
+ */
+
+// The mount point for Tomcat (when using mod_jk)
+BASE_URL = "/";
+
+// The name of the Saiku server webapp in Tomcat
+TOMCAT_WEBAPP = "saiku/";
+
+// The preferred REST mountpoint for Enunciate
+REST_MOUNT_POINT = "rest/saiku/";
+
+/**
  * Handle log messages.
  * @param message {String} The message to output.
  */
@@ -54,10 +67,6 @@ var controller = {
     /** Handle click when the save logout button is clicked. */
     logout : function () {
         view.destroy_ui();
-        model.username = "";
-        model.password = "";
-        model.session_id = "";
-        model.connections = "";
         location.reload(true);
     },
 
@@ -68,13 +77,8 @@ var controller = {
     
 };
 
-/** Lazy load the view and model. */
+/** Lazy load the rest of the javascript. */
 $(document).ready(function() {
-	// Set base url for all REST calls
-	BASE_URL = "/";
-	TOMCAT_WEBAPP = "saiku/";
-	REST_MOUNT_POINT = "rest/saiku/";
-
 	$.getScript("js/saiku/src/tabs.js", function() {
 		$.getScript("js/saiku/src/view.js");
 	});
