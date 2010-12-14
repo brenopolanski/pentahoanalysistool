@@ -492,6 +492,9 @@ var view = {
                     .removeClass('expand').addClass('collapsed')
                     .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
                 }
+            },
+            stop: function(event, ui) {
+                alert('You have just dropped/sorted something!');
             }
         }).disableSelection();
 
