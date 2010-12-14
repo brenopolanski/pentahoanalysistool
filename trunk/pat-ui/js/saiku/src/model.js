@@ -102,7 +102,10 @@ var model = {
     		});
     	}
     	
-    	view.tabs.tabs[tab_index].data['query_name'] = model.generate_uuid();
+    	view.tabs.tabs[tab_index].data['query_name'] = 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    	    return v.toString(16);
+    	}).toUpperCase();
     },
 
     /**
@@ -152,15 +155,5 @@ var model = {
                 $('.cubes').find('option:first').attr('selected', 'selected');
             }
         });        
-    },
-    
-    /**
-     * Generate a UUID to identify new queries until they are saved
-     */
-    generate_uuid: function() {
-    	return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    	    return v.toString(16);
-    	}).toUpperCase();
     }
 };
