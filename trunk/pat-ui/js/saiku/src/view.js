@@ -313,7 +313,7 @@ var view = {
                     .text(cube['cubeName'])
                     .appendTo($cubes);
                     view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
-                        'connectionName': connection['name'],
+                        'connectionName': connection['connectionName'],
                         'catalogName': connection.catalogs[0]['name'],
                         'schema': schema['name'],
                         'cube': cube['cubeName']
