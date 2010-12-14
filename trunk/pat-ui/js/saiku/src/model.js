@@ -97,6 +97,9 @@ var model = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     new_query : function(tab_index) {
+    	
+    	/** Generate the temporary query name */
+    	view.tabs.tabs[tab_index].data['query_name'] = model.generate_uuid();
 
         /** Find the selected cube. */
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
@@ -116,7 +119,7 @@ var model = {
         // Get a list of available dimensions and measures.
         model.request({
             method : "POST",
-            url : model.username + "/query/new_query",
+            url : model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
             data: {
                 'connection': data['connectionName'],
                 'cube': data['cube'],
@@ -127,15 +130,23 @@ var model = {
                 /** Load dimensions into a tree. */
                 view.load_dimensions($tab, data.axes[0].dimensions);
                 /** Load measures into a tree. */
-                view.load_measures($tab, data.axes[0].dimensions, "/query/new_query/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                view.load_measures($tab, data.axes[0].dimensions, "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
             },
             error: function() {
                 view.stop_waiting();
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
                 $('.cubes').find('option:first').attr('selected', 'selected');
             }
-        });
+        });        
+    },
     
-        
+    /**
+     * Generate a UUID to identify new queries until they are saved
+     */
+    generate_uuid: function() {
+    	return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    	    return v.toString(16);
+    	}).toUpperCase();
     }
-}
+};
