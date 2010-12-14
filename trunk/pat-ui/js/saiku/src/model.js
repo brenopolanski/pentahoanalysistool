@@ -121,8 +121,7 @@ var model = {
                 'connection': data['connectionName'],
                 'cube': data['cube'],
                 'catalog': data['catalogName'],
-                'schema': data['schema'],
-                'queryname': 'new_query'
+                'schema': data['schema']
             },
             success: function(data, textStatus, XMLHttpRequest) {
                 /** Load dimensions into a tree. */
