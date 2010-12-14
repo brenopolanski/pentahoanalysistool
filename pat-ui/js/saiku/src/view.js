@@ -535,28 +535,6 @@ var view = {
                     /** Refresh the sortables. */
                     $both_dropzones.sortable('refresh');
                 }
-            /** If the user is double clicking on a item which is already added and has been used. */
-            }else if ($(this).hasClass('not-draggable') && $(this).hasClass('used')) {
-                /** If it is a measure. */
-                if (is_measure) {
-                    /** We can assume it is only one measures being removed. */
-                    var measure_id = $(this).find('a').attr('rel');
-                    /** Remove from the dropzone. */
-                    $both_dropzones.find('[rel=' + measure_id + ']').parent().remove();
-                    /** Enable the measure in the measures tree. */
-                    $measure_tree.find('[rel=' + measure_id + ']').parent()
-                    .removeClass('not-draggable used').addClass('ui-draggable');
-                }else if (is_dimension) {
-                    /** dimension id. */
-                    var dimension_id = $(this).find('a').attr('rel').split('_')[0];
-                    var dimension_id_member = $(this).find('a').attr('rel');
-                    /** Remove the dimension from the dropzone. */
-                    $both_dropzones.find('[rel=' + dimension_id_member + ']').parent().remove();
-                    /** Enable the dimenson and sibilings in the dimension tree. */
-                    $dimension_tree.find('[rel=' + dimension_id + ']').parent().removeClass('used').parent().find('li')
-                    .removeClass('not-draggable').addClass('ui-draggable');
-                    $dimension_tree.find('[rel=' + dimension_id_member + ']').parent().removeClass('used');
-                }
             }
         });
 
