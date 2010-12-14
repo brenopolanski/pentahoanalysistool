@@ -5,23 +5,6 @@
  */
 
 /**
- * Lazy load JavaScript files.
- * @param script_filename {String} The name of the file to lazy load.
- */
-function lazy_load(script_filename) {
-
-    var html_doc = document.getElementsByTagName('head').item(0);
-    var js = document.createElement('script');
-
-    js.setAttribute('type', 'text/javascript');
-    js.setAttribute('src', script_filename);
-    html_doc.appendChild(js);
-    
-    return false;
-    
-}
-
-/**
  * Handle log messages.
  * @param message {String} The message to output.
  */
@@ -92,6 +75,6 @@ $(document).ready(function() {
 	TOMCAT_WEBAPP = "saiku/";
 	REST_MOUNT_POINT = "rest/saiku/";
 	
-    lazy_load("js/saiku/src/view.js");
-    lazy_load("js/saiku/src/model.js");
+	$.getScript("js/saiku/src/view.js");
+	$.getScript("js/saiku/src/model.js");
 });
