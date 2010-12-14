@@ -303,9 +303,6 @@ var view = {
                 
                 $cubes.append('<optgroup label="'+schema['name']+'">');
                 $.each(schema.cubes, function(i,cube){
-                    //if (cube.length == undefined)
-                    //    cube = [cube];
-                    //$.each(cube, function(i,item){
                     $("<option />")
                     .attr({
                         'value': storage_id
@@ -662,12 +659,13 @@ var view = {
             }
         });
 
-        //** Make the sidebar droppable. */
+        /** Make the sidebar droppable. */
         $sidebar_dropzone.droppable({
             accept: '.d_measure, .d_dimension',
             drop: function(event, ui) {
                 /** Add the drop class so that the sortable functions. */
                 ui.draggable.addClass('dropped');
+                
                 /** Is the item being removed is a measure or is all the measures. */
                 if (ui.draggable.find('a').hasClass('measure')) {
                     /** We can assume it is only one measures being removed. */
