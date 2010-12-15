@@ -339,11 +339,12 @@ html, body {
     padding-left: 20px;
     background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
 }
-.dimension_tree .hierarchy,
-.measure_tree .hierarchy {
-    color: #777;
-    font-style: italic;
-    padding-left: 3px;
+.dimension_tree .hierarchy {
+    padding-left: 0;
+}
+.dimension_tree .hierarchy a {
+    cursor: default;
+    background: url('../../../images/src/bullet_green.png') 0px 0px no-repeat;
 }
 
 

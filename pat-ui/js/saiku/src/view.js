@@ -215,7 +215,7 @@ var view = {
                 $.each(dimension.hierarchies, function(hierarchy_iterator, hierarchy) {
                     $second_level = $('<ul />').appendTo($first_level);
                     // Add the hierarchy name.
-                    $('<li />').html('<span class="hierarchy">' + hierarchy.caption + '</span>').appendTo($second_level);
+                    $('<li class="hierarchy" />').html('<a href="#">' + hierarchy.caption + '</a>').appendTo($second_level);
                     // Loop through each hierarchy.
                     $.each(hierarchy.levels, function(level_iterator, level){
                         dimension_id++;
@@ -243,7 +243,7 @@ var view = {
                 });
                 /** After each loop of the dimension make sure that is more than one hierarchy, if not remove the hiearchy. */
                 if ($first_level.find('.hierarchy').length == 1) {
-                    $first_level.find('.hierarchy').parent().remove();
+                    $first_level.find('.hierarchy').remove();
                 }
             }
         });
