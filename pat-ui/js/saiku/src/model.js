@@ -172,5 +172,24 @@ var model = {
      */
     removed_item: function() {
         //view.show_dialog("Alert", "You removed something!", "error");
+    },
+    
+    /**
+     * Run the query (triggered by drag events, double click events, and button
+     * @param tab_index {Integer} the id of the tab
+     */
+    run_query: function(tab_index) {
+    	if (! view.tabs.tabs[tab_index].data['query_name']) {
+    		view.show_dialog("Run query", "Please select a cube first.", "info");
+    		return false;
+    	}
+    	
+    	model.request({
+    		method: "GET",
+    		url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
+    		success: function(data, textStatus, XMLHttpRequest) {
+    			alert(data);
+    		}
+    	});
     }
 };

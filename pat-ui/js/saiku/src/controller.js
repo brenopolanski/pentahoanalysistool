@@ -67,7 +67,7 @@ var controller = {
     
     /** Run query **/
     run_query: function(tab_index) {
-    	alert("Run query on tab " + tab_index)
+    	model.run_query(tab_index);
     },
 
     /** Handle click when the new query button is clicked. */
