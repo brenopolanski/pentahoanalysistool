@@ -1,4 +1,10 @@
 /**
+ * @fileOverview    This represents the tab module for Saiku UI.
+ * @description     This will handle all interaction with Saiku UI tabs.
+ * @version         1.0.0
+ */
+
+/**
  * Object for containing tab metadata.
  * @class
  */
