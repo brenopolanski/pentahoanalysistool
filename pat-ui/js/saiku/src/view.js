@@ -117,9 +117,8 @@ var view = {
         });
         
         /** Bind event handler to workspace toolbar methods **/
-        $('.workspace_toolbar a').live('click', function() {
+        $('.workspace_toolbar a').live('click', function(event) {
         	controller.workspace_toolbar_click_handler($(this));
-        	return false;
         });
 
         /** Add click handler on tabs. */
