@@ -146,9 +146,9 @@ var model = {
             },
             success: function(data, textStatus, XMLHttpRequest) {
                 /** Load dimensions into a tree. */
-                view.load_dimensions($tab, data.axes[0].dimensions);
+                view.load_dimensions(tab_index, data.axes[0].dimensions);
                 /** Load measures into a tree. */
-                view.load_measures($tab, data.axes[0].dimensions, "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                view.load_measures(tab_index, data.axes[0].dimensions, "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
             },
             error: function() {
                 view.stop_waiting();
@@ -162,16 +162,27 @@ var model = {
      * When a dimension or measure is dropped or sorted set it as a selection.
      * @param ... 
      */
-    dropped_item: function() {
-        //view.show_dialog("Alert", "You dropped / sorted something!", "error");
+    dropped_item: function($item) {
+    	console.debug();
+    	tab_index = view.tabs.index_from_content($item.closest('.tab'));
+    	axis = $item.closest('.fields_list').attr('title');
+    	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')]
+    	console.debug(item_data);
+    	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
+    	// FIXME - go down to the level level
+    	model.request({
+    		method: "POST",
+    		url: url
+    	});
+    	// TODO - does something need to be done on success?
     },
 
     /**
      * When a dimension or measure is removed, remove it from the selection.
      * @param ...
      */
-    removed_item: function() {
-        //view.show_dialog("Alert", "You removed something!", "error");
+    removed_item: function($item) {
+        //view.show_dialog("Alert", "You removed ", "error");
     },
     
     /**
@@ -188,7 +199,8 @@ var model = {
     		method: "GET",
     		url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
     		success: function(data, textStatus, XMLHttpRequest) {
-    			alert(data);
+    			// FIXME - create actual table
+    			view.tabs.tabs[tab_index].content.find('.workspace_results').text(XMLHttpRequest.responseText);
     		}
     	});
     }
