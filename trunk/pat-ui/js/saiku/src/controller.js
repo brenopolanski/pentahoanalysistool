@@ -38,16 +38,36 @@ var controller = {
      * @param $button {Object} The clicked toolbar button object.
      */
     toolbar_click_handler : function($button) {
-        var handler = $button.attr("id");
-        var success = false;
+        method_name = $button.attr("id");
+        controller.call_method(method_name, -1);
+    },
+    
+    /**
+     * Handle all click events on workspace toolbar
+     * @param $target {Object} button which was pressed
+     */
+    workspace_toolbar_click_handler: function($button) {
+    	tab_index = view.tabs.index_from_content($button.closest('.tab'));
+    	method_name = $button.text().replace(" ", "_").toLowerCase();
+    	controller.call_method(method_name, tab_index);
+    },
+    
+    /** Allows the use of reflection to call methods */
+    call_method: function(method_name, tab_index) {
         for (method in controller) {
-            if (method == handler) {
-                eval("controller." + method + "();");
-                success = true;
+            if (method == method_name) {
+            	if (tab_index == -1) {
+            		eval("controller." + method + "();");
+            	} else {
+            		eval("controller." + method + "(" + tab_index + ");");
+            	}
             }
         }
-        if (success == false)
-            view.show_dialog("Warning", "This button handler isn't implemented yet.", "error");
+    },
+    
+    /** Run query **/
+    run_query: function(tab_index) {
+    	alert("Run query on tab " + tab_index)
     },
 
     /** Handle click when the new query button is clicked. */
