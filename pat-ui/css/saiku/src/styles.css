@@ -340,7 +340,7 @@ html, body {
     background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
 }
 .dimension_tree .hierarchy {
-    padding-left: 0;
+    padding-left: 1px;
 }
 .dimension_tree .hierarchy a {
     cursor: default;
@@ -650,7 +650,7 @@ html, body {
     text-align: right
 }
 .dialog .dialog_inner .dialog_footer .tested_browsers {
-    padding-right: 10px;
+    padding-right: 69px;
 }
 
 /** Button */
