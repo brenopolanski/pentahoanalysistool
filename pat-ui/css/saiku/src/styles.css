@@ -256,7 +256,7 @@ html, body {
     margin: 0;
 }
 .sidebar .dimension_tree {
-    height: 180px;
+    height: 200px;
     overflow: auto;
 }
 .sidebar .measure_tree {
@@ -339,6 +339,13 @@ html, body {
     padding-left: 20px;
     background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
 }
+.dimension_tree .hierarchy,
+.measure_tree .hierarchy {
+    color: #777;
+    font-style: italic;
+    padding-left: 3px;
+}
+
 
 /** Tab Panel */
 
