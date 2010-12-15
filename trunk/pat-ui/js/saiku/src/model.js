@@ -163,7 +163,7 @@ var model = {
      * @param ... 
      */
     dropped_item: function() {
-        view.show_dialog("Alert", "You dropped / sorted something!", "error");
+        //view.show_dialog("Alert", "You dropped / sorted something!", "error");
     },
 
     /**
@@ -171,6 +171,6 @@ var model = {
      * @param ...
      */
     removed_item: function() {
-        view.show_dialog("Alert", "You removed something!", "error");
+        //view.show_dialog("Alert", "You removed something!", "error");
     }
 };
