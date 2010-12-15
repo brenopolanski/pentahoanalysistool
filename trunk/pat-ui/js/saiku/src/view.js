@@ -537,11 +537,20 @@ var view = {
         function remove_dimension(id) {
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
-            /** Enabel all of the dimension's siblings and unhighlight the dimension being used. */
+            /** Enable all of the dimension's siblings and unhighlight the dimension being used. */
             $dimension_tree.find('[rel=' + parent_id + ']').parent().removeClass('used').parent().find('li')
             .removeClass('not-draggable').addClass('ui-draggable');
             /** Remove the dimension's highlighted parent. */
             $dimension_tree.find('[rel=' + id + ']').parent().removeClass('used');
+            /** Collapse the dimension parent if it is exapnded. */
+            if ($dimension_tree.find('[rel=' + parent_id + ']').parent().hasClass('expand')) {
+                /** Toggle the children of the dimension's parent. */
+                $dimension_tree.find('[rel=' + parent_id + ']').parent().parent().find('ul').toggle();
+                /** Style the parent dimension. */
+                $dimension_tree.find('[rel=' + parent_id + ']').parent()
+                .removeClass('expand').addClass('collapsed')
+                .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+            }
         }
 
         /**
