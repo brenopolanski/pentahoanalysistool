@@ -231,7 +231,6 @@ var view = {
                         };                        
                         
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
-                        console.debug(hierarchy);
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
                             $second_level_link = $('<a href="#" class="dimension"> All ' + hierarchy.caption + '</a>')
