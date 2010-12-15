@@ -28,7 +28,6 @@ function toggle_sidebar() {
  * @class
  */
 var view = {
-
     /** Display the login form when the view is initialised. */
     init : function() {
         // Append a dialog <div/> to the body.
@@ -348,6 +347,8 @@ var view = {
                 }
                 /** Refresh the sortables. */
                 $both_dropzones.sortable('refresh');
+                /** When stopped dropping or sorting set the selection. */
+                model.dropped_item();
             } else if ($(this).hasClass('not-draggable')) {
                 if (is_measure) {
                     /** Remove the measure manually. */
@@ -362,6 +363,8 @@ var view = {
                 }
                 /** Refresh the sortables. */
                 $both_dropzones.sortable('refresh');
+                /** When dimension or measure is removed, set the selection. */
+                model.removed_item();
             }
         });
 
@@ -384,17 +387,14 @@ var view = {
             beforeStop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
-
                     /** Determine the sorting to and from axis. */
                     if($(this).parent().hasClass('rows')) {
                         var sort_to = 'columns', sort_from = 'rows', is_measure = ui.item.hasClass('d_measure');
                     }else{
                         var sort_to = 'rows', sort_from = 'columns', is_measure = ui.item.hasClass('d_measure');
                     }
-
                     /** Set sorting between lists to false. */
                     var between_lists = false;
-
                     /** Check if sorting a measure, does the axis accepting the sort have a measure already. */
                     if ($('.'+sort_to).find('.d_measure').length == 1 && $('.'+sort_from).find('.d_measure').length > 0 && is_measure) {
                         /** Move all measures from rows to columns. */
@@ -402,13 +402,10 @@ var view = {
                         /** Set sorting between lists to true. */
                         between_lists = true;
                     }
-
                     /** Sorting a dimension or measure. */
                     var is_dimension = ui.item.find('a').hasClass('dimension'), is_measure = ui.item.find('a').hasClass('measure');
-                    
                     /** What is on the left and right of the placeholder. */
                     var left_item = $(this).find('.placeholder').prev().prev(), right_item = $(this).find('.placeholder').next();
-
                     /** Sorting a dimension. */
                     if (is_dimension){
                         /** If the placeholder is in between measures. */
@@ -442,7 +439,13 @@ var view = {
                     }
                 }
             },
-            stop: function(event, ui) {}
+            stop: function(event, ui) {
+                /** Is the item being removed. */
+                if(!(ui.item.hasClass('dropped'))) {
+                    /** When stopped dropping or sorting set the selection. */
+                    model.dropped_item();
+                }
+            }
         }).disableSelection();
 
         /** Make the measure and dimension tree draggable. */
@@ -479,13 +482,14 @@ var view = {
                     /** Remove the draggable measure. */
                     ui.draggable.remove();
                 },1);
+                /** When dimension or measure is removed, set the selection. */
+                model.removed_item();
             }
         });
 
         /**
-     * Active dimension and measure trees.
-     */
-
+         * Active dimension and measure trees.
+         */
         function init_trees() {
             /** Activate hide and show on trees. */
             $tab.find('.dimension_tree').find('ul li ul').hide();
@@ -508,12 +512,11 @@ var view = {
             });
         }
 
-
         /**
-     * Add a dimension.
-     * @param id {String} The rel attribute of the link being clicked which
-     * identifies the dimension.
-     */
+         * Add a dimension.
+         * @param id {String} The rel attribute of the link being clicked which
+         * identifies the dimension.
+         */
         function add_dimension(id) {
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
@@ -531,9 +534,9 @@ var view = {
         }
          
         /**
-     * Remove a dimension.
-     * @param id {String} The rel attribute of the dimension being removed.
-     */
+         * Remove a dimension.
+         * @param id {String} The rel attribute of the dimension being removed.
+         */
         function remove_dimension(id) {
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
@@ -554,10 +557,10 @@ var view = {
         }
 
         /**
-     * Add a measure.
-     * @param id {String} The rel attribute of the link being clicked which
-     * identifies the measure.
-     */
+         * Add a measure.
+         * @param id {String} The rel attribute of the link being clicked which
+         * identifies the measure.
+         */
         function add_measure(id) {
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
@@ -566,10 +569,10 @@ var view = {
         }
 
         /**
-     * Remove a measure.
-     * @param id {String} The rel attribute of the measure being removed.
-     * @param is_drop {Boolean} If the measure is being dropped.
-     */
+         * Remove a measure.
+         * @param id {String} The rel attribute of the measure being removed.
+         * @param is_drop {Boolean} If the measure is being dropped.
+         */
         function remove_measure(id, is_drop) {
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
@@ -583,9 +586,9 @@ var view = {
     },
 
     /**
- * Displays a waiting dialog box.
- * @param message {String} Waiting message to be displayed.
- */
+     * Displays a waiting dialog box.
+     * @param message {String} Waiting message to be displayed.
+     */
     start_waiting : function (message) {
         $('.waiting_message').html(message);
         $('.waiting').show();
@@ -598,9 +601,9 @@ var view = {
     },
 
     /**
- * Load views into a dialog template
- * @param url {String} The url where the view is located.
- */
+    * Load views into a dialog template
+    * @param url {String} The url where the view is located.
+    */
     show_view : function(url) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
@@ -627,10 +630,10 @@ var view = {
     },
 
     /**
- * Loads a pop up dialog box for alerting.
- * @param title {String} Title to be displayed in the dialog box.
- * @param message {String} Message to be displayed in the dialog box.
- */
+     * Loads a pop up dialog box for alerting.
+     * @param title {String} Title to be displayed in the dialog box.
+     * @param message {String} Message to be displayed in the dialog box.
+     */
     show_dialog : function (title, message, type) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide">').appendTo('body');
@@ -657,7 +660,6 @@ var view = {
             }
         });
     }
-    
 }
 
 /** Initialise the user interface. */

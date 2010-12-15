@@ -156,5 +156,21 @@ var model = {
                 $('.cubes').find('option:first').attr('selected', 'selected');
             }
         });        
+    },
+
+    /**
+     * When a dimension or measure is dropped or sorted set it as a selection.
+     * @param ... 
+     */
+    dropped_item: function() {
+        view.show_dialog("Alert", "You dropped / sorted something!", "error");
+    },
+
+    /**
+     * When a dimension or measure is removed, remove it from the selection.
+     * @param ...
+     */
+    removed_item: function() {
+        view.show_dialog("Alert", "You removed something!", "error");
     }
 };
