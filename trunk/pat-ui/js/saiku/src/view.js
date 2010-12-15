@@ -195,37 +195,56 @@ var view = {
      * @param data {Object} Data object which contains the available dimension
      *                      members.
      */
-    load_dimensions : function($tab, data) {
+    load_dimensions : function(tab_index, data) {
         // Remove any instances of a tree.
+    	$tab = view.tabs.tabs[tab_index].content;
         $tab.find('.dimension_tree ul').remove();
+        
         // Add a new dimension tree.
         $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree'));
+        
         // Populate the tree with first level dimensions.
-        $.each(data, function(i, dimension) {
+        dimension_id = 0;
+        delete view.tabs.tabs[tab_index].data['dimensions'];
+        view.tabs.tabs[tab_index].data['dimensions'] = new Array();
+        $.each(data, function(dimension_iterator, dimension) {
             if (this['name'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
-                $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + i + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
+                $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + dimension_iterator + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
                 .appendTo($dimension_tree);
+                
                 // Store the dimension name for the (All) level
                 var dimension_name = this['name'];
-                if (dimension.hierarchies[0].levels.length > 1) {
+                
+                $.each(dimension.hierarchies, function(hierarchy_iterator, hierarchy) {
                     $second_level = $('<ul />').appendTo($first_level);
-                    $.each(dimension.hierarchies[0].levels, function(j, level){
+                    $('<li />').html("<b>" + hierarchy.caption + "</b>").appendTo($second_level);
+                    $.each(hierarchy.levels, function(level_iterator, level){
+                    	dimension_id++;
                         $li = $('<li />').mousedown(function() {
                             return false;
-                        }).appendTo($second_level);
+                        })
+                        .attr('title', dimension_id)
+                        .appendTo($second_level);
+                        
+                        view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
+                        	'dimension': dimension.name,
+                        	'hierarchy': hierarchy.hierarchy,
+                        	'level': level.level 
+                        };                        
+                        
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + level['uniqueName'] + '"> All ' + dimension_name + '</a>')
+                            $second_level_link = $('<a href="#" class="dimension"> All ' + dimension_name + '</a>')
                             .appendTo($li);
                         }else{
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + i + '_' + j + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
+                            $second_level_link = $('<a href="#" class="dimension">' + level['caption'] + '</a>')
                             .appendTo($li);
                         }
                     });
-                }
+            	});
             }
         });
     },
@@ -236,8 +255,9 @@ var view = {
      * @param data {Object} Data object which contains the available measure
      *                      members.
      */
-    load_measures : function($tab, data, url) {
+    load_measures : function(tab_index, data, url) {
         /** We need to fetch the measures separetely. */
+    	$tab = view.tabs.tabs[tab_index].content;
         model.request({
             method : "GET",
             url : model.username + url,
@@ -338,13 +358,13 @@ var view = {
                         $(this).clone().appendTo($column_dropzone).addClass('d_measure');
                         /** Continue adding the measure. */
                         add_measure($(this).find('a').attr('rel'));
-                        model.dropped_item();
+                        model.dropped_item($(this));
                     }else{
                         /** Append the measure to the last measure available. */
                         $(this).clone().insertAfter($both_dropzones.find('.d_measure').last()).addClass('d_measure');
                         /** Continue adding the measure. */
                         add_measure($(this).find('a').attr('rel'));
-                        model.dropped_item();
+                        model.dropped_item($(this));
                     }
                 }else if(is_dimension) {
                     /** Add the dimension to the row dropzone manually. */
@@ -355,7 +375,7 @@ var view = {
                 /** Refresh the sortables. */
                 $both_dropzones.sortable('refresh');
                 /** When stopped dropping or sorting set the selection. */
-                model.dropped_item();
+                model.dropped_item($(this));
             } else if ($(this).hasClass('not-draggable')) {
                 if (is_measure) {
                     /** Remove the measure manually. */
@@ -450,7 +470,7 @@ var view = {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
                     /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item();
+                    model.dropped_item(ui.item);
                 }
             }
         }).disableSelection();
