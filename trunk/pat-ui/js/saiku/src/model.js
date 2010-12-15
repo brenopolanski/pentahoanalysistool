@@ -163,11 +163,9 @@ var model = {
      * @param ... 
      */
     dropped_item: function($item) {
-    	console.debug();
     	tab_index = view.tabs.index_from_content($item.closest('.tab'));
     	axis = $item.closest('.fields_list').attr('title');
     	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')]
-    	console.debug(item_data);
     	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
     	// FIXME - go down to the level level
     	model.request({
