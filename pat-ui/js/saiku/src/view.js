@@ -213,9 +213,6 @@ var view = {
                 $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + dimension_iterator + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
                 .appendTo($dimension_tree);
                 
-                // Store the dimension name for the (All) level
-                var dimension_name = this['name'];
-                
                 $.each(dimension.hierarchies, function(hierarchy_iterator, hierarchy) {
                     $second_level = $('<ul />').appendTo($first_level);
                     $('<li />').html("<b>" + hierarchy.caption + "</b>").appendTo($second_level);
@@ -234,9 +231,10 @@ var view = {
                         };                        
                         
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
+                        console.debug(hierarchy);
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension"> All ' + dimension_name + '</a>')
+                            $second_level_link = $('<a href="#" class="dimension"> All ' + hierarchy.caption + '</a>')
                             .appendTo($li);
                         }else{
                             // Create a parent-child relationship with the rel attribute.
