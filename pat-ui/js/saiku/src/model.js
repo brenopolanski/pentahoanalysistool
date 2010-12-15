@@ -92,7 +92,8 @@ var model = {
     },
     
     /**
-     * Delete old query and create new
+     * Delete old query and create new.
+     * @param tab_index {Integer} Index of the selected tab.
      */
     new_query_id: function(tab_index) {
     	if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
