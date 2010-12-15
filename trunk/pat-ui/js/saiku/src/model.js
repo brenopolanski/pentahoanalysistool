@@ -96,17 +96,17 @@ var model = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     new_query_id: function(tab_index) {
-    	if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
-    		model.request({
-    			method: "DELETE",
-    			url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
-    		});
-    	}
+        if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
+            model.request({
+                method: "DELETE",
+                url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
+            });
+        }
     	
-    	view.tabs.tabs[tab_index].data['query_name'] = 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    	    return v.toString(16);
-    	}).toUpperCase();
+        view.tabs.tabs[tab_index].data['query_name'] = 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        }).toUpperCase();
     },
 
     /**
@@ -116,8 +116,8 @@ var model = {
      */
     new_query : function(tab_index) {
     	
-    	/** Generate the temporary query name */
-    	model.new_query_id(tab_index);
+        /** Generate the temporary query name */
+        model.new_query_id(tab_index);
 
         /** Find the selected cube. */
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");

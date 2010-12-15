@@ -333,11 +333,13 @@ var view = {
                         $(this).clone().appendTo($column_dropzone).addClass('d_measure');
                         /** Continue adding the measure. */
                         add_measure($(this).find('a').attr('rel'));
+                        model.dropped_item();
                     }else{
                         /** Append the measure to the last measure available. */
                         $(this).clone().insertAfter($both_dropzones.find('.d_measure').last()).addClass('d_measure');
                         /** Continue adding the measure. */
                         add_measure($(this).find('a').attr('rel'));
+                        model.dropped_item();
                     }
                 }else if(is_dimension) {
                     /** Add the dimension to the row dropzone manually. */
@@ -525,12 +527,15 @@ var view = {
             .parent().children().removeClass('ui-draggable').addClass('not-draggable');
             /** Highlight the dimension's parent being used. */
             $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
-            /** Toggle the children of the dimension's parent. */
-            $dimension_tree.find('[rel=' + parent_id + ']').parent().parent().find('ul').toggle();
-            /** Style the parent dimension. */
-            $dimension_tree.find('[rel=' + parent_id + ']').parent()
-            .removeClass('expand').addClass('collapsed')
-            .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+            /** Collapse the dimension parent if it is exapnded. */
+            if ($dimension_tree.find('[rel=' + parent_id + ']').parent().hasClass('expand')) {
+                /** Toggle the children of the dimension's parent. */
+                $dimension_tree.find('[rel=' + parent_id + ']').parent().parent().find('ul').toggle();
+                /** Style the parent dimension. */
+                $dimension_tree.find('[rel=' + parent_id + ']').parent()
+                .removeClass('expand').addClass('collapsed')
+                .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+            }
         }
          
         /**
