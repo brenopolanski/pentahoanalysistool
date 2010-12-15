@@ -118,7 +118,7 @@ var view = {
         
         /** Bind event handler to workspace toolbar methods **/
         $('.workspace_toolbar a').live('click', function(event) {
-        	controller.workspace_toolbar_click_handler($(this));
+            controller.workspace_toolbar_click_handler($(this));
         });
 
         /** Add click handler on tabs. */
@@ -197,7 +197,7 @@ var view = {
      */
     load_dimensions : function(tab_index, data) {
         // Remove any instances of a tree.
-    	$tab = view.tabs.tabs[tab_index].content;
+        $tab = view.tabs.tabs[tab_index].content;
         $tab.find('.dimension_tree ul').remove();
         
         // Add a new dimension tree.
@@ -212,24 +212,23 @@ var view = {
                 // Make sure the first level has a unique rel attribute.
                 $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + dimension_iterator + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
                 .appendTo($dimension_tree);
-                
                 $.each(dimension.hierarchies, function(hierarchy_iterator, hierarchy) {
                     $second_level = $('<ul />').appendTo($first_level);
-                    $('<li />').html("<b>" + hierarchy.caption + "</b>").appendTo($second_level);
+                    // Add the hierarchy name.
+                    $('<li />').html('<span class="hierarchy">' + hierarchy.caption + '</span>').appendTo($second_level);
+                    // Loop through each hierarchy.
                     $.each(hierarchy.levels, function(level_iterator, level){
-                    	dimension_id++;
+                        dimension_id++;
                         $li = $('<li />').mousedown(function() {
                             return false;
                         })
                         .attr('title', dimension_id)
                         .appendTo($second_level);
-                        
                         view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
-                        	'dimension': dimension.name,
-                        	'hierarchy': hierarchy.hierarchy,
-                        	'level': level.level 
+                            'dimension': dimension.name,
+                            'hierarchy': hierarchy.hierarchy,
+                            'level': level.level
                         };                        
-                        
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
@@ -241,7 +240,11 @@ var view = {
                             .appendTo($li);
                         }
                     });
-            	});
+                });
+                /** After each loop of the dimension make sure that is more than one hierarchy, if not remove the hiearchy. */
+                if ($first_level.find('.hierarchy').length == 1) {
+                    $first_level.find('.hierarchy').parent().remove();
+                }
             }
         });
     },
@@ -254,7 +257,7 @@ var view = {
      */
     load_measures : function(tab_index, data, url) {
         /** We need to fetch the measures separetely. */
-    	$tab = view.tabs.tabs[tab_index].content;
+        $tab = view.tabs.tabs[tab_index].content;
         model.request({
             method : "GET",
             url : model.username + url,
@@ -474,7 +477,7 @@ var view = {
 
         /** Make the measure and dimension tree draggable. */
         $both_tree_items.draggable({
-            cancel: '.not-draggable',
+            cancel: '.not-draggable, .hierarchy',
             connectToSortable: $connectable,
             helper: 'clone',
             opacity: 0.60,

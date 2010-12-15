@@ -163,16 +163,16 @@ var model = {
      * @param ... 
      */
     dropped_item: function($item) {
-    	tab_index = view.tabs.index_from_content($item.closest('.tab'));
-    	axis = $item.closest('.fields_list').attr('title');
-    	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')]
-    	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
-    	// FIXME - go down to the level level
-    	model.request({
-    		method: "POST",
-    		url: url
-    	});
-    	// TODO - does something need to be done on success?
+        tab_index = view.tabs.index_from_content($item.closest('.tab'));
+        axis = $item.closest('.fields_list').attr('title');
+        item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')]
+        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
+        // FIXME - go down to the level level
+        model.request({
+            method: "POST",
+            url: url
+        });
+    // TODO - does something need to be done on success?
     },
 
     /**
@@ -180,7 +180,7 @@ var model = {
      * @param ...
      */
     removed_item: function($item) {
-        //view.show_dialog("Alert", "You removed ", "error");
+    //view.show_dialog("Alert", "You removed ", "error");
     },
     
     /**
@@ -188,18 +188,18 @@ var model = {
      * @param tab_index {Integer} the id of the tab
      */
     run_query: function(tab_index) {
-    	if (! view.tabs.tabs[tab_index].data['query_name']) {
-    		view.show_dialog("Run query", "Please select a cube first.", "info");
-    		return false;
-    	}
+        if (! view.tabs.tabs[tab_index].data['query_name']) {
+            view.show_dialog("Run query", "Please select a cube first.", "info");
+            return false;
+        }
     	
-    	model.request({
-    		method: "GET",
-    		url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
-    		success: function(data, textStatus, XMLHttpRequest) {
-    			// FIXME - create actual table
-    			view.tabs.tabs[tab_index].content.find('.workspace_results').text(XMLHttpRequest.responseText);
-    		}
-    	});
+        model.request({
+            method: "GET",
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
+            success: function(data, textStatus, XMLHttpRequest) {
+                // FIXME - create actual table
+                view.tabs.tabs[tab_index].content.find('.workspace_results').text(XMLHttpRequest.responseText);
+            }
+        });
     }
 };
