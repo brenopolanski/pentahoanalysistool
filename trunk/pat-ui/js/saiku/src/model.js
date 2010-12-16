@@ -199,6 +199,8 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 /** Set up a pointer to the result area of the active tab. */
                 $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+                /** Remove the table before rendering. */
+                $workspace_result.find('table').remove();
                 /** Create the table visualisation structure. */
                 $('<table><thead><tr/></thead><tbody></tbody></table>').appendTo($workspace_result);
                 /** Setup a pointer to the table. */
@@ -222,11 +224,13 @@ var model = {
                         $table_vis.find('tbody').append('<tr id="' + i + '" />');
                         /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
                         $.each(data[i], function(k, cell) {
-                                if (cell['type'] === "HEADER") {
-                                    $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
-                                }else if (cell['type'] === "DATA_CELL") {
-                                    $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
-                                }
+                            if (cell['value'] === "null" && cell['type'] === "HEADER") {
+                                $table_vis.find('tr#' + i).append('<th/>');
+                            }else if(cell['type'] === "HEADER") {
+                                $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
+                            }else if(cell['type'] === "DATA_CELL") {
+                                $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
+                            }
                         });
                     }
                 });
