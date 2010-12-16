@@ -213,7 +213,7 @@ var model = {
                         /** Loop through the header object and catch any nulls. */
                         $.each(data[i], function(j, header) {
                             if (header['value'] === "null") {
-                                $table_vis.find('thead tr').append('<th/>');
+                                $table_vis.find('thead tr').append('<th class="empty_cell"/>');
                             }else{
                                 $table_vis.find('thead tr').append('<th>' + header['value'] + '</th>');
                             }
@@ -225,7 +225,7 @@ var model = {
                         /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
                         $.each(data[i], function(k, cell) {
                             if (cell['value'] === "null" && cell['type'] === "HEADER") {
-                                $table_vis.find('tr#' + i).append('<th"/>');
+                                $table_vis.find('tr#' + i).append('<th/>');
                             }else if(cell['type'] === "HEADER") {
                                 $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
                             }else if(cell['type'] === "DATA_CELL") {
