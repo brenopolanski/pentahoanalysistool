@@ -192,14 +192,51 @@ var model = {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
-    	
+        view.start_waiting('Getting results...');
         model.request({
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
-                // FIXME - create actual table
-                view.tabs.tabs[tab_index].content.find('.workspace_results').text(XMLHttpRequest.responseText);
+                /** Set up a pointer to the result area of the active tab. */
+                $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+                /** Create the table visualisation structure. */
+                $('<table><thead><tr/></thead><tbody></tbody></table>').appendTo($workspace_result);
+                /** Setup a pointer to the table. */
+                $table_vis = $workspace_result.find('table');
+
+                /** Loop through the resultset. */
+                $.each(data, function(i, item) {
+                    /** If this is the first object in the result set we can assume it is the column HEADER's. */
+                    if (i == 0) {
+                        /** Loop through the header object and catch any nulls. */
+                        $.each(data[i], function(j, header) {
+                            if (header['value'] === "null") {
+                                $table_vis.find('thead tr').append('<th></th>');
+                            }else{
+                                $table_vis.find('thead tr').append('<th>' + header['value'] + '</th>');
+                            }
+                        });
+                    }else{
+                        /** If it isn't the first object we can assume it is a row. */
+                        /** Create a new row specific to this object in the result set. */
+                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
+                        /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
+                        $.each(data[i], function(k, cell) {
+                                if (cell['type'] === "HEADER") {
+                                    $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
+                                }else if (cell['type'] === "DATA_CELL") {
+                                    $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
+                                }
+                        });
+                    }
+                });
+
+                view.stop_waiting();
+            },
+            error: function() {
+                view.show_dialog("Result set", "There was an error getting the result set <br/>for that query.", "error");
+                view.stop_waiting();
             }
         });
     }
-};
+}

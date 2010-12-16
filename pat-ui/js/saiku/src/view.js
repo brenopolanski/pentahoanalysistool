@@ -413,6 +413,14 @@ var view = {
                 ui.placeholder.text(ui.helper.text());
             },
             beforeStop: function(event, ui) {
+
+                /** Is the item being removed. */
+                if(!(ui.item.hasClass('dropped'))) {
+                    /** When stopped dropping or sorting set the selection. */
+                    model.dropped_item(ui.item);
+                }
+            },
+            stop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
                     /** Determine the sorting to and from axis. */
@@ -466,13 +474,7 @@ var view = {
                         add_measure(ui.item.find('a').attr('rel'));
                     }
                 }
-            },
-            stop: function(event, ui) {
-                /** Is the item being removed. */
-                if(!(ui.item.hasClass('dropped'))) {
-                    /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item(ui.item);
-                }
+
             }
         }).disableSelection();
 
