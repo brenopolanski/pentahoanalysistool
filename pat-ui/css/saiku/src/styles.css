@@ -720,16 +720,17 @@ a.button_selected {
 }
 .workspace_results table thead tr th {
     background: #FFF;
-    border-bottom: 1px solid #CCC;
     border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
 }
+.workspace_results table tbody tr td,
 .workspace_results table tbody tr th {
     border-bottom: 1px solid #CCC;
     border-right: 1px solid #CCC;
 }
-.workspace_results table tbody tr td {
-    border-right: 1px solid #CCC;
-    border-bottom: 1px solid #CCC;
+.workspace_results table tbody tr:nth-child(even) td,
+.workspace_results table tbody tr.even td  {
+    background: #F0F0F0;
 }
 
 /** Waiting */
