@@ -387,6 +387,7 @@ html, body {
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     border-right: 1px solid #CCC;
     float: left;
+    font-weight: bold;
     padding: 2px 5px 3px 5px;
     line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
@@ -708,26 +709,20 @@ a.button_selected {
 
 /** Table visualisation. */
 .workspace_results table {
-    border-bottom: 1px solid #CCC;
     margin-top: 20px;
 }
 .workspace_results table thead tr th {
     background: #FFF;
     border-bottom: 1px solid #CCC;
     border-right: 1px solid #CCC;
-    text-align: right;
 }
 .workspace_results table tbody tr th {
+    border-bottom: 1px solid #CCC;
     border-right: 1px solid #CCC;
 }
-
 .workspace_results table tbody tr td {
     border-right: 1px solid #CCC;
-    text-align: right;
-}
-.workspace_results table tbody tr:nth-child(even) td,
-tbody tr.even td  {
-    background: #F0F0F0;
+    border-bottom: 1px solid #CCC;
 }
 
 /** Waiting */
