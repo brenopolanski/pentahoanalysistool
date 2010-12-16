@@ -180,7 +180,7 @@ var model = {
      * @param ...
      */
     removed_item: function($item) {
-    //view.show_dialog("Alert", "You removed ", "error");
+        //view.show_dialog("Alert", "You removed ", "error");
     },
     
     /**
@@ -200,7 +200,7 @@ var model = {
                 /** Set up a pointer to the result area of the active tab. */
                 $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
                 /** Remove the table before rendering. */
-                $workspace_result.find('table').remove();
+                $workspace_result.html('');
                 /** Create the table visualisation structure. */
                 $('<table><thead><tr/></thead><tbody></tbody></table>').appendTo($workspace_result);
                 /** Setup a pointer to the table. */
