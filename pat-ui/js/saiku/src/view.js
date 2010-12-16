@@ -516,6 +516,10 @@ var view = {
                     /** Remove the dimension. */
                     remove_dimension(ui.draggable.find('a').attr('rel'));
                 }
+                
+                // Remove item from query
+                model.removed_item(ui.draggable);
+                
                 /** Remove the draggable measure. */
                 ui.draggable.remove();
                 // Patch needed for IE to work.
@@ -524,7 +528,6 @@ var view = {
                     ui.draggable.remove();
                 },1);
                 /** When dimension or measure is removed, set the selection. */
-                model.removed_item();
             }
         });
 

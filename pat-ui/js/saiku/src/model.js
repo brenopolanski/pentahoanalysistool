@@ -171,7 +171,7 @@ var model = {
         	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
 	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
 	        	+ "/hierarchy/" + item_data.hierarchy; 
-	        if (item_data.level != "(all)")
+	        if (item_data.level != "(All)")
 	        	url += "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
         	// This is a measure
@@ -190,7 +190,26 @@ var model = {
      * @param ...
      */
     removed_item: function($item) {
-        //view.show_dialog("Alert", "You removed ", "error");
+        tab_index = view.tabs.index_from_content($item.closest('.tab'));
+        axis = $item.closest('.fields_list').attr('title');
+        
+        if ($item.find('a').hasClass('dimension')) {
+        	// This is a dimension
+        	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+	        	+ "/hierarchy/" + item_data.hierarchy; 
+	        if (item_data.level != "(All)")
+	        	url += "/" + item_data.level;
+        } else if ($item.find('a').hasClass('measure')) {
+        	// This is a measure
+        	item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
+        	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
+        }
+        
+        model.request({
+            method: "DELETE",
+            url: url
+        });
     },
     
     /**
