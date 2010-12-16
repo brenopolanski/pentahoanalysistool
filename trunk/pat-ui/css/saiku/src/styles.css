@@ -380,8 +380,8 @@ html, body {
     margin-bottom: 10px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-box-shadow:0 1px 2px #DDDDDD;
-    -webkit-box-shadow:0 1px 2px #DDDDDD;;
+    -moz-box-shadow:0 1px 2px #EEE;
+    -webkit-box-shadow:0 1px 2px #EEE;
 }
 .fields_list .fields_list_header {
     background: #F9F9F9;
@@ -710,8 +710,8 @@ a.button_selected {
     overflow: auto;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-box-shadow:0 1px 2px #DDDDDD;
-    -webkit-box-shadow:0 1px 2px #DDDDDD;
+    -moz-box-shadow:0 1px 2px #EEE;
+    -webkit-box-shadow:0 1px 2px #EEE;
 }
 
 /** Table visualisation. */
