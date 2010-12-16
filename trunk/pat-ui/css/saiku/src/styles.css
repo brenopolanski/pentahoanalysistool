@@ -701,9 +701,34 @@ a.button_selected {
 /** Workspace Results */
 
 .workspace_results {
+    border-top: 1px solid #CCC;
+    margin-top: 10px;
     overflow: auto;
 }
 
+/** Table visualisation. */
+.workspace_results table {
+    border-bottom: 1px solid #CCC;
+    margin-top: 20px;
+}
+.workspace_results table thead tr th {
+    background: #FFF;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    text-align: right;
+}
+.workspace_results table tbody tr th {
+    border-right: 1px solid #CCC;
+}
+
+.workspace_results table tbody tr td {
+    border-right: 1px solid #CCC;
+    text-align: right;
+}
+.workspace_results table tbody tr:nth-child(even) td,
+tbody tr.even td  {
+    background: #F0F0F0;
+}
 
 /** Waiting */
 
