@@ -131,7 +131,7 @@ html, body {
 
 /** Logo */
 #logo a {
-    background: transparent url("../../../images/src/logo.png") 24px 1px no-repeat;
+    background: transparent url("../../../images/src/logo_red.png") 24px 1px no-repeat;
     float: right;
     width: 166px;
     height: 28px;
@@ -634,7 +634,7 @@ html, body {
     padding: 10px 10px 10px 70px;
 }
 .dialog .dialog_inner .dialog_body_login {
-    background: transparent url('../../../images/src/dialog_login.png') 25px 15px no-repeat;
+    background: transparent url('../../../images/src/dialog_login_red.png') 25px 15px no-repeat;
     min-height: 40px;
     padding: 10px 10px 10px 100px;
 }
