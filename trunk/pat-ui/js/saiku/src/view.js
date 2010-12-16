@@ -227,8 +227,8 @@ var view = {
                         .appendTo($second_level);
                         view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
                             'dimension': dimension.name,
-                            'hierarchy': hierarchy.hierarchy,
-                            'level': level.level
+                            'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
+                            'level': level.uniqueName // level.level
                         };                        
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
@@ -288,7 +288,7 @@ var view = {
                     }).appendTo($measures_ul);
                     
                     view.tabs.tabs[tab_index].data['measures'][measure_id] = {
-                            'measure': member.member
+                            'measure': member.uniqueName // member.member
                     };
                 });
                 /** Prepare the workspace. */

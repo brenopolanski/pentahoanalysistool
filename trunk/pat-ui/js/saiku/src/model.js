@@ -170,9 +170,7 @@ var model = {
         	// This is a dimension
         	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
 	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-	        	+ "/hierarchy/" + item_data.hierarchy; 
-	        if (item_data.level != "(All)")
-	        	url += "/" + item_data.level;
+	        	+ "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
         	// This is a measure
         	item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
@@ -197,13 +195,11 @@ var model = {
         	// This is a dimension
         	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
 	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-	        	+ "/hierarchy/" + item_data.hierarchy; 
-	        if (item_data.level != "(All)")
-	        	url += "/" + item_data.level;
+	        	+ "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
         	// This is a measure
         	item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-        	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
+        	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/[Measures]/member/" + item_data.measure;
         }
         
         model.request({
