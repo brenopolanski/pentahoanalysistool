@@ -272,12 +272,24 @@ var view = {
                 .appendTo($measure_tree);
                 // Add a child list to the measures list.
                 $measures_ul = $('<ul />').appendTo($measures);
+                
+                // Prep measures metadata
+                measure_id = 0;
+                delete view.tabs.tabs[tab_index].data['measures'];
+                view.tabs.tabs[tab_index].data['measures'] = new Array();
+                
                 // Populate the tree with the children of MeasureLevel
                 $.each(data, function(i, member) {
-                    $('<li><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['member']+'</a></li>')
+                	measure_id++;
+                	
+                    $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['member']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
+                    
+                    view.tabs.tabs[tab_index].data['measures'][measure_id] = {
+                            'measure': member.member
+                    };
                 });
                 /** Prepare the workspace. */
                 view.prepare_workspace($tab);
