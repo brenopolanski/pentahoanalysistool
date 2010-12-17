@@ -4,9 +4,6 @@
  * @version         1.0.0
  */
 
-// Enable debugging
-enable_debug = true;
-
 /** Toggle (hide/show) the sidebar. */
 function toggle_sidebar() {
     // TODO - Has to be for selected tab only.
