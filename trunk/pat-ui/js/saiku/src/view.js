@@ -2,23 +2,7 @@
  * @fileOverview    This represents the view for Saiku UI.
  * @description     This will handle the drawing of the UI.
  * @version         1.0.0
- */
-
-/** Toggle (hide/show) the sidebar. */
-function toggle_sidebar() {
-    // TODO - Has to be for selected tab only.
-    // Get the width of the sidebar.
-    var sidebar_width = $('.sidebar').width();
-    // If the sidebar is not hidden.
-    if (sidebar_width == 260) {
-        $('.sidebar').css('width', 0);
-        $('.workspace_inner').css('margin-left', 5);
-    } else {
-        // If the sidebar is hidden.
-        $('.sidebar').css('width', 260);
-        $('.workspace_inner').css('margin-left', 265);
-    }
-}
+ */ 
 
 /**
  * View class.
@@ -29,6 +13,7 @@ var view = {
     init : function() {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
             url : BASE_URL + 'views/session/',
@@ -47,6 +32,7 @@ var view = {
                         dialog.container.remove();
                         dialog.overlay.remove();
                         $.modal.close();
+                        
                         // Remove the #dialog which we appended to the body.
                         $('#dialog').remove();
 
@@ -85,6 +71,27 @@ var view = {
         $('.workspace_inner').css('height', workspace_height);
         $('.workspace_results').css('height', workspace_height - 153);
     },
+    
+    /** 
+     * Toggle (hide/show) the sidebar. 
+     */
+    toggle_sidebar: function($sidebar_separator) {
+    	// Find the tab
+    	$tab = $sidebar_separator.closest('.tab');
+    	
+        // Get the width of the sidebar.
+        var sidebar_width = $tab.find('.sidebar').width();
+       
+        if (sidebar_width == 260) {
+            // If the sidebar is not hidden.
+        	$tab.find('.sidebar').css('width', 0);
+            $tab.find('.workspace_inner').css('margin-left', 5);
+        } else {
+            // If the sidebar is hidden.
+            $tab.find('.sidebar').css('width', 260);
+            $tab.find('.workspace_inner').css('margin-left', 265);
+        }
+    },
 
     /** Initialise the user interface. */
     draw_ui : function () {
@@ -111,7 +118,7 @@ var view = {
 
         /** Bind toggle_sidebar() to click event on the sidebar_separator. */
         $('.sidebar_separator').live('click', function() {
-            toggle_sidebar();
+            view.toggle_sidebar($(this));
         });
         
         /** Bind event handler to workspace toolbar methods **/
