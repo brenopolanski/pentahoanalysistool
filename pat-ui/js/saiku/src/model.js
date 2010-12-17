@@ -160,21 +160,31 @@ var model = {
 
     /**
      * When a dimension or measure is dropped or sorted set it as a selection.
-     * @param ... 
+     * @param $item {Object} 
+     * @param is_click {Boolean} If the dimension or measure is being added via a double click.
      */
-    dropped_item: function($item) {
+    dropped_item: function($item, is_click) {
         tab_index = view.tabs.index_from_content($item.closest('.tab'));
-        axis = $item.closest('.fields_list').attr('title');
         
+        if (is_click) {
+            if ($item.find('a').hasClass('dimension')) {
+                axis = 'ROWS';
+            }else if ($item.find('a').hasClass('measure')){
+                axis = 'COLUMNS';
+            }
+        }else{
+            axis = $item.closest('.fields_list').attr('title');
+        }
+
         if ($item.find('a').hasClass('dimension')) {
-        	// This is a dimension
-        	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-	        	+ "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+            // This is a dimension
+            item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+            + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
-        	// This is a measure
-        	item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-        	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
+            // This is a measure
+            item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
+            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
         model.request({
@@ -185,21 +195,22 @@ var model = {
 
     /**
      * When a dimension or measure is removed, remove it from the selection.
-     * @param ...
+     * @param $item {Object}
+     * @param is_click {Boolean} If the dimension or measure is being removed via a double click.
      */
-    removed_item: function($item) {
+    removed_item: function($item, is_click) {
         tab_index = view.tabs.index_from_content($item.closest('.tab'));
         axis = $item.closest('.fields_list').attr('title');
         
         if ($item.find('a').hasClass('dimension')) {
-        	// This is a dimension
-        	item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-	        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-	        	+ "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+            // This is a dimension
+            item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+            + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
-        	// This is a measure
-        	item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-        	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/[Measures]/member/" + item_data.measure;
+            // This is a measure
+            item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
+            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/[Measures]/member/" + item_data.measure;
         }
         
         model.request({
@@ -224,41 +235,86 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 /** Set up a pointer to the result area of the active tab. */
                 $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
-                /** Remove the table before rendering. */
-                $workspace_result.html('');
                 /** Create the table visualisation structure. */
-                $('<table><thead><tr/></thead><tbody></tbody></table>').appendTo($workspace_result);
+                $('<table><thead></thead><tbody></tbody></table>').appendTo($workspace_result);
                 /** Setup a pointer to the table. */
                 $table_vis = $workspace_result.find('table');
 
                 /** Loop through the resultset. */
-                $.each(data, function(i, item) {
-                    /** If this is the first object in the result set we can assume it is the column HEADER's. */
-                    if (i == 0) {
-                        /** Loop through the header object and catch any nulls. */
-                        $.each(data[i], function(j, header) {
-                            if (header['value'] === "null") {
-                                $table_vis.find('thead tr').append('<th class="empty_cell"/>');
-                            }else{
-                                $table_vis.find('thead tr').append('<th>' + header['value'] + '</th>');
-                            }
-                        });
-                    }else{
-                        /** If it isn't the first object we can assume it is a row. */
-                        /** Create a new row specific to this object in the result set. */
-                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
-                        /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
-                        $.each(data[i], function(k, cell) {
-                            if (cell['value'] === "null" && cell['type'] === "HEADER") {
-                                $table_vis.find('tr#' + i).append('<th/>');
-                            }else if(cell['type'] === "HEADER") {
-                                $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
-                            }else if(cell['type'] === "DATA_CELL") {
-                                $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
-                            }
-                        });
-                    }
+                $.each(data, function(i, cells) {
+
+                    $table_vis.find('thead').append('<tr id="' + i + '" />');
+                    $.each(cells, function(j, header) {
+                        if (header['type'] === 'COLUMN_HEADER' && header['value'] === "null") {
+                            $table_vis.find('thead tr#' + i).append('<th class="null"></th>');
+                        }else if(header['type'] === 'COLUMN_HEADER') {
+                            $table_vis.find('thead tr#' + i).append('<th class="col_hd">' + header['value'] + '</th>');
+                        }
+                    });
+
+                    $table_vis.find('tbody').append('<tr id="' + i + '" />');
+                    $.each(cells, function(k, body) {
+                        if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
+                            $table_vis.find('tbody tr#' + i).append('<th class="row_hd"></th>');
+                        }else if(body['type'] === 'ROW_HEADER') {
+                            $table_vis.find('tbody tr#' + i).append('<th class="row_hd">' + body['value'] + '</th>');
+                        }else if(body['type'] === 'DATA_CELL') {
+                            $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
+                        }
+                    });
+
+
+
+                //                        /** Anything after the first iteration is part of the table body. */
+                //                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
+                //                        $.each(cells, function(k, body) {
+                //
+                //                            /** If the cell is a header and is null. */
+                //                            if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
+                //                                $table_vis.find('tbody tr#' + i).append('<th class="null"></th>');
+                //                            /** If the cell is just a header. */
+                //                            }else if (body['type'] === 'ROW_HEADER'){
+                //                                $table_vis.find('tbody tr#' + i).append('<th class="row_hd">' + body['value'] + '</th>');
+                //                            /** Otherwise it must be a data cell. */
+                //                            }else if (body['type'] === 'DATA_CELL'){
+                //                                $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
+                //                            }
+                //                        });
                 });
+
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //                    /** If this is the first object in the result set we can assume it is the column HEADER's. */
+                //                    if (i == 0) {
+                //                        /** Loop through the header object and catch any nulls. */
+                //                        $.each(data[i], function(j, header) {
+                //                            if (header['value'] === "null") {
+                //                                $table_vis.find('thead tr').append('<th class="empty_cell"/>');
+                //                            }else{
+                //                                $table_vis.find('thead tr').append('<th>' + header['value'] + '</th>');
+                //                            }
+                //                        });
+                //                    }else{
+                //                        /** If it isn't the first object we can assume it is a row. */
+                //                        /** Create a new row specific to this object in the result set. */
+                //                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
+                //                        /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
+                //                        $.each(data[i], function(k, cell) {
+                //                            if (cell['value'] === "null" && cell['type'] === "HEADER") {
+                //                                $table_vis.find('tr#' + i).append('<th/>');
+                //                            }else if(cell['type'] === "HEADER") {
+                //                                $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
+                //                            }else if(cell['type'] === "DATA_CELL") {
+                //                                $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
+                //                            }
+                //                        });
+                //                    }
 
                 view.stop_waiting();
             },
