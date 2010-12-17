@@ -18,16 +18,6 @@
 	REST_MOUNT_POINT = "rest/saiku/";
 
 /**
- * Handle log messages.
- * @param message {String} The message to output.
- */
-function debug(message) {
-    if (enable_debug == true && console != 'undefined') {
-        console.log(message);
-    }
-}
-
-/**
  * Controller class
  * @class
  */
