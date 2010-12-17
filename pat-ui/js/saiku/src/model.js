@@ -210,7 +210,7 @@ var model = {
         } else if ($item.find('a').hasClass('measure')) {
             // This is a measure
             item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/[Measures]/member/" + item_data.measure;
+            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
         model.request({
@@ -236,7 +236,7 @@ var model = {
                 /** Set up a pointer to the result area of the active tab. */
                 $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
                 /** Create the table visualisation structure. */
-                $('<table><thead></thead><tbody></tbody></table>').appendTo($workspace_result);
+                $workspace_result.html('<table><thead></thead><tbody></tbody></table>');
                 /** Setup a pointer to the table. */
                 $table_vis = $workspace_result.find('table');
 
