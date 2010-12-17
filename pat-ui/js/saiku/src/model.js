@@ -34,7 +34,9 @@ var model = {
         if (typeof parameters.success == "undefined")
             parameters.success = function() {};
         if (typeof parameters.error == "undefined")
-            parameters.error = model.server_error;
+            parameters.error = function() {
+        		view.show_dialog('Error', 'Could not connect to the server, please check your internet connection. If this problem persists, please refresh the page.', 'error');
+        	};
         if (typeof parameters.dataType == "undefined")
             parameters.dataType = 'json';
         
@@ -48,25 +50,6 @@ var model = {
             error: parameters.error,
             data: parameters.data
         });
-    },
-
-    /** Handle all errors which occur with the server. */
-    server_error : function() {
-        view.show_dialog('Error', 'Could not connect to the server, please refresh the page.', 'error');
-    /*
-        view.logout();
-        view.processing("Could not connect to server, trying again...");
-        if (controller.errors > 5) {
-            view.free();
-            view.processing("Could not connect to server. Giving up.");
-        } else {
-            setTimeout(function() {
-                controller.errors++;
-                view.free();
-                model.init();
-            }, 10000);
-        }
-         */
     },
 
     /** Get the sessionid and based on the username and unhide the UI. */
