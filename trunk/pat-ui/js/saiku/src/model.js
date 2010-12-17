@@ -35,7 +35,9 @@ var model = {
             parameters.success = function() {};
         if (typeof parameters.error == "undefined")
             parameters.error = function() {
-        		view.show_dialog('Error', 'Could not connect to the server, please check your internet connection. If this problem persists, please refresh the page.', 'error');
+        		view.show_dialog('Error', 
+        				'Could not connect to the server, please check your internet connection.' +
+        				'If this problem persists, please refresh the page.', 'error');
         	};
         if (typeof parameters.dataType == "undefined")
             parameters.dataType = 'json';
@@ -86,7 +88,8 @@ var model = {
             });
         }
     	
-        view.tabs.tabs[tab_index].data['query_name'] = 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        view.tabs.tabs[tab_index].data['query_name'] = 
+        	'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         }).toUpperCase();
@@ -99,13 +102,13 @@ var model = {
      */
     new_query : function(tab_index) {
     	
-        /** Generate the temporary query name */
+        // Generate the temporary query name
         model.new_query_id(tab_index);
 
-        /** Find the selected cube. */
+        // Find the selected cube.
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
 
-        /** Check if the cube is valid if so then display an error. */
+        // Check if the cube is valid if so then display an error.
         data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
         if (typeof data == "undefined") {
             view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error')
@@ -121,19 +124,25 @@ var model = {
         model.request({
             method : "POST",
             url : model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
+            
             data: {
                 'connection': data['connectionName'],
                 'cube': data['cube'],
                 'catalog': data['catalogName'],
                 'schema': data['schema']
             },
+            
             success: function(data, textStatus, XMLHttpRequest) {
-                /** Load dimensions into a tree. */
+                // Load dimensions into a tree.
                 view.load_dimensions(tab_index, data.axes[0].dimensions);
-                /** Load measures into a tree. */
-                view.load_measures(tab_index, data.axes[0].dimensions, "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                // Load measures into a tree.
+                view.load_measures(tab_index, data.axes[0].dimensions, 
+                		"/query/" + view.tabs.tabs[tab_index].data['query_name'] + 
+                		"/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
             },
+            
             error: function() {
+            	// Could not retrieve dimensions and measures from server
                 view.stop_waiting();
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
                 $('.cubes').find('option:first').attr('selected', 'selected');
@@ -170,6 +179,7 @@ var model = {
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
+        // Notify server of change
         model.request({
             method: "POST",
             url: url
@@ -196,6 +206,7 @@ var model = {
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
+        // Notify server of change
         model.request({
             method: "DELETE",
             url: url
@@ -207,25 +218,33 @@ var model = {
      * @param tab_index {Integer} the id of the tab
      */
     run_query: function(tab_index) {
+    	// Make sure that a cube has been selected on this tab
         if (! view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
+        
+        // Let the users know this might take a while
         view.start_waiting('Getting results...');
+        
+        // Fetch the resultset from the server
         model.request({
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
-                /** Set up a pointer to the result area of the active tab. */
+                // Set up a pointer to the result area of the active tab.
                 $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
-                /** Create the table visualisation structure. */
+                
+                // Create the table visualisation structure.
                 $workspace_result.html('<table><thead></thead><tbody></tbody></table>');
-                /** Setup a pointer to the table. */
+                
+                // Setup a pointer to the table.
                 $table_vis = $workspace_result.find('table');
 
-                /** Loop through the resultset. */
+                // Loop through the resultset.
                 $.each(data, function(i, cells) {
 
+                	// Fill in headers
                     $table_vis.find('thead').append('<tr id="' + i + '" />');
                     $.each(cells, function(j, header) {
                         if (header['type'] === 'COLUMN_HEADER' && header['value'] === "null") {
@@ -234,7 +253,8 @@ var model = {
                             $table_vis.find('thead tr#' + i).append('<th class="col_hd">' + header['value'] + '</th>');
                         }
                     });
-
+                    
+                    // Fill in data
                     $table_vis.find('tbody').append('<tr id="' + i + '" />');
                     $.each(cells, function(k, body) {
                         if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
@@ -245,66 +265,17 @@ var model = {
                             $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
                         }
                     });
-
-
-
-                //                        /** Anything after the first iteration is part of the table body. */
-                //                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
-                //                        $.each(cells, function(k, body) {
-                //
-                //                            /** If the cell is a header and is null. */
-                //                            if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
-                //                                $table_vis.find('tbody tr#' + i).append('<th class="null"></th>');
-                //                            /** If the cell is just a header. */
-                //                            }else if (body['type'] === 'ROW_HEADER'){
-                //                                $table_vis.find('tbody tr#' + i).append('<th class="row_hd">' + body['value'] + '</th>');
-                //                            /** Otherwise it must be a data cell. */
-                //                            }else if (body['type'] === 'DATA_CELL'){
-                //                                $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
-                //                            }
-                //                        });
                 });
 
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //                    /** If this is the first object in the result set we can assume it is the column HEADER's. */
-                //                    if (i == 0) {
-                //                        /** Loop through the header object and catch any nulls. */
-                //                        $.each(data[i], function(j, header) {
-                //                            if (header['value'] === "null") {
-                //                                $table_vis.find('thead tr').append('<th class="empty_cell"/>');
-                //                            }else{
-                //                                $table_vis.find('thead tr').append('<th>' + header['value'] + '</th>');
-                //                            }
-                //                        });
-                //                    }else{
-                //                        /** If it isn't the first object we can assume it is a row. */
-                //                        /** Create a new row specific to this object in the result set. */
-                //                        $table_vis.find('tbody').append('<tr id="' + i + '" />');
-                //                        /** Loop through the row object and catch any HEADER's and DATA_CELL's types. */
-                //                        $.each(data[i], function(k, cell) {
-                //                            if (cell['value'] === "null" && cell['type'] === "HEADER") {
-                //                                $table_vis.find('tr#' + i).append('<th/>');
-                //                            }else if(cell['type'] === "HEADER") {
-                //                                $table_vis.find('tr#' + i).append('<th>' + cell['value'] + '</th>');
-                //                            }else if(cell['type'] === "DATA_CELL") {
-                //                                $table_vis.find('tr#' + i).append('<td>' + cell['value'] + '</td>');
-                //                            }
-                //                        });
-                //                    }
-
+                // Clear the wait message
                 view.stop_waiting();
             },
+            
             error: function() {
+            	// Let the user know that their query was not successful
                 view.show_dialog("Result set", "There was an error getting the result set <br/>for that query.", "error");
                 view.stop_waiting();
             }
         });
     }
-}
+};
