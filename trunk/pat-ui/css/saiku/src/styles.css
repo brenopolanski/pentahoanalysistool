@@ -714,7 +714,30 @@ a.button_selected {
     -webkit-box-shadow:0 1px 2px #EEE;
 }
 
-/** Table visualisation. */
+.workspace_results table {
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    margin-bottom: 0;
+    width: auto;
+}
+
+
+.workspace_results table .empty_cell {
+    border-bottom: none !important;
+}
+
+.workspace_results table th.col_hd,
+.workspace_results table td.data_cell {
+    border-left: 1px solid #CCC;
+    text-align: right;
+}
+
+.workspace_results table th.row_hd,
+.workspace_results table td.data_cell {
+    border-top: 1px solid #CCC;
+}
+
+/* Table visualisation.
 .workspace_results table {
     margin-top: 20px;
 }
@@ -733,7 +756,16 @@ a.button_selected {
 }
 .workspace_results table tbody tr:nth-child(even) td,
 .workspace_results table tbody tr.even td  {
-    /*background: #F0F0F0;*/
+}
+*/
+
+.workspace_results table {
+    margin-bottom: 0;
+}
+
+.workspace_results table .col_hd,
+.workspace_results table .data_cell {
+    text-align: right;
 }
 
 /** Waiting */
