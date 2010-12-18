@@ -704,7 +704,7 @@ a.button_selected {
 .workspace_results {
     border: 1px solid #CCC;
     margin-top: 10px;
-    padding: 10px;
+    /*padding: 10px;*/
     overflow: auto;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;

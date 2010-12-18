@@ -69,7 +69,9 @@ var view = {
 
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
-        $('.workspace_results').css('height', workspace_height - 163);
+        $('.workspace_results').css({
+         'height' : workspace_height - 141
+        });
     },
     
     /** 
