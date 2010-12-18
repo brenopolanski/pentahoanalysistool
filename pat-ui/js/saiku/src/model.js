@@ -252,15 +252,14 @@ var model = {
         
         // Let the users know this might take a while
         view.start_waiting('Getting results...');
+        // Set up a pointer to the result area of the active tab.
+        $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
         
         // Fetch the resultset from the server
         model.request({
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
-                // Set up a pointer to the result area of the active tab.
-                $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
-                
                 // Create the table visualisation structure.
                 $workspace_result.html('<table><thead></thead><tbody></tbody></table>');
                 
