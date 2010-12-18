@@ -229,7 +229,8 @@ html, body {
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     border-top: 1px solid #CCC;
     border-bottom: 1px solid #CCC;
-    font-size: 13px;
+    /*font-size: 13px;*/
+    font-size: 12px;
     font-weight: bold;
     line-height: 1.4em;
     margin: 0;
@@ -595,16 +596,17 @@ html, body {
     background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0));
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     border-bottom: 1px solid #CCC;
-    line-height: 1.4em;
+    height: 18px;
     padding: 5px 5px 6px 10px;
     -moz-box-shadow:0 1px 3px #DDDDDD;
     -webkit-box-shadow:0 1px 3px #DDDDDD;
 }
 .dialog .dialog_inner .dialog_header h3 {
     float: left;
-    font-size: 13px;
+    /*font-size: 13px;*/
+    font-size: 12px;
     font-weight: bold;
-    line-height: 1.4em;
+    line-height: 18px;
     margin: 0;
     text-shadow: 1px 1px 0 #FFFFFF;
     width: 200px;
@@ -650,7 +652,7 @@ html, body {
     text-align: right
 }
 .dialog .dialog_inner .dialog_footer .tested_browsers {
-    padding-right: 69px;
+    padding-right: 10px;
 }
 
 /** Button */
@@ -702,7 +704,7 @@ a.button_selected {
 /** Workspace Results */
 
 .workspace_results {
-    border: 1px solid #CCC;
+    /*border: 1px solid #CCC;*/
     margin-top: 10px;
     /*padding: 10px;*/
     overflow: auto;
