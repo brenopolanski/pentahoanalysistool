@@ -8,14 +8,14 @@
  * Global variables that control where REST API calls are sent
  */
 
-	// The mount point for Tomcat (when using mod_jk)
-	BASE_URL = "/";
+// The mount point for Tomcat (when using mod_jk)
+BASE_URL = "/";
 	
-	// The name of the Saiku server webapp in Tomcat
-	TOMCAT_WEBAPP = "saiku/";
+// The name of the Saiku server webapp in Tomcat
+TOMCAT_WEBAPP = "saiku/";
 	
-	// The preferred REST mountpoint for Enunciate
-	REST_MOUNT_POINT = "rest/saiku/";
+// The preferred REST mountpoint for Enunciate
+REST_MOUNT_POINT = "rest/saiku/";
 
 /**
  * Controller class
@@ -37,27 +37,29 @@ var controller = {
      * @param $target {Object} button which was pressed
      */
     workspace_toolbar_click_handler: function($button) {
-    	tab_index = view.tabs.index_from_content($button.closest('.tab'));
-    	method_name = $button.text().replace(" ", "_").toLowerCase();
-    	controller.call_method(method_name, tab_index);
+        tab_index = view.tabs.index_from_content($button.closest('.tab'));
+        if (!($button.hasClass('button_disabled'))) {
+            method_name = $button.text().replace(" ", "_").toLowerCase();
+            controller.call_method(method_name, tab_index);
+        }
     },
     
     /** Allows the use of reflection to call methods */
     call_method: function(method_name, tab_index) {
         for (method in controller) {
             if (method == method_name) {
-            	if (tab_index == -1) {
-            		eval("controller." + method + "();");
-            	} else {
-            		eval("controller." + method + "(" + tab_index + ");");
-            	}
+                if (tab_index == -1) {
+                    eval("controller." + method + "();");
+                } else {
+                    eval("controller." + method + "(" + tab_index + ");");
+                }
             }
         }
     },
     
     /** Run query **/
     run_query: function(tab_index) {
-    	model.run_query(tab_index);
+        model.run_query(tab_index);
     },
 
     /** Handle click when the new query button is clicked. */
@@ -89,8 +91,8 @@ var controller = {
 
 /** Lazy load the rest of the javascript. */
 $(document).ready(function() {
-	$.getScript("js/saiku/src/tabs.js", function() {
-		$.getScript("js/saiku/src/view.js");
-	});
-	$.getScript("js/saiku/src/model.js");
+    $.getScript("js/saiku/src/tabs.js", function() {
+        $.getScript("js/saiku/src/view.js");
+    });
+    $.getScript("js/saiku/src/model.js");
 });
