@@ -433,13 +433,6 @@ var view = {
             beforeStop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
-                    /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item(ui.item);
-                }
-            },
-            stop: function(event, ui) {
-                /** Is the item being removed. */
-                if(!(ui.item.hasClass('dropped'))) {
                     /** Determine the sorting to and from axis. */
                     if($(this).parent().hasClass('rows')) {
                         var sort_to = 'columns', sort_from = 'rows', is_measure = ui.item.hasClass('d_measure');
@@ -491,7 +484,13 @@ var view = {
                         add_measure(ui.item.find('a').attr('rel'));
                     }
                 }
-
+            },
+            stop: function(event, ui) {
+                /** Is the item being removed. */
+                if(!(ui.item.hasClass('dropped'))) {
+                    /** When stopped dropping or sorting set the selection. */
+                    model.dropped_item(ui.item);
+                }
             }
         }).disableSelection();
 
