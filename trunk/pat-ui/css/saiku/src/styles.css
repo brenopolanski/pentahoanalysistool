@@ -297,13 +297,13 @@ html, body {
 }
 .dimension_tree ul li span.collapsed,
 .measure_tree ul li span.collapsed {
-    background: url('../../../images/src/tree_collapsed.png') 0px -1px no-repeat;
+    background: url('../../../images/src/tree_collapsed.png') 0px -2px no-repeat;
     cursor: pointer;
     padding-left: 20px;
 }
 .dimension_tree ul li span.expand,
 .measure_tree ul li span.expand {
-    background: url('../../../images/src/tree_expand.png') 0px -1px no-repeat;
+    background: url('../../../images/src/tree_expand.png') 0px -2px no-repeat;
     cursor: pointer;
     padding-left: 20px;
 }
@@ -315,11 +315,11 @@ html, body {
 }
 .dimension_tree ul li a.folder_expand,
 .measure_tree ul li a.folder_expand {
-    background: url('../../../images/src/tree_folder_expand.png') 0px -1px no-repeat;
+    background: url('../../../images/src/tree_folder_expand.png') 0px -2px no-repeat;
 }
 .dimension_tree ul li a.folder_collapsed,
 .measure_tree ul li a.folder_collapsed {
-    background: url('../../../images/src/tree_folder_collapsed.png') 0px -1px no-repeat;
+    background: url('../../../images/src/tree_folder_collapsed.png') 0px -2px no-repeat;
 }
 .dimension_tree ul li ul,
 .measure_tree ul li ul {
@@ -330,22 +330,47 @@ html, body {
 .measure_tree ul li ul li {
     padding-left: 18px;
 }
-.dimension_tree ul li ul li a {
+
+@-moz-document url(http://www.w3.org/),
+url-prefix(http://www.w3.org/Style/),
+domain(mozilla.org)
+{
+    .dimension_tree ul li ul li a {
     /* cursor: move; */
     padding-left: 20px;
-    background: url('../../../images/src/bullet_blue.png') 0px 0px no-repeat;
+    background: url('../../../images/src/bullet_blue.png') 0px -1px no-repeat;
 }
 .measure_tree ul li ul li a {
     /* cursor: move; */
     padding-left: 20px;
-    background: url('../../../images/src/bullet_red.png') 0px 0px no-repeat;
+    background: url('../../../images/src/bullet_red.png') 0px -1px no-repeat;
 }
 .dimension_tree .hierarchy {
     padding-left: 1px;
 }
 .dimension_tree .hierarchy a {
     cursor: default;
-    background: url('../../../images/src/bullet_green.png') 0px 0px no-repeat;
+    background: url('../../../images/src/bullet_green.png') 0px -1px no-repeat;
+}
+}
+
+
+.dimension_tree ul li ul li a {
+    /* cursor: move; */
+    padding-left: 20px;
+    background: url('../../../images/src/bullet_blue.png') 0px -2px no-repeat;
+}
+.measure_tree ul li ul li a {
+    /* cursor: move; */
+    padding-left: 20px;
+    background: url('../../../images/src/bullet_red.png') 0px -2px no-repeat;
+}
+.dimension_tree .hierarchy {
+    padding-left: 1px;
+}
+.dimension_tree .hierarchy a {
+    cursor: default;
+    background: url('../../../images/src/bullet_green.png') 0px -2px no-repeat;
 }
 
 /** Tab Panel */
