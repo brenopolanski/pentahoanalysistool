@@ -69,7 +69,7 @@ var view = {
 
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
-        $('.workspace_results').css('height', workspace_height - 153);
+        $('.workspace_results').css('height', workspace_height - 163);
     },
     
     /** 
@@ -429,10 +429,12 @@ var view = {
             opacity: 0.60,
             placeholder: 'placeholder',
             tolerance: 'pointer',
+            
             start: function(event, ui) {
                 /** Replace the placeholder text. */
                 ui.placeholder.text(ui.helper.text());
             },
+
             beforeStop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
@@ -488,20 +490,15 @@ var view = {
                     }
                 }
             },
+            
             stop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
-
-                    if (ui.item.parent().parent().hasClass('rows')) {
-                        var position = $row_dropzone.find('li').index(ui.item);
-                    }else{
-                        var position = $column_dropzone.find('li').index(ui.item);
-                    }
-
                     /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item(ui.item, false, position);
+                    model.dropped_item(ui.item, false);
                 }
             }
+            
         }).disableSelection();
 
         /** Make the measure and dimension tree draggable. */
