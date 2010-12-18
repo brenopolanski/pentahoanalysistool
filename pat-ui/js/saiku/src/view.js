@@ -356,6 +356,9 @@ var view = {
         // If the user selects a new query within the same tab.
         /** Remove all dropped items. */
         $both_dropzones.find('li').remove();
+        /** Remove the table. */
+        $tab.find('.workspace_results table').remove();
+
         /** Reset all sortable items. */
         $both_dropzones.sortable('reset');
 
@@ -488,8 +491,15 @@ var view = {
             stop: function(event, ui) {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
+
+                    if (ui.item.parent().parent().hasClass('rows')) {
+                        var position = $row_dropzone.find('li').index(ui.item);
+                    }else{
+                        var position = $column_dropzone.find('li').index(ui.item);
+                    }
+
                     /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item(ui.item);
+                    model.dropped_item(ui.item, false, position);
                 }
             }
         }).disableSelection();

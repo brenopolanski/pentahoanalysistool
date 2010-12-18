@@ -154,8 +154,9 @@ var model = {
      * When a dimension or measure is dropped or sorted set it as a selection.
      * @param $item {Object} 
      * @param is_click {Boolean} If the dimension or measure is being added via a double click.
+     * @param position {Integer} The position of the dimension or measure being dropped.
      */
-    dropped_item: function($item, is_click) {
+    dropped_item: function($item, is_click, position) {
         tab_index = view.tabs.index_from_content($item.closest('.tab'));
         
         if (is_click) {
@@ -182,7 +183,10 @@ var model = {
         // Notify server of change
         model.request({
             method: "POST",
-            url: url
+            url: url,
+            data: {
+                'position' : position
+            }
         });
     },
 
