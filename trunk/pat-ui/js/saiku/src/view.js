@@ -70,7 +70,7 @@ var view = {
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
         $('.workspace_results').css({
-         'height' : workspace_height - 131
+         'height' : workspace_height - 133
         });
     },
     
@@ -337,8 +337,6 @@ var view = {
         /** Initisalise trees */
         init_trees();
 
-        
-
         /** Tree selectors. */
         $dimension_tree = $tab.find('.dimension_tree');
         $measure_tree = $tab.find('.measure_tree');
@@ -365,6 +363,9 @@ var view = {
 
         /** Reset all sortable items. */
         $both_dropzones.sortable('reset');
+
+        /** Check the toolbar. */
+        check_toolbar();
 
         /** Double click instead of drag and drop. */
         $both_tree_items.dblclick(function(e){
@@ -594,6 +595,7 @@ var view = {
                 .removeClass('expand').addClass('collapsed')
                 .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
+            check_toolbar();
         }
          
         /**
@@ -617,6 +619,7 @@ var view = {
                 .removeClass('expand').addClass('collapsed')
                 .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
+            check_toolbar();
         }
 
         /**
@@ -629,6 +632,7 @@ var view = {
             $measure_tree.find('[rel=' + id + ']').parent()
             .removeClass('ui-draggable').addClass('used not-draggable');
             $measure_tree.find('.root').addClass('used');
+            check_toolbar();
         }
 
         /**
@@ -644,6 +648,18 @@ var view = {
                 $measure_tree.find('.root').removeClass('used');
             }else if ($both_dropzones.find('.d_measure').length == 1 && is_drop) {
                 $measure_tree.find('.root').removeClass('used');
+            }
+            check_toolbar();
+        }
+
+        /**
+         * Check if the toolbar can be enabled or disabled.
+         */
+        function check_toolbar() {
+            if($row_dropzone.find('li.d_measure, li.d_dimension').length + $column_dropzone.find('li.d_measure, li.d_dimension').length > 1) {
+                $tab.find('.workspace_toolbar').find('a').removeClass('button_disabled').addClass('button');
+            }else{
+                $tab.find('.workspace_toolbar').find('a').removeClass('button').addClass('button_disabled');
             }
         }
     },
