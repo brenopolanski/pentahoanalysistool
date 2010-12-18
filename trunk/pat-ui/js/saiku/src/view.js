@@ -70,7 +70,7 @@ var view = {
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
         $('.workspace_results').css({
-         'height' : workspace_height - 141
+         'height' : workspace_height - 131
         });
     },
     
@@ -336,6 +336,8 @@ var view = {
 
         /** Initisalise trees */
         init_trees();
+
+        
 
         /** Tree selectors. */
         $dimension_tree = $tab.find('.dimension_tree');
