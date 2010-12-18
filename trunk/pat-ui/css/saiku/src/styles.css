@@ -380,8 +380,6 @@ html, body {
     margin-bottom: 10px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-box-shadow:0 1px 2px #EEE;
-    -webkit-box-shadow:0 1px 2px #EEE;
 }
 .fields_list .fields_list_header {
     background: #F9F9F9;
@@ -710,8 +708,6 @@ a.button_selected {
     overflow: auto;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-box-shadow:0 1px 2px #EEE;
-    -webkit-box-shadow:0 1px 2px #EEE;
 }
 
 .workspace_results table {
@@ -736,28 +732,6 @@ a.button_selected {
 .workspace_results table td.data_cell {
     border-top: 1px solid #CCC;
 }
-
-/* Table visualisation.
-.workspace_results table {
-    margin-top: 20px;
-}
-.workspace_results table thead tr th {
-    background: #FFF;
-    border-right: 1px solid #CCC;
-    border-bottom: 1px solid #CCC;
-}
-.workspace_results table tbody tr td,
-.workspace_results table tbody tr th {
-    border-bottom: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-}
-.workspace_results table thead tr th.empty_cell {
-    border-bottom: none !important;
-}
-.workspace_results table tbody tr:nth-child(even) td,
-.workspace_results table tbody tr.even td  {
-}
-*/
 
 .workspace_results table {
     margin-bottom: 0;
