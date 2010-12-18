@@ -35,10 +35,10 @@ var model = {
             parameters.success = function() {};
         if (typeof parameters.error == "undefined")
             parameters.error = function() {
-        		view.show_dialog('Error', 
-        				'Could not connect to the server, please check your internet connection.' +
-        				'If this problem persists, please refresh the page.', 'error');
-        	};
+                view.show_dialog('Error',
+                    'Could not connect to the server, please check your internet connection.' +
+                    'If this problem persists, please refresh the page.', 'error');
+            };
         if (typeof parameters.dataType == "undefined")
             parameters.dataType = 'json';
         
@@ -89,7 +89,7 @@ var model = {
         }
     	
         view.tabs.tabs[tab_index].data['query_name'] = 
-        	'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         }).toUpperCase();
@@ -137,12 +137,12 @@ var model = {
                 view.load_dimensions(tab_index, data.axes[0].dimensions);
                 // Load measures into a tree.
                 view.load_measures(tab_index, data.axes[0].dimensions, 
-                		"/query/" + view.tabs.tabs[tab_index].data['query_name'] + 
-                		"/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                    "/query/" + view.tabs.tabs[tab_index].data['query_name'] +
+                    "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
             },
             
             error: function() {
-            	// Could not retrieve dimensions and measures from server
+                // Could not retrieve dimensions and measures from server
                 view.stop_waiting();
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
                 $('.cubes').find('option:first').attr('selected', 'selected');
@@ -156,9 +156,10 @@ var model = {
      * @param is_click {Boolean} If the dimension or measure is being added via a double click.
      * @param position {Integer} The position of the dimension or measure being dropped.
      */
-    dropped_item: function($item, is_click, position) {
+    dropped_item: function($item, is_click, pos) {
         tab_index = view.tabs.index_from_content($item.closest('.tab'));
-        
+
+        /** Has the dimension or measure been double clicked on. */
         if (is_click) {
             if ($item.find('a').hasClass('dimension')) {
                 axis = 'ROWS';
@@ -169,12 +170,32 @@ var model = {
             axis = $item.closest('.fields_list').attr('title');
         }
 
-        if ($item.find('a').hasClass('dimension')) {
+        /** Sorting a dimension or measure. */
+        var is_dimension = $item.find('a').hasClass('dimension'),
+        is_measure = $item.find('a').hasClass('measure');
+
+        /** If sorting on a ROW axis and is a dimension. */
+        if (axis === 'ROWS' && is_dimension) {
+            var position = $row_dropzone.find('li').index($item), memberposition = -1;
+        /** If sorting on a COLUMN axis and is a dimension. */
+        } else if (axis === 'COLUMNS' && is_dimension) {
+            var position = $column_dropzone.find('li').index($item), memberposition = -1;
+        /** If sorting on a ROW axis and is a measure. */
+        } else if (axis === 'ROWS' && is_measure) {
+            var memberposition = $both_dropzones.find('li.d_measure').index($item),
+            position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
+        /** If sorting on a COLUMN axis and is a measure. */
+        } else if (axis === 'COLUMNS' && is_measure) {
+            var memberposition = $both_dropzones.find('li.d_measure').index($item),
+            position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
+        }
+
+        if (is_dimension) {
             // This is a dimension
             item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
             + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
-        } else if ($item.find('a').hasClass('measure')) {
+        } else if (is_measure) {
             // This is a measure
             item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
@@ -185,7 +206,8 @@ var model = {
             method: "POST",
             url: url,
             data: {
-                'position' : position
+                'position' : position,
+                'memberposition' : memberposition
             }
         });
     },
@@ -222,7 +244,7 @@ var model = {
      * @param tab_index {Integer} the id of the tab
      */
     run_query: function(tab_index) {
-    	// Make sure that a cube has been selected on this tab
+        // Make sure that a cube has been selected on this tab
         if (! view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
@@ -248,7 +270,7 @@ var model = {
                 // Loop through the resultset.
                 $.each(data, function(i, cells) {
 
-                	// Fill in headers
+                    // Fill in headers
                     $table_vis.find('thead').append('<tr id="' + i + '" />');
                     $.each(cells, function(j, header) {
                         if (header['type'] === 'COLUMN_HEADER' && header['value'] === "null") {
@@ -276,7 +298,7 @@ var model = {
             },
             
             error: function() {
-            	// Let the user know that their query was not successful
+                // Let the user know that their query was not successful
                 view.show_dialog("Result set", "There was an error getting the result set <br/>for that query.", "error");
                 view.stop_waiting();
             }
