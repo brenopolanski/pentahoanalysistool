@@ -378,7 +378,7 @@ html, body {
 }
 .fields_list {
     border: 1px solid #CCC;
-    margin: 10px 0;
+    margin-bottom: 10px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
@@ -392,7 +392,7 @@ html, body {
     padding: 2px 5px 3px 5px;
     line-height: 23px;
     text-shadow: 1px 1px 0 #FFFFFF;
-    width: 68px;
+    width: 62px;
 }
 .fields_list .fields_list_body {
     float: left;
@@ -642,7 +642,7 @@ html, body {
     padding: 10px 10px 10px 100px;
 }
 .dialog .dialog_inner .dialog_body_waiting {
-    background: transparent url('../../../images/src/waiting.gif') 10px 11px no-repeat;
+    background: transparent url('../../../images/src/waiting.gif') 10px 10px no-repeat;
     padding: 10px 10px 10px 30px;
 }
 .dialog .dialog_inner .dialog_footer {
@@ -686,6 +686,17 @@ a.button_selected {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+a.button_disabled {
+    background: #F5F5F5;
+    border: 1px solid #CCC;
+    color: #777;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
 
 /** Workspace Toolbar */
 
@@ -755,11 +766,11 @@ a.button_selected {
 /** Pre Waiting */
 
 .pre_waiting {
-    height: 40px !important;
+    height: 38px !important;
     left: 50%;
-    margin: -20px auto auto -100px;
-    position:absolute; 
+    margin: -19px auto auto -95px;
+    position: absolute;
     top: 50%;
-    width: 200px !important;
+    width: 190px !important;
     text-align: center;
 }
