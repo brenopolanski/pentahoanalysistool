@@ -656,7 +656,7 @@ var view = {
          * Check if the toolbar can be enabled or disabled.
          */
         function check_toolbar() {
-            if($row_dropzone.find('li.d_measure, li.d_dimension').length + $column_dropzone.find('li.d_measure, li.d_dimension').length > 1) {
+            if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
                 $tab.find('.workspace_toolbar').find('a').removeClass('button_disabled').addClass('button');
             }else{
                 $tab.find('.workspace_toolbar').find('a').removeClass('button').addClass('button_disabled');

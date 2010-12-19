@@ -331,10 +331,27 @@ html, body {
     padding-left: 18px;
 }
 
-@-moz-document url(http://www.w3.org/),
-url-prefix(http://www.w3.org/Style/),
-domain(mozilla.org)
-{
+.dimension_tree ul li ul li a {
+    /* cursor: move; */
+    padding-left: 20px;
+    background: url('../../../images/src/bullet_blue.png') 0px -2px no-repeat;
+}
+.measure_tree ul li ul li a {
+    /* cursor: move; */
+    padding-left: 20px;
+    background: url('../../../images/src/bullet_red.png') 0px -2px no-repeat;
+}
+.dimension_tree .hierarchy {
+    padding-left: 1px;
+}
+.dimension_tree .hierarchy a {
+    cursor: default;
+    background: url('../../../images/src/bullet_green.png') 0px -2px no-repeat;
+}
+
+
+
+@-moz-document url-prefix() {
     .dimension_tree ul li ul li a {
     /* cursor: move; */
     padding-left: 20px;
@@ -354,24 +371,6 @@ domain(mozilla.org)
 }
 }
 
-
-.dimension_tree ul li ul li a {
-    /* cursor: move; */
-    padding-left: 20px;
-    background: url('../../../images/src/bullet_blue.png') 0px -2px no-repeat;
-}
-.measure_tree ul li ul li a {
-    /* cursor: move; */
-    padding-left: 20px;
-    background: url('../../../images/src/bullet_red.png') 0px -2px no-repeat;
-}
-.dimension_tree .hierarchy {
-    padding-left: 1px;
-}
-.dimension_tree .hierarchy a {
-    cursor: default;
-    background: url('../../../images/src/bullet_green.png') 0px -2px no-repeat;
-}
 
 /** Tab Panel */
 
