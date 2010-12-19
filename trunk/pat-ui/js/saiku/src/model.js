@@ -36,7 +36,7 @@ var model = {
         if (typeof parameters.error == "undefined")
             parameters.error = function() {
                 view.show_dialog('Error',
-                    'Could not connect to the server, please check your internet connection.<br/>' +
+                    'Could not connect to the server, please check your internet connection. ' +
                     'If this problem persists, please refresh the page.', 'error');
             };
         if (typeof parameters.dataType == "undefined")
