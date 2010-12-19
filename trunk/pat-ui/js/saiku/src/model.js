@@ -298,9 +298,34 @@ var model = {
             
             error: function() {
                 // Let the user know that their query was not successful
-                view.show_dialog("Result set", "There was an error getting the result set <br/>for that query.", "error");
+                view.show_dialog("Result set", "There was an error getting the result set for that query.", "error");
                 view.stop_waiting();
             }
         });
+    },
+
+    /**
+     * Display the MDX for the active tab query.
+     * @param tab_index {Integer} The active tab index.
+     */
+    show_mdx: function(tab_index) {
+
+        // Fetch the MDX from the server
+        model.request({
+            method: "GET",
+            dataType: 'html',
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/mdx",
+            success: function(data, textStatus, XMLHttpRequest) {
+                // Let the user know that their query was not successful
+                view.show_dialog("MDX", data, "info");
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                // Let the user know that their query was not successful
+                view.show_dialog("MDX", "There was an error getting the MDX for that query.", "error");
+            }
+        });
+
     }
+
+
 };
