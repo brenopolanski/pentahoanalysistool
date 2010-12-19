@@ -671,7 +671,7 @@ html, body {
 }
 .dialog .dialog_inner .dialog_body_waiting {
     background: transparent url('../../../images/src/waiting.gif') 10px 10px no-repeat;
-    padding: 10px 10px 20px 30px;
+    padding: 10px 10px 10px 30px;
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
