@@ -36,7 +36,7 @@ var model = {
         if (typeof parameters.error == "undefined")
             parameters.error = function() {
                 view.show_dialog('Error',
-                    'Could not connect to the server, please check your internet connection.' +
+                    'Could not connect to the server, please check your internet connection.<br/>' +
                     'If this problem persists, please refresh the page.', 'error');
             };
         if (typeof parameters.dataType == "undefined")
@@ -317,11 +317,11 @@ var model = {
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/mdx",
             success: function(data, textStatus, XMLHttpRequest) {
                 // Let the user know that their query was not successful
-                view.show_dialog("MDX", data, "info");
+                view.show_dialog("MDX", data, "mdx");
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 // Let the user know that their query was not successful
-                view.show_dialog("MDX", "There was an error getting the MDX for that query.", "error");
+                view.show_dialog("MDX", "There was an error getting the MDX for that query.", "info");
             }
         });
 
