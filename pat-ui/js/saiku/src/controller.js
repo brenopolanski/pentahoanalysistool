@@ -62,6 +62,11 @@ var controller = {
         model.run_query(tab_index);
     },
 
+    /** Show MDX **/
+    show_mdx: function(tab_index) {
+        model.show_mdx(tab_index);
+    },
+
     /** Handle click when the new query button is clicked. */
     add_tab : function () {
         view.tabs.add_tab();

@@ -654,25 +654,29 @@ domain(mozilla.org)
 .dialog .dialog_inner .dialog_body_info {
     background: transparent url('../../../images/src/toolbar_about.png') 20px 10px no-repeat;
     min-height: 40px;
-    padding: 10px 10px 10px 70px;
+    height: 100px;
+    overflow: auto;
+    padding: 10px 10px 20px 70px;
 }
 .dialog .dialog_inner .dialog_body_error {
     background: transparent url('../../../images/src/toolbar_error.png') 20px 10px no-repeat;
     min-height: 40px;
-    padding: 10px 10px 10px 70px;
+    height: 100px;
+    overflow: auto;
+    padding: 10px 10px 20px 70px;
 }
 .dialog .dialog_inner .dialog_body_login {
     background: transparent url('../../../images/src/dialog_login_red.png') 25px 15px no-repeat;
     min-height: 40px;
-    padding: 10px 10px 10px 100px;
+    padding: 10px 10px 20px 100px;
 }
 .dialog .dialog_inner .dialog_body_waiting {
     background: transparent url('../../../images/src/waiting.gif') 10px 10px no-repeat;
-    padding: 10px 10px 10px 30px;
+    padding: 10px 10px 20px 30px;
 }
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     padding: 5px 10px;
     text-align: right
 }
@@ -688,6 +692,7 @@ a.button {
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F0F0F0 100%);
     border: 1px solid #CCC;
     color: #222;
+    margin-right: 5px;
     padding: 6px 10px;
     text-decoration: none;
     text-shadow: 1px 1px 0 #FFFFFF;
@@ -716,6 +721,7 @@ a.button_disabled {
     border: 1px solid #CCC;
     color: #777;
     padding: 5px 10px;
+    margin-right: 5px;
     text-decoration: none;
     text-shadow: 1px 1px 0 #FFFFFF;
     -moz-border-radius: 3px;
