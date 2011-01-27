@@ -69,8 +69,13 @@ var view = {
 
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
-        $('.workspace_results').css({
-         'height' : workspace_height - 133
+
+        /**
+         * TODO - Needs to be specific for each table visualisation in tabs
+         */
+
+        $('.workspace_results .table_cols, .workspace_results .table_data').css({
+         'height' : workspace_height - ( 133 + $('.workspace_results .table_nulls').height() )
         });
     },
     
