@@ -44,7 +44,9 @@ var model = {
         
         $.ajax({
             type: parameters.method,
-            url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + parameters.url,
+            /* This is used for local development. */
+            url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
+            //url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + parameters.url,
             dataType: parameters.dataType,
             username: model.username,
             password: model.password,
@@ -254,7 +256,10 @@ var model = {
         view.start_waiting('Getting results...');
         // Set up a pointer to the result area of the active tab.
         $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
-        
+
+        var col_counter = view.tabs.tabs[tab_index].content.find('.columns ul li').length;
+        var row_counter = view.tabs.tabs[tab_index].content.find('.rows ul li').length;
+
         // Fetch the resultset from the server
         model.request({
             method: "GET",
@@ -283,13 +288,21 @@ var model = {
                     $table_vis.find('tbody').append('<tr id="' + i + '" />');
                     $.each(cells, function(k, body) {
                         if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
-                            $table_vis.find('tbody tr#' + i).append('<th class="row_hd"></th>');
+                            $table_vis.find('tbody tr#' + i).append('<th class=" row_hd"></th>');
                         }else if(body['type'] === 'ROW_HEADER') {
                             $table_vis.find('tbody tr#' + i).append('<th class="row_hd">' + body['value'] + '</th>');
                         }else if(body['type'] === 'DATA_CELL') {
                             $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
                         }
                     });
+                });
+
+                
+                
+                $workspace_result.find('table').fixer({
+                    fixedrows:col_counter,
+                    fixedcols:row_counter,
+                    height: 400
                 });
 
                 // Clear the wait message
