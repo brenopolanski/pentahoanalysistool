@@ -265,8 +265,13 @@ var model = {
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
+
+                /**
+                 * TODO - Clean up
+                 */
+
                 // Create the table visualisation structure.
-                $workspace_result.html('<table><thead></thead><tbody></tbody></table>');
+                $workspace_result.html('<table/>');
                 
                 // Setup a pointer to the table.
                 $table_vis = $workspace_result.find('table');
@@ -275,35 +280,39 @@ var model = {
                 $.each(data, function(i, cells) {
 
                     // Fill in headers
-                    $table_vis.find('thead').append('<tr id="' + i + '" />');
+                    $table_vis.append('<tr id="' + i + '" />');
+
                     $.each(cells, function(j, header) {
                         if (header['type'] === 'COLUMN_HEADER' && header['value'] === "null") {
-                            $table_vis.find('thead tr#' + i).append('<th class="null"></th>');
+                            $table_vis.find('tr#' + i).append('<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                         }else if(header['type'] === 'COLUMN_HEADER') {
-                            $table_vis.find('thead tr#' + i).append('<th class="col_hd">' + header['value'] + '</th>');
+                            $table_vis.find('tr#' + i).append('<th>' + header['value'] + '</th>');
                         }
                     });
                     
                     // Fill in data
-                    $table_vis.find('tbody').append('<tr id="' + i + '" />');
+                    //$table_vis.find('tbody').append('<tr id="' + i + '" />');
                     $.each(cells, function(k, body) {
                         if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
-                            $table_vis.find('tbody tr#' + i).append('<th class=" row_hd"></th>');
+                            $table_vis.find('tr#' + i).append('<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                         }else if(body['type'] === 'ROW_HEADER') {
-                            $table_vis.find('tbody tr#' + i).append('<th class="row_hd">' + body['value'] + '</th>');
+                            $table_vis.find('tr#' + i).append('<th>' + body['value'] + '</th>');
                         }else if(body['type'] === 'DATA_CELL') {
-                            $table_vis.find('tbody tr#' + i).append('<td class="data_cell">' + body['value'] + '</td>');
+                            $table_vis.find('tr#' + i).append('<td>' + body['value'] + '</td>');
                         }
                     });
                 });
 
-                
-                
                 $workspace_result.find('table').fixer({
-                    fixedrows:col_counter,
-                    fixedcols:row_counter,
-                    height: 400
+                    fixedrows: col_counter,
+                    fixedcols: row_counter
                 });
+
+                $workspace_result.find('.table_nulls').css({
+                    width : $workspace_result.find('.table_cols').width()
+                })
+
+                view.resize_height();
 
                 // Clear the wait message
                 view.stop_waiting();

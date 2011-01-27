@@ -164,16 +164,16 @@
                     }
                 }
                 // pack the tables into a wrapper
-                var wrapper = $("<div></div>");
+                var wrapper = $('<div class="table_wrapper"></div>');
                 if (fixrows && fixcols) {
-                    var topleft = $("<div><br></div>");
+                    var topleft = $('<div class="table_nulls"><br></div>');
                     topleft.css("float", "left").css("overflow",
                         "hidden");
                     topleft.append(toplefttable);
                     wrapper.append(topleft);
                 }
                 if (fixrows) {
-                    var topright = $("<div><br></div>");
+                    var topright = $('<div class="table_rows"><br/></div>');
                     topright.css("overflow-x", "hidden");
                     if ($.browser.msie)
                         topright.css("float", "left");
@@ -184,14 +184,14 @@
                     wrapper.append(cleardiv1);
                 }
                 if (fixcols) {
-                    var bottomleft = $("<div></div>");
+                    var bottomleft = $('<div class="table_cols"></div>');
                     bottomleft.css("float", "left").css(
                         "overflow-y", "hidden").css(
                         "overflow-x", "scroll");
                     bottomleft.append(bottomlefttable);
                     wrapper.append(bottomleft);
                 }
-                var bottomright = $("<div></div>");
+                var bottomright = $('<div class="table_data"></div>');
                 bottomright.css("overflow-x", "scroll");
                 if ($.browser.msie)
                     bottomright.css("float", "left");
