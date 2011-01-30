@@ -96,6 +96,11 @@ var TabContainer = function(tab_container, content_container) {
             view.resize_height();
         });
         $new_tab_content.appendTo(this.content_container);
+        
+        // Set default options
+        this.tabs[new_index].data['options'] = {
+        	
+        };
 
         // Register the new tab with the TabContainer.
         this.tabs.push(new Tab($new_tab, $new_tab_content));
