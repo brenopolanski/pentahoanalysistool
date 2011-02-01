@@ -182,13 +182,13 @@ var view = {
                     .attr({
                         'value': storage_id
                     })
-                    .text(cube['cubeName'])
+                    .text(cube['name'])
                     .appendTo($cubes);
                     view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
-                        'connectionName': connection['connectionName'],
+                        'connectionName': connection['name'],
                         'catalogName': connection.catalogs[0]['name'],
                         'schema': schema['name'],
-                        'cube': cube['cubeName']
+                        'cube': cube['name']
                     };
                     storage_id++;
                 //});
@@ -296,7 +296,7 @@ var view = {
                 $.each(data, function(i, member) {
                     measure_id++;
                 	
-                    $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['member']+'</a></li>')
+                    $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['caption']+'</a></li>')
                     .mousedown(function() {
                         return false;
                     }).appendTo($measures_ul);
