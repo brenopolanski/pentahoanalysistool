@@ -266,53 +266,60 @@ var model = {
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
 
-                /**
-                 * TODO - Clean up
-                 */
-
                 // Create the table visualisation structure.
                 $workspace_result.html('<table/>');
                 
                 // Setup a pointer to the table.
                 $table_vis = $workspace_result.find('table');
 
+                // Hide the table
+                $table_vis.hide();
+
                 // Loop through the resultset.
                 $.each(data, function(i, cells) {
 
-                    // Fill in headers
+                    // Create a new row to start with and id it with a unique iterator
                     $table_vis.append('<tr id="' + i + '" />');
 
+                    // Loop through each 'cell'
                     $.each(cells, function(j, header) {
-                        if (header['type'] === 'COLUMN_HEADER' && header['value'] === "null") {
-                            $table_vis.find('tr#' + i).append('<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');
-                        }else if(header['type'] === 'COLUMN_HEADER') {
-                            $table_vis.find('tr#' + i).append('<th>' + header['value'] + '</th>');
+
+                        // If the cell is a column header and is null (top left of table)
+                        if(header['type'] === "COLUMN_HEADER"
+                            && header['value'] === "null") {
+                            $table_vis.find('tr#' + i).append('<th class="all_null" />');
+                        } // If the cell is a column header and isn't null (column header of table)
+                        else if(header['type'] === "COLUMN_HEADER") {
+                            $table_vis.find('tr#' + i).append('<th class="col">'+header['value']+'</th>');
+                        } // If the cell is a row header and is null (grouped row header)
+                        else if(header['type'] === "ROW_HEADER"
+                            && header['value'] === "null") {
+                            $table_vis.find('tr#' + i).append('<th class="row_null" />');
+                        } // If the cell is a row header and isn't null (last row header)
+                        else if(header['type'] === "ROW_HEADER") {
+                            $table_vis.find('tr#' + i).append('<th class="row">'+header['value']+'</th>');
+                        } // If the cell is a normal data cell
+                        else if(header['type'] === "DATA_CELL") {
+                            $table_vis.find('tr#' + i).append('<td class="data">'+header['value']+'</td>');
                         }
+                        
                     });
-                    
-                    // Fill in data
-                    //$table_vis.find('tbody').append('<tr id="' + i + '" />');
-                    $.each(cells, function(k, body) {
-                        if (body['type'] === 'ROW_HEADER' && body['value'] === "null") {
-                            $table_vis.find('tr#' + i).append('<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');
-                        }else if(body['type'] === 'ROW_HEADER') {
-                            $table_vis.find('tr#' + i).append('<th>' + body['value'] + '</th>');
-                        }else if(body['type'] === 'DATA_CELL') {
-                            $table_vis.find('tr#' + i).append('<td>' + body['value'] + '</td>');
-                        }
+
+                    /*$workspace_result.find('table').fixer({
+                        fixedrows: col_counter,
+                        fixedcols: row_counter
                     });
+
+                    $workspace_result.find('.all_null').css({
+                        width : $workspace_result.find('.table_cols').width()
+                    })*/
+
+                    view.resize_height();
+
+                    // Show the table
+                    $table_vis.show();
+
                 });
-
-                $workspace_result.find('table').fixer({
-                    fixedrows: col_counter,
-                    fixedcols: row_counter
-                });
-
-                $workspace_result.find('.table_nulls').css({
-                    width : $workspace_result.find('.table_cols').width()
-                })
-
-                view.resize_height();
 
                 // Clear the wait message
                 view.stop_waiting();
