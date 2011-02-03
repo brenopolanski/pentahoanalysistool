@@ -58,12 +58,12 @@ var model = {
 
     /** Get the sessionid and based on the username and unhide the UI. */
     get_session : function() {
-        model.request({
+        /* model.request({
             method: "GET",
             url: "session",
             dataType: "html",
             success: function(data, textStatus, XMLHttpRequest) {
-                model.session_id = data;
+                model.session_id = data; */
                 model.request({
                     method: "GET",
                     url: model.username + "/datasources",
@@ -74,8 +74,8 @@ var model = {
                         controller.add_tab();
                     }
                 });
-            }
-        });
+           /* }
+        }); */
     },
     
     /**
