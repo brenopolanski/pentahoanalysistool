@@ -266,60 +266,56 @@ var model = {
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
 
-                // Create the table visualisation structure.
-                $workspace_result.html('<table/>');
-                
-                // Setup a pointer to the table.
-                $table_vis = $workspace_result.find('table');
+                // Create a variable to store the table
+                var table_vis = '<table>';
 
-                // Hide the table
-                $table_vis.hide();
-
-                // Loop through the resultset.
+                // Start looping through the result set
                 $.each(data, function(i, cells) {
 
-                    // Create a new row to start with and id it with a unique iterator
-                    $table_vis.append('<tr id="' + i + '" />');
+                    // Add a new row.
+                    table_vis = table_vis + '<tr>';
 
-                    // Loop through each 'cell'
+                    // Look through the contents of the row
                     $.each(cells, function(j, header) {
 
                         // If the cell is a column header and is null (top left of table)
                         if(header['type'] === "COLUMN_HEADER"
                             && header['value'] === "null") {
-                            $table_vis.find('tr#' + i).append('<th class="all_null" />');
+                            table_vis = table_vis + '<th class="all_null" />';
                         } // If the cell is a column header and isn't null (column header of table)
                         else if(header['type'] === "COLUMN_HEADER") {
-                            $table_vis.find('tr#' + i).append('<th class="col">'+header['value']+'</th>');
+                            table_vis = table_vis + '<th class="col">'+header['value']+'</th>';
                         } // If the cell is a row header and is null (grouped row header)
                         else if(header['type'] === "ROW_HEADER"
                             && header['value'] === "null") {
-                            $table_vis.find('tr#' + i).append('<th class="row_null" />');
+                            table_vis = table_vis + '<th class="row_null" />';
                         } // If the cell is a row header and isn't null (last row header)
                         else if(header['type'] === "ROW_HEADER") {
-                            $table_vis.find('tr#' + i).append('<th class="row">'+header['value']+'</th>');
+                            table_vis = table_vis + '<th class="row">'+header['value']+'</th>';
                         } // If the cell is a normal data cell
                         else if(header['type'] === "DATA_CELL") {
-                            $table_vis.find('tr#' + i).append('<td class="data">'+header['value']+'</td>');
+                            table_vis = table_vis + '<td class="data">'+header['value']+'</td>';
                         }
                         
                     });
 
-                    /*$workspace_result.find('table').fixer({
-                        fixedrows: col_counter,
-                        fixedcols: row_counter
-                    });
-
-                    $workspace_result.find('.all_null').css({
-                        width : $workspace_result.find('.table_cols').width()
-                    })*/
-
-                    view.resize_height();
-
-                    // Show the table
-                    $table_vis.show();
+                    // Close of the new row
+                    table_vis = table_vis + '</tr>';
 
                 });
+
+                // Resize the workspace
+                view.resize_height();
+
+                // Close the table
+                table_vis = table_vis + '</table>';
+
+                // Insert the table to the DOM
+                $workspace_result.html(table_vis);
+
+                // Add the fixer plugin.
+                // $workspace_result.find('table').fixer({fixedrows:col_counter,fixedcols:row_counter});
+
 
                 // Clear the wait message
                 view.stop_waiting();
@@ -327,7 +323,7 @@ var model = {
             
             error: function() {
                 // Let the user know that their query was not successful
-                view.show_dialog("Result set", "There was an error getting the result set for that query.", "error");
+                view.show_dialog("Result Set", "There was an error getting the result set for that query.", "info");
                 view.stop_waiting();
             }
         });
