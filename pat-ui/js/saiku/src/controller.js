@@ -39,9 +39,11 @@ var controller = {
     workspace_toolbar_click_handler: function($button) {
         tab_index = view.tabs.index_from_content($button.closest('.tab'));
         if (!($button.hasClass('button_disabled'))) {
-            method_name = $button.text().replace(" ", "_").toLowerCase();
+            method_name = $button.text().replace(" ", "_").replace("-", "_").toLowerCase();
             controller.call_method(method_name, tab_index);
         }
+        
+        return false;
     },
     
     /** Allows the use of reflection to call methods */
@@ -65,6 +67,11 @@ var controller = {
     /** Show MDX **/
     show_mdx: function(tab_index) {
         model.show_mdx(tab_index);
+    },
+    
+    /** Enable or disable NON EMPTY **/
+    non_empty: function(tab_index) {
+    	model.non_empty(tab_index);
     },
 
     /** Handle click when the new query button is clicked. */

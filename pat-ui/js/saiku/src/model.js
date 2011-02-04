@@ -350,7 +350,31 @@ var model = {
             }
         });
 
+    },
+    
+    /**
+     * Enable or disable NON EMPTY
+     * @param tab_index {Integer} The active tab index
+     */
+    non_empty: function(tab_index) {
+    	$button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
+    	if (view.tabs.tabs[tab_index].data['options']) {
+    		view.tabs.tabs[tab_index].data['options'] = false;
+    		$button.removeClass('button_selected');
+    	} else {
+    		view.tabs.tabs[tab_index].data['options'] = true;
+    		$button.addClass('button_selected');
+    	}
+    	
+    	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.nonempty";
+    	
+        // Notify server of change
+        model.request({
+            method: "POST",
+            url: url,
+            data: {
+                'propertyValue' : view.tabs.tabs[tab_index].data['options']
+            }
+        });
     }
-
-
 };
