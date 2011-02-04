@@ -97,15 +97,14 @@ var TabContainer = function(tab_container, content_container) {
         });
         $new_tab_content.appendTo(this.content_container);
         
-        // TODO - Set default options
-        //this.tabs[new_index].data['options'] = {
-        //	
-        //};
-
         // Register the new tab with the TabContainer.
         this.tabs.push(new Tab($new_tab, $new_tab_content));
         this.select_tab(new_index);
 
+        // Set default options
+        this.tabs[new_index].data['options'] = {
+        	'nonempty': true
+        };
     };
 
     /** Empty the tab container (used for logout) */
