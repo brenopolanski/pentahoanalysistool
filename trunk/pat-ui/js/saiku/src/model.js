@@ -358,11 +358,11 @@ var model = {
      */
     non_empty: function(tab_index) {
     	$button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
-    	if (view.tabs.tabs[tab_index].data['options']) {
-    		view.tabs.tabs[tab_index].data['options'] = false;
+    	if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
+    		view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
     		$button.removeClass('button_selected');
     	} else {
-    		view.tabs.tabs[tab_index].data['options'] = true;
+    		view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
     		$button.addClass('button_selected');
     	}
     	
@@ -373,7 +373,7 @@ var model = {
             method: "POST",
             url: url,
             data: {
-                'propertyValue' : view.tabs.tabs[tab_index].data['options']
+                'propertyValue' : view.tabs.tabs[tab_index].data['options']['nonempty']
             }
         });
     }
