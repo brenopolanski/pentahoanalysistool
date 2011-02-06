@@ -664,9 +664,25 @@ var view = {
          */
         function check_toolbar() {
             if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                $tab.find('.workspace_toolbar').find('a').removeClass('button_disabled').addClass('button');
+                $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
+                   if($(this).hasClass('button_disabled')) {
+                       $(this).removeClass('button_disabled').addClass('button');
+                   }else if($(this).hasClass('button_toggle_disabled_on')) {
+                       $(this).removeClass('button_toggle_disabled_on').addClass('button_toggle_on');
+                   }else if($(this).hasClass('button_toggle_disabled_off')) {
+                       $(this).removeClass('button_toggle_disabled_off').addClass('button_toggle_off');
+                   }
+                });
             }else{
-                $tab.find('.workspace_toolbar').find('a').removeClass('button').addClass('button_disabled');
+                $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
+                   if($(this).hasClass('button')) {
+                       $(this).removeClass('button').addClass('button_disabled');
+                   }else if($(this).hasClass('button_toggle_on')) {
+                       $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_on');
+                   }else if($(this).hasClass('button_toggle_off')) {
+                       $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_off');
+                   }
+                });
             }
         }
     },
