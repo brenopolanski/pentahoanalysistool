@@ -360,10 +360,10 @@ var model = {
     	$button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
     	if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
     		view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
-    		$button.removeClass('button_selected');
+    		$button.removeClass('button_toggle_on').addClass('button_toggle_off');
     	} else {
     		view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
-    		$button.addClass('button_selected');
+    		$button.addClass('button_toggle_on').removeClass('button_toggle_off');
     	}
     	
     	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.nonempty";
