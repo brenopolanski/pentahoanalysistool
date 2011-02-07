@@ -803,14 +803,16 @@ a.button_off:hover {
     overflow: auto;
 }
 .workspace_results table {
-    width: auto;
     border-bottom: 1px solid #d5d5d5;
     border-right: 1px solid #d5d5d5;
     margin-bottom: 0;
+    table-layout: fixed;
+    width: auto;
 }
 .workspace_results table th {
     border-left: 1px solid #d5d5d5;
     margin-bottom: 0;
+    white-space: nowrap;
 }
 .workspace_results table th.all_null {
     text-align: center;
@@ -832,6 +834,7 @@ a.button_off:hover {
     border-left: 1px solid #d5d5d5;
     border-top: 1px solid #d5d5d5;
     text-align: right;
+    white-space: nowrap;
 }
 
 /** Waiting */

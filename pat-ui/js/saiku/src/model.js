@@ -64,17 +64,17 @@ var model = {
             dataType: "html",
             success: function(data, textStatus, XMLHttpRequest) {
                 model.session_id = data; */
-                model.request({
-                    method: "GET",
-                    url: model.username + "/datasources",
-                    success: function(data, textStatus, XMLHttpRequest) {
-                        model.connections = data;
-                        $('.pre_waiting').remove();
-                        view.draw_ui();
-                        controller.add_tab();
-                    }
-                });
-           /* }
+        model.request({
+            method: "GET",
+            url: model.username + "/datasources",
+            success: function(data, textStatus, XMLHttpRequest) {
+                model.connections = data;
+                $('.pre_waiting').remove();
+                view.draw_ui();
+                controller.add_tab();
+            }
+        });
+    /* }
         }); */
     },
     
@@ -281,20 +281,20 @@ var model = {
                         // If the cell is a column header and is null (top left of table)
                         if(header['type'] === "COLUMN_HEADER"
                             && header['value'] === "null") {
-                            table_vis = table_vis + '<th class="all_null" />';
+                            table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
                         } // If the cell is a column header and isn't null (column header of table)
                         else if(header['type'] === "COLUMN_HEADER") {
-                            table_vis = table_vis + '<th class="col">'+header['value']+'</th>';
+                            table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
                         } // If the cell is a row header and is null (grouped row header)
                         else if(header['type'] === "ROW_HEADER"
                             && header['value'] === "null") {
-                            table_vis = table_vis + '<th class="row_null" />';
+                            table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
                         } // If the cell is a row header and isn't null (last row header)
                         else if(header['type'] === "ROW_HEADER") {
-                            table_vis = table_vis + '<th class="row">'+header['value']+'</th>';
+                            table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
                         } // If the cell is a normal data cell
                         else if(header['type'] === "DATA_CELL") {
-                            table_vis = table_vis + '<td class="data">'+header['value']+'</td>';
+                            table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
                         }
                         
                     });
@@ -309,13 +309,30 @@ var model = {
 
                 // Close the table
                 table_vis = table_vis + '</table>';
-
+              
                 // Insert the table to the DOM
                 $workspace_result.html(table_vis);
 
-                // Add the fixer plugin.
-                // $workspace_result.find('table').fixer({fixedrows:col_counter,fixedcols:row_counter});
+                // Loop through all headers and find the largest one.
+                var max_width = 0;
+                $.each($workspace_result.find('table th'), function(i, j){
 
+                    var width = $(this).width();
+                    if(width > max_width) {
+                        max_width = width;
+                    }
+
+                });
+
+                // Make sure all <div/>'s are all equal.
+                $workspace_result.find('table div').css('width', max_width);
+
+                // Enable highlighting on rows.
+                $workspace_result.find('table tr').hover(function(){
+                    $(this).children().css('background', '#eff4fc');
+                },function(){
+                    $(this).children().css('background', '');
+                });
 
                 // Clear the wait message
                 view.stop_waiting();
@@ -357,16 +374,16 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     non_empty: function(tab_index) {
-    	$button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
-    	if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
-    		view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
-    		$button.removeClass('button_toggle_on').addClass('button_toggle_off');
-    	} else {
-    		view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
-    		$button.addClass('button_toggle_on').removeClass('button_toggle_off');
-    	}
+        $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
+        if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
+            view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
+            $button.removeClass('button_toggle_on').addClass('button_toggle_off');
+        } else {
+            view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
+            $button.addClass('button_toggle_on').removeClass('button_toggle_off');
+        }
     	
-    	url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.nonempty";
+        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.nonempty";
     	
         // Notify server of change
         model.request({

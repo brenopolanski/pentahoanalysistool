@@ -54,6 +54,7 @@ var view = {
      * Resize layout to fit window height
      */
     resize_height: function() {
+
         // Get the browser's current height
         var window_height = $(window).height();
         
@@ -70,14 +71,6 @@ var view = {
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
 
-        /**
-         * TODO - Needs to be specific for each table visualisation in tabs
-         
-
-        $('.workspace_results .table_cols, .workspace_results .table_data').css({
-         'height' : workspace_height - ( 133 + $('.workspace_results .table_nulls').height() )
-        });*/
-
         $('.workspace_results').css('height', workspace_height - 133);
     },
     
@@ -85,15 +78,15 @@ var view = {
      * Toggle (hide/show) the sidebar. 
      */
     toggle_sidebar: function($sidebar_separator) {
-    	// Find the tab
-    	$tab = $sidebar_separator.closest('.tab');
+        // Find the tab
+        $tab = $sidebar_separator.closest('.tab');
     	
         // Get the width of the sidebar.
         var sidebar_width = $tab.find('.sidebar').width();
        
         if (sidebar_width == 260) {
             // If the sidebar is not hidden.
-        	$tab.find('.sidebar').css('width', 0);
+            $tab.find('.sidebar').css('width', 0);
             $tab.find('.workspace_inner').css('margin-left', 5);
         } else {
             // If the sidebar is hidden.
@@ -665,23 +658,23 @@ var view = {
         function check_toolbar() {
             if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
                 $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
-                   if($(this).hasClass('button_disabled')) {
-                       $(this).removeClass('button_disabled').addClass('button');
-                   }else if($(this).hasClass('button_toggle_disabled_on')) {
-                       $(this).removeClass('button_toggle_disabled_on').addClass('button_toggle_on');
-                   }else if($(this).hasClass('button_toggle_disabled_off')) {
-                       $(this).removeClass('button_toggle_disabled_off').addClass('button_toggle_off');
-                   }
+                    if($(this).hasClass('button_disabled')) {
+                        $(this).removeClass('button_disabled').addClass('button');
+                    }else if($(this).hasClass('button_toggle_disabled_on')) {
+                        $(this).removeClass('button_toggle_disabled_on').addClass('button_toggle_on');
+                    }else if($(this).hasClass('button_toggle_disabled_off')) {
+                        $(this).removeClass('button_toggle_disabled_off').addClass('button_toggle_off');
+                    }
                 });
             }else{
                 $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
-                   if($(this).hasClass('button')) {
-                       $(this).removeClass('button').addClass('button_disabled');
-                   }else if($(this).hasClass('button_toggle_on')) {
-                       $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_on');
-                   }else if($(this).hasClass('button_toggle_off')) {
-                       $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_off');
-                   }
+                    if($(this).hasClass('button')) {
+                        $(this).removeClass('button').addClass('button_disabled');
+                    }else if($(this).hasClass('button_toggle_on')) {
+                        $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_on');
+                    }else if($(this).hasClass('button_toggle_off')) {
+                        $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_off');
+                    }
                 });
             }
         }
@@ -703,9 +696,9 @@ var view = {
     },
 
     /**
-    * Load views into a dialog template
-    * @param url {String} The url where the view is located.
-    */
+     * Load views into a dialog template
+     * @param url {String} The url where the view is located.
+     */
     show_view : function(url) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
