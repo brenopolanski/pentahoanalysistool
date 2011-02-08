@@ -212,6 +212,11 @@ var model = {
                 'memberposition' : memberposition
             }
         });
+        
+        // If automatic query execution is enabled, rerun the query after making change
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+        	model.run_query(tab_index);
+        }
     },
 
     /**
@@ -239,6 +244,11 @@ var model = {
             method: "DELETE",
             url: url
         });
+        
+        // If automatic query execution is enabled, rerun the query after making change
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+        	model.run_query(tab_index);
+        }
     },
     
     /**
@@ -393,5 +403,25 @@ var model = {
                 'propertyValue' : view.tabs.tabs[tab_index].data['options']['nonempty']
             }
         });
+        
+        // If automatic query execution is enabled, rerun the query when this option is changed
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+        	model.run_query(tab_index);
+        }
+    },
+    
+    /**
+     * Enable or disable automatic query execution
+     * @param tab_index {Integer} The active tab index
+     */
+    automatic_execution: function(tab_index) {
+        $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+            view.tabs.tabs[tab_index].data['options']['automatic_execution'] = false;
+            $button.removeClass('button_toggle_on').addClass('button_toggle_off');
+        } else {
+            view.tabs.tabs[tab_index].data['options']['automatic_execution'] = true;
+            $button.addClass('button_toggle_on').removeClass('button_toggle_off');
+        }
     }
 };

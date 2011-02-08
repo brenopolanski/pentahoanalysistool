@@ -66,12 +66,23 @@ var controller = {
 
     /** Show MDX **/
     show_mdx: function(tab_index) {
-        model.show_mdx(tab_index);
+    	if (view.tabs.tabs[tab_index].data['query_name']) {
+    		model.show_mdx(tab_index);
+    	}
     },
     
     /** Enable or disable NON EMPTY **/
     non_empty: function(tab_index) {
-    	model.non_empty(tab_index);
+    	if (view.tabs.tabs[tab_index].data['query_name']) {
+    		model.non_empty(tab_index);
+    	}
+    },
+    
+    /** Enable or disable automatic query execution **/
+    automatic_execution: function(tab_index) {
+    	if (view.tabs.tabs[tab_index].data['query_name']) {
+    		model.automatic_execution(tab_index);
+    	}
     },
 
     /** Handle click when the new query button is clicked. */
