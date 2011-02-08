@@ -423,5 +423,33 @@ var model = {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = true;
             $button.addClass('button_toggle_on').removeClass('button_toggle_off');
         }
+    },
+    
+    /**
+     * 
+     */
+    swap_axis: function(tab_index) {
+    	// Swap the actual selections
+    	$rows = view.tabs.tabs[tab_index].content.find('.rows li');
+    	$columns = view.tabs.tabs[tab_index].content.find('.columns li');
+    	
+    	$rows.detach().appendTo(view.tabs.tabs[tab_index].content.find('.columns ul'));
+    	$columns.detach().appendTo(view.tabs.tabs[tab_index].content.find('.rows ul'));
+    	
+        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.swap.axis";
+    	
+        // Notify server of change
+        model.request({
+            method: "POST",
+            url: url,
+            data: {
+                'propertyValue' : true
+            }
+        });
+        
+        // If automatic query execution is enabled, rerun the query when this option is changed
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+        	model.run_query(tab_index);
+        }	
     }
 };
