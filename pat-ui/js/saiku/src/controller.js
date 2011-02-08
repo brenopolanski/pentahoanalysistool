@@ -29,7 +29,10 @@ var controller = {
      */
     toolbar_click_handler : function($button) {
         method_name = $button.attr("id");
-        controller.call_method(method_name, -1);
+        
+        try {
+        	eval("controller." + method_name + "();");
+        } catch (e) {};
     },
     
     /**
@@ -38,9 +41,14 @@ var controller = {
      */
     workspace_toolbar_click_handler: function($button) {
         tab_index = view.tabs.index_from_content($button.closest('.tab'));
-        if (!($button.hasClass('button_disabled'))) {
+        
+        // Make sure button isn't disabled, and that a query is active
+        if (!($button.hasClass('button_disabled')) && view.tabs.tabs[tab_index].data['query_name']) {
             method_name = $button.text().replace(" ", "_").replace("-", "_").toLowerCase();
-            controller.call_method(method_name, tab_index);
+            
+            try {
+            	eval("model." + method_name + "(" + tab_index + ");");
+            } catch (e) {};
         }
         
         return false;
@@ -51,38 +59,12 @@ var controller = {
         for (method in controller) {
             if (method == method_name) {
                 if (tab_index == -1) {
-                    eval("controller." + method + "();");
+                    
                 } else {
-                    eval("controller." + method + "(" + tab_index + ");");
+                    
                 }
             }
         }
-    },
-    
-    /** Run query **/
-    run_query: function(tab_index) {
-        model.run_query(tab_index);
-    },
-
-    /** Show MDX **/
-    show_mdx: function(tab_index) {
-    	if (view.tabs.tabs[tab_index].data['query_name']) {
-    		model.show_mdx(tab_index);
-    	}
-    },
-    
-    /** Enable or disable NON EMPTY **/
-    non_empty: function(tab_index) {
-    	if (view.tabs.tabs[tab_index].data['query_name']) {
-    		model.non_empty(tab_index);
-    	}
-    },
-    
-    /** Enable or disable automatic query execution **/
-    automatic_execution: function(tab_index) {
-    	if (view.tabs.tabs[tab_index].data['query_name']) {
-    		model.automatic_execution(tab_index);
-    	}
     },
 
     /** Handle click when the new query button is clicked. */
