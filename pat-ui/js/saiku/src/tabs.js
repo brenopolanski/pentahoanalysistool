@@ -94,6 +94,11 @@ var TabContainer = function(tab_container, content_container) {
         .load(BASE_URL + "views/queries/", function() {
             view.load_cubes(new_index);
             view.resize_height();
+            
+            // Bind event handler to workspace toolbar methods
+            $new_tab_content.find('.workspace_toolbar a').click(function(event) {
+                return controller.workspace_toolbar_click_handler($(this));
+            });
         });
         $new_tab_content.appendTo(this.content_container);
         
