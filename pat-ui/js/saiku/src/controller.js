@@ -53,19 +53,6 @@ var controller = {
         
         return false;
     },
-    
-    /** Allows the use of reflection to call methods */
-    call_method: function(method_name, tab_index) {
-        for (method in controller) {
-            if (method == method_name) {
-                if (tab_index == -1) {
-                    
-                } else {
-                    
-                }
-            }
-        }
-    },
 
     /** Handle click when the new query button is clicked. */
     add_tab : function () {
