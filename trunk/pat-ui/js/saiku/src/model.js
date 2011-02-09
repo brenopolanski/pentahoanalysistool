@@ -458,7 +458,7 @@ var model = {
      * Export data as Excel XML
      * @param tab_index {Integer} The active tab index
      */
-    export_xls: function(tab_index) {
+    export_data: function(tab_index) {
     	location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
     }
 };
