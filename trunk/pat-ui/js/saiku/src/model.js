@@ -426,7 +426,8 @@ var model = {
     },
     
     /**
-     * 
+     * Swap axis
+     * @param tab_index {Integer} The active tab index
      */
     swap_axis: function(tab_index) {
     	// Swap the actual selections
@@ -451,5 +452,13 @@ var model = {
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
         	model.run_query(tab_index);
         }	
+    },
+    
+    /**
+     * Export data as Excel XML
+     * @param tab_index {Integer} The active tab index
+     */
+    export_data: function(tab_index) {
+    	location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
     }
 };
