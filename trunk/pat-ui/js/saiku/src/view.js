@@ -122,11 +122,6 @@ var view = {
         $('.sidebar_separator').live('click', function() {
             view.toggle_sidebar($(this));
         });
-        
-        /** Bind event handler to workspace toolbar methods **/
-        $('.workspace_toolbar a').live('click', function(event) {
-            return controller.workspace_toolbar_click_handler($(this));
-        });
 
         /** Add click handler on tabs. */
         view.tabs.tab_container.find("a").live('mousedown', function(event) {
