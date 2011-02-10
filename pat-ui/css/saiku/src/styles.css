@@ -663,6 +663,12 @@ html, body {
     overflow: auto;
     padding: 10px 10px 20px 70px;
 }
+.dialog .dialog_inner .dialog_body_save {
+    background: transparent url('../../../images/src/toolbar_save.png') 20px 10px no-repeat;
+    min-height: 40px;
+    overflow: auto;
+    padding: 10px 10px 20px 70px;
+}
 .dialog .dialog_inner .dialog_body_error {
     background: transparent url('../../../images/src/toolbar_error.png') 20px 10px no-repeat;
     min-height: 40px;
@@ -851,4 +857,9 @@ a.button_off:hover {
     top: 50%;
     width: 190px !important;
     text-align: center;
+}
+
+
+.error_msg {
+    color: #CC0000;
 }
