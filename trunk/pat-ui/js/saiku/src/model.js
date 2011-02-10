@@ -44,6 +44,7 @@ var model = {
         
         $.ajax({
             type: parameters.method,
+            cache: false,
             /* This is used for local development. */
             url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
             //url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + parameters.url,
@@ -273,7 +274,6 @@ var model = {
         // Fetch the resultset from the server
         model.request({
             method: "GET",
-            cache: false,
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
 
