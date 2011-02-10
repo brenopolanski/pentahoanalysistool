@@ -11,6 +11,7 @@
 var view = {
     /** Display the login form when the view is initialised. */
     init : function() {
+
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         
@@ -725,30 +726,77 @@ var view = {
      * @param message {String} Message to be displayed in the dialog box.
      */
     show_dialog : function (title, message, type) {
+
+        // Check if there is already a dialog box
+        if($('#dialog').length() > 0) {
+        // Do nothing
+        }else {
+            // Append a dialog <div/> to the body.
+            $('<div id="dialog" class="dialog hide">').appendTo('body');
+            // Add the structure of the dialog.
+            $('#dialog').append('<div class="dialog_inner">' +
+                '<div class="dialog_header">' +
+                '<h3>' + title + '</h3>' +
+                '<a href="#" title="Close" class="close_dialog close">Close</a>' +
+                '<div class="clear"></div>' +
+                '</div>' +
+                '<div class="dialog_body_' + type + '">' + message + '</div>' +
+                '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
+                '</div>' +
+                '</div>').modal({
+                opacity : 100,
+                onClose : function (dialog) {
+                    // Remove all simple modal objects.
+                    dialog.data.remove();
+                    dialog.container.remove();
+                    dialog.overlay.remove();
+                    $.modal.close();
+                    // Remove the #dialog which we appended to the body.
+                    $('#dialog').remove();
+                }
+            });
+        }
+    },
+
+    /**
+     * Loads a pop up dialog box for saving a query.
+     * @param url {String} Url for the view to be loaded
+     */
+    save_dialog : function (url) {
+
         // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="dialog hide">').appendTo('body');
-        // Add the structure of the dialog.
-        $('#dialog').append('<div class="dialog_inner">' +
-            '<div class="dialog_header">' +
-            '<h3>' + title + '</h3>' +
-            '<a href="#" title="Close" class="close_dialog close">Close</a>' +
-            '<div class="clear"></div>' +
-            '</div>' +
-            '<div class="dialog_body_' + type + '">' + message + '</div>' +
-            '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
-            '</div>' +
-            '</div>').modal({
-            opacity : 100,
-            onClose : function (dialog) {
-                // Remove all simple modal objects.
-                dialog.data.remove();
-                dialog.container.remove();
-                dialog.overlay.remove();
-                $.modal.close();
-                // Remove the #dialog which we appended to the body.
-                $('#dialog').remove();
+        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        // Load the view into the dialog <div/> and disable caching.
+        $.ajax({
+            url : BASE_URL + url,
+            cache : false,
+            dataType : "html",
+            success : function(data) {
+                $('#dialog').html(data).modal({
+                    opacity : 100,
+                    onShow : function(dialog) {
+                        dialog.data.find('#save_query').click(function() {
+                            if(dialog.data.find('#query_name').text().length == 0) {
+                                dialog.data.find('.error_msg').html('You need to specify a name for your query.');
+                            }else{
+                                var query_name = dialog.data.find('#query_name').text();
+                            }
+                        });
+                    },
+                    onClose : function (dialog) {
+                        // Remove all simple modal objects.
+                        dialog.data.remove();
+                        dialog.container.remove();
+                        dialog.overlay.remove();
+                        $.modal.close();
+                        // Remove the #dialog which we appended to the body.
+                        $('#dialog').remove();
+                    }
+                });
             }
         });
+
+
     }
 }
 

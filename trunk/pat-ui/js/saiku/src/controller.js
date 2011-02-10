@@ -63,7 +63,9 @@ var controller = {
     open_query : function () {},
 
     /** Handle click when the save query button is clicked. */
-    save_query : function () {},
+    save_query : function () {
+        view.save_dialog('views/queries/save.html');
+    },
 
     /** Handle click when the delete query button is clicked. */
     delete_query : function () {},

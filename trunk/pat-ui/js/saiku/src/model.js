@@ -468,12 +468,26 @@ var model = {
 
         view.stop_waiting();
     },
-    
+
     /**
      * Export data as Excel XML
      * @param tab_index {Integer} The active tab index
      */
     export_data: function(tab_index) {
         location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
+    },
+
+    /**
+     * Save query
+     * @param tab_index {Integer} The active tab index
+     * @param query_name {string} The query name
+     */
+    save_query: function(tab_index, query_name) {
+
+        // Save with the new query name
+        // If success
+        //  Change the title of tab
+        //  Confirm successful save
+
     }
 };
