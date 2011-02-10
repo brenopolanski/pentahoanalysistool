@@ -475,7 +475,17 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     export_data: function(tab_index) {
-        location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
+    	view.show_view('views/queries/export.html', function() {
+    		types = ['csv', 'xls'];
+    		$.each(types, function(index, type) {
+        		$('<a />')
+        			.attr({ 'href': BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" 
+        				+ view.tabs.tabs[tab_index].data['query_name'] + "/export/" + type })
+        			.text(type.toUpperCase() + " format")
+        			.appendTo($('.export_data'));
+        		$('<br />').appendTo($('.export_data'));
+        	});
+	    });
     },
 
     /**
