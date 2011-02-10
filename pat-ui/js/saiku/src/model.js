@@ -273,6 +273,7 @@ var model = {
         // Fetch the resultset from the server
         model.request({
             method: "GET",
+            cache: false,
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
 
