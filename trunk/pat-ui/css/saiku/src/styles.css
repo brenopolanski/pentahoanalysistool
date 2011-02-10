@@ -220,7 +220,8 @@ html, body {
 
 .sidebar {
     float: left;
-    overflow: auto;
+        overflow: hidden;;
+
     width: 260px;
 }
 .sidebar h3 {
@@ -244,6 +245,7 @@ html, body {
 }
 .sidebar .sidebar_inner {
     padding: 10px;
+    
 }
 .sidebar .sidebar_inner select {
     border: 1px solid #CCC;
@@ -257,10 +259,11 @@ html, body {
     margin: 0;
 }
 .sidebar .dimension_tree {
-    height: 200px;
+    height: 35%;
     overflow: auto;
 }
 .sidebar .measure_tree {
+    height: 30%;
     overflow: auto;
 }
 
@@ -330,7 +333,6 @@ html, body {
 .measure_tree ul li ul li {
     padding-left: 18px;
 }
-
 .dimension_tree ul li ul li a {
     /* cursor: move; */
     padding-left: 20px;
@@ -348,8 +350,6 @@ html, body {
     cursor: default;
     background: url('../../../images/src/bullet_green.png') 0px -2px no-repeat;
 }
-
-
 
 @-moz-document url-prefix() {
     .dimension_tree ul li ul li a {
