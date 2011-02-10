@@ -23,6 +23,7 @@ var view = {
             success : function(data) {
                 $('#dialog').html(data).modal({
                     opacity : 100,
+                    // onShow : function (dialog) {}
                     onClose : function (dialog) {
                         // Get the username and password from the form.
                         model.username = $('#username').val();
