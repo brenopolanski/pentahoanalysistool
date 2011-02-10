@@ -695,7 +695,7 @@ var view = {
      * Load views into a dialog template
      * @param url {String} The url where the view is located.
      */
-    show_view : function(url) {
+    show_view : function(url, callback) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
@@ -716,6 +716,9 @@ var view = {
                         $('#dialog').remove();
                     }
                 });
+                
+                if (callback)
+                	callback();
             }
         });
     },
