@@ -215,7 +215,7 @@ var model = {
         
         // If automatic query execution is enabled, rerun the query after making change
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-        	model.run_query(tab_index);
+            model.run_query(tab_index);
         }
     },
 
@@ -247,7 +247,7 @@ var model = {
         
         // If automatic query execution is enabled, rerun the query after making change
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-        	model.run_query(tab_index);
+            model.run_query(tab_index);
         }
     },
     
@@ -384,6 +384,9 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     non_empty: function(tab_index) {
+
+        view.start_waiting('Setting non-empty...');
+
         $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
         if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
             view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
@@ -406,8 +409,10 @@ var model = {
         
         // If automatic query execution is enabled, rerun the query when this option is changed
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-        	model.run_query(tab_index);
+            model.run_query(tab_index);
         }
+
+        view.stop_waiting();
     },
     
     /**
@@ -415,6 +420,9 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     automatic_execution: function(tab_index) {
+
+        view.start_waiting('Setting automatic execution...');
+
         $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = false;
@@ -423,6 +431,8 @@ var model = {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = true;
             $button.addClass('button_toggle_on').removeClass('button_toggle_off');
         }
+
+        view.stop_waiting();
     },
     
     /**
@@ -430,12 +440,15 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     swap_axis: function(tab_index) {
-    	// Swap the actual selections
-    	$rows = view.tabs.tabs[tab_index].content.find('.rows li');
-    	$columns = view.tabs.tabs[tab_index].content.find('.columns li');
+
+        view.start_waiting('Swapping axis...');
+
+        // Swap the actual selections
+        $rows = view.tabs.tabs[tab_index].content.find('.rows li');
+        $columns = view.tabs.tabs[tab_index].content.find('.columns li');
     	
-    	$rows.detach().appendTo(view.tabs.tabs[tab_index].content.find('.columns ul'));
-    	$columns.detach().appendTo(view.tabs.tabs[tab_index].content.find('.rows ul'));
+        $rows.detach().appendTo(view.tabs.tabs[tab_index].content.find('.columns ul'));
+        $columns.detach().appendTo(view.tabs.tabs[tab_index].content.find('.rows ul'));
     	
         url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.swap.axis";
     	
@@ -450,8 +463,10 @@ var model = {
         
         // If automatic query execution is enabled, rerun the query when this option is changed
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-        	model.run_query(tab_index);
-        }	
+            model.run_query(tab_index);
+        }
+
+        view.stop_waiting();
     },
     
     /**
@@ -459,6 +474,6 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     export_data: function(tab_index) {
-    	location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
+        location.href = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
     }
 };
