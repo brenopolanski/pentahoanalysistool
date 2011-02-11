@@ -50,7 +50,7 @@ $.ajax({
 	type: 'GET',
 	dataType: 'text',
 	success: function(data) {
-		locale = data;
+		locale = data.substring(0,2);
 		$.ajax({
 			url: '/i18n/' + locale + ".json",
 			type: 'GET',
