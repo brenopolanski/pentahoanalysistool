@@ -43,12 +43,14 @@
 // TODO - if po is not available, prompt user to provide translation
 // Fetch PO file and store for later use
 var po_file;
+var locale;
+
 $.ajax({
 	url: '/i18n/',
 	type: 'GET',
 	dataType: 'text',
 	success: function(data) {
-		var locale = data;
+		locale = data;
 		$.ajax({
 			url: '/i18n/' + locale + ".json",
 			type: 'GET',
