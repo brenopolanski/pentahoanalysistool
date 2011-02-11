@@ -129,13 +129,13 @@ var model = {
                 'schema': data['schema']
             },
             
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function(responsedata, textStatus, XMLHttpRequest) {
                 // Load dimensions into a tree.
-                view.load_dimensions(tab_index, data.axes[0].dimensions);
+                view.load_dimensions(tab_index, responsedata.axes[0].dimensions);
                 // Load measures into a tree.
-                view.load_measures(tab_index, data.axes[0].dimensions, 
-                    "/query/" + view.tabs.tabs[tab_index].data['query_name'] +
-                    "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                view.load_measures(tab_index, responsedata.axes[0].dimensions, 
+                    "/datasources/" + data['connectionName'] + "/" + data['catalogName'] + "/" +
+                    data['schema'] + "/" + data['cube'] + "/measures"); 
                 view.hide_processing(true, tab_index);
             },
             
