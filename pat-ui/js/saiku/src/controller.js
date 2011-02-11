@@ -28,10 +28,8 @@ var controller = {
      * @param $button {Object} The clicked toolbar button object.
      */
     toolbar_click_handler : function($button) {
-        method_name = $button.attr("id");
-        
         try {
-        	eval("controller." + method_name + "();");
+        	eval("controller." + $button.attr('data-handler') + "();");
         } catch (e) {};
     },
     
@@ -89,4 +87,5 @@ $(document).ready(function() {
         $.getScript("js/saiku/src/view.js");
     });
     $.getScript("js/saiku/src/model.js");
+    $.getScript("js/saiku/src/i18n.js");
 });
