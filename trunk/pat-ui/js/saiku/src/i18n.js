@@ -31,17 +31,15 @@
 					element.attr({ 'title': translated_text });
 			
 			// Remove class so this element isn't repeatedly translated
-			if (element.removeClass)
+			if (element.removeClass) {
 				element.removeClass('.i18n');
+				element.addClass('.i18n_translated');
+			}
 		});
 	};
 })( jQuery );
 
-// Have the server look up the user-set language and 
-// attempt to automatically translate the interface
-
-// TODO - if po is not available, prompt user to provide translation
-// Fetch PO file and store for later use
+// Have the server look up the user-set language and store po file for later
 var po_file;
 var locale;
 
@@ -57,9 +55,6 @@ $.ajax({
 			dataType: 'json',
 			success: function(data) {
 				po_file = data;
-			},
-			error: function() {
-				// Prompt user if they would like to contribute a translation
 			}
 		});
 	}
