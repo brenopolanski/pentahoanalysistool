@@ -42,7 +42,7 @@ var controller = {
         
         // Make sure button isn't disabled, and that a query is active
         if (!($button.hasClass('button_disabled')) && view.tabs.tabs[tab_index].data['query_name']) {
-            method_name = $button.text().replace(" ", "_").replace("-", "_").toLowerCase();
+            method_name = $button.attr('data-handler')
             
             try {
             	eval("model." + method_name + "(" + tab_index + ");");
