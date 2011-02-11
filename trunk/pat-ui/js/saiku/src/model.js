@@ -106,8 +106,8 @@ var model = {
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
 
         // Check if the cube is valid if so then display an error.
-        data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
-        if (typeof data == "undefined") {
+        cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+        if (typeof cube_data == "undefined") {
             view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error')
             return;
         }
@@ -123,19 +123,23 @@ var model = {
             url : model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
             
             data: {
-                'connection': data['connectionName'],
-                'cube': data['cube'],
-                'catalog': data['catalogName'],
-                'schema': data['schema']
+                'connection': cube_data['connectionName'],
+                'cube': cube_data['cube'],
+                'catalog': cube_data['catalogName'],
+                'schema': cube_data['schema']
             },
             
-            success: function(responsedata, textStatus, XMLHttpRequest) {
+            success: function(data, textStatus, XMLHttpRequest) {
+            	// FIXME - populate axes with data
+            	
                 // Load dimensions into a tree.
-                view.load_dimensions(tab_index, responsedata.axes[0].dimensions);
+                view.load_dimensions(tab_index, data.axes[0].dimensions);
+                
                 // Load measures into a tree.
-                view.load_measures(tab_index, responsedata.axes[0].dimensions, 
-                    "/datasources/" + data['connectionName'] + "/" + data['catalogName'] + "/" +
-                    data['schema'] + "/" + data['cube'] + "/measures"); 
+                view.load_measures(tab_index, data.axes[0].dimensions, 
+                		"/datasources/" + cube_data['connectionName'] + "/" +
+                		cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures");
+                
                 view.hide_processing(true, tab_index);
             },
             
