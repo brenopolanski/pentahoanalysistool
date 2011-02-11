@@ -56,7 +56,7 @@ $.ajax({
 			success: function(data) {
 				po_file = data;
 			},
-			failure: function() {
+			error: function() {
 				// Prompt user if they would like to contribute a translation
 			}
 		});
