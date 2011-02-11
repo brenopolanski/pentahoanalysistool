@@ -59,20 +59,14 @@ var model = {
 
     /** Get the sessionid and based on the username and unhide the UI. */
     get_session : function() {
-        /* model.request({
-            method: "GET",
-            url: "session",
-            dataType: "html",
-            success: function(data, textStatus, XMLHttpRequest) {
-                model.session_id = data; */
         model.request({
             method: "GET",
             url: model.username + "/datasources",
             success: function(data, textStatus, XMLHttpRequest) {
                 model.connections = data;
-                $('.pre_waiting').remove();
                 view.draw_ui();
                 controller.add_tab();
+                view.hide_processing();
             }
         });
     /* }
@@ -121,7 +115,7 @@ var model = {
         // Reference for the selected tabs content.
         $tab = view.tabs.tabs[tab_index].content;
 
-        view.start_waiting('Preparing workspace...');
+        view.show_processing('Preparing workspace. Please wait...', true, tab_index);
 
         // Get a list of available dimensions and measures.
         model.request({
@@ -142,11 +136,12 @@ var model = {
                 view.load_measures(tab_index, data.axes[0].dimensions, 
                     "/query/" + view.tabs.tabs[tab_index].data['query_name'] +
                     "/axis/UNUSED/dimension/Measures/hierarchy/Measures/MeasuresLevel");
+                view.hide_processing(true, tab_index);
             },
             
             error: function() {
                 // Could not retrieve dimensions and measures from server
-                view.stop_waiting();
+                view.hide_processing(true, tab_index);
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
                 $('.cubes').find('option:first').attr('selected', 'selected');
             }
@@ -257,14 +252,15 @@ var model = {
      * @param tab_index {Integer} the id of the tab
      */
     run_query: function(tab_index) {
+
+        // Notify the user...
+        view.show_processing('Executing query. Please wait...', true, tab_index);
+
         // Make sure that a cube has been selected on this tab
         if (! view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
-        
-        // Let the users know this might take a while
-        view.start_waiting('Getting results...');
         // Set up a pointer to the result area of the active tab.
         $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
 
@@ -276,7 +272,7 @@ var model = {
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
-
+                
                 // Create a variable to store the table
                 var table_vis = '<table>';
 
@@ -346,13 +342,13 @@ var model = {
                 });
 
                 // Clear the wait message
-                view.stop_waiting();
+                view.hide_processing(true, tab_index);
             },
             
             error: function() {
                 // Let the user know that their query was not successful
+                view.hide_processing(true, tab_index);
                 view.show_dialog("Result Set", "There was an error getting the result set for that query.", "info");
-                view.stop_waiting();
             }
         });
     },
@@ -386,7 +382,7 @@ var model = {
      */
     non_empty: function(tab_index) {
 
-        view.start_waiting('Setting non-empty...');
+        view.show_processing('Setting Non-empty. Please wait...', true, tab_index);
 
         $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
         if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
@@ -413,7 +409,7 @@ var model = {
             model.run_query(tab_index);
         }
 
-        view.stop_waiting();
+        view.hide_processing(true, tab_index);
     },
     
     /**
@@ -422,7 +418,7 @@ var model = {
      */
     automatic_execution: function(tab_index) {
 
-        view.start_waiting('Setting automatic execution...');
+        view.show_processing('Setting automatic execution. Please wait...', true, tab_index);
 
         $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
@@ -433,7 +429,7 @@ var model = {
             $button.addClass('button_toggle_on').removeClass('button_toggle_off');
         }
 
-        view.stop_waiting();
+        view.hide_processing(true, tab_index);
     },
     
     /**
@@ -442,7 +438,7 @@ var model = {
      */
     swap_axis: function(tab_index) {
 
-        view.start_waiting('Swapping axis...');
+        view.show_processing('Swapping axis. Please wait...', true, tab_index);
 
         // Swap the actual selections
         $rows = view.tabs.tabs[tab_index].content.find('.rows li');
@@ -467,7 +463,7 @@ var model = {
             model.run_query(tab_index);
         }
 
-        view.stop_waiting();
+        view.hide_processing(true, tab_index);
     },
 
     /**
@@ -475,17 +471,19 @@ var model = {
      * @param tab_index {Integer} The active tab index
      */
     export_data: function(tab_index) {
-    	view.show_view('views/queries/export.html', function() {
-    		types = ['csv', 'xls'];
-    		$.each(types, function(index, type) {
-        		$('<a />')
-        			.attr({ 'href': BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" 
-        				+ view.tabs.tabs[tab_index].data['query_name'] + "/export/" + type })
-        			.text(type.toUpperCase() + " format")
-        			.appendTo($('.export_data'));
-        		$('<br />').appendTo($('.export_data'));
-        	});
-	    });
+        view.show_view('views/queries/export.html', function() {
+            types = ['csv', 'xls'];
+            $.each(types, function(index, type) {
+                $('<a />')
+                .attr({
+                    'href': BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
+                    + view.tabs.tabs[tab_index].data['query_name'] + "/export/" + type
+                })
+                .text(type.toUpperCase() + " format")
+                .appendTo($('.export_data'));
+                $('<br />').appendTo($('.export_data'));
+            });
+        });
     },
 
     /**
@@ -495,10 +493,10 @@ var model = {
      */
     save_query: function(tab_index, query_name) {
 
-        // Save with the new query name
-        // If success
-        //  Change the title of tab
-        //  Confirm successful save
+    // Save with the new query name
+    // If success
+    //  Change the title of tab
+    //  Confirm successful save
 
     }
 };

@@ -39,7 +39,9 @@ var view = {
                         $('#dialog').remove();
 
                         // Show pre loading message
-                        $('<div class="dialog pre_waiting"><div class="dialog_inner"><div class="dialog_body_waiting">Loading Saiku. Please wait...</div></div></div>').appendTo('body');
+                        // $('<div class="dialog pre_waiting"><div class="dialog_inner"><div class="dialog_body_waiting">Loading Saiku. Please wait...</div></div></div>').appendTo('body');
+
+                        view.show_processing('Loading Saiku User Interface. Please wait...');
 
                         // Create the session and log in.
                         model.get_session();
@@ -154,7 +156,7 @@ var view = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     load_cubes : function(tab_index) {
-        view.start_waiting('Loading available schemas and cubes');
+        view.show_processing('Loading available schemas and cubes. Please wait...', true, tab_index);
         $tab = view.tabs.tabs[tab_index].content;
         $cubes = $tab.find('.cubes');
         $cubes.append('<option>Select a cube</option>');
@@ -186,7 +188,7 @@ var view = {
                 $cubes.append('</optgroup>');
             });
         });
-        view.stop_waiting();
+        view.hide_processing(true, tab_index);
 
         $cubes.change(function() {
             model.new_query(tab_index);
@@ -297,8 +299,6 @@ var view = {
                 });
                 /** Prepare the workspace. */
                 view.prepare_workspace($tab);
-                /** Stop waiting. */
-                view.stop_waiting();
             },
             error: function() {
                 view.stop_waiting();
@@ -678,6 +678,46 @@ var view = {
     },
 
     /**
+     * Displays a waiting message and blocks the user from performing any actions.
+     * @param msg {String} Message to be displayed to the user.
+     * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
+     * @param tab_index {Integer} Index of the active tab.
+     */
+    show_processing : function (msg, block_div, tab_index) {
+        if(block_div) {
+            $active_tab = view.tabs.tabs[tab_index].content.parent().find('.tab');
+            $active_tab.block({
+                message: '<div class="processing"><div class="processing_inner">' + msg + '</div></div>',
+                overlayCSS:  {
+                    backgroundColor: '#FFF',
+                    opacity:         0.5
+                }
+            });
+        }else{
+            $.blockUI({
+                message: '<div class="processing"><div class="processing_inner">' + msg + '</div></div>',
+                overlayCSS:  {
+                    backgroundColor: '#FFF',
+                    opacity:         0.5
+                }
+            });
+        }
+    },
+
+    /**
+     * Hides the waiting message.
+     * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
+     * @param tab_index {Integer} Index of the active tab.
+     */
+    hide_processing : function(block_div, tab_index) {
+        if (block_div) {
+            $('.tab').unblock();
+        }else{
+            $.unblockUI();
+        }
+    },
+
+    /**
      * Displays a waiting dialog box.
      * @param message {String} Waiting message to be displayed.
      */
@@ -719,7 +759,7 @@ var view = {
                 });
                 
                 if (callback)
-                	callback();
+                    callback();
             }
         });
     },

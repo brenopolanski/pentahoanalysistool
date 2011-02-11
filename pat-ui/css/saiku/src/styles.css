@@ -1,7 +1,7 @@
 /**
  * @fileOverview Saiku User Inteface (UI) Default Styles
  * @author Prashant Raju and Mark Cahill
- * @version 1.0.0
+ * @version 2.0.0
 */
 
 /** Globals */
@@ -220,7 +220,7 @@ html, body {
 
 .sidebar {
     float: left;
-        overflow: hidden;;
+    overflow: hidden;;
 
     width: 260px;
 }
@@ -245,7 +245,7 @@ html, body {
 }
 .sidebar .sidebar_inner {
     padding: 10px;
-    
+
 }
 .sidebar .sidebar_inner select {
     border: 1px solid #CCC;
@@ -784,10 +784,6 @@ a.button_off:hover {
     border: 1px solid #888;
 }
 
-
-
-
-
 /** Workspace Toolbar */
 
 .workspace_toolbar {
@@ -843,13 +839,13 @@ a.button_off:hover {
     white-space: nowrap;
 }
 
-/** Waiting */
+/** Waiting 
 
 .waiting {
     background: transparent url('../../../images/src/waiting.gif') no-repeat left center;
     padding: 5px 0 5px 20px;
     float: right;
-}
+}*/
 
 /** Pre Waiting */
 
@@ -866,4 +862,28 @@ a.button_off:hover {
 /** Save Dialog */
 .error_msg {
     color: #CC0000;
+}
+
+/** blockUI */
+.blockOverlay, .blockMsg {
+    cursor: default !important;
+}
+.blockMsg {
+    background: #FFF !important;
+    border: none !important;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.processing {
+    border: 3px solid #EEE;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0 0 10px #EEE;
+    -webkit-box-shadow: 0 0 10px #EEE;
+}
+.processing_inner {
+    border: 1px solid #CCC;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    padding: 10px 5px;
 }
