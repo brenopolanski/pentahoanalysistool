@@ -505,7 +505,7 @@ var model = {
                     'href': BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
                     + view.tabs.tabs[tab_index].data['query_name'] + "/export/" + type
                 })
-                .text(type.toUpperCase() + " format")
+                .text(type.toUpperCase())
                 .appendTo($('.export_data'));
                 $('<br />').appendTo($('.export_data'));
             });
