@@ -772,7 +772,7 @@ var view = {
     show_dialog : function (title, message, type) {
 
         // Check if there is already a dialog box
-        if($('#dialog').length() > 0) {
+        if($('#dialog').length > 0) {
         // Do nothing
         }else {
             // Append a dialog <div/> to the body.
