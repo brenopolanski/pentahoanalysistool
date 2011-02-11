@@ -111,6 +111,9 @@ var TabContainer = function(tab_container, content_container) {
         	'nonempty': true,
         	'automatic_execution': false
         };
+        
+        // Localize UI controls
+        $('.i18n').i18n(po_file);
     };
 
     /** Empty the tab container (used for logout) */
