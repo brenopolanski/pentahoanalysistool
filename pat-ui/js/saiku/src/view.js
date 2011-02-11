@@ -265,47 +265,37 @@ var view = {
     load_measures : function(tab_index, data, url) {
         /** We need to fetch the measures separetely. */
         $tab = view.tabs.tabs[tab_index].content;
-        model.request({
-            method : "GET",
-            url : model.username + url,
-            success: function(data, textStatus, XMLHttpRequest) {
-                // Remove any instances of a tree.
-                $tab.find('.measure_tree ul').remove();
-                // Create a new measures tree.
-                $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree'));
-                // Add the first static measures folder.
-                $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m0" class="folder_expand">Measures</a></span></li>')
-                .appendTo($measure_tree);
-                // Add a child list to the measures list.
-                $measures_ul = $('<ul />').appendTo($measures);
-                
-                // Prep measures metadata
-                measure_id = 0;
-                delete view.tabs.tabs[tab_index].data['measures'];
-                view.tabs.tabs[tab_index].data['measures'] = new Array();
-                
-                // Populate the tree with the children of MeasureLevel
-                $.each(data, function(i, member) {
-                    measure_id++;
-                	
-                    $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['caption']+'</a></li>')
-                    .mousedown(function() {
-                        return false;
-                    }).appendTo($measures_ul);
-                    
-                    view.tabs.tabs[tab_index].data['measures'][measure_id] = {
-                        'measure': member.uniqueName // member.member
-                    };
-                });
-                /** Prepare the workspace. */
-                view.prepare_workspace($tab);
-            },
-            error: function() {
-                view.stop_waiting();
-                view.show_dialog("Error", "Couldn't fetch measures. Please try again.", "error");
-                $('.cubes').find('option:first').attr('selected', 'selected');
-            }
+
+        // Remove any instances of a tree.
+        $tab.find('.measure_tree ul').remove();
+        // Create a new measures tree.
+        $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree'));
+        // Add the first static measures folder.
+        $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m0" class="folder_expand">Measures</a></span></li>')
+        .appendTo($measure_tree);
+        // Add a child list to the measures list.
+        $measures_ul = $('<ul />').appendTo($measures);
+        
+        // Prep measures metadata
+        measure_id = 0;
+        delete view.tabs.tabs[tab_index].data['measures'];
+        view.tabs.tabs[tab_index].data['measures'] = new Array();
+        
+        // Populate the tree with the children of MeasureLevel
+        $.each(data, function(i, member) {
+            measure_id++;
+        	
+            $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['caption']+'</a></li>')
+            .mousedown(function() {
+                return false;
+            }).appendTo($measures_ul);
+            
+            view.tabs.tabs[tab_index].data['measures'][measure_id] = {
+                'measure': member.uniqueName // member.member
+            };
         });
+        /** Prepare the workspace. */
+        view.prepare_workspace($tab);
         
         // Add a new measure tree.
         $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');

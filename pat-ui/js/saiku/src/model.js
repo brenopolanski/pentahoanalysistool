@@ -133,12 +133,34 @@ var model = {
             	// FIXME - populate axes with data
             	
                 // Load dimensions into a tree.
-                view.load_dimensions(tab_index, data.axes[0].dimensions);
+                model.request({
+                    method : "GET",
+                    url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
+            			cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
+                    success: function(data, textStatus, XMLHttpRequest) {
+                		view.load_dimensions(tab_index, data);
+                	},
+                	error: function() {
+                        view.stop_waiting();
+                        view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
+                        $('.cubes').find('option:first').attr('selected', 'selected');
+                    }
+                });
                 
                 // Load measures into a tree.
-                view.load_measures(tab_index, data.axes[0].dimensions, 
-                		"/datasources/" + cube_data['connectionName'] + "/" +
-                		cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures");
+                model.request({
+                    method : "GET",
+                    url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
+            			cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
+                    success: function(data, textStatus, XMLHttpRequest) {
+                		view.load_measures(tab_index, data);
+                	},
+                	error: function() {
+                        view.stop_waiting();
+                        view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
+                        $('.cubes').find('option:first').attr('selected', 'selected');
+                    }
+                });
                 
                 view.hide_processing(true, tab_index);
             },
