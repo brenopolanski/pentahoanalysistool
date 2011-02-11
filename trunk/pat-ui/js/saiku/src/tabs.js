@@ -109,7 +109,7 @@ var TabContainer = function(tab_container, content_container) {
         // Set default options
         this.tabs[new_index].data['options'] = {
         	'nonempty': true,
-        	'automatic_execution': false
+        	'automatic_execution': true
         };
         
         // Localize UI controls

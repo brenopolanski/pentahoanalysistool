@@ -278,21 +278,25 @@ var model = {
      * @param tab_index {Integer} the id of the tab
      */
     run_query: function(tab_index) {
-
-        // Notify the user...
-        view.show_processing('Executing query. Please wait...', true, tab_index);
-
         // Make sure that a cube has been selected on this tab
         if (! view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
-        // Set up a pointer to the result area of the active tab.
-        $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
 
         var col_counter = view.tabs.tabs[tab_index].content.find('.columns ul li').length;
         var row_counter = view.tabs.tabs[tab_index].content.find('.rows ul li').length;
+        
+        // Abort if one axis or the other is empty
+        if (col_counter == 0 || row_counter == 0)
+        	return;
+        
+        // Notify the user...
+        view.show_processing('Executing query. Please wait...', true, tab_index);
 
+        // Set up a pointer to the result area of the active tab.
+        $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+        
         // Fetch the resultset from the server
         model.request({
             method: "GET",
