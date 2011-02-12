@@ -1,0 +1,14 @@
+{
+	"New Query": "Nueva Pregunta",
+	"Open Query": "Pregunta Abierta",
+	"Save Query": "Guardar Pregunta",
+	"Delete Query": "Borrar Pregunta",
+	"Logout": "Salir",
+	"About": "Aproximadamente",
+	"Run Query": "Correr Pregunta",  
+	"Automatic execution": "Ejecución automática",
+	"Non-empty": "No vacio",
+	"Swap axis": "Cambiar eje",
+	"Show MDX" : "Demuestra MDX",
+	"Export data": "Exportar datos"
+}
