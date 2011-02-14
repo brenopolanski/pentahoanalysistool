@@ -24,31 +24,30 @@ var model = {
      * @param paramters {Object} Parameters for AJAX requests.
      */
     request : function(parameters) {
-        if (typeof parameters.method == "undefined")
-            parameters.method = "GET";
-        if (typeof parameters.data == "undefined")
-            parameters.data = {};
-        if (typeof parameters.success == "undefined")
-            parameters.success = function() {};
-        if (typeof parameters.error == "undefined")
-            parameters.error = function() {
-                view.show_dialog('Error',
-                    'Could not connect to the server, please check your internet connection. ' +
-                    'If this problem persists, please refresh the page.', 'error');
-            };
-        if (typeof parameters.dataType == "undefined")
-            parameters.dataType = 'json';
+    	// Overwrite defaults with incoming parameters
+    	settings = $.extend({
+    		method: "GET",
+    		data: {},
+    		success: function() {},
+    		error: function() {
+    			view.show_dialog('Error',
+                        'Could not connect to the server, please check your internet connection. ' +
+                        'If this problem persists, please refresh the page.', 'error');
+    		},
+    		dataType: "json"
+    	}, parameters);
         
+    	// Make ajax request
         $.ajax({
-            type: parameters.method,
+            type: settings.method,
             cache: false,
             url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
-            dataType: parameters.dataType,
+            dataType: settings.dataType,
             username: model.username,
             password: model.password,
-            success: parameters.success,
-            error: parameters.error,
-            data: parameters.data
+            success: settings.success,
+            error: settings.error,
+            data: settings.data
         });
     },
 
