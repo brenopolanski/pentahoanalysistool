@@ -31,23 +31,41 @@ var locale;
 			element = $(this);
 			
 			// Translate text
-			if (element.text && po_file) {
+			if (element.text()) {
 				translated_text = translate( element.text(), po_file );
-				if (translated_text)
-					element.text( );
+				if (translated_text) {
+					element.data('original', element.text());
+					element.text(translated_text);
+				}
 			}
 			
 			// Translate title
-			if (element.attr && po_file)
+			if (element.attr('title'))
 				translated_text = translate( element.attr('title'), po_file );
-				if (translated_text) 
+				if (translated_text) {
+					element.data('original', element.attr('title'));
 					element.attr({ 'title': translated_text });
+				}
 			
 			// Remove class so this element isn't repeatedly translated
-			if (element.removeClass) {
-				element.removeClass('i18n');
-				element.addClass('i18n_translated');
-			}
+			element.removeClass('i18n');
+			element.addClass('i18n_translated');
+		});
+	};
+	
+	$.fn.un_i18n = function() {
+		// Iterate over UI elements to replace the original text
+		return $.each(this, function() {
+			element = $(this);
+			
+			if (element.text())
+				element.text(element.data('original'));
+			
+			if (element.attr('title'))
+				element.attr({ 'title': element.data('original') });
+			
+			element.addClass('i18n');
+			element.removeClass('i18n_translated');
 		});
 	};
 })( jQuery );
