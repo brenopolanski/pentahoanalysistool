@@ -99,6 +99,9 @@ var TabContainer = function(tab_container, content_container) {
             $new_tab_content.find('.workspace_toolbar a').click(function(event) {
                 return controller.workspace_toolbar_click_handler($(this));
             });
+            
+            // Localize UI controls
+            $('.i18n').i18n(po_file);
         });
         $new_tab_content.appendTo(this.content_container);
         
@@ -111,9 +114,6 @@ var TabContainer = function(tab_container, content_container) {
         	'nonempty': true,
         	'automatic_execution': true
         };
-        
-        // Localize UI controls
-        $('.i18n').i18n(po_file);
     };
 
     /** Empty the tab container (used for logout) */
