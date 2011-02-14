@@ -32,8 +32,8 @@
 			
 			// Remove class so this element isn't repeatedly translated
 			if (element.removeClass) {
-				element.removeClass('.i18n');
-				element.addClass('.i18n_translated');
+				element.removeClass('i18n');
+				element.addClass('i18n_translated');
 			}
 		});
 	};
