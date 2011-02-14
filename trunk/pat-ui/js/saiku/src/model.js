@@ -51,7 +51,9 @@ var model = {
         });
     },
 
-    /** Get the sessionid and based on the username and unhide the UI. */
+    /** 
+     * Create a new session and unhide the UI. 
+     */
     get_session : function() {
         model.request({
             method: "GET",
@@ -63,22 +65,25 @@ var model = {
                 view.hide_processing();
             }
         });
-    /* }
-        }); */
     },
     
     /**
-     * Delete old query and create new.
-     * @param tab_index {Integer} Index of the selected tab.
+     * Delete a query
+     * @param tab_index The tab containing the query
      */
-    new_query_id: function(tab_index) {
-        if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
-            model.request({
-                method: "DELETE",
-                url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
-            });
-        }
-    	
+    delete_query: function(tab_index) {
+        model.request({
+            method: "DELETE",
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
+        });
+    },
+    
+    /**
+     * Generate a new query_id
+     * @param tab_index {Integer} Index of the selected tab.
+     * @return A new unique query_id
+     */
+    generate_query_id: function(tab_index) {
         view.tabs.tabs[tab_index].data['query_name'] = 
         'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -91,10 +96,14 @@ var model = {
      * droppable and sortable items.
      * @param tab_index {Integer} Index of the selected tab.
      */
-    new_query : function(tab_index) {
+    new_query: function(tab_index) {
+    	// If query already exists, delete it
+        if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
+        	model.delete_query(tab_index);
+        }
     	
         // Generate the temporary query name
-        model.new_query_id(tab_index);
+        model.generate_query_id(tab_index);
 
         // Find the selected cube.
         $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
