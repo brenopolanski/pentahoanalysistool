@@ -24,7 +24,7 @@ REST_MOUNT_POINT = "rest/saiku/";
 var controller = {
     
     /**
-     * Handle all clicks events on the toolbar.
+     * Handle all clicks events on the main toolbar.
      * @param $button {Object} The clicked toolbar button object.
      */
     toolbar_click_handler : function($button) {
@@ -42,7 +42,7 @@ var controller = {
         
         // Make sure button isn't disabled, and that a query is active
         if (!($button.hasClass('button_disabled')) && view.tabs.tabs[tab_index].data['query_name']) {
-            method_name = $button.attr('data-handler')
+            method_name = $button.attr('href').replace('#', '');
             
             try {
             	eval("model." + method_name + "(" + tab_index + ");");
