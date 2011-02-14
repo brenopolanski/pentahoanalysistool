@@ -1,18 +1,18 @@
 <!-- tab_workspace -->
 <div class="workspace">
     <div class="workspace_inner">
-        <div class="workspace_toolbar">
-            <a href="#" class="button_disabled i18n" data-handler="run_query" title="Run Query">Run Query</a>
-            <a href="#" class="button_toggle_disabled_on i18n" data-handler="automatic_execution" title="Automatic execution">Automatic execution</a>
-            <a href="#" class="button_toggle_disabled_on i18n" data-handler="non_empty" title="Non-empty">Non-empty</a>
-            <a href="#" class="button_disabled i18n" data-handler="swap_axis" title="Swap axis">Swap axis</a>
-            <a href="#" class="button_disabled i18n" data-handler="show_mdx" title="Show MDX">Show MDX</a>
-            <a href="#" class="button_disabled i18n" data-handler="export_data" title="Export data">Export data</a>
+        <div class="workspace_toolbar disabled_toolbar">
+            <ul>
+                <li><a href="#" class="save button" title="Save Query"></a></li>
+                <li class="seperator"><a href="#" class="run button" data-handler="run_query" title="Run query"></a></li>
+                <li><a href="#" class="auto button on" data-handler="automatic_execution" title="Automatic execution"></a></li>
+                <li class="seperator"><a href="#" class="non_empty on button"  data-handler="non_empty"  title="Non-empty"></a></li>
+                <li><a href="#" class="swap_axis button" data-handler="swap_axis" title="Swap axis"></a></li>
+                <li><a href="#" class="mdx button" data-handler="show_mdx" title="Show MDX"></a></li>
+                <li class="seperator"><a href="#" class="export_xls button" data-handler="export_xls" title="Export XLS"></a></li>
+                <li><a href="#" class="export_csv button" data-handler="export_csv" title="Export CSV"></a></li>
+            </ul>
         </div>
-        <div class="waiting quiet">
-            <span class="waiting_message"></span>
-        </div>
-        <div class="clear"></div>
         <div class="workspace_area">
             <div class="fields">
                 <div class="fields_list" title="COLUMNS">

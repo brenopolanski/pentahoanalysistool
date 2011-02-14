@@ -130,32 +130,32 @@ var model = {
             },
             
             success: function(data, textStatus, XMLHttpRequest) {
-            	// FIXME - populate axes with data
+                // FIXME - populate axes with data
             	
                 // Load dimensions into a tree.
                 model.request({
                     method : "GET",
                     url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
-            			cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
+                    cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
                     success: function(data, textStatus, XMLHttpRequest) {
-                		view.load_dimensions(tab_index, data);
+                        view.load_dimensions(tab_index, data);
                 		
-		                // Load measures into a tree.
-		                model.request({
-		                    method : "GET",
-		                    url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
-		            			cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
-		                    success: function(data, textStatus, XMLHttpRequest) {
-		                		view.load_measures(tab_index, data);
-		                	},
-		                	error: function() {
-		                        view.stop_waiting();
-		                        view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
-		                        $('.cubes').find('option:first').attr('selected', 'selected');
-		                    }
-		                });
-                	},
-                	error: function() {
+                        // Load measures into a tree.
+                        model.request({
+                            method : "GET",
+                            url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
+                            cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
+                            success: function(data, textStatus, XMLHttpRequest) {
+                                view.load_measures(tab_index, data);
+                            },
+                            error: function() {
+                                view.stop_waiting();
+                                view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
+                                $('.cubes').find('option:first').attr('selected', 'selected');
+                            }
+                        });
+                    },
+                    error: function() {
                         view.stop_waiting();
                         view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
                         $('.cubes').find('option:first').attr('selected', 'selected');
@@ -269,8 +269,12 @@ var model = {
         
         // If automatic query execution is enabled, rerun the query after making change
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-            model.run_query(tab_index);
+            if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                model.run_query(tab_index);
+            }
         }
+
+        view.check_toolbar();
     },
     
     /**
@@ -289,7 +293,7 @@ var model = {
         
         // Abort if one axis or the other is empty
         if (col_counter == 0 || row_counter == 0)
-        	return;
+            return;
         
         // Notify the user...
         view.show_processing('Executing query. Please wait...', true, tab_index);
@@ -417,10 +421,10 @@ var model = {
         $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
         if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
             view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
-            $button.removeClass('button_toggle_on').addClass('button_toggle_off');
+            $button.removeClass('on');
         } else {
             view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
-            $button.addClass('button_toggle_on').removeClass('button_toggle_off');
+            $button.addClass('on');
         }
     	
         url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.nonempty";
@@ -453,10 +457,10 @@ var model = {
         $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = false;
-            $button.removeClass('button_toggle_on').addClass('button_toggle_off');
+            $button.removeClass('on');
         } else {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = true;
-            $button.addClass('button_toggle_on').removeClass('button_toggle_off');
+            $button.addClass('on');
         }
 
         view.hide_processing(true, tab_index);
@@ -500,33 +504,21 @@ var model = {
      * Export data as Excel XML
      * @param tab_index {Integer} The active tab index
      */
-    export_data: function(tab_index) {
-        view.show_view('views/queries/export.html', function() {
-            types = ['csv', 'xls'];
-            $.each(types, function(index, type) {
-                $('<a />')
-                .attr({
-                    'href': BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
-                    + view.tabs.tabs[tab_index].data['query_name'] + "/export/" + type
-                })
-                .text(type.toUpperCase())
-                .appendTo($('.export_data'));
-                $('<br />').appendTo($('.export_data'));
-            });
-        });
+    export_xls: function(tab_index) {
+        
+        window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
+        + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
+            
     },
 
     /**
-     * Save query
+     * Export data as CSV
      * @param tab_index {Integer} The active tab index
-     * @param query_name {string} The query name
      */
-    save_query: function(tab_index, query_name) {
+    export_csv: function(tab_index) {
 
-    // Save with the new query name
-    // If success
-    //  Change the title of tab
-    //  Confirm successful save
+        window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
+        + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
 
     }
 };
