@@ -241,7 +241,7 @@ html, body {
 .sidebar h3.top {
     border-top: none !important;
     margin: 0;
-    padding-top: 6px;
+    padding-top: 5px;
 }
 .sidebar .sidebar_inner {
     padding: 10px;
@@ -352,7 +352,12 @@ html, body {
 }
 
 @-moz-document url-prefix() {
-    .sidebar h3 {
+    .sidebar h3.top {
+    border-top: none !important;
+    margin: 0;
+    padding-top: 6px;
+}
+.sidebar h3 {
     line-height: 1.5em;
     margin: 0;
     padding: 5px 10px 6px;

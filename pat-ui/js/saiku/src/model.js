@@ -266,13 +266,8 @@ var model = {
             method: "DELETE",
             url: url
         });
+
         
-        // If automatic query execution is enabled, rerun the query after making change
-        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-            if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                model.run_query(tab_index);
-            }
-        }
     },
     
     /**

@@ -357,7 +357,7 @@ var view = {
         $both_dropzones.sortable('reset');
 
         /** Check the toolbar. */
-        check_toolbar();
+        view.check_toolbar();
 
         /** Double click instead of drag and drop. */
         $both_tree_items.dblclick(function(e){
@@ -411,6 +411,16 @@ var view = {
                 $both_dropzones.sortable('refresh');
                 /** When dimension or measure is removed, set the selection. */
                 model.removed_item($(this), true);
+
+                // If automatic query execution is enabled, rerun the query after making change
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                    if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                        model.run_query(tab_index);
+                    }
+                }
+
+                view.check_toolbar();
+                
             }
         });
 
@@ -536,7 +546,16 @@ var view = {
                     /** Remove the draggable measure. */
                     ui.draggable.remove();
                 },1);
-            /** When dimension or measure is removed, set the selection. */
+                /** When dimension or measure is removed, set the selection. */
+
+                // If automatic query execution is enabled, rerun the query after making change
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                    if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                        model.run_query(tab_index);
+                    }
+                }
+
+                view.check_toolbar();
             }
         });
 
@@ -587,7 +606,7 @@ var view = {
                 .removeClass('expand').addClass('collapsed')
                 .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
-            check_toolbar();
+            view.check_toolbar();
         }
          
         /**
@@ -611,7 +630,7 @@ var view = {
                 .removeClass('expand').addClass('collapsed')
                 .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
-            check_toolbar();
+            view.check_toolbar();
         }
 
         /**
@@ -624,7 +643,7 @@ var view = {
             $measure_tree.find('[rel=' + id + ']').parent()
             .removeClass('ui-draggable').addClass('used not-draggable');
             $measure_tree.find('.root').addClass('used');
-            check_toolbar();
+            view.check_toolbar();
         }
 
         /**
@@ -641,19 +660,9 @@ var view = {
             }else if ($both_dropzones.find('.d_measure').length == 1 && is_drop) {
                 $measure_tree.find('.root').removeClass('used');
             }
-            check_toolbar();
+            view.check_toolbar();
         }
 
-        /**
-         * Check if the toolbar can be enabled or disabled.
-         */
-        function check_toolbar() {
-            if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
-            }else{
-                $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
-            }
-        }
     },
 
     /**
@@ -763,6 +772,19 @@ var view = {
                     $('#dialog').remove();
                 }
             });
+        }
+    },
+
+    /**
+     * Check if the toolbar can be enabled or disabled.
+     */
+    check_toolbar: function() {
+        if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+            $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
+        }else{
+            $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
+            // Lets clear the .workspace result as well
+            $tab.find('.workspace_results').html('');
         }
     }
 
