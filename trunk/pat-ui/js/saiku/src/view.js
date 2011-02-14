@@ -70,12 +70,17 @@ var view = {
         // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
         var sidebar_offset = ( $('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4) ),
         sidebar_height = window_height - sidebar_offset,
-        workspace_height = sidebar_height - 20;
+        workspace_height = sidebar_height - 40;
+
+        if(!$('.fields').is(':visible')) {
+            var workspace_results = $('.workspace_toolbar').outerHeight();
+        }else{
+            var workspace_results = $('.workspace_toolbar').outerHeight() + $('.fields').outerHeight();
+        }
 
         $('.sidebar, .sidebar_separator').css('height', sidebar_height);
         $('.workspace_inner').css('height', workspace_height);
-
-        $('.workspace_results').css('height', workspace_height - 133);
+        $('.workspace_results').css('height', workspace_height - workspace_results);
     },
     
     /** 

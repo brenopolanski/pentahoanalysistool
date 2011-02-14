@@ -872,3 +872,8 @@ html, body {
     background-repeat: no-repeat;
     background-position: center center;
 }
+.workspace_toolbar .toggle_fields {
+    background-image: url('../../../images/src/textfield.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
