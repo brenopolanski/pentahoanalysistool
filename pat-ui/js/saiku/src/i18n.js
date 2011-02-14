@@ -1,4 +1,17 @@
+/**
+ * The PO file for the currently selected language
+ */
+var po_file;
+
+/**
+ * The user's current locale
+ */
+var locale;
+
 (function( $ ){
+	/**
+	 * Internationalize selected elements with the provided PO file
+	 */
 	$.fn.i18n = function(po_file) {
 		// If no PO file is provided, then don't translate anything
 		if (! po_file)
@@ -39,23 +52,24 @@
 	};
 })( jQuery );
 
-// Have the server look up the user-set language and store po file for later
-var po_file;
-var locale;
-
-$.ajax({
-	url: '/i18n/',
-	type: 'GET',
-	dataType: 'text',
-	success: function(data) {
-		locale = data.substring(0,2);
-		$.ajax({
-			url: '/i18n/' + locale + ".json",
-			type: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				po_file = data;
-			}
-		});
-	}
-});
+/**
+ * Automatically internationalize the UI based on the user's Accept-Language header
+ */
+automatic_i18n = function() {
+	$.ajax({
+		url: '/i18n/',
+		type: 'GET',
+		dataType: 'text',
+		success: function(data) {
+			locale = data.substring(0,2);
+			$.ajax({
+				url: '/i18n/' + locale + ".json",
+				type: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					po_file = data;
+				}
+			});
+		}
+	});
+}();
