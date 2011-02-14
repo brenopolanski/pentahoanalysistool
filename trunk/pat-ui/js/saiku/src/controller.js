@@ -29,7 +29,7 @@ var controller = {
      */
     toolbar_click_handler : function($button) {
         try {
-        	eval("controller." + $button.attr('data-handler') + "();");
+        	eval("controller." + $button.attr('href').replace('#', '') + "();");
         } catch (e) {};
     },
     
