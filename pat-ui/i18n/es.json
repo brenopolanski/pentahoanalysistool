@@ -10,5 +10,6 @@
 	"Non-empty": "No vacio",
 	"Swap axis": "Cambiar eje",
 	"Show MDX" : "Demuestra MDX",
-	"Export data": "Exportar datos"
+	"Export XLS": "Exportar XLS",
+	"Export CSV": "Exportar CSV"
 }
