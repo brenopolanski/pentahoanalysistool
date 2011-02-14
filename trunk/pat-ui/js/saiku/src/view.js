@@ -644,25 +644,9 @@ var view = {
          */
         function check_toolbar() {
             if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
-                    if($(this).hasClass('button_disabled')) {
-                        $(this).removeClass('button_disabled').addClass('button');
-                    }else if($(this).hasClass('button_toggle_disabled_on')) {
-                        $(this).removeClass('button_toggle_disabled_on').addClass('button_toggle_on');
-                    }else if($(this).hasClass('button_toggle_disabled_off')) {
-                        $(this).removeClass('button_toggle_disabled_off').addClass('button_toggle_off');
-                    }
-                });
+                $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
             }else{
-                $.each($tab.find('.workspace_toolbar').find('a'), function(i, button) {
-                    if($(this).hasClass('button')) {
-                        $(this).removeClass('button').addClass('button_disabled');
-                    }else if($(this).hasClass('button_toggle_on')) {
-                        $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_on');
-                    }else if($(this).hasClass('button_toggle_off')) {
-                        $(this).removeClass('button_toggle_on').addClass('button_toggle_disabled_off');
-                    }
-                });
+                $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
             }
         }
     },
@@ -677,7 +661,7 @@ var view = {
         if(block_div) {
             $active_tab = view.tabs.tabs[tab_index].content.parent().find('.tab');
             $active_tab.block({
-                message: '<div class="processing"><div class="processing_inner">' + msg + '</div></div>',
+                message: '<div class="processing"><div class="processing_inner"><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
                 overlayCSS:  {
                     backgroundColor: '#FFF',
                     opacity:         0.5
@@ -685,7 +669,7 @@ var view = {
             });
         }else{
             $.blockUI({
-                message: '<div class="processing"><div class="processing_inner">' + msg + '</div></div>',
+                message: '<div class="processing"><div class="processing_inner"><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
                 overlayCSS:  {
                     backgroundColor: '#FFF',
                     opacity:         0.5
@@ -705,21 +689,6 @@ var view = {
         }else{
             $.unblockUI();
         }
-    },
-
-    /**
-     * Displays a waiting dialog box.
-     * @param message {String} Waiting message to be displayed.
-     */
-    start_waiting : function (message) {
-        $('.waiting_message').html(message);
-        $('.waiting').show();
-    },
-    
-    /** Removes a waiting dialog box. */
-    stop_waiting : function () {
-        $('.waiting_message').html('');
-        $('.waiting').hide();
     },
 
     /**
