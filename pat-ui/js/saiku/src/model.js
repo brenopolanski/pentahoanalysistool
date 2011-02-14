@@ -61,7 +61,7 @@ var model = {
     get_session : function() {
         model.request({
             method: "GET",
-            url: model.username + "/datasources",
+            url: model.username + "/discovers",
             success: function(data, textStatus, XMLHttpRequest) {
                 model.connections = data;
                 view.draw_ui();
@@ -135,7 +135,7 @@ var model = {
                 // Load dimensions into a tree.
                 model.request({
                     method : "GET",
-                    url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
+                    url : model.username + "/discover/" + cube_data['connectionName'] + "/" +
                     cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
                     success: function(data, textStatus, XMLHttpRequest) {
                         view.load_dimensions(tab_index, data);
@@ -143,7 +143,7 @@ var model = {
                         // Load measures into a tree.
                         model.request({
                             method : "GET",
-                            url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
+                            url : model.username + "/discover/" + cube_data['connectionName'] + "/" +
                             cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
                             success: function(data, textStatus, XMLHttpRequest) {
                                 view.load_measures(tab_index, data);
