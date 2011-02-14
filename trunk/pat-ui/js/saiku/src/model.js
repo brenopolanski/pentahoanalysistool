@@ -428,13 +428,14 @@ var model = {
             url: url,
             data: {
                 'propertyValue' : view.tabs.tabs[tab_index].data['options']['nonempty']
+            },
+            success: function() {
+                // If automatic query execution is enabled, rerun the query when this option is changed
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                    model.run_query(tab_index);
+                }
             }
         });
-        
-        // If automatic query execution is enabled, rerun the query when this option is changed
-        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-            model.run_query(tab_index);
-        }
 
         view.hide_processing(true, tab_index);
     },
@@ -504,13 +505,14 @@ var model = {
             url: url,
             data: {
                 'propertyValue' : true
+            },
+            success: function() {
+                // If automatic query execution is enabled, rerun the query when this option is changed
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                    model.run_query(tab_index);
+                }
             }
         });
-        
-        // If automatic query execution is enabled, rerun the query when this option is changed
-        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-            model.run_query(tab_index);
-        }
 
         view.hide_processing(true, tab_index);
     },
