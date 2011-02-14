@@ -543,9 +543,12 @@ var model = {
         + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
 
     },
-    
-    save_query: function(tab_index) {
 
+    /**
+     * Save the query
+     * @param tab_index {Integer} The active tab index
+     */
+    save_query: function(tab_index) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
@@ -558,16 +561,28 @@ var model = {
                     opacity : 100,
                     onShow : function(dialog) {
                         dialog.data.find('#save_query').click(function() {
-                            if(dialog.data.find('#query_name').text().length == 0) {
+                            if(dialog.data.find('#query_name').val().length == 0) {
                                 dialog.data.find('.error_msg').html('You need to specify a name for your query.');
                             }else{
-                                var query_name = dialog.data.find('#query_name').text();
-                                // Save the query
+                                var query_name = dialog.data.find('#query_name').val();
+
+                                url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'];
+
                                 model.request({
                                     method: "POST",
                                     url: url,
                                     data: {
-                                        'propertyValue' : view.tabs.tabs[tab_index].data['options']['nonempty']
+                                        'queryname' : query_name
+                                    },
+                                    success : function(){
+                                        // Change the tab title
+                                        $('#header').find('.selected').find('a').html(query_name);
+                                        // Change the dialog message
+                                        $('#dialog').find('.dialog_body_save').text('').text('Query saved succesfully.');
+                                        // Remove the dialog save button
+                                        $('#save_query').remove();
+                                        // Rename the cancel button
+                                        $('#dialog').find('.close').val('Ok');
                                     }
                                 });
                             }
