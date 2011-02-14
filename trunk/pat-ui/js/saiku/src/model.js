@@ -16,9 +16,6 @@ var model = {
     /** Password to be used with BASIC_AUTH. */
     password : "",
 
-    /** session_id used to make calls to the server. */
-    session_id : "",
-
     /** Connection information for this Saiku server. */
     connections : {},
 
@@ -45,9 +42,7 @@ var model = {
         $.ajax({
             type: parameters.method,
             cache: false,
-            /* This is used for local development. */
             url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
-            //url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + parameters.url,
             dataType: parameters.dataType,
             username: model.username,
             password: model.password,
