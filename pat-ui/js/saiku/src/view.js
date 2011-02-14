@@ -149,6 +149,24 @@ var view = {
             view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
             return false;
         });
+        
+        // Activate language selector
+        $("#language-selector").val(locale)
+        	.change(function() {
+        		locale = $("#language-selector").val();
+        		$.ajax({
+        			url: '/i18n/' + locale + ".json",
+        			type: 'GET',
+        			dataType: 'json',
+        			success: function(data) {
+        				if (data) {
+	        				po_file = data;
+	        				$('.i18n').i18n(po_file);
+	        				$('.i18n_translated').i18n(po_file);
+        				}
+        			}
+        		});
+        	});
     },
 
     /** Destroy the user interface. */
