@@ -61,7 +61,7 @@ var model = {
     get_session : function() {
         model.request({
             method: "GET",
-            url: model.username + "/discovers",
+            url: model.username + "/discover",
             success: function(data, textStatus, XMLHttpRequest) {
                 model.connections = data;
                 view.draw_ui();
