@@ -759,48 +759,8 @@ var view = {
                 }
             });
         }
-    },
-
-    /**
-     * Loads a pop up dialog box for saving a query.
-     * @param url {String} Url for the view to be loaded
-     */
-    save_dialog : function (url) {
-
-        // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="dialog hide" />').appendTo('body');
-        // Load the view into the dialog <div/> and disable caching.
-        $.ajax({
-            url : BASE_URL + url,
-            cache : false,
-            dataType : "html",
-            success : function(data) {
-                $('#dialog').html(data).modal({
-                    opacity : 100,
-                    onShow : function(dialog) {
-                        dialog.data.find('#save_query').click(function() {
-                            if(dialog.data.find('#query_name').text().length == 0) {
-                                dialog.data.find('.error_msg').html('You need to specify a name for your query.');
-                            }else{
-                                var query_name = dialog.data.find('#query_name').text();
-                            }
-                        });
-                    },
-                    onClose : function (dialog) {
-                        // Remove all simple modal objects.
-                        dialog.data.remove();
-                        dialog.container.remove();
-                        dialog.overlay.remove();
-                        $.modal.close();
-                        // Remove the #dialog which we appended to the body.
-                        $('#dialog').remove();
-                    }
-                });
-            }
-        });
-
-
     }
+
 }
 
 /** Initialise the user interface. */

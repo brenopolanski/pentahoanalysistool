@@ -36,7 +36,7 @@ var model = {
         if (typeof parameters.error == "undefined")
             parameters.error = function() {
                 view.show_dialog('Error',
-                    'Could not connect to the server, please check your internet connection. ' +
+                'Could not connect to the server, please check your internet connection. ' +
                     'If this problem persists, please refresh the page.', 'error');
             };
         if (typeof parameters.dataType == "undefined")
@@ -69,7 +69,7 @@ var model = {
                 view.hide_processing();
             }
         });
-    /* }
+        /* }
         }); */
     },
     
@@ -86,7 +86,7 @@ var model = {
         }
     	
         view.tabs.tabs[tab_index].data['query_name'] = 
-        'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         }).toUpperCase();
@@ -136,7 +136,7 @@ var model = {
                 model.request({
                     method : "GET",
                     url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
-                    cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
+                        cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
                     success: function(data, textStatus, XMLHttpRequest) {
                         view.load_dimensions(tab_index, data);
                 		
@@ -144,7 +144,7 @@ var model = {
                         model.request({
                             method : "GET",
                             url : model.username + "/datasources/" + cube_data['connectionName'] + "/" +
-                            cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
+                                cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
                             success: function(data, textStatus, XMLHttpRequest) {
                                 view.load_measures(tab_index, data);
                             },
@@ -201,14 +201,14 @@ var model = {
         /** If sorting on a ROW axis and is a dimension. */
         if (axis === 'ROWS' && is_dimension) {
             var position = $row_dropzone.find('li').index($item), memberposition = -1;
-        /** If sorting on a COLUMN axis and is a dimension. */
+            /** If sorting on a COLUMN axis and is a dimension. */
         } else if (axis === 'COLUMNS' && is_dimension) {
             var position = $column_dropzone.find('li').index($item), memberposition = -1;
-        /** If sorting on a ROW axis and is a measure. */
+            /** If sorting on a ROW axis and is a measure. */
         } else if (axis === 'ROWS' && is_measure) {
             var memberposition = $both_dropzones.find('li.d_measure').index($item),
             position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
-        /** If sorting on a COLUMN axis and is a measure. */
+            /** If sorting on a COLUMN axis and is a measure. */
         } else if (axis === 'COLUMNS' && is_measure) {
             var memberposition = $both_dropzones.find('li.d_measure').index($item),
             position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
@@ -218,7 +218,7 @@ var model = {
             // This is a dimension
             item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-            + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+                + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if (is_measure) {
             // This is a measure
             item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
@@ -254,7 +254,7 @@ var model = {
             // This is a dimension
             item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
             url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-            + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+                + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
             // This is a measure
             item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
@@ -507,7 +507,7 @@ var model = {
     export_xls: function(tab_index) {
         
         window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
-        + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
+            + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
             
     },
 
@@ -518,7 +518,44 @@ var model = {
     export_csv: function(tab_index) {
 
         window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
-        + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
+            + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
 
+    },
+    
+    save_query: function(tab_index) {
+
+        // Append a dialog <div/> to the body.
+        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        // Load the view into the dialog <div/> and disable caching.
+        $.ajax({
+            url : BASE_URL + 'views/queries/save.html',
+            cache : false,
+            dataType : "html",
+            success : function(data) {
+                $('#dialog').html(data).modal({
+                    opacity : 100,
+                    onShow : function(dialog) {
+                        dialog.data.find('#save_query').click(function() {
+                            if(dialog.data.find('#query_name').text().length == 0) {
+                                dialog.data.find('.error_msg').html('You need to specify a name for your query.');
+                            }else{
+                                var query_name = dialog.data.find('#query_name').text();
+                                
+                            }
+                        });
+                    },
+                    onClose : function (dialog) {
+                        // Remove all simple modal objects.
+                        dialog.data.remove();
+                        dialog.container.remove();
+                        dialog.overlay.remove();
+                        $.modal.close();
+                        // Remove the #dialog which we appended to the body.
+                        $('#dialog').remove();
+                    }
+                });
+            }
+        });
     }
+
 };
