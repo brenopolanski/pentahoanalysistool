@@ -38,14 +38,17 @@ var TabContainer = function(tab_container, content_container) {
 
     /** Remove a tab and reclaim memory. */
     this.remove_tab = function(index) {
-    	model.new_query_id(index);
+    	// Delete the query associated with the tab
+    	model.delete_query(index);
     	
+    	// Remove the tab and associated metadata
         if (typeof this.tabs[index] != "undefined") {
             this.tabs[index].tab.remove();
             this.tabs[index].content.remove();
             delete this.tabs[index].data;
             delete this.tabs[index];
         }
+        
         // Find the next tab and select it.
         for (next_tab = index; next_tab < this.tabs.length; next_tab++) {
             if (typeof this.tabs[next_tab] != "undefined") {
@@ -54,7 +57,7 @@ var TabContainer = function(tab_container, content_container) {
             }
         }
         // Check and make sure there are any tabs at all.
-        if (this.active_tabs() == 0 || model.session_id != "") {
+        if (this.active_tabs() == 0) {
             // Create one if not.
             this.add_tab();
             return;
