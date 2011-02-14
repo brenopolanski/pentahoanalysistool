@@ -1,14 +1,16 @@
 {
-	"New Query": "",
-	"Open Query": "",
-	"Save Query": "",
-	"Delete Query": "",
+	"New query": "",
+	"Open query": "",
+	"Save query": "",
+	"Delete query": "",
 	"Logout": "",
 	"About": "",
-	"Run Query": "",
+	"Run query": "",  
+	"Toggle fields": "",
 	"Automatic execution": "",
 	"Non-empty": "",
 	"Swap axis": "",
-	"Show MDX": "",
-	"Export data": ""
+	"Show MDX" : "",
+	"Export XLS": "",
+	"Export CSV": ""
 }
