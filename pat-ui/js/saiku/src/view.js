@@ -161,8 +161,8 @@ var view = {
         			success: function(data) {
         				if (data) {
 	        				po_file = data;
+	        				$('.i18n_translated').un_i18n();
 	        				$('.i18n').i18n(po_file);
-	        				$('.i18n_translated').i18n(po_file);
         				}
         			}
         		});
@@ -806,7 +806,6 @@ var view = {
         }
     }
 
-}
+};
 
-/** Initialise the user interface. */
 view.init();
