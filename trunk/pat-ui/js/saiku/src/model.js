@@ -273,8 +273,6 @@ var model = {
                 model.run_query(tab_index);
             }
         }
-
-        view.check_toolbar();
     },
     
     /**
