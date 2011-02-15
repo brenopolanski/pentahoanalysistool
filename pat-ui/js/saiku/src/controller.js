@@ -29,7 +29,7 @@ var controller = {
      */
     toolbar_click_handler : function($button) {
         try {
-        	eval("controller." + $button.attr('href').replace('#', '') + "();");
+        	controller[$button.attr('href').replace('#', '')]();
         } catch (e) {};
     },
     
@@ -45,7 +45,7 @@ var controller = {
             method_name = $button.attr('href').replace('#', '');
             
             try {
-            	eval("model." + method_name + "(" + tab_index + ");");
+            	model[method_name](tab_index);
             } catch (e) {};
         }
         
