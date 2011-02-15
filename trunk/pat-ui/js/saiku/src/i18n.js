@@ -20,7 +20,7 @@ var locale;
 		// If key is not found, return original language
 		var translate = function(key, po_file) {
 			if (typeof po_file[key] == "undefined") {
-				return false;
+				return "";
 			} else {
 				return po_file[key];
 			}
@@ -31,7 +31,7 @@ var locale;
 			element = $(this);
 			
 			// Translate text
-			if (element.text()) {
+			if (element.text() !== "") {
 				translated_text = translate( element.text(), po_file );
 				if (translated_text) {
 					element.data('original', element.text());
@@ -40,12 +40,13 @@ var locale;
 			}
 			
 			// Translate title
-			if (element.attr('title'))
-				translated_text = translate( element.attr('title'), po_file );
-				if (translated_text) {
+			if (element.attr('title') !== "") {
+				translated_title = translate( element.attr('title'), po_file );
+				if (translated_title) {
 					element.data('original', element.attr('title'));
-					element.attr({ 'title': translated_text });
+					element.attr({ 'title': translated_title });
 				}
+			}
 			
 			// Remove class so this element isn't repeatedly translated
 			element.removeClass('i18n');
