@@ -474,12 +474,12 @@ var model = {
         if (view.tabs.tabs[tab_index].data['options']['toggle_fields']) {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = false;
             $button.removeClass('on');
-            view.tabs.tabs[tab_index].content.find('.fields').show();
+            view.tabs.tabs[tab_index].content.find('.workspace_fields').show();
             view.resize_height();
         } else {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = true;
             $button.addClass('on');
-            view.tabs.tabs[tab_index].content.find('.fields').hide();
+            view.tabs.tabs[tab_index].content.find('.workspace_fields').hide();
             view.resize_height();
         }
     },
