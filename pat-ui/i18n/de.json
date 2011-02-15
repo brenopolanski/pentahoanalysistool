@@ -12,5 +12,8 @@
 	"Swap axis": "",
 	"Show MDX" : "",
 	"Export XLS": "",
-	"Export CSV": ""
+	"Export CSV": "",
+	"Cubes": "",
+	"Dimensions": "",
+	"Measures": ""
 }

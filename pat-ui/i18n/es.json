@@ -12,5 +12,8 @@
 	"Swap axis": "Intercambiar ejes",
 	"Show MDX" : "Mostrar MDX",
 	"Export XLS": "Exportar XLS",
-	"Export CSV": "Exportar CSV"
+	"Export CSV": "Exportar CSV",
+	"Cubes": "Cubos",
+	"Dimensions": "Dimensiones",
+	"Measures": "Medidas"
 }
