@@ -58,29 +58,50 @@ var view = {
      * Resize layout to fit window height
      */
     resize_height: function() {
-
-        // Get the browser's current height
-        var window_height = $(window).height();
         
-        // When the height of the browser is less than 600px set a height of 600px.
-        if (window_height <= 600) {
-            window_height = 600;
-        }
-        
-        // Add 1px to tabs height for tab_panel border-top: 1px solid #CCC
-        var sidebar_offset = ( $('#toolbar').outerHeight(true) + ($('#tabs').outerHeight(true) + 4) ),
-        sidebar_height = window_height - sidebar_offset,
-        workspace_height = sidebar_height - 40;
+        // What tab is being viewed
+        $active_tab = $('#tab_panel').find('.tab:visible');
+        var window_height, workspace_header;
 
-        if(!$('.fields').is(':visible')) {
-            var workspace_results = $('.workspace_toolbar').outerHeight();
+        // Work out the browser windows height and make sure that it is set to
+        // 600px when the user reduces the height below 600px.
+        if ($(window).height() <= 600) {
+            window_height = 600
         }else{
-            var workspace_results = $('.workspace_toolbar').outerHeight() + $('.fields').outerHeight();
+            window_height = $(window).height();
         }
 
-        $('.sidebar, .sidebar_separator').css('height', sidebar_height);
-        $('.workspace_inner').css('height', workspace_height);
-        $('.workspace_results').css('height', workspace_height - workspace_results);
+        // Work out the header height and add 1px for the border-bottom on the
+        // header.
+        var header_height = $('#header').outerHeight() + 1; 
+        
+        // Work out the sidebar height, which is the header minus the window
+        // height.
+        var sidebar_height = window_height - header_height;
+
+        // Work out the height of the workspace toolbar.
+        var workspace_toolbar = $active_tab.find('.workspace_toolbar').outerHeight(true);
+        
+        // Work out the height of the fields area
+        var workspace_fields = $active_tab.find('.workspace_fields').outerHeight(true);
+
+        // Calculate workspace_header area taking into account that fields can
+        // be hidden or shown
+
+        if($active_tab.find('.workspace_fields').is(':visible')) {
+            workspace_header = workspace_toolbar + workspace_fields;
+        }else{
+            workspace_header = workspace_toolbar;
+        }
+        
+        // Set sidebar heights
+        $active_tab.find('.sidebar, .sidebar_separator, .workspace_inner')
+            .css('height', sidebar_height);
+
+        $active_tab.find('.workspace_results')
+            // Add 30 for padding on height
+            .css('height', (sidebar_height - workspace_header) - 30);
+
     },
     
     /** 

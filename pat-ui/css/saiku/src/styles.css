@@ -406,7 +406,7 @@ html, body {
 
 /** Field List */
 
-.fields {
+.workspace_fields {
     overflow: hidden;
     padding: 0 10px 0 10px;
 }
@@ -715,7 +715,7 @@ html, body {
 .workspace_results {
     margin-right: 10px;
     margin-left: 10px;
-    padding: 10px;
+    padding-top: 10px;
     overflow: auto;
 }
 .workspace_results table {
