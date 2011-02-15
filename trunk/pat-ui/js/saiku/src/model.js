@@ -152,14 +152,14 @@ var model = {
                                 view.load_measures(tab_index, data);
                             },
                             error: function() {
-                                view.stop_waiting();
+                                view.hide_processing(true, tab_index);
                                 view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
                                 $('.cubes').find('option:first').attr('selected', 'selected');
                             }
                         });
                     },
                     error: function() {
-                        view.stop_waiting();
+                        view.hide_processing(true, tab_index);
                         view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
                         $('.cubes').find('option:first').attr('selected', 'selected');
                     }
