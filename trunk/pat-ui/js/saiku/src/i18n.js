@@ -31,16 +31,16 @@ var locale;
 			element = $(this);
 			
 			// Translate text
-			if (element.text() !== "") {
-				translated_text = translate( element.text(), po_file );
+			if (element.html()) {
+				translated_text = translate( element.html(), po_file );
 				if (translated_text) {
-					element.data('original', element.text());
-					element.text(translated_text);
+					element.data('original', element.html());
+					element.html(translated_text);
 				}
 			}
 			
 			// Translate title
-			if (element.attr('title') !== "") {
+			if (element.attr('title')) {
 				translated_title = translate( element.attr('title'), po_file );
 				if (translated_title) {
 					element.data('original', element.attr('title'));
