@@ -176,7 +176,7 @@ var view = {
         	.change(function() {
         		locale = $("#language-selector").val();
         		$.ajax({
-        			url: '/i18n/' + locale + ".json",
+        			url: BASE_URL + 'i18n/' + locale + ".json",
         			type: 'GET',
         			dataType: 'json',
         			success: function(data) {
