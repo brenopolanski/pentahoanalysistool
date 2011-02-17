@@ -96,11 +96,11 @@ var view = {
         
         // Set sidebar heights
         $active_tab.find('.sidebar, .sidebar_separator, .workspace_inner')
-            .css('height', sidebar_height);
+        .css('height', sidebar_height);
 
         $active_tab.find('.workspace_results')
-            // Add 30 for padding on height
-            .css('height', (sidebar_height - workspace_header) - 30);
+        // Add 30 for padding on height
+        .css('height', (sidebar_height - workspace_header) - 30);
 
     },
     
@@ -173,21 +173,21 @@ var view = {
         
         // Activate language selector
         $("#language-selector").val(locale)
-        	.change(function() {
-        		locale = $("#language-selector").val();
-        		$.ajax({
-        			url: BASE_URL + 'i18n/' + locale + ".json",
-        			type: 'GET',
-        			dataType: 'json',
-        			success: function(data) {
-        				if (data) {
-	        				po_file = data;
-	        				$('.i18n_translated').un_i18n();
-	        				$('.i18n').i18n(po_file);
-        				}
-        			}
-        		});
-        	});
+        .change(function() {
+            locale = $("#language-selector").val();
+            $.ajax({
+                url: '/i18n/' + locale + ".json",
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data) {
+                        po_file = data;
+                        $('.i18n_translated').un_i18n();
+                        $('.i18n').i18n(po_file);
+                    }
+                }
+            });
+        });
     },
 
     /** Destroy the user interface. */
@@ -400,6 +400,13 @@ var view = {
 
         /** Double click instead of drag and drop. */
         $both_tree_items.dblclick(function(e){
+
+            /** Make sure the new pointers are setup. */
+            $tab = $('#tab_panel').find('.tab:visible');
+            $both_dropzones = $tab.find('.rows ul, .columns ul');
+            $column_dropzone = $tab.find('.columns ul');
+            $row_dropzone = $tab.find('.rows ul');
+
             // Prevent default browser action from occuring.
             e.preventDefault();
             /* Is the user double clicking on a dimension or measure. */
@@ -465,7 +472,7 @@ var view = {
 
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
-            connectWith: '.connectable',
+            connectWith: $('#tab_panel').find('.tab:visible .connectable'),
             cursorAt: {
                 top: 10,
                 left: 35
@@ -629,6 +636,11 @@ var view = {
          * identifies the dimension.
          */
         function add_dimension(id) {
+
+            /* Make sure we are referencing the tab being used */
+            $tab = $('#tab_panel').find('.tab:visible');
+            $dimension_tree = $tab.find('.dimension_tree');
+
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
             /** Disable all of the dimension's siblings and highlight the dimension being used. */
@@ -653,6 +665,11 @@ var view = {
          * @param id {String} The rel attribute of the dimension being removed.
          */
         function remove_dimension(id) {
+
+            /* Make sure we are referencing the tab being used */
+            $tab = $('#tab_panel').find('.tab:visible');
+            $dimension_tree = $tab.find('.dimension_tree');
+
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
             /** Enable all of the dimension's siblings and unhighlight the dimension being used. */
@@ -678,6 +695,11 @@ var view = {
          * identifies the measure.
          */
         function add_measure(id) {
+
+            /* Make sure we are referencing the tab being used */
+            $tab = $('#tab_panel').find('.tab:visible');
+            $measure_tree = $tab.find('.measure_tree');
+
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
             .removeClass('ui-draggable').addClass('used not-draggable');
@@ -691,6 +713,11 @@ var view = {
          * @param is_drop {Boolean} If the measure is being dropped.
          */
         function remove_measure(id, is_drop) {
+
+            /* Make sure we are referencing the tab being used */
+            $tab = $('#tab_panel').find('.tab:visible');
+            $measure_tree = $tab.find('.measure_tree');
+
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
             .removeClass('used not-draggable').addClass('ui-draggable');
@@ -818,6 +845,12 @@ var view = {
      * Check if the toolbar can be enabled or disabled.
      */
     check_toolbar: function() {
+
+        /* Make sure we are referencing the tab being used */
+        $tab = $('#tab_panel').find('.tab:visible');
+        $column_dropzone = $tab.find('.columns ul');
+        $row_dropzone = $tab.find('.rows ul');
+
         if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
             $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
         }else{
