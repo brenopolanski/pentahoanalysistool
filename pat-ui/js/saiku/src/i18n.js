@@ -76,13 +76,13 @@ var locale;
  */
 automatic_i18n = function() {
 	$.ajax({
-		url: '/i18n/',
+		url: BASE_URL + 'i18n/',
 		type: 'GET',
 		dataType: 'text',
 		success: function(data) {
 			locale = data.substring(0,2);
 			$.ajax({
-				url: '/i18n/' + locale + ".json",
+				url: BASE_URL + 'i18n/' + locale + ".json",
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
