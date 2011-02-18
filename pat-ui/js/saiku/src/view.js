@@ -366,7 +366,7 @@ var view = {
     prepare_workspace: function($tab) {
 
         /** Initisalise trees */
-        init_trees();
+        init_trees($tab);
 
         /** Tree selectors. */
         $dimension_tree = $tab.find('.dimension_tree');
@@ -401,12 +401,6 @@ var view = {
         /** Double click instead of drag and drop. */
         $both_tree_items.dblclick(function(e){
 
-            /** Make sure the new pointers are setup. */
-            $tab = $('#tab_panel').find('.tab:visible');
-            $both_dropzones = $tab.find('.rows ul, .columns ul');
-            $column_dropzone = $tab.find('.columns ul');
-            $row_dropzone = $tab.find('.rows ul');
-
             // Prevent default browser action from occuring.
             e.preventDefault();
             /* Is the user double clicking on a dimension or measure. */
@@ -421,12 +415,12 @@ var view = {
                         /** By default add the measure to the column dropzone. */
                         $(this).clone().appendTo($column_dropzone).addClass('d_measure');
                         /** Continue adding the measure. */
-                        add_measure($(this).find('a').attr('rel'));
+                        add_measure($tab, $(this).find('a').attr('rel'));
                     }else{
                         /** Append the measure to the last measure available. */
                         $(this).clone().insertAfter($both_dropzones.find('.d_measure').last()).addClass('d_measure');
                         /** Continue adding the measure. */
-                        add_measure($(this).find('a').attr('rel'));
+                        add_measure($tab, $(this).find('a').attr('rel'));
                     }
                     /** When stopped dropping or sorting set the selection. */
                     model.dropped_item($(this), true);
@@ -434,7 +428,7 @@ var view = {
                     /** Add the dimension to the row dropzone manually. */
                     $(this).clone().appendTo($row_dropzone).addClass('d_dimension');
                     /** Continue adding the dimension. */
-                    add_dimension($(this).find('a').attr('rel'));
+                    add_dimension($tab, $(this).find('a').attr('rel'));
                     /** When stopped dropping or sorting set the selection. */
                     model.dropped_item($(this), true);
                 }
@@ -446,12 +440,12 @@ var view = {
                     /** Remove the measure manually. */
                     $both_dropzones.find('[rel=' + $(this).find('a').attr('rel') +']').parent().remove();
                     /** Continue removing the measure. */
-                    remove_measure($(this).find('a').attr('rel'));
+                    remove_measure($tab, $(this).find('a').attr('rel'));
                 } else if(is_dimension) {
                     /** Remove the dimension manually. */
                     $both_dropzones.find('[rel=' + $(this).find('a').attr('rel') +']').parent().remove();
                     /** Continue removing the measure. */
-                    remove_dimension($(this).find('a').attr('rel'));
+                    remove_dimension($tab, $(this).find('a').attr('rel'));
                 }
                 /** Refresh the sortables. */
                 $both_dropzones.sortable('refresh');
@@ -472,7 +466,7 @@ var view = {
 
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
-            connectWith: $('#tab_panel').find('.tab:visible .connectable'),
+            connectWith: $tab.find('.connectable'),
             cursorAt: {
                 top: 10,
                 left: 35
@@ -521,7 +515,7 @@ var view = {
                             ui.item.css('display', '').addClass('d_dimension');
                         }
                         /** Continue adding the dimension. */
-                        add_dimension(ui.item.find('a').attr('rel'));
+                        add_dimension($tab, ui.item.find('a').attr('rel'));
                     }else if (!(between_lists)) {
                         /** If sorting a measure and is not between lists. */
                         /** If this is the first measure. */
@@ -539,7 +533,7 @@ var view = {
                             }
                         }
                         /** Continue adding the measure. */
-                        add_measure(ui.item.find('a').attr('rel'));
+                        add_measure($tab, ui.item.find('a').attr('rel'));
                     }
                 }
             },
@@ -576,10 +570,10 @@ var view = {
                 /** Is the item being removed is a measure or is all the measures. */
                 if (ui.draggable.find('a').hasClass('measure')) {
                     /** Remove the measure. */
-                    remove_measure(ui.draggable.find('a').attr('rel'), true);
+                    remove_measure($tab, ui.draggable.find('a').attr('rel'), true);
                 }else{
                     /** Remove the dimension. */
-                    remove_dimension(ui.draggable.find('a').attr('rel'));
+                    remove_dimension($tab, ui.draggable.find('a').attr('rel'));
                 }
                 
                 // Remove item from query
@@ -608,7 +602,7 @@ var view = {
         /**
          * Active dimension and measure trees.
          */
-        function init_trees() {
+        function init_trees($tab) {
             /** Activate hide and show on trees. */
             $tab.find('.dimension_tree').find('ul li ul').hide();
             /** When the root item is clicked show it's children. */
@@ -635,10 +629,9 @@ var view = {
          * @param id {String} The rel attribute of the link being clicked which
          * identifies the dimension.
          */
-        function add_dimension(id) {
+        function add_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $tab = $('#tab_panel').find('.tab:visible');
             $dimension_tree = $tab.find('.dimension_tree');
 
             /** Find the parent dimension id. */
@@ -664,10 +657,9 @@ var view = {
          * Remove a dimension.
          * @param id {String} The rel attribute of the dimension being removed.
          */
-        function remove_dimension(id) {
+        function remove_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $tab = $('#tab_panel').find('.tab:visible');
             $dimension_tree = $tab.find('.dimension_tree');
 
             /** Find the parent dimension id. */
@@ -694,10 +686,9 @@ var view = {
          * @param id {String} The rel attribute of the link being clicked which
          * identifies the measure.
          */
-        function add_measure(id) {
+        function add_measure($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $tab = $('#tab_panel').find('.tab:visible');
             $measure_tree = $tab.find('.measure_tree');
 
             /** Disable and highlight the measure. */
@@ -712,10 +703,9 @@ var view = {
          * @param id {String} The rel attribute of the measure being removed.
          * @param is_drop {Boolean} If the measure is being dropped.
          */
-        function remove_measure(id, is_drop) {
+        function remove_measure($tab, id, is_drop) {
 
             /* Make sure we are referencing the tab being used */
-            $tab = $('#tab_panel').find('.tab:visible');
             $measure_tree = $tab.find('.measure_tree');
 
             /** Disable and highlight the measure. */
