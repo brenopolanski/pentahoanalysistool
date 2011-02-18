@@ -350,20 +350,6 @@ var model = {
                 // Insert the table to the DOM
                 $workspace_result.html(table_vis);
 
-                // Loop through all headers and find the largest one.
-                var max_width = 0;
-                $.each($workspace_result.find('table th'), function(i, j){
-
-                    var width = $(this).width();
-                    if(width > max_width) {
-                        max_width = width;
-                    }
-
-                });
-
-                // Make sure all <div/>'s are all equal.
-                $workspace_result.find('table div').css('width', max_width);
-
                 // Enable highlighting on rows.
                 $workspace_result.find('table tr').hover(function(){
                     $(this).children().css('background', '#eff4fc');
