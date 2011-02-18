@@ -240,6 +240,17 @@ var view = {
     },
 
     /**
+     * Populate a list of queries
+     * @param tab_index {Integer} Current tab index
+     */
+
+     load_queries : function(tab_index) {
+
+        $tab = view.tabs.tabs[tab_index].content;
+        
+     },
+
+    /**
      * Populate the dimension tree for the selected tab.
      * @param $tab {Object} Selected tab content.
      * @param data {Object} Data object which contains the available dimension
