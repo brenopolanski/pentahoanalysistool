@@ -544,19 +544,20 @@ var model = {
                 $('#dialog').html(data).modal({
                     opacity : 100,
                     onShow : function(dialog) {
+                        dialog.data.find('#query_name').val($('#header').find('.selected').find('a').html());
                         dialog.data.find('#save_query').click(function() {
                             if(dialog.data.find('#query_name').val().length == 0) {
                                 dialog.data.find('.error_msg').html('You need to specify a name for your query.');
                             }else{
                                 var query_name = dialog.data.find('#query_name').val();
 
-                                url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'];
+                                url = model.username + "/repository/" + view.tabs.tabs[tab_index].data['query_name'];
 
                                 model.request({
                                     method: "POST",
                                     url: url,
                                     data: {
-                                        'queryname' : query_name
+                                        'newname' : encodeURI(query_name)
                                     },
                                     success : function(){
                                         // Change the tab title
