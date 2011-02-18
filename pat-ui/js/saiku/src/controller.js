@@ -59,12 +59,7 @@ var controller = {
 
     /** Handle click when the open query button is clicked. */
     open_query : function () {
-        view.tabs.add_tab(true);
-    },
-
-    /** Handle click when the save query button is clicked. */
-    save_query : function () {
-        view.save_dialog('views/queries/save.html');
+        view.tabs.open_query_tab();
     },
 
     /** Handle click when the delete query button is clicked. */

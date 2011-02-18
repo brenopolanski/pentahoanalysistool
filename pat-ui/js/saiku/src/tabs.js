@@ -79,56 +79,32 @@ var TabContainer = function(tab_container, content_container) {
     };
 
     /** Add a tab. */
-    this.add_tab = function(open_query) {
+    this.add_tab = function() {
         // Create the tab itself
         var new_index = this.tabs.length;
         var $new_tab = $("<li />");
-
-        if(open_query) {
-            var $new_tab_link = $("<a />")
-            .html("Repository")
-            .appendTo($new_tab);
-        }else{
-            var $new_tab_link = $("<a />")
-            .html("Unsaved query (" + (new_index + 1) + ")")
-            .appendTo($new_tab);
-        }
-
+        var $new_tab_link = $("<a />")
+        .html("Unsaved query (" + (new_index + 1) + ")")
+        .appendTo($new_tab);
         var $new_tab_closer = $("<span>Close Tab</span>")
         .addClass("close_tab")
         .appendTo($new_tab);
         $new_tab.appendTo(this.tab_container);
-
-        if(open_query) {
-            // Create the content portion of the tab.
-            $new_tab_content = $('<div />')
-            .addClass("tab")
-            .load(BASE_URL + "views/queries/open.html", function() {
-                
-                view.load_queries(new_index);
-
-                view.resize_height();
-
-                // Localize UI controls
-                $('.i18n').i18n(po_file);
-            });
-        }else{
-            // Create the content portion of the tab.
-            $new_tab_content = $('<div />')
-            .addClass("tab")
-            .load(BASE_URL + "views/queries/", function() {
-                view.load_cubes(new_index);
-                view.resize_height();
+        // Create the content portion of the tab.
+        $new_tab_content = $('<div />')
+        .addClass("tab")
+        .load(BASE_URL + "views/queries/", function() {
+            view.load_cubes(new_index);
+            view.resize_height();
             
-                // Bind event handler to workspace toolbar methods
-                $new_tab_content.find('.workspace_toolbar a').click(function(event) {
-                    return controller.workspace_toolbar_click_handler($(this));
-                });
-            
-                // Localize UI controls
-                $('.i18n').i18n(po_file);
+            // Bind event handler to workspace toolbar methods
+            $new_tab_content.find('.workspace_toolbar a').click(function(event) {
+                return controller.workspace_toolbar_click_handler($(this));
             });
-        }
+            
+            // Localize UI controls
+            $('.i18n').i18n(po_file);
+        });
         $new_tab_content.appendTo(this.content_container);
         
         // Register the new tab with the TabContainer.
@@ -140,6 +116,52 @@ var TabContainer = function(tab_container, content_container) {
             'nonempty': true,
             'automatic_execution': true
         };
+    };
+
+    /** Open a new query tab */
+    this.open_query_tab = function() {
+
+        // Check if the tab already exists
+        if($('#tabs').find('#queries').length == 0) {
+
+            // Create the tab itself
+            var new_index = this.tabs.length;
+
+            var $new_tab = $("<li />")
+            .attr('id', 'queries');
+            var $new_tab_link = $("<a />")
+            .html("Queries")
+            .appendTo($new_tab);
+
+            var $new_tab_closer = $("<span>Close Tab</span>")
+            .addClass("close_tab")
+            .appendTo($new_tab);
+
+
+            $new_tab.appendTo(this.tab_container);
+
+            // Create the content portion of the tab.
+            $new_tab_content = $('<div />')
+            .addClass("tab")
+            .load(BASE_URL + "views/queries/open.html", function() {
+                model.get_queries(new_index);
+                view.resize_height();
+
+                // Localize UI controls
+                $('.i18n').i18n(po_file);
+            });
+            $new_tab_content.appendTo(this.content_container);
+
+            // Register the new tab with the TabContainer.
+            this.tabs.push(new Tab($new_tab, $new_tab_content));
+            this.select_tab(new_index);
+
+            // Set default options
+            this.tabs[new_index].data['options'] = {
+            };
+        }else{
+            this.select_tab($('#tabs').find('#queries').index())
+        }
     };
 
     /** Empty the tab container (used for logout) */
