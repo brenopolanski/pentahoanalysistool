@@ -453,7 +453,6 @@ var model = {
      * Show or hide the fields list
      * @param tab_index {Integer} The active tab index
      */
-
     toggle_fields: function(tax_index) {
 
         $button = view.tabs.tabs[tab_index].content.find('a[title="Toggle fields"]');
@@ -469,7 +468,6 @@ var model = {
             view.resize_height();
         }
     },
-
 
     /**
      * Swap axis
@@ -583,6 +581,20 @@ var model = {
                         $('#dialog').remove();
                     }
                 });
+            }
+        });
+    },
+
+    /**
+     * Get a list of queries
+     * @param tab_index {Integer} The active tab index
+     */
+    get_queries: function(tab_index) {
+        model.request({
+            method: "GET",
+            url: model.username + "/repository/",
+            success: function(data, textStatus, XMLHttpRequest) {
+                view.load_queries(tab_index, data);
             }
         });
     }
