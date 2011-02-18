@@ -38,10 +38,10 @@ var TabContainer = function(tab_container, content_container) {
 
     /** Remove a tab and reclaim memory. */
     this.remove_tab = function(index) {
-    	// Delete the query associated with the tab
-    	model.delete_query(index);
+        // Delete the query associated with the tab
+        model.delete_query(index);
     	
-    	// Remove the tab and associated metadata
+        // Remove the tab and associated metadata
         if (typeof this.tabs[index] != "undefined") {
             this.tabs[index].tab.remove();
             this.tabs[index].content.remove();
@@ -79,33 +79,56 @@ var TabContainer = function(tab_container, content_container) {
     };
 
     /** Add a tab. */
-    this.add_tab = function() {
+    this.add_tab = function(open_query) {
         // Create the tab itself
         var new_index = this.tabs.length;
         var $new_tab = $("<li />");
-        var $new_tab_link = $("<a />")
-        .html("Unsaved query (" + (new_index + 1) + ")")
-        .appendTo($new_tab);
+
+        if(open_query) {
+            var $new_tab_link = $("<a />")
+            .html("Repository")
+            .appendTo($new_tab);
+        }else{
+            var $new_tab_link = $("<a />")
+            .html("Unsaved query (" + (new_index + 1) + ")")
+            .appendTo($new_tab);
+        }
+
         var $new_tab_closer = $("<span>Close Tab</span>")
         .addClass("close_tab")
         .appendTo($new_tab);
         $new_tab.appendTo(this.tab_container);
 
-        // Create the content portion of the tab.
-        $new_tab_content = $('<div />')
-        .addClass("tab")
-        .load(BASE_URL + "views/queries/", function() {
-            view.load_cubes(new_index);
-            view.resize_height();
-            
-            // Bind event handler to workspace toolbar methods
-            $new_tab_content.find('.workspace_toolbar a').click(function(event) {
-                return controller.workspace_toolbar_click_handler($(this));
+        if(open_query) {
+            // Create the content portion of the tab.
+            $new_tab_content = $('<div />')
+            .addClass("tab")
+            .load(BASE_URL + "views/queries/open.html", function() {
+                
+                view.load_queries(new_index);
+
+                view.resize_height();
+
+                // Localize UI controls
+                $('.i18n').i18n(po_file);
             });
+        }else{
+            // Create the content portion of the tab.
+            $new_tab_content = $('<div />')
+            .addClass("tab")
+            .load(BASE_URL + "views/queries/", function() {
+                view.load_cubes(new_index);
+                view.resize_height();
             
-            // Localize UI controls
-            $('.i18n').i18n(po_file);
-        });
+                // Bind event handler to workspace toolbar methods
+                $new_tab_content.find('.workspace_toolbar a').click(function(event) {
+                    return controller.workspace_toolbar_click_handler($(this));
+                });
+            
+                // Localize UI controls
+                $('.i18n').i18n(po_file);
+            });
+        }
         $new_tab_content.appendTo(this.content_container);
         
         // Register the new tab with the TabContainer.
@@ -114,8 +137,8 @@ var TabContainer = function(tab_container, content_container) {
 
         // Set default options
         this.tabs[new_index].data['options'] = {
-        	'nonempty': true,
-        	'automatic_execution': true
+            'nonempty': true,
+            'automatic_execution': true
         };
     };
 
