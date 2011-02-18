@@ -739,7 +739,7 @@ var view = {
      */
     show_processing : function (msg, block_div, tab_index) {
         if(block_div) {
-            $active_tab = view.tabs.tabs[tab_index].content.parent().find('.tab');
+            $active_tab = view.tabs.tabs[tab_index].content;
             $active_tab.block({
                 message: '<div class="processing"><div class="processing_inner"><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
                 overlayCSS:  {
@@ -765,7 +765,7 @@ var view = {
      */
     hide_processing : function(block_div, tab_index) {
         if (block_div) {
-            $('.tab').unblock();
+            view.tabs.tabs[tab_index].content.unblock();
         }else{
             $.unblockUI();
         }
