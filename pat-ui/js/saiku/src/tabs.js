@@ -116,10 +116,12 @@ var TabContainer = function(tab_container, content_container) {
             'nonempty': true,
             'automatic_execution': true
         };
+        
+        return new_index;
     };
 
     /** Open a new query tab */
-    this.open_query_tab = function() {
+    this.open_query_tab = function(callback) {
 
         // Check if the tab already exists
         if($('#tabs').find('#queries').length == 0) {

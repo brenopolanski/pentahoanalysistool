@@ -240,17 +240,47 @@ var view = {
     },
 
     /**
-     * Load queries
+     * Load queries into the sidebar of the open query dialog
      * @param tab_index {Integer} Index of a queries.
      */
     load_queries: function(tab_index, data) {
-       // Pointer for tab
-       $tab = view.tabs.tabs[tab_index].content;
-
-       // Add a list
-       $.each(data, function(query_iterator, name) {
-            $tab.find('.sidebar_inner ul').append('<p>'+name+'</p>');
-       });
+        // Pointer for sidebar
+        $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
+        
+        // Load the list of queries
+        $.each(data, function(query_iterator, query) {
+            $list_element = $('<li />').appendTo($query_list);
+            $("<a />").text(query.name)
+                .data('object', query)
+                .attr('href', '#')
+                // Show information about the query when its name is clicked
+                .click(function() {
+                    var $query = $(this).data('object');
+                    $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
+                    $results.html('<h2>' + $query.name + '</h2>');
+                    $properties = $('<ul />').appendTo($results);
+                    // Iterate through properties and show a key=>value set in the information pane
+                    for (property in $query) {
+                        if ($query.hasOwnProperty(property)) {
+                            $properties.append($('<li />').text(property + ": " + $query[property]));                     
+                        }
+                    }
+                    
+                    // Add open query button
+                    $('<a />').text('Open query')
+                        .attr('href', '#')
+                        .addClass('i18n')
+                        .i18n(po_file)
+                        .click(function() {
+                            model.open_query($query.name, view.tabs.add_tab());
+                            return false;
+                        })
+                        .appendTo($results);
+                    
+                    return false;
+                })
+                .appendTo($list_element);
+        });
     },
 
     /**

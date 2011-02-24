@@ -584,6 +584,19 @@ var model = {
             }
         });
     },
+    
+    /**
+     * Open a query
+     * @param query_name The name of the query
+     * @param tab_index The tab to load it into
+     */
+    open_query: function(query_name, tab_index) {
+        // Change tab title
+        view.tabs.tabs[tab_index].tab.find('a').text(query_name);
+        
+        //TODO - request selections and adjust UI accordingly
+        alert("Not implemented");
+    },
 
     /**
      * Get a list of queries
