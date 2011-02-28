@@ -341,9 +341,6 @@ var model = {
 
                 });
 
-                // Resize the workspace
-                view.resize_height();
-
                 // Close the table
                 table_vis = table_vis + '</table>';
               
@@ -356,7 +353,10 @@ var model = {
                 },function(){
                     $(this).children().css('background', '');
                 });
-
+                
+                // Resize the workspace
+                view.resize_height();
+                
                 // Clear the wait message
                 view.hide_processing(true, tab_index);
             },
