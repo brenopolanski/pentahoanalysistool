@@ -595,7 +595,23 @@ var model = {
         view.tabs.tabs[tab_index].tab.find('a').text(query_name);
         
         //TODO - request selections and adjust UI accordingly
-        alert("Not implemented");
+        model.request({
+            url: model.username + "/repository/" + query_name,
+            success: function(data) {
+                // Select cube in menu
+                //selected_cube = data.cube.name;
+                //$cubes = view.tabs.tabs[tab_index].content.find('.cubes');
+                //$cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val().eq(0));
+                //$cubes.change();
+            
+                // Move selections to axes
+                //$.each(data.saikuAxes, function(selection_iterator, selection) {
+                //    
+                //});
+                
+                console.debug(data);
+            }
+        });
     },
 
     /**
