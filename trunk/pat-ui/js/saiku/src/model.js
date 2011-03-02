@@ -41,7 +41,7 @@ var model = {
         $.ajax({
             type: settings.method,
             cache: false,
-            url: BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
+            url: TOMCAT_WEBAPP + REST_MOUNT_POINT + encodeURI(parameters.url),
             dataType: settings.dataType,
             username: model.username,
             password: model.password,

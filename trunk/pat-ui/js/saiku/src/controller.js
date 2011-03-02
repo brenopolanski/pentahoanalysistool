@@ -8,11 +8,11 @@
  * Global variables that control where REST API calls are sent
  */
 
-// The mount point for Tomcat (when using mod_jk)
+// The name of the Saiku UI webapp in Tomcat
 BASE_URL = "/";
 	
 // The name of the Saiku server webapp in Tomcat
-TOMCAT_WEBAPP = "saiku/";
+TOMCAT_WEBAPP = "/saiku/";
 	
 // The preferred REST mountpoint for Enunciate
 REST_MOUNT_POINT = "rest/saiku/";
