@@ -162,7 +162,7 @@ var TabContainer = function(tab_container, content_container) {
             this.tabs[new_index].data['options'] = {
             };
         }else{
-            this.select_tab($('#tabs').find('#queries').index())
+            this.select_tab($('#tabs').find('#queries').index());
         }
     };
 
