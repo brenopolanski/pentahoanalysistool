@@ -96,7 +96,7 @@ var model = {
      * droppable and sortable items.
      * @param tab_index {Integer} Index of the selected tab.
      */
-    new_query: function(tab_index) {
+    new_query: function(tab_index, xml, callback) {
     	// If query already exists, delete it
         if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
         	model.delete_query(tab_index);
@@ -105,51 +105,63 @@ var model = {
         // Generate the temporary query name
         model.generate_query_id(tab_index);
 
-        // Find the selected cube.
-        $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
-
-        // Check if the cube is valid if so then display an error.
-        cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
-        if (typeof cube_data == "undefined") {
-            view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error')
-            return;
-        }
-
         // Reference for the selected tabs content.
         $tab = view.tabs.tabs[tab_index].content;
 
         view.show_processing('Preparing workspace. Please wait...', true, tab_index);
+        
+        if (xml) {
+        // Open existing query
+            var post_data = {'xml': xml};
+        } else {
+        // Create new query
+            // Find the selected cube.
+            $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
+
+            // Check if the cube is valid if so then display an error.
+            cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+            if (typeof cube_data == "undefined") {
+                view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error');
+                return;
+            }
+            
+            var post_data = {
+                'connection': cube_data['connectionName'],
+                'cube': cube_data['cube'],
+                'catalog': cube_data['catalogName'],
+                'schema': cube_data['schema']
+            };
+        }
 
         // Get a list of available dimensions and measures.
         model.request({
             method : "POST",
             url : model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
             
-            data: {
-                'connection': cube_data['connectionName'],
-                'cube': cube_data['cube'],
-                'catalog': cube_data['catalogName'],
-                'schema': cube_data['schema']
-            },
+            data: post_data,
             
             success: function(data, textStatus, XMLHttpRequest) {
-                // FIXME - populate axes with data
-            	
+                // Get cube data
+                var cube = data.cube;
+                
                 // Load dimensions into a tree.
                 model.request({
                     method : "GET",
-                    url : model.username + "/discover/" + cube_data['connectionName'] + "/" +
-                    cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/dimensions",
+                    url : model.username + "/discover/" + cube.connectionName + "/" +
+                    cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/dimensions",
                     success: function(data, textStatus, XMLHttpRequest) {
                         view.load_dimensions(tab_index, data);
                 		
                         // Load measures into a tree.
                         model.request({
                             method : "GET",
-                            url : model.username + "/discover/" + cube_data['connectionName'] + "/" +
-                            cube_data['catalogName'] + "/" + cube_data['schema'] + "/" + cube_data['cube'] + "/measures",
+                            url : model.username + "/discover/" + cube.connectionName + "/" +
+                            cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/measures",
                             success: function(data, textStatus, XMLHttpRequest) {
                                 view.load_measures(tab_index, data);
+                                if (callback) {
+                                    callback(cube);
+                                }
                             },
                             error: function() {
                                 view.hide_processing(true, tab_index);
@@ -597,22 +609,22 @@ var model = {
         //TODO - request selections and adjust UI accordingly
         model.request({
             url: model.username + "/repository/" + query_name,
-            success: function(data) {
-                // Select cube in menu
-                selected_cube = data.cube.name;
-                $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
-                $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val());
-                $cubes.change();
-            
-                // TODO - Move selections to axes
-                //$.each(data.saikuAxes, function(selection_iterator, selection) {
-                //    
-                //});
-                
-                // TODO - Retrieve properties for this query
-                
-                console.debug(data);
-                console.debug(view.tabs.tabs[tab_index].data);
+            dataType: 'xml',
+            success: function(data, textStatus, jqXHR) {
+                // Create a new query in the workspace
+                model.new_query(tab_index, jqXHR.responseText, function(cube) {
+                    // Select cube in menu
+                    selected_cube = cube.name;
+                    $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
+                    $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val()); 
+                    
+                    // TODO - Move selections to axes
+                    //$.each(data.saikuAxes, function(selection_iterator, selection) {
+                    //    
+                    //});
+                    
+                    // TODO - Retrieve properties for this query
+                });
             }
         });
     },
