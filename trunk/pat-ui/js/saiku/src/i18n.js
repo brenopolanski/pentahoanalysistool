@@ -81,14 +81,18 @@ automatic_i18n = function() {
 		dataType: 'text',
 		success: function(data) {
 			locale = data.substring(0,2);
-			$.ajax({
-				url: BASE_URL + 'i18n/' + locale + ".json",
-				type: 'GET',
-				dataType: 'json',
-				success: function(data) {
-					po_file = data;
-				}
-			});
+			
+			// Load language file if it isn't English
+			if (locale != "en") {
+    			$.ajax({
+    				url: BASE_URL + 'i18n/' + locale + ".json",
+    				type: 'GET',
+    				dataType: 'json',
+    				success: function(data) {
+    					po_file = data;
+    				}
+    			});
+			}
 		}
 	});
 }();
