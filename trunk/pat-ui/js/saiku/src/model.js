@@ -24,20 +24,20 @@ var model = {
      * @param paramters {Object} Parameters for AJAX requests.
      */
     request : function(parameters) {
-    	// Overwrite defaults with incoming parameters
-    	settings = $.extend({
-    		method: "GET",
-    		data: {},
-    		success: function() {},
-    		error: function() {
-    			view.show_dialog('Error',
-                        'Could not connect to the server, please check your internet connection. ' +
-                        'If this problem persists, please refresh the page.', 'error');
-    		},
-    		dataType: "json"
-    	}, parameters);
+        // Overwrite defaults with incoming parameters
+        settings = $.extend({
+            method: "GET",
+            data: {},
+            success: function() {},
+            error: function() {
+                view.show_dialog('Error',
+                    'Could not connect to the server, please check your internet connection. ' +
+                    'If this problem persists, please refresh the page.', 'error');
+            },
+            dataType: "json"
+        }, parameters);
         
-    	// Make ajax request
+        // Make ajax request
         $.ajax({
             type: settings.method,
             cache: false,
@@ -97,9 +97,9 @@ var model = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     new_query: function(tab_index, xml, callback) {
-    	// If query already exists, delete it
+        // If query already exists, delete it
         if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
-        	model.delete_query(tab_index);
+            model.delete_query(tab_index);
         }
     	
         // Generate the temporary query name
@@ -111,10 +111,12 @@ var model = {
         view.show_processing('Preparing workspace. Please wait...', true, tab_index);
         
         if (xml) {
-        // Open existing query
-            var post_data = {'xml': xml};
+            // Open existing query
+            var post_data = {
+                'xml': xml
+            };
         } else {
-        // Create new query
+            // Create new query
             // Find the selected cube.
             $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
 
@@ -618,12 +620,12 @@ var model = {
                     $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
                     $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val()); 
                     
-                    // TODO - Move selections to axes
-                    //$.each(data.saikuAxes, function(selection_iterator, selection) {
-                    //    
-                    //});
+                // TODO - Move selections to axes
+                //$.each(data.saikuAxes, function(selection_iterator, selection) {
+                //
+                //});
                     
-                    // TODO - Retrieve properties for this query
+                // TODO - Retrieve properties for this query
                 });
             }
         });
@@ -641,6 +643,90 @@ var model = {
                 view.load_queries(tab_index, data);
             }
         });
-    }
+    },
 
+    /**
+     * Show and populate the selection dialog
+     * @param tab_index {Integer} The active tab index
+     */
+    show_selections: function(member_clicked) {
+        // Append a dialog <div/> to the body.
+        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        // Load the view into the dialog <div/> and disable caching.
+        $.ajax({
+            url : BASE_URL + 'views/selections/',
+            cache : false,
+            dataType : "html",
+            success : function(data) {
+                $('#dialog').html(data).modal({
+                    onShow: function() {
+                        $('h3').html(member_clicked + ' Selections');
+                        $('.selection_tree').html('Insert tree here...');
+
+                        /**
+                         * Step 1.
+                         * Populate the thin version of the tree.
+                         */
+
+                         /*
+                          * model.request({
+                          *     method: "POST",
+                          *     // Need to work out how to get connection, schema, cube etc.
+                          *     url: model.username + '/discover/' + url
+                          *     success: function(data) {
+                          *
+                          *         // Loop through data
+                          *         $.each(data,function(index, item) {
+                          *             // Append to a var the html string
+                          *         });
+                          *
+                          *         // Append the var to the DOM
+                          *         $('.selection_tree').append(var);
+                          *     }
+                          * });
+                          *
+                          */
+
+                         /*
+                          * Step 2.
+                          * Activate a lazy load method over the thin tree.
+                          */
+
+                         /*
+                          * The method will be most likely in the view so you can
+                          * call it by:
+                          *
+                          * view.lazy_selection_tree();
+                          *
+                          * lazy_selection_tree: function(tab_index) {
+                          *
+                          *     // Add a listener to clicking on root lists and call
+                          *     // the REST api to send back the correct list element
+                          *     // and loop through results like above.
+                          *
+                          *     $('.selection_tree li.root').click(function() {
+                          *
+                          *         model.request({
+                          *             url: model.username + '/discover/' + url
+                          *             success: function(data) {
+                          *                 $.each(data, function(index, item) {
+                          *                     // Append the new list
+                          *                 });
+                          *             }
+                          *         })
+                          *
+                          *     });
+                          *
+                          * }
+                          *
+                          */
+                    }
+                });
+
+            },
+            error: function(data) {
+
+            }
+        });
+    }
 };
