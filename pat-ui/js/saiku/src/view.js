@@ -251,35 +251,35 @@ var view = {
         $.each(data, function(query_iterator, query) {
             $list_element = $('<li />').appendTo($query_list);
             $("<a />").text(query.name)
-                .data('object', query)
-                .attr('href', '#')
-                // Show information about the query when its name is clicked
-                .click(function() {
-                    var $query = $(this).data('object');
-                    $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
-                    $results.html('<h2>' + $query.name + '</h2>');
-                    $properties = $('<ul />').appendTo($results);
-                    // Iterate through properties and show a key=>value set in the information pane
-                    for (property in $query) {
-                        if ($query.hasOwnProperty(property)) {
-                            $properties.append($('<li />').text(property + ": " + $query[property]));                     
-                        }
+            .data('object', query)
+            .attr('href', '#')
+            // Show information about the query when its name is clicked
+            .click(function() {
+                var $query = $(this).data('object');
+                $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
+                $results.html('<h2>' + $query.name + '</h2>');
+                $properties = $('<ul />').appendTo($results);
+                // Iterate through properties and show a key=>value set in the information pane
+                for (property in $query) {
+                    if ($query.hasOwnProperty(property)) {
+                        $properties.append($('<li />').text(property + ": " + $query[property]));
                     }
+                }
                     
-                    // Add open query button
-                    $('<a />').text('Open query')
-                        .attr('href', '#')
-                        .addClass('i18n')
-                        .i18n(po_file)
-                        .click(function() {
-                            model.open_query($query.name, view.tabs.add_tab());
-                            return false;
-                        })
-                        .appendTo($results);
-                    
+                // Add open query button
+                $('<a />').text('Open query')
+                .attr('href', '#')
+                .addClass('i18n')
+                .i18n(po_file)
+                .click(function() {
+                    model.open_query($query.name, view.tabs.add_tab());
                     return false;
                 })
-                .appendTo($list_element);
+                .appendTo($results);
+                    
+                return false;
+            })
+            .appendTo($list_element);
         });
     },
 
@@ -509,6 +509,13 @@ var view = {
         //
         //            }
         //        });
+
+
+        /** Activate all items for selection. */
+        $('.rows ul li a, .columns ul li a').live('dblclick', function() {
+            var member_clicked = $(this).text();
+            model.show_selections(member_clicked);
+        });
 
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
@@ -876,6 +883,7 @@ var view = {
             });
         }
     },
+
 
     /**
      * Check if the toolbar can be enabled or disabled.
