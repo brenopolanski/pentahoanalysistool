@@ -531,7 +531,7 @@ var model = {
      */
     export_xls: function(tab_index) {
         
-        window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
+        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
         + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
             
     },
@@ -542,7 +542,7 @@ var model = {
      */
     export_csv: function(tab_index) {
 
-        window.location = BASE_URL + TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
+        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
         + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
 
     },
