@@ -637,6 +637,22 @@ var model = {
             }
         });
     },
+    
+    /**
+     * Delete a query from the repository
+     */
+    delete_query_from_repository: function(query_name, tab_index) {
+        if (confirm("Are you sure?")) {
+            model.request({
+                method: "DELETE",
+                url: model.username + "/repository/" + query_name + "/",
+                success: function(data, textStatus, XMLHttpRequest) {
+                    view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
+                    model.get_queries(tab_index);
+                }
+            });
+        }
+    },
 
     /**
      * Get a list of queries
