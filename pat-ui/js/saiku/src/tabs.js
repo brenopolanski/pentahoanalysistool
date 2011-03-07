@@ -132,8 +132,11 @@ var TabContainer = function(tab_container, content_container) {
             var $new_tab = $("<li />")
             .attr('id', 'queries');
             var $new_tab_link = $("<a />")
-            .html("Queries")
-            .appendTo($new_tab);
+            .html("Repository")
+            .appendTo($new_tab)
+            .click(function() {
+                model.get_queries(new_index);
+            });
 
             var $new_tab_closer = $("<span>Close Tab</span>")
             .addClass("close_tab")
@@ -161,8 +164,10 @@ var TabContainer = function(tab_container, content_container) {
             // Set default options
             this.tabs[new_index].data['options'] = {
             };
-        }else{
-            this.select_tab($('#tabs').find('#queries').index());
+        } else {
+            var tab_index = $('#tabs').find('#queries').index();
+            this.select_tab(tab_index);
+            model.get_queries(tab_index);
         }
     };
 
