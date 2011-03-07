@@ -275,7 +275,18 @@ var view = {
                         return false;
                     })
                     .appendTo($results);
-                    
+
+                // Add delete query button
+                $('<a />').text('Delete query')
+                    .attr('href', '#')
+                    .addClass('i18n')
+                    .i18n(po_file)
+                    .click(function() {
+                        model.delete_query_from_repository($query.name, tab_index);
+                        return false;
+                    })
+                    .appendTo($results);
+                
                 return false;
             })
             .appendTo($list_element);
