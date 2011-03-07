@@ -249,13 +249,16 @@ var model = {
             data: {
                 'position' : position,
                 'memberposition' : memberposition
+            },
+            success: function(data, textStatus, XMLHttpRequest) {
+                // If automatic query execution is enabled, rerun the query when this option is changed
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                    model.run_query(tab_index);
+                }
             }
+
         });
         
-        // If automatic query execution is enabled, rerun the query after making change
-        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-            model.run_query(tab_index);
-        }
     },
 
     /**
