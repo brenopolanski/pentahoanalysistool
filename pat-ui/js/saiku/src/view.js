@@ -60,15 +60,15 @@ var view = {
     resize_height: function(tab_index) {
         
         // What tab is being viewed
-        $active_tab = view.tabs.tabs[tab_index].content;
+        var $active_tab = view.tabs.tabs[tab_index].content;
         var window_height, workspace_header;
 
         // Work out the browser windows height and make sure that it is set to
         // 600px when the user reduces the height below 600px.
         if ($(window).height() <= 600) {
-            window_height = 600;
+            var window_height = 600;
         }else{
-            window_height = $(window).height();
+            var window_height = $(window).height();
         }
 
         // Work out the header height and add 1px for the border-bottom on the
@@ -89,9 +89,9 @@ var view = {
         // be hidden or shown
 
         if($active_tab.find('.workspace_fields').is(':visible')) {
-            workspace_header = workspace_toolbar + workspace_fields;
+            var workspace_header = workspace_toolbar + workspace_fields;
         }else{
-            workspace_header = workspace_toolbar;
+            var workspace_header = workspace_toolbar;
         }
         
         // Set sidebar heights
@@ -109,7 +109,7 @@ var view = {
      */
     toggle_sidebar: function($sidebar_separator) {
         // Find the tab
-        $tab = $sidebar_separator.closest('.tab');
+        var $tab = $sidebar_separator.closest('.tab');
     	
         // Get the width of the sidebar.
         var sidebar_width = $tab.find('.sidebar').width();
@@ -200,12 +200,12 @@ var view = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     load_cubes : function(tab_index) {
-        $tab = view.tabs.tabs[tab_index].content;
-        $cubes = $tab.find('.cubes');
+        var $tab = view.tabs.tabs[tab_index].content;
+        var $cubes = $tab.find('.cubes');
         $cubes.append('<option>Select a cube</option>');
 
         view.tabs.tabs[tab_index].data['navigation'] = new Array();
-        storage_id = 0;
+        var storage_id = 0;
 
         /** Loop through available connections and populate the select box. */
         $.each(model.connections, function(i,connection){
@@ -243,20 +243,20 @@ var view = {
      */
     load_queries: function(tab_index, data) {
         // Pointer for sidebar
-        $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
+        var $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
         
         // Load the list of queries
         $.each(data, function(query_iterator, query) {
-            $list_element = $('<li />').appendTo($query_list);
+            var $list_element = $('<li />').appendTo($query_list);
             $("<a />").text(query.name)
-            .data('object', query)
-            .attr('href', '#')
+                .data('object', query)
+                .attr('href', '#')
             // Show information about the query when its name is clicked
             .click(function() {
                 var $query = $(this).data('object');
-                $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
+                var $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
                 $results.html('<h2>' + $query.name + '</h2>');
-                $properties = $('<ul />').appendTo($results);
+                var $properties = $('<ul />').appendTo($results);
                 // Iterate through properties and show a key=>value set in the information pane
                 for (property in $query) {
                     if ($query.hasOwnProperty(property)) {
@@ -266,14 +266,14 @@ var view = {
                     
                 // Add open query button
                 $('<a />').text('Open query')
-                .attr('href', '#')
-                .addClass('i18n')
-                .i18n(po_file)
-                .click(function() {
-                    model.open_query($query.name, view.tabs.add_tab());
-                    return false;
-                })
-                .appendTo($results);
+                    .attr('href', '#')
+                    .addClass('i18n')
+                    .i18n(po_file)
+                    .click(function() {
+                        model.open_query($query.name, view.tabs.add_tab());
+                        return false;
+                    })
+                    .appendTo($results);
                     
                 return false;
             })
@@ -289,22 +289,22 @@ var view = {
      */
     load_dimensions : function(tab_index, data) {
         // Remove any instances of a tree.
-        $tab = view.tabs.tabs[tab_index].content;
+        var $tab = view.tabs.tabs[tab_index].content;
         $tab.find('.dimension_tree ul').remove();
         
         // Add a new dimension tree.
-        $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree'));
+        var $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree'));
         
         // Populate the tree with first level dimensions.
-        dimension_id = 0;
+        var dimension_id = 0;
         delete view.tabs.tabs[tab_index].data['dimensions'];
         view.tabs.tabs[tab_index].data['dimensions'] = new Array();
         $.each(data, function(dimension_iterator, dimension) {
             if (this['name'] != 'Measures') {
                 // Make sure the first level has a unique rel attribute.
-                $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + dimension_iterator + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
-                .appendTo($dimension_tree);
-                $second_level = $('<ul />').appendTo($first_level);
+                var $first_level = $('<li><span class="root collapsed"><a href="#" rel="d' + dimension_iterator + '" class="folder_collapsed">' + this['name'] + '</a></span></li>')
+                    .appendTo($dimension_tree);
+                var $second_level = $('<ul />').appendTo($first_level);
                 $.each(dimension.hierarchies, function(hierarchy_iterator, hierarchy) {
                     
                     // Add the hierarchy name.
@@ -312,11 +312,11 @@ var view = {
                     // Loop through each hierarchy.
                     $.each(hierarchy.levels, function(level_iterator, level){
                         dimension_id++;
-                        $li = $('<li />').mousedown(function() {
+                        var $li = $('<li />').mousedown(function() {
                             return false;
                         })
-                        .attr('title', dimension_id)
-                        .appendTo($second_level);
+                            .attr('title', dimension_id)
+                            .appendTo($second_level);
                         view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
                             'dimension': dimension.name,
                             'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
@@ -325,11 +325,11 @@ var view = {
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + dimension_iterator + '_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '"> All ' + hierarchy.caption + '</a>')
+                            var $second_level_link = $('<a href="#" class="dimension" rel="d' + dimension_iterator + '_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '"> All ' + hierarchy.caption + '</a>')
                             .appendTo($li);
                         }else{
                             // Create a parent-child relationship with the rel attribute.
-                            $second_level_link = $('<a href="#" class="dimension" rel="d' + dimension_iterator + '_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
+                            var $second_level_link = $('<a href="#" class="dimension" rel="d' + dimension_iterator + '_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
                             .appendTo($li);
                         }
                     });
@@ -350,20 +350,20 @@ var view = {
      */
     load_measures : function(tab_index, data, url) {
         /** We need to fetch the measures separetely. */
-        $tab = view.tabs.tabs[tab_index].content;
+        var $tab = view.tabs.tabs[tab_index].content;
 
         // Remove any instances of a tree.
         $tab.find('.measure_tree ul').remove();
         // Create a new measures tree.
-        $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree'));
+        var $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree'));
         // Add the first static measures folder.
-        $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m0" class="folder_expand">Measures</a></span></li>')
-        .appendTo($measure_tree);
+        var $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m0" class="folder_expand">Measures</a></span></li>')
+            .appendTo($measure_tree);
         // Add a child list to the measures list.
-        $measures_ul = $('<ul />').appendTo($measures);
+        var $measures_ul = $('<ul />').appendTo($measures);
         
         // Prep measures metadata
-        measure_id = 0;
+        var measure_id = 0;
         delete view.tabs.tabs[tab_index].data['measures'];
         view.tabs.tabs[tab_index].data['measures'] = new Array();
         
@@ -372,30 +372,30 @@ var view = {
             measure_id++;
         	
             $('<li title="' + measure_id + '"><a href="#" class="measure" rel="m0_' + i + '"  title="'+this['uniqueName']+'">'+this['caption']+'</a></li>')
-            .mousedown(function() {
-                return false;
-            }).appendTo($measures_ul);
+                .mousedown(function() {
+                    return false;
+                }).appendTo($measures_ul);
             
             view.tabs.tabs[tab_index].data['measures'][measure_id] = {
                 'measure': member.uniqueName // member.member
             };
         });
         /** Prepare the workspace. */
-        view.prepare_workspace($tab);
+        view.prepare_workspace(tab_index);
         
         // Add a new measure tree.
-        $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');
+        var $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree')).addClass('mtree');
         // Populate the tree with first level measures.
         $.each(data, function(i, dimension) {
             if (this['name'] === 'Measures') {
-                $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></span></li>')
-                .appendTo($tab.find('.measure_tree ul'));
-                $measures_ul = $('<ul />').appendTo($measures);
+                var $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m' + i + '" class="folder_expand">Measures</a></span></li>')
+                    .appendTo($tab.find('.measure_tree ul'));
+                var $measures_ul = $('<ul />').appendTo($measures);
                 $.each(dimension.hierarchies[0].levels, function(j, level){
                     $('<li><a href="#" class="measure" rel="m' + i + '_' + j + '"  title="'+this['level']+'">'+this['caption']+'</a></li>')
-                    .mousedown(function() {
-                        return false;
-                    }).appendTo($measures_ul);
+                        .mousedown(function() {
+                            return false;
+                        }).appendTo($measures_ul);
                 });
             }
         });
@@ -405,24 +405,25 @@ var view = {
      * Prepare the new query trees and workspace.
      * @param $tab {Object} Selected tab content.
      */
-    prepare_workspace: function($tab) {
+    prepare_workspace: function(tab_index) {
 
         /** Initisalise trees */
+        var $tab = view.tabs.tabs[tab_index].content;
         init_trees($tab);
 
         /** Tree selectors. */
-        $dimension_tree = $tab.find('.dimension_tree');
-        $measure_tree = $tab.find('.measure_tree');
-        $both_trees = $tab.find('.measure_tree, .dimension_tree');
-        $both_tree_items = $tab.find('.measure_tree ul li ul li, .dimension_tree ul li ul li');
+        var $dimension_tree = $tab.find('.dimension_tree');
+        var $measure_tree = $tab.find('.measure_tree');
+        var $both_trees = $tab.find('.measure_tree, .dimension_tree');
+        var $both_tree_items = $tab.find('.measure_tree ul li ul li, .dimension_tree ul li ul li');
 
         /** Dropzone selectors. */
-        $both_dropzones = $tab.find('.rows ul, .columns ul');
-        $column_dropzone = $tab.find('.columns ul');
-        $row_dropzone = $tab.find('.rows ul');
-        $sidebar_dropzone = $tab.find('.sidebar');
-        $connectable = $tab.find('.columns > ul, .rows > ul');
-        $sidebar_accept = $tab.find('.rows li, .columns li');
+        var $both_dropzones = $tab.find('.rows ul, .columns ul');
+        var $column_dropzone = $tab.find('.columns ul');
+        var $row_dropzone = $tab.find('.rows ul');
+        var $sidebar_dropzone = $tab.find('.sidebar');
+        var $connectable = $tab.find('.columns > ul, .rows > ul');
+        var $sidebar_accept = $tab.find('.rows li, .columns li');
 
         /** Disable selection. */
         $both_dropzones.find('.placeholder').disableSelection();
@@ -438,7 +439,7 @@ var view = {
         $both_dropzones.sortable('reset');
 
         /** Check the toolbar. */
-        view.check_toolbar();
+        view.check_toolbar(tab_index);
 
         //        /** Double click instead of drag and drop. */
         //        $both_tree_items.dblclick(function(e){
@@ -503,7 +504,7 @@ var view = {
         //                    }
         //                }
         //
-        //                view.check_toolbar();
+        //                view.check_toolbar(tab_index);
         //
         //            }
         //        });
@@ -538,9 +539,11 @@ var view = {
                 if(!(ui.item.hasClass('dropped'))) {
                     /** Determine the sorting to and from axis. */
                     if($(this).parent().hasClass('rows')) {
-                        var sort_to = 'columns', sort_from = 'rows', is_measure = ui.item.hasClass('d_measure');
+                        var sort_to = 'columns', sort_from = 'rows'; 
+                        var is_measure = ui.item.hasClass('d_measure');
                     }else{
-                        var sort_to = 'rows', sort_from = 'columns', is_measure = ui.item.hasClass('d_measure');
+                        var sort_to = 'rows', sort_from = 'columns';
+                        var is_measure = ui.item.hasClass('d_measure');
                     }
                     /** Set sorting between lists to false. */
                     var between_lists = false;
@@ -552,7 +555,8 @@ var view = {
                         between_lists = true;
                     }
                     /** Sorting a dimension or measure. */
-                    var is_dimension = ui.item.find('a').hasClass('dimension'), is_measure = ui.item.find('a').hasClass('measure');
+                    var is_dimension = ui.item.find('a').hasClass('dimension');
+                    var is_measure = ui.item.find('a').hasClass('measure');
                     /** What is on the left and right of the placeholder. */
                     var left_item = $(this).find('.placeholder').prev().prev(), right_item = $(this).find('.placeholder').next();
                     /** Sorting a dimension. */
@@ -646,7 +650,7 @@ var view = {
                     }
                 }
 
-                view.check_toolbar();
+                view.check_toolbar(tab_index);
             }
         });
 
@@ -683,7 +687,7 @@ var view = {
         function add_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $dimension_tree = $tab.find('.dimension_tree');
+            var $dimension_tree = $tab.find('.dimension_tree');
 
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
@@ -698,10 +702,10 @@ var view = {
                 $dimension_tree.find('[rel=' + parent_id + ']').parent().parent().find('ul').toggle();
                 /** Style the parent dimension. */
                 $dimension_tree.find('[rel=' + parent_id + ']').parent()
-                .removeClass('expand').addClass('collapsed')
-                .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
+                    .removeClass('expand').addClass('collapsed')
+                    .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
-            view.check_toolbar();
+            view.check_toolbar(tab_index);
         }
          
         /**
@@ -711,7 +715,7 @@ var view = {
         function remove_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $dimension_tree = $tab.find('.dimension_tree');
+            var $dimension_tree = $tab.find('.dimension_tree');
 
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
@@ -729,7 +733,7 @@ var view = {
                 .removeClass('expand').addClass('collapsed')
                 .find('a.folder_expand').removeClass('folder_expand').addClass('folder_collapsed');
             }
-            view.check_toolbar();
+            view.check_toolbar(tab_index);
         }
 
         /**
@@ -740,13 +744,13 @@ var view = {
         function add_measure($tab, id) {
 
             /* Make sure we are referencing the tab being used */
-            $measure_tree = $tab.find('.measure_tree');
+            var $measure_tree = $tab.find('.measure_tree');
 
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
             .removeClass('ui-draggable').addClass('used not-draggable');
             $measure_tree.find('.root').addClass('used');
-            view.check_toolbar();
+            view.check_toolbar(tab_index);
         }
 
         /**
@@ -757,7 +761,7 @@ var view = {
         function remove_measure($tab, id, is_drop) {
 
             /* Make sure we are referencing the tab being used */
-            $measure_tree = $tab.find('.measure_tree');
+            var $measure_tree = $tab.find('.measure_tree');
 
             /** Disable and highlight the measure. */
             $measure_tree.find('[rel=' + id + ']').parent()
@@ -767,7 +771,7 @@ var view = {
             }else if ($both_dropzones.find('.d_measure').length == 1 && is_drop) {
                 $measure_tree.find('.root').removeClass('used');
             }
-            view.check_toolbar();
+            view.check_toolbar(tab_index);
         }
 
     },
@@ -780,7 +784,7 @@ var view = {
      */
     show_processing : function (msg, block_div, tab_index) {
         if(block_div) {
-            $active_tab = view.tabs.tabs[tab_index].content;
+            var $active_tab = view.tabs.tabs[tab_index].content;
             $active_tab.unblock();
             $active_tab.block({
                 message: '<div class="processing"><div class="processing_inner"><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
@@ -888,10 +892,10 @@ var view = {
     /**
      * Check if the toolbar can be enabled or disabled.
      */
-    check_toolbar: function() {
+    check_toolbar: function(tab_index) {
 
         /* Make sure we are referencing the tab being used */
-        $tab = $('#tab_panel').find('.tab:visible');
+        $tab = view.tabs.tabs[tab_index].content;
         $column_dropzone = $tab.find('.columns ul');
         $row_dropzone = $tab.find('.rows ul');
 
