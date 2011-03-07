@@ -369,7 +369,7 @@ var model = {
                 });
                 
                 // Resize the workspace
-                view.resize_height();
+                view.resize_height(tab_index);
                 
                 // Clear the wait message
                 view.hide_processing(true, tab_index);
@@ -474,12 +474,12 @@ var model = {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = false;
             $button.removeClass('on');
             view.tabs.tabs[tab_index].content.find('.workspace_fields').show();
-            view.resize_height();
+            view.resize_height(tab_index);
         } else {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = true;
             $button.addClass('on');
             view.tabs.tabs[tab_index].content.find('.workspace_fields').hide();
-            view.resize_height();
+            view.resize_height(tab_index);
         }
     },
 

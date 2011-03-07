@@ -57,16 +57,16 @@ var view = {
     /**
      * Resize layout to fit window height
      */
-    resize_height: function() {
+    resize_height: function(tab_index) {
         
         // What tab is being viewed
-        $active_tab = $('#tab_panel').find('.tab:visible');
+        $active_tab = view.tabs.tabs[tab_index].content;
         var window_height, workspace_header;
 
         // Work out the browser windows height and make sure that it is set to
         // 600px when the user reduces the height below 600px.
         if ($(window).height() <= 600) {
-            window_height = 600
+            window_height = 600;
         }else{
             window_height = $(window).height();
         }
@@ -145,7 +145,7 @@ var view = {
 
         /** Bind resize_height() to the resize event. */
         $(window).bind('resize', function() {
-            view.resize_height();
+            view.resize_height(0);
         });
 
         /** Bind toggle_sidebar() to click event on the sidebar_separator. */

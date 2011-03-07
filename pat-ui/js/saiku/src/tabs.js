@@ -72,7 +72,7 @@ var TabContainer = function(tab_container, content_container) {
             this.tab_container.find("li.selected").removeClass("selected");
             this.content_container.find(".tab").hide();
             this.tabs[index].tab.addClass("selected");
-            view.resize_height();
+            view.resize_height(index);
             this.tabs[index].content.show();
             this.selected = index;
         }
@@ -95,7 +95,7 @@ var TabContainer = function(tab_container, content_container) {
         .addClass("tab")
         .load(BASE_URL + "views/queries/", function() {
             view.load_cubes(new_index);
-            view.resize_height();
+            view.resize_height(new_index);
             
             // Bind event handler to workspace toolbar methods
             $new_tab_content.find('.workspace_toolbar a').click(function(event) {
@@ -147,7 +147,7 @@ var TabContainer = function(tab_container, content_container) {
             .addClass("tab")
             .load(BASE_URL + "views/queries/open.html", function() {
                 model.get_queries(new_index);
-                view.resize_height();
+                view.resize_height(new_index);
 
                 // Localize UI controls
                 $('.i18n').i18n(po_file);
