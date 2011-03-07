@@ -199,6 +199,9 @@ var model = {
      */
     dropped_item: function($item, is_click, pos) {
         tab_index = view.tabs.index_from_content($item.closest('.tab'));
+        $tab = view.tabs.tabs[tab_index].content;
+        $column_dropzone = $tab.find('.columns ul');
+        $row_dropzone = $tab.find('.rows ul');
 
         /** Has the dimension or measure been double clicked on. */
         if (is_click) {
