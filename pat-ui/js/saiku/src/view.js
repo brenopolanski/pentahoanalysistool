@@ -200,7 +200,6 @@ var view = {
      * @param tab_index {Integer} Index of the selected tab.
      */
     load_cubes : function(tab_index) {
-        view.show_processing('Loading available schemas and cubes. Please wait...', true, tab_index);
         $tab = view.tabs.tabs[tab_index].content;
         $cubes = $tab.find('.cubes');
         $cubes.append('<option>Select a cube</option>');
@@ -232,7 +231,6 @@ var view = {
                 $cubes.append('</optgroup>');
             });
         });
-        view.hide_processing(true, tab_index);
 
         $cubes.change(function() {
             model.new_query(tab_index);
