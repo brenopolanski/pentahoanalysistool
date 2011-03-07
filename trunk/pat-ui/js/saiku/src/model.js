@@ -106,7 +106,7 @@ var model = {
         model.generate_query_id(tab_index);
 
         // Reference for the selected tabs content.
-        $tab = view.tabs.tabs[tab_index].content;
+        var $tab = view.tabs.tabs[tab_index].content;
 
         view.show_processing('Preparing workspace. Please wait...', true, tab_index);
         
@@ -118,10 +118,10 @@ var model = {
         } else {
             // Create new query
             // Find the selected cube.
-            $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
+            var $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
 
             // Check if the cube is valid if so then display an error.
-            cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+            var cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
             if (typeof cube_data == "undefined") {
                 view.show_dialog('Error', 'There was an error loading that cube.<br/>Please close the tab and try again.', 'error');
                 return;
@@ -168,14 +168,14 @@ var model = {
                             error: function() {
                                 view.hide_processing(true, tab_index);
                                 view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
-                                $('.cubes').find('option:first').attr('selected', 'selected');
+                                $tab.find('.cubes').find('option:first').attr('selected', 'selected');
                             }
                         });
                     },
                     error: function() {
                         view.hide_processing(true, tab_index);
                         view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
-                        $('.cubes').find('option:first').attr('selected', 'selected');
+                        $tab.find('.cubes').find('option:first').attr('selected', 'selected');
                     }
                 });
                 
@@ -186,7 +186,7 @@ var model = {
                 // Could not retrieve dimensions and measures from server
                 view.hide_processing(true, tab_index);
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
-                $('.cubes').find('option:first').attr('selected', 'selected');
+                $tab.find('.cubes').find('option:first').attr('selected', 'selected');
             }
         });        
     },
@@ -198,25 +198,26 @@ var model = {
      * @param position {Integer} The position of the dimension or measure being dropped.
      */
     dropped_item: function($item, is_click, pos) {
-        tab_index = view.tabs.index_from_content($item.closest('.tab'));
-        $tab = view.tabs.tabs[tab_index].content;
-        $column_dropzone = $tab.find('.columns ul');
-        $row_dropzone = $tab.find('.rows ul');
+        var tab_index = view.tabs.index_from_content($item.closest('.tab'));
+        var $tab = view.tabs.tabs[tab_index].content;
+        var $column_dropzone = $tab.find('.columns ul');
+        var $row_dropzone = $tab.find('.rows ul');
+        var $both_dropzones = $tab.find('.rows ul, .columns ul');
 
         /** Has the dimension or measure been double clicked on. */
         if (is_click) {
             if ($item.find('a').hasClass('dimension')) {
-                axis = 'ROWS';
+                var axis = 'ROWS';
             }else if ($item.find('a').hasClass('measure')){
-                axis = 'COLUMNS';
+                var axis = 'COLUMNS';
             }
         }else{
-            axis = $item.closest('.fields_list').attr('title');
+            var axis = $item.closest('.fields_list').attr('title');
         }
 
         /** Sorting a dimension or measure. */
-        var is_dimension = $item.find('a').hasClass('dimension'),
-        is_measure = $item.find('a').hasClass('measure');
+        var is_dimension = $item.find('a').hasClass('dimension');
+        var is_measure = $item.find('a').hasClass('measure');
 
         /** If sorting on a ROW axis and is a dimension. */
         if (axis === 'ROWS' && is_dimension) {
@@ -226,23 +227,23 @@ var model = {
             var position = $column_dropzone.find('li').index($item), memberposition = -1;
         /** If sorting on a ROW axis and is a measure. */
         } else if (axis === 'ROWS' && is_measure) {
-            var memberposition = $both_dropzones.find('li.d_measure').index($item),
-            position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
+            var memberposition = $both_dropzones.find('li.d_measure').index($item);
+            var position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
         /** If sorting on a COLUMN axis and is a measure. */
         } else if (axis === 'COLUMNS' && is_measure) {
-            var memberposition = $both_dropzones.find('li.d_measure').index($item),
-            position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
+            var memberposition = $both_dropzones.find('li.d_measure').index($item);
+            var position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
         }
 
         if (is_dimension) {
             // This is a dimension
-            item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+            var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
             + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if (is_measure) {
             // This is a measure
-            item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
+            var item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
+            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
         // Notify server of change
@@ -270,18 +271,18 @@ var model = {
      * @param is_click {Boolean} If the dimension or measure is being removed via a double click.
      */
     removed_item: function($item, is_click) {
-        tab_index = view.tabs.index_from_content($item.closest('.tab'));
-        axis = $item.closest('.fields_list').attr('title');
+        var tab_index = view.tabs.index_from_content($item.closest('.tab'));
+        var axis = $item.closest('.fields_list').attr('title');
         
         if ($item.find('a').hasClass('dimension')) {
             // This is a dimension
-            item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+            var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
             + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
         } else if ($item.find('a').hasClass('measure')) {
             // This is a measure
-            item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
-            url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
+            var item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
+            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
         
         // Notify server of change
@@ -315,7 +316,7 @@ var model = {
         view.show_processing('Executing query. Please wait...', true, tab_index);
 
         // Set up a pointer to the result area of the active tab.
-        $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+        var $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
         
         // Fetch the resultset from the server
         model.request({
@@ -420,7 +421,7 @@ var model = {
 
         view.show_processing('Setting Non-empty. Please wait...', true, tab_index);
 
-        $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
+        var $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
         if (view.tabs.tabs[tab_index].data['options']['nonempty']) {
             view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
             $button.removeClass('on');
@@ -457,7 +458,7 @@ var model = {
 
         view.show_processing('Setting automatic execution. Please wait...', true, tab_index);
 
-        $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
+        var $button = view.tabs.tabs[tab_index].content.find('a[title="Automatic execution"]');
         if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
             view.tabs.tabs[tab_index].data['options']['automatic_execution'] = false;
             $button.removeClass('on');
@@ -475,7 +476,7 @@ var model = {
      */
     toggle_fields: function(tax_index) {
 
-        $button = view.tabs.tabs[tab_index].content.find('a[title="Toggle fields"]');
+        var $button = view.tabs.tabs[tab_index].content.find('a[title="Toggle fields"]');
         if (view.tabs.tabs[tab_index].data['options']['toggle_fields']) {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = false;
             $button.removeClass('on');
@@ -498,13 +499,13 @@ var model = {
         view.show_processing('Swapping axis. Please wait...', true, tab_index);
 
         // Swap the actual selections
-        $rows = view.tabs.tabs[tab_index].content.find('.rows li');
-        $columns = view.tabs.tabs[tab_index].content.find('.columns li');
+        var $rows = view.tabs.tabs[tab_index].content.find('.rows li');
+        var $columns = view.tabs.tabs[tab_index].content.find('.columns li');
     	
         $rows.detach().appendTo(view.tabs.tabs[tab_index].content.find('.columns ul'));
         $columns.detach().appendTo(view.tabs.tabs[tab_index].content.find('.rows ul'));
     	
-        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.swap.axis";
+        var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.swap.axis";
     	
         // Notify server of change
         model.request({
@@ -569,7 +570,7 @@ var model = {
                             }else{
                                 var query_name = dialog.data.find('#query_name').val();
 
-                                url = model.username + "/repository/" + view.tabs.tabs[tab_index].data['query_name'];
+                                var url = model.username + "/repository/" + view.tabs.tabs[tab_index].data['query_name'];
 
                                 model.request({
                                     method: "POST",
@@ -622,7 +623,7 @@ var model = {
                 // Create a new query in the workspace
                 model.new_query(tab_index, jqXHR.responseText, function(cube) {
                     // Select cube in menu
-                    selected_cube = cube.name;
+                    var selected_cube = cube.name;
                     $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
                     $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val()); 
                     
