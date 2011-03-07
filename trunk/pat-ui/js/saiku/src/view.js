@@ -244,6 +244,7 @@ var view = {
     load_queries: function(tab_index, data) {
         // Pointer for sidebar
         var $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
+        $query_list.empty();
         
         // Load the list of queries
         $.each(data, function(query_iterator, query) {
