@@ -840,7 +840,7 @@ var view = {
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
             url : BASE_URL + url,
-            cache : false,
+            cache : true,
             dataType : "html",
             success : function(data) {
                 $('#dialog').html(data).modal({
