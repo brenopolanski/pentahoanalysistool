@@ -115,6 +115,8 @@ var model = {
             var post_data = {
                 'xml': xml
             };
+            
+            // FIXME - get connection data from opened query
         } else {
             // Create new query
             // Find the selected cube.
@@ -133,6 +135,8 @@ var model = {
                 'catalog': cube_data['catalogName'],
                 'schema': cube_data['schema']
             };
+            
+            view.tabs.tabs[tab_index].data['connection'] = post_data;
         }
 
         // Get a list of available dimensions and measures.
@@ -675,6 +679,7 @@ var model = {
     show_selections: function(member_clicked, $tab) {
         var tab_index = view.tabs.index_from_content($tab);
         var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
+        var tab_data = view.tabs.tabs[tab_index].data['connection'];
         
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
@@ -695,18 +700,18 @@ var model = {
                          */
 
                         
-                        url = model.username + '/discover/' + "";
+                        url = model.username + '/discover/' + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension;
                         model.request({
-                            method: "POST",
-                        url: url,
-                        success: function(data) {
+                            method: "GET",
+                            url: url,
+                            success: function(data, textStatus, jqXHR) {
                                 // Loop through data
                                 //$.each(data,function(index, item) {
                                     // Append to a var the html string
                                 //});
                                 
                                 // Append the var to the DOM
-                                $('.selection_tree').html(data);
+                                $('.selection_tree').html(jqXHR.responseText);
                             }
                         });                          
 
