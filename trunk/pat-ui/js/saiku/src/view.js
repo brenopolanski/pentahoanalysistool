@@ -524,8 +524,8 @@ var view = {
 
         /** Activate all items for selection. */
         $('.rows ul li a, .columns ul li a').live('dblclick', function() {
-            var member_clicked = $(this).text();
-            model.show_selections(member_clicked);
+            var $tab = $(this).closest(".tab");
+            model.show_selections($(this), $tab);
         });
 
         /** Make the dropzones sortable. */

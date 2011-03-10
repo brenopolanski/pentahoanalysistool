@@ -198,8 +198,8 @@ var model = {
      * @param position {Integer} The position of the dimension or measure being dropped.
      */
     dropped_item: function($item, is_click, pos) {
-        var tab_index = view.tabs.index_from_content($item.closest('.tab'));
-        var $tab = view.tabs.tabs[tab_index].content;
+        var $tab = $item.closest('.tab');
+        var tab_index = view.tabs.index_from_content($tab);
         var $column_dropzone = $tab.find('.columns ul');
         var $row_dropzone = $tab.find('.rows ul');
         var $both_dropzones = $tab.find('.rows ul, .columns ul');
@@ -672,9 +672,13 @@ var model = {
      * Show and populate the selection dialog
      * @param tab_index {Integer} The active tab index
      */
-    show_selections: function(member_clicked) {
+    show_selections: function(member_clicked, $tab) {
+        var tab_index = view.tabs.index_from_content($tab);
+        var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
+        
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
             url : BASE_URL + 'views/selections/',
@@ -683,7 +687,6 @@ var model = {
             success : function(data) {
                 $('#dialog').html(data).modal({
                     onShow: function() {
-                        $('h3').html(member_clicked + ' Selections');
                         $('.selection_tree').html('Insert tree here...');
 
                         /**
@@ -691,24 +694,21 @@ var model = {
                          * Populate the thin version of the tree.
                          */
 
-                         /*
-                          * model.request({
-                          *     method: "POST",
-                          *     // Need to work out how to get connection, schema, cube etc.
-                          *     url: model.username + '/discover/' + url
-                          *     success: function(data) {
-                          *
-                          *         // Loop through data
-                          *         $.each(data,function(index, item) {
-                          *             // Append to a var the html string
-                          *         });
-                          *
-                          *         // Append the var to the DOM
-                          *         $('.selection_tree').append(var);
-                          *     }
-                          * });
-                          *
-                          */
+                        
+                        url = model.username + '/discover/' + "";
+                        model.request({
+                            method: "POST",
+                        url: url,
+                        success: function(data) {
+                                // Loop through data
+                                //$.each(data,function(index, item) {
+                                    // Append to a var the html string
+                                //});
+                                
+                                // Append the var to the DOM
+                                $('.selection_tree').html(data);
+                            }
+                        });                          
 
                          /*
                           * Step 2.
