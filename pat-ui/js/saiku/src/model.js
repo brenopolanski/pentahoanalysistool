@@ -72,10 +72,12 @@ var model = {
      * @param tab_index The tab containing the query
      */
     delete_query: function(tab_index) {
-        model.request({
-            method: "DELETE",
-            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
-        });
+        if (view.tabs.tabs[tab_index].data['query_name'] !== undefined) {
+            model.request({
+                method: "DELETE",
+                url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/"
+            });
+        }
     },
     
     /**
