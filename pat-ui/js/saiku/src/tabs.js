@@ -34,7 +34,7 @@ var TabContainer = function(tab_container, content_container) {
             }
         }
         return active_tabs;
-    }
+    };
 
     /** Remove a tab and reclaim memory. */
     this.remove_tab = function(index) {
@@ -85,6 +85,7 @@ var TabContainer = function(tab_container, content_container) {
         var $new_tab = $("<li />");
         var $new_tab_link = $("<a />")
         .html("Unsaved query (" + (new_index + 1) + ")")
+        .data("tab_index", new_index)
         .appendTo($new_tab);
         var $new_tab_closer = $("<span>Close Tab</span>")
         .addClass("close_tab")
@@ -93,6 +94,7 @@ var TabContainer = function(tab_container, content_container) {
         // Create the content portion of the tab.
         $new_tab_content = $('<div />')
         .addClass("tab")
+        .data("tab_index", new_index)
         .load(BASE_URL + "views/queries/", function() {
             view.load_cubes(new_index);
             view.resize_height(new_index);
@@ -198,21 +200,21 @@ var TabContainer = function(tab_container, content_container) {
 
     /** Get a tab_index from a tab instance. */
     this.index_from_tab = function($tab) {
-        for (i = 0; i < this.tabs.length; i++) {
-            if (typeof this.tabs[i] != "undefined" && $tab[0] == this.tabs[i].tab[0]) {
-                return i;
-            }
+        tab_index = $tab.data("tab_index");
+        if (tab_index !== null) {
+            return tab_index;
+        } else {
+            throw "Invalid tab";
         }
-        return -1;
     };
 
     /** Get a tab_index from a tab content. */
     this.index_from_content = function($content) {
-        for (i = 0; i < this.tabs.length; i++) {
-            if (typeof this.tabs[i] != "undefined" && $content[0] == this.tabs[i].content[0]) {
-                return i;
-            }
+        tab_index = $content.data("tab_index");
+        if (tab_index !== null) {
+            return tab_index;
+        } else {
+            throw "Invalid tab";
         }
-        return -1;
     };
 };
