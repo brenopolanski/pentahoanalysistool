@@ -82,10 +82,9 @@ var TabContainer = function(tab_container, content_container) {
     this.add_tab = function() {
         // Create the tab itself
         var new_index = this.tabs.length;
-        var $new_tab = $("<li />");
+        var $new_tab = $("<li />").data("tab_index", new_index);
         var $new_tab_link = $("<a />")
         .html("Unsaved query (" + (new_index + 1) + ")")
-        .data("tab_index", new_index)
         .appendTo($new_tab);
         var $new_tab_closer = $("<span>Close Tab</span>")
         .addClass("close_tab")
