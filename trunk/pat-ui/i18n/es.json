@@ -13,6 +13,7 @@
 	"Show MDX" : "Mostrar MDX",
 	"Export XLS": "Exportar XLS",
 	"Export CSV": "Exportar CSV",
+	"Drill Through": "",
 	"Cubes": "Cubos",
 	"Dimensions": "Dimensiones",
 	"Measures": "Medidas"

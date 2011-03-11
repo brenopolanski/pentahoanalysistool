@@ -13,6 +13,7 @@
 	"Show MDX" : "显示多维表达式",
 	"Export XLS": "导出Microsoft Excel 文件",
 	"Export CSV": "导出逗号分隔的(CSV)文件 (export CSV)",
+	"Drill Through": "",
 	"Cubes": "多维数据",
 	"Dimensions": "维",
 	"Measures": "计量"
