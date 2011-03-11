@@ -395,6 +395,102 @@ var model = {
             }
         });
     },
+    
+    /**
+     * Drillthrough the current query
+     * @param tab_index {Integer} the id of the tab
+     */
+    drillthrough: function(tab_index) {
+        // Make sure that a cube has been selected on this tab
+        if (! view.tabs.tabs[tab_index].data['query_name']) {
+            view.show_dialog("Run query", "Please select a cube first.", "info");
+            return false;
+        }
+
+        var col_counter = view.tabs.tabs[tab_index].content.find('.columns ul li').length;
+        var row_counter = view.tabs.tabs[tab_index].content.find('.rows ul li').length;
+        
+        // Abort if one axis or the other is empty
+        if (col_counter == 0 || row_counter == 0)
+            return;
+        
+        // Notify the user...
+        view.show_processing('Executing drillthrough. Please wait...', true, tab_index);
+
+        // Set up a pointer to the result area of the active tab.
+        var $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+        
+        // Fetch the resultset from the server
+        model.request({
+            method: "GET",
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/drillthrough:1000",
+            success: function(data, textStatus, XMLHttpRequest) {
+                
+                // Create a variable to store the table
+                var table_vis = '<table>';
+
+                // Start looping through the result set
+                $.each(data, function(i, cells) {
+
+                    // Add a new row.
+                    table_vis = table_vis + '<tr>';
+
+                    // Look through the contents of the row
+                    $.each(cells, function(j, header) {
+
+                        // If the cell is a column header and is null (top left of table)
+                        if(header['type'] === "COLUMN_HEADER"
+                            && header['value'] === "null") {
+                            table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
+                        } // If the cell is a column header and isn't null (column header of table)
+                        else if(header['type'] === "COLUMN_HEADER") {
+                            table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
+                        } // If the cell is a row header and is null (grouped row header)
+                        else if(header['type'] === "ROW_HEADER"
+                            && header['value'] === "null") {
+                            table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
+                        } // If the cell is a row header and isn't null (last row header)
+                        else if(header['type'] === "ROW_HEADER") {
+                            table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
+                        } // If the cell is a normal data cell
+                        else if(header['type'] === "DATA_CELL") {
+                            table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
+                        }
+                        
+                    });
+
+                    // Close of the new row
+                    table_vis = table_vis + '</tr>';
+
+                });
+
+                // Close the table
+                table_vis = table_vis + '</table>';
+              
+                // Insert the table to the DOM
+                $workspace_result.html(table_vis);
+
+                // Enable highlighting on rows.
+                $workspace_result.find('table tr').hover(function(){
+                    $(this).children().css('background', '#eff4fc');
+                },function(){
+                    $(this).children().css('background', '');
+                });
+                
+                // Resize the workspace
+                view.resize_height(tab_index);
+                
+                // Clear the wait message
+                view.hide_processing(true, tab_index);
+            },
+            
+            error: function() {
+                // Let the user know that their query was not successful
+                view.hide_processing(true, tab_index);
+                view.show_dialog("Result Set", "There was an error getting the result set for that query.", "info");
+            }
+        });
+    },
 
     /**
      * Display the MDX for the active tab query.
