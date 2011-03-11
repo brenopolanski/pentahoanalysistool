@@ -151,7 +151,10 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Get cube data
                 var cube = data.cube;
-                
+                // TODO this is only a dirty fix, need a way to do that properly
+                if (cube.schemaName == "") {
+                    cube.schemaName= "null";
+                }
                 // Load dimensions into a tree.
                 model.request({
                     method : "GET",
