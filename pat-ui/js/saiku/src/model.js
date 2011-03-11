@@ -151,10 +151,10 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                 // Get cube data
                 var cube = data.cube;
-                // TODO this is only a dirty fix, need a way to do that properly
                 if (cube.schemaName == "") {
                     cube.schemaName= "null";
                 }
+                
                 // Load dimensions into a tree.
                 model.request({
                     method : "GET",
@@ -773,6 +773,16 @@ var model = {
         });
     },
 
+    load_children : function(member, tab_data, callback) {
+        var url = model.username + '/discover/' + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/member/" + member + "/children";
+                        model.request({
+                            method: "GET",
+                            url: url,
+                            success: function(data, textStatus, jqXHR) {
+                                callback(data);
+                            }
+                        });  
+    },
     /**
      * Show and populate the selection dialog
      * @param tab_index {Integer} The active tab index
@@ -793,7 +803,7 @@ var model = {
             success : function(data) {
                 $('#dialog').html(data).modal({
                     onShow: function() {
-                        $('.selection_tree').html('Insert tree here...');
+                        $('.selection_tree').html(member_data.dimension);
 
                         /**
                          * Step 1.
@@ -812,7 +822,8 @@ var model = {
                                 //});
                                 
                                 // Append the var to the DOM
-                                $('.selection_tree').html(jqXHR.responseText);
+                                view.load_selection_tree($('.selection_tree'), data,tab_index);
+
                             }
                         });                          
 

@@ -293,6 +293,133 @@ var view = {
         });
     },
 
+  /**
+     * Populate the dimension tree for the selected tab.
+     * @param $tab {Object} Selected tab content.
+     * @param data {Object} Data object which contains the available dimension
+     *                      members.
+     */
+    load_selection_tree : function($selection_tree, data, tab_index) {
+        
+        // Add a new dimension tree.
+        $selection_tree = $('<ul />').appendTo($selection_tree);
+        
+        // Populate the tree with first level dimensions.
+        var hierarchy_id = 0;
+        $.each(data.hierarchies, function(hierarchy_iterator, hierarchy) {
+                // Make sure the first level has a unique rel attribute.
+                var $first_level = $('<li><span class="root collapsed"><a href="#" rel="h' + hierarchy_iterator + '" class="folder_collapsed">' + hierarchy['caption'] + '</a></span></li>')
+                    .appendTo($selection_tree);
+                var $second_level = $('<ul />').appendTo($first_level);
+                $.each(hierarchy.levels, function(level_iterator, level) {
+                        hierarchy_id++;
+                        var $li = $('<li />').mousedown(function() {
+                            return true;
+                        })
+                            .attr('title', hierarchy_id)
+                            .appendTo($second_level);
+                        
+                        // Check if the dimension level is (All) if so display the All dimension_name instead.
+                        if (level['caption'] === '(All)') {
+                            // Create a parent-child relationship with the rel attribute.
+                            var $second_level_link = $('<a href="#" class="dimension" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '"> All ' + hierarchy.caption + '</a>')
+                            .appendTo($li);
+                        }else{
+                            // Create a parent-child relationship with the rel attribute.
+                            var $second_level_link = $('<a href="#" class="dimension" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
+                            .appendTo($li);
+                        }
+                });
+                $.each(hierarchy.rootMembers, function(member_iterator, member) {
+                        hierarchy_id++;
+                        var $li = $('<li/>');
+                        $('<span class="collapsed unloaded"><a href="#" class="measure" rel="d_' + hierarchy_iterator + '_' + member_iterator + '" title="' + member['uniqueName'] + '">' + member['caption'] + '</a></span>')
+                        .mousedown(function() {
+                            return true;
+                        }).click(function(e) {
+                            e.preventDefault();
+                            $(this).parent().find('ul').toggle();
+                            if ($(this).hasClass('expand')) {
+                                $(this).removeClass('expand').addClass('collapsed');
+                            }else{
+                                $(this).removeClass('collapsed').addClass('expand');
+                            }
+                            if ($(this).hasClass('unloaded')) {
+                                view.load_children($(this), tab_index);
+                                $(this).removeClass('unloaded').addClass('loaded');
+                            }
+                            return false;
+                        })
+                            .attr('title', member['uniqueName'])
+                            .appendTo($li);
+                            $($li).appendTo($second_level);
+                            // Create a parent-child relationship with the rel attribute.
+                            
+                            
+                        
+                });
+                /** After each loop of the dimension make sure that is more than one hierarchy, if not remove the hiearchy. */
+                //if ($first_level.find('.hierarchy').length == 1) {
+                //    $first_level.find('.hierarchy').remove();
+               //}
+        });
+         $selection_tree.find('ul').hide();
+            /** When the root item is clicked show it's children. */
+            $selection_tree.find('.root').click(function(e) {
+                e.preventDefault();
+                $(this).parent().find('ul').toggle();
+                if ($(this).hasClass('expand')) {
+                    $(this).removeClass('expand').addClass('collapsed')
+                    .find('a.folder_expand')
+                    .removeClass('folder_expand')
+                    .addClass('folder_collapsed');
+                }else{
+                    $(this).removeClass('collapsed').addClass('expand')
+                    .find('a.folder_collapsed')
+                    .removeClass('folder_collapsed')
+                    .addClass('folder_expand');
+                }
+                return false;
+            });
+    },
+    load_children : function($item, tab_index) {
+        member = $item.find('a').attr('title');
+        var tab_data = view.tabs.tabs[tab_index].data['connection'];
+        var member_id = 0;
+        model.load_children(member,tab_data,function(data){
+            var $second_level = $('<ul />').appendTo($item);
+              $.each(data, function(member_iterator, member) {
+                        member_id++;
+
+                        var $li = $('<li/>');
+                        $('<span class="collapsed unloaded"><a href="#" class="measure" rel="m_' + member_iterator + '" title="' + member['uniqueName'] + '">' + member['caption'] + '</a></span>')
+                        .mousedown(function() {
+                            return true;
+                        }).click(function(e) {
+                            e.preventDefault();
+                            $(this).parent().find('ul').toggle();
+                            if ($(this).hasClass('expand')) {
+                                $(this).removeClass('expand').addClass('collapsed');
+                            }else{
+                                $(this).removeClass('collapsed').addClass('expand');
+                            }
+                            if ($(this).hasClass('unloaded')) {
+                                view.load_children($(this), tab_index);
+                                $(this).removeClass('unloaded').addClass('loaded');
+                            }
+                            return false;
+                        })
+                            .attr('title', member['uniqueName'])
+                            .appendTo($li);
+                            $($li).appendTo($second_level);
+                            // Create a parent-child relationship with the rel attribute.
+                            
+                            
+                        
+                });
+        });
+        
+    },
     /**
      * Populate the dimension tree for the selected tab.
      * @param $tab {Object} Selected tab content.
