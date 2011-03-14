@@ -293,19 +293,51 @@ var view = {
         });
     },
 
+    load_selection_listbox : function($selection_listbox,axis, data, tab_index) {
+         $selection_listbox.find('select').remove();
+         $selection_listbox = $('<select size="10"/>').appendTo($selection_listbox);
+         $.each(data.selections, function(selection_iterator, selection) {
+            $item = $('<option value="' + selection.uniqueName + '" title="' + selection.uniqueName + '" class="' + selection.type +'">' + selection.uniqueName + '</otpion>')
+                .dblclick(function(e) {
+                            e.preventDefault();
+                            var url = "";
+                            if (selection.type == "LEVEL") {
+                                url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + selection.dimensionUniqueName
+                                    + "/hierarchy/" + selection.hierarchyUniqueName + "/" + selection.uniqueName;
+                            }
+                            if (selection.type == "MEMBER") {
+                                url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + selection.dimensionUniqueName
+                                    + "/member/"  + selection.uniqueName;
+                            }
+                             model.request({
+                                method: "DELETE",
+                                url: url,
+                                success: function(data, textStatus, XMLHttpRequest) {
+                                       $item.remove();
+                                }
+                            });        
+                            return false;
+                });
+                $item.appendTo($selection_listbox);
+
+          });
+    },
+        
+      
   /**
      * Populate the dimension tree for the selected tab.
      * @param $tab {Object} Selected tab content.
      * @param data {Object} Data object which contains the available dimension
      *                      members.
      */
-    load_selection_tree : function($selection_tree, data, tab_index) {
+    load_selection_tree : function($selection_tree, axis, data, tab_index) {
         
         // Add a new dimension tree.
         $selection_tree = $('<ul />').appendTo($selection_tree);
         
         // Populate the tree with first level dimensions.
         var hierarchy_id = 0;
+        var $dimension_name = data['name'];
         $.each(data.hierarchies, function(hierarchy_iterator, hierarchy) {
                 // Make sure the first level has a unique rel attribute.
                 var $first_level = $('<li><span class="root collapsed"><a href="#" rel="h' + hierarchy_iterator + '" class="folder_collapsed">' + hierarchy['caption'] + '</a></span></li>')
@@ -329,6 +361,19 @@ var view = {
                             var $second_level_link = $('<a href="#" class="level" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
                             .appendTo($li);
                         }
+                        $second_level_link.dblclick(function(e) {
+                            e.preventDefault();
+                            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" +  $dimension_name
+                                    + "/hierarchy/" + level['hierarchyUniqueName'] + "/" + level['uniqueName'];
+                             model.request({
+                                method: "POST",
+                                url: url,
+                                success: function(data, textStatus, XMLHttpRequest) {
+                                    model.load_selection_listbox(tab_index, axis, $dimension_name );
+                                }
+                            });        
+                            return false;
+                        });
                 });
                 $.each(hierarchy.rootMembers, function(member_iterator, member) {
                         hierarchy_id++;
@@ -345,9 +390,21 @@ var view = {
                                 $(this).removeClass('collapsed').addClass('expand');
                             }
                             if ($(this).hasClass('unloaded')) {
-                                view.load_children($(this), tab_index);
+                                view.load_children($(this),axis,$dimension_name, tab_index);
                                 $(this).removeClass('unloaded').addClass('loaded');
                             }
+                            return false;
+                        }).dblclick(function(e) {
+                            e.preventDefault();
+                            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" +  $dimension_name
+                                    + "/member/" + $(this).attr('title');
+                             model.request({
+                                method: "POST",
+                                url: url,
+                                success: function(data, textStatus, XMLHttpRequest) {
+                                    model.load_selection_listbox(tab_index, axis, $dimension_name );
+                                }
+                            });        
                             return false;
                         })
                             .attr('title', member['uniqueName'])
@@ -382,7 +439,7 @@ var view = {
                 return false;
             });
     },
-    load_children : function($item, tab_index) {
+    load_children : function($item, axis, $dimension_name, tab_index) {
         member = $item.find('a').attr('title');
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
         var member_id = 0;
