@@ -426,7 +426,7 @@ var model = {
         // Fetch the resultset from the server
         model.request({
             method: "GET",
-            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/drillthrough:1000",
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/drillthrough:500",
             success: function(data, textStatus, XMLHttpRequest) {
                 
                 // Create a variable to store the table
