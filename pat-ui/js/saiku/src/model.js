@@ -302,6 +302,8 @@ var model = {
 
         
     },
+
+     
     
     /**
      * Run the query (triggered by drag events, double click events, and button
@@ -783,6 +785,18 @@ var model = {
                             }
                         });  
     },
+    load_selection_listbox : function(tab_index, axis, dimension) {
+        var query_name = view.tabs.tabs[tab_index].data['query_name'];
+        var url = model.username + '/query/' + query_name + "/axis/" + axis + "/dimension/" + dimension;
+                        model.request({
+                            method: "GET",
+                            url: url,
+                            success: function(data, textStatus, jqXHR) {
+                                view.load_selection_listbox($('.selection_listbox'),axis, data,tab_index);
+
+                            }
+                        });      
+    },
     /**
      * Show and populate the selection dialog
      * @param tab_index {Integer} The active tab index
@@ -791,7 +805,17 @@ var model = {
         var tab_index = view.tabs.index_from_content($tab);
         var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
-        
+        var query_name = view.tabs.tabs[tab_index].data['query_name'];
+        var axis = "";
+        if (member_clicked.parent().parent().parent().hasClass('rows')) {
+            axis = "ROWS"
+        }
+        if (member_clicked.parent().parent().parent().hasClass('columns')) {
+            axis = "COLUMNS"
+        }
+        if (member_clicked.parent().parent().parent().hasClass('filter')) {
+            axis = "FILTER"
+        }
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         
@@ -822,44 +846,16 @@ var model = {
                                 //});
                                 
                                 // Append the var to the DOM
-                                view.load_selection_tree($('.selection_tree'), data,tab_index);
+                                view.load_selection_tree($('.selection_tree'), axis, data,tab_index);
 
                             }
-                        });                          
+                        });    
+                        
+                        model.load_selection_listbox(tab_index, axis, member_data.dimension);
+                                            
+                      
 
-                         /*
-                          * Step 2.
-                          * Activate a lazy load method over the thin tree.
-                          */
 
-                         /*
-                          * The method will be most likely in the view so you can
-                          * call it by:
-                          *
-                          * view.lazy_selection_tree();
-                          *
-                          * lazy_selection_tree: function(tab_index) {
-                          *
-                          *     // Add a listener to clicking on root lists and call
-                          *     // the REST api to send back the correct list element
-                          *     // and loop through results like above.
-                          *
-                          *     $('.selection_tree li.root').click(function() {
-                          *
-                          *         model.request({
-                          *             url: model.username + '/discover/' + url
-                          *             success: function(data) {
-                          *                 $.each(data, function(index, item) {
-                          *                     // Append the new list
-                          *                 });
-                          *             }
-                          *         })
-                          *
-                          *     });
-                          *
-                          * }
-                          *
-                          */
                     }
                 });
 
