@@ -322,18 +322,18 @@ var view = {
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
-                            var $second_level_link = $('<a href="#" class="dimension" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '"> All ' + hierarchy.caption + '</a>')
+                            var $second_level_link = $('<a href="#" class="level" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '"> All ' + hierarchy.caption + '</a>')
                             .appendTo($li);
                         }else{
                             // Create a parent-child relationship with the rel attribute.
-                            var $second_level_link = $('<a href="#" class="dimension" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
+                            var $second_level_link = $('<a href="#" class="level" rel="d_' + hierarchy_iterator + '_' + level_iterator + '" title="' + level['uniqueName'] + '">' + level['caption'] + '</a>')
                             .appendTo($li);
                         }
                 });
                 $.each(hierarchy.rootMembers, function(member_iterator, member) {
                         hierarchy_id++;
                         var $li = $('<li/>');
-                        $('<span class="collapsed unloaded"><a href="#" class="measure" rel="d_' + hierarchy_iterator + '_' + member_iterator + '" title="' + member['uniqueName'] + '">' + member['caption'] + '</a></span>')
+                        $('<span class="collapsed unloaded"><a href="#" class="member" rel="d_' + hierarchy_iterator + '_' + member_iterator + '" title="' + member['uniqueName'] + '">' + member['caption'] + '</a></span>')
                         .mousedown(function() {
                             return true;
                         }).click(function(e) {
@@ -557,12 +557,13 @@ var view = {
         var $both_tree_items = $tab.find('.measure_tree ul li ul li, .dimension_tree ul li ul li');
 
         /** Dropzone selectors. */
-        var $both_dropzones = $tab.find('.rows ul, .columns ul');
+        var $both_dropzones = $tab.find('.rows ul, .columns ul, .filter ul');
         var $column_dropzone = $tab.find('.columns ul');
         var $row_dropzone = $tab.find('.rows ul');
+        var $filter_dropzone = $tab.find('.filter ul');
         var $sidebar_dropzone = $tab.find('.sidebar');
-        var $connectable = $tab.find('.columns > ul, .rows > ul');
-        var $sidebar_accept = $tab.find('.rows li, .columns li');
+        var $connectable = $tab.find('.columns > ul, .rows > ul, .filter > ul');
+        var $sidebar_accept = $tab.find('.rows li, .columns li, , .filter > ul');
 
         /** Disable selection. */
         $both_dropzones.find('.placeholder').disableSelection();
@@ -650,7 +651,7 @@ var view = {
 
 
         /** Activate all items for selection. */
-        $('.rows ul li a, .columns ul li a').live('dblclick', function() {
+        $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
             var $tab = $(this).closest(".tab");
             model.show_selections($(this), $tab);
         });
@@ -784,7 +785,7 @@ var view = {
 
                 // If automatic query execution is enabled, rerun the query after making change
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-                    if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                    if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $filter_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
                         model.run_query(tab_index);
                     }
                 }
