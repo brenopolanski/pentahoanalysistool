@@ -381,7 +381,6 @@ html, body {
 }
 }
 
-
 /** Tab Panel */
 
 #tab_panel {
@@ -609,7 +608,7 @@ html, body {
 .dialog {
     background: #FFF;
     border: 3px solid #EEE;
-    width: 400px;
+    min-width: 400px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-box-shadow: 0 0 10px #EEE;
@@ -651,7 +650,7 @@ html, body {
     /*cursor: pointer;*/
     float: right;
     height: 18px;
-    text-indent: -999px;
+    text-indent: -9999px;
     width: 20px;
 }
 .dialog .dialog_inner .dialog_header a.close_dialog:hover {
@@ -702,6 +701,10 @@ html, body {
 }
 .dialog .dialog_inner .dialog_footer .tested_browsers {
     padding-right: 10px;
+}
+
+.dialog_footer {
+	clear: both;
 }
 
 /** Workspace Area */
@@ -882,4 +885,27 @@ html, body {
     background-image: url('../../../images/src/fields.png');
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+
+/** Selections **/
+.selection_tree {
+    width: 60%;
+    min-height: 480px;
+    overflow: auto; 
+}
+
+.selection_listbox {
+    width: 35%;
+    float: right;
+}
+
+.selection_listbox select {
+	min-height: 480px;
+	width: 100%;
+	margin: 0;
+}
+
+.selections {
+	width: 80%;
 }
