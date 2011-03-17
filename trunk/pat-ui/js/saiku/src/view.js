@@ -726,9 +726,14 @@ var view = {
 
 
         /** Activate all items for selection. */
+        // FIXME - this should be added when the item is dragged to avoid page fragments
         $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
-            var $tab = $(this).closest(".tab");
-            model.show_selections($(this), $tab);
+            if ($(this).hasClass('dimension')) {
+                var $tab = $(this).closest(".tab");
+                model.show_selections($(this), $tab);
+            }
+            
+            return false;
         });
 
         /** Make the dropzones sortable. */
