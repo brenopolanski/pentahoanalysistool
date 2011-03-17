@@ -825,16 +825,16 @@ var model = {
         var query_name = view.tabs.tabs[tab_index].data['query_name'];
         var axis = "";
         if (member_clicked.parent().parent().parent().hasClass('rows')) {
-            axis = "ROWS"
+            axis = "ROWS";
         }
         if (member_clicked.parent().parent().parent().hasClass('columns')) {
-            axis = "COLUMNS"
+            axis = "COLUMNS";
         }
         if (member_clicked.parent().parent().parent().hasClass('filter')) {
-            axis = "FILTER"
+            axis = "FILTER";
         }
         // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        $('<div id="dialog" class="selections dialog hide" />').appendTo('body');
         
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
@@ -843,6 +843,7 @@ var model = {
             dataType : "html",
             success : function(data) {
                 $('#dialog').html(data).modal({
+                    autoPosition: true,
                     onShow: function() {
                         $('.selection_tree').html(member_data.dimension);
 

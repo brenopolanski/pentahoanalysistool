@@ -1044,7 +1044,7 @@ var view = {
      */
     show_view : function(url, callback) {
         // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        $('<div id="dialog" class="selections dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
             url : BASE_URL + url,
