@@ -1,4 +1,4 @@
-/* Saiku UI -- a suite of utilities for electronic mail
+/* Saiku UI -- a user interface for the Saiku Server
    Copyright (C) Paul Stoellberger, 2011.
 
    This library is free software; you can redistribute it and/or
