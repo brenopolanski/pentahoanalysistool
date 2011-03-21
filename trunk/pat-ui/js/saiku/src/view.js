@@ -479,7 +479,7 @@ var view = {
                                 $(this).removeClass('collapsed').addClass('expand');
                             }
                             if ($(this).hasClass('unloaded')) {
-                                view.load_children($(this), tab_index);
+                                view.load_children($(this),axis,$dimension_name, tab_index);
                                 $(this).removeClass('unloaded').addClass('loaded');
                             }
                             return false;
