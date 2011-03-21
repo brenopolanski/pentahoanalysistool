@@ -794,7 +794,7 @@ var model = {
 
     load_children : function(member, tab_data, callback) {
         // TODO better solution, fix for PALO
-        if (tab_data.schema == "undefined" ||Êtab_data.schema == "" ) {
+        if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
         	tab_data.schema = "null";
         }
         var url = model.username + '/discover/' + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/member/" + member + "/children";
@@ -856,7 +856,7 @@ var model = {
                          * Populate the thin version of the tree.
                          */
                         // TODO better solution, fix for PALO
-                        if (tab_data.schema == "undefined" ||Êtab_data.schema == "" ) {
+                        if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
                         	tab_data.schema = "null";
                         }
                         
