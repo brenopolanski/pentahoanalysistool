@@ -888,7 +888,7 @@ html, body {
 }
 
 
-/** Selections **/
+/** Selections 
 .selection_tree {
     width: 60%;
     min-height: 480px;
@@ -908,4 +908,26 @@ html, body {
 
 .selections {
 	width: 80%;
+}**/
+#dialog_selections {
+     min-width: 500px !important;
+}
+#dialog_selections .dialog_body {
+    height: 300px;
+}
+#dialog_selections .dialog_body .selection_buttons {
+    height: 270px;
+    vertical-align: middle;
+}
+#dialog_selections .dialog_body .available_selections,
+#dialog_selections .dialog_body .selection_buttons {
+    float: left;
+}
+#dialog_selections .dialog_body .used_selections {
+    float: right;
+}
+#dialog_selections .dialog_body select {
+    height: 270px;
+    width: 200px;
+    overflow: auto;
 }

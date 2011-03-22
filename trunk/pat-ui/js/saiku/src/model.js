@@ -136,7 +136,7 @@ var model = {
                 'xml': xml
             };
             
-            // FIXME - get connection data from opened query
+        // FIXME - get connection data from opened query
         } else {
             // Create new query
             // Find the selected cube.
@@ -795,28 +795,28 @@ var model = {
     load_children : function(member, tab_data, callback) {
         // TODO better solution, fix for PALO
         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
-        	tab_data.schema = "null";
+            tab_data.schema = "null";
         }
         var url = model.username + '/discover/' + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/member/" + member + "/children";
-                        model.request({
-                            method: "GET",
-                            url: url,
-                            success: function(data, textStatus, jqXHR) {
-                                callback(data);
-                            }
-                        });  
+        model.request({
+            method: "GET",
+            url: url,
+            success: function(data, textStatus, jqXHR) {
+                callback(data);
+            }
+        });
     },
     load_selection_listbox : function(tab_index, axis, dimension) {
         var query_name = view.tabs.tabs[tab_index].data['query_name'];
         var url = model.username + '/query/' + query_name + "/axis/" + axis + "/dimension/" + dimension;
-                        model.request({
-                            method: "GET",
-                            url: url,
-                            success: function(data, textStatus, jqXHR) {
-                                view.load_selection_listbox($('.selection_listbox'),axis, data,tab_index);
+        model.request({
+            method: "GET",
+            url: url,
+            success: function(data, textStatus, jqXHR) {
+                view.load_selection_listbox($('.selection_listbox'),axis, data,tab_index);
 
-                            }
-                        });      
+            }
+        });
     },
     /**
      * Show and populate the selection dialog
@@ -838,7 +838,7 @@ var model = {
             axis = "FILTER";
         }
         // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="selections dialog hide" />').appendTo('body');
+        $('<div id="dialog_selections" class="selections dialog hide" />').appendTo('body');
         
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
@@ -846,41 +846,22 @@ var model = {
             cache : false,
             dataType : "html",
             success : function(data) {
-                $('#dialog').html(data).modal({
-                    autoPosition: true,
+                $('#dialog_selections').html(data).modal({
+                    /*autoPosition: true,*/
                     onShow: function() {
-                        $('.selection_tree').html(member_data.dimension);
-
-                        /**
-                         * Step 1.
-                         * Populate the thin version of the tree.
-                         */
                         // TODO better solution, fix for PALO
                         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
-                        	tab_data.schema = "null";
+                            tab_data.schema = "null";
                         }
-                        
-                        url = model.username + '/discover/' + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension;
+                        var url = "admin/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimensionuniquename + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level;
                         model.request({
                             method: "GET",
                             url: url,
                             success: function(data, textStatus, jqXHR) {
-                                // Loop through data
-                                //$.each(data,function(index, item) {
-                                    // Append to a var the html string
-                                //});
-                                
-                                // Append the var to the DOM
-                                view.load_selection_tree($('.selection_tree'), axis, data,tab_index);
-
+                                console.log(data);
+                                //view.load_available_selections($('.available_selections select'), axis, data, tab_index);
                             }
                         });    
-                        
-                        model.load_selection_listbox(tab_index, axis, member_data.dimension);
-                                            
-                      
-
-
                     }
                 });
 
