@@ -837,6 +837,9 @@ var model = {
         if (member_clicked.parent().parent().parent().hasClass('filter')) {
             axis = "FILTER";
         }
+
+        view.show_processing('Loading selections. Please wait...', true, tab_index);
+
         // Append a dialog <div/> to the body.
         $('<div id="dialog_selections" class="selections dialog hide" />').appendTo('body');
         
@@ -853,13 +856,14 @@ var model = {
                         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
                             tab_data.schema = "null";
                         }
-                        var url = "admin/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimensionuniquename + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level;
+                        var url = "admin/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
                         model.request({
                             method: "GET",
                             url: url,
                             success: function(data, textStatus, jqXHR) {
-                                console.log(data);
-                                //view.load_available_selections($('.available_selections select'), axis, data, tab_index);
+                                $('#dialog_selections').find('h3').text('Selections on ' + member_data.dimension);
+                                view.load_available_selections($('.available_selections select'), axis, data, tab_index);
+                                view.hide_processing(true, tab_index);
                             }
                         });    
                     }
