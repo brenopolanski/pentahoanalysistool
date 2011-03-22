@@ -348,9 +348,24 @@ var view = {
      * @param data {Object} Data object which contains the available dimension
      *                      members.
      */
-    load_available_selections : function($selection_tree, axis, data, tab_index) {
-        
+    load_available_selections : function($available_selections, axis, data, tab_index) {
+
+        // Pointer to the used selections multi list box
+        $used_selections = $available_selections.parent().parent().find('.used_selections select');
+
+        // Cycle through each member and append to the available selections listbox
+        $.each(data, function(member_iterator, member) {
+           $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
+        });
+
+        // When you double click on an option in the available selections remove it and move it to the used selections list box
+        $available_selections.find('option').dblclick(function(){        
+            $(this).remove();
+            $used_selections.append('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+        });
+
     },
+    
     load_children : function($item, axis, $dimension_name, tab_index) {
         member = $item.find('a').attr('title');
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
@@ -427,7 +442,6 @@ var view = {
                         .appendTo($second_level);
                         view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
                             'dimension': dimension.name,
-                            'dimensionuniquename': dimension.uniqueName,
                             'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
                             'level': level.uniqueName // level.level
                         };                        

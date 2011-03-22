@@ -921,13 +921,16 @@ html, body {
 }
 #dialog_selections .dialog_body .available_selections,
 #dialog_selections .dialog_body .selection_buttons {
+    padding-left: 5px;
     float: left;
 }
 #dialog_selections .dialog_body .used_selections {
+    padding-right: 5px;
     float: right;
 }
 #dialog_selections .dialog_body select {
-    height: 270px;
+    height: 285px;
     width: 200px;
     overflow: auto;
+    font-size: 11px;
 }
