@@ -792,7 +792,7 @@ var model = {
         });
     },
 
-    load_children : function(member, tab_data, callback) {
+    /*load_children : function(member, tab_data, callback) {
         // TODO better solution, fix for PALO
         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
             tab_data.schema = "null";
@@ -817,7 +817,7 @@ var model = {
 
             }
         });
-    },
+    },*/
     /**
      * Show and populate the selection dialog
      * @param tab_index {Integer} The active tab index
@@ -851,21 +851,73 @@ var model = {
             success : function(data) {
                 $('#dialog_selections').html(data).modal({
                     /*autoPosition: true,*/
-                    onShow: function() {
+                    onShow: function(dialog) {
                         // TODO better solution, fix for PALO
                         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
                             tab_data.schema = "null";
                         }
-                        var url = "admin/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
+                        // Load the selections dialog box
+
+                        // Load all available selections and load into the available selection list
+                        var url = model.username + "/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
                         model.request({
                             method: "GET",
                             url: url,
                             success: function(data, textStatus, jqXHR) {
+                                // Change the title of the selections dialog box
                                 $('#dialog_selections').find('h3').text('Selections on ' + member_data.dimension);
-                                view.load_available_selections($('.available_selections select'), axis, data, tab_index);
+                                // Call the method to load the selection box
+                                view.load_available_selections($('#dialog_selections .available_selections select'), axis, data, tab_index);
+                                // End processing
                                 view.hide_processing(true, tab_index);
                             }
-                        });    
+                        });
+
+                        // When the save button is clicked
+                        $('.save').click(function(){
+                            // Let the user know you are saving selections...
+                            view.show_processing('Saving selections. Please wait...', true, tab_index);
+                            // Hide the dialog
+                            $('#dialog_selections').hide();
+                            // First remove the level selection
+                            var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+                            model.request({
+                                method: "DELETE",
+                                url: url,
+                                success: function(data, textStatus, jqXHR) {
+                                    // If the level was removed, then add all selections in the used listbox
+
+                                    // Loop through all options in the used selections listbox
+                                    $('#dialog_selections .used_selections select option').each(function(members, index) {
+                                        // Build up the url
+                                        var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+                                        // POST to Saiku
+                                        model.request({
+                                            method: "POST",
+                                            url: url,
+                                            success: function(data, textStatus, jqXHR) { /*Do nothing*/ },
+                                            error: function(data) { /*Do nothing*/ }
+                                        });
+                                    });
+
+                                    // Remove all simple modal objects.
+                                    dialog.data.remove();
+                                    dialog.container.remove();
+                                    dialog.overlay.remove();
+                                    $.modal.close();
+                                    // Remove the #dialog which we appended to the body.
+                                    $('#dialog').remove();
+
+                                    // Hide the processing
+                                    view.hide_processing(true, tab_index);
+
+                                    // Execute the query
+                                    model.run_query(tab_index);
+
+                                },
+                                error: function(data) {}
+                            });
+                        });
                     }
                 });
 

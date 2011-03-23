@@ -311,7 +311,7 @@ var view = {
         });
     },
 
-    load_selection_listbox : function($selection_listbox,axis, data, tab_index) {
+    /*load_selection_listbox : function($selection_listbox,axis, data, tab_index) {
         $selection_listbox.find('select').remove();
         $selection_listbox = $('<select size="10"/>').appendTo($selection_listbox);
         $.each(data.selections, function(selection_iterator, selection) {
@@ -339,7 +339,7 @@ var view = {
             $item.appendTo($selection_listbox);
 
         });
-    },
+    },*/
         
       
     /**
@@ -350,20 +350,29 @@ var view = {
      */
     load_available_selections : function($available_selections, axis, data, tab_index) {
 
-        // Pointer to the used selections multi list box
-        $used_selections = $available_selections.parent().parent().find('.used_selections select');
+        // Setup a pointer to the used members
+        $used_selections = $('#dialog_selections .used_selections select');
 
-        // Cycle through each member and append to the available selections listbox
+        // Cycle through each member and append to the
+        // available selections listbox
         $.each(data, function(member_iterator, member) {
-           $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
+            $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
         });
 
-        // When you double click on an option in the available selections remove it and move it to the used selections list box
-        $available_selections.find('option').dblclick(function(){        
-            $(this).remove();
-            $used_selections.append('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+        // Clicking on the > button will add all selected members.
+        $('#add_members').click(function(){
+            $available_selections.find('option:selected').appendTo($used_selections);
+            $available_selections.find('option:selected').remove();
+            $used_selections.find('option:selected').attr('selected', '');
         });
 
+        // Clicking on the < button will remove all selected members.
+        $('#remove_members').click(function(){
+            $used_selections.find('option:selected').appendTo($available_selections);
+            $used_selections.find('option:selected').remove();
+            $available_selections.find('option:selected').attr('selected', '');
+        });
+        
     },
     
     load_children : function($item, axis, $dimension_name, tab_index) {
@@ -405,11 +414,11 @@ var view = {
         
     },
     /**
-     * Populate the dimension tree for the selected tab.
-     * @param $tab {Object} Selected tab content.
-     * @param data {Object} Data object which contains the available dimension
-     *                      members.
-     */
+         * Populate the dimension tree for the selected tab.
+         * @param $tab {Object} Selected tab content.
+         * @param data {Object} Data object which contains the available dimension
+         *                      members.
+         */
     load_dimensions : function(tab_index, data) {
         // Remove any instances of a tree.
         var $tab = view.tabs.tabs[tab_index].content;
@@ -444,7 +453,7 @@ var view = {
                             'dimension': dimension.name,
                             'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
                             'level': level.uniqueName // level.level
-                        };                        
+                        };
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
                             // Create a parent-child relationship with the rel attribute.
@@ -466,11 +475,11 @@ var view = {
     },
 
     /**
-     * Populate the measure tree for the selected tab.
-     * @param $tab {Object} Selected tab content.
-     * @param data {Object} Data object which contains the available measure
-     *                      members.
-     */
+         * Populate the measure tree for the selected tab.
+         * @param $tab {Object} Selected tab content.
+         * @param data {Object} Data object which contains the available measure
+         *                      members.
+         */
     load_measures : function(tab_index, data, url) {
         /** We need to fetch the measures separetely. */
         var $tab = view.tabs.tabs[tab_index].content;
@@ -525,9 +534,9 @@ var view = {
     },
 
     /**
-     * Prepare the new query trees and workspace.
-     * @param $tab {Object} Selected tab content.
-     */
+         * Prepare the new query trees and workspace.
+         * @param $tab {Object} Selected tab content.
+         */
     prepare_workspace: function(tab_index) {
 
         /** Initisalise trees */
@@ -668,7 +677,7 @@ var view = {
                 if(!(ui.item.hasClass('dropped'))) {
                     /** Determine the sorting to and from axis. */
                     if($(this).parent().hasClass('rows')) {
-                        var sort_to = 'columns', sort_from = 'rows'; 
+                        var sort_to = 'columns', sort_from = 'rows';
                         var is_measure = ui.item.hasClass('d_measure');
                     }else{
                         var sort_to = 'rows', sort_from = 'columns';
@@ -784,8 +793,8 @@ var view = {
         });
 
         /**
-         * Active dimension and measure trees.
-         */
+             * Active dimension and measure trees.
+             */
         function init_trees($tab) {
             /** Activate hide and show on trees. */
             $tab.find('.dimension_tree').find('ul li ul').hide();
@@ -809,10 +818,10 @@ var view = {
         }
 
         /**
-         * Add a dimension.
-         * @param id {String} The rel attribute of the link being clicked which
-         * identifies the dimension.
-         */
+             * Add a dimension.
+             * @param id {String} The rel attribute of the link being clicked which
+             * identifies the dimension.
+             */
         function add_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
@@ -838,9 +847,9 @@ var view = {
         }
          
         /**
-         * Remove a dimension.
-         * @param id {String} The rel attribute of the dimension being removed.
-         */
+             * Remove a dimension.
+             * @param id {String} The rel attribute of the dimension being removed.
+             */
         function remove_dimension($tab, id) {
 
             /* Make sure we are referencing the tab being used */
@@ -866,10 +875,10 @@ var view = {
         }
 
         /**
-         * Add a measure.
-         * @param id {String} The rel attribute of the link being clicked which
-         * identifies the measure.
-         */
+             * Add a measure.
+             * @param id {String} The rel attribute of the link being clicked which
+             * identifies the measure.
+             */
         function add_measure($tab, id) {
 
             /* Make sure we are referencing the tab being used */
@@ -883,10 +892,10 @@ var view = {
         }
 
         /**
-         * Remove a measure.
-         * @param id {String} The rel attribute of the measure being removed.
-         * @param is_drop {Boolean} If the measure is being dropped.
-         */
+             * Remove a measure.
+             * @param id {String} The rel attribute of the measure being removed.
+             * @param is_drop {Boolean} If the measure is being dropped.
+             */
         function remove_measure($tab, id, is_drop) {
 
             /* Make sure we are referencing the tab being used */
@@ -906,11 +915,11 @@ var view = {
     },
 
     /**
-     * Displays a waiting message and blocks the user from performing any actions.
-     * @param msg {String} Message to be displayed to the user.
-     * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
-     * @param tab_index {Integer} Index of the active tab.
-     */
+         * Displays a waiting message and blocks the user from performing any actions.
+         * @param msg {String} Message to be displayed to the user.
+         * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
+         * @param tab_index {Integer} Index of the active tab.
+         */
     show_processing : function (msg, block_div, tab_index) {
         if(block_div) {
             var $active_tab = view.tabs.tabs[tab_index].content;
@@ -920,7 +929,8 @@ var view = {
                 overlayCSS:  {
                     backgroundColor: '#FFF',
                     opacity:         0.5
-                }
+                },
+                baseZ: 100000
             });
         }else{
             $.unblockUI();
@@ -935,10 +945,10 @@ var view = {
     },
 
     /**
-     * Hides the waiting message.
-     * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
-     * @param tab_index {Integer} Index of the active tab.
-     */
+         * Hides the waiting message.
+         * @param block_div {Boolean} If blocking a specific tab or the whole viewport.
+         * @param tab_index {Integer} Index of the active tab.
+         */
     hide_processing : function(block_div, tab_index) {
         if (block_div) {
             view.tabs.tabs[tab_index].content.unblock();
@@ -948,9 +958,9 @@ var view = {
     },
 
     /**
-     * Load views into a dialog template
-     * @param url {String} The url where the view is located.
-     */
+         * Load views into a dialog template
+         * @param url {String} The url where the view is located.
+         */
     show_view : function(url, callback) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="selections dialog hide" />').appendTo('body');
@@ -980,10 +990,10 @@ var view = {
     },
 
     /**
-     * Loads a pop up dialog box for alerting.
-     * @param title {String} Title to be displayed in the dialog box.
-     * @param message {String} Message to be displayed in the dialog box.
-     */
+         * Loads a pop up dialog box for alerting.
+         * @param title {String} Title to be displayed in the dialog box.
+         * @param message {String} Message to be displayed in the dialog box.
+         */
     show_dialog : function (title, message, type) {
 
         // Check if there is already a dialog box
@@ -1019,8 +1029,8 @@ var view = {
 
 
     /**
-     * Check if the toolbar can be enabled or disabled.
-     */
+         * Check if the toolbar can be enabled or disabled.
+         */
     check_toolbar: function(tab_index) {
 
         /* Make sure we are referencing the tab being used */

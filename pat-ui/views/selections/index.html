@@ -6,18 +6,23 @@
     </div>
     <div class="dialog_body">
         <div class="available_selections">
+            Available members:<br/>
             <select multiple></select>
         </div>
         <div class="selection_buttons">
+            <input type="button" value="Add" id="add_members" /><br/><br/>
+            <input type="button" value="Remove" id="remove_members" />
         </div>
         <div class="used_selections">
-            <select multiple></select>
+            Used members:<br/>
+            <select multiple>
+              </select>
         </div>
         <!--<div class="selection_listbox"></div>
         <div class="selection_tree dimension_tree"></div>-->
     </div>
     <div class="dialog_footer">
-        <input type="button" value="&nbsp;Save&nbsp;" />
+        <input type="button" class="save" value="&nbsp;Save&nbsp;" />
         <input type="button" class="close" value="&nbsp;Cancel&nbsp;" />
     </div>
 </div>
