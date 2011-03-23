@@ -919,18 +919,31 @@ html, body {
     height: 270px;
     vertical-align: middle;
 }
-#dialog_selections .dialog_body .available_selections,
-#dialog_selections .dialog_body .selection_buttons {
+#dialog_selections .dialog_body .available_selections {
     padding-left: 5px;
     float: left;
+}
+#dialog_selections .dialog_body .selection_buttons {
+    float: left;
+    padding-left: 10px;
+    text-align:center;
+}
+#dialog_selections .dialog_body .selection_buttons #add_members {
+    margin-top: 105px;
 }
 #dialog_selections .dialog_body .used_selections {
     padding-right: 5px;
     float: right;
 }
 #dialog_selections .dialog_body select {
-    height: 285px;
+    height: 270px;
     width: 200px;
     overflow: auto;
     font-size: 11px;
+}
+#dialog_selections .dialog_body #add_members,
+#dialog_selections .dialog_body #remove_members {
+    font-size: 11px;
+    width: 50px;
+    text-align: center;
 }
