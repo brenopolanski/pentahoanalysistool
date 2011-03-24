@@ -828,6 +828,7 @@ var model = {
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
         var query_name = view.tabs.tabs[tab_index].data['query_name'];
         var axis = "";
+        
         if (member_clicked.parent().parent().parent().hasClass('rows')) {
             axis = "ROWS";
         }
@@ -878,14 +879,16 @@ var model = {
 
                                 // Build up a url
                                 var url = model.username + "/query/" + query_name + "/axis/" + axis +"/";
-                                
+                                // Used selection array
+                                var used_selection = [];
+
                                 // Request a list of used selections. For this to occur it will need to do three concurrent loops.
                                 model.request({
                                     method: "GET",
                                     url: url,
-                                    success: function(data, textStatus, jqXHR) {
+                                    success: function(used_data, textStatus, jqXHR) {
                                         // First loop through all available dimensions
-                                        $.each(data, function(i, dimensions) {
+                                        $.each(used_data, function(i, dimensions) {
                                             // If the dimension is the same as the dimension the user is doing
                                             // selections on.
                                             if(dimensions['uniqueName'] === member_data.dimensionuniquename) {
@@ -895,20 +898,25 @@ var model = {
                                                     if(selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
                                                         // Add the selection to the used list box
                                                         $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
+                                                        // Store into an array
+                                                        used_selection.push(selections['uniqueName']);
                                                     }
                                                 });
+                                            }
+                                        });
+
+                                        // Load all available selections once we know we can successfully retrieve
+                                        // all used selections.
+
+                                        // Cycle through each member and append to the available selections listbox
+                                        $.each(data, function(member_iterator, member) {
+                                            if($.inArray(member['uniqueName'], used_selection) == -1) {
+                                                $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
                                             }
                                         });
                                     },
                                     error: function(data) {}
                                 });
-
-                                // Cycle through each member and append to the available selections listbox
-                                $.each(data, function(member_iterator, member) {
-                                    $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
-                                });
-
-                                // Delete array
 
                                 // Clicking on the > button will add all selected members.
                                 $('#add_members').click(function(){
@@ -935,53 +943,56 @@ var model = {
                             view.show_processing('Saving selections. Please wait...', true, tab_index);
                             // Hide the dialog
                             $('#dialog_selections').hide();
-                            // First remove the level selection
-                            var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
-                            model.request({
-                                method: "DELETE",
-                                url: url,
-                                success: function(data, textStatus, jqXHR) {
-                                    // If the level was removed, then add all selections in the used listbox
 
-                                    var member_iterator = 0;
-                                    // Loop through all options in the used selections listbox
-                                    $('#dialog_selections .used_selections select option').each(function(members, index) {
-                                        // Build up the url
-                                        var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
-                                        // POST to Saiku
-                                        model.request({
-                                            method: "POST",
-                                            url: url,
-                                            success: function(data, textStatus, jqXHR) {
-                                                // For each member added we will let the user know by adding a counter
-                                                // next to the dimension on the axis.
-                                                member_iterator = member_iterator + 1;
-                                                $(member_clicked).text(member_data.dimension + ' (' + member_iterator + ')');
-
-                                            },
-                                            error: function(data) { /*Do nothing*/ }
+                            if($used_selections.find('option').length >= 0) {
+                                // If we are using selections...
+                                // First remove the level selection
+                                var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+                                model.request({
+                                    method: "DELETE",
+                                    url: url,
+                                    success: function(data, textStatus, jqXHR) {
+                                        // If the level was removed, then add all selections in the used listbox
+                                        var member_iterator = 0;
+                                        // Loop through all options in the used selections listbox
+                                        $('#dialog_selections .used_selections select option').each(function(members, index) {
+                                            // Build up the url
+                                            var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+                                            // POST to Saiku
+                                            model.request({
+                                                method: "POST",
+                                                url: url,
+                                                success: function(data, textStatus, jqXHR) {
+                                                    // For each member added we will let the user know by adding a counter
+                                                    // next to the dimension on the axis.
+                                                    member_iterator = member_iterator + 1;
+                                                    $(member_clicked).text(member_data.levelname + ' (' + member_iterator + ')');
+                                                },
+                                                error: function(data) { /*Do nothing*/ }
+                                            });
                                         });
-                                    });
+                                        // Remove all simple modal objects.
+                                        dialog.data.remove();
+                                        dialog.container.remove();
+                                        dialog.overlay.remove();
+                                        $.modal.close();
+                                        // Remove the #dialog which we appended to the body.
+                                        $('#dialog').remove();
 
-                                    // Remove all simple modal objects.
-                                    dialog.data.remove();
-                                    dialog.container.remove();
-                                    dialog.overlay.remove();
-                                    $.modal.close();
-                                    // Remove the #dialog which we appended to the body.
-                                    $('#dialog').remove();
+                                        // Hide the processing
+                                        view.hide_processing(true, tab_index);
 
-                                    // Hide the processing
-                                    view.hide_processing(true, tab_index);
+                                        // Execute the query
+                                        model.run_query(tab_index);
 
-                                    // Execute the query
-                                    model.run_query(tab_index);
-
-                                },
-                                error: function(data) {
-                                    $('#dialog_selections').show();
-                                }
-                            });
+                                    },
+                                    error: function(data) {
+                                        $('#dialog_selections').show();
+                                    }
+                                });
+                            }else{
+                                
+                            }
                         });
                     }
                 });
