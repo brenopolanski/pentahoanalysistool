@@ -350,7 +350,7 @@ var view = {
      */
     load_available_selections : function($available_selections, axis, data, tab_index) {
 
-        // Nothing.
+    // Nothing.
         
     },
 
@@ -432,7 +432,8 @@ var view = {
                             'dimension': dimension.name,
                             'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
                             'level': level.uniqueName, // level.level
-                            'dimensionuniquename' : dimension.uniqueName // dimension.uniqueName
+                            'dimensionuniquename' : dimension.uniqueName, // dimension.uniqueName
+                            'levelname' : level.name // level.name
                         };
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
@@ -621,18 +622,6 @@ var view = {
         //
         //            }
         //        });
-
-
-        /** Activate all items for selection. */
-        // FIXME - this should be added when the item is dragged to avoid page fragments
-        $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
-            if ($(this).hasClass('dimension')) {
-                var $tab = $(this).closest(".tab");
-                model.show_selections($(this), $tab);
-            }
-            
-            return false;
-        });
 
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
@@ -1020,6 +1009,18 @@ var view = {
 
         if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
             $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
+
+            /** Activate all items for selection. */
+            // FIXME - this should be added when the item is dragged to avoid page fragments
+            $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
+                if ($(this).hasClass('dimension')) {
+                    var $tab = $(this).closest(".tab");
+                    model.show_selections($(this), $tab);
+                }
+
+                return false;
+            });
+            
         }else{
             $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
             // Lets clear the .workspace result as well

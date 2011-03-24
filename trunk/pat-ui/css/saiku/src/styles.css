@@ -886,6 +886,11 @@ html, body {
     background-repeat: no-repeat;
     background-position: center center;
 }
+.workspace_toolbar .drillthrough {
+    background-image: url('../../../images/src/drillthrough.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
 
 
 /** Selections 
