@@ -850,24 +850,80 @@ var model = {
             dataType : "html",
             success : function(data) {
                 $('#dialog_selections').html(data).modal({
-                    /*autoPosition: true,*/
                     onShow: function(dialog) {
+                        
                         // TODO better solution, fix for PALO
                         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
                             tab_data.schema = "null";
                         }
-                        // Load the selections dialog box
 
+                        // Change the title of the selections dialog box
+                        $('#dialog_selections').find('h3').text('Selections on ' + member_data.dimension);
+                        
                         // Load all available selections and load into the available selection list
                         var url = model.username + "/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
+                        
+                        // AJAX GET request to Saiku
                         model.request({
                             method: "GET",
                             url: url,
                             success: function(data, textStatus, jqXHR) {
-                                // Change the title of the selections dialog box
-                                $('#dialog_selections').find('h3').text('Selections on ' + member_data.dimension);
-                                // Call the method to load the selection box
-                                view.load_available_selections($('#dialog_selections .available_selections select'), axis, data, tab_index);
+
+                                // Setup pointers
+                                $available_selections = $('#dialog_selections .available_selections select');
+                                $used_selections = $('#dialog_selections .used_selections select');
+
+                                // Load used selections first so that we know what to NOT display in the available
+                                // listbox.
+
+                                // Build up a url
+                                var url = model.username + "/query/" + query_name + "/axis/" + axis +"/";
+                                
+                                // Request a list of used selections. For this to occur it will need to do three concurrent loops.
+                                model.request({
+                                    method: "GET",
+                                    url: url,
+                                    success: function(data, textStatus, jqXHR) {
+                                        // First loop through all available dimensions
+                                        $.each(data, function(i, dimensions) {
+                                            // If the dimension is the same as the dimension the user is doing
+                                            // selections on.
+                                            if(dimensions['uniqueName'] === member_data.dimensionuniquename) {
+                                                // Secondly loop through all available selections
+                                                $.each(dimensions['selections'], function(i, selections) {
+                                                    // Thirdly loop through all available selections
+                                                    if(selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
+                                                        // Add the selection to the used list box
+                                                        $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    },
+                                    error: function(data) {}
+                                });
+
+                                // Cycle through each member and append to the available selections listbox
+                                $.each(data, function(member_iterator, member) {
+                                    $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
+                                });
+
+                                // Delete array
+
+                                // Clicking on the > button will add all selected members.
+                                $('#add_members').click(function(){
+                                    $available_selections.find('option:selected').appendTo($used_selections);
+                                    $available_selections.find('option:selected').remove();
+                                    $used_selections.find('option:selected').attr('selected', '');
+                                });
+
+                                // Clicking on the < button will remove all selected members.
+                                $('#remove_members').click(function(){
+                                    $used_selections.find('option:selected').appendTo($available_selections);
+                                    $used_selections.find('option:selected').remove();
+                                    $available_selections.find('option:selected').attr('selected', '');
+                                });
+
                                 // End processing
                                 view.hide_processing(true, tab_index);
                             }
@@ -887,6 +943,7 @@ var model = {
                                 success: function(data, textStatus, jqXHR) {
                                     // If the level was removed, then add all selections in the used listbox
 
+                                    var member_iterator = 0;
                                     // Loop through all options in the used selections listbox
                                     $('#dialog_selections .used_selections select option').each(function(members, index) {
                                         // Build up the url
@@ -895,7 +952,13 @@ var model = {
                                         model.request({
                                             method: "POST",
                                             url: url,
-                                            success: function(data, textStatus, jqXHR) { /*Do nothing*/ },
+                                            success: function(data, textStatus, jqXHR) {
+                                                // For each member added we will let the user know by adding a counter
+                                                // next to the dimension on the axis.
+                                                member_iterator = member_iterator + 1;
+                                                $(member_clicked).text(member_data.dimension + ' (' + member_iterator + ')');
+
+                                            },
                                             error: function(data) { /*Do nothing*/ }
                                         });
                                     });
@@ -915,7 +978,9 @@ var model = {
                                     model.run_query(tab_index);
 
                                 },
-                                error: function(data) {}
+                                error: function(data) {
+                                    $('#dialog_selections').show();
+                                }
                             });
                         });
                     }
