@@ -350,31 +350,10 @@ var view = {
      */
     load_available_selections : function($available_selections, axis, data, tab_index) {
 
-        // Setup a pointer to the used members
-        $used_selections = $('#dialog_selections .used_selections select');
-
-        // Cycle through each member and append to the
-        // available selections listbox
-        $.each(data, function(member_iterator, member) {
-            $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
-        });
-
-        // Clicking on the > button will add all selected members.
-        $('#add_members').click(function(){
-            $available_selections.find('option:selected').appendTo($used_selections);
-            $available_selections.find('option:selected').remove();
-            $used_selections.find('option:selected').attr('selected', '');
-        });
-
-        // Clicking on the < button will remove all selected members.
-        $('#remove_members').click(function(){
-            $used_selections.find('option:selected').appendTo($available_selections);
-            $used_selections.find('option:selected').remove();
-            $available_selections.find('option:selected').attr('selected', '');
-        });
+        // Nothing.
         
     },
-    
+
     load_children : function($item, axis, $dimension_name, tab_index) {
         member = $item.find('a').attr('title');
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
@@ -452,7 +431,8 @@ var view = {
                         view.tabs.tabs[tab_index].data['dimensions'][dimension_id] = {
                             'dimension': dimension.name,
                             'hierarchy': hierarchy.uniqueName, //hierarchy.hierarchy
-                            'level': level.uniqueName // level.level
+                            'level': level.uniqueName, // level.level
+                            'dimensionuniquename' : dimension.uniqueName // dimension.uniqueName
                         };
                         // Check if the dimension level is (All) if so display the All dimension_name instead.
                         if (level['caption'] === '(All)') {
