@@ -351,61 +351,71 @@ var model = {
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             success: function(data, textStatus, XMLHttpRequest) {
-                
-                // Create a variable to store the table
-                var table_vis = '<table>';
 
-                // Start looping through the result set
-                $.each(data, function(i, cells) {
+                if (data == "") {
 
-                    // Add a new row.
-                    table_vis = table_vis + '<tr>';
+                    // No results table
+                    var table_vis = '<div style="text-align:center;">No results</div>';
 
-                    // Look through the contents of the row
-                    $.each(cells, function(j, header) {
+                    // Insert the table to the DOM
+                    $workspace_result.html(table_vis);
 
-                        // If the cell is a column header and is null (top left of table)
-                        if(header['type'] === "COLUMN_HEADER"
-                            && header['value'] === "null") {
-                            table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
-                        } // If the cell is a column header and isn't null (column header of table)
-                        else if(header['type'] === "COLUMN_HEADER") {
-                            table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
-                        } // If the cell is a row header and is null (grouped row header)
-                        else if(header['type'] === "ROW_HEADER"
-                            && header['value'] === "null") {
-                            table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
-                        } // If the cell is a row header and isn't null (last row header)
-                        else if(header['type'] === "ROW_HEADER") {
-                            table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
-                        } // If the cell is a normal data cell
-                        else if(header['type'] === "DATA_CELL") {
-                            table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
-                        }
+                }else{
+                    // Create a variable to store the table
+                    var table_vis = '<table>';
+
+                    // Start looping through the result set
+                    $.each(data, function(i, cells) {
+
+                        // Add a new row.
+                        table_vis = table_vis + '<tr>';
+
+                        // Look through the contents of the row
+                        $.each(cells, function(j, header) {
+
+                            // If the cell is a column header and is null (top left of table)
+                            if(header['type'] === "COLUMN_HEADER"
+                                && header['value'] === "null") {
+                                table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
+                            } // If the cell is a column header and isn't null (column header of table)
+                            else if(header['type'] === "COLUMN_HEADER") {
+                                table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
+                            } // If the cell is a row header and is null (grouped row header)
+                            else if(header['type'] === "ROW_HEADER"
+                                && header['value'] === "null") {
+                                table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
+                            } // If the cell is a row header and isn't null (last row header)
+                            else if(header['type'] === "ROW_HEADER") {
+                                table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
+                            } // If the cell is a normal data cell
+                            else if(header['type'] === "DATA_CELL") {
+                                table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
+                            }
                         
+                        });
+
+                        // Close of the new row
+                        table_vis = table_vis + '</tr>';
+
                     });
 
-                    // Close of the new row
-                    table_vis = table_vis + '</tr>';
-
-                });
-
-                // Close the table
-                table_vis = table_vis + '</table>';
+                    // Close the table
+                    table_vis = table_vis + '</table>';
               
-                // Insert the table to the DOM
-                $workspace_result.html(table_vis);
+                    // Insert the table to the DOM
+                    $workspace_result.html(table_vis);
 
-                // Enable highlighting on rows.
-                $workspace_result.find('table tr').hover(function(){
-                    $(this).children().css('background', '#eff4fc');
-                },function(){
-                    $(this).children().css('background', '');
-                });
-                
+                    // Enable highlighting on rows.
+                    $workspace_result.find('table tr').hover(function(){
+                        $(this).children().css('background', '#eff4fc');
+                    },function(){
+                        $(this).children().css('background', '');
+                    });
+                }
+
                 // Resize the workspace
                 view.resize_height(tab_index);
-                
+
                 // Clear the wait message
                 view.hide_processing(true, tab_index);
             },
