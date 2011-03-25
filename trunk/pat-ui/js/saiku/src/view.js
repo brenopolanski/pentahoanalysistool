@@ -623,6 +623,18 @@ var view = {
         //            }
         //        });
 
+
+        /** Activate all items for selection. */
+        // FIXME - this should be added when the item is dragged to avoid page fragments
+        $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
+            if ($(this).hasClass('dimension')) {
+                var $tab = $(this).closest(".tab");
+                model.show_selections($(this), $tab);
+            }
+            
+            return false;
+        });
+
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
             connectWith: $tab.find('.connectable'),
@@ -758,6 +770,17 @@ var view = {
                 }
 
                 view.check_toolbar(tab_index);
+
+                /** Activate all items for selection. */
+                // FIXME - this should be added when the item is dragged to avoid page fragments
+                $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
+                    if ($(this).hasClass('dimension')) {
+                        var $tab = $(this).closest(".tab");
+                        model.show_selections($(this), $tab);
+                    }
+
+                    return false;
+                });
             }
         });
 
@@ -1009,18 +1032,6 @@ var view = {
 
         if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
             $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
-
-            /** Activate all items for selection. */
-            // FIXME - this should be added when the item is dragged to avoid page fragments
-            $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
-                if ($(this).hasClass('dimension')) {
-                    var $tab = $(this).closest(".tab");
-                    model.show_selections($(this), $tab);
-                }
-
-                return false;
-            });
-            
         }else{
             $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
             // Lets clear the .workspace result as well

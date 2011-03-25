@@ -853,62 +853,76 @@ var model = {
                 $('#dialog_selections').html(data).modal({
                     onShow: function(dialog) {
                         
+                        // Change the title of the dialog box
+                        $('#dialog_selections')
+                        .find('h3')
+                        .text('Selections on ' + member_data.levelname);
+
                         // TODO better solution, fix for PALO
                         if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
                             tab_data.schema = "null";
                         }
 
-                        // Change the title of the selections dialog box
-                        $('#dialog_selections').find('h3').text('Selections on ' + member_data.dimension);
-                        
-                        // Load all available selections and load into the available selection list
+                        // URL to retrieve all available members
                         var url = model.username + "/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
-                        
-                        // AJAX GET request to Saiku
+
+                        // Retrieve all available members with an AJAX request
                         model.request({
                             method: "GET",
                             url: url,
                             success: function(data, textStatus, jqXHR) {
-
+                                
                                 // Setup pointers
                                 $available_selections = $('#dialog_selections .available_selections select');
                                 $used_selections = $('#dialog_selections .used_selections select');
 
-                                // Load used selections first so that we know what to NOT display in the available
-                                // listbox.
+                                /*
+                                 * Step 1
+                                 * Get a list of all USED members
+                                 */
 
-                                // Build up a url
+                                // URL to retrieve all available members
                                 var url = model.username + "/query/" + query_name + "/axis/" + axis +"/";
-                                // Used selection array
+                                
+                                // Array to store all used selections
                                 var used_selection = [];
 
-                                // Request a list of used selections. For this to occur it will need to do three concurrent loops.
+                                // Retrieve all USED members with an AJAX request.
+                                // This call will require to loop through dimension, level and members.
                                 model.request({
                                     method: "GET",
                                     url: url,
                                     success: function(used_data, textStatus, jqXHR) {
-                                        // First loop through all available dimensions
+                                        
+                                        // Loop through all available dimensions
                                         $.each(used_data, function(i, dimensions) {
-                                            // If the dimension is the same as the dimension the user is doing
-                                            // selections on.
+                                            
+                                            // Is the dimension unique name the same as what the user has selected
                                             if(dimensions['uniqueName'] === member_data.dimensionuniquename) {
-                                                // Secondly loop through all available selections
+                                                
+                                                // Loop through all available selections
                                                 $.each(dimensions['selections'], function(i, selections) {
-                                                    // Thirdly loop through all available selections
+                                                    
+                                                    // Loop through all levels which are MEMBERS
                                                     if(selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
-                                                        // Add the selection to the used list box
+                                                        
+                                                        // Add the levels to the used_selections list box
                                                         $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
-                                                        // Store into an array
+                                                        
+                                                        // Store the uniqueName into the used_selection array for comparison later
                                                         used_selection.push(selections['uniqueName']);
                                                     }
                                                 });
                                             }
                                         });
 
-                                        // Load all available selections once we know we can successfully retrieve
-                                        // all used selections.
+                                        /*
+                                         * Step 2.
+                                         * Load all AVAILABLE members
+                                         */
 
-                                        // Cycle through each member and append to the available selections listbox
+                                        // Loop through each member and if does not exsist in the used_selection array
+                                        // then append it to the listbox.
                                         $.each(data, function(member_iterator, member) {
                                             if($.inArray(member['uniqueName'], used_selection) == -1) {
                                                 $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
@@ -917,6 +931,11 @@ var model = {
                                     },
                                     error: function(data) {}
                                 });
+
+                                /*
+                                 * Step 3.
+                                 * Make the listbox interactive
+                                 */
 
                                 // Clicking on the > button will add all selected members.
                                 $('#add_members').click(function(){
@@ -937,66 +956,170 @@ var model = {
                             }
                         });
 
+                        /*
+                         * Step 4.
+                         * Bind the following when the save button is clicked.
+                         */
+
                         // When the save button is clicked
                         $('.save').click(function(){
-                            // Let the user know you are saving selections...
+
+                            // Show processing
                             view.show_processing('Saving selections. Please wait...', true, tab_index);
-                            // Hide the dialog
+                            
+                            // After the save button is clicked lets hide the dialog to display the above message
                             $('#dialog_selections').hide();
 
-                            if($used_selections.find('option').length >= 0) {
-                                // If we are using selections...
-                                // First remove the level selection
+                            /*
+                             * Step 5.
+                             * Is the used selections box empty?
+                             * If so remove all available members and add LEVEL
+                             */
+
+                            if($used_selections.find('option').length == 0) {
+
+                                // First remove all AVAILABLE members
+                                $('#dialog_selections .available_selections select option')
+                                .each(function(used_members, index) {
+
+                                    // URL to remove specific members in the AVAILABLE listbox
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+
+                                    // AJAX request to DELETE from the Saiku Server
+                                    model.request({
+                                        method: "DELETE",
+                                        url: url,
+                                        success: function(data, textStatus, jqXHR) {
+                                        // Do nothing
+                                        },
+                                        error: function(data) {
+                                        // TODO - Notify user of error
+                                        }
+                                    });
+                                });
+
+                                // Second add the LEVEL
                                 var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+                                
+                                // AJAX request to add level
+                                model.request({
+                                    method: "POST",
+                                    url: url,
+                                    success: function(data, textStatus, jqXHR) { 
+                                        // Append the counter the dropped item
+                                        $(member_clicked).text(member_data.levelname);
+                                    },
+                                    error: function(data) {
+                                    // TODO - Notify user of error
+                                    }
+                                });
+
+                                // Remove all simple modal objects.
+                                dialog.data.remove();
+                                dialog.container.remove();
+                                dialog.overlay.remove();
+                                $.modal.close();
+
+                                // Remove the #dialog which we appended to the body.
+                                $('#dialog_selections').remove();
+
+                                // Hide the processing
+                                view.hide_processing(true, tab_index);
+
+                                // Execute the query
+                                model.run_query(tab_index);
+
+                            }else{
+
+                                /*
+                                 * Step 6.
+                                 * Is used selections box NOT empty?
+                                 * If so first remove all AVAILABLE members and add all USED members and remove LEVEL
+                                 */
+
+                                // First remove all AVAILABLE members
+                                $('#dialog_selections .available_selections select option')
+                                .each(function(used_members, index) {
+
+                                    // URL to remove specific members in the AVAILABLE listbox
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+
+                                    // AJAX request to DELETE from the Saiku Server
+                                    model.request({
+                                        method: "DELETE",
+                                        url: url,
+                                        success: function(data, textStatus, jqXHR) {
+                                        // Do nothing
+                                        },
+                                        error: function(data) {
+                                        // TODO - Notify user of error
+                                        }
+                                    });
+                                });
+
+                                // Secondly add all USED members
+
+                                // Counter to track all members which are being used
+                                var member_iterator = 0;
+                                
+                                // Loop through all used selections box
+                                $('#dialog_selections .used_selections select option').each(function(members, index) {
+
+                                    // URL to remove specific members in the USED listbox
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+
+                                    // AJAX request to POST from the Saiku Server
+                                    model.request({
+                                        method: "POST",
+                                        url: url,
+                                        success: function(data, textStatus, jqXHR) {
+
+                                            // Increment member_iterator
+                                            member_iterator = member_iterator + 1;
+                                            // Append the counter the dropped item
+                                            $(member_clicked).text(member_data.levelname + ' (' + member_iterator + ')');
+                                            
+                                        },
+                                        error: function(data) {
+                                        // TODO - Notify the user
+                                        }
+                                    });
+                                });
+
+                                // Remove level item even it doesn't need removing
+                                // Second add the LEVEL
+                                var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+
+                                // AJAX request to add level
                                 model.request({
                                     method: "DELETE",
                                     url: url,
-                                    success: function(data, textStatus, jqXHR) {
-                                        // If the level was removed, then add all selections in the used listbox
-                                        var member_iterator = 0;
-                                        // Loop through all options in the used selections listbox
-                                        $('#dialog_selections .used_selections select option').each(function(members, index) {
-                                            // Build up the url
-                                            var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
-                                            // POST to Saiku
-                                            model.request({
-                                                method: "POST",
-                                                url: url,
-                                                success: function(data, textStatus, jqXHR) {
-                                                    // For each member added we will let the user know by adding a counter
-                                                    // next to the dimension on the axis.
-                                                    member_iterator = member_iterator + 1;
-                                                    $(member_clicked).text(member_data.levelname + ' (' + member_iterator + ')');
-                                                },
-                                                error: function(data) { /*Do nothing*/ }
-                                            });
-                                        });
-                                        // Remove all simple modal objects.
-                                        dialog.data.remove();
-                                        dialog.container.remove();
-                                        dialog.overlay.remove();
-                                        $.modal.close();
-                                        // Remove the #dialog which we appended to the body.
-                                        $('#dialog').remove();
-
-                                        // Hide the processing
-                                        view.hide_processing(true, tab_index);
-
-                                        // Execute the query
-                                        model.run_query(tab_index);
-
+                                    success: function(data, textStatus, jqXHR) { 
+                                    // Do nothing
                                     },
                                     error: function(data) {
-                                        $('#dialog_selections').show();
+                                    // TODO - Notify the user
                                     }
                                 });
-                            }else{
+
+                                // Remove all simple modal objects.
+                                dialog.data.remove();
+                                dialog.container.remove();
+                                dialog.overlay.remove();
+                                $.modal.close();
                                 
+                                // Remove the #dialog which we appended to the body.
+                                $('#dialog_selections').remove();
+
+                                // Hide the processing
+                                view.hide_processing(true, tab_index);
+
+                                // Execute the query
+                                model.run_query(tab_index);
                             }
                         });
                     }
                 });
-
             },
             error: function(data) {
 
