@@ -58,7 +58,7 @@ var TabContainer = function(tab_container, content_container) {
     this.remove_tab = function(index) {
         // Delete the query associated with the tab
         model.delete_query(index);
-    	
+        
         // Remove the tab and associated metadata
         if (typeof this.tabs[index] != "undefined") {
             this.tabs[index].tab.remove();
