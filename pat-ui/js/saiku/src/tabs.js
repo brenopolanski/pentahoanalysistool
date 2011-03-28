@@ -55,18 +55,22 @@ var TabContainer = function(tab_container, content_container) {
     };
 
     /** Remove a tab and reclaim memory. */
-    this.remove_tab = function(index) {
+    this.remove_tab = function(index, is_queries) {
+
         // Delete the query associated with the tab
-        model.delete_query(index);
-        
+        if(!is_queries) {
+            model.delete_query(index);
+        }
+
         // Remove the tab and associated metadata
         if (typeof this.tabs[index] != "undefined") {
+            //console.log('Remove content');
             this.tabs[index].tab.remove();
             this.tabs[index].content.remove();
             delete this.tabs[index].data;
             delete this.tabs[index];
         }
-        
+
         // Find the next tab and select it.
         for (next_tab = index; next_tab < this.tabs.length; next_tab++) {
             if (typeof this.tabs[next_tab] != "undefined") {
@@ -83,7 +87,7 @@ var TabContainer = function(tab_container, content_container) {
         // If the last tab was removed, select the next to last tab.
         this.select_tab(this.index_from_tab(this.tab_container.find("li:last")));
 
-        view.resize_height(this.index_from_tab(this.tab_container.find("li:last")));
+    //view.resize_height(this.index_from_tab(this.tab_container.find("li:last")));
     };
 
     /** Change the selected tab. */
@@ -110,6 +114,7 @@ var TabContainer = function(tab_container, content_container) {
         .addClass("close_tab")
         .appendTo($new_tab);
         $new_tab.appendTo(this.tab_container);
+
         // Create the content portion of the tab.
         $new_tab_content = $('<div />')
         .addClass("tab")
@@ -126,6 +131,8 @@ var TabContainer = function(tab_container, content_container) {
             // Localize UI controls
             $('.i18n').i18n(po_file);
         });
+
+
         $new_tab_content.appendTo(this.content_container);
         
         // Register the new tab with the TabContainer.
@@ -144,13 +151,13 @@ var TabContainer = function(tab_container, content_container) {
     /** Open a new query tab */
     this.open_query_tab = function(callback) {
 
-        // Check if the tab already exists
         if($('#tabs').find('#queries').length == 0) {
 
             // Create the tab itself
             var new_index = this.tabs.length;
 
             var $new_tab = $("<li />")
+            .data("tab_index", new_index)
             .attr('id', 'queries');
             var $new_tab_link = $("<a />")
             .html("Repository")
@@ -169,6 +176,7 @@ var TabContainer = function(tab_container, content_container) {
             // Create the content portion of the tab.
             $new_tab_content = $('<div />')
             .addClass("tab")
+            .data("tab_index", new_index)
             .load(BASE_URL + "views/queries/open.html", function() {
                 model.get_queries(new_index);
                 view.resize_height(new_index);
