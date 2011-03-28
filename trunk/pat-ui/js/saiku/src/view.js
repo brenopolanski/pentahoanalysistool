@@ -173,11 +173,7 @@ var view = {
 
         /** Add click handler on tabs. */
         view.tabs.tab_container.find("a").live('mousedown', function(event) {
-            if (event.which == 1) {
-                view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
-            } else if (event.which == 2) {
-                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
-            }
+            view.tabs.select_tab(view.tabs.index_from_tab($(this).parent()));
             event.stopImmediatePropagation();
             event.cancelBubble = true;
             return false;
@@ -185,15 +181,16 @@ var view = {
 
         /** Add click handler on tabs. */
         view.tabs.tab_container.find("span").live('click', function() {
-            // Handle the Repository tab differently.
-            // TODO - Unsure why this has to be done...
-            if ($(this).parent().attr('id') == 'queries') {
-                view.tabs.remove_tab($('#tabs').find('#queries').index());
+            if($(this).parent().attr('id') == 'queries') {
+                var is_queries = true;
+                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()), is_queries);
                 return false;
             }else{
-                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+                var is_queries = false;
+                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()), is_queries);
                 return false;
             }
+            
         });
         
         // Activate language selector
