@@ -87,7 +87,8 @@ var TabContainer = function(tab_container, content_container) {
         // If the last tab was removed, select the next to last tab.
         this.select_tab(this.index_from_tab(this.tab_container.find("li:last")));
 
-    //view.resize_height(this.index_from_tab(this.tab_container.find("li:last")));
+        // Resize tabs
+        view.resize_height(this.index_from_tab(this.tab_container.find("li:last")));
     };
 
     /** Change the selected tab. */
