@@ -893,7 +893,7 @@ var model = {
 
                                 // URL to retrieve all available members
                                 var url = model.username + "/query/" + query_name + "/axis/" + axis +"/";
-                                
+                                var used_array = [];
                                 // Array to store all used selections
                                 var used_selection = [];
 

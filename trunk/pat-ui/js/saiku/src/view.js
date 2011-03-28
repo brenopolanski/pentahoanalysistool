@@ -185,8 +185,15 @@ var view = {
 
         /** Add click handler on tabs. */
         view.tabs.tab_container.find("span").live('click', function() {
-            view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
-            return false;
+            // Handle the Repository tab differently.
+            // TODO - Unsure why this has to be done...
+            if ($(this).parent().attr('id') == 'queries') {
+                view.tabs.remove_tab($('#tabs').find('#queries').index());
+                return false;
+            }else{
+                view.tabs.remove_tab(view.tabs.index_from_tab($(this).parent()));
+                return false;
+            }
         });
         
         // Activate language selector
