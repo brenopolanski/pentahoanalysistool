@@ -641,15 +641,12 @@ var model = {
         $rows.detach().appendTo(view.tabs.tabs[tab_index].content.find('.columns ul'));
         $columns.detach().appendTo(view.tabs.tabs[tab_index].content.find('.rows ul'));
     	
-        var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/saiku.olap.query.swap.axis";
+        var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/swapaxes";
     	
         // Notify server of change
         model.request({
-            method: "POST",
+            method: "PUT",
             url: url,
-            data: {
-                'propertyValue' : true
-            },
             success: function() {
                 // If automatic query execution is enabled, rerun the query when this option is changed
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
@@ -657,6 +654,7 @@ var model = {
                 }
             }
         });
+
 
         view.hide_processing(true, tab_index);
     },
