@@ -46,6 +46,7 @@ var model = {
         settings = $.extend({
             method: "GET",
             data: {},
+            contentType: 'application/x-www-form-urlencoded',
             success: function() {},
             error: function() {
                 view.show_dialog('Error',
@@ -65,7 +66,8 @@ var model = {
             password: model.password,
             success: settings.success,
             error: settings.error,
-            data: settings.data
+            data: settings.data,
+            contentType: settings.contentType
         });
     },
 
@@ -985,20 +987,31 @@ var model = {
                              * Is the used selections box empty?
                              * If so remove all available members and add LEVEL
                              */
-
-                            if($used_selections.find('option').length == 0) {
-
+                             
+                                var available_members = "[";
+                                var member_iterator = 0;
                                 // First remove all AVAILABLE members
                                 $('#dialog_selections .available_selections select option')
                                 .each(function(used_members, index) {
-
+                                    if (member_iterator > 0) {
+                                        available_members += ",";
+                                    }
+                                    member_iterator++;
+                                    available_members += '{"uniquename":"' + $(this).val() + '","type":"member"}';
+                                });
+                                available_members += ']';
                                     // URL to remove specific members in the AVAILABLE listbox
-                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/";
+
+                                // First remove all AVAILABLE members
 
                                     // AJAX request to DELETE from the Saiku Server
                                     model.request({
                                         method: "DELETE",
                                         url: url,
+                                        data: available_members,
+                                        dataType: "json",
+                                        contentType: 'application/json',
                                         success: function(data, textStatus, jqXHR) {
                                         // Do nothing
                                         },
@@ -1006,23 +1019,15 @@ var model = {
                                         // TODO - Notify user of error
                                         }
                                     });
-                                });
+
+                            var level_url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+
+                            if($used_selections.find('option').length == 0) {
+
+
 
                                 // Second add the LEVEL
-                                var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
-                                
-                                // AJAX request to add level
-                                model.request({
-                                    method: "POST",
-                                    url: url,
-                                    success: function(data, textStatus, jqXHR) { 
-                                        // Append the counter the dropped item
-                                        $(member_clicked).text(member_data.levelname);
-                                    },
-                                    error: function(data) {
-                                    // TODO - Notify user of error
-                                    }
-                                });
+                                edit_level("POST",level_url);
 
                                 // Remove all simple modal objects.
                                 dialog.data.remove();
@@ -1047,45 +1052,35 @@ var model = {
                                  * If so first remove all AVAILABLE members and add all USED members and remove LEVEL
                                  */
 
-                                // First remove all AVAILABLE members
-                                $('#dialog_selections .available_selections select option')
-                                .each(function(used_members, index) {
-
-                                    // URL to remove specific members in the AVAILABLE listbox
-                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
-
-                                    // AJAX request to DELETE from the Saiku Server
-                                    model.request({
-                                        method: "DELETE",
-                                        url: url,
-                                        success: function(data, textStatus, jqXHR) {
-                                        // Do nothing
-                                        },
-                                        error: function(data) {
-                                        // TODO - Notify user of error
-                                        }
-                                    });
-                                });
-
                                 // Secondly add all USED members
 
                                 // Counter to track all members which are being used
                                 var member_iterator = 0;
                                 
+                                var used_selections = "[";
                                 // Loop through all used selections box
                                 $('#dialog_selections .used_selections select option').each(function(members, index) {
+                                    if (member_iterator > 0) {
+                                        used_selections += ",";
+                                    }
+                                    used_selections += '{"uniquename":"' + $(this).val() + '","type":"member"}';
+                                    member_iterator = member_iterator + 1;
 
+                                });
+                                used_selections += "]";
+
+    
                                     // URL to remove specific members in the USED listbox
-                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/" + $(this).val();
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/member/";
 
                                     // AJAX request to POST from the Saiku Server
                                     model.request({
                                         method: "POST",
                                         url: url,
+                                        data: used_selections,
+                                        dataType: "json",
+                                        contentType: 'application/json',
                                         success: function(data, textStatus, jqXHR) {
-
-                                            // Increment member_iterator
-                                            member_iterator = member_iterator + 1;
                                             // Append the counter the dropped item
                                             $(member_clicked).text(member_data.levelname + ' (' + member_iterator + ')');
                                             
@@ -1094,23 +1089,11 @@ var model = {
                                         // TODO - Notify the user
                                         }
                                     });
-                                });
 
                                 // Remove level item even it doesn't need removing
                                 // Second add the LEVEL
-                                var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension + "/hierarchy/" + member_data.hierarchy + "/" + member_data.level + "/";
+                                edit_level("DELETE",level_url);
 
-                                // AJAX request to add level
-                                model.request({
-                                    method: "DELETE",
-                                    url: url,
-                                    success: function(data, textStatus, jqXHR) { 
-                                    // Do nothing
-                                    },
-                                    error: function(data) {
-                                    // TODO - Notify the user
-                                    }
-                                });
 
                                 // Remove all simple modal objects.
                                 dialog.data.remove();
@@ -1126,6 +1109,8 @@ var model = {
 
                                 // Execute the query
                                 model.run_query(tab_index);
+                                
+                               
                             }
                         });
                     }
@@ -1135,5 +1120,15 @@ var model = {
 
             }
         });
+         function edit_level(method,url) {
+            model.request({
+                method: method,
+                url: url,
+                success: function(data, textStatus, jqXHR) { },
+                error: function(data) {
+                    // TODO - Notify the user
+                }
+            });
+         }
     }
 };
