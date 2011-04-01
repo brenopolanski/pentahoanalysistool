@@ -168,9 +168,9 @@ var model = {
 
 				data: post_data,
 
-				success: function(data, textStatus, XMLHttpRequest) {
+				success: function(query_data, textStatus, XMLHttpRequest) {
 					// Get cube data
-					var cube = data.cube;
+					var cube = query_data.cube;
 					if (cube.schemaName == "") {
 						cube.schemaName= "null";
 					}
@@ -191,7 +191,7 @@ var model = {
 								success: function(data, textStatus, XMLHttpRequest) {
 									view.load_measures(tab_index, data);
 									if (callback) {
-										callback(cube);
+										callback(cube,query_data);
 									}
 								},
 								error: function() {
@@ -755,16 +755,84 @@ var model = {
 				dataType: 'xml',
 				success: function(data, textStatus, jqXHR) {
 					// Create a new query in the workspace
-					model.new_query(tab_index, jqXHR.responseText, function(cube) {
+					model.new_query(tab_index, jqXHR.responseText, function(cube,data) {
 						// Select cube in menu
 						var selected_cube = cube.name;
 						$cubes = view.tabs.tabs[tab_index].content.find('.cubes');
 						$cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val()); 
+                        
+                        // save connection data
+                        var $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
+                        var cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+                        var connection_data = {
+                            'connection': cube_data['connectionName'],
+                            'cube': cube_data['cube'],
+                            'catalog': cube_data['catalogName'],
+                            'schema': cube_data['schema']
+                        };
+
+                        view.tabs.tabs[tab_index].data['connection'] = connection_data;
 
 						// TODO - Move selections to axes
-						//$.each(data.saikuAxes, function(selection_iterator, selection) {
-						//
-						//});
+						$.each(data.saikuAxes, function(axis_iterator, axis) {
+                            var $axis = view.tabs.tabs[tab_index].content.find('.workspace_fields').find('.' + axis.name.toLowerCase() + ' ul');
+                            
+                            $.each(axis.dimensionSelections, function(dim_iter, dimension) {
+                                levels = new Array();
+                                $.each(dimension.selections, function(sel_iter, selection) {
+                                    
+                                    if (selection.dimensionUniqueName != "Measures") {
+                                        if (levels.indexOf(selection.levelUniqueName) < 0) {
+                                            var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="'+ selection.levelUniqueName + '"]').parent();
+                                            
+                                            $(dimitem.clone().addClass('d_dimension')).appendTo($axis);
+                                            levels.push(selection.levelUniqueName);
+                                            
+                                            var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree');
+                                            /** Find the parent dimension id. */
+                                            var id = dimitem.find('a').attr('rel');
+                                            var parent_id = id.split('_')[0]
+                                            /** Disable all of the dimension's siblings and highlight the dimension being used. */
+                                            $dimension_tree.find('[rel=' + id + ']').parent().addClass('used')
+                                                .removeClass('ui-draggable').addClass('not-draggable');
+                                            /** Highlight the dimension's parent being used. */
+                                            $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
+
+                                        }
+                                    }
+                                    else {
+                                        var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="'+ selection.uniqueName + '"]').parent();
+                                        
+                                        $(measureitem.clone().addClass('d_measure')).appendTo($axis);
+                                        var $measure_tree = view.tabs.tabs[tab_index].content.find('.measure_tree');
+
+                                        /** Disable and highlight the measure. */
+                                        var id = measureitem.find('a').attr('rel');
+                                        $measure_tree.find('[rel=' + id + ']').parent()
+                                            .removeClass('ui-draggable').addClass('used not-draggable');
+                                        $measure_tree.find('.root').addClass('used');
+
+                                    }
+
+                                    
+                                    
+                                });  
+                            });                            
+						});
+
+                        var $tab = view.tabs.tabs[tab_index].content;
+                        var $column_dropzone = $tab.find('.columns ul');
+                        var $row_dropzone = $tab.find('.rows ul');
+                        var $filter_dropzone = $tab.find('.filter ul');
+
+                        // If automatic query execution is enabled, rerun the query after making change
+                        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                            if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                        model.run_query(tab_index);
+                    }
+                }
+
+                view.check_toolbar(tab_index);
 
 						// TODO - Retrieve properties for this query
 					});
@@ -969,7 +1037,7 @@ var model = {
 									 */
 
 									// When the save button is clicked
-									$('.save').click(function(){
+									$('.save_selections').click(function(){
 
 										// Show processing
 										view.show_processing('Saving selections. Please wait...', true, tab_index);
