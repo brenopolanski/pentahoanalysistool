@@ -345,19 +345,6 @@ var view = {
         });
     },*/
         
-      
-    /**
-     * Populate the dimension tree for the selected tab.
-     * @param $tab {Object} Selected tab content.
-     * @param data {Object} Data object which contains the available dimension
-     *                      members.
-     */
-    load_available_selections : function($available_selections, axis, data, tab_index) {
-
-    // Nothing.
-        
-    },
-
     load_children : function($item, axis, $dimension_name, tab_index) {
         member = $item.find('a').attr('title');
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
@@ -630,14 +617,14 @@ var view = {
 
         /** Activate all items for selection. */
         // FIXME - this should be added when the item is dragged to avoid page fragments
-        $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
+        /*$tab.find('.rows ul li a, .columns ul li a, .filter ul li a').live('dblclick', function() {
             if ($(this).hasClass('dimension')) {
                 var $tab = $(this).closest(".tab");
                 model.show_selections($(this), $tab);
             }
             
             return false;
-        });
+        });*/
 
         /** Make the dropzones sortable. */
         $both_dropzones.sortable({
