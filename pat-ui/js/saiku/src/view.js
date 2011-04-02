@@ -267,7 +267,10 @@ var view = {
         // Pointer for sidebar
         var $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
         $query_list.empty();
-        
+
+        view.tabs.tabs[tab_index].content.find(".workspace_results")
+        .text('Click on the names on the left to Open or Delete queries.');
+
         // Load the list of queries
         $.each(data, function(query_iterator, query) {
             var $list_element = $('<li />').appendTo($query_list);
@@ -278,17 +281,17 @@ var view = {
             .click(function() {
                 var $query = $(this).data('object');
                 var $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
-                $results.html('<h2>' + $query.name + '</h2>');
-                var $properties = $('<ul />').appendTo($results);
+                $results.html('<h3><strong>' + $query.name + '</strong></h3>');
+                var $properties = $('<ul id="query_info" />').appendTo($results);
                 // Iterate through properties and show a key=>value set in the information pane
                 for (property in $query) {
                     if ($query.hasOwnProperty(property)) {
-                        $properties.append($('<li />').text(property + ": " + $query[property]));
+                        $properties.append($('<li />').html("<strong>"+property + "</strong> : " + $query[property]));
                     }
                 }
                     
                 // Add open query button
-                $('<a />').text('Open query')
+                $('<a />').text('Open')
                 .attr('href', '#')
                 .addClass('i18n')
                 .i18n(po_file)
@@ -298,8 +301,10 @@ var view = {
                 })
                 .appendTo($results);
 
+                $('<span/>').text(' | ').appendTo($results);
+
                 // Add delete query button
-                $('<a />').text('Delete query')
+                $('<a />').text('Delete')
                 .attr('href', '#')
                 .addClass('i18n')
                 .i18n(po_file)

@@ -286,6 +286,28 @@ html, body {
 
 /** Tree */
 
+#queries {
+    margin: 0;
+    padding: 0;
+}
+#queries li {
+    background: url("../../../images/src/mdx.png") no-repeat scroll 1px 0 transparent;
+    cursor: pointer;
+    line-height: 17px;
+    list-style-type: none;
+    margin: 0;
+    padding-left: 22px;
+}
+#queries li a {
+    color: #222;
+    text-decoration: none;
+}
+#query_info {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+
 .dimension_tree ul,
 .measure_tree ul {
     margin: 0;
@@ -704,7 +726,7 @@ html, body {
 }
 
 .dialog_footer {
-	clear: both;
+    clear: both;
 }
 
 /** Workspace Area */
@@ -915,7 +937,7 @@ html, body {
 	width: 80%;
 }**/
 #dialog_selections {
-     min-width: 500px !important;
+    min-width: 500px !important;
 }
 #dialog_selections .dialog_body {
     height: 300px;
