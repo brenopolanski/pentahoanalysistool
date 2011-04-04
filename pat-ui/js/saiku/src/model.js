@@ -290,7 +290,7 @@ var model = {
                     model.run_query(tab_index);
                 }
                 // Make sure the item is clickable for selections.
-                $item.find('a').live('dblclick', function() {
+                $item.find('a').live('click', function() {
                     if ($(this).hasClass('dimension')) {
                         var $tab = $(this).closest(".tab");
                         model.show_selections($(this), $tab);
@@ -794,8 +794,17 @@ var model = {
                                 if (selection.dimensionUniqueName != "Measures") {
                                     if (levels.indexOf(selection.levelUniqueName) < 0) {
                                         var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="'+ selection.levelUniqueName + '"]').parent();
+                                        var drop_item = dimitem.clone().addClass('d_dimension');
+                                        drop_item.find('a').click(function(e) {
+                                            if ($(this).hasClass('dimension')) {
+                                                var $tab = $(this).closest(".tab");
+                                                model.show_selections($(this), $tab);
+                                            }
                                             
-                                        $(dimitem.clone().addClass('d_dimension')).appendTo($axis);
+                                            return false;
+                                        });
+
+                                        $(drop_item).appendTo($axis);
                                         levels.push(selection.levelUniqueName);
                                             
                                         var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree');
