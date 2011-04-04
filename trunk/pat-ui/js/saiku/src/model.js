@@ -821,17 +821,18 @@ var model = {
                                         $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
 
                                     }
-                                    if (!test[selection.levelUniqueName]) {
-                                        var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
-                                        test[selection.levelUniqueName] = 1;
-                                        $(m).text(m.text() + ' (' + 1 + ')');
-                                    }
-                                    else {
-                                        test[selection.levelUniqueName] += 1;
-                                        var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
-                                        var prevText = $(m).text().split('(')[0];
-                                        $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
-
+                                    if (selection.type == "MEMBER") {
+                                        if (!test[selection.levelUniqueName]) {
+                                            var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                            test[selection.levelUniqueName] = 1;
+                                            $(m).text(m.text() + ' (' + 1 + ')');
+                                        }
+                                        else {
+                                            test[selection.levelUniqueName] += 1;
+                                            var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                            var prevText = $(m).text().split('(')[0];
+                                            $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
+                                        }
                                     }
                                                 
                                 }
