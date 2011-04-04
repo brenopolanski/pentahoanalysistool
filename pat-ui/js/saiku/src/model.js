@@ -788,10 +788,12 @@ var model = {
                         var $axis = view.tabs.tabs[tab_index].content.find('.workspace_fields').find('.' + axis.name.toLowerCase() + ' ul');
                             
                         $.each(axis.dimensionSelections, function(dim_iter, dimension) {
-                            levels = new Array();
+                            var levels = new Array();
+                            var test = new Object();
                             $.each(dimension.selections, function(sel_iter, selection) {
                                     
                                 if (selection.dimensionUniqueName != "Measures") {
+
                                     if (levels.indexOf(selection.levelUniqueName) < 0) {
                                         var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="'+ selection.levelUniqueName + '"]').parent();
                                         var drop_item = dimitem.clone().addClass('d_dimension');
@@ -805,6 +807,7 @@ var model = {
                                         });
 
                                         $(drop_item).appendTo($axis);
+                                       
                                         levels.push(selection.levelUniqueName);
                                             
                                         var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree');
@@ -818,6 +821,19 @@ var model = {
                                         $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
 
                                     }
+                                    if (!test[selection.levelUniqueName]) {
+                                        var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                        test[selection.levelUniqueName] = 1;
+                                        $(m).text(m.text() + ' (' + 1 + ')');
+                                    }
+                                    else {
+                                        test[selection.levelUniqueName] += 1;
+                                        var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                        var prevText = $(m).text().split('(')[0];
+                                        $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
+
+                                    }
+                                                
                                 }
                                 else {
                                     var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="'+ selection.uniqueName + '"]').parent();
