@@ -16,5 +16,8 @@
 	"Drill Through": "",
 	"Cubes": "多维数据",
 	"Dimensions": "维",
-	"Measures": "计量"
+	"Measures": "计量",
+	"Rows": "",
+	"Filter": "",
+	"Columns": ""
 }

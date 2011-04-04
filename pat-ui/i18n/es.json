@@ -16,5 +16,8 @@
 	"Drill Through": "",
 	"Cubes": "Cubos",
 	"Dimensions": "Dimensiones",
-	"Measures": "Medidas"
+	"Measures": "Medidas",
+	"Rows": "Rows",
+	"Filter": "Filter",
+	"Columns": "Columns"
 }
