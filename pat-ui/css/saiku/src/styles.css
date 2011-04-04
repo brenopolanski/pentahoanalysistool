@@ -297,6 +297,7 @@ html, body {
     list-style-type: none;
     margin: 0;
     padding-left: 22px;
+    padding-bottom: 5px;
 }
 #queries li a {
     color: #222;
