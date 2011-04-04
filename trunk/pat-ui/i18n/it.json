@@ -8,7 +8,7 @@
 	"Run query": "Esegui query",  
 	"Toggle fields": "Attiva campi",
 	"Automatic execution": "Esecuzione automatica",
-	"Non-empty": "Non vuote",
+	"Non-empty": "Elimina righe vuote",
 	"Swap axis": "Scambia assi",
 	"Show MDX" : "Visualizza MDX",
 	"Export XLS": "Esporta XLS",
