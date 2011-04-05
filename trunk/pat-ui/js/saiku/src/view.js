@@ -712,7 +712,7 @@ var view = {
                 /** Is the item being removed. */
                 if(!(ui.item.hasClass('dropped'))) {
                     /** When stopped dropping or sorting set the selection. */
-                    model.dropped_item(ui.item, false);
+                    model.dropped_item(ui.item, false, ui);
                 }
             }
             
@@ -817,11 +817,18 @@ var view = {
 
             /** Find the parent dimension id. */
             var parent_id = id.split('_')[0];
+
+            if($dimension_tree.find('[rel=' + id + ']').parent().hasClass('used')) {
+                $dimension_tree.find('[rel=' + id + ']').parent().addClass('reuse');
+            }
+
             /** Disable all of the dimension's siblings and highlight the dimension being used. */
             $dimension_tree.find('[rel=' + id + ']').parent().addClass('used')
             .parent().children().removeClass('ui-draggable').addClass('not-draggable');
             /** removeClass('ui-draggable').addClass('not-draggable'); This will enable multiple level selections */
+            
             /** Highlight the dimension's parent being used. */
+            // If reuse of the item is true i.e. are we sorting between lists
             $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
             /** Collapse the dimension parent if it is exapnded. */
             if ($dimension_tree.find('[rel=' + parent_id + ']').parent().hasClass('expand')) {
@@ -850,7 +857,7 @@ var view = {
             $dimension_tree.find('[rel=' + parent_id + ']').parent().removeClass('used').parent().find('li')
             .removeClass('not-draggable').addClass('ui-draggable');
             /** Remove the dimension's highlighted parent. */
-            $dimension_tree.find('[rel=' + id + ']').parent().removeClass('used');
+            $dimension_tree.find('[rel=' + id + ']').parent().removeClass('used reuse');
             /** Collapse the dimension parent if it is exapnded. */
             if ($dimension_tree.find('[rel=' + parent_id + ']').parent().hasClass('expand')) {
                 /** Toggle the children of the dimension's parent. */

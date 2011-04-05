@@ -226,8 +226,8 @@ var model = {
 		 * @param is_click {Boolean} If the dimension or measure is being added via a double click.
 		 * @param position {Integer} The position of the dimension or measure being dropped.
 		 */
-    dropped_item: function($item, is_click, pos) {
-
+    dropped_item: function($item, is_click) {
+        
         var $tab = $item.closest('.tab');
         var tab_index = view.tabs.index_from_content($tab);
         var $column_dropzone = $tab.find('.columns ul');
@@ -244,7 +244,6 @@ var model = {
         }else{
             var axis = $item.closest('.fields_list').attr('title');
         }
-
         /** Sorting a dimension or measure. */
         var is_dimension = $item.find('a').hasClass('dimension');
         var is_measure = $item.find('a').hasClass('measure');
@@ -264,19 +263,19 @@ var model = {
             var memberposition = $both_dropzones.find('li.d_measure').index($item);
             var position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
         }
+        var used_dimension = $item.find('a').attr('rel');
 
         if (is_dimension) {
-            // If we are sorting between lists ONLY
-            if(axis === 'ROWS' || axis === 'COLUMNS') {
+            if(view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[rel="'+ used_dimension + '"]').parent().hasClass('reuse')) {
+                // This is a dimension
                 var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
                 var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
-
+            }else{
+                // This is a dimension
+                var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+                var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
+                + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
             }
-            // This is a dimension
-            var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-            var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-            + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
-
         } else if (is_measure) {
             // This is a measure
             var item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
@@ -298,7 +297,7 @@ var model = {
                     model.run_query(tab_index);
                 }
                 // Make sure the item is clickable for selections.
-                $item.find('a').live('click', function() {
+                $item.find('a').live('dblclick', function() {
                     if ($(this).hasClass('dimension')) {
                         var $tab = $(this).closest(".tab");
                         model.show_selections($(this), $tab);
