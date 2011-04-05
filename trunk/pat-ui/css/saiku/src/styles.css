@@ -564,7 +564,11 @@ html, body {
     -webkit-border-radius: 3px;
 }
 .d_dimension a {
+    background-image: url("../../../images/src/filter.png");
+    background-repeat: no-repeat;
+    background-position:  right center;
     color: #2a6085;
+    padding-right: 15px;
     text-decoration: none;
 }
 .d_measure {
