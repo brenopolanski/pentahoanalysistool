@@ -1141,7 +1141,7 @@ var model = {
 
 
                                     // Counter to track all members which are being used
-                                    var member_iterator = 0;
+                                    
 
                                     if($used_selections.find('option').length == 0) {
                                         // if no selections were made include the level, even if it already included
@@ -1192,12 +1192,14 @@ var model = {
                                         dataType: "json",
                                         contentType: 'application/json',
                                         success: function(data, textStatus, jqXHR) {
+
+                                            var selection_num = $('#dialog_selections .used_selections select option').length;
                                             // Append the counter the dropped item
-                                            if (member_iterator == 0) {
+                                            if (selection_num == 0) {
                                                 $(member_clicked).text(member_data.levelname);
                                             }
                                             else {
-                                                $(member_clicked).text(member_data.levelname + ' (' + member_iterator + ')');
+                                                $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
                                             }
                                             // Remove all simple modal objects.
                                             dialog.data.remove();
