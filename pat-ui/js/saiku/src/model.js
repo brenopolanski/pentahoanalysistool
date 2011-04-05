@@ -266,15 +266,23 @@ var model = {
         }
 
         if (is_dimension) {
+            // If we are sorting between lists ONLY
+            if(axis === 'ROWS' || axis === 'COLUMNS') {
+                var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
+                var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
+
+            }
             // This is a dimension
             var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
             var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
             + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+
         } else if (is_measure) {
             // This is a measure
             var item_data = view.tabs.tabs[tab_index].data['measures'][$item.attr('title')];
             var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/Measures/member/" + item_data.measure;
         }
+
 
         // Notify server of change
         model.request({
