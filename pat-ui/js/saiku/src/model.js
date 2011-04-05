@@ -1042,6 +1042,20 @@ var model = {
                                                 $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
                                             }
                                         });
+
+                                        // Clicking on the > button will add all selected members.
+                                        $('#add_members').live('click',function(){
+                                            $available_selections.find('option:selected').appendTo($used_selections);
+                                            $available_selections.find('option:selected').remove();
+                                            $used_selections.find('option:selected').attr('selected', '');
+                                        });
+
+                                        // Clicking on the < button will remove all selected members.
+                                        $('#remove_members').live('click',function(){
+                                            $used_selections.find('option:selected').appendTo($available_selections);
+                                            $used_selections.find('option:selected').remove();
+                                            $available_selections.find('option:selected').attr('selected', '');
+                                        });
                                     },
                                     error: function(data) {}
                                 });
@@ -1051,19 +1065,7 @@ var model = {
 									 * Make the listbox interactive
 									 */
 
-                                // Clicking on the > button will add all selected members.
-                                $('#add_members').live('click',function(){
-                                    $available_selections.find('option:selected').appendTo($used_selections);
-                                    $available_selections.find('option:selected').remove();
-                                    $used_selections.find('option:selected').attr('selected', '');
-                                });
-
-                                // Clicking on the < button will remove all selected members.
-                                $('#remove_members').live('click',function(){
-                                    $used_selections.find('option:selected').appendTo($available_selections);
-                                    $used_selections.find('option:selected').remove();
-                                    $available_selections.find('option:selected').attr('selected', '');
-                                });
+                                
 
                                 // End processing
                                 view.hide_processing(true, tab_index);
