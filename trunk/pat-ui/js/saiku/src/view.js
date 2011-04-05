@@ -819,7 +819,8 @@ var view = {
             var parent_id = id.split('_')[0];
             /** Disable all of the dimension's siblings and highlight the dimension being used. */
             $dimension_tree.find('[rel=' + id + ']').parent().addClass('used')
-            .removeClass('ui-draggable').addClass('not-draggable');
+            .parent().children().removeClass('ui-draggable').addClass('not-draggable');
+            /** removeClass('ui-draggable').addClass('not-draggable'); This will enable multiple level selections */
             /** Highlight the dimension's parent being used. */
             $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
             /** Collapse the dimension parent if it is exapnded. */
