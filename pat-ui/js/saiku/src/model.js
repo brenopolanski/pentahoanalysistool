@@ -1081,19 +1081,26 @@ var model = {
                                             }
                                         });
 
-                                        // Clicking on the > button will add all selected members.
-                                        $('#add_members').live('click',function(){
+                                        add_selections = function() {
                                             $available_selections.find('option:selected').appendTo($used_selections);
                                             $available_selections.find('option:selected').remove();
                                             $used_selections.find('option:selected').attr('selected', '');
-                                        });
+                                        };
 
-                                        // Clicking on the < button will remove all selected members.
-                                        $('#remove_members').live('click',function(){
+                                        // Clicking on the > button will add all selected members.
+                                        $('#add_members').live('click', add_selections);
+                                        $available_selections.find('option').live('dblclick',add_selections);
+                                        
+                                        remove_selections = function(){
                                             $used_selections.find('option:selected').appendTo($available_selections);
                                             $used_selections.find('option:selected').remove();
                                             $available_selections.find('option:selected').attr('selected', '');
-                                        });
+                                        };
+                                        // Clicking on the < button will remove all selected members.
+                                        $('#remove_members').live('click', remove_selections);
+                                        $used_selections.find('option').live('dblclick',remove_selections);
+                                        
+                                        
                                     },
                                     error: function(data) {}
                                 });
@@ -1130,7 +1137,9 @@ var model = {
                                     var member_updates = "[";
                                     var member_iterator = 0;
                                     // First remove all AVAILABLE members
-                                    $('#dialog_selections .available_selections select option')
+                                    
+                                    // We don't have to do this by each member, removing the level removes all members as well
+                                    /* $('#dialog_selections .available_selections select option')
                                     .each(function(used_members, index) {
                                         if (member_iterator > 0) {
                                             member_updates += ",";
@@ -1138,6 +1147,11 @@ var model = {
                                         member_iterator++;
                                         member_updates += '{"uniquename":"' + $(this).val() + '","type":"member","action":"delete"}';
                                     });
+                                    */
+                                    if (member_iterator > 0) {
+                                            member_updates += ",";
+                                    }
+                                    member_updates += '{"hierarchy":"' + member_data.hierarchy + '","uniquename":"' + member_data.level + '","type":"level","action":"delete"}';
 
 
                                     // Counter to track all members which are being used
@@ -1171,13 +1185,7 @@ var model = {
                                         });
 
 
-                                        // Remove level item even if it doesn't need removing
-                                        // Second add the LEVEL
-                                        if (member_updates.length > 1) {
-                                            member_updates += ",";
-                                        }
-
-                                        member_updates += '{"hierarchy":"' + member_data.hierarchy + '","uniquename":"' + member_data.level + '","type":"level","action":"delete"}';
+                                        
                                     }
 
                                     member_updates +="]";
