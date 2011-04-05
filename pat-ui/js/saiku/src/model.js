@@ -1052,14 +1052,14 @@ var model = {
 									 */
 
                                 // Clicking on the > button will add all selected members.
-                                $('#add_members').click(function(){
+                                $('#add_members').live('click',function(){
                                     $available_selections.find('option:selected').appendTo($used_selections);
                                     $available_selections.find('option:selected').remove();
                                     $used_selections.find('option:selected').attr('selected', '');
                                 });
 
                                 // Clicking on the < button will remove all selected members.
-                                $('#remove_members').click(function(){
+                                $('#remove_members').live('click',function(){
                                     $used_selections.find('option:selected').appendTo($available_selections);
                                     $used_selections.find('option:selected').remove();
                                     $available_selections.find('option:selected').attr('selected', '');
