@@ -669,7 +669,7 @@ html, body {
     line-height: 18px;
     margin: 0;
     text-shadow: 1px 1px 0 #FFFFFF;
-    width: 200px;
+    width: 300px;
 }
 .dialog .dialog_inner .dialog_header a.close_dialog {
     background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
@@ -853,7 +853,7 @@ html, body {
 }
 .workspace_toolbar a.button {
     display: block;
-    height: 16px;
+    height: 16px;d
     padding: 4px;
     width: 16px;
     -moz-border-radius: 3px;
