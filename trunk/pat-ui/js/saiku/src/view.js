@@ -1006,7 +1006,7 @@ var view = {
                 '<div class="clear"></div>' +
                 '</div>' +
                 '<div class="dialog_body_' + type + '">' + message + '</div>' +
-                '<div class="dialog_footer calign"><input type="button" class="close" value="&nbsp;OK&nbsp;" />' +
+                '<div class="dialog_footer calign"><a href="#" class="close form_button">&nbsp;OK&nbsp;</a>' +
                 '</div>' +
                 '</div>').modal({
                 opacity : 100,
