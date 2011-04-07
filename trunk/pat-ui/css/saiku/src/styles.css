@@ -669,7 +669,7 @@ html, body {
     line-height: 18px;
     margin: 0;
     text-shadow: 1px 1px 0 #FFFFFF;
-    width: 300px;
+    width: 200px;
 }
 .dialog .dialog_inner .dialog_header a.close_dialog {
     background: transparent url('../../../images/src/tabs_cross_off.png') 0px 1px no-repeat;
@@ -723,7 +723,7 @@ html, body {
 .dialog .dialog_inner .dialog_footer {
     border-top: 1px solid #CCC;
     /*margin-top: 10px;*/
-    padding: 5px 10px;
+    padding: 10px 10px;
     text-align: right
 }
 .dialog .dialog_inner .dialog_footer .tested_browsers {
@@ -853,7 +853,7 @@ html, body {
 }
 .workspace_toolbar a.button {
     display: block;
-    height: 16px;d
+    height: 16px;
     padding: 4px;
     width: 16px;
     -moz-border-radius: 3px;
@@ -979,3 +979,21 @@ html, body {
     width: 50px;
     text-align: center;
 }
+
+.form_button {
+    background: #F0F0F0;
+    background: -moz-linear-gradient(center top , #FFFFFF 0%, #F0F0F0 100%) repeat scroll 0 0 transparent;
+    background: -webkit-linear-gradient(center top , #FFFFFF 0%, #F0F0F0 100%) repeat scroll 0 0 transparent;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0px 0px 3px #DDDDDD;
+    color: #222222 !important;
+    font-size: 1em;
+    height: 18px;
+    margin-bottom: 2px;
+    padding: 5px 10px;
+    text-decoration: none
+}
+.form_button:hover {
+    border: 1px solid #999;
+    color: #222222;
+}s
