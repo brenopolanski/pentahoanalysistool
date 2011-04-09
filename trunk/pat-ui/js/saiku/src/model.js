@@ -768,7 +768,7 @@ var model = {
                                         // Remove the dialog save button
                                         $('#save_query').remove();
                                         // Rename the cancel button
-                                        $('#dialog').find('.close').val('Ok');
+                                        $('#save_close').text('Ok');
                                     }
                                 });
                             }
