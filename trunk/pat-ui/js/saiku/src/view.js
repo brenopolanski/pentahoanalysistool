@@ -1033,33 +1033,44 @@ var view = {
         $tab = view.tabs.tabs[tab_index].content;
         $column_dropzone = $tab.find('.columns ul');
         $row_dropzone = $tab.find('.rows ul');
+        var row_dropzone_items = $row_dropzone.find('li.d_measure, li.d_dimension').length;
+        var col_dropzone_items = $column_dropzone.find('li.d_measure, li.d_dimension').length;
+        var query_name = view.tabs.tabs[tab_index].data['query_name'].length;
 
-        // First check if a cube has been selected.
-        
-        if (view.tabs.tabs[tab_index].data['query_name'].length == 0) {
-            // Disable the toolbar.
+
+        // No query name (no cube selected).
+        if (query_name == 0) {
+            // Add the disabled_toolbar class to all icons.
             $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
-            // Clear the table results.
+            // Clear the results area.
             $tab.find('.workspace_results').html('');
-        }else if (view.tabs.tabs[tab_index].data['query_name'].length > 0
-                  && $row_dropzone.find('li.d_measure, li.d_dimension').length == 0
-                  && $column_dropzone.find('li.d_measure, li.d_dimension').length == 0) {
-            // Enable specific toolbar buttons.
+        }else if ((query_name > 0 && col_dropzone_items == 0 && row_dropzone_items == 0)
+            || (query_name > 0 && (col_dropzone_items > 0 && row_dropzone_items == 0))
+            || (query_name > 0 && (col_dropzone_items == 0 && row_dropzone_items > 0))) {
+
+            // If there is a query name BUT no items on ROWS and/or COLUMNS.
+
+            // Add the disabled_toolbar class to all icons.
+            $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
+            // This means users can setup specific query options i.e. Non Empty, Auto Exec.
+            // by removing the disabled_toolbar class.s
             $tab.find('.workspace_toolbar li')
-            .find('a[href="#automatic_execution"]').removeClass('disabled_toolbar');
-            $tab.find('.workspace_toolbar li')
-            .find('a[href="#toggle_fields"]').removeClass('disabled_toolbar');
-            $tab.find('.workspace_toolbar li')
-            .find('a[href="#non_empty"]').removeClass('disabled_toolbar');
-        }else if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0
-                 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+            .find('a[href="#automatic_execution"], a[href="#toggle_fields"], a[href="#non_empty"]')
+            .removeClass('disabled_toolbar');
+            
+        }else if (query_name > 0 && col_dropzone_items > 0 && row_dropzone_items > 0) {
+
+            // If there is a query name AND items on ROWS and COLUMNS
+            // Remove disabled_toolbar class from all icons.
             $tab.find('.workspace_toolbar li a').removeClass('disabled_toolbar');
         }else{
-            // Disable the toolbar.
+
+            // Add the disabled_toolbar class to all icons.
             $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
-            // Clear the table results.
+            // Clear the results area.
             $tab.find('.workspace_results').html('');
         }
+
     }
 
 };
