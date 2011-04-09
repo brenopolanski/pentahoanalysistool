@@ -832,7 +832,7 @@ html, body {
     text-shadow: 1px 1px 0 #FFFFFF;
 }
 .disabled_toolbar {
-    opacity: 0.5 !important;
+    opacity: 0.3 !important;
 }
 .disabled_toolbar a.button:hover {
     border: none !important;
