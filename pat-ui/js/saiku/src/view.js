@@ -1029,16 +1029,35 @@ var view = {
          */
     check_toolbar: function(tab_index) {
 
-        /* Make sure we are referencing the tab being used */
+        // Make sure we are referencing the tab being used.
         $tab = view.tabs.tabs[tab_index].content;
         $column_dropzone = $tab.find('.columns ul');
         $row_dropzone = $tab.find('.rows ul');
 
-        if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-            $tab.find('.workspace_toolbar').removeClass('disabled_toolbar');
+        // First check if a cube has been selected.
+        
+        if (view.tabs.tabs[tab_index].data['query_name'].length == 0) {
+            // Disable the toolbar.
+            $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
+            // Clear the table results.
+            $tab.find('.workspace_results').html('');
+        }else if (view.tabs.tabs[tab_index].data['query_name'].length > 0
+                  && $row_dropzone.find('li.d_measure, li.d_dimension').length == 0
+                  && $column_dropzone.find('li.d_measure, li.d_dimension').length == 0) {
+            // Enable specific toolbar buttons.
+            $tab.find('.workspace_toolbar li')
+            .find('a[href="#automatic_execution"]').removeClass('disabled_toolbar');
+            $tab.find('.workspace_toolbar li')
+            .find('a[href="#toggle_fields"]').removeClass('disabled_toolbar');
+            $tab.find('.workspace_toolbar li')
+            .find('a[href="#non_empty"]').removeClass('disabled_toolbar');
+        }else if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0
+                 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+            $tab.find('.workspace_toolbar li a').removeClass('disabled_toolbar');
         }else{
-            $tab.find('.workspace_toolbar').addClass('disabled_toolbar');
-            // Lets clear the .workspace result as well
+            // Disable the toolbar.
+            $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
+            // Clear the table results.
             $tab.find('.workspace_results').html('');
         }
     }
