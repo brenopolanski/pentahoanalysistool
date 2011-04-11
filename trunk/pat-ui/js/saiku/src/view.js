@@ -231,26 +231,27 @@ var view = {
 
         /** Loop through available connections and populate the select box. */
         $.each(model.connections, function(i,connection){
-            $.each(connection.catalogs[0].schemas, function(i,schema){
+            $.each(connection.catalogs, function(cat_i,catalog){
+                $.each(catalog.schemas, function(i,schema){
                 
-                $cubes.append('<optgroup label="'+schema['name']+'">');
-                $.each(schema.cubes, function(i,cube){
-                    $("<option />")
-                    .attr({
-                        'value': storage_id
-                    })
-                    .text(cube['name'])
-                    .appendTo($cubes);
-                    view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
-                        'connectionName': connection['name'],
-                        'catalogName': connection.catalogs[0]['name'],
-                        'schema': schema['name'],
-                        'cube': cube['name']
-                    };
-                    storage_id++;
-                //});
+                    $cubes.append('<optgroup label="'+schema['name']+'">');
+                    $.each(schema.cubes, function(i,cube){
+                        $("<option />")
+                        .attr({
+                            'value': storage_id
+                        })
+                        .text(cube['name'])
+                        .appendTo($cubes);
+                        view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
+                            'connectionName': connection['name'],
+                            'catalogName': connection.catalogs[0]['name'],
+                            'schema': schema['name'],
+                            'cube': cube['name']
+                        };
+                        storage_id++;
+                    });
+                    $cubes.append('</optgroup>');
                 });
-                $cubes.append('</optgroup>');
             });
         });
 
@@ -1070,6 +1071,7 @@ var view = {
             // Clear the results area.
             $tab.find('.workspace_results').html('');
         }
+        model.load_properties(tab_index);
 
     }
 
