@@ -607,17 +607,23 @@ var model = {
             success: function(data, textStatus, XMLHttpRequest) {
                  for(var key in data) {
                     if (key == "saiku.olap.query.nonempty") {
-                        view.tabs.tabs[tab_index].data['options']['nonempty'] = data[key];
                         if (data[key] == "true") {
+                            view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
                             var $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
                             $button.addClass("on");
                         }
+                        else {
+                            view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
+                        }
                     }
                     if (key == "saiku.olap.query.drillthrough") {
-                        view.tabs.tabs[tab_index].data['options']['drillthrough'] = data[key];
                         if (data[key] == "false") {
+                            view.tabs.tabs[tab_index].data['options']['drillthrough'] = false;
                             var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
                             $button.addClass("disabled_toolbar");
+                        }
+                        else {
+                            view.tabs.tabs[tab_index].data['options']['drillthrough'] = true;
                         }
                     }
                  }
