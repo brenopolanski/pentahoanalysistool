@@ -481,6 +481,8 @@ var model = {
         }
 
         if(!view.tabs.tabs[tab_index].data['options']['drillthrough']) {
+            var $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
+            $workspace_result.html("<table />");
             model.run_query(tab_index);
         }else{
 
@@ -595,6 +597,34 @@ var model = {
             }
         });
 
+    },
+    
+    load_properties: function(tab_index) {
+        url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/";
+        model.request({
+            method: "GET",
+            url: url,
+            success: function(data, textStatus, XMLHttpRequest) {
+                 for(var key in data) {
+                    if (key == "saiku.olap.query.nonempty") {
+                        view.tabs.tabs[tab_index].data['options']['nonempty'] = data[key];
+                        if (data[key] == "true") {
+                            var $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
+                            $button.addClass("on");
+                        }
+                    }
+                    if (key == "saiku.olap.query.drillthrough") {
+                        view.tabs.tabs[tab_index].data['options']['drillthrough'] = data[key];
+                        if (data[key] == "false") {
+                            var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
+                            $button.addClass("disabled_toolbar");
+                        }
+                    }
+                 }
+
+            }
+        });
+        
     },
 
     /**
