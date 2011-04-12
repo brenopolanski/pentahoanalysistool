@@ -58,9 +58,9 @@ var controller = {
      */
     workspace_toolbar_click_handler: function($button) {
         tab_index = view.tabs.index_from_content($button.closest('.tab'));
-        
+        console.log($button);
         // Make sure button isn't disabled, and that a query is active
-        if (!($button.hasClass('button_disabled')) && view.tabs.tabs[tab_index].data['query_name']) {
+        if (!($button.hasClass('disabled_toolbar')) && view.tabs.tabs[tab_index].data['query_name']) {
             method_name = $button.attr('href').replace('#', '');
             
             try {
