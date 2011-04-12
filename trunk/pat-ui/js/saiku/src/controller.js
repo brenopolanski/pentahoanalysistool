@@ -90,6 +90,11 @@ var controller = {
         location.reload(true);
     },
 
+    /** Handle click on the issuet tracker icon. */
+    issue_tracker : function() {
+       window.open('http://projects.analytical-labs.com/projects/saiku/issues');
+    },
+
     /** Handle click when the about button is clicked. */
     about : function() {
         view.show_view('views/info/');

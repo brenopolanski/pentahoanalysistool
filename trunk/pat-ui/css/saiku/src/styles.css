@@ -81,52 +81,34 @@ html, body {
     -webkit-border-radius: 2px;
 }
 #toolbar ul li a.new_tab {
-    background: transparent url('../../../images/src/toolbar_new.png') 2px 2px no-repeat;
+    background: transparent url('../../../images/src/main_toolbar_doc_plus.png') 5px 5px no-repeat;
 }
 #toolbar ul li a.open_query {
-    background: transparent url('../../../images/src/toolbar_open.png') 2px 2px no-repeat;
-}
-#toolbar ul li a.save_query {
-    background: transparent url('../../../images/src/toolbar_save.png') 2px 2px no-repeat;
-}
-#toolbar ul li a.delete_query {
-    background: transparent url('../../../images/src/toolbar_delete.png') 2px 2px no-repeat;
+    background: transparent url('../../../images/src/main_toolbar_folder.png') 5px 5px no-repeat;
 }
 #toolbar ul li a.logout {
-    background: transparent url('../../../images/src/toolbar_logout.png') 2px 2px no-repeat;
+    background: transparent url('../../../images/src/main_toolbar_on_off.png') 4px 5px no-repeat;
 }
 #toolbar ul li a.about {
-    background: transparent url('../../../images/src/toolbar_about.png') 2px 2px no-repeat;
+    background: transparent url('../../../images/src/main_toolbar_info.png') 4px 4px no-repeat;
+}
+#toolbar ul li a.bug {
+    background: transparent url('../../../images/src/main_toolbar_bug.png') 4px 4px no-repeat;
 }
 #toolbar ul li a.new_tab:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_new.png') 2px 2px no-repeat;
+    background: #F0F0F0 url('../../../images/src/main_toolbar_doc_plus.png') 5px 5px no-repeat;
 }
 #toolbar ul li a.open_query:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_open.png') 2px 2px no-repeat;
-}
-#toolbar ul li a.save_query:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_save.png') 2px 2px no-repeat;
-}
-#toolbar ul li a.delete_query:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_delete.png') 2px 2px no-repeat;
+    background: #F0F0F0 url('../../../images/src/main_toolbar_folder.png') 5px 5px no-repeat;
 }
 #toolbar ul li a.logout:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_logout.png') 2px 2px no-repeat;
+    background: #F0F0F0 url('../../../images/src/main_toolbar_on_off.png') 4px 5px no-repeat;
 }
 #toolbar ul li a.about:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#EEEEEE));
-    background: -moz-linear-gradient(top, #F0F0F0 0%, #EEEEEE 100%);
-    background: #F0F0F0 url('../../../images/src/toolbar_about.png') 2px 2px no-repeat;
+    background: #F0F0F0 url('../../../images/src/main_toolbar_info.png')  4px 4px no-repeat;
+}
+#toolbar ul li a.bug:hover {
+    background: #F0F0F0 url('../../../images/src/main_toolbar_bug.png') 4px 4px no-repeat;
 }
 
 /** Logo */
