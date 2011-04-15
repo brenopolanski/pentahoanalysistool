@@ -268,6 +268,8 @@ var view = {
         // Pointer for sidebar
         var $query_list = view.tabs.tabs[tab_index].content.find('.sidebar_inner ul');
         $query_list.empty();
+        $('.open_query_tb').find('a').remove();
+        $('.delete_query_tb').find('a').remove();
 
         //view.tabs.tabs[tab_index].content.find(".workspace_results")
         //.text('Click on the names on the left to Open or Delete queries.');
@@ -293,7 +295,7 @@ var view = {
                 }
                 // Add open query button to the toolbar
                 $('<a />')
-                .attr('href', '#open_query')
+                .attr('href', '#')
                 .addClass('i18n open button')
                 .attr('title', 'Open query')
                 .i18n(po_file)
@@ -301,11 +303,11 @@ var view = {
                     model.open_query($query.name, view.tabs.add_tab());
                     return false;
                 })
-                .appendTo($('.open_query'));
+                .appendTo($('.open_query_tb'));
 
                 // Add delete query button to the toolbar
                 $('<a />')
-                .attr('href', '#delete_query')
+                .attr('href', '#')
                 .attr('title', 'Delete query')
                 .addClass('i18n delete button')
                 .i18n(po_file)
@@ -313,7 +315,7 @@ var view = {
                     model.delete_query_from_repository($query.name, tab_index);
                     return false;
                 })
-                .appendTo($('.delete_query'));
+                .appendTo($('.delete_query_tb'));
                 
                 return false;
             })
