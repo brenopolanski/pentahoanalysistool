@@ -972,6 +972,13 @@ var model = {
                                 success: function(data, textStatus, XMLHttpRequest) {
                                     view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
                                     model.get_queries(tab_index);
+                                    // Change the dialog message
+                                    $('#dialog').find('.dialog_body_delete').text('').text('Query deleted succesfully.');
+                                    // Remove the dialog save button
+                                    $('#delete_query').remove();
+                                    // Rename the cancel button
+                                    $('#delete_close').text('OK');
+
                                 }
                             });
                         });
@@ -984,6 +991,7 @@ var model = {
                         $.modal.close();
                         // Remove the #dialog which we appended to the body.
                         $('#dialog').remove();
+                        
                     }
                 });
             }
