@@ -972,6 +972,10 @@ var model = {
                                 success: function(data, textStatus, XMLHttpRequest) {
                                     view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
                                     model.get_queries(tab_index);
+
+                                    $('.open_query_tb').find('a').remove();
+                                    $('.delete_query_tb').find('a').remove();
+
                                     // Change the dialog message
                                     $('#dialog').find('.dialog_body_delete').text('').text('Query deleted succesfully.');
                                     // Remove the dialog save button
@@ -1043,7 +1047,6 @@ var model = {
 		 * @param tab_index {Integer} The active tab index
 		 */
     show_selections: function(member_clicked, $tab) {
-        console.log(member_clicked);
         var tab_index = view.tabs.index_from_content($tab);
         var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
         var tab_data = view.tabs.tabs[tab_index].data['connection'];

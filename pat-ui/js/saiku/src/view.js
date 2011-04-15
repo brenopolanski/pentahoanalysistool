@@ -283,6 +283,10 @@ var view = {
             .attr('title', 'Click on the query name to open or delete it')
             // Show information about the query when its name is clicked
             .click(function() {
+
+                $('.open_query_tb').find('a').remove();
+                $('.delete_query_tb').find('a').remove();
+
                 var $query = $(this).data('object');
                 var $results = view.tabs.tabs[tab_index].content.find(".workspace_results");
                 $results.html('<h3><strong>' + $query.name + '</strong></h3>');
