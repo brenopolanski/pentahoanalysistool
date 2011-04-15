@@ -716,6 +716,10 @@ var view = {
                 if(!(ui.item.hasClass('dropped'))) {
                     /** When stopped dropping or sorting set the selection. */
                     model.dropped_item(ui.item, false, ui);
+                    // If something is being dropped onto the filter axis and is not a measure.
+                    if(ui.item.parent().parent().hasClass('filter') && ui.item.hasClass('d_dimension')) {
+                        model.show_selections(ui.item.find('a'),$(this).closest(".tab"));
+                    }
                 }
             }
             
