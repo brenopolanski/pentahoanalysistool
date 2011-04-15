@@ -605,7 +605,7 @@ var model = {
             method: "GET",
             url: url,
             success: function(data, textStatus, XMLHttpRequest) {
-                 for(var key in data) {
+                for(var key in data) {
                     if (key == "saiku.olap.query.nonempty") {
                         if (data[key] == "true") {
                             view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
@@ -626,7 +626,7 @@ var model = {
                             view.tabs.tabs[tab_index].data['options']['drillthrough'] = true;
                         }
                     }
-                 }
+                }
 
             }
         });
@@ -954,16 +954,40 @@ var model = {
 		 * Delete a query from the repository
 		 */
     delete_query_from_repository: function(query_name, tab_index) {
-        if (confirm("Are you sure?")) {
-            model.request({
-                method: "DELETE",
-                url: model.username + "/repository/" + query_name + "/",
-                success: function(data, textStatus, XMLHttpRequest) {
-                    view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
-                    model.get_queries(tab_index);
-                }
-            });
-        }
+        // Append a dialog <div/> to the body.
+        $('<div id="dialog" class="dialog hide" />').appendTo('body');
+        // Load the view into the dialog <div/> and disable caching.
+        $.ajax({
+            url : BASE_URL + 'views/queries/delete.html',
+            cache : false,
+            dataType : "html",
+            success : function(data) {
+                $('#dialog').html(data).modal({
+                    opacity : 100,
+                    onShow : function(dialog) {
+                        dialog.data.find('#delete_query').click(function() {
+                            model.request({
+                                method: "DELETE",
+                                url: model.username + "/repository/" + query_name + "/",
+                                success: function(data, textStatus, XMLHttpRequest) {
+                                    view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
+                                    model.get_queries(tab_index);
+                                }
+                            });
+                        });
+                    },
+                    onClose : function (dialog) {
+                        // Remove all simple modal objects.
+                        dialog.data.remove();
+                        dialog.container.remove();
+                        dialog.overlay.remove();
+                        $.modal.close();
+                        // Remove the #dialog which we appended to the body.
+                        $('#dialog').remove();
+                    }
+                });
+            }
+        });
     },
 
     /**
@@ -1185,7 +1209,7 @@ var model = {
                                     });
                                     */
                                     if (member_iterator > 0) {
-                                            member_updates += ",";
+                                        member_updates += ",";
                                     }
                                     member_updates += '{"hierarchy":"' + member_data.hierarchy + '","uniquename":"' + member_data.level + '","type":"level","action":"delete"}';
 
