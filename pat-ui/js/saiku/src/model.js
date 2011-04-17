@@ -1046,6 +1046,23 @@ var model = {
         // Append a dialog <div/> to the body.
         $('<div id="dialog_selections" class="selections dialog hide" />').appendTo($tab);
 
+
+        // Handle showing the unique and caption names
+        var visible = true;
+        $('#show_unique').live('change',function() {
+            if(visible) {
+                $('#dialog_selections select option').each(function(i, options) {
+                    $(this).text($(this).val());
+                });
+                visible = false;
+            }else{
+                $('#dialog_selections select option').each(function(i, options) {
+                    $(this).text($(this).attr('lang'));
+                });
+                visible = true;
+            }
+        });
+
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
             url: BASE_URL + 'views/selections/',
@@ -1063,21 +1080,7 @@ var model = {
                             tab_data.schema = "null";
                         }
 
-                        // Handle showing the unique and caption names
-                        var visible = true;
-                        $('#show_unique').live('click',function() {
-                            if(visible) {
-                                $('#dialog_selections select option').each(function(i, options) {
-                                    $(this).text($(this).val());
-                                });
-                                visible = false;
-                            }else{
-                                $('#dialog_selections select option').each(function(i, options) {
-                                    $(this).text($(this).attr('label'));
-                                });
-                                visible = true;
-                            }
-                        });
+                        
 
                         // URL to retrieve all available members
                         var url = model.username + "/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
@@ -1123,7 +1126,7 @@ var model = {
                                                     if (selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
 
                                                         // Add the levels to the used_selections list box
-                                                        $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '" label="'+selections['name']+'" title="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
+                                                        $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '" lang="'+selections['name']+'" title="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
 
                                                         // Store the uniqueName into the used_selection array for comparison later
                                                         used_selection.push(selections['uniqueName']);
@@ -1141,7 +1144,7 @@ var model = {
                                         // then append it to the listbox.
                                         $.each(data, function (member_iterator, member) {
                                             if ($.inArray(member['uniqueName'], used_selection) == -1) {
-                                                $available_selections.append('<option value="' + member['uniqueName'] + '" title="' + member['uniqueName'] + '" label="' + member['caption'] + '">' + member['caption'] + '</option>');
+                                                $available_selections.append('<option value="' + member['uniqueName'] + '" title="' + member['uniqueName'] + '" lang="' + member['caption'] + '">' + member['caption'] + '</option>');
                                             }
                                         });
 
