@@ -967,8 +967,17 @@ html, body {
 #dialog_selections .dialog_body select {
     height: 270px;
     width: 200px;
-    overflow: auto;
     font-size: 11px;
+    overflow-x: scroll;
+}
+#dialog_selections .dialog_footer .options {
+    float: left;
+    width: 150px;
+    text-align: left;
+}
+#dialog_selections .dialog_footer .footer_buttons {
+    float: right;
+    width: 200px;
 }
 
 .form_button {

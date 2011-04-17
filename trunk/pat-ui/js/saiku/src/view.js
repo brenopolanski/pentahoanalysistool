@@ -406,6 +406,7 @@ var view = {
         
         // Add a new dimension tree.
         var $dimension_tree = $('<ul />').appendTo($tab.find('.dimension_tree'));
+        $dimension_tree.hide();
         
         // Populate the tree with first level dimensions.
         var dimension_id = 0;
@@ -470,6 +471,7 @@ var view = {
         $tab.find('.measure_tree ul').remove();
         // Create a new measures tree.
         var $measure_tree = $('<ul />').appendTo($tab.find('.measure_tree'));
+        $measure_tree.hide();
         // Add the first static measures folder.
         var $measures = $('<li><span class="root expand"><a href="#" title="Measures" rel="m0" class="folder_expand">Measures</a></span></li>')
         .appendTo($measure_tree);
@@ -524,6 +526,7 @@ var view = {
         /** Initisalise trees */
         var $tab = view.tabs.tabs[tab_index].content;
         init_trees($tab);
+        $tab.find('.dimension_tree ul:first, .measure_tree ul:first').show();
 
         /** Tree selectors. */
         var $dimension_tree = $tab.find('.dimension_tree');

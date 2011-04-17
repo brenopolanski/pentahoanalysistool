@@ -14,7 +14,7 @@
     You should have received a copy of the GNU Lesser General
     Public License along with this library; if not, write to the
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301 USA 
+    Boston, MA 02110-1301 USA
  */
 /**
  * @fileOverview    This represents the model for Saiku UI.
@@ -29,29 +29,27 @@
 var model = {
 
     /** Username to be used with BASIC_AUTH. */
-    username : "",
+    username: "",
 
     /** Password to be used with BASIC_AUTH. */
-    password : "",
+    password: "",
 
     /** Connection information for this Saiku server. */
-    connections : {},
+    connections: {},
 
     /**
-		 * Handle all AJAX requests.
-		 * @param paramters {Object} Parameters for AJAX requests.
-		 */
-    request : function(parameters) {
+	 * Handle all AJAX requests.
+	 * @param paramters {Object} Parameters for AJAX requests.
+	 */
+    request: function (parameters) {
         // Overwrite defaults with incoming parameters
         settings = $.extend({
             method: "GET",
             data: {},
             contentType: 'application/x-www-form-urlencoded',
-            success: function() {},
-            error: function() {
-                view.show_dialog('Error',
-                    'Could not connect to the server, please check your internet connection. ' +
-                    'If this problem persists, please refresh the page.', 'error');
+            success: function () {},
+            error: function () {
+                view.show_dialog('Error', 'Could not connect to the server, please check your internet connection. ' + 'If this problem persists, please refresh the page.', 'error');
             },
             dataType: "json"
         }, parameters);
@@ -72,13 +70,13 @@ var model = {
     },
 
     /**
-		 * Create a new session and unhide the UI. 
-		 */
-    get_session : function() {
+	 * Create a new session and unhide the UI.
+	 */
+    get_session: function () {
         model.request({
             method: "GET",
             url: model.username + "/discover",
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function (data, textStatus, XMLHttpRequest) {
                 model.connections = data;
                 view.draw_ui();
                 controller.add_tab();
@@ -88,10 +86,10 @@ var model = {
     },
 
     /**
-		 * Delete a query
-		 * @param tab_index The tab containing the query
-		 */
-    delete_query: function(tab_index) {
+	 * Delete a query
+	 * @param tab_index The tab containing the query
+	 */
+    delete_query: function (tab_index) {
         if (view.tabs.tabs[tab_index].data['query_name'] !== undefined) {
             model.request({
                 method: "DELETE",
@@ -101,24 +99,24 @@ var model = {
     },
 
     /**
-		 * Generate a new query_id
-		 * @param tab_index {Integer} Index of the selected tab.
-		 * @return A new unique query_id
-		 */
-    generate_query_id: function(tab_index) {
-        view.tabs.tabs[tab_index].data['query_name'] =
-        'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+	 * Generate a new query_id
+	 * @param tab_index {Integer} Index of the selected tab.
+	 * @return A new unique query_id
+	 */
+    generate_query_id: function (tab_index) {
+        view.tabs.tabs[tab_index].data['query_name'] = 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         }).toUpperCase();
     },
 
     /**
-		 * Populate the dimension and measure tree and initialise draggable,
-		 * droppable and sortable items.
-		 * @param tab_index {Integer} Index of the selected tab.
-		 */
-    new_query: function(tab_index, xml, callback) {
+	 * Populate the dimension and measure tree and initialise draggable,
+	 * droppable and sortable items.
+	 * @param tab_index {Integer} Index of the selected tab.
+	 */
+    new_query: function (tab_index, xml, callback) {
         // If query already exists, delete it
         if (typeof view.tabs.tabs[tab_index].data['query_name'] != "undefined") {
             model.delete_query(tab_index);
@@ -163,55 +161,55 @@ var model = {
 
         // Get a list of available dimensions and measures.
         model.request({
-            method : "POST",
-            url : model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
+            method: "POST",
+            url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/",
 
             data: post_data,
 
-            success: function(query_data, textStatus, XMLHttpRequest) {
+            success: function (query_data, textStatus, XMLHttpRequest) {
                 // Get cube data
                 var cube = query_data.cube;
                 if (cube.schemaName == "") {
-                    cube.schemaName= "null";
+                    cube.schemaName = "null";
                 }
 
                 // Load dimensions into a tree.
                 model.request({
-                    method : "GET",
-                    url : model.username + "/discover/" + cube.connectionName + "/" +
-                    cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/dimensions",
-                    success: function(data, textStatus, XMLHttpRequest) {
+                    method: "GET",
+                    url: model.username + "/discover/" + cube.connectionName + "/" + cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/dimensions",
+                    success: function (data, textStatus, XMLHttpRequest) {
                         view.load_dimensions(tab_index, data);
 
                         // Load measures into a tree.
                         model.request({
-                            method : "GET",
-                            url : model.username + "/discover/" + cube.connectionName + "/" +
-                            cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/measures",
-                            success: function(data, textStatus, XMLHttpRequest) {
+                            method: "GET",
+                            url: model.username + "/discover/" + cube.connectionName + "/" + cube.catalogName + "/" + cube.schemaName + "/" + cube.name + "/measures",
+                            success: function (data, textStatus, XMLHttpRequest) {
                                 view.load_measures(tab_index, data);
                                 if (callback) {
-                                    callback(cube,query_data);
+                                    callback(cube, query_data);
                                 }
+
                             },
-                            error: function() {
+                            error: function () {
                                 view.hide_processing(true, tab_index);
                                 view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
                                 $tab.find('.cubes').find('option:first').attr('selected', 'selected');
                             }
                         });
                     },
-                    error: function() {
+                    error: function () {
                         view.hide_processing(true, tab_index);
                         view.show_dialog("Error", "Couldn't fetch dimensions. Please try again.", "error");
                         $tab.find('.cubes').find('option:first').attr('selected', 'selected');
                     }
                 });
-
+                
+                
                 view.hide_processing(true, tab_index);
             },
 
-            error: function() {
+            error: function () {
                 // Could not retrieve dimensions and measures from server
                 view.hide_processing(true, tab_index);
                 view.show_dialog("Error", "Couldn't create a new query. Please try again.", "error");
@@ -221,44 +219,42 @@ var model = {
     },
 
     /**
-		 * When a dimension or measure is dropped or sorted set it as a selection.
-		 * @param $item {Object} 
-		 * @param is_click {Boolean} If the dimension or measure is being added via a double click.
-		 * @param position {Integer} The position of the dimension or measure being dropped.
-		 */
-    dropped_item: function($item, is_click) {
-        
+	 * When a dimension or measure is dropped or sorted set it as a selection.
+	 * @param $item {Object}
+	 * @param is_click {Boolean} If the dimension or measure is being added via a double click.
+	 * @param position {Integer} The position of the dimension or measure being dropped.
+	 */
+    dropped_item: function ($item, is_click) {
+
         var $tab = $item.closest('.tab');
         var tab_index = view.tabs.index_from_content($tab);
         var $column_dropzone = $tab.find('.columns ul');
         var $row_dropzone = $tab.find('.rows ul');
         var $both_dropzones = $tab.find('.rows ul, .columns ul');
-                        
+
         /** Has the dimension or measure been double clicked on. */
         if (is_click) {
             if ($item.find('a').hasClass('dimension')) {
                 var axis = 'ROWS';
-            }else if ($item.find('a').hasClass('measure')){
+            } else if ($item.find('a').hasClass('measure')) {
                 var axis = 'COLUMNS';
             }
-        }else{
+        } else {
             var axis = $item.closest('.fields_list').attr('title');
-        }
-        /** Sorting a dimension or measure. */
+        } /** Sorting a dimension or measure. */
         var is_dimension = $item.find('a').hasClass('dimension');
         var is_measure = $item.find('a').hasClass('measure');
 
         /** If sorting on a ROW axis and is a dimension. */
         if (axis === 'ROWS' && is_dimension) {
-            var position = $row_dropzone.find('li').index($item), memberposition = -1;
-        /** If sorting on a COLUMN axis and is a dimension. */
+            var position = $row_dropzone.find('li').index($item),
+            memberposition = -1; /** If sorting on a COLUMN axis and is a dimension. */
         } else if (axis === 'COLUMNS' && is_dimension) {
-            var position = $column_dropzone.find('li').index($item), memberposition = -1;
-        /** If sorting on a ROW axis and is a measure. */
+            var position = $column_dropzone.find('li').index($item),
+            memberposition = -1; /** If sorting on a ROW axis and is a measure. */
         } else if (axis === 'ROWS' && is_measure) {
             var memberposition = $both_dropzones.find('li.d_measure').index($item);
-            var position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
-        /** If sorting on a COLUMN axis and is a measure. */
+            var position = $row_dropzone.find('li').index($both_dropzones.find('li.d_measure:first')); /** If sorting on a COLUMN axis and is a measure. */
         } else if (axis === 'COLUMNS' && is_measure) {
             var memberposition = $both_dropzones.find('li.d_measure').index($item);
             var position = $column_dropzone.find('li').index($both_dropzones.find('li.d_measure:first'));
@@ -266,15 +262,14 @@ var model = {
         var used_dimension = $item.find('a').attr('rel');
 
         if (is_dimension) {
-            if(view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[rel="'+ used_dimension + '"]').parent().hasClass('reuse')) {
+            if (view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[rel="' + used_dimension + '"]').parent().hasClass('reuse')) {
                 // This is a dimension
                 var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
                 var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension;
-            }else{
+            } else {
                 // This is a dimension
                 var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
-                var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension
-                + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
+                var url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/axis/" + axis + "/dimension/" + item_data.dimension + "/hierarchy/" + item_data.hierarchy + "/" + item_data.level;
             }
         } else if (is_measure) {
             // This is a measure
@@ -288,16 +283,16 @@ var model = {
             method: "POST",
             url: url,
             data: {
-                'position' : position,
-                'memberposition' : memberposition
+                'position': position,
+                'memberposition': memberposition
             },
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function (data, textStatus, XMLHttpRequest) {
                 // If automatic query execution is enabled, rerun the query when this option is changed
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
                     model.run_query(tab_index);
                 }
                 // Make sure the item is clickable for selections.
-                $item.find('a').live('dblclick', function() {
+                $item.find('a').live('dblclick', function () {
                     if ($(this).hasClass('dimension')) {
                         var $tab = $(this).closest(".tab");
                         model.show_selections($(this), $tab);
@@ -312,11 +307,11 @@ var model = {
     },
 
     /**
-		 * When a dimension or measure is removed, remove it from the selection.
-		 * @param $item {Object}
-		 * @param is_click {Boolean} If the dimension or measure is being removed via a double click.
-		 */
-    removed_item: function($item, is_click) {
+	 * When a dimension or measure is removed, remove it from the selection.
+	 * @param $item {Object}
+	 * @param is_click {Boolean} If the dimension or measure is being removed via a double click.
+	 */
+    removed_item: function ($item, is_click) {
         var tab_index = view.tabs.index_from_content($item.closest('.tab'));
         var axis = $item.closest('.fields_list').attr('title');
 
@@ -342,18 +337,18 @@ var model = {
 
 
     /**
-    * Run the query (triggered by drag events, double click events, and button
-    * @param tab_index {Integer} the id of the tab
-    */
-    run_query: function(tab_index) {
+	 * Run the query (triggered by drag events, double click events, and button
+	 * @param tab_index {Integer} the id of the tab
+	 */
+    run_query: function (tab_index) {
         // Make sure that a cube has been selected on this tab
-        if (! view.tabs.tabs[tab_index].data['query_name']) {
+        if (!view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
 
         // Check if the drillthrough button is enabled
-        if(view.tabs.tabs[tab_index].data['options']['drillthrough']) {
+        if (view.tabs.tabs[tab_index].data['options']['drillthrough']) {
             // Lets disable it and set the property to false
             view.tabs.tabs[tab_index].data['options']['drillthrough'] = false
             // Enable the button on the toolbar
@@ -365,8 +360,7 @@ var model = {
         var row_counter = view.tabs.tabs[tab_index].content.find('.rows ul li').length;
 
         // Abort if one axis or the other is empty
-        if (col_counter == 0 || row_counter == 0)
-            return;
+        if (col_counter == 0 || row_counter == 0) return;
 
         // Notify the user...
         view.show_processing('Executing query. Please wait...', true, tab_index);
@@ -379,9 +373,9 @@ var model = {
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
             data: {
-                'propertyValue' : view.tabs.tabs[tab_index].data['options']['drillthrough']
+                'propertyValue': view.tabs.tabs[tab_index].data['options']['drillthrough']
             },
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function (data, textStatus, XMLHttpRequest) {
 
                 if (data == "") {
 
@@ -391,36 +385,34 @@ var model = {
                     // Insert the table to the DOM
                     $workspace_result.html(table_vis);
 
-                }else{
+                } else {
                     // Create a variable to store the table
                     var table_vis = '<table>';
 
                     // Start looping through the result set
-                    $.each(data, function(i, cells) {
+                    $.each(data, function (i, cells) {
 
                         // Add a new row.
                         table_vis = table_vis + '<tr>';
 
                         // Look through the contents of the row
-                        $.each(cells, function(j, header) {
+                        $.each(cells, function (j, header) {
 
                             // If the cell is a column header and is null (top left of table)
-                            if(header['type'] === "COLUMN_HEADER"
-                                && header['value'] === "null") {
+                            if (header['type'] === "COLUMN_HEADER" && header['value'] === "null") {
                                 table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
                             } // If the cell is a column header and isn't null (column header of table)
-                            else if(header['type'] === "COLUMN_HEADER") {
-                                table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
+                            else if (header['type'] === "COLUMN_HEADER") {
+                                table_vis = table_vis + '<th class="col"><div>' + header['value'] + '</div></th>';
                             } // If the cell is a row header and is null (grouped row header)
-                            else if(header['type'] === "ROW_HEADER"
-                                && header['value'] === "null") {
+                            else if (header['type'] === "ROW_HEADER" && header['value'] === "null") {
                                 table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
                             } // If the cell is a row header and isn't null (last row header)
-                            else if(header['type'] === "ROW_HEADER") {
-                                table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
+                            else if (header['type'] === "ROW_HEADER") {
+                                table_vis = table_vis + '<th class="row"><div>' + header['value'] + '</div></th>';
                             } // If the cell is a normal data cell
-                            else if(header['type'] === "DATA_CELL") {
-                                table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
+                            else if (header['type'] === "DATA_CELL") {
+                                table_vis = table_vis + '<td class="data"><div>' + header['value'] + '</div></td>';
                             }
 
                         });
@@ -437,9 +429,9 @@ var model = {
                     $workspace_result.html(table_vis);
 
                     // Enable highlighting on rows.
-                    $workspace_result.find('table tr').hover(function(){
+                    $workspace_result.find('table tr').hover(function () {
                         $(this).children().css('background', '#eff4fc');
-                    },function(){
+                    }, function () {
                         $(this).children().css('background', '');
                     });
                 }
@@ -451,7 +443,7 @@ var model = {
                 view.hide_processing(true, tab_index);
             },
 
-            error: function() {
+            error: function () {
                 // Let the user know that their query was not successful
                 view.hide_processing(true, tab_index);
                 view.show_dialog("Result Set", "There was an error getting the result set for that query.", "info");
@@ -460,12 +452,12 @@ var model = {
     },
 
     /**
-		 * Drillthrough the current query
-		 * @param tab_index {Integer} the id of the tab
-		 */
-    drillthrough: function(tab_index) {
+	 * Drillthrough the current query
+	 * @param tab_index {Integer} the id of the tab
+	 */
+    drillthrough: function (tab_index) {
         // Make sure that a cube has been selected on this tab
-        if (! view.tabs.tabs[tab_index].data['query_name']) {
+        if (!view.tabs.tabs[tab_index].data['query_name']) {
             view.show_dialog("Run query", "Please select a cube first.", "info");
             return false;
         }
@@ -480,18 +472,17 @@ var model = {
             $button.addClass('on');
         }
 
-        if(!view.tabs.tabs[tab_index].data['options']['drillthrough']) {
+        if (!view.tabs.tabs[tab_index].data['options']['drillthrough']) {
             var $workspace_result = view.tabs.tabs[tab_index].content.find('.workspace_results');
             $workspace_result.html("<table />");
             model.run_query(tab_index);
-        }else{
+        } else {
 
             var col_counter = view.tabs.tabs[tab_index].content.find('.columns ul li').length;
             var row_counter = view.tabs.tabs[tab_index].content.find('.rows ul li').length;
 
             // Abort if one axis or the other is empty
-            if (col_counter == 0 || row_counter == 0)
-                return;
+            if (col_counter == 0 || row_counter == 0) return;
 
             // Notify the user...
             view.show_processing('Executing drillthrough. Please wait...', true, tab_index);
@@ -504,39 +495,37 @@ var model = {
                 method: "GET",
                 url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/drillthrough:500",
                 data: {
-                    'propertyValue' : view.tabs.tabs[tab_index].data['options']['drillthrough']
+                    'propertyValue': view.tabs.tabs[tab_index].data['options']['drillthrough']
                 },
-                success: function(data, textStatus, XMLHttpRequest) {
+                success: function (data, textStatus, XMLHttpRequest) {
 
                     // Create a variable to store the table
                     var table_vis = '<table>';
 
                     // Start looping through the result set
-                    $.each(data, function(i, cells) {
+                    $.each(data, function (i, cells) {
 
                         // Add a new row.
                         table_vis = table_vis + '<tr>';
 
                         // Look through the contents of the row
-                        $.each(cells, function(j, header) {
+                        $.each(cells, function (j, header) {
 
                             // If the cell is a column header and is null (top left of table)
-                            if(header['type'] === "COLUMN_HEADER"
-                                && header['value'] === "null") {
+                            if (header['type'] === "COLUMN_HEADER" && header['value'] === "null") {
                                 table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
                             } // If the cell is a column header and isn't null (column header of table)
-                            else if(header['type'] === "COLUMN_HEADER") {
-                                table_vis = table_vis + '<th class="col"><div>'+header['value']+'</div></th>';
+                            else if (header['type'] === "COLUMN_HEADER") {
+                                table_vis = table_vis + '<th class="col"><div>' + header['value'] + '</div></th>';
                             } // If the cell is a row header and is null (grouped row header)
-                            else if(header['type'] === "ROW_HEADER"
-                                && header['value'] === "null") {
+                            else if (header['type'] === "ROW_HEADER" && header['value'] === "null") {
                                 table_vis = table_vis + '<th class="row_null"><div>&nbsp;</div></th>';
                             } // If the cell is a row header and isn't null (last row header)
-                            else if(header['type'] === "ROW_HEADER") {
-                                table_vis = table_vis + '<th class="row"><div>'+header['value']+'</div></th>';
+                            else if (header['type'] === "ROW_HEADER") {
+                                table_vis = table_vis + '<th class="row"><div>' + header['value'] + '</div></th>';
                             } // If the cell is a normal data cell
-                            else if(header['type'] === "DATA_CELL") {
-                                table_vis = table_vis + '<td class="data"><div>'+header['value']+'</div></td>';
+                            else if (header['type'] === "DATA_CELL") {
+                                table_vis = table_vis + '<td class="data"><div>' + header['value'] + '</div></td>';
                             }
 
                         });
@@ -553,13 +542,13 @@ var model = {
                     $workspace_result.html(table_vis);
 
                     // Enable highlighting on rows.
-                    $workspace_result.find('table tr').hover(function(){
+                    $workspace_result.find('table tr').hover(function () {
                         $(this).children().css('background', '#eff4fc');
-                    },function(){
+                    }, function () {
                         $(this).children().css('background', '');
                     });
 
-                
+
                     // Resize the workspace
                     view.resize_height(tab_index);
 
@@ -567,7 +556,7 @@ var model = {
                     view.hide_processing(true, tab_index);
                 },
 
-                error: function() {
+                error: function () {
                     // Let the user know that their query was not successful
                     view.hide_processing(true, tab_index);
                     view.show_dialog("Result Set", "There was an error getting the result set for that query.", "info");
@@ -577,42 +566,41 @@ var model = {
     },
 
     /**
-		 * Display the MDX for the active tab query.
-		 * @param tab_index {Integer} The active tab index.
-		 */
-    show_mdx: function(tab_index) {
+	 * Display the MDX for the active tab query.
+	 * @param tab_index {Integer} The active tab index.
+	 */
+    show_mdx: function (tab_index) {
 
         // Fetch the MDX from the server
         model.request({
             method: "GET",
             dataType: 'html',
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/mdx",
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function (data, textStatus, XMLHttpRequest) {
                 // Let the user know that their query was not successful
                 view.show_dialog("MDX", data, "mdx");
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 // Let the user know that their query was not successful
                 view.show_dialog("MDX", "There was an error getting the MDX for that query.", "info");
             }
         });
 
     },
-    
-    load_properties: function(tab_index) {
+
+    load_properties: function (tab_index) {
         url = model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/properties/";
         model.request({
             method: "GET",
             url: url,
-            success: function(data, textStatus, XMLHttpRequest) {
-                for(var key in data) {
+            success: function (data, textStatus, XMLHttpRequest) {
+                for (var key in data) {
                     if (key == "saiku.olap.query.nonempty") {
                         if (data[key] == "true") {
                             view.tabs.tabs[tab_index].data['options']['nonempty'] = true;
                             var $button = view.tabs.tabs[tab_index].content.find('a[title="Non-empty"]');
                             $button.addClass("on");
-                        }
-                        else {
+                        } else {
                             view.tabs.tabs[tab_index].data['options']['nonempty'] = false;
                         }
                     }
@@ -621,8 +609,7 @@ var model = {
                             view.tabs.tabs[tab_index].data['options']['drillthrough'] = false;
                             var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
                             $button.addClass("disabled_toolbar");
-                        }
-                        else {
+                        } else {
                             view.tabs.tabs[tab_index].data['options']['drillthrough'] = true;
                         }
                     }
@@ -630,14 +617,14 @@ var model = {
 
             }
         });
-        
+
     },
 
     /**
-		 * Enable or disable NON EMPTY
-		 * @param tab_index {Integer} The active tab index
-		 */
-    non_empty: function(tab_index) {
+	 * Enable or disable NON EMPTY
+	 * @param tab_index {Integer} The active tab index
+	 */
+    non_empty: function (tab_index) {
 
         view.show_processing('Setting Non-empty. Please wait...', true, tab_index);
 
@@ -657,9 +644,9 @@ var model = {
             method: "POST",
             url: url,
             data: {
-                'propertyValue' : view.tabs.tabs[tab_index].data['options']['nonempty']
+                'propertyValue': view.tabs.tabs[tab_index].data['options']['nonempty']
             },
-            success: function() {
+            success: function () {
                 // If automatic query execution is enabled, rerun the query when this option is changed
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
                     model.run_query(tab_index);
@@ -671,10 +658,10 @@ var model = {
     },
 
     /**
-		 * Enable or disable automatic query execution
-		 * @param tab_index {Integer} The active tab index
-		 */
-    automatic_execution: function(tab_index) {
+	 * Enable or disable automatic query execution
+	 * @param tab_index {Integer} The active tab index
+	 */
+    automatic_execution: function (tab_index) {
 
         view.show_processing('Setting automatic execution. Please wait...', true, tab_index);
 
@@ -691,10 +678,10 @@ var model = {
     },
 
     /**
-		 * Show or hide the fields list
-		 * @param tab_index {Integer} The active tab index
-		 */
-    toggle_fields: function(tax_index) {
+	 * Show or hide the fields list
+	 * @param tab_index {Integer} The active tab index
+	 */
+    toggle_fields: function (tax_index) {
 
         var $button = view.tabs.tabs[tab_index].content.find('a[title="Toggle fields"]');
         if (view.tabs.tabs[tab_index].data['options']['toggle_fields']) {
@@ -711,10 +698,10 @@ var model = {
     },
 
     /**
-		 * Swap axis
-		 * @param tab_index {Integer} The active tab index
-		 */
-    swap_axis: function(tab_index) {
+	 * Swap axis
+	 * @param tab_index {Integer} The active tab index
+	 */
+    swap_axis: function (tab_index) {
 
         view.show_processing('Swapping axis. Please wait...', true, tab_index);
 
@@ -731,7 +718,7 @@ var model = {
         model.request({
             method: "PUT",
             url: url,
-            success: function() {
+            success: function () {
                 // If automatic query execution is enabled, rerun the query when this option is changed
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
                     model.run_query(tab_index);
@@ -744,48 +731,46 @@ var model = {
     },
 
     /**
-		 * Export data as Excel XML
-		 * @param tab_index {Integer} The active tab index
-		 */
-    export_xls: function(tab_index) {
+	 * Export data as Excel XML
+	 * @param tab_index {Integer} The active tab index
+	 */
+    export_xls: function (tab_index) {
 
-        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
-        + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
-
-    },
-
-    /**
-		 * Export data as CSV
-		 * @param tab_index {Integer} The active tab index
-		 */
-    export_csv: function(tab_index) {
-
-        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/"
-        + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
+        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/xls";
 
     },
 
     /**
-		 * Save the query
-		 * @param tab_index {Integer} The active tab index
-		 */
-    save_query: function(tab_index) {
+	 * Export data as CSV
+	 * @param tab_index {Integer} The active tab index
+	 */
+    export_csv: function (tab_index) {
+
+        window.location = TOMCAT_WEBAPP + REST_MOUNT_POINT + model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/export/csv";
+
+    },
+
+    /**
+	 * Save the query
+	 * @param tab_index {Integer} The active tab index
+	 */
+    save_query: function (tab_index) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : BASE_URL + 'views/queries/save.html',
-            cache : false,
-            dataType : "html",
-            success : function(data) {
+            url: BASE_URL + 'views/queries/save.html',
+            cache: false,
+            dataType: "html",
+            success: function (data) {
                 $('#dialog').html(data).modal({
-                    opacity : 100,
-                    onShow : function(dialog) {
+                    opacity: 100,
+                    onShow: function (dialog) {
                         dialog.data.find('#query_name').val($('#header').find('.selected').find('a').html());
-                        dialog.data.find('#save_query').click(function() {
-                            if(dialog.data.find('#query_name').val().length == 0) {
+                        dialog.data.find('#save_query').click(function () {
+                            if (dialog.data.find('#query_name').val().length == 0) {
                                 dialog.data.find('.error_msg').html('You need to specify a name for your query.');
-                            }else{
+                            } else {
                                 var query_name = dialog.data.find('#query_name').val();
 
                                 var url = model.username + "/repository/" + view.tabs.tabs[tab_index].data['query_name'];
@@ -794,9 +779,9 @@ var model = {
                                     method: "POST",
                                     url: url,
                                     data: {
-                                        'newname' : encodeURI(query_name)
+                                        'newname': encodeURI(query_name)
                                     },
-                                    success : function(){
+                                    success: function () {
                                         // Change the tab title
                                         $('#header').find('.selected').find('a').html(query_name);
                                         // Change the dialog message
@@ -810,7 +795,7 @@ var model = {
                             }
                         });
                     },
-                    onClose : function (dialog) {
+                    onClose: function (dialog) {
                         // Remove all simple modal objects.
                         dialog.data.remove();
                         dialog.container.remove();
@@ -825,11 +810,11 @@ var model = {
     },
 
     /**
-		 * Open a query
-		 * @param query_name The name of the query
-		 * @param tab_index The tab to load it into
-		 */
-    open_query: function(query_name, tab_index) {
+	 * Open a query
+	 * @param query_name The name of the query
+	 * @param tab_index The tab to load it into
+	 */
+    open_query: function (query_name, tab_index) {
         // Change tab title
         view.tabs.tabs[tab_index].tab.find('a').text(query_name);
 
@@ -837,14 +822,14 @@ var model = {
         model.request({
             url: model.username + "/repository/" + query_name,
             dataType: 'xml',
-            success: function(data, textStatus, jqXHR) {
+            success: function (data, textStatus, jqXHR) {
                 // Create a new query in the workspace
-                model.new_query(tab_index, jqXHR.responseText, function(cube,data) {
+                model.new_query(tab_index, jqXHR.responseText, function (cube, data) {
                     // Select cube in menu
                     var selected_cube = cube.name;
                     $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
                     $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val());
-                        
+
                     // save connection data
                     var $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
                     var cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
@@ -858,74 +843,67 @@ var model = {
                     view.tabs.tabs[tab_index].data['connection'] = connection_data;
 
                     // TODO - Move selections to axes
-                    $.each(data.saikuAxes, function(axis_iterator, axis) {
+                    $.each(data.saikuAxes, function (axis_iterator, axis) {
                         var $axis = view.tabs.tabs[tab_index].content.find('.workspace_fields').find('.' + axis.name.toLowerCase() + ' ul');
-                            
-                        $.each(axis.dimensionSelections, function(dim_iter, dimension) {
+
+                        $.each(axis.dimensionSelections, function (dim_iter, dimension) {
                             var levels = new Array();
                             var test = new Object();
-                            $.each(dimension.selections, function(sel_iter, selection) {
-                                    
+                            $.each(dimension.selections, function (sel_iter, selection) {
+
                                 if (selection.dimensionUniqueName != "Measures") {
 
                                     if (levels.indexOf(selection.levelUniqueName) < 0) {
-                                        var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="'+ selection.levelUniqueName + '"]').parent();
+                                        var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="' + selection.levelUniqueName + '"]').parent();
                                         var drop_item = dimitem.clone().addClass('d_dimension');
-                                        drop_item.find('a').click(function(e) {
+                                        drop_item.find('a').click(function (e) {
                                             if ($(this).hasClass('dimension')) {
                                                 var $tab = $(this).closest(".tab");
                                                 model.show_selections($(this), $tab);
                                             }
-                                            
+
                                             return false;
                                         });
 
                                         $(drop_item).appendTo($axis);
-                                       
+
                                         levels.push(selection.levelUniqueName);
-                                            
-                                        var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree');
-                                        /** Find the parent dimension id. */
+
+                                        var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree'); /** Find the parent dimension id. */
                                         var id = dimitem.find('a').attr('rel');
-                                        var parent_id = id.split('_')[0]
-                                        /** Disable all of the dimension's siblings and highlight the dimension being used. */
-                                        $dimension_tree.find('[rel=' + id + ']').parent().addClass('used')
-                                        .removeClass('ui-draggable').addClass('not-draggable');
-                                        /** Highlight the dimension's parent being used. */
+                                        var parent_id = id.split('_')[0] /** Disable all of the dimension's siblings and highlight the dimension being used. */
+                                        $dimension_tree.find('[rel=' + id + ']').parent().addClass('used').removeClass('ui-draggable').addClass('not-draggable'); /** Highlight the dimension's parent being used. */
                                         $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
 
                                     }
                                     if (selection.type == "MEMBER") {
                                         if (!test[selection.levelUniqueName]) {
-                                            var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                            var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
                                             test[selection.levelUniqueName] = 1;
                                             $(m).text(m.text() + ' (' + 1 + ')');
-                                        }
-                                        else {
+                                        } else {
                                             test[selection.levelUniqueName] += 1;
-                                            var m = $axis.find('a[title="'+ selection.levelUniqueName + '"]')
+                                            var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
                                             var prevText = $(m).text().split('(')[0];
                                             $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
                                         }
                                     }
-                                                
-                                }
-                                else {
-                                    var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="'+ selection.uniqueName + '"]').parent();
-                                        
+
+                                } else {
+                                    var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="' + selection.uniqueName + '"]').parent();
+
                                     $(measureitem.clone().addClass('d_measure')).appendTo($axis);
                                     var $measure_tree = view.tabs.tabs[tab_index].content.find('.measure_tree');
 
                                     /** Disable and highlight the measure. */
                                     var id = measureitem.find('a').attr('rel');
-                                    $measure_tree.find('[rel=' + id + ']').parent()
-                                    .removeClass('ui-draggable').addClass('used not-draggable');
+                                    $measure_tree.find('[rel=' + id + ']').parent().removeClass('ui-draggable').addClass('used not-draggable');
                                     $measure_tree.find('.root').addClass('used');
 
                                 }
 
-                                    
-                                    
+
+
                             });
                         });
                     });
@@ -937,7 +915,7 @@ var model = {
 
                     // If automatic query execution is enabled, rerun the query after making change
                     if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-                        if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                        if ($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
                             model.run_query(tab_index);
                         }
                     }
@@ -951,25 +929,25 @@ var model = {
     },
 
     /**
-		 * Delete a query from the repository
-		 */
-    delete_query_from_repository: function(query_name, tab_index) {
+	 * Delete a query from the repository
+	 */
+    delete_query_from_repository: function (query_name, tab_index) {
         // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : BASE_URL + 'views/queries/delete.html',
-            cache : false,
-            dataType : "html",
-            success : function(data) {
+            url: BASE_URL + 'views/queries/delete.html',
+            cache: false,
+            dataType: "html",
+            success: function (data) {
                 $('#dialog').html(data).modal({
-                    opacity : 100,
-                    onShow : function(dialog) {
-                        dialog.data.find('#delete_query').click(function() {
+                    opacity: 100,
+                    onShow: function (dialog) {
+                        dialog.data.find('#delete_query').click(function () {
                             model.request({
                                 method: "DELETE",
                                 url: model.username + "/repository/" + query_name + "/",
-                                success: function(data, textStatus, XMLHttpRequest) {
+                                success: function (data, textStatus, XMLHttpRequest) {
                                     view.tabs.tabs[tab_index].content.find(".workspace_results").empty();
                                     model.get_queries(tab_index);
 
@@ -987,7 +965,7 @@ var model = {
                             });
                         });
                     },
-                    onClose : function (dialog) {
+                    onClose: function (dialog) {
                         // Remove all simple modal objects.
                         dialog.data.remove();
                         dialog.container.remove();
@@ -995,7 +973,7 @@ var model = {
                         $.modal.close();
                         // Remove the #dialog which we appended to the body.
                         $('#dialog').remove();
-                        
+
                     }
                 });
             }
@@ -1003,14 +981,14 @@ var model = {
     },
 
     /**
-		 * Get a list of queries
-		 * @param tab_index {Integer} The active tab index
-		 */
-    get_queries: function(tab_index) {
+	 * Get a list of queries
+	 * @param tab_index {Integer} The active tab index
+	 */
+    get_queries: function (tab_index) {
         model.request({
             method: "GET",
             url: model.username + "/repository/",
-            success: function(data, textStatus, XMLHttpRequest) {
+            success: function (data, textStatus, XMLHttpRequest) {
                 view.load_queries(tab_index, data);
             }
         });
@@ -1043,10 +1021,10 @@ var model = {
         });
     },*/
     /**
-		 * Show and populate the selection dialog
-		 * @param tab_index {Integer} The active tab index
-		 */
-    show_selections: function(member_clicked, $tab) {
+	 * Show and populate the selection dialog
+	 * @param tab_index {Integer} The active tab index
+	 */
+    show_selections: function (member_clicked, $tab) {
         var tab_index = view.tabs.index_from_content($tab);
         var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
@@ -1070,22 +1048,36 @@ var model = {
 
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : BASE_URL + 'views/selections/',
-            cache : false,
-            dataType : "html",
-            success : function(data) {
+            url: BASE_URL + 'views/selections/',
+            cache: false,
+            dataType: "html",
+            success: function (data) {
                 $('#dialog_selections').html(data).modal({
-                    onShow: function(dialog) {
+                    onShow: function (dialog) {
 
                         // Change the title of the dialog box
-                        $('#dialog_selections')
-                        .find('h3')
-                        .text('Selections on ' + member_data.levelname);
+                        $('#dialog_selections').find('h3').text('Selections on ' + member_data.levelname);
 
                         // TODO better solution, fix for PALO
-                        if (tab_data.schema == "undefined" || tab_data.schema == "" ) {
+                        if (tab_data.schema == "undefined" || tab_data.schema == "") {
                             tab_data.schema = "null";
                         }
+
+                        // Handle showing the unique and caption names
+                        var visible = true;
+                        $('#show_unique').live('click',function() {
+                            if(visible) {
+                                $('#dialog_selections select option').each(function(i, options) {
+                                    $(this).text($(this).val());
+                                });
+                                visible = false;
+                            }else{
+                                $('#dialog_selections select option').each(function(i, options) {
+                                    $(this).text($(this).attr('label'));
+                                });
+                                visible = true;
+                            }
+                        });
 
                         // URL to retrieve all available members
                         var url = model.username + "/discover/" + tab_data.connection + "/" + tab_data.catalog + "/" + tab_data.schema + "/" + tab_data.cube + "/dimensions/" + member_data.dimension + "/hierarchies/" + member_data.hierarchy + "/levels/" + member_data.level + "/";
@@ -1094,19 +1086,19 @@ var model = {
                         model.request({
                             method: "GET",
                             url: url,
-                            success: function(data, textStatus, jqXHR) {
+                            success: function (data, textStatus, jqXHR) {
 
                                 // Setup pointers
                                 $available_selections = $('#dialog_selections .available_selections select');
                                 $used_selections = $('#dialog_selections .used_selections select');
 
                                 /*
-									 * Step 1
-									 * Get a list of all USED members
-									 */
+                                 * Step 1
+                                 * Get a list of all USED members
+                                 */
 
                                 // URL to retrieve all available members
-                                var url = model.username + "/query/" + query_name + "/axis/" + axis +"/";
+                                var url = model.username + "/query/" + query_name + "/axis/" + axis + "/";
                                 var used_array = [];
                                 // Array to store all used selections
                                 var used_selection = [];
@@ -1116,22 +1108,22 @@ var model = {
                                 model.request({
                                     method: "GET",
                                     url: url,
-                                    success: function(used_data, textStatus, jqXHR) {
+                                    success: function (used_data, textStatus, jqXHR) {
 
                                         // Loop through all available dimensions
-                                        $.each(used_data, function(i, dimensions) {
+                                        $.each(used_data, function (i, dimensions) {
 
                                             // Is the dimension unique name the same as what the user has selected
-                                            if(dimensions['uniqueName'] === member_data.dimensionuniquename) {
+                                            if (dimensions['uniqueName'] === member_data.dimensionuniquename) {
 
                                                 // Loop through all available selections
-                                                $.each(dimensions['selections'], function(i, selections) {
+                                                $.each(dimensions['selections'], function (i, selections) {
 
                                                     // Loop through all levels which are MEMBERS
-                                                    if(selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
+                                                    if (selections['levelUniqueName'] === member_data.level && selections['type'] == 'MEMBER') {
 
                                                         // Add the levels to the used_selections list box
-                                                        $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
+                                                        $('#dialog_selections .used_selections select').append('<option value="' + selections['uniqueName'] + '" label="'+selections['name']+'" title="' + selections['uniqueName'] + '">' + selections['name'] + '</option>');
 
                                                         // Store the uniqueName into the used_selection array for comparison later
                                                         used_selection.push(selections['uniqueName']);
@@ -1141,19 +1133,19 @@ var model = {
                                         });
 
                                         /*
-											 * Step 2.
-											 * Load all AVAILABLE members
-											 */
+                                         * Step 2.
+                                         * Load all AVAILABLE members
+                                         */
 
                                         // Loop through each member and if does not exsist in the used_selection array
                                         // then append it to the listbox.
-                                        $.each(data, function(member_iterator, member) {
-                                            if($.inArray(member['uniqueName'], used_selection) == -1) {
-                                                $available_selections.append('<option value="' + member['uniqueName'] + '">' + member['caption'] + '</option>');
+                                        $.each(data, function (member_iterator, member) {
+                                            if ($.inArray(member['uniqueName'], used_selection) == -1) {
+                                                $available_selections.append('<option value="' + member['uniqueName'] + '" title="' + member['uniqueName'] + '" label="' + member['caption'] + '">' + member['caption'] + '</option>');
                                             }
                                         });
 
-                                        add_selections = function() {
+                                        add_selections = function () {
                                             $available_selections.find('option:selected').appendTo($used_selections);
                                             $available_selections.find('option:selected').remove();
                                             $used_selections.find('option:selected').attr('selected', '');
@@ -1161,38 +1153,36 @@ var model = {
 
                                         // Clicking on the > button will add all selected members.
                                         $('#add_members').live('click', add_selections);
-                                        $available_selections.find('option').live('dblclick',add_selections);
-                                        
-                                        remove_selections = function(){
+                                        $available_selections.find('option').live('dblclick', add_selections);
+
+                                        remove_selections = function () {
                                             $used_selections.find('option:selected').appendTo($available_selections);
                                             $used_selections.find('option:selected').remove();
                                             $available_selections.find('option:selected').attr('selected', '');
                                         };
+
                                         // Clicking on the < button will remove all selected members.
                                         $('#remove_members').live('click', remove_selections);
-                                        $used_selections.find('option').live('dblclick',remove_selections);
-                                        
-                                        
+                                        $used_selections.find('option').live('dblclick', remove_selections);
+
                                     },
-                                    error: function(data) {}
+                                    error: function (data) {}
                                 });
 
                                 /*
-									 * Step 3.
-									 * Make the listbox interactive
-									 */
-
-                                
+                                 * Step 3.
+                                 * Make the listbox interactive
+                                 */
 
                                 // End processing
                                 view.hide_processing(true, tab_index);
                                 /*
-									 * Step 4.
-									 * Bind the following when the save button is clicked.
-									 */
+                                 * Step 4.
+                                 * Bind the following when the save button is clicked.
+                                 */
 
                                 // When the save button is clicked
-                                $('.save_selections').click(function(){
+                                $('.save_selections').click(function () {
 
                                     // Show processing
                                     view.show_processing('Saving selections. Please wait...', true, tab_index);
@@ -1201,15 +1191,14 @@ var model = {
                                     $('#dialog_selections').hide();
 
                                     /*
-										 * Step 5.
-										 * Is the used selections box empty?
-										 * If so remove all available members and add LEVEL
-										 */
+                                     * Step 5.
+                                     * Is the used selections box empty?
+                                     * If so remove all available members and add LEVEL
+                                     */
 
                                     var member_updates = "[";
                                     var member_iterator = 0;
                                     // First remove all AVAILABLE members
-                                    
                                     // We don't have to do this by each member, removing the level removes all members as well
                                     /* $('#dialog_selections .available_selections select option')
                                     .each(function(used_members, index) {
@@ -1227,9 +1216,8 @@ var model = {
 
 
                                     // Counter to track all members which are being used
-                                    
 
-                                    if($used_selections.find('option').length == 0) {
+                                    if ($used_selections.find('option').length == 0) {
                                         // if no selections were made include the level, even if it already included
                                         if (member_updates.length > 1) {
                                             member_updates += ",";
@@ -1239,15 +1227,14 @@ var model = {
                                     } else {
 
                                         /*
-											 * Step 6.
-											 * Is used selections box NOT empty?
-											 * If so first remove all AVAILABLE members and add all USED members and remove LEVEL
-											 */
+                                         * Step 6.
+                                         * Is used selections box NOT empty?
+                                         * If so first remove all AVAILABLE members and add all USED members and remove LEVEL
+                                         */
 
                                         // Secondly add all USED members
-
                                         // Loop through all used selections box
-                                        $('#dialog_selections .used_selections select option').each(function(members, index) {
+                                        $('#dialog_selections .used_selections select option').each(function (members, index) {
                                             if (member_updates.length > 1) {
                                                 member_updates += ",";
                                             }
@@ -1257,12 +1244,12 @@ var model = {
                                         });
 
 
-                                        
+
                                     }
 
-                                    member_updates +="]";
+                                    member_updates += "]";
 
-                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension ;
+                                    var url = model.username + "/query/" + query_name + "/axis/" + axis + "/dimension/" + member_data.dimension;
 
                                     // AJAX request to POST from the Saiku Server
                                     model.request({
@@ -1271,14 +1258,13 @@ var model = {
                                         data: member_updates,
                                         dataType: "json",
                                         contentType: 'application/json',
-                                        success: function(data, textStatus, jqXHR) {
+                                        success: function (data, textStatus, jqXHR) {
 
                                             var selection_num = $('#dialog_selections .used_selections select option').length;
                                             // Append the counter the dropped item
                                             if (selection_num == 0) {
                                                 $(member_clicked).text(member_data.levelname);
-                                            }
-                                            else {
+                                            } else {
                                                 $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
                                             }
                                             // Remove all simple modal objects.
@@ -1296,7 +1282,7 @@ var model = {
                                             // Execute the query
                                             model.run_query(tab_index);
                                         },
-                                        error: function(data) {
+                                        error: function (data) {
                                         // TODO - Notify the user
                                         }
                                     });
@@ -1308,7 +1294,7 @@ var model = {
                     }
                 });
             },
-            error: function(data) {
+            error: function (data) {
 
             }
         });
