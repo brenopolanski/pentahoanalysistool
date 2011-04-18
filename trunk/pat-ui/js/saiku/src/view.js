@@ -244,7 +244,7 @@ var view = {
                         .appendTo($cubes);
                         view.tabs.tabs[tab_index].data['navigation'][storage_id] = {
                             'connectionName': connection['name'],
-                            'catalogName': connection.catalogs[0]['name'],
+                            'catalogName': catalog['name'],
                             'schema': schema['name'],
                             'cube': cube['name']
                         };
