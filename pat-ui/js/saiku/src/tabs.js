@@ -64,7 +64,6 @@ var TabContainer = function(tab_container, content_container) {
 
         // Remove the tab and associated metadata
         if (typeof this.tabs[index] != "undefined") {
-            //console.log('Remove content');
             this.tabs[index].tab.remove();
             this.tabs[index].content.remove();
             delete this.tabs[index].data;
