@@ -163,7 +163,7 @@ var view = {
 
         /** Bind resize_height() to the resize event. */
         $(window).bind('resize', function() {
-            view.resize_height(0);
+            view.resize_height(view.tabs.index_from_tab($('#tabs').find('.selected')));
         });
 
         /** Bind toggle_sidebar() to click event on the sidebar_separator. */
@@ -779,7 +779,7 @@ var view = {
 
                 view.check_toolbar(tab_index);
 
-                /** Activate all items for selection. */
+                /** Activate all items for selection. 
                 // FIXME - this should be added when the item is dragged to avoid page fragments
                 $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
                     if ($(this).hasClass('dimension')) {
@@ -789,6 +789,7 @@ var view = {
 
                     return false;
                 });
+                 */
             }
         });
 

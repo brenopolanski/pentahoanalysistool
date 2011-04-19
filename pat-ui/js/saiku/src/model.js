@@ -291,6 +291,9 @@ var model = {
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
                     model.run_query(tab_index);
                 }
+                // Remove the orginal binded live event to the filter option
+                // this would cause duplicate loading of events.
+                $item.find('a').die('dblclick');
                 // Make sure the item is clickable for selections.
                 $item.find('a').live('dblclick', function () {
                     if ($(this).hasClass('dimension')) {
@@ -856,14 +859,14 @@ var model = {
                                     if (levels.indexOf(selection.levelUniqueName) < 0) {
                                         var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="' + selection.levelUniqueName + '"]').parent();
                                         var drop_item = dimitem.clone().addClass('d_dimension');
-                                        drop_item.find('a').click(function (e) {
-                                            if ($(this).hasClass('dimension')) {
-                                                var $tab = $(this).closest(".tab");
-                                                model.show_selections($(this), $tab);
-                                            }
-
-                                            return false;
-                                        });
+                                        //                                        drop_item.find('a').click(function (e) {
+                                        //                                            if ($(this).hasClass('dimension')) {
+                                        //                                                var $tab = $(this).closest(".tab");
+                                        //                                                model.show_selections($(this), $tab);
+                                        //                                            }
+                                        //
+                                        //                                            return false;
+                                        //                                        });
 
                                         $(drop_item).appendTo($axis);
 
@@ -1025,6 +1028,7 @@ var model = {
 	 * @param tab_index {Integer} The active tab index
 	 */
     show_selections: function (member_clicked, $tab) {
+
         var tab_index = view.tabs.index_from_content($tab);
         var member_data = view.tabs.tabs[tab_index].data['dimensions'][member_clicked.parent().attr('title')];
         var tab_data = view.tabs.tabs[tab_index].data['connection'];
@@ -1268,7 +1272,14 @@ var model = {
                                             if (selection_num == 0) {
                                                 $(member_clicked).text(member_data.levelname);
                                             } else {
-                                                $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
+                                                // Store the old level name for reuse
+                                                var old_levelname = $(member_clicked).text();
+                                                // If the levelname is (All) then keep the old level name in the dimension.
+                                                if(member_data.levelname == '(All)') {
+                                                    $(member_clicked).text(old_levelname + ' (' + selection_num + ')');
+                                                }else{
+                                                    $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
+                                                }
                                             }
                                             // Remove all simple modal objects.
                                             dialog.data.remove();
