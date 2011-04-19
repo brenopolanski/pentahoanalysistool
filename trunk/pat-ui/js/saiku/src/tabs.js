@@ -97,8 +97,8 @@ var TabContainer = function(tab_container, content_container) {
             this.tab_container.find("li.selected").removeClass("selected");
             this.content_container.find(".tab").hide();
             this.tabs[index].tab.addClass("selected");
-            view.resize_height(index);
             this.tabs[index].content.show();
+            view.resize_height(index);
             this.selected = index;
         }
     };
