@@ -232,6 +232,8 @@ var model = {
         var $row_dropzone = $tab.find('.rows ul');
         var $both_dropzones = $tab.find('.rows ul, .columns ul');
 
+        view.show_processing('Performing selection. Please wait...', true, tab_index);
+
         /** Has the dimension or measure been double clicked on. */
         if (is_click) {
             if ($item.find('a').hasClass('dimension')) {
@@ -287,6 +289,7 @@ var model = {
                 'memberposition': memberposition
             },
             success: function (data, textStatus, XMLHttpRequest) {
+                view.hide_processing(true, tab_index);
                 // If automatic query execution is enabled, rerun the query when this option is changed
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
                     model.run_query(tab_index);
@@ -303,6 +306,11 @@ var model = {
 
                     return false;
                 });
+            },
+            error: function () {
+                // Let the user know that their selection was not successful
+                view.hide_processing(true, tab_index);
+                view.show_dialog("Error", "There was an error performing the selection.", "info");
             }
 
         });
@@ -318,6 +326,8 @@ var model = {
         var tab_index = view.tabs.index_from_content($item.closest('.tab'));
         var axis = $item.closest('.fields_list').attr('title');
 
+        view.show_processing('Removing selection. Please wait...', true, tab_index);
+        
         if ($item.find('a').hasClass('dimension')) {
             // This is a dimension
             var item_data = view.tabs.tabs[tab_index].data['dimensions'][$item.attr('title')];
@@ -331,7 +341,22 @@ var model = {
         // Notify server of change
         model.request({
             method: "DELETE",
-            url: url
+            url: url,
+            success: function() {
+                view.hide_processing(true, tab_index);
+                // If automatic query execution is enabled, rerun the query after making change
+                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+                        model.run_query(tab_index);
+                }
+                view.check_toolbar(tab_index);
+                
+
+            },
+            error: function () {
+                // Let the user know that their selection was not successful
+                view.hide_processing(true, tab_index);
+                view.show_dialog("Error", "There was an error removing the selection.", "info");
+            }
         });
 
 
