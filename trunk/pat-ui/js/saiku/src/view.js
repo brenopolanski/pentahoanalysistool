@@ -770,14 +770,6 @@ var view = {
                 },1);
                 /** When dimension or measure is removed, set the selection. */
 
-                // If automatic query execution is enabled, rerun the query after making change
-                if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-                    if($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                        model.run_query(tab_index);
-                    }
-                }
-
-                view.check_toolbar(tab_index);
 
                 /** Activate all items for selection. 
                 // FIXME - this should be added when the item is dragged to avoid page fragments
