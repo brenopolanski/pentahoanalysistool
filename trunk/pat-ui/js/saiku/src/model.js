@@ -189,6 +189,8 @@ var model = {
                                 if (callback) {
                                     callback(cube, query_data);
                                 }
+                                view.hide_processing(true, tab_index);
+
 
                             },
                             error: function () {
@@ -204,9 +206,6 @@ var model = {
                         $tab.find('.cubes').find('option:first').attr('selected', 'selected');
                     }
                 });
-                
-                
-                view.hide_processing(true, tab_index);
             },
 
             error: function () {
