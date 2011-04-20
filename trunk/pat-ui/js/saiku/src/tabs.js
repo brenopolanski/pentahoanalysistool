@@ -119,7 +119,7 @@ var TabContainer = function(tab_container, content_container) {
         $new_tab_content = $('<div />')
         .addClass("tab")
         .data("tab_index", new_index)
-        .load(BASE_URL + "views/queries/", function() {
+        .load(BASE_URL + "views/queries/index.html", function() {
             view.load_cubes(new_index);
             view.resize_height(new_index);
             
