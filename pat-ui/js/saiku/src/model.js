@@ -379,7 +379,7 @@ var model = {
             // Lets disable it and set the property to false
             view.tabs.tabs[tab_index].data['options']['drillthrough'] = false
             // Enable the button on the toolbar
-            var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
+            var $button = view.tabs.tabs[tab_index].content.find('.drillthrough');
             $button.removeClass('on');
         }
 
@@ -399,9 +399,6 @@ var model = {
         model.request({
             method: "GET",
             url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/result/",
-            data: {
-                'propertyValue': view.tabs.tabs[tab_index].data['options']['drillthrough']
-            },
             success: function (data, textStatus, XMLHttpRequest) {
 
                 if (data == "") {
@@ -490,7 +487,7 @@ var model = {
         }
 
         // Enable the button on the toolbar
-        var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
+        var $button = view.tabs.tabs[tab_index].content.find('.drillthrough');
         if (view.tabs.tabs[tab_index].data['options']['drillthrough']) {
             view.tabs.tabs[tab_index].data['options']['drillthrough'] = false;
             $button.removeClass('on');
@@ -521,9 +518,6 @@ var model = {
             model.request({
                 method: "GET",
                 url: model.username + "/query/" + view.tabs.tabs[tab_index].data['query_name'] + "/drillthrough:500",
-                data: {
-                    'propertyValue': view.tabs.tabs[tab_index].data['options']['drillthrough']
-                },
                 success: function (data, textStatus, XMLHttpRequest) {
 
                     // Create a variable to store the table
