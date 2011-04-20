@@ -29,13 +29,29 @@
 var view = {
     /** Display the login form when the view is initialised. */
     init : function() {
-
-        // Append a dialog <div/> to the body.
+            $.ajax({
+                type: "GET",
+                cache: false,
+                url: 'config.json',
+                dataType: "json",
+                success: function (data, textStatus, XMLHttpRequest) {
+                    model.username = data['username'];
+                    model.password = data['password'];
+                    TOMCAT_WEBAPP = data['saiku-webapp'];
+                   	BASE_URL = data['saiku-ui-base'];
+                    PLUGIN = data['plugin']
+                    if (PLUGIN == "true") {
+                        view.show_processing('Loading Saiku User Interface. Please wait...');
+                        // Create the session and log in.
+                        model.get_session();
+                    }
+                    else {
+                            // Append a dialog <div/> to the body.
         $('<div id="dialog" class="dialog hide" />').appendTo('body');
         
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url : BASE_URL + 'views/session/',
+            url : BASE_URL + 'views/session/index.html',
             cache : false,
             dataType : "html",
             success : function(data) {
@@ -67,6 +83,10 @@ var view = {
                 });
             }
         });
+                    }
+                }
+            });
+
     },
 
     /** Tabs container. */
@@ -155,11 +175,16 @@ var view = {
         /** Show all UI elements. */
         $('#header, #tab_panel').show();
 
-        /** Add an event handler to all toolbar buttons. */
+        if (!(typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true)) {
+            $('#toolbar, #tabs').show();
+                    /** Add an event handler to all toolbar buttons. */
         $("#toolbar ul li a").click(function() {
             controller.toolbar_click_handler($(this));
             return false;
         });
+
+        }
+
 
         /** Bind resize_height() to the resize event. */
         $(window).bind('resize', function() {

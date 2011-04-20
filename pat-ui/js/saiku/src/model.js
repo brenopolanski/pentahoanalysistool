@@ -1087,7 +1087,7 @@ var model = {
 
         // Load the view into the dialog <div/> and disable caching.
         $.ajax({
-            url: BASE_URL + 'views/selections/',
+            url: BASE_URL + 'views/selections/index.html',
             cache: false,
             dataType: "html",
             success: function (data) {

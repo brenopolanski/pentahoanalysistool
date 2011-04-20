@@ -96,7 +96,7 @@ var controller = {
 
     /** Handle click when the about button is clicked. */
     about : function() {
-        view.show_view('views/info/');
+        view.show_view('views/info/index.html');
     }
     
 };
