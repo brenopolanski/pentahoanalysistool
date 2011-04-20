@@ -1267,9 +1267,6 @@ var model = {
                                             member_iterator = member_iterator + 1;
 
                                         });
-
-
-
                                     }
 
                                     member_updates += "]";
@@ -1286,19 +1283,30 @@ var model = {
                                         success: function (data, textStatus, jqXHR) {
 
                                             var selection_num = $('#dialog_selections .used_selections select option').length;
-                                            // Append the counter the dropped item
-                                            if (selection_num == 0) {
-                                                $(member_clicked).text(member_data.levelname);
-                                            } else {
-                                                // Store the old level name for reuse
-                                                var old_levelname = $(member_clicked).text();
-                                                // If the levelname is (All) then keep the old level name in the dimension.
-                                                if(member_data.levelname == '(All)') {
-                                                    $(member_clicked).text(old_levelname + ' (' + selection_num + ')');
-                                                }else{
+
+                                            // If the user is selecting the All ... member
+
+                                            console.log(member_clicked);
+                                            console.log(member_data);
+
+                                            if(member_data.levelname === '(All)') {
+                                                // Store the orginal member text
+                                                var old_member_text = $(member_clicked).text();
+                                                // Change the dimension name on the axis
+                                                if (selection_num == 0) {
+                                                    $(member_clicked).text(old_member_text);
+                                                } else {
+                                                    $(member_clicked).text(old_member_text + ' (' + selection_num + ')');
+                                                }
+                                            }else{
+                                                // Append the counter the dropped item
+                                                if (selection_num == 0) {
+                                                    $(member_clicked).text(member_data.levelname);
+                                                } else {
                                                     $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
                                                 }
                                             }
+                                            
                                             // Remove all simple modal objects.
                                             dialog.data.remove();
                                             dialog.container.remove();

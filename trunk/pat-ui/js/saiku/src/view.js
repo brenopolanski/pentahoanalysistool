@@ -771,7 +771,7 @@ var view = {
                 /** When dimension or measure is removed, set the selection. */
 
 
-                /** Activate all items for selection. 
+            /** Activate all items for selection.
                 // FIXME - this should be added when the item is dragged to avoid page fragments
                 $('.rows ul li a, .columns ul li a,  .filter ul li a').live('dblclick', function() {
                     if ($(this).hasClass('dimension')) {
@@ -1001,6 +1001,9 @@ var view = {
         if($('#dialog').length > 0) {
         // Do nothing
         }else {
+            if(type === 'mdx'){
+                var message = '<textarea readonly="yes" wrap="hard">' + message + '</textarea>';
+            }
             // Append a dialog <div/> to the body.
             $('<div id="dialog" class="dialog hide">').appendTo('body');
             // Add the structure of the dialog.
