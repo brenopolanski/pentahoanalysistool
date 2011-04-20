@@ -1283,29 +1283,14 @@ var model = {
                                         success: function (data, textStatus, jqXHR) {
 
                                             var selection_num = $('#dialog_selections .used_selections select option').length;
-
-                                            // If the user is selecting the All ... member
-
-                                            console.log(member_clicked);
-                                            console.log(member_data);
-
-                                            if(member_data.levelname === '(All)') {
-                                                // Store the orginal member text
-                                                var old_member_text = $(member_clicked).text();
-                                                // Change the dimension name on the axis
-                                                if (selection_num == 0) {
-                                                    $(member_clicked).text(old_member_text);
-                                                } else {
-                                                    $(member_clicked).text(old_member_text + ' (' + selection_num + ')');
-                                                }
-                                            }else{
-                                                // Append the counter the dropped item
-                                                if (selection_num == 0) {
-                                                    $(member_clicked).text(member_data.levelname);
-                                                } else {
-                                                    $(member_clicked).text(member_data.levelname + ' (' + selection_num + ')');
-                                                }
+                                            $tree_item = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[rel="' + $(member_clicked).attr('rel') + '"]');
+                                            // Append the counter the dropped item
+                                            if (selection_num == 0) {
+                                                $(member_clicked).text($tree_item.text());
+                                            } else {
+                                                $(member_clicked).text($tree_item.text() + ' (' + selection_num + ')');
                                             }
+
                                             
                                             // Remove all simple modal objects.
                                             dialog.data.remove();
