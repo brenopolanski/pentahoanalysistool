@@ -32,7 +32,7 @@ var view = {
             $.ajax({
                 type: "GET",
                 cache: false,
-                url: 'config.json',
+                url: 'config/config.json',
                 dataType: "json",
                 success: function (data, textStatus, XMLHttpRequest) {
                     model.username = data['username'];
