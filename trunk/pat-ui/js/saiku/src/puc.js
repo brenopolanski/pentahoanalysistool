@@ -38,8 +38,8 @@ function save_to_solution( filename, solution, path, type, overwrite ) {
             dataType: 'xml',
             success: function (query_data, textStatus, jqXHR) {
                 $.ajax({
-                    type: "GET",
-                    url: "./",
+                    type: "POST",
+                    url: "../saiku",
                     success: function (data, textStatus, jqXHR) { 
                         top.mantle_refreshRepository();
                         view.show_dialog('File Saved','');
