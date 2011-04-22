@@ -81,6 +81,11 @@ var model = {
                 view.draw_ui();
                 controller.add_tab();
                 view.hide_processing();
+                
+                if (QUERY !== undefined) {
+                    model.new_query(0, QUERY, model.load_cube );
+                }
+
             }
         });
     },
@@ -187,7 +192,7 @@ var model = {
                             success: function (data, textStatus, XMLHttpRequest) {
                                 view.load_measures(tab_index, data);
                                 if (callback) {
-                                    callback(cube, query_data);
+                                    callback(tab_index,cube, query_data);
                                 }
                                 view.hide_processing(true, tab_index);
 
@@ -845,7 +850,12 @@ var model = {
             dataType: 'xml',
             success: function (data, textStatus, jqXHR) {
                 // Create a new query in the workspace
-                model.new_query(tab_index, jqXHR.responseText, function (cube, data) {
+                model.new_query(tab_index, jqXHR.responseText, model.load_cube );
+            }
+        });
+    },
+    
+    load_cube: function (tab_index, cube, data) {
                     // Select cube in menu
                     var selected_cube = cube.name;
                     $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
@@ -944,9 +954,6 @@ var model = {
                     view.check_toolbar(tab_index);
 
                 // TODO - Retrieve properties for this query
-                });
-            }
-        });
     },
 
     /**
