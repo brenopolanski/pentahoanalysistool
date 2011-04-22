@@ -108,4 +108,5 @@ $(document).ready(function() {
     });
     $.getScript("js/saiku/src/model.js");
     $.getScript("js/saiku/src/i18n.js");
+    $.getScript("js/saiku/src/puc.js");
 });

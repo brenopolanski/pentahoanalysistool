@@ -175,16 +175,15 @@ var view = {
         /** Show all UI elements. */
         $('#header, #tab_panel').show();
 
-        if (!(typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true)) {
+        if (PLUGIN != "true") {
             $('#toolbar, #tabs').show();
-                    /** Add an event handler to all toolbar buttons. */
-        $("#toolbar ul li a").click(function() {
-            controller.toolbar_click_handler($(this));
-            return false;
-        });
-
+            /** Add an event handler to all toolbar buttons. */
+            $("#toolbar ul li a").click(function() {
+                controller.toolbar_click_handler($(this));
+                return false;
+            });
         }
-
+        
 
         /** Bind resize_height() to the resize event. */
         $(window).bind('resize', function() {
@@ -1103,8 +1102,15 @@ var view = {
             // Clear the results area.
             $tab.find('.workspace_results').html('');
         }
+        if (PLUGIN == "true") {
+            $tab.find('.workspace_toolbar li').find('a[href="#save_query"]').remove();
+            if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
+                if(top.parent.enableAdhocSave ) {
+                    top.parent.enableAdhocSave( true );
+                }
+            }
+        }
         model.load_properties(tab_index);
-
     }
 
 };

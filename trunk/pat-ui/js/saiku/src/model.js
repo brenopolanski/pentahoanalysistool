@@ -707,18 +707,19 @@ var model = {
 	 * Show or hide the fields list
 	 * @param tab_index {Integer} The active tab index
 	 */
-    toggle_fields: function (tax_index) {
-
+    toggle_fields: function (tab_index) {
         var $button = view.tabs.tabs[tab_index].content.find('a[title="Toggle fields"]');
         if (view.tabs.tabs[tab_index].data['options']['toggle_fields']) {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = false;
             $button.removeClass('on');
             view.tabs.tabs[tab_index].content.find('.workspace_fields').show();
+            view.toggle_sidebar($button);
             view.resize_height(tab_index);
         } else {
             view.tabs.tabs[tab_index].data['options']['toggle_fields'] = true;
             $button.addClass('on');
             view.tabs.tabs[tab_index].content.find('.workspace_fields').hide();
+            view.toggle_sidebar($button);
             view.resize_height(tab_index);
         }
     },
