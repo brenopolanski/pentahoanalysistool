@@ -103,25 +103,26 @@ var controller = {
 
 /** Lazy load the rest of the javascript. */
 $(document).ready(function() {
-    $.getScript("js/saiku/src/model.js");
+
     $.getScript("js/saiku/src/puc.js");
-    
-    $.ajax({
-        type: "GET",
-        cache: false,
-        url: 'config/config.json',
-        dataType: "json",
-        success: function (data, textStatus, XMLHttpRequest) {
-            model.username = data['username'];
-            model.password = data['password'];
-            TOMCAT_WEBAPP = data['saiku-webapp'];
-            BASE_URL = data['saiku-ui-base'];
-            PLUGIN = data['plugin'];
-            $.getScript("js/saiku/src/i18n.js");
-            $.getScript("js/saiku/src/tabs.js", function() {
-                $.getScript("js/saiku/src/view.js");
-            });
-        }
+    $.getScript("js/saiku/src/model.js",function() {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: 'config/config.json',
+            dataType: "json",
+            success: function (data, textStatus, XMLHttpRequest) {
+                model.username = data['username'];
+                model.password = data['password'];
+                TOMCAT_WEBAPP = data['saiku-webapp'];
+                BASE_URL = data['saiku-ui-base'];
+                PLUGIN = data['plugin'];
+                $.getScript("js/saiku/src/i18n.js");
+                $.getScript("js/saiku/src/tabs.js", function() {
+                    $.getScript("js/saiku/src/view.js");
+                });
+            }
+        });
     });
     
    
