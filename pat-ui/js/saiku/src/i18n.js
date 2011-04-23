@@ -94,7 +94,7 @@ var locale;
  */
 automatic_i18n = function() {
 	$.ajax({
-		url: BASE_URL + 'i18n/',
+		url: BASE_URL + 'i18n/index.jsp',
 		type: 'GET',
 		dataType: 'text',
 		success: function(data) {

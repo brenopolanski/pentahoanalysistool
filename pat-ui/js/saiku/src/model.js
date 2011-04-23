@@ -82,7 +82,7 @@ var model = {
                 controller.add_tab();
                 view.hide_processing();
                 
-                if (QUERY !== undefined) {
+                if (typeof QUERY !== "undefined") {
                     model.new_query(0, QUERY, model.load_cube );
                 }
 

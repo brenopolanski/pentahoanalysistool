@@ -1,4 +1,19 @@
 
+
+var puc = {
+    allowSave: function(isAllowed) {
+            if( typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true && top.parent.enableAdhocSave ) {
+                top.parent.enableAdhocSave(isAllowed);
+            }
+    },
+    
+    refresh_repo: function() {
+        if( typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
+            top.mantle_refreshRepository();
+        }
+    }
+};
+
 // The following code is for Save/Save As functionality
 
 var gCtrlr = new WaqrProxy(); // this is a required variable
@@ -41,7 +56,7 @@ function save_to_solution( filename, solution, path, type, overwrite ) {
                     type: "POST",
                     url: "../saiku",
                     success: function (data, textStatus, jqXHR) { 
-                        top.mantle_refreshRepository();
+                        puc.refresh_repo();
                         view.show_dialog('File Saved','');
                     },
                     data: { "solution":solution,
