@@ -27,67 +27,56 @@
  * @class
  */
 var view = {
-    /** Display the login form when the view is initialised. */
-    init : function() {
-            $.ajax({
-                type: "GET",
-                cache: false,
-                url: 'config/config.json',
-                dataType: "json",
-                success: function (data, textStatus, XMLHttpRequest) {
-                    model.username = data['username'];
-                    model.password = data['password'];
-                    TOMCAT_WEBAPP = data['saiku-webapp'];
-                   	BASE_URL = data['saiku-ui-base'];
-                    PLUGIN = data['plugin']
-                    if (PLUGIN == "true") {
-                        view.show_processing('Loading Saiku User Interface. Please wait...');
-                        // Create the session and log in.
-                        model.get_session();
-                    }
-                    else {
-                            // Append a dialog <div/> to the body.
-        $('<div id="dialog" class="dialog hide" />').appendTo('body');
-        
-        // Load the view into the dialog <div/> and disable caching.
-        $.ajax({
-            url : BASE_URL + 'views/session/index.html',
-            cache : false,
-            dataType : "html",
-            success : function(data) {
-                $('#dialog').html(data).modal({
-                    opacity : 100,
-                    // onShow : function (dialog) {}
-                    onClose : function (dialog) {
-                        // Get the username and password from the form.
-                        model.username = $('#username').val();
-                        model.password = $('#password').val();
+		/** Display the login form when the view is initialised. */
+		init : function() {
 
-                        // Remove all simple modal objects.
-                        dialog.data.remove();
-                        dialog.container.remove();
-                        dialog.overlay.remove();
-                        $.modal.close();
-                        
-                        // Remove the #dialog which we appended to the body.
-                        $('#dialog').remove();
+			if (PLUGIN == "true") {
+				view.show_processing('Loading Saiku User Interface. Please wait...');
+				// Create the session and log in.
+				model.get_session();
+			}
+			else {
+				// Append a dialog <div/> to the body.
+				$('<div id="dialog" class="dialog hide" />').appendTo('body');
 
-                        // Show pre loading message
-                        // $('<div class="dialog pre_waiting"><div class="dialog_inner"><div class="dialog_body_waiting">Loading Saiku. Please wait...</div></div></div>').appendTo('body');
+				// Load the view into the dialog <div/> and disable caching.
+				$.ajax({
+					url : BASE_URL + 'views/session/index.html',
+					cache : false,
+					dataType : "html",
+					success : function(data) {
+						$('#dialog').html(data).modal({
+							opacity : 100,
+							// onShow : function (dialog) {}
+							onClose : function (dialog) {
+								// Get the username and password from the form.
+								model.username = $('#username').val();
+								model.password = $('#password').val();
 
-                        view.show_processing('Loading Saiku User Interface. Please wait...');
+								// Remove all simple modal objects.
+								dialog.data.remove();
+								dialog.container.remove();
+								dialog.overlay.remove();
+								$.modal.close();
 
-                        // Create the session and log in.
-                        model.get_session();
-                    }
-                });
-            }
-        });
-                    }
-                }
-            });
+								// Remove the #dialog which we appended to the body.
+								$('#dialog').remove();
 
-    },
+								// Show pre loading message
+								// $('<div class="dialog pre_waiting"><div class="dialog_inner"><div class="dialog_body_waiting">Loading Saiku. Please wait...</div></div></div>').appendTo('body');
+
+								view.show_processing('Loading Saiku User Interface. Please wait...');
+
+								// Create the session and log in.
+								model.get_session();
+							}
+						});
+					}
+				});
+			}
+
+
+		},
 
     /** Tabs container. */
     tabs : new TabContainer($("#tabs"), $('#tab_panel')),
@@ -222,7 +211,7 @@ var view = {
         .change(function() {
             locale = $("#language-selector").val();
             $.ajax({
-                url: '/i18n/' + locale + ".json",
+                url: BASE_URL + '/i18n/' + locale + ".json",
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -1076,41 +1065,40 @@ var view = {
             $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
             // Clear the results area.
             $tab.find('.workspace_results').html('');
+            puc.allowSave(false);
         }else if ((query_name > 0 && col_dropzone_items == 0 && row_dropzone_items == 0)
             || (query_name > 0 && (col_dropzone_items > 0 && row_dropzone_items == 0))
             || (query_name > 0 && (col_dropzone_items == 0 && row_dropzone_items > 0))) {
 
             // If there is a query name BUT no items on ROWS and/or COLUMNS.
-
             // Add the disabled_toolbar class to all icons.
             $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
+            
             // This means users can setup specific query options i.e. Non Empty, Auto Exec.
             // by removing the disabled_toolbar class.s
             $tab.find('.workspace_toolbar li')
             .find('a[href="#automatic_execution"], a[href="#toggle_fields"], a[href="#non_empty"]')
             .removeClass('disabled_toolbar');
-            
+            puc.allowSave(false);
+
         }else if (query_name > 0 && col_dropzone_items > 0 && row_dropzone_items > 0) {
 
             // If there is a query name AND items on ROWS and COLUMNS
             // Remove disabled_toolbar class from all icons.
             $tab.find('.workspace_toolbar li a').removeClass('disabled_toolbar');
+            puc.allowSave(true);
         }else{
 
             // Add the disabled_toolbar class to all icons.
             $tab.find('.workspace_toolbar li a').addClass('disabled_toolbar');
             // Clear the results area.
             $tab.find('.workspace_results').html('');
-        }
-        if (PLUGIN == "true") {
-            $tab.find('.workspace_toolbar li').find('a[href="#save_query"]').remove();
-            if (typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true) {
-                if(top.parent.enableAdhocSave ) {
-                    top.parent.enableAdhocSave( true );
-                }
-            }
+            puc.allowSave(false);
         }
         model.load_properties(tab_index);
+
+
+
     }
 
 };

@@ -127,6 +127,9 @@ var TabContainer = function(tab_container, content_container) {
             $new_tab_content.find('.workspace_toolbar a').click(function(event) {
                 return controller.workspace_toolbar_click_handler($(this));
             });
+            if (PLUGIN == "true") {
+                $new_tab_content.find('.workspace_toolbar li').find('a[href="#save_query"]').remove();
+            }
             
             // Localize UI controls
             $('.i18n').i18n(po_file);
