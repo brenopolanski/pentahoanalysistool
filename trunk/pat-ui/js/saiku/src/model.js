@@ -429,7 +429,7 @@ var model = {
 
                             // If the cell is a column header and is null (top left of table)
                             if (header['type'] === "COLUMN_HEADER" && header['value'] === "null") {
-                                table_vis = table_vis + '<th class="col_null"><div>&nbsp;</div></th>';
+                                table_vis = table_vis + '<th class="all_null"><div>&nbsp;</div></th>';
                             } // If the cell is a column header and isn't null (column header of table)
                             else if (header['type'] === "COLUMN_HEADER") {
                                 table_vis = table_vis + '<th class="col"><div>' + header['value'] + '</div></th>';
