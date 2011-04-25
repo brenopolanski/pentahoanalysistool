@@ -759,9 +759,6 @@ html, body {
     text-align: center;
     border: none;
 }
-.workspace_results table th.col_null {
-    background: #f9f9f9;
-}
 .workspace_results table th.col {
     border-top: 1px solid #d5d5d5;
     background: #f9f9f9;
