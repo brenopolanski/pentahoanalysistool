@@ -3,7 +3,9 @@
 var puc = {
     allowSave: function(isAllowed) {
             if( typeof top.mantle_initialized != "undefined" && top.mantle_initialized == true && top.parent.enableAdhocSave ) {
-                top.parent.enableAdhocSave(isAllowed);
+                if (typeof ALLOW_PUC_SAVE == "undefined" || ALLOW_PUC_SAVE) {
+                    top.parent.enableAdhocSave(isAllowed);
+                }
             }
     },
     
