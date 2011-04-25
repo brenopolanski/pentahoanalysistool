@@ -632,11 +632,8 @@ var model = {
                     }
                     if (key == "saiku.olap.query.drillthrough") {
                         if (data[key] == "false") {
-                            view.tabs.tabs[tab_index].data['options']['drillthrough'] = false;
                             var $button = view.tabs.tabs[tab_index].content.find('a[title="Drill Through"]');
                             $button.addClass("disabled_toolbar");
-                        } else {
-                            view.tabs.tabs[tab_index].data['options']['drillthrough'] = true;
                         }
                     }
                 }
