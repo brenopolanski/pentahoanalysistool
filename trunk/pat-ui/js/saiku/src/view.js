@@ -949,7 +949,7 @@ var view = {
         }else{
             $.unblockUI();
             $.blockUI({
-                message: '<div class="processing"><div class="processing_inner"><img src="images/src/saiku_32x32.png"></img><br /><br /><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
+                message: '<div class="processing"><div class="processing_inner"><span class="processing_image">&nbsp;</span>' + msg + '</div></div>',
                 overlayCSS:  {
                     backgroundColor: '#FFF',
                     opacity:         0.5

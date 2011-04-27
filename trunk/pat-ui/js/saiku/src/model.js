@@ -350,7 +350,7 @@ var model = {
                 view.hide_processing(true, tab_index);
                 // If automatic query execution is enabled, rerun the query after making change
                 if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-                        model.run_query(tab_index);
+                    model.run_query(tab_index);
                 }
                 view.check_toolbar(tab_index);
                 
@@ -456,6 +456,20 @@ var model = {
 
                     // Insert the table to the DOM
                     $workspace_result.html(table_vis);
+
+                    // Fix the headers
+                    // TODO - Make this server dependent!
+
+//                    $workspace_result.find('table tr').each(function(i) {
+//                        if(i == 0) {
+//                            $prev_hd = $(this).find('th').first();
+//                        }
+//                        if ( $prev_hd.hasClass('col') &&
+//                            $(this).find('th').first().hasClass('row'))
+//                            {
+//                            $prev_hd.removeClass('col').addClass('row');
+//                        }
+//                    });
 
                     // Enable highlighting on rows.
                     $workspace_result.find('table tr').hover(function () {
@@ -854,104 +868,104 @@ var model = {
     },
     
     load_cube: function (tab_index, cube, data) {
-                    // Select cube in menu
-                    var selected_cube = cube.name;
-                    $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
-                    $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val());
+        // Select cube in menu
+        var selected_cube = cube.name;
+        $cubes = view.tabs.tabs[tab_index].content.find('.cubes');
+        $cubes.val($cubes.find('option:[text="' + selected_cube + '"]').val());
 
-                    // save connection data
-                    var $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
-                    var cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
-                    var connection_data = {
-                        'connection': cube_data['connectionName'],
-                        'cube': cube_data['cube'],
-                        'catalog': cube_data['catalogName'],
-                        'schema': cube_data['schema']
-                    };
+        // save connection data
+        var $cube = view.tabs.tabs[tab_index].content.find(".cubes option:selected");
+        var cube_data = view.tabs.tabs[tab_index].data['navigation'][$cube.attr('value')];
+        var connection_data = {
+            'connection': cube_data['connectionName'],
+            'cube': cube_data['cube'],
+            'catalog': cube_data['catalogName'],
+            'schema': cube_data['schema']
+        };
 
-                    view.tabs.tabs[tab_index].data['connection'] = connection_data;
+        view.tabs.tabs[tab_index].data['connection'] = connection_data;
 
-                    // TODO - Move selections to axes
-                    $.each(data.saikuAxes, function (axis_iterator, axis) {
-                        var $axis = view.tabs.tabs[tab_index].content.find('.workspace_fields').find('.' + axis.name.toLowerCase() + ' ul');
+        // TODO - Move selections to axes
+        $.each(data.saikuAxes, function (axis_iterator, axis) {
+            var $axis = view.tabs.tabs[tab_index].content.find('.workspace_fields').find('.' + axis.name.toLowerCase() + ' ul');
 
-                        $.each(axis.dimensionSelections, function (dim_iter, dimension) {
-                            var levels = new Array();
-                            var test = new Object();
-                            $.each(dimension.selections, function (sel_iter, selection) {
+            $.each(axis.dimensionSelections, function (dim_iter, dimension) {
+                var levels = new Array();
+                var test = new Object();
+                $.each(dimension.selections, function (sel_iter, selection) {
 
-                                if (selection.dimensionUniqueName != "Measures") {
+                    if (selection.dimensionUniqueName != "Measures") {
 
-                                    if (levels.indexOf(selection.levelUniqueName) < 0) {
-                                        var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="' + selection.levelUniqueName + '"]').parent();
-                                        var drop_item = dimitem.clone().addClass('d_dimension');
-                                        //                                        drop_item.find('a').click(function (e) {
-                                        //                                            if ($(this).hasClass('dimension')) {
-                                        //                                                var $tab = $(this).closest(".tab");
-                                        //                                                model.show_selections($(this), $tab);
-                                        //                                            }
-                                        //
-                                        //                                            return false;
-                                        //                                        });
+                        if (levels.indexOf(selection.levelUniqueName) < 0) {
+                            var dimitem = view.tabs.tabs[tab_index].content.find('.dimension_tree').find('a[title="' + selection.levelUniqueName + '"]').parent();
+                            var drop_item = dimitem.clone().addClass('d_dimension');
+                            //                                        drop_item.find('a').click(function (e) {
+                            //                                            if ($(this).hasClass('dimension')) {
+                            //                                                var $tab = $(this).closest(".tab");
+                            //                                                model.show_selections($(this), $tab);
+                            //                                            }
+                            //
+                            //                                            return false;
+                            //                                        });
 
-                                        $(drop_item).appendTo($axis);
+                            $(drop_item).appendTo($axis);
 
-                                        levels.push(selection.levelUniqueName);
+                            levels.push(selection.levelUniqueName);
 
-                                        var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree'); /** Find the parent dimension id. */
-                                        var id = dimitem.find('a').attr('rel');
-                                        var parent_id = id.split('_')[0] /** Disable all of the dimension's siblings and highlight the dimension being used. */
-                                        $dimension_tree.find('[rel=' + id + ']').parent().addClass('used').removeClass('ui-draggable').addClass('not-draggable'); /** Highlight the dimension's parent being used. */
-                                        $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
+                            var $dimension_tree = view.tabs.tabs[tab_index].content.find('.dimension_tree'); /** Find the parent dimension id. */
+                            var id = dimitem.find('a').attr('rel');
+                            var parent_id = id.split('_')[0] /** Disable all of the dimension's siblings and highlight the dimension being used. */
+                            $dimension_tree.find('[rel=' + id + ']').parent().addClass('used').removeClass('ui-draggable').addClass('not-draggable'); /** Highlight the dimension's parent being used. */
+                            $dimension_tree.find('[rel=' + parent_id + ']').parent().addClass('used');
 
-                                    }
-                                    if (selection.type == "MEMBER") {
-                                        if (!test[selection.levelUniqueName]) {
-                                            var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
-                                            test[selection.levelUniqueName] = 1;
-                                            $(m).text(m.text() + ' (' + 1 + ')');
-                                        } else {
-                                            test[selection.levelUniqueName] += 1;
-                                            var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
-                                            var prevText = $(m).text().split('(')[0];
-                                            $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
-                                        }
-                                    }
-
-                                } else {
-                                    var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="' + selection.uniqueName + '"]').parent();
-
-                                    $(measureitem.clone().addClass('d_measure')).appendTo($axis);
-                                    var $measure_tree = view.tabs.tabs[tab_index].content.find('.measure_tree');
-
-                                    /** Disable and highlight the measure. */
-                                    var id = measureitem.find('a').attr('rel');
-                                    $measure_tree.find('[rel=' + id + ']').parent().removeClass('ui-draggable').addClass('used not-draggable');
-                                    $measure_tree.find('.root').addClass('used');
-
-                                }
-
-
-
-                            });
-                        });
-                    });
-
-                    var $tab = view.tabs.tabs[tab_index].content;
-                    var $column_dropzone = $tab.find('.columns ul');
-                    var $row_dropzone = $tab.find('.rows ul');
-                    var $filter_dropzone = $tab.find('.filter ul');
-
-                    // If automatic query execution is enabled, rerun the query after making change
-                    if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
-                        if ($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
-                            model.run_query(tab_index);
                         }
+                        if (selection.type == "MEMBER") {
+                            if (!test[selection.levelUniqueName]) {
+                                var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
+                                test[selection.levelUniqueName] = 1;
+                                $(m).text(m.text() + ' (' + 1 + ')');
+                            } else {
+                                test[selection.levelUniqueName] += 1;
+                                var m = $axis.find('a[title="' + selection.levelUniqueName + '"]')
+                                var prevText = $(m).text().split('(')[0];
+                                $(m).text(prevText + ' (' + test[selection.levelUniqueName] + ')');
+                            }
+                        }
+
+                    } else {
+                        var measureitem = view.tabs.tabs[tab_index].content.find('.measure_tree').find('a[title="' + selection.uniqueName + '"]').parent();
+
+                        $(measureitem.clone().addClass('d_measure')).appendTo($axis);
+                        var $measure_tree = view.tabs.tabs[tab_index].content.find('.measure_tree');
+
+                        /** Disable and highlight the measure. */
+                        var id = measureitem.find('a').attr('rel');
+                        $measure_tree.find('[rel=' + id + ']').parent().removeClass('ui-draggable').addClass('used not-draggable');
+                        $measure_tree.find('.root').addClass('used');
+
                     }
 
-                    view.check_toolbar(tab_index);
 
-                // TODO - Retrieve properties for this query
+
+                });
+            });
+        });
+
+        var $tab = view.tabs.tabs[tab_index].content;
+        var $column_dropzone = $tab.find('.columns ul');
+        var $row_dropzone = $tab.find('.rows ul');
+        var $filter_dropzone = $tab.find('.filter ul');
+
+        // If automatic query execution is enabled, rerun the query after making change
+        if (view.tabs.tabs[tab_index].data['options']['automatic_execution']) {
+            if ($row_dropzone.find('li.d_measure, li.d_dimension').length > 0 && $column_dropzone.find('li.d_measure, li.d_dimension').length > 0) {
+                model.run_query(tab_index);
+            }
+        }
+
+        view.check_toolbar(tab_index);
+
+    // TODO - Retrieve properties for this query
     },
 
     /**
