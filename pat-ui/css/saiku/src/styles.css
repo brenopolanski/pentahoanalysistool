@@ -762,7 +762,7 @@ html, body {
 .workspace_results table th.col {
     border-top: 1px solid #d5d5d5;
     background: #f9f9f9;
-    text-align: right;
+    text-align: left;
 }
 .workspace_results table th.row {
     border-top: 1px solid #d5d5d5;
