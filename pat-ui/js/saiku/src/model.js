@@ -506,9 +506,9 @@ var model = {
 
                     // Enable highlighting on rows.
                     $workspace_result.find('table tr').hover(function () {
-                        $(this).children().css('background', '#eff4fc');
+                        $(this).find('td, th.row').css('background', '#eff4fc');
                     }, function () {
-                        $(this).children().css('background', '');
+                        $(this).find('td, th.row').css('background', '');
                     });
                 }
 
