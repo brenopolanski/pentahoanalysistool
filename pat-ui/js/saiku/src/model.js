@@ -194,6 +194,12 @@ var model = {
                                 if (callback) {
                                     callback(tab_index,cube, query_data);
                                 }
+
+                                // Make sure the auto exec and non empty buttons are toggled on
+                                var $tab = view.tabs.tabs[tab_index].content;
+                                $tab.find('a[title="Automatic execution"]').addClass('on');
+                                $tab.find('a[title="Non-empty"]').addClass('on');
+
                                 view.hide_processing(true, tab_index);
 
 
@@ -457,19 +463,46 @@ var model = {
                     // Insert the table to the DOM
                     $workspace_result.html(table_vis);
 
-                    // Fix the headers
-                    // TODO - Make this server dependent!
+                    // Group column headers
+                    // TODO - Could be done in a plugin
+                    
+                    var prev_cell_text,
+                        j = 1,
+                        prev_cells = [];
 
-//                    $workspace_result.find('table tr').each(function(i) {
-//                        if(i == 0) {
-//                            $prev_hd = $(this).find('th').first();
-//                        }
-//                        if ( $prev_hd.hasClass('col') &&
-//                            $(this).find('th').first().hasClass('row'))
-//                            {
-//                            $prev_hd.removeClass('col').addClass('row');
-//                        }
-//                    });
+                    // Loop through all table headers with the class col
+                    $workspace_result.find('table tr th.col').each(function(i) {
+
+                        // If the previous cell text is the same as this cell text
+                        if (prev_cell_text === $(this).text()) {
+                            // Add the previous cell reference to an array
+                            prev_cells.push($prev_cell);
+                            // Increment the counter
+                            j++;
+                        } else {
+                            // If the counter is more than one i.e. more than the same header
+                            if (j > 1) {
+                                // Loop through the array of previous cell references
+                                $.each(prev_cells, function(index, value) {
+                                    // Physicaly remove the previous cell references
+                                    $(this).remove();
+                                });
+                                // With the last cell add the colspan attribute with the value
+                                // of the counter
+                                $prev_cell.attr('colspan', j);
+                            }
+                            // Reset the counter otherwise
+                            j = 1;
+                        }
+
+                        
+
+                        // Store the previous cell text and
+                        // previous cell reference into pointers
+                        prev_cell_text = $(this).text();
+                        $prev_cell = $(this);
+
+                    });
 
                     // Enable highlighting on rows.
                     $workspace_result.find('table tr').hover(function () {
