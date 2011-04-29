@@ -467,8 +467,8 @@ var model = {
                     // TODO - Could be done in a plugin
                     
                     var prev_cell_text,
-                        j = 1,
-                        prev_cells = [];
+                    j = 1,
+                    prev_cells = [];
 
                     // Loop through all table headers with the class col
                     $workspace_result.find('table tr th.col').each(function(i) {
@@ -495,8 +495,6 @@ var model = {
                             j = 1;
                         }
 
-                        
-
                         // Store the previous cell text and
                         // previous cell reference into pointers
                         prev_cell_text = $(this).text();
@@ -504,11 +502,18 @@ var model = {
 
                     });
 
+                    // Equal widths on columns
+                    var max = 0;
+                    $workspace_result.find('table td').each(function() {
+                        max = Math.max($(this).width(), max);
+                    }).find('div').width(max);
+
+
                     // Enable highlighting on rows.
                     $workspace_result.find('table tr').hover(function () {
-                        $(this).find('td, th.row').css('background', '#eff4fc');
+                        $(this).find('td, th.row, th.row_null').css('background', '#eff4fc');
                     }, function () {
-                        $(this).find('td, th.row').css('background', '');
+                        $(this).find('td, th.row, th.row_null').css('background', '');
                     });
                 }
 
