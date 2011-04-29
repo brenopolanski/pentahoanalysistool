@@ -619,7 +619,7 @@ html, body {
 
 .dialog {
     background: #FFF;
-    border: 3px solid #EEE;
+    border: 3px solid #e5e5e5;
     width: 400px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -1002,4 +1002,10 @@ html, body {
 .form_button:hover {
     border: 1px solid #999;
     color: #222222;
+}
+
+#simplemodal-overlay {
+    background: #d5d5d5;
+    opacity: 0.12 !important;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=12)";
 }
